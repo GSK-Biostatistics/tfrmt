@@ -14,8 +14,10 @@ tfmt(
  txt_style =  element_text(),
  row_grp_txt_style =  element_text(), ?maybe pass a named list 
  row_txt_style =  element_text(),
+ row_grp_stype = list("lab1" = element_block(), "lab2" = element_block(post_space = "---")), #the style between blocking 
  rounding = 1, 
- rounding_rowwise = element_rowwise(cols, ref_col, c("n" = fmt_str("X"), "mean" = fmt_str("X.XX"),  "CV%" = fmt_str("X.XX %") ect.)),
+ rounding_rowwise = list(element_rowwise(cols, ref_col, c(".default" = fmt_str(), "n" = fmt_str("X"), "mean" = fmt_str("X.XX"),  "CV%" = fmt_str("X.XX %") ect.)),
+                    element_rowwise(cols, ref_col, c(".default" = fmt_str(str_fmt, bounds = element_bounds(upper_exp =">5", lower_exp, upper_lab, lower_lab), fill = " "), "n" = fmt_str("X"), "mean" = fmt_str("X.XX"),  "CV%" = fmt_str("X.XX %") ect.))),
  rouning_colwise = element_colwise(),
  body_align = element_align(left = vars(), right = vars(), dec_pl = vars()), 
  #And now the things that do this!! 
