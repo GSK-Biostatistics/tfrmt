@@ -16,13 +16,19 @@ tfmt(
  row_txt_style =  element_text(),
  row_grp_stype = list("lab1" = element_block(), "lab2" = element_block(post_space = "---")), #the style between blocking 
  rounding = 1, 
- rounding_rowwise = list(element_rowwise(cols, ref_col, c(".default" = fmt_str(), "n" = fmt_str("X"), "mean" = fmt_str("X.XX"),  "CV%" = fmt_str("X.XX %") ect.)),
-                    element_rowwise(cols, ref_col, c(".default" = fmt_str(str_fmt, bounds = element_bounds(upper_exp =">5", lower_exp, upper_lab, lower_lab), fill = " "), "n" = fmt_str("X"), "mean" = fmt_str("X.XX"),  "CV%" = fmt_str("X.XX %") ect.))),
- rouning_colwise = element_colwise(),
+ body_style = element_style(rowwise = element_rowwise(ref_col, c(".default" = fmt_str(), 
+ "n" = fmt_str("{COLNAME1} ({COLNAME2}%)",
+          fmt(rounding = "XX",  bounds = element_bounds(upper_exp = ">5", lower_exp, upper_lab, lower_lab), padding = " "),
+          fmt(...), cols = NULL, output = NULL),
+ "mean" =  fmt_str(
+     "{(.*)_mean} ({(.*)_std}%)",
+      fmt(rounding = "XX", padding = " ", bounds = element_bounds(upper_exp = ">5", lower_exp, upper_lab, lower_lab)),
+      fmt(...),
+     cols = vars(palcebo_mean:total_std),output = "(.*)"),  "CV%" = fmt_str("X.XX %") ect.)),
+  colwise = element_colwise(fmt_str("{P_VAL}", p_val_fmt())),
  body_align = element_align(left = vars(), right = vars(), dec_pl = vars()), 
  #And now the things that do this!! 
- sorting_cols = vars(),  
- combine_data_col = elment_combo(new_col = "{COLNAME1} {COLNAME2}", new_col2 = "{COLNAME1} {COLNAME2}%"),
+ sorting_cols = vars(),
  page_vars = vars(), 
  row_grp = element_grp(cols, out_col?) #assume 
  col_labels = element_label(..., wrap_txt = 30),
