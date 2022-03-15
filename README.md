@@ -14,7 +14,7 @@ tfmt(
  txt_style =  element_text(),
  row_grp_txt_style =  element_text(), ?maybe pass a named list 
  row_txt_style =  element_text(),
- row_grp_stype = list("lab1" = element_block(), "lab2" = element_block(post_space = "---")), #the style between blocking 
+ row_grp_style = list("lab1" = element_block(), "lab2" = element_block(post_space = "---")), #the style between blocking 
  rounding = 1, 
  body_style = element_style(rowwise = element_rowwise(ref_col, c(".default" = fmt_str(), 
  "n" = fmt_str("{COLNAME1} ({COLNAME2}%)",
@@ -40,10 +40,37 @@ tfmt(
 gsk_tfmt() %>%
 pull_current_fmt("rouning_rowwise")
 #Bucketlist 
+print_previw(tfmt, output_type = c("gt", "flextable"))
 print_preview(c("gt", "flextable")) 
 
-dataset %>% 
+
+
+
 gsk_tfmt() %>% 
 sumstatrow_tfmt(base_round = 2) %>% 
 tfmt(title = "Hello World") %>% 
-print_to_gt() 
+print_to_gt(, .data)
+
+
+sumstatrow_tfmt <- function(og_tfmt, base_round, n_df){
+thingy <- pull_current_fmt(og_fmt)
+old_lbs <- thingy$col_labels
+str_extract(old_labels, (<?=\\{).(?=}))
+
+
+
+}
+
+pt_profile <- function(usubjid, ADSL, plot_dt){
+  gt <- adsl %>% 
+  filter(USUBJID == usubjid) %>% 
+  print_to_get(pp_tfmt, .)
+  
+  
+  
+}
+
+
+
+
+gsk_tfmt <- tfm(title = "hello")
