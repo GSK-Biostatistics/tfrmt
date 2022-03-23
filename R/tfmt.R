@@ -1,5 +1,10 @@
 
 tfmt <- function(
+  group = vars(),
+  label = vars(),
+  param = vars(),
+  values = vars(),
+  column = vars(),
   title,
   title_txt_style,
   subtitle,

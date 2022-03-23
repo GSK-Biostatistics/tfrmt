@@ -51,34 +51,55 @@ eth <- adam_adsl %>%
 
 age <- adam_adsl %>%
   group_by(ARM) %>%
-  sum_stats(AGE) %>%
-  transpose_tbl(wide_column = ARM)
+  sum_stats(AGE, include_raw = TRUE) %>%
+  select(contains("raw")) %>%
+  pivot_longer(contains("raw")) %>%
+  ungroup()
 age <- adam_adsl %>%
-  sum_stats(AGE) %>%
+  sum_stats(AGE, include_raw = TRUE) %>%
+  select(contains("raw")) %>%
   pivot_longer(everything()) %>%
-  select(total = value) %>%
-  bind_cols(age, .) %>%
+  mutate(ARM = "total") %>%
+  bind_rows(age, .) %>%
   mutate(row_label1 = "Age",
          ord_layer_1 = 2,
-         ord_layer_2 = row_number()) %>%
-  rename(row_label2 = LABEL) %>%
-  select(starts_with("row"), everything())
+         ord_layer_2 = row_number(),
+         row_label2 = str_remove(name, "_raw$"),
+         column = ARM) %>%
+  select(-ARM, -name)
 
 weight <- adam_adsl %>%
   group_by(ARM) %>%
-  sum_stats(WEIGHTBL) %>%
-  transpose_tbl(wide_column = ARM)
+  sum_stats(WEIGHTBL, include_raw = TRUE) %>%
+  select(contains("raw")) %>%
+  pivot_longer(contains("raw")) %>%
+  ungroup()
 weight <- adam_adsl %>%
-  sum_stats(WEIGHTBL) %>%
+  sum_stats(WEIGHTBL, include_raw = TRUE) %>%
+  select(contains("raw")) %>%
   pivot_longer(everything()) %>%
-  select(total = value) %>%
-  bind_cols(weight, .) %>%
+  mutate(ARM = "total") %>%
+  bind_rows(weight, .) %>%
   mutate(row_label1 = "Weight",
          ord_layer_1 = 6,
-         ord_layer_2 = row_number()) %>%
-  rename(row_label2 = LABEL) %>%
-  select(starts_with("row"), everything())
+         ord_layer_2 = row_number(),
+         row_label2 = str_remove(name, "_raw$"),
+         column = ARM) %>%
+  select(-ARM, -name)
 
 
-data <- bind_rows(age_grp, sex, race, eth, age, weight)
+data_freq <- bind_rows(age_grp, sex, race, eth) %>%
+  mutate(across(contains("percent"), ~.*100)) %>%
+  pivot_longer(contains("raw"),
+               names_to = c("column", "param", "raw"),
+               names_pattern = "(.*)_(.*)_(.*)") %>%
+  select(-total, -raw)
 
+data_stats <- bind_rows(age, weight) %>%
+  mutate(param = row_label2,
+         row_label2 = case_when(row_label2 == "Min" ~ "Min., Max.",
+                                row_label2 == "Max" ~ "Min., Max.",
+                                TRUE ~ row_label2))
+
+data <- bind_rows(data_freq, data_stats) %>%
+  arrange(ord_layer_1, ord_layer_2, row_label1, row_label2, column, param)
