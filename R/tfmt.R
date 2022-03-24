@@ -24,8 +24,9 @@ tfmt <- function(
   page_vars,
   row_grp, # col which is used to make the row grps
   col_labels,
+  col_widths,
   spanning_label_grp,
-  col_select ,
+  col_select,
   ...
 ){
   #TODO rewrite find_args for our package

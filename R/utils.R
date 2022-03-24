@@ -72,8 +72,13 @@ apply_fmt <- function(vals, fmt){
     stop("Check format, there largest value is larger than expected")
   }
 
+  if(!is.null(fmt$missing)){
+    miss_val <- fmt$missing
+  } else {
+    miss_val <- NA_character_
+  }
+
   fmt_vals <- case_when(!is.na(fmt_options$bound) ~ fmt_options$bound,
-            fmt_options$rounded == "NA" ~ NA_character_,
             TRUE ~ str_c(str_dup(" ", fmt_options$space_to_add),
                          fmt_options$rounded))
 
@@ -85,12 +90,32 @@ apply_fmt <- function(vals, fmt){
 
   # Combining the additional formatting
   case_when(fmt_options$bound == "" ~ "",
+            fmt_options$rounded == "NA" ~ miss_val,
             TRUE ~ str_c(fmt$padding, start, fmt_vals, end))
 }
 
-# apply_fmt_combine(.data, param, values, fmt){
-#
-#   names(fmt$fmt_ls)
-#
-# }
 
+apply_combo_fmt <- function(.data, fmt_combine, param, values){
+  param_vals <- fmt_combine$expression %>%
+    str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
+    unlist()
+
+  if(!setequal(names(fmt_combine$fmt_ls), param_vals)){
+    stop("The values in the expression don't match the names of the given formats ")
+  }
+
+  var <- param_vals[1]
+  out <- map_dfr(param_vals, function(var){
+    fmt <- fmt_combine$fmt_ls[[var]]
+    .data %>%
+      filter(!!param == var) %>%
+      mutate(!!values := apply_fmt(!!values, fmt))
+  })
+  out %>%
+    pivot_wider(values_from = !!values,
+                names_from = !!param) %>%
+    mutate(!!values := str_glue(fmt_combine$expression) %>% as.character()) %>%
+    select(-all_of(param_vals))
+  #TODO MANAGE MISSING
+
+}

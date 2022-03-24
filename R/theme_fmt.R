@@ -3,7 +3,7 @@
 #                       count = fmt(),
 #                       percent = fmt()
 #           )
-fmt_combine <- function(expression, ...){
+fmt_combine <- function(expression, ..., missing = NULL){
   everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
   n_vars <- str_count(expression, everything_but_curly)
   vars_to_fmt <- str_extract_all(expression, everything_but_curly, simplify = TRUE)
@@ -17,7 +17,7 @@ fmt_combine <- function(expression, ...){
   names(fmt_ls) <- vars_to_fmt
 
   structure(
-    list(expression = expression, fmt_ls = fmt_ls),
+    list(expression = expression, fmt_ls = fmt_ls, missing = missing),
     class = c("fmt_combine")
   )
 }
@@ -33,9 +33,9 @@ fmt_str <- function(group = NULL, label = NULL, fmt = NULL){
 }
 
 # Do we need to add any formating for txt? like the ability to convert to sentence case?
-fmt <- function(rounding = NULL, bounds = NULL, padding = "", missing = ""){
+fmt <- function(rounding = NULL, bounds = NULL, padding = "", missing = NULL){
   structure(
-    list(rounding = rounding, bounds = bounds, padding = padding),
+    list(rounding = rounding, bounds = bounds, missing = missing, padding = padding),
     class = c("fmt")
   )
 

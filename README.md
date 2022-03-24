@@ -73,14 +73,19 @@ pull_current_fmt("footer")
 print_preview(tfmt, output_type = c("gt", "flextable"))
 print_preview(c("gt", "flextable")) 
 
+#Create Mocks
+print_preview(tfmt, output_type = "gt")
 
-
-
+#Layerable 
 gsk_tfmt() %>% 
 demog_tfmt() %>% 
 tfmt(title = "Hello World") %>% 
 print_to_gt(, .data)
 
+#Flexible
+print_to_gt(fmt, .data)
+print_to_flextable(fmt, .data)
+print_to_dt(fmt, .data)
 
 sumstatrow_tfmt <- function(og_tfmt, base_round, n_df){
 thingy <- pull_current_fmt(og_fmt)
