@@ -95,10 +95,20 @@ apply_fmt <- function(vals, fmt){
 }
 
 
+#' Apply fmt_combine information to data
+#'
+#' @param .data data, but only what is getting changed
+#' @param fmt_combine
+#' @param param
+#' @param values
+#'
+#' @return rounded and formatted df
+#' @noRd
 apply_combo_fmt <- function(.data, fmt_combine, param, values){
   param_vals <- fmt_combine$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
     unlist()
+  # Check if unspecified param values are in the dataset
 
   if(!setequal(names(fmt_combine$fmt_ls), param_vals)){
     stop("The values in the expression don't match the names of the given formats ")
@@ -116,6 +126,5 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
                 names_from = !!param) %>%
     mutate(!!values := str_glue(fmt_combine$expression) %>% as.character()) %>%
     select(-all_of(param_vals))
-  #TODO MANAGE MISSING
-
+  #TODO MANAGE MISSING should this be a function? will that be confusing
 }

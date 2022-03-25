@@ -10,21 +10,7 @@ element_block <- function(background_fill,
 }
 
 
-# element_style(
-#   fmt_str(group = ".default", label = ".default",
-#           fmt_combine("{count} ({percent})%",
-#                       count = fmt(),
-#                       percent = fmt()
-#           )
-#   ),
-#   fmt_str(group = "Age", label = "Min., Max.",
-#           fmt_combine("{Min}, {Max}",
-#                       Min = fmt(),
-#                       Max = fmt()
-#           )
-#   ),
-#   fmt_str(group = c("Age", "Weight"), label = "n", fmt())
-# )
+
 element_style <- function(...){
   structure(
     list(all_fmts = list(...)),
