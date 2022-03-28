@@ -4,13 +4,7 @@ library(tibble)
 library(stringr)
 library(rlang)
 library(purrr)
-
-
-
-foo <- fmt_str(expression = "{COLNAME1} ({COLNAME2}%)",
-        fmt(rounding = "XX",  bounds = element_bounds(upper_exp = ">5"), padding = " "),
-        fmt(), cols = vars(Sepal.Length, Sepal.Width))
-
+source("dev/sample_data.R")
 
 
 tfmt(
@@ -18,10 +12,10 @@ tfmt(
   subtitle = "Study ID: GSK12345",
   footer = "A footnote about stuff\nHere is a new line with more stuff",
   group = vars(row_label1),
-  label = vars(row_label2),
-  param = vars(param),
-  values = vars(value),
-  column = vars(column),
+  label = vars(row_label2)[[1]],
+  param = vars(param)[[1]],
+  values = vars(value)[[1]],
+  column = vars(column)[[1]],
   sorting_cols = vars(ord_layer_1, ord_layer_2),
   body_style = element_style(
     fmt_str(group = ".default", label = ".default",
@@ -40,18 +34,7 @@ tfmt(
     ),
     fmt_str(group = c("Age", "Weight"), label = "Mean", fmt("xx.x")),
     fmt_str(group = c("Age", "Weight"), label = "Median", fmt("xx.x")),
-    fmt_str(group = c("Age", "Weight"), label = "Std", fmt("xx.xx"))
-  )
-)
-
-
-
-data %>%
-  filter(param %in% c("count", "percent")) %>%
-  apply_combo_fmt(fmt_combine, sym("param"), sym("value"))
-
-
-element <- element_style(
+    fmt_str(group = c("Age", "Weight"), labelelement_style(
   fmt_str(group = ".default", label = ".default",
           fmt_combine("{count} {percent}",
                       count = fmt(rounding = "XXX"),
@@ -70,13 +53,28 @@ element <- element_style(
   fmt_str(group = c("Age", "Weight"), label = "Median", fmt("xx.x")),
   fmt_str(group = c("Age", "Weight"), label = "Std", fmt("xx.xx"))
 )
-foo <-
-tibble(group = element$all_fmts %>% map(~.$group),
-       label = element$all_fmts %>% map(~.$label),
-       fmt = element$all_fmts %>% map(~.$fmt)) %>%
-  mutate(order = row_number())
-#Function to test if you could apply a fmt to a row
-# test is there is only one group
-data
+ = "Std", fmt("xx.xx"))
+  )
+)
+
+
+
+
+
+element <-
+
+group = vars(row_label1)
+label = vars(row_label2)[[1]]
+param = vars(param)[[1]]
+values = vars(value)[[1]]
+column = vars(column)[[1]]
+sorting_cols = vars(ord_layer_1, ord_layer_2)
+foo <- apply_all_fmts(data, element, group = group, label = label, param = param, values) %>%
+  pivot_wider(names_from = !!column,
+              values_from = !!values) %>%
+  arrange(!!!sorting_cols)
+
+
+
 
 
