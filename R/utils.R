@@ -119,7 +119,15 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
       filter(!!param == var) %>%
       mutate(!!values := apply_fmt(!!values, fmt))
   })
-  #Test if common information exsists
+  #Test if common information exists
+  miss_from_data <- out %>%
+    pull(!!param) %>%
+    unique()%>%
+    setdiff(param_vals, .)
+  if(length(miss_from_data) > 0 ){
+    stop(paste0("Unable to create formatting combination because the following parameters are missing from the data:\n ",
+                paste0(miss_from_data, collapse = " \n")))
+  }
   test <- out %>%
     select(-!!param, -!!values) %>%
     distinct() %>%
@@ -169,14 +177,26 @@ fmt_test_data <- function(cur_fmt, .data, label, group){
   data <- .data %>%
     mutate(TEMP_row = row_number())
 
-
   if(length(group) == 1){
     grp_expr <- param_test_expr(group[[1]], cur_fmt$group)
   } else {
     #TODO add test when names don't match
-    grp_expr <- group %>%
-      map_chr(~param_test_expr(., cur_fmt$group[[as_label(.)]])) %>%
-      paste(collapse = " & ")
+    if(length(cur_fmt$group) == 1){
+      grp_expr <- group %>%
+        map(as_label) %>%
+        map_chr(~param_test_expr(., cur_fmt$group)) %>%
+        paste(collapse = " & ")
+    } else {
+      grp_str <- group %>%
+        map(as_label)
+
+      if(length(setdiff(grp_str, names(cur_fmt$group))) > 0){
+        stop("The group names don't mathc the group vairables provided")
+      }
+      grp_expr <- group %>%
+        map2_chr(grp_str, ~param_test_expr(.x, cur_fmt$group[.y])) %>%
+        paste(collapse = " & ")
+    }
   }
 
   filter_expr <- paste(param_test_expr(label, cur_fmt$label),
@@ -204,16 +224,21 @@ fmt_test_data <- function(cur_fmt, .data, label, group){
 #' @importFrom tidyr unnest
 #' @importFrom rlang !!
 apply_all_fmts <- function(.data, element_style, group, label, param, values){
-  dat_plus_fmt <- tibble(TEMP_appl_row = element_style$all_fmts %>%
-                  map(fmt_test_data, data, label, group),
-                TEMP_fmt_to_apply = element_style$all_fmts %>% map(~.$fmt)) %>%
+
+  TEMP_appl_row = element_style$all_fmts %>%
+    map(fmt_test_data, .data, label, group)
+  TEMP_fmt_to_apply = element_style$all_fmts %>% map(~.$fmt)
+
+  dat_plus_fmt <- tibble(TEMP_appl_row,
+                TEMP_fmt_to_apply) %>%
+    # TODO? add a warning if a formate isn't applied anywhere?
     mutate(TEMP_fmt_rank = row_number()) %>%
     unnest(cols = c(TEMP_appl_row)) %>%
     group_by(TEMP_appl_row) %>%
     #TODO add warning if there are rows not covered
     arrange(TEMP_appl_row, desc(TEMP_fmt_rank)) %>%
     slice(1) %>%
-    bind_cols(data, . ) %>%
+    bind_cols(.data, . ) %>%
     group_by(TEMP_fmt_rank) %>%
     group_split()
 

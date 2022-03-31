@@ -4,6 +4,7 @@ library(tibble)
 library(stringr)
 library(rlang)
 library(purrr)
+library(tidyr)
 source("dev/sample_data.R")
 
 
@@ -34,7 +35,11 @@ tfmt(
     ),
     fmt_str(group = c("Age", "Weight"), label = "Mean", fmt("xx.x")),
     fmt_str(group = c("Age", "Weight"), label = "Median", fmt("xx.x")),
-    fmt_str(group = c("Age", "Weight"), labelelement_style(
+    fmt_str(group = c("Age", "Weight"), label = "Std", fmt("xx.xx"))
+  )
+)
+
+element <- element_style(
   fmt_str(group = ".default", label = ".default",
           fmt_combine("{count} {percent}",
                       count = fmt(rounding = "XXX"),
@@ -53,15 +58,10 @@ tfmt(
   fmt_str(group = c("Age", "Weight"), label = "Median", fmt("xx.x")),
   fmt_str(group = c("Age", "Weight"), label = "Std", fmt("xx.xx"))
 )
- = "Std", fmt("xx.xx"))
-  )
-)
 
 
 
-
-
-element <-
+apply_fmt(rnorm(10), fmt(rounding = "XX.X a"))
 
 group = vars(row_label1)
 label = vars(row_label2)[[1]]
