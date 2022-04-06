@@ -204,27 +204,27 @@ expr_for_param <- function(param, fmt_str){
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
 
   if(length(group) == 1){
-    grp_expr <- expr_to_filter(group[[1]], cur_fmt$group)
+    grp_expr <- expr_to_filter(group[[1]], cur_fmt$group_val)
   } else {
     #TODO add test when names don't match
-    if(length(cur_fmt$group) == 1){
+    if(length(cur_fmt$group_val) == 1){
       grp_expr <- group %>%
         map(as_label) %>%
-        map_chr(~expr_to_filter(., cur_fmt$group)) %>%
+        map_chr(~expr_to_filter(., cur_fmt$group_val)) %>%
         paste(collapse = " & ")
     } else {
       grp_str <- group %>%
         map(as_label)
 
-      if(length(setdiff(grp_str, names(cur_fmt$group))) > 0){
+      if(length(setdiff(grp_str, names(cur_fmt$group_val))) > 0){
         stop("The group names don't mathc the group vairables provided")
       }
       grp_expr <- group %>%
-        map2_chr(grp_str, ~expr_to_filter(.x, cur_fmt$group[.y])) %>%
+        map2_chr(grp_str, ~expr_to_filter(.x, cur_fmt$group_val[.y])) %>%
         paste(collapse = " & ")
     }
   }
-  lbl_expr <- expr_to_filter(label, cur_fmt$label)
+  lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
 
   parm_expr <- expr_for_param(param, cur_fmt)
 
