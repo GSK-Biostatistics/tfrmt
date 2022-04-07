@@ -113,18 +113,128 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
   if(!setequal(names(fmt_combine$fmt_ls), param_vals)){
     stop("The values in the expression don't match the names of the given formats ")
   }
-
-  var <- param_vals[1]
   out <- map_dfr(param_vals, function(var){
     fmt <- fmt_combine$fmt_ls[[var]]
     .data %>%
       filter(!!param == var) %>%
       mutate(!!values := apply_fmt(!!values, fmt))
   })
+  #Test if common information exsists
+  test <- out %>%
+    select(-!!param, -!!values) %>%
+    distinct() %>%
+    nrow()
+  if(test == nrow(out)){
+    stop("Unique information exsists in rows that should be combined. Unable to combine")
+  }
   out %>%
     pivot_wider(values_from = !!values,
                 names_from = !!param) %>%
     mutate(!!values := str_glue(fmt_combine$expression) %>% as.character()) %>%
     select(-all_of(param_vals))
   #TODO MANAGE MISSING should this be a function? will that be confusing
+}
+
+
+
+#' Create string of the expression needed to test against a dataset
+#'
+#' @param param parameter value symbol
+#' @param val value from the fmt
+#'
+#' @noRd
+#' @importFrom rlang as_label
+param_test_expr <- function(param, val){
+  if(all(val == ".default")){ # This is all so it works when there is a list
+    out <- "TRUE"
+  } else {
+    out <- as_label(param) %>%
+      paste0(" %in% c('",
+            paste0(val, collapse = "', '"),
+            "')")
+  }
+  out
+}
+
+#' Test of the frmt of the data
+#'
+#' @param cur_fmt current formatting
+#' @param data data to test against
+#' @param label label symbol should only be one
+#' @param group list of the group parameters
+#'
+#' @return vector of the rows which this format could be applied to
+#' @noRd
+fmt_test_data <- function(cur_fmt, .data, label, group){
+  data <- .data %>%
+    mutate(TEMP_row = row_number())
+
+
+  if(length(group) == 1){
+    grp_expr <- param_test_expr(group[[1]], cur_fmt$group)
+  } else {
+    #TODO add test when names don't match
+    grp_expr <- group %>%
+      map_chr(~param_test_expr(., cur_fmt$group[[as_label(.)]])) %>%
+      paste(collapse = " & ")
+  }
+
+  filter_expr <- paste(param_test_expr(label, cur_fmt$label),
+                       "&",
+                       grp_expr) %>%
+    parse_expr()
+  data %>%
+    filter(!!filter_expr) %>%
+    pull(TEMP_row)
+}
+
+
+#' Apply the formatting to all values in the dataset
+#'
+#' @param .data data
+#' @param element_style styling element needed
+#' @param group symbolic list of grouping
+#' @param label symbolic label
+#' @param param symbolic parameter
+#' @param values symbolic value
+#'
+#' @noRd
+#' @importFrom dplyr tibble mutate group_by arrange slice bind_cols group_split pull select starts_with
+#' @importFrom purrr map map_dfr
+#' @importFrom tidyr unnest
+#' @importFrom rlang !!
+apply_all_fmts <- function(.data, element_style, group, label, param, values){
+  dat_plus_fmt <- tibble(TEMP_appl_row = element_style$all_fmts %>%
+                  map(fmt_test_data, data, label, group),
+                TEMP_fmt_to_apply = element_style$all_fmts %>% map(~.$fmt)) %>%
+    mutate(TEMP_fmt_rank = row_number()) %>%
+    unnest(cols = c(TEMP_appl_row)) %>%
+    group_by(TEMP_appl_row) %>%
+    #TODO add warning if there are rows not covered
+    arrange(TEMP_appl_row, desc(TEMP_fmt_rank)) %>%
+    slice(1) %>%
+    bind_cols(data, . ) %>%
+    group_by(TEMP_fmt_rank) %>%
+    group_split()
+
+  dat_plus_fmt %>%
+    map_dfr(function(x){
+      cur_fmt <- x %>%
+        pull(TEMP_fmt_to_apply) %>%
+        .[1] %>%
+        .[[1]]
+      x <- x %>%
+        select(-starts_with("TEMP_"))
+
+      if(class(cur_fmt) == "fmt_combine"){
+        out <- apply_combo_fmt(x, cur_fmt, param, values)
+      } else if(class(cur_fmt) == "fmt"){
+        out <- x %>%
+          mutate(!!values := apply_fmt(!!values, cur_fmt)) %>%
+          select(-!!param)
+      } else {
+        stop("Unrecorganized format type, chec the style element and try again")
+      }
+      out
+    })
 }
