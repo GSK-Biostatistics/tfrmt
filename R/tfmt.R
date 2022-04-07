@@ -4,42 +4,51 @@
 #' of your tables, and how the data will be handled once added: i.e. title, footers,
 #' headers, span headers, and cell formats. In addition, tfmt's can be layered,
 #' building from one table format to the next. For cases where only one value
-#' can be used, the newest
+#' can be used, the newly defined tfmt accepts the latest tfmt
 #'
-#' @param ... values for new_tfmt, a prior tfmt
+#' @param tfmt_obj a tfmt object to base this new format off of
+#' @param group what are the grouping vars of the input dataset
+#' @param label what is the label column of the input dataset
+#' @param param what is the param column of the input dataset
+#' @param values what is the values column of the input dataset
+#' @param column what is the column names column in the input dataset
+#' @param title title of the table
+#' @param title_txt_style the styling of the table title
+#' @param subtitle subtitle of the table
+#' @param subtitle_txt_style the styling of the table subtitle
+#' @param col_label_txt_style the styling of the headers of the table
+#' @param spanning_label_txt_style the styling of the column spanners of the table
+#' @param footer footers of the table
+#' @param footer_txt_style style of the footers of the table
+#' @param txt_style style of the cell text contents of the table
+#' @param row_grp_txt_style style of the grouping level row headers
+#' @param row_txt_style style of the row headers
+#' @param row_grp_style style of the row groups blocking
+#' @param body_style combination and formatting of the input data [look at renaming?]
+#' @param body_txt_style ?
+#' @param body_align how to align columns? left, right, decimal
+#' @param sorting_cols which columns determine sorting of output
+#' @param page_vars which colums determing paging of table (splitting)
+#' @param row_group which columns deterimine row groups
+#' @param col_labels values to display for the columns in the dataset
+#' @param col_widths special column widths. otherwise fits contents
+#' @param spanning_label_grp named list detailing which columns are spanned by what text
+#' @param col_select which columns to display. defaults to everything(). uses tidyselect semantics
+#' @param ... These dots are for future extensions and must be empty.
+#'
 #'
 #' @details
 #'
 #' @rdname tfmt
 #'
 #' @export
-tfmt <- function(...){
-
-  arg_list <- list(...)
-  old_tfmt_loc <- do.call('c',lapply(arg_list, is_tfmt))
-
-  if(any(old_tfmt_loc)){
-    old_tfmt <- arg_list[[which(old_tfmt_loc)]]
-    pass_through_args <- arg_list[!old_tfmt_loc]
-    layer_tfmt(
-      old_tfmt,
-      do.call(tfmt, pass_through_args)
-    )
-  }else{
-
-    tfmt(...)
-  }
-}
-
-#' @rdname tfmt
-#' @export
-#'
-new_tfmt <- function(
+tfmt <- function(
+  tfmt_obj,
   group = vars(),
-  label = vars(),
-  param = vars(),
-  values = vars(),
-  column = vars(),
+  label = quo(),
+  param = quo(),
+  values = quo(),
+  column = quo(),
   title,
   title_txt_style,
   subtitle,
@@ -57,7 +66,7 @@ new_tfmt <- function(
   body_align,
   sorting_cols,
   page_vars,
-  row_grp, # col which is used to make the row grps
+  row_group, # col which is used to make the row grps
   col_labels,
   col_widths,
   spanning_label_grp,
@@ -65,63 +74,41 @@ new_tfmt <- function(
   ...
   ){
 
-  elements <- tfmt_find_args(...)
+  tfmt_el <- tfmt_find_args(...)
 
-  structure(
-    elements,
+  new_tfmt <- structure(
+    tfmt_el,
     class = c("tfmt")
   )
 
-}
-
-layer_tfmt <- function(fmt1, fmt2){
-
-  args <- union(names(fmt1), names(fmt2))
-
-  arg_list <- lapply(args, function(argname, fmt1, fmt2){
-    layer_tfmt_arg(fmt1, fmt2, argname)
-  },fmt1=fmt1, fmt2 = fmt2)
-
-  names(arg_list) <- args
-
-  do.call(tfmt, arg_list)
-}
-
-layer_tfmt_arg <- function(x, y, argname){
-  func <- get_layer_tfmt_arg(argname)
-  func(x, y, argname)
-}
-
-get_layer_tfmt_arg <- function(argname){
-
-  if(argname == "body_style"){
-    layer_tfmt_arg.body_style
-  }else{
-    layer_tfmt_arg.default
+  if(!missing(tfmt_obj)){
+    new_tfmt <- layer_tfmt(
+      tfmt_obj,
+      new_tfmt
+    )
   }
+
+  new_tfmt
+
 }
 
-layer_tfmt_arg.default<- function(x, y, arg_name, ...){
-  x_arg_val <- x[[arg_name]]
-  y_arg_val <- y[[arg_name]]
-  if(is.null(y_arg_val)){
-    x_arg_val
-  }else{
-    y_arg_val
-  }
-}
-
-layer_tfmt_arg.body_style <- function(x, y, ...){
-  x_body_style <- x[["body_style"]][["all_fmts"]]
-  y_body_style <- y[["body_style"]][["all_fmts"]]
-
-  do.call(element_style,unique(c(x_body_style, y_body_style)))
+is_tfmt <- function(x){
+  inherits(x, "tfmt")
 }
 
 tfmt_find_args <- function(..., env = parent.frame()){
-  args <- names(formals(sys.function(sys.parent(1))))
+
+  args <- setdiff(names(formals(sys.function(sys.parent(1)))),"tfmt_obj")
   vals <- mget(args, envir = env)
   vals <- vals[!sapply(vals, is_missing)]
+
+  vals[["group"]] <- as_vars(vals[["group"]])
+
+  sub_quosures <- intersect(c("label","param","values","column"), names(vals))
+  for(sub_quo in sub_quosures){
+    vals[[sub_quo]] <-as_length_one_quo(vals[[sub_quo]])
+  }
+
   new_args <- list(..., ... = NULL)
 
   for (i in names(new_args)){
@@ -130,10 +117,38 @@ tfmt_find_args <- function(..., env = parent.frame()){
   vals
 }
 
-is_tfmt <- function(x){
-  inherits(x, "tfmt")
-}
-
 is_missing <- function(x){
   identical(x, quote(expr = ))
+}
+
+as_length_one_quo <- function(x){
+  UseMethod("as_length_one_quo",x)
+}
+
+as_length_one_quo.quosure <- function(x){
+  x
+}
+
+as_length_one_quo.quosures <- function(x){
+  if(length(x) == 0){
+    quo()
+  }else{
+    x[[1]]
+  }
+}
+
+as_length_one_quo.character <- function(x){
+  quo(!!sym(x))
+}
+
+as_vars <-  function(x){
+  UseMethod("as_vars",x)
+}
+
+as_vars.quosures <- function(x){
+  x
+}
+
+as_vars.character <- function(x){
+  do.call(vars,lapply(x,function(x){ quo(!!sym(x))}))
 }
