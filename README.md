@@ -83,9 +83,9 @@ tfmt(title = "Hello World") %>%
 print_to_gt(, .data)
 
 #Flexible
-print_to_gt(fmt, .data)
-print_to_flextable(fmt, .data)
-print_to_dt(fmt, .data)
+print_to_gt(tfmt, .data)
+print_to_flextable(tfmt, .data)
+print_to_dt(tfmt, .data)
 
 sumstatrow_tfmt <- function(og_tfmt, base_round, n_df){
 thingy <- pull_current_fmt(og_fmt)
