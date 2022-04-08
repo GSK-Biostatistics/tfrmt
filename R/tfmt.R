@@ -20,13 +20,13 @@
 #' @param spanning_label_txt_style the styling of the column spanners of the table
 #' @param footer footers of the table
 #' @param footer_txt_style style of the footers of the table
-#' @param txt_style style of the cell text contents of the table
+#' @param txt_style style of the text contents of the table
 #' @param row_grp_txt_style style of the grouping level row headers
 #' @param row_txt_style style of the row headers
 #' @param row_grp_style style of the row groups blocking
 #' @param body_style combination and formatting of the input data [look at renaming?]
-#' @param body_txt_style ?
-#' @param body_align how to align columns? left, right, decimal
+#' @param body_txt_style style of the cell text contents of the table
+#' @param col_align how to align columns? left, right, decimal
 #' @param sorting_cols which columns determine sorting of output
 #' @param page_vars which colums determing paging of table (splitting)
 #' @param row_group which columns deterimine row groups
@@ -63,7 +63,7 @@ tfmt <- function(
   row_grp_style, #the style between blocking
   body_style,
   body_txt_style,
-  body_align,
+  col_align,
   sorting_cols,
   page_vars,
   row_group, # col which is used to make the row grps
@@ -98,8 +98,11 @@ is_tfmt <- function(x){
 
 tfmt_find_args <- function(..., env = parent.frame()){
 
-  args <- setdiff(names(formals(sys.function(sys.parent(1)))),"tfmt_obj")
+  arg_parent <- names(formals(sys.function(sys.parent(1))))
+
+  args <- setdiff(arg_parent,"tfmt_obj")
   vals <- mget(args, envir = env)
+
   vals <- vals[!sapply(vals, is_missing)]
 
   vals[["group"]] <- as_vars(vals[["group"]])

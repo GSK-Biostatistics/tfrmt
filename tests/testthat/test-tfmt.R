@@ -57,6 +57,28 @@ test_that("basic tfmt - selecting group/label/param/values/column - char", {
   expect_equal( t_fmt$column, quo(column), ignore_attr = TRUE)
 })
 
+
+test_that("basic tfmt - selecting group/label/param/values/column - bare", {
+
+  t_fmt <- tfmt(
+    title = "Table Title",
+    group = vars(row_label1),
+    label = row_label2,
+    param = param,
+    values = values,
+    column = column
+  )
+
+  expect_s3_class(t_fmt,"tfmt")
+
+  expect_equal( t_fmt$title, "Table Title")
+  expect_equal( t_fmt$group, vars(row_label1), ignore_attr = TRUE)
+  expect_equal( t_fmt$label, quo(row_label2), ignore_attr = TRUE)
+  expect_equal( t_fmt$param, quo(param), ignore_attr = TRUE)
+  expect_equal( t_fmt$values, quo(values), ignore_attr = TRUE)
+  expect_equal( t_fmt$column, quo(column), ignore_attr = TRUE)
+})
+
 test_that("layering tfmt - default table elements - func/tfmt",{
 
   t_fmt_title <- tfmt(
@@ -213,9 +235,9 @@ test_that("layering tfmt - body style elements - multiple",{
   expect_equal(
     t_fmt_layered$body_style,
     element_style(
-      fmt_str(group = "group1",fmt("XXX")),
-      fmt_str(group = "group2",fmt("xx.x")),
-      fmt_str(group = "group3",fmt("xx.xx"))
+      fmt_str(group_val = "group1",fmt("XXX")),
+      fmt_str(group_val = "group2",fmt("xx.x")),
+      fmt_str(group_val = "group3",fmt("xx.xx"))
     )
   )
 
@@ -227,7 +249,7 @@ test_that("layering tfmt - body style elements - override_body_style",{
     title = "Table Title",
     body_style = element_style(
       fmt_str(
-        group = "group1",
+        group_val = "group1",
         fmt(rounding = "XXX")
       )
     )
@@ -237,8 +259,8 @@ test_that("layering tfmt - body style elements - override_body_style",{
     layer_tfmt(
       tfmt(subtitle = "Table Subtitle",
            body_style = element_style(
-             fmt_str(group = "group2",fmt("xx.x")),
-             fmt_str(group = "group3",fmt("xx.xx"))
+             fmt_str(group_val = "group2",fmt("xx.x")),
+             fmt_str(group_val = "group3",fmt("xx.xx"))
            )
       ),
       override_body_style = TRUE
@@ -248,8 +270,8 @@ test_that("layering tfmt - body style elements - override_body_style",{
     layer_tfmt(
       tfmt(subtitle = "Table Subtitle",
            body_style = element_style(
-             fmt_str(group = "group2",fmt("xx.x")),
-             fmt_str(group = "group3",fmt("xx.xx"))
+             fmt_str(group_val = "group2",fmt("xx.x")),
+             fmt_str(group_val = "group3",fmt("xx.xx"))
            )
       ),
       preferred = "x",
@@ -268,15 +290,15 @@ test_that("layering tfmt - body style elements - override_body_style",{
   expect_equal(
     t_fmt_layered_y$body_style,
     element_style(
-      fmt_str(group = "group2",fmt("xx.x")),
-      fmt_str(group = "group3",fmt("xx.xx"))
+      fmt_str(group_val = "group2",fmt("xx.x")),
+      fmt_str(group_val = "group3",fmt("xx.xx"))
     )
   )
 
   expect_equal(
     t_fmt_layered_x$body_style,
     element_style(
-      fmt_str(group = "group1",fmt("XXX"))
+      fmt_str(group_val = "group1",fmt("XXX"))
     )
   )
 
