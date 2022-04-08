@@ -25,7 +25,11 @@ fmt_combine <- function(expression, ..., missing = NULL){
 
 
 
-fmt_str <- function(group = NULL, label = NULL, fmt = NULL){
+fmt_str <- function(group = NULL, label = NULL, ...){
+  fmt <- list(...)
+  if(length(fmt) > 1){
+    stop("Can only handel one format per fmt_str function. Use fmt_combine if a combination is needed")
+  }
   structure(
     list(group = group, label = label, fmt = fmt),
     class = c("fmt_str")
