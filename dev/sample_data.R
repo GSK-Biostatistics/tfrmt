@@ -33,7 +33,7 @@ race <- adam_adsl %>%
          RACE = as.character(RACE),
          row_label2 = case_when(RACE == "TOTAL" ~ "n",
                                 TRUE ~ RACE),
-         ord_layer_1 = 3,
+         ord_layer_1 = 4,
          ord_layer_2 = row_number()) %>%
   select(starts_with("row"), everything(), -RACE, -Placebo,
          -`Xanomeline High Dose`, -`Xanomeline Low Dose`)
@@ -63,7 +63,6 @@ age <- adam_adsl %>%
   bind_rows(age, .) %>%
   mutate(row_label1 = "Age",
          ord_layer_1 = 2,
-         ord_layer_2 = row_number(),
          row_label2 = str_remove(name, "_raw$"),
          column = ARM) %>%
   select(-ARM, -name)
@@ -82,7 +81,6 @@ weight <- adam_adsl %>%
   bind_rows(weight, .) %>%
   mutate(row_label1 = "Weight",
          ord_layer_1 = 6,
-         ord_layer_2 = row_number(),
          row_label2 = str_remove(name, "_raw$"),
          column = ARM) %>%
   select(-ARM, -name)
@@ -99,7 +97,14 @@ data_stats <- bind_rows(age, weight) %>%
   mutate(param = row_label2,
          row_label2 = case_when(row_label2 == "Min" ~ "Min., Max.",
                                 row_label2 == "Max" ~ "Min., Max.",
-                                TRUE ~ row_label2))
+                                TRUE ~ row_label2),
+         ord_layer_2 = case_when(row_label2 == "n" ~ 1L,
+                                 row_label2 == "Mean" ~ 2L,
+                                 row_label2 == "Std" ~ 3L,
+                                 row_label2 == "Median" ~ 4L,
+                                 row_label2 == "Min., Max." ~ 5L,)
+         )
+
 
 data <- bind_rows(data_freq, data_stats) %>%
   arrange(ord_layer_1, ord_layer_2, row_label1, row_label2, column, param)
