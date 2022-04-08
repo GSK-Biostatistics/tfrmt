@@ -25,7 +25,7 @@ tfmt(
   row_grp_style,
   body_style,
   body_txt_style,
-  body_align,
+  col_align,
   sorting_cols,
   page_vars,
   row_group,
@@ -65,7 +65,7 @@ tfmt(
 
 \item{footer_txt_style}{style of the footers of the table}
 
-\item{txt_style}{style of the cell text contents of the table}
+\item{txt_style}{style of the text contents of the table}
 
 \item{row_grp_txt_style}{style of the grouping level row headers}
 
@@ -75,15 +75,15 @@ tfmt(
 
 \item{body_style}{combination and formatting of the input data \link{look at renaming?}}
 
-\item{body_txt_style}{?}
+\item{body_txt_style}{style of the cell text contents of the table}
 
-\item{body_align}{how to align columns? left, right, decimal}
+\item{col_align}{how to align columns? left, right, decimal}
 
 \item{sorting_cols}{which columns determine sorting of output}
 
-\item{page_vars}{which colums determing paging of table (splitting)}
+\item{page_vars}{which column determine paging of table (splitting)}
 
-\item{row_group}{which columns deterimine row groups}
+\item{row_group}{which columns determine row groups}
 
 \item{col_labels}{values to display for the columns in the dataset}
 

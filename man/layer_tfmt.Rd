@@ -4,18 +4,16 @@
 \alias{layer_tfmt}
 \title{Layer tfmt objects together}
 \usage{
-layer_tfmt(x, y, ..., preferred = "y")
+layer_tfmt(x, y, ..., join_body_styles = TRUE)
 }
 \arguments{
 \item{x, y}{tfmt objects that need to be combined}
 
 \item{...}{arguments passed to layer_tfmt_arg functions for combining different tfmt elements}
-
-\item{preferred}{which tfmt should be used when layering and both have values. "x" or "y", defaults to "y".}
 }
 \description{
 Provide utility for layering tfmt objects together. If both tmft's have
-values, it will preferentially choose the second (y) tfmt by default.
+values, it will preferentially choose the second tfmt by default.
 }
 \examples{
 
