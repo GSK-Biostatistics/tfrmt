@@ -1,10 +1,18 @@
+#' Title
+#'
+#' @param .data
+#' @param tfmt
+#'
+#' @return
+#' @export
+#'
+#' @examples
 apply_tfmt <- function(.data, tfmt){
-
   apply_all_fmts(.data, tfmt$body_style, group = tfmt$group, label = tfmt$label, param = tfmt$param, tfmt$values) %>%
     pivot_wider(names_from = !!tfmt$column,
                 values_from = !!tfmt$values) %>%
     tentative_process(arrange, tfmt$sorting_cols) %>%
-    tentative_process(arrange, tfmt$col_select)
+    tentative_process(select, tfmt$col_select)
 }
 
 
