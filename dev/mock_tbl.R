@@ -43,10 +43,12 @@ fmt_spec <- tfmt(
     fmt_str(group_val = c("Age", "Weight"), label_val = "Std", fmt("xx.xx"))
   ),
   # These are the variables to keep
-  col_select = vars(-starts_with("ord"))
+  col_select = vars(-total, everything(), -starts_with("ord"))
 )
 
 
 print_to_gt(fmt_spec, data)
+
+
 
 

@@ -52,7 +52,7 @@ element_label <- function(..., wrap_txt = 30){
 
 # element_bounds(upper_exp = ">5", lower_exp, upper_lab, lower_lab)
 element_bounds <- function(upper_exp = NULL, lower_exp = NULL, upper_lab = NULL, lower_lab = NULL){
-  if(!is_null(upper_exp) & is_null(upper_lab)){
+  if(!is.null(upper_exp) & is.null(upper_lab)){
     upper_lab = upper_exp
   }
 
