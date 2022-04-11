@@ -1,10 +1,10 @@
 
 tfmt <- function(
-  group = vars(),
-  label = vars(),
-  param = vars(),
-  values = vars(),
-  column = vars(),
+  group,
+  label,
+  param,
+  values,
+  column,
   title,
   title_txt_style,
   subtitle,
@@ -32,11 +32,14 @@ tfmt <- function(
   #TODO rewrite find_args for our package
   elements <- ggplot2:::find_args(...)
 
+#
+#   # elements$label <- elements$label[[1]]
+#   mode(elements$label)
+#   mode(elements$param)
 
   structure(
     elements,
-    class = c("tfmt"),
-
+    class = c("tfmt")
   )
 
 }
