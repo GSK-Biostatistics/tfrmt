@@ -3,6 +3,7 @@
 export("%>%")
 export(apply_tfmt)
 export(element_align)
+export(layer_tfmt)
 export(tfmt)
 import(dplyr)
 importFrom(dplyr,arrange)
