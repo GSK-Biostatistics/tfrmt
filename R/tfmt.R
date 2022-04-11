@@ -114,7 +114,7 @@ tfmt_find_args <- function(..., env = parent.frame()){
 
   sub_quosures <- intersect(c("label","param","values","column"), names(vals))
   for(sub_quo in sub_quosures){
-    vals[[sub_quo]] <-as_length_one_quo(vals[[sub_quo]])
+    vals[[sub_quo]] <-as_length_one_quo(vals[[sub_quo]], arg = sub_quo)
   }
 
   new_args <- list(..., ... = NULL)
@@ -125,6 +125,7 @@ tfmt_find_args <- function(..., env = parent.frame()){
   vals
 }
 
+#' @importFrom rlang abort
 quo_get <- function(args, as_var_args, as_quo_args, envir = parent.frame()){
 
   arg_set <- lapply(args, function(arg){
@@ -135,7 +136,28 @@ quo_get <- function(args, as_var_args, as_quo_args, envir = parent.frame()){
             get(arg, envir = envir, inherits = FALSE),
             error = function(e){
               var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))[-1]
+              var_list_is_name <- sapply(var_list, is.name)
+              if(!all(var_list_is_name)){
+                new_arg_call <- paste0(
+                  "vars(",
+                  paste(sapply(var_list, as.character),collapse = ","),
+                  ")"
+                )
+                abort(
+                  paste0(
+                    "Entries for `",
+                    arg,
+                    "` argument must be vars(), a character vector, or unquoted column name.\n",
+                    "  Consider updating the argument input to `",
+                    arg,
+                    "` to:\n\t",
+                    new_arg_call
+                  ),
+                  class = c("group_vars_error")
+                )
+              }
               do.call('vars',var_list, envir = envir)
+
             })
         }else if(arg %in% as_quo_args){
           tryCatch(
@@ -147,7 +169,11 @@ quo_get <- function(args, as_var_args, as_quo_args, envir = parent.frame()){
           get(arg, envir = envir,inherits = FALSE)
         }
       },error = function(e){
+        if(inherits(e,"group_vars_error")){
+          stop(e)
+        }else{
           quote(expr = )
+        }
       }
     )
 
@@ -161,23 +187,34 @@ is_missing <- function(x){
   identical(x, quote(expr = ))
 }
 
-as_length_one_quo <- function(x){
+as_length_one_quo <- function(x, ...){
   UseMethod("as_length_one_quo",x)
 }
 
-as_length_one_quo.quosure <- function(x){
+as_length_one_quo.quosure <- function(x, ...){
   x
 }
 
-as_length_one_quo.quosures <- function(x){
+#' @importFrom rlang warn
+as_length_one_quo.quosures <- function(x, ..., arg = NULL){
   if(length(x) == 0){
     quo()
   }else{
+    if(length(x) > 1){
+      warn(
+        paste0(
+          "Passed more than one quosure to the argument `",
+          arg,
+          "`. Selecting the first entry."
+        ),
+        class = "quo_greater_length_one"
+      )
+    }
     x[[1]]
   }
 }
 
-as_length_one_quo.character <- function(x){
+as_length_one_quo.character <- function(x, ...){
   quo(!!sym(x))
 }
 
