@@ -28,8 +28,8 @@
 #' @param body_txt_style style of the cell text contents of the table
 #' @param col_align how to align columns? left, right, decimal
 #' @param sorting_cols which columns determine sorting of output
-#' @param page_vars which colums determing paging of table (splitting)
-#' @param row_group which columns deterimine row groups
+#' @param page_vars which column determine paging of table (splitting)
+#' @param row_group which columns determine row groups
 #' @param col_labels values to display for the columns in the dataset
 #' @param col_widths special column widths. otherwise fits contents
 #' @param spanning_label_grp named list detailing which columns are spanned by what text
@@ -99,9 +99,14 @@ is_tfmt <- function(x){
 tfmt_find_args <- function(..., env = parent.frame()){
 
   arg_parent <- names(formals(sys.function(sys.parent(1))))
-
   args <- setdiff(arg_parent,"tfmt_obj")
-  vals <- mget(args, envir = env)
+
+  vals <- quo_get(
+    args,
+    as_var_args = c("group"),
+    as_quo_args = c("label","param","values","column"),
+    envir = env
+    )
 
   vals <- vals[!sapply(vals, is_missing)]
 
@@ -118,6 +123,38 @@ tfmt_find_args <- function(..., env = parent.frame()){
     vals[[i]] <- new_args[[i]]
   }
   vals
+}
+
+quo_get <- function(args, as_var_args, as_quo_args, envir = parent.frame()){
+
+  arg_set <- lapply(args, function(arg){
+
+    tryCatch({
+        if(arg %in% as_var_args){
+          tryCatch(
+            get(arg, envir = envir, inherits = FALSE),
+            error = function(e){
+              var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))[-1]
+              do.call('vars',var_list, envir = envir)
+            })
+        }else if(arg %in% as_quo_args){
+          tryCatch(
+            get(arg, envir = envir, inherits = FALSE),
+            error = function(e){
+              do.call('enquo',list(as.symbol(arg)), envir = envir)
+            })
+        }else{
+          get(arg, envir = envir,inherits = FALSE)
+        }
+      },error = function(e){
+          quote(expr = )
+      }
+    )
+
+  })
+
+  names(arg_set) <- args
+  arg_set
 }
 
 is_missing <- function(x){

@@ -59,11 +59,9 @@ test_that("basic tfmt - selecting group/label/param/values/column - char", {
 
 test_that("basic tfmt - selecting group/label/param/values/column - bare", {
 
-  skip("Not functional yet")
-
   t_fmt <- tfmt(
     title = "Table Title",
-    group = vars(row_label1),
+    group = c(row_label1, row_label4),
     label = row_label2,
     param = param,
     values = values,
@@ -73,11 +71,12 @@ test_that("basic tfmt - selecting group/label/param/values/column - bare", {
   expect_s3_class(t_fmt,"tfmt")
 
   expect_equal( t_fmt$title, "Table Title")
-  expect_equal( t_fmt$group, vars(row_label1), ignore_attr = TRUE)
+  expect_equal( t_fmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
   expect_equal( t_fmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal( t_fmt$param, quo(param), ignore_attr = TRUE)
   expect_equal( t_fmt$values, quo(values), ignore_attr = TRUE)
   expect_equal( t_fmt$column, quo(column), ignore_attr = TRUE)
+
 })
 
 test_that("layering tfmt - default table elements - func/tfmt",{
