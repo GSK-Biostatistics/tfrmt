@@ -81,9 +81,9 @@ tfmt(
 
 \item{sorting_cols}{which columns determine sorting of output}
 
-\item{page_vars}{which column determine paging of table (splitting)}
+\item{page_vars}{which colums determing paging of table (splitting)}
 
-\item{row_group}{which columns determine row groups}
+\item{row_group}{which columns deterimine row groups}
 
 \item{col_labels}{values to display for the columns in the dataset}
 

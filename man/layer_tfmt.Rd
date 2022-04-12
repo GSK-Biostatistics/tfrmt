@@ -10,6 +10,8 @@ layer_tfmt(x, y, ..., join_body_styles = TRUE)
 \item{x, y}{tfmt objects that need to be combined}
 
 \item{...}{arguments passed to layer_tfmt_arg functions for combining different tfmt elements}
+
+\item{join_body_styles}{should the body styles be uniquely combined, or just keep styling in y}
 }
 \description{
 Provide utility for layering tfmt objects together. If both tmft's have
@@ -19,7 +21,7 @@ values, it will preferentially choose the second tfmt by default.
 
 tfmt_1 <- tfmt(title = "title1")
 
-tfmt_2 <- tfmt(title = "title2",subtitle = "subtitle2")
+tfmt_2 <- tfmt(title = "title2", subtitle = "subtitle2")
 
 layered_table_format <- layer_tfmt(tfmt_1, tfmt_2)
 
