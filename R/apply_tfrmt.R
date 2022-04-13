@@ -84,7 +84,7 @@ apply_frmt_structure <- function(struct, .data, group, label, column, param, val
 
   .data_sub <- .data[struct_locs,]
 
-  struct_frmts <- unique(tibble(param = struct$param, fmt_applied = struct$fmt_applied))
+  struct_frmts <- unique(tibble(param = struct$param, frmt_to_apply = struct$frmt_to_apply))
   ## set default to always be last
 
   if(".default" %in% struct_frmts$param & nrow(struct_frmts) > 1){
@@ -96,7 +96,7 @@ apply_frmt_structure <- function(struct, .data, group, label, column, param, val
 
   for(frmt_idx in seq_len(nrow(struct_frmts))){
 
-    frmt_to_apply <- struct_frmts$fmt_applied[[frmt_idx]]
+    frmt_to_apply <- struct_frmts$frmt_to_apply[[frmt_idx]]
     param_out_loc <- struct_frmts$param[[frmt_idx]]
 
     .data_sub <- apply_frmt(

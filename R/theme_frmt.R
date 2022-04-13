@@ -35,43 +35,20 @@ frmt_combine <- function(expression, ..., missing = NULL){
 #' @importFrom tidyr expand_grid
 #' @rdname frmt
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
-
-  param_frmt_list <- list(...)
-  param_val <- names(param_frmt_list)
-  if(length(param_frmt_list) > 1){
-    stop("Can only handel one format per fmt_str function. Use fmt_combine if a combination is needed")
+  param_frmt <- list(...)
+  param_val <- names(param_frmt)
+  if(length(param_frmt) > 1){
+    stop("Can only handel one format per frmt_structure function. Use frmt_combine if a combination is needed")
   }
 
   if(is.null(param_val)){
-    param_val <- rep("", length(param_frmt_list))
-    names(param_frmt_list) <- param_val
+    names(param_frmt) <- ".default"
   }
 
-
-  if(sum(param_val %in% c("",".default")) > 1){
-    stop(paste(c(
-      "Can only handle one default frmt in frmt_structure(). Passed Values:\n",
-      capture.output({print(param_frmt_list)})
-      ),collapse = "\n"))
+  if(!is_frmt(param_frmt[[1]])){
+    stop(paste0("Entry is not an object of class `frmt`"))
   }
 
-  for(param_frmt_idx in seq_along(param_frmt_list)){
-    if(!is_frmt(param_frmt_list[[param_frmt_idx]])){
-      param_name <- param_val[[param_frmt_idx]]
-      if(param_name == ""){
-        param_name <- paste("number",param_frmt_idx)
-      }else{
-        param_name <- paste("`",param_name,"`")
-      }
-      stop(paste0("Entry ",param_name," is not an object of class `frmt`."))
-    }
-  }
-
-
-  if(any(param_val == "")){
-    param_val[param_val == ""] <- ".default"
-    names(param_frmt_list) <- param_val
-  }
 
   if(is.list(group_val)){
     group_val_names <- names(group_val)
@@ -82,17 +59,12 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
     }
   }
 
-  frmt_grid <- expand_grid(
-    group = list(group_val),
-    label = label_val,
-    param = param_val
-    ) %>%
-    mutate(
-      fmt_applied = map(param, function(p_){param_frmt_list[[p_]]})
-    )
-
   structure(
-    frmt_grid,
+    list(
+      group = group_val,
+      label = label_val,
+      param = names(param_frmt),
+      frmt_to_apply = param_frmt[[1]]),
     class = c("frmt_structure","frmt_table")
   )
 }

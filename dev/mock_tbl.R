@@ -22,13 +22,13 @@ tfrmt_spec  <- tfrmt(
   #This controls how the rows are sorted
   sorting_cols = vars(ord_layer_1, ord_layer_2),
   body_style = table_body_plan(
-    frmt_structure(
-      count = frmt_combine(
-        "{count} {percent}",
-        count = frmt("XXX"),
-        percent = frmt("(XXX.X %)")
-        ),
-      .default = frmt("XXX.XX")),
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt("(XXX.X %)")
+                   )),
     frmt_structure(
       group_val = c("Age", "Weight"), #Values in the group column where you would want to apply this fmt
       label_val = "n", # Value(s) in the label column where you would want to apply this fmt
@@ -37,16 +37,12 @@ tfrmt_spec  <- tfrmt(
       group_val = c("Age", "Weight"),
       label_val = "Min., Max.",
       frmt_combine("{Min}, {Max}",
-                  Min = frmt("XXX"),
-                  Max = frmt("XXX")
+                   Min = frmt("XXX"),
+                   Max = frmt("XXX")
       )
     ),
-    frmt_structure(
-      group_val = c("Age", "Weight"),
-      label_val = c("Mean", "Median", "Std"),
-      .default = frmt("xx.xx"),
-      Mean = frmt("XX.xxX")
-    )
+    frmt_structure(group_val = c("Age", "Weight"), label_val = c("Mean", "Median"), fmt("xx.x")),
+    frmt_structure(group_val = c("Age", "Weight"), label_val = "Std", fmt("xx.xx"))
   ),
   # These are the variables to keep
   col_select = vars(-total, everything(), -starts_with("ord"))
@@ -58,4 +54,5 @@ print_to_gt(tfrmt_spec , data)
 
 .data %>% filter(row_label1 %in% c("Age","Weight")) %>% filter(row_label2 %in% c("Mean","Median","Std"))
 
+frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX"))
 

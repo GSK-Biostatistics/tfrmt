@@ -48,10 +48,11 @@ print.frmt_combine <- function(x,...){
 
 #' @export
 format.frmt_structure <- function(x,...){
+  browser()
 
   groups <- unique(x$group)[[1]]
   labels <- unique(x$label)
-  fmts <- unique(tibble(param = x$param, fmt_applied = x$fmt_applied))
+  fmts <- unique(tibble(param = x$param, frmt_to_apply = x$frmt_to_apply))
 
   if(is.list(groups)){
     group_string <- paste0(
@@ -64,6 +65,7 @@ format.frmt_structure <- function(x,...){
     group_string <- paste0(" \"",groups,"\"", collapse=",")
   }
 
+
   frmt_struct_str <- c(
     "Format Structure",
     paste0("  Group Values:",group_string),
@@ -74,7 +76,7 @@ format.frmt_structure <- function(x,...){
   for(fmt_idx in seq_len(nrow(fmts))){
     frmt_struct_str <- c(
       frmt_struct_str,
-      paste0("   `",fmts$param[[fmt_idx]],"`: ",format(fmts$fmt_applied[[fmt_idx]]))
+      paste0("   `",fmts$param[[fmt_idx]],"`: ",format(fmts$frmt_to_apply[[fmt_idx]]))
     )
 
   }
