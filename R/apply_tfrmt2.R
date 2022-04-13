@@ -18,7 +18,7 @@ NULL
 #' @importFrom purrr map_lgl
 apply_fmt <- function(vals, fmt){
   #Round
-  dig <- fmt$rounding %>%
+  dig <- fmt$expression %>%
     str_count("(?<=\\.)[X|x]")
   rounded_vals <- format(round(vals, dig)) %>%
     str_trim()
@@ -46,7 +46,8 @@ apply_fmt <- function(vals, fmt){
   if("THIS IS AN ISSUE" %in% bound){
     stop("Overlapping bounds")
   }
-  pre_dec <- fmt$rounding %>%
+
+  pre_dec <- fmt$expression %>%
     str_remove("\\..*$") %>%
     str_count("[X|x]")
 
@@ -74,9 +75,9 @@ apply_fmt <- function(vals, fmt){
                                      fmt_options$rounded))
 
 
-  start <- fmt$rounding %>%
+  start <- fmt$expression %>%
     str_extract("^[^X|^x]*(?=[X|x])")
-  end <- fmt$rounding %>%
+  end <- fmt$expression %>%
     str_extract("(?<=[X|x])[^X|^x]*$")
 
   # Combining the additional formatting
@@ -224,7 +225,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 
   TEMP_appl_row = table_frmt_plan %>%
     map(fmt_test_data, .data, label, group, param)
-  TEMP_fmt_to_apply = table_frmt_plan %>% map(~.$fmt[[1]])
+  TEMP_fmt_to_apply = table_frmt_plan %>% map(~.$frmt_to_apply[[1]])
 
   dat_plus_fmt <- tibble(TEMP_appl_row,
                          TEMP_fmt_to_apply) %>%
@@ -241,7 +242,6 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 
   dat_plus_fmt %>%
     map_dfr(function(x){
-
       cur_fmt <- x %>%
         pull(TEMP_fmt_to_apply) %>%
         .[1] %>%
@@ -263,9 +263,9 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
           paste("The following rows of the given dataset have no format applied to them", .) %>%
           message()
 
-      } else if(class(cur_fmt) == "fmt_combine"){
+      } else if(is_frmt_combine(cur_fmt)){
         out <- apply_combo_fmt(data_only, cur_fmt, param, values)
-      } else if(class(cur_fmt) == "fmt"){
+      } else if(is_frmt(cur_fmt)){
         out <- data_only %>%
           mutate(!!values := apply_fmt(!!values, cur_fmt)) %>%
           select(-!!param)
