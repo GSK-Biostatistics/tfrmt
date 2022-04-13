@@ -34,10 +34,13 @@ frmt_combine <- function(expression, ..., missing = NULL){
 
 #' @importFrom tidyr expand_grid
 #' @rdname frmt
-frmt_structure <- function(..., group_val = ".default", label_val = ".default"){
+frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 
   param_frmt_list <- list(...)
   param_val <- names(param_frmt_list)
+  if(length(param_frmt_list) > 1){
+    stop("Can only handel one format per fmt_str function. Use fmt_combine if a combination is needed")
+  }
 
   if(is.null(param_val)){
     param_val <- rep("", length(param_frmt_list))
