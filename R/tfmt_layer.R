@@ -11,10 +11,11 @@
 #'
 #' tfmt_1 <- tfmt(title = "title1")
 #'
-#' tfmt_2 <- tfmt(title = "title2",subtitle = "subtitle2")
+#' tfmt_2 <- tfmt(title = "title2", subtitle = "subtitle2")
 #'
 #' layered_table_format <- layer_tfmt(tfmt_1, tfmt_2)
 #'
+#' @export
 layer_tfmt <- function(x, y, ..., join_body_styles = TRUE){
 
   stopifnot(is_tfmt(x))
