@@ -33,14 +33,14 @@ apply_fmt <- function(vals, fmt){
     str_trim()
 
   #Bound
-  if(!is_null(fmt$bounds$upper_exp)){
+  if(!is.null(fmt$bounds$upper_exp)){
     up_bound_lb <- str_c(vals, fmt$bounds$upper_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$upper_lab, NA_character_)
   } else {
     up_bound_lb <- rep(NA_character_, length(vals))
   }
-  if(!is_null(fmt$bounds$lower_exp)){
+  if(!is.null(fmt$bounds$lower_exp)){
     low_bound_lb <- str_c(vals, fmt$bounds$lower_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$lower_lab, NA_character_)
@@ -65,7 +65,7 @@ apply_fmt <- function(vals, fmt){
     act_pre_dec = rounded_vals %>%
       str_remove("\\..*$") %>%
       str_count("."),
-    space_to_add = if_else(!is.na(bound), 0L, pre_dec - act_pre_dec)
+    space_to_add = if_else(!is.na(bound) | rounded=="NA", 0L, pre_dec - act_pre_dec)
   )
 
   if(any(fmt_options$space_to_add < 0)){
@@ -113,6 +113,7 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
   if(!setequal(names(fmt_combine$fmt_ls), param_vals)){
     stop("The values in the expression don't match the names of the given formats ")
   }
+
   out <- map_dfr(param_vals, function(var){
     fmt <- fmt_combine$fmt_ls[[var]]
     .data %>%
@@ -206,6 +207,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
   if(length(group) == 1){
     grp_expr <- expr_to_filter(group[[1]], cur_fmt$group_val)
   } else {
+
     #TODO add test when names don't match
     if(length(cur_fmt$group_val) == 1){
       grp_expr <- group %>%
@@ -213,6 +215,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
         map_chr(~expr_to_filter(., cur_fmt$group_val)) %>%
         paste(collapse = " & ")
     } else {
+
       grp_str <- group %>%
         map(as_label)
 
@@ -220,7 +223,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
         stop("The group names don't mathc the group vairables provided")
       }
       grp_expr <- group %>%
-        map2_chr(grp_str, ~expr_to_filter(.x, cur_fmt$group_val[.y])) %>%
+        map2_chr(grp_str, ~expr_to_filter(.x, cur_fmt$group_val[[.y]])) %>%
         paste(collapse = " & ")
     }
   }
