@@ -1,18 +1,27 @@
 #' Title
 #'
 #' @param .data
-#' @param tfmt
+#' @param tfrmt
 #'
 #' @return
 #' @export
 #'
 #' @examples
-apply_tfmt <- function(.data, tfmt){
-  apply_all_fmts(.data, tfmt$body_style, group = tfmt$group, label = tfmt$label, param = tfmt$param, tfmt$values) %>%
-    pivot_wider(names_from = !!tfmt$column,
-                values_from = !!tfmt$values) %>%
-    tentative_process(arrange, tfmt$sorting_cols) %>%
-    tentative_process(select, tfmt$col_select)
+apply_tfrmt <- function(.data, tfrmt_spec){
+
+  apply_table_frmt_plan(
+    .data = .data,
+    table_frmt_plan = tfrmt_spec$body_style,
+    group = tfrmt_spec$group,
+    label = tfrmt_spec$label,
+    param = tfrmt_spec$param,
+    values = tfrmt_spec$values,
+    column = tfrmt_spec$column
+    ) %>%
+    pivot_wider(names_from = !!tfrmt_spec$column,
+                values_from = !!tfrmt_spec$values) %>%
+    tentative_process(arrange, tfrmt_spec$sorting_cols) %>%
+    tentative_process(select, tfrmt_spec$col_select)
 }
 
 

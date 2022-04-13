@@ -1,12 +1,12 @@
 #' Table Format
 #'
-#' tfmt, or "table format" is a way to pre-define the non-data components
+#' tfrmt, or "table format" is a way to pre-define the non-data components
 #' of your tables, and how the data will be handled once added: i.e. title, footers,
-#' headers, span headers, and cell formats. In addition, tfmt's can be layered,
+#' headers, span headers, and cell formats. In addition, tfrmt's can be layered,
 #' building from one table format to the next. For cases where only one value
-#' can be used, the newly defined tfmt accepts the latest tfmt
+#' can be used, the newly defined tfrmt accepts the latest tfrmt
 #'
-#' @param tfmt_obj a tfmt object to base this new format off of
+#' @param tfrmt_obj a tfrmt object to base this new format off of
 #' @param group what are the grouping vars of the input dataset
 #' @param label what is the label column of the input dataset
 #' @param param what is the param column of the input dataset
@@ -39,11 +39,11 @@
 #'
 #' @details
 #'
-#' @rdname tfmt
+#' @rdname tfrmt
 #'
 #' @export
-tfmt <- function(
-  tfmt_obj,
+tfrmt <- function(
+  tfrmt_obj,
   group = vars(),
   label = quo(),
   param = quo(),
@@ -74,33 +74,33 @@ tfmt <- function(
   ...
   ){
 
-  tfmt_el <- tfmt_find_args(...)
+  tfrmt_el <- tfrmt_find_args(...)
 
-  new_tfmt <- structure(
-    tfmt_el,
-    class = c("tfmt")
+  new_tfrmt <- structure(
+    tfrmt_el,
+    class = c("tfrmt")
   )
 
-  if(!missing(tfmt_obj)){
-    new_tfmt <- layer_tfmt(
-      tfmt_obj,
-      new_tfmt
+  if(!missing(tfrmt_obj)){
+    new_tfrmt <- layer_tfrmt(
+      tfrmt_obj,
+      new_tfrmt
     )
   }
 
-  new_tfmt
+  new_tfrmt
 
 }
 
-is_tfmt <- function(x){
-  inherits(x, "tfmt")
+is_tfrmt <- function(x){
+  inherits(x, "tfrmt")
 }
 
-tfmt_find_args <- function(..., env = parent.frame()){
+tfrmt_find_args <- function(..., env = parent.frame()){
 
   arg_parent <- names(formals(sys.function(sys.parent(1))))
 
-  args <- setdiff(arg_parent,"tfmt_obj")
+  args <- setdiff(arg_parent,"tfrmt_obj")
   vals <- mget(args, envir = env)
 
   vals <- vals[!sapply(vals, is_missing)]
