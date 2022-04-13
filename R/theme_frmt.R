@@ -42,8 +42,10 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
     stop("Can only handel one format per frmt_structure function. Use frmt_combine if a combination is needed")
   }
 
-  if(is.null(param_val)){
-    names(param_frmt) <- ".default"
+  if(is_frmt_combine(param_frmt[[1]])){
+    param_val <- names(param_frmt[[1]]$fmt_ls)
+  } else if(is.null(param_val)){
+    param_val <- ".default"
   }
 
   if(!is_frmt(param_frmt[[1]])){
@@ -62,10 +64,10 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 
   structure(
     list(
-      group = group_val,
-      label = label_val,
-      param = names(param_frmt),
-      frmt_to_apply = param_frmt[[1]]),
+      group_val = group_val,
+      label_val = label_val,
+      param_val = param_val,
+      frmt_to_apply = param_frmt),
     class = c("frmt_structure","frmt_table")
   )
 }

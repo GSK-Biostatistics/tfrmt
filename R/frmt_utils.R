@@ -7,6 +7,15 @@ is_frmt <- function(x){
   inherits(x, "frmt")
 }
 
+#' Check if input is a frmt_combine
+#'
+#' @export
+#'
+#' @rdname frmt_utils
+is_frmt_combine <- function(x){
+  inherits(x, "frmt_combine")
+}
+
 #' Check if input is a frmt_structure
 #'
 #' @export
@@ -48,14 +57,14 @@ print.frmt_combine <- function(x,...){
 
 #' @export
 format.frmt_structure <- function(x,...){
-  groups <- unique(x$group)[[1]]
-  labels <- unique(x$label)
-  fmts <- tibble(param = x$param, frmt_to_apply = list(x$frmt_to_apply))
+  groups <- unique(x$group_val)[[1]]
+  labels <- unique(x$label_val)
+  fmts <- tibble(param = x$param_val, frmt_to_apply = list(x$frmt_to_apply))
 
   if(is.list(groups)){
     group_string <- paste0(
       sapply(names(groups), function(x) {
-        paste0(" `",x,"` - ", paste0("\"", groups[[x]], "\"", collapse = ", "))
+        paste0(" `",x,"` - ", paste0("\"", groups_val[[x]], "\"", collapse = ", "))
       }),
       collapse = ";"
     )

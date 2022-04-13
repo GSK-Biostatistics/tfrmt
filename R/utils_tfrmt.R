@@ -15,8 +15,7 @@ apply_tfrmt <- function(.data, tfrmt_spec){
     group = tfrmt_spec$group,
     label = tfrmt_spec$label,
     param = tfrmt_spec$param,
-    values = tfrmt_spec$values,
-    column = tfrmt_spec$column
+    values = tfrmt_spec$values
     ) %>%
     pivot_wider(names_from = !!tfrmt_spec$column,
                 values_from = !!tfrmt_spec$values) %>%

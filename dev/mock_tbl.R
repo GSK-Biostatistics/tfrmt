@@ -8,6 +8,9 @@ library(tidyr)
 library(gt)
 source("dev/sample_data.R")
 
+data <- data %>%
+  mutate(grp1 = "Test")
+
 
 tfrmt_spec  <- tfrmt(
   title = "Demographic Safety",
@@ -15,10 +18,10 @@ tfrmt_spec  <- tfrmt(
   footer = "A footnote about stuff<br/>Here is a new line with more stuff",
   #These are the columns that control the general structure of the data
   group = vars(row_label1),
-  label = vars(row_label2)[[1]],
-  param = vars(param)[[1]],
-  values = vars(value)[[1]],
-  column = vars(column)[[1]],
+  label = "row_label2",
+  param = "param",
+  values = "value",
+  column = "column",
   #This controls how the rows are sorted
   sorting_cols = vars(ord_layer_1, ord_layer_2),
   body_style = table_body_plan(
@@ -53,6 +56,5 @@ tfrmt_spec  <- tfrmt(
 print_to_gt(tfrmt_spec , data)
 
 .data %>% filter(row_label1 %in% c("Age","Weight")) %>% filter(row_label2 %in% c("Mean","Median","Std"))
-
-frmt_structure(group_val = c("Age", "Weight"), label_val = c("Mean", "Median"), fmt("xx.x"))
+frmt_structure(group_val = c("Age", "Weight"), label_val = c("Mean", "Median"), frmt("xx.x"))
 
