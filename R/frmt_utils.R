@@ -48,11 +48,9 @@ print.frmt_combine <- function(x,...){
 
 #' @export
 format.frmt_structure <- function(x,...){
-  browser()
-
   groups <- unique(x$group)[[1]]
   labels <- unique(x$label)
-  fmts <- unique(tibble(param = x$param, frmt_to_apply = x$frmt_to_apply))
+  fmts <- tibble(param = x$param, frmt_to_apply = list(x$frmt_to_apply))
 
   if(is.list(groups)){
     group_string <- paste0(

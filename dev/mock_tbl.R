@@ -41,8 +41,8 @@ tfrmt_spec  <- tfrmt(
                    Max = frmt("XXX")
       )
     ),
-    frmt_structure(group_val = c("Age", "Weight"), label_val = c("Mean", "Median"), fmt("xx.x")),
-    frmt_structure(group_val = c("Age", "Weight"), label_val = "Std", fmt("xx.xx"))
+    frmt_structure(group_val = c("Age", "Weight"), label_val = c("Mean", "Median"), frmt("xx.x")),
+    frmt_structure(group_val = c("Age", "Weight"), label_val = "Std", frmt("xx.xx"))
   ),
   # These are the variables to keep
   col_select = vars(-total, everything(), -starts_with("ord"))
@@ -54,5 +54,5 @@ print_to_gt(tfrmt_spec , data)
 
 .data %>% filter(row_label1 %in% c("Age","Weight")) %>% filter(row_label2 %in% c("Mean","Median","Std"))
 
-frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX"))
+frmt_structure(group_val = c("Age", "Weight"), label_val = c("Mean", "Median"), fmt("xx.x"))
 

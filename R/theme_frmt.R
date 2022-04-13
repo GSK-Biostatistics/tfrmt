@@ -37,6 +37,7 @@ frmt_combine <- function(expression, ..., missing = NULL){
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   param_frmt <- list(...)
   param_val <- names(param_frmt)
+
   if(length(param_frmt) > 1){
     stop("Can only handel one format per frmt_structure function. Use frmt_combine if a combination is needed")
   }
