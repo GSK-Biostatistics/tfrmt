@@ -65,7 +65,8 @@ demog_tbl <- function(){
                      frmt_combine(
                        "{count} {percent}",
                        count = frmt("XXX"),
-                       percent = frmt("(XXX.X%)")
+                       percent = frmt("(XXX.X%)", bounds = element_bounds(upper_exp = "==100", upper_lab = "",
+                                                                          lower_exp = "<1.0"))
                      )),
       frmt_structure(
         group_val = c("Age", "Weight"), #Values in the group column where you would want to apply this fmt
