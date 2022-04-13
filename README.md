@@ -1,5 +1,10 @@
 # tlang
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/GSK-Biostatistics/tlang/workflows/R-CMD-check/badge.svg)](https://github.com/GSK-Biostatistics/tlang/actions)
+[![Codecov test coverage](https://codecov.io/gh/GSK-Biostatistics/tlang/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tlang?branch=main)
+<!-- badges: end -->
+
 
 tfmt(
  title = "", 
