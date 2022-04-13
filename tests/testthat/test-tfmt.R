@@ -59,11 +59,9 @@ test_that("basic tfmt - selecting group/label/param/values/column - char", {
 
 test_that("basic tfmt - selecting group/label/param/values/column - bare", {
 
-  skip("Not functional yet")
-
   t_fmt <- tfmt(
     title = "Table Title",
-    group = vars(row_label1),
+    group = c(row_label1, row_label4),
     label = row_label2,
     param = param,
     values = values,
@@ -73,12 +71,85 @@ test_that("basic tfmt - selecting group/label/param/values/column - bare", {
   expect_s3_class(t_fmt,"tfmt")
 
   expect_equal( t_fmt$title, "Table Title")
-  expect_equal( t_fmt$group, vars(row_label1), ignore_attr = TRUE)
+  expect_equal( t_fmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
   expect_equal( t_fmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal( t_fmt$param, quo(param), ignore_attr = TRUE)
   expect_equal( t_fmt$values, quo(values), ignore_attr = TRUE)
   expect_equal( t_fmt$column, quo(column), ignore_attr = TRUE)
+
 })
+
+test_that("basic tfmt - length one quo warning", {
+
+  single_warning <- capture_warnings({
+    tfmt(
+      title = "Table Title",
+      group = row_label1,
+      label = vars(row_label2,row_label3),
+      param = param,
+      values = values,
+      column = column
+    )
+  })
+
+  expect_equal(
+    single_warning,
+    paste0(
+      "Passed more than one quosure to the argument `",
+      "label",
+      "`. Selecting the first entry."
+    )
+  )
+
+  multi_warning <- capture_warnings({
+    tfmt(
+      title = "Table Title",
+      group = row_label1,
+      label = vars(row_label2,row_label3),
+      param = vars(param, param2),
+      values = vars(values, values2),
+      column = vars(column, column2)
+    )
+  })
+
+  expect_equal(
+    multi_warning,
+    c(
+      "Passed more than one quosure to the argument `label`. Selecting the first entry.",
+      "Passed more than one quosure to the argument `param`. Selecting the first entry.",
+      "Passed more than one quosure to the argument `values`. Selecting the first entry.",
+      "Passed more than one quosure to the argument `column`. Selecting the first entry."
+    )
+  )
+
+})
+
+test_that("basic tfmt - bare/char mix error", {
+
+  expect_error(
+    tfmt(
+      title = "Table Title",
+      group = c(row_label1, "row_label4"),
+      label = row_label2,
+      param = param,
+      values = values,
+      column = column
+    ),
+    paste0(
+      "Entries for `",
+      "group",
+      "` argument must be vars(), a character vector, or unquoted column name.\n",
+      "  Consider updating the argument input to `",
+      "group",
+      "` to:\n\t",
+      "vars(row_label1,row_label4)"
+    ),
+    fixed = TRUE
+  )
+
+})
+
+
 
 test_that("layering tfmt - default table elements - func/tfmt",{
 
