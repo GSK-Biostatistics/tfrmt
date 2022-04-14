@@ -24,14 +24,14 @@ apply_fmt <- function(vals, fmt){
     str_trim()
 
   #Bound
-  if(!is_null(fmt$bounds$upper_exp)){
+  if(!is.null(fmt$bounds$upper_exp)){
     up_bound_lb <- str_c(vals, fmt$bounds$upper_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$upper_lab, NA_character_)
   } else {
     up_bound_lb <- rep(NA_character_, length(vals))
   }
-  if(!is_null(fmt$bounds$lower_exp)){
+  if(!is.null(fmt$bounds$lower_exp)){
     low_bound_lb <- str_c(vals, fmt$bounds$lower_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$lower_lab, NA_character_)
@@ -57,7 +57,7 @@ apply_fmt <- function(vals, fmt){
     act_pre_dec = rounded_vals %>%
       str_remove("\\..*$") %>%
       str_count("."),
-    space_to_add = if_else(!is.na(bound), 0L, pre_dec - act_pre_dec)
+    space_to_add = if_else(!is.na(bound) | rounded=="NA", 0L, pre_dec - act_pre_dec)
   )
 
   if(any(fmt_options$space_to_add < 0)){
@@ -105,6 +105,7 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
   if(!setequal(names(fmt_combine$fmt_ls), param_vals)){
     stop("The values in the expression don't match the names of the given formats ")
   }
+
   out <- map_dfr(param_vals, function(var){
     fmt <- fmt_combine$fmt_ls[[var]]
     .data %>%
@@ -152,6 +153,7 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
   #get filters for each column type
   grp_expr <- expr_to_filter(group, cur_fmt$group_val)
+
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
   parm_expr <- expr_to_filter(param, cur_fmt$param_val)
 

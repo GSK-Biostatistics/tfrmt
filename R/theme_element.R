@@ -56,7 +56,7 @@ element_bounds <- function(upper_exp = NULL, lower_exp = NULL, upper_lab = NULL,
     upper_lab = upper_exp
   }
 
-  if(!is_null(lower_exp) & is_null(lower_lab)){
+  if(!is.null(lower_exp) & is.null(lower_lab)){
     lower_lab = lower_exp
   }
   structure(
