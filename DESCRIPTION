@@ -17,7 +17,11 @@ Authors@R:
              person(given = "Becca",
                     family = "Krouse",
                     role = c("aut"),
-                    email = "becca.z.krouse@gsk.com")
+                    email = "becca.z.krouse@gsk.com"),
+             person(given = "Karima",
+                    family = "Ahmad",
+                    role = c("aut"),
+                    email = c("karima.j.ahmad@gsk.com"))
              )
 Description: table formatting
 License: Apache License (>= 2)
