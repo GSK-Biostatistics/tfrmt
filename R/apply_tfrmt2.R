@@ -223,6 +223,7 @@ expr_to_filter.quosures <- function(cols, val){
 #' @importFrom rlang !!
 apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values){
   .data <- .data %>%
+    ungroup() %>%
     mutate(TEMP_row = row_number())
 
   TEMP_appl_row = table_frmt_plan %>%

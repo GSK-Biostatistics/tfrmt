@@ -134,7 +134,7 @@ sum_subgrp <- function(.data, subgroup_var, order_var = NULL, include.n=TRUE, pa
     rename(rowlbl2 = {{ subgroup_var }})
 
   if (include.n){
-    subgrps <- bind_rows(desc_stats(.data, {{subgroup_var}}, include='n')[1,] %>% mutate(rowlbl2="n_cat"),
+    subgrps <- bind_rows(desc_stats(.data, {{subgroup_var}}, include='n')[1,],
                          subgrps)
   }
 

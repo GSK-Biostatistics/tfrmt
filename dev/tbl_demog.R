@@ -16,19 +16,16 @@ fmt_spec <- tfrmt(
   column = quo(column),
   value = quo(value),
   sorting_cols = vars(ord1, ord2),
-  col_select = vars(-starts_with("ord")),
+  col_select = vars( -starts_with("ord")),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default",
             label_val = ".default",
             frmt_combine("{n} {pct}",
-                        n = frmt("XXX"),
-                        pct = frmt("(xX.X %)")
+                        n = frmt("XXX", missing = ""),
+                        pct = frmt("(xX.X %)", missing = "")
             )
     ),
-
     frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-
-
     frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
     frmt_structure(group_val = ".default", label_val = ".default", SD = frmt("xxx.xx")),
     frmt_structure(group_val = ".default", label_val = ".default", p = frmt("x.xxx",
