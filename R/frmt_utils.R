@@ -57,9 +57,11 @@ print.frmt_combine <- function(x,...){
 
 #' @export
 format.frmt_structure <- function(x,...){
+
   groups <- unique(x$group_val)[[1]]
   labels <- unique(x$label_val)
-  fmts <- tibble(param = x$param_val, frmt_to_apply = list(x$frmt_to_apply))
+  param <- unique(x$param_val)
+  fmts <- x$frmt_to_apply[[1]]
 
   if(is.list(groups)){
     group_string <- paste0(
@@ -76,17 +78,21 @@ format.frmt_structure <- function(x,...){
   frmt_struct_str <- c(
     "Format Structure",
     paste0("  Group Values:",group_string),
-    paste0("  Label Values: ",paste0("\"",labels,"\"", collapse=", ")),
-    paste0("  Param Format",ifelse(nrow(fmts) > 1,"s:",":"))
+    paste0("  Label Values: ",paste0("\"",labels,"\"", collapse=", "))
   )
 
-  for(fmt_idx in seq_len(nrow(fmts))){
+  if(param != ".default"){
     frmt_struct_str <- c(
       frmt_struct_str,
-      paste0("   `",fmts$param[[fmt_idx]],"`: ",format(fmts$frmt_to_apply[[fmt_idx]]))
+      paste0("  Param Value: \"",param,"\"")
+    )
+  }
+
+  frmt_struct_str <- c(
+    frmt_struct_str,
+    paste0("  Format: ",format(fmts))
     )
 
-  }
 
   frmt_struct_str
 
@@ -131,3 +137,4 @@ format.table_body_plan <- function(x,...){
 print.table_body_plan <- function(x, ...){
   cat(format(x, ...), sep = "\n")
 }
+
