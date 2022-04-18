@@ -37,6 +37,7 @@
 #'        frmt_values = "..frmt_values",
 #'        applied_frmt_values = "..applied_frmt_values"
 #'     )
+#'
 #'   }
 #'
 #'
@@ -120,112 +121,96 @@
 #'
 #'   .data
 #' }
+
+
+#' Apply formatting
+#'
+#' @param .data data, but only what is getting changed
+#' @param frmt_def formatting to be applied
+#' @param param param symbol should only be one
+#' @param column column symbol should only be one
+#' @param values values symbol should only be one
+#'
+#' @return
+#' @noRd
+#' @importFrom stringr str_count str_trim str_dup str_c str_remove
+#' @importFrom dplyr if_else case_when tibble
+#' @importFrom purrr map_lgl
+apply_frmt <- function(frmt_def, .data, values, ...){
+  UseMethod("apply_frmt", frmt_def)
+}
+
+#' Apply formatting
 #'
 #'
-#' #' Apply formatting
-#' #'
-#' #'
-#' #' SCIENFIC NOTATION????
-#' #' @param .data data, but only what is getting changed
-#' #' @param frmt_def formatting to be applied
-#' #' @param param param symbol should only be one
-#' #' @param column column symbol should only be one
-#' #' @param values values symbol should only be one
-#' #'
-#' #' @return
-#' #' @noRd
-#' #' @importFrom stringr str_count str_trim str_dup str_c str_remove
-#' #' @importFrom dplyr if_else case_when tibble
-#' #' @importFrom purrr map_lgl
-#' apply_frmt <- function(frmt_def, .data, values, param, param_def, ..., frmt_values, applied_frmt_values){
+#' SCIENFIC NOTATION????
+#' @param vals vector of numeric values
+#' @param frmt_def formatting to be applied
 #'
-#'   UseMethod("apply_frmt", frmt_def)
-#' }
-#'
-#' #' Apply formatting
-#' #'
-#' #'
-#' #' SCIENFIC NOTATION????
-#' #' @param vals vector of numeric values
-#' #' @param frmt_def formatting to be applied
-#' #'
-#' #' @return
-#' #' @noRd
-#' #' @importFrom stringr str_count str_trim str_dup str_c str_remove
-#' #' @importFrom dplyr if_else case_when tibble
-#' #' @importFrom purrr map_lgl
-#' apply_frmt.frmt <- function( frmt_def, .data, values, param, param_val, ..., frmt_values, applied_frmt_values){
-#'   if(param_val == ".default"){
-#'      vals <- .data %>%
-#'        filter(!(!!sym(applied_frmt_values))) %>%
-#'        select(!!values) %>%
-#'        pluck(1)
-#'   }else{
-#'     vals <- .data %>%
-#'       filter(!(!!sym(applied_frmt_values))) %>%
-#'       filter(!!param == param_val) %>%
-#'       select(!!values) %>%
-#'       pluck(1)
-#'   }
-#'
-#'   if(length(vals) == 0){
-#'     return(.data)
-#'   }
-#'
-#'   #Apply Expression
-#'   dig <- frmt_def$expression %>%
-#'     str_count("(?<=\\.)[X|x]")
-#'
-#'   rounded_vals <- format(round(vals, dig)) %>%
-#'     str_trim()
-#'
-#'   pre_dec <- frmt_def$expression %>%
-#'     str_remove("\\..*$") %>%
-#'     str_count("[X|x]")
-#'
-#'   fmt_options <- tibble(
-#'     rounded = rounded_vals,
-#'     act_pre_dec = rounded_vals %>%
-#'       str_remove("\\..*$") %>%
-#'       str_count("."),
-#'     space_to_add = pre_dec - act_pre_dec
-#'   )
-#'
-#'   if(any(fmt_options$space_to_add < 0)){
-#'     stop("Check format, there largest value is larger than expected")
-#'   }
-#'
-#'   if(!is.null(frmt_def$missing)){
-#'     miss_val <- frmt_def$missing
-#'   } else {
-#'     miss_val <- NA_character_
-#'   }
-#'
-#'   fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded)
-#'
-#'   expr_start <- frmt_def$expression %>%
-#'     str_extract("^[^X|^x]*(?=[X|x])")
-#'
-#'   expr_end <- frmt_def$expression %>%
-#'     str_extract("(?<=[X|x])[^X|^x]*$")
-#'
-#'   # Combining the additional formatting
-#'   fmt_val_output <- case_when(
-#'     fmt_options$rounded == "NA" ~ miss_val,
-#'     TRUE ~ str_c(frmt_def$padding, expr_start, fmt_vals, expr_end)
-#'     )
-#'
-#'   if(param_val == ".default"){
-#'     .data[!.data[[applied_frmt_values]], frmt_values] <- fmt_val_output
-#'     .data[!.data[[applied_frmt_values]], applied_frmt_values] <- TRUE
-#'   }else{
-#'     .data[.data[[as_label(param)]] %in% param_val & !.data[[applied_frmt_values]], frmt_values] <- fmt_val_output
-#'     .data[.data[[as_label(param)]] %in% param_val & !.data[[applied_frmt_values]], applied_frmt_values] <- TRUE
-#'   }
-#'
-#'   .data
-#'
-#' }
+#' @return
+#' @noRd
+#' @importFrom stringr str_count str_trim str_dup str_c str_remove
+#' @importFrom dplyr if_else case_when tibble
+#' @importFrom purrr map_lgl
+apply_frmt.frmt <- function( frmt_def, .data, values, ...){
+
+  vals <- .data %>%
+    select(!!values) %>%
+    pluck(1)
+
+  if(length(vals) == 0){
+    return(.data)
+  }
+
+  #Apply Expression
+  dig <- frmt_def$expression %>%
+    str_count("(?<=\\.)[X|x]")
+
+  rounded_vals <- format(round(vals, dig)) %>%
+    str_trim()
+
+  pre_dec <- frmt_def$expression %>%
+    str_remove("\\..*$") %>%
+    str_count("[X|x]")
+
+  fmt_options <- tibble(
+    rounded = rounded_vals,
+    act_pre_dec = rounded_vals %>%
+      str_remove("\\..*$") %>%
+      str_count("."),
+    # space_to_add = pre_dec - act_pre_dec
+  )
+
+  # if(any(fmt_options$space_to_add < 0)){
+  #   stop("Check format, there largest value is larger than expected")
+  # }
+
+  if(!is.null(frmt_def$missing)){
+    miss_val <- frmt_def$missing
+  } else {
+    miss_val <- NA_character_
+  }
+
+  # fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded)
+
+  expr_start <- frmt_def$expression %>%
+    str_extract("^[^X|^x]*(?=[X|x])")
+
+  expr_end <- frmt_def$expression %>%
+    str_extract("(?<=[X|x])[^X|^x]*$")
+
+  # Combining the additional formatting
+  fmt_val_output <- case_when(
+    fmt_options$rounded == "NA" ~ miss_val,
+    TRUE ~ str_c(frmt_def$padding, expr_start, fmt_options$rounded, expr_end)
+    )
+
+  .data %>%
+    mutate(
+      !!values := fmt_val_output
+    )
+
+}
 #'
 #'
 #' #' Apply frmt_combine information to data
@@ -237,110 +222,85 @@
 #' #'
 #' #' @return rounded and formatted df
 #' #' @noRd
-#' apply_frmt.frmt_combine <- function(frmt_def, .data, values, column, param, param_val, label, group, ..., frmt_values, applied_frmt_values){
-#'
-#'   fmt_param_vals <- frmt_def$expression %>%
-#'     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
-#'     unlist()
-#'   # Check if unspecified param values are in the dataset
-#'
-#'   if(!setequal(names(frmt_def$fmt_ls), fmt_param_vals)){
-#'     stop("The values in the expression don't match the names of the given formats ")
-#'   }
-#'
-#'
-#'   .tmp_data <- .data
-#'   .tmp_data$..frmt_values <- ""
-#'   .tmp_data$..is_frmt_values <- FALSE
-#'
-#'   .tmp_data <- map_dfr(fmt_param_vals, function(var){
-#'
-#'     frmt_param <- frmt_def$fmt_ls[[var]]
-#'     apply_frmt(
-#'       frmt_def = frmt_param,
-#'       .data = .tmp_data,
-#'       values = values,
-#'       param = param,
-#'       param_val = var,
-#'       frmt_values = "..frmt_values",
-#'       applied_frmt_values = "..is_frmt_values"
-#'       ) %>%
-#'       filter(!!param == var)
-#'     }) %>%
-#'     select(-!!values) %>%
-#'     rename(
-#'       !!values := `..frmt_values`
-#'     ) %>%
-#'     select(-`..is_frmt_values`, -(!!applied_frmt_values))
-#'
-#'   #Test if common information exists
-#'   miss_from_data <- .tmp_data %>%
-#'     pull(!!param) %>%
-#'     unique() %>%
-#'     setdiff(fmt_param_vals, .)
-#'
-#'   if(length(miss_from_data) > 0 ){
-#'     stop(paste0("Unable to create formatting combination because the following parameters are missing from the data:\n ",
-#'                 paste0(miss_from_data, collapse = " \n")))
-#'   }
-#'
-#'   test <- .tmp_data %>%
-#'     select(-!!param, -!!values) %>%
-#'     distinct() %>%
-#'     nrow()
-#'
-#'   if(test == nrow(.tmp_data)){
-#'     stop("Unique information exsists in rows that should be combined. Unable to combine")
-#'   }
-#'
-#'   if(param_val == ".default"){
-#'     param_val <- fmt_param_vals[[1]]
-#'   }
-#'
-#'   .tmp_data_fmted <- .tmp_data %>%
-#'     select(!!values, !!param, !!column, !!label, !!!group) %>%
-#'     pivot_wider(
-#'       values_from = !!values,
-#'       names_from = !!param
-#'       ) %>%
-#'     mutate(
-#'       !!frmt_values := str_glue(frmt_def$expression) %>% as.character(),
-#'       !!applied_frmt_values := TRUE,
-#'       !!param := param_val
-#'       ) %>%
-#'     select(-all_of(fmt_param_vals))
-#'
-#'   .merged_data <- .data %>%
-#'       filter(
-#'         !!param == param_val,
-#'         !(!!sym(applied_frmt_values))
-#'       )
-#'
-#'   .reserved_data <- .data %>%
-#'       filter(
-#'         !!param %in% setdiff(unique(.data[[as_label(param)]]),fmt_param_vals) |
-#'           !(!!param %in% fmt_param_vals & !(!!sym(applied_frmt_values)))
-#'       )
-#'
-#'
-#'   .merged_data <- .merged_data %>%
-#'     select(
-#'       -all_of(c(frmt_values,applied_frmt_values))
-#'     ) %>%
-#'     left_join(
-#'       .tmp_data_fmted,
-#'       by = map_chr(c(param, column, label, group), as_label)
-#'     )
-#'
-#'   .data <- bind_rows(
-#'     .reserved_data,
-#'     .merged_data
-#'   )
-#'   #TODO MANAGE MISSING only when both are missing
-#'
-#'   .data
-#'
-#' }
+apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, label, group, ...){
+
+  fmt_param_vals <- frmt_def$expression %>%
+    str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
+    unlist()
+  # Check if unspecified param values are in the dataset
+
+  if(!setequal(names(frmt_def$fmt_ls), fmt_param_vals)){
+    stop("The values in the expression don't match the names of the given formats ")
+  }
+
+  .tmp_data <- map_dfr(fmt_param_vals, function(var){
+    fmt_to_apply <- frmt_def$fmt_ls[[var]]
+    .data %>%
+      filter(!!param == var) %>%
+      apply_frmt(
+        frmt_def = fmt_to_apply,
+        .data = .,
+        values = values,
+        column = column,
+        param = param,
+        label = label,
+        group = group,
+        ...
+        )
+  })
+
+  #Test if common information exists
+  miss_param_from_data <- .tmp_data %>%
+    pull(!!param) %>%
+    unique() %>%
+    setdiff(fmt_param_vals, .)
+
+  if(length(miss_param_from_data) > 0 ){
+    stop(paste0("Unable to create formatting combination because the following parameters are missing from the data:\n ",
+                paste0(miss_from_data, collapse = " \n")))
+  }
+
+  .tmp_data_wide <- .tmp_data %>%
+    select(!!values, !!param, !!column, !!label, !!!group) %>%
+    pivot_wider(
+      values_from = !!values,
+      names_from = !!param
+      ) %>%
+    mutate(
+      .is_all_missing =  all_missing(fmt_param_vals,.)
+    )
+
+  if(is.null(frmt_def$missing)){
+    frmt_def$missing <- ""
+  }
+
+  .tmp_data_fmted <- .tmp_data_wide %>%
+    mutate(
+      !!values := case_when(
+        ## if both params are missing, then drop in frmt definition missing value
+        .is_all_missing ~ frmt_def$missing,
+        TRUE ~ str_glue(frmt_def$expression) %>% as.character()
+        )
+      ) %>%
+    select(-all_of(fmt_param_vals), -.is_all_missing)
+
+  ## keep only the first case of param, and add the joined values
+  .data %>%
+    filter(!!param == fmt_param_vals[[1]]) %>%
+    select(-!!values) %>%
+    left_join(
+      .tmp_data_fmted,
+      by = map_chr(c(column, label, group), as_label)
+    )
+
+}
+
+all_missing <- function(cols, .data){
+  paste0("is.na(.data$",cols,")", collapse = " & ") %>%
+    parse_expr() %>%
+    eval_bare(env = environment())
+}
+
 #'
 #' #' Test of the frmt of the data
 #' #'
