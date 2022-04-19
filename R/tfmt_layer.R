@@ -57,6 +57,35 @@ layer_tfmt_arg.default<- function(x, y, arg_name, ...){
   }
 }
 
+## if group is an empty vars, keep the original value
+layer_tfmt_arg.group<- function(x, y, arg_name, ...){
+  x_arg_val <- x[[arg_name]]
+  y_arg_val <- y[[arg_name]]
+
+  if(identical(y_arg_val, vars())){
+    x_arg_val
+  }else{
+    y_arg_val
+  }
+}
+
+## if label/param/values/column is an empty quo, keep the original value
+layer_tfmt_arg.label<- function(x, y, arg_name, ...){
+  x_arg_val <- x[[arg_name]]
+  y_arg_val <- y[[arg_name]]
+
+  if(identical(y_arg_val, quo())){
+    x_arg_val
+  }else{
+    y_arg_val
+  }
+}
+
+layer_tfmt_arg.param <- layer_tfmt_arg.label
+layer_tfmt_arg.values <- layer_tfmt_arg.label
+layer_tfmt_arg.column <- layer_tfmt_arg.label
+
+
 layer_tfmt_arg.body_style <- function(x, y, ...,  join_body_styles = TRUE){
   x_body_style <- x[["body_style"]][["all_fmts"]]
   y_body_style <- y[["body_style"]][["all_fmts"]]
