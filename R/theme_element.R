@@ -26,8 +26,11 @@ element_style <- function(...){
 #'
 #' @export
 element_align <- function(left = vars(), right = vars(), dec_pl = vars()){
+
+  args <- names(formals(sys.function(sys.parent(1))))
+
   structure(
-    list(left = left, right = right, dec_pl = dec_pl),
+    quo_get(args, as_var_args = args),
     class = c("element_align", "element")
   )
 }

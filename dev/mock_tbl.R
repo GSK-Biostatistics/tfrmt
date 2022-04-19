@@ -5,7 +5,6 @@ library(stringr)
 library(rlang)
 library(purrr)
 library(tidyr)
-library(gt)
 source("dev/sample_data.R")
 
 
@@ -19,6 +18,9 @@ fmt_spec <- tfmt(
   param = vars(param)[[1]],
   values = vars(value)[[1]],
   column = vars(column)[[1]],
+  col_align = element_align(left = "total",
+                            right = vars(Placebo),
+                            dec_pl = c(`Xanomeline High Dose`, `Xanomeline Low Dose`)), # specify by values of column var, can leave any empty
   #This controls how the rows are sorted
   sorting_cols = vars(ord_layer_1, ord_layer_2),
   body_style = element_style(
@@ -46,9 +48,16 @@ fmt_spec <- tfmt(
   col_select = vars(-total, everything(), -starts_with("ord"))
 )
 
-
-print_to_gt(fmt_spec, data)
-
+apply_tfmt(data, fmt_spec)
 
 
+apply_tfmt(data, fmt_spec) %>%
+  gt::gt(.,
+         groupname_col = as_label(fmt_spec$group[[1]]),
+         rowname_col = as_label(fmt_spec$label)) %>%
+  gt::tab_style(
+    style = gt::cell_text(font = gt::google_font("PT Mono"), whitespace = "pre"),
+    locations = gt::cells_body(columns = everything())
+  ) %>%
+  gt::cols_align(align = "left", columns = everything()) # also check right, center to see how white space is added/preserved
 

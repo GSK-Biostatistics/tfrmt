@@ -33,14 +33,14 @@ apply_fmt <- function(vals, fmt){
     str_trim()
 
   #Bound
-  if(!is_null(fmt$bounds$upper_exp)){
+  if(!is.null(fmt$bounds$upper_exp)){
     up_bound_lb <- str_c(vals, fmt$bounds$upper_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$upper_lab, NA_character_)
   } else {
     up_bound_lb <- rep(NA_character_, length(vals))
   }
-  if(!is_null(fmt$bounds$lower_exp)){
+  if(!is.null(fmt$bounds$lower_exp)){
     low_bound_lb <- str_c(vals, fmt$bounds$lower_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$lower_lab, NA_character_)
