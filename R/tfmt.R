@@ -98,9 +98,14 @@ is_tfmt <- function(x){
 
 tfmt_find_args <- function(..., env = parent.frame()){
 
+  ## get args of parent function
   arg_parent <- names(formals(sys.function(sys.parent(1))))
+  ## don't try to get the tftmt obj
   args <- setdiff(arg_parent,"tfmt_obj")
 
+  ## get the values from the parent env. turn the
+  ## as_var_args call into vars
+  ## and as_quo_args into length one quo's
   vals <- quo_get(
     args,
     as_var_args = c("group"),
@@ -108,40 +113,34 @@ tfmt_find_args <- function(..., env = parent.frame()){
     envir = env
     )
 
+  ## remove the "missing" values from vals
   vals <- vals[!sapply(vals, is_missing)]
 
-  vals[["group"]] <- as_vars(vals[["group"]])
-
-  sub_quosures <- intersect(c("label","param","values","column"), names(vals))
-  for(sub_quo in sub_quosures){
-    vals[[sub_quo]] <-as_length_one_quo(vals[[sub_quo]], arg = sub_quo)
-  }
-
+  ## preserve the values included in ... input
   new_args <- list(..., ... = NULL)
-
   for (i in names(new_args)){
     vals[[i]] <- new_args[[i]]
   }
+
   vals
 }
 
-#' @importFrom rlang abort
-quo_get <- function(args, as_var_args, as_quo_args, envir = parent.frame()){
-
+#' @importFrom rlang abort vars
+quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame()){
   arg_set <- lapply(args, function(arg){
-
     tryCatch({
         if(arg %in% as_var_args){
-          tryCatch(
+          arg_val <- tryCatch(
             get(arg, envir = envir, inherits = FALSE),
             error = function(e){
-              var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))[-1]
+              var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))
+              if(length(var_list) > 1){
+                var_list <- var_list[-1]
+              }
               var_list_is_name <- sapply(var_list, is.name)
               if(!all(var_list_is_name)){
                 new_arg_call <- paste0(
-                  "vars(",
-                  paste(sapply(var_list, as.character),collapse = ","),
-                  ")"
+                  "vars(",paste(sapply(var_list, as.character),collapse = ","),")"
                 )
                 abort(
                   paste0(
@@ -157,14 +156,19 @@ quo_get <- function(args, as_var_args, as_quo_args, envir = parent.frame()){
                 )
               }
               do.call('vars',var_list, envir = envir)
-
             })
+          as_vars(arg_val)
         }else if(arg %in% as_quo_args){
-          tryCatch(
+          arg_val <- tryCatch(
             get(arg, envir = envir, inherits = FALSE),
             error = function(e){
-              do.call('enquo',list(as.symbol(arg)), envir = envir)
+              var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))
+              if(length(var_list) > 1){
+                var_list <- var_list[-1]
+              }
+              do.call('vars',var_list, envir = envir)
             })
+          as_length_one_quo(arg_val, arg = as.character(arg))
         }else{
           get(arg, envir = envir,inherits = FALSE)
         }
