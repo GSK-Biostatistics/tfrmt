@@ -8,7 +8,20 @@ Authors@R:
              email = "christina.e.fillmore@gsk.com",
              comment = c(ORCID = "0000-0003-0595-2302")),
              person("GlaxoSmithKline LLC", role = c("cph", "fnd")),
-             person("Atorus Research LLC", role = c("cph", "fnd"))
+             person("Atorus Research LLC", role = c("cph", "fnd")),
+             person(given = "Ellis",
+                    family = "Hughes",
+                    role = c("aut"),
+                    email = "ellis.h.hughes@gsk.com",
+                    comment = c(ORCID = "0000-0003-0637-4436")),
+             person(given = "Becca",
+                    family = "Krouse",
+                    role = c("aut"),
+                    email = "becca.z.krouse@gsk.com"),
+             person(given = "Karima",
+                    family = "Ahmad",
+                    role = c("aut"),
+                    email = c("karima.j.ahmad@gsk.com"))
              )
 Description: table formatting
 License: Apache License (>= 2)
@@ -17,8 +30,8 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
+    covr,
     testthat (>= 3.0.0)
-Config/testthat/edition: 3
 Imports: 
     magrittr,
     dplyr,
@@ -26,3 +39,4 @@ Imports:
     rlang,
     stringr,
     tidyr
+Config/testthat/edition: 3
