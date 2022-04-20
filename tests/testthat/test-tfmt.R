@@ -77,7 +77,7 @@ test_that("basic tfrmt - selecting group/label/param/values/column - bare", {
   expect_equal( t_frmt$column, quo(column), ignore_attr = TRUE)
 })
 
-test_that("basic tfmt - length one quo warning", {
+test_that("basic tfrmt - length one quo warning", {
 
   single_warning <- capture_warnings({
     tfrmt(
@@ -122,7 +122,7 @@ test_that("basic tfmt - length one quo warning", {
 
 })
 
-test_that("basic tfmt - bare/char mix error", {
+test_that("basic tfrmt - bare/char mix error", {
 
   expect_error(
     tfrmt(
@@ -147,7 +147,7 @@ test_that("basic tfmt - bare/char mix error", {
 
 })
 
-test_that("layering tfmt - default table elements - func/tfmt",{
+test_that("layering tfrmt - default table elements - func/tfrmt",{
 
   t_frmt_title <- tfrmt(
     title = "Table Title"
@@ -323,50 +323,50 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE",{
 
 })
 
-test_that("layering tfmt - keeping original var/quo",{
+test_that("layering tfrmt - keeping original var/quo",{
 
-  t_fmt_o <- tfmt(
+  t_frmt_o <- tfrmt(
     title = "Table Title",
     group = c(Group1, Group2),
     label = label1
   )
 
-  t_fmt_layered <- t_fmt_o %>%
-    layer_tfmt(
-      tfmt(
+  t_frmt_layered <- t_frmt_o %>%
+    layer_tfrmt(
+      tfrmt(
         title = "Table Title 2",
         subtitle = "Table Subtitle"
       ))
 
-  expect_s3_class( t_fmt_layered,"tfmt"  )
-  expect_equal( t_fmt_layered$title, "Table Title 2")
-  expect_equal( t_fmt_layered$subtitle, "Table Subtitle")
-  expect_equal( t_fmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
-  expect_equal( t_fmt_layered$label, quo(label1), ignore_attr = TRUE )
+  expect_s3_class( t_frmt_layered,"tfrmt"  )
+  expect_equal( t_frmt_layered$title, "Table Title 2")
+  expect_equal( t_frmt_layered$subtitle, "Table Subtitle")
+  expect_equal( t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
+  expect_equal( t_frmt_layered$label, quo(label1), ignore_attr = TRUE )
 
 })
 
-test_that("layering tfmt - Mixing var/quo",{
+test_that("layering tfrmt - Mixing var/quo",{
 
-  t_fmt_o <- tfmt(
+  t_frmt_o <- tfrmt(
     title = "Table Title",
     group = c(Group1, Group2),
     label = label1
   )
 
-  t_fmt_layered <- t_fmt_o %>%
-    layer_tfmt(
-      tfmt(
+  t_frmt_layered <- t_frmt_o %>%
+    layer_tfrmt(
+      tfrmt(
         title = "Table Title 2",
         subtitle = "Table Subtitle",
         label = label3
 
       ))
 
-  expect_s3_class( t_fmt_layered,"tfmt"  )
-  expect_equal( t_fmt_layered$title, "Table Title 2")
-  expect_equal( t_fmt_layered$subtitle, "Table Subtitle")
-  expect_equal( t_fmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
-  expect_equal( t_fmt_layered$label, quo(label3), ignore_attr = TRUE )
+  expect_s3_class( t_frmt_layered,"tfrmt"  )
+  expect_equal( t_frmt_layered$title, "Table Title 2")
+  expect_equal( t_frmt_layered$subtitle, "Table Subtitle")
+  expect_equal( t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
+  expect_equal( t_frmt_layered$label, quo(label3), ignore_attr = TRUE )
 
 })
