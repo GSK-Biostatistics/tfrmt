@@ -34,7 +34,7 @@ col_align_char <- function(col, char = NULL){
 #'
 col_align_lr <- function(col, side){
 
-  tbl_dat <- tibble(col = trimws(col)) %>%
+  tbl_dat <- tibble(col = col) %>%
     mutate(string_col = nchar(col),
            string_tot = max(string_col),
            space_to_add = str_dup(" ", string_tot-string_col))

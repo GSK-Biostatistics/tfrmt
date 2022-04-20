@@ -27,13 +27,13 @@ test_that("element_align - char", {
 
 test_that("left & right align works", {
 
-  vec <- c(" xx.xx","xx", " x, x")
+  vec <- c(" xx.xxx","xx", " x,  x")
 
   expect_equal(col_align_lr(vec, side = "left"),
-               c("xx.xx","xx   ", "x, x "))
+               c(" xx.xxx","xx     ", " x,  x "))
 
   expect_equal(col_align_lr(vec, side = "right"),
-               c("xx.xx","   xx", " x, x"))
+               c(" xx.xxx","     xx", "  x,  x"))
 
 })
 
@@ -72,8 +72,8 @@ test_that("alignment of multiple columns works", {
 
   expect_equal(col_align_all(dat, element),
                tibble(one = c("n (%)   ", "mean    ", "sd      ", "median  ", "(q1, q3)"),
-                      two = c("12 (34%)", "    12.3", "    4.34", "      14", "(10, 20)"),
-                      three = c("24 (58%)", "    15.4", "    8.25", "      16", "(11, 22)"),
+                      two = c(" 12 (34%)", "     12.3", "     4.34", "       14", " (10, 20)"),
+                      three = c(" 24 (58%)", "     15.4", "     8.25", "       16", " (11, 22)"),
                       four = c("      ", "<0.001", "      ", "  0.05", "      ")))
 
 })
