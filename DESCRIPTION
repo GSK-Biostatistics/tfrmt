@@ -34,10 +34,9 @@ Suggests:
     testthat (>= 3.0.0)
 Imports: 
     magrittr,
-    dplyr, 
+    dplyr,
     purrr,
-    rlang, 
+    rlang,
     stringr,
     tidyr
 Config/testthat/edition: 3
-
