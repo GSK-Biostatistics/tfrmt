@@ -23,6 +23,7 @@ NULL
 #'     str_count("(?<=\\.)[X|x]")
 #'   rounded_vals <- format(round(vals, dig)) %>%
 #'     str_trim()
+
 #'
 #'   #Bound
 #'   if(!is_null(fmt$bounds$upper_exp)){
@@ -48,6 +49,7 @@ NULL
 #'     stop("Overlapping bounds")
 #'   }
 #'
+
 #'   pre_dec <- fmt$expression %>%
 #'     str_remove("\\..*$") %>%
 #'     str_count("[X|x]")
@@ -140,6 +142,7 @@ NULL
 
 
 
+
 #' Test of the frmt of the data
 #'
 #' @param cur_fmt current formatting
@@ -153,6 +156,7 @@ NULL
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
   #get filters for each column type
   grp_expr <- expr_to_filter(group, cur_fmt$group_val)
+
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
   parm_expr <- expr_to_filter(param, cur_fmt$param_val)
 
@@ -224,6 +228,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 
   ## identify which formatting needs to be applied where
   .data <- .data %>%
+    ungroup() %>%
     mutate(TEMP_row = row_number())
 
   TEMP_appl_row = table_frmt_plan %>%

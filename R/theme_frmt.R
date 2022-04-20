@@ -118,3 +118,14 @@ table_body_plan <- function(...){
     class = c("table_body_plan", "frmt_table")
   )
 }
+
+
+
+#' @rdname frmt
+#' @importFrom rlang list2
+frmt_when <- function(...){
+  structure(
+    list2(...),
+    class = c("fmt_when","frmt")
+  )
+}
