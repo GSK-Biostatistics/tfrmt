@@ -13,18 +13,24 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/apply_tfrmt.html</loc>
+  </url>
+  <url>
     <loc>/reference/element_align.html</loc>
+  </url>
+  <url>
+    <loc>/reference/frmt_utils.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/layer_tfmt.html</loc>
+    <loc>/reference/layer_tfrmt.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>/reference/tfmt.html</loc>
+    <loc>/reference/tfrmt.html</loc>
   </url>
 </urlset>
