@@ -1,16 +1,7 @@
-
 #' @import dplyr
 #'
 #'
 NULL
-
-
-
-
-pull_current_fmt <- function(tfmt, element = NULL){
-
-}
-
 
 
 #' Apply formatting
@@ -27,20 +18,20 @@ pull_current_fmt <- function(tfmt, element = NULL){
 #' @importFrom purrr map_lgl
 apply_fmt <- function(vals, fmt){
   #Round
-  dig <- fmt$rounding %>%
+  dig <- fmt$expression %>%
     str_count("(?<=\\.)[X|x]")
   rounded_vals <- format(round(vals, dig)) %>%
     str_trim()
 
   #Bound
-  if(!is_null(fmt$bounds$upper_exp)){
+  if(!is.null(fmt$bounds$upper_exp)){
     up_bound_lb <- str_c(vals, fmt$bounds$upper_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$upper_lab, NA_character_)
   } else {
     up_bound_lb <- rep(NA_character_, length(vals))
   }
-  if(!is_null(fmt$bounds$lower_exp)){
+  if(!is.null(fmt$bounds$lower_exp)){
     low_bound_lb <- str_c(vals, fmt$bounds$lower_exp) %>%
       map_lgl(~eval(parse(text =.))) %>%
       if_else(., fmt$bounds$lower_lab, NA_character_)
@@ -55,7 +46,8 @@ apply_fmt <- function(vals, fmt){
   if("THIS IS AN ISSUE" %in% bound){
     stop("Overlapping bounds")
   }
-  pre_dec <- fmt$rounding %>%
+
+  pre_dec <- fmt$expression %>%
     str_remove("\\..*$") %>%
     str_count("[X|x]")
 
@@ -65,7 +57,7 @@ apply_fmt <- function(vals, fmt){
     act_pre_dec = rounded_vals %>%
       str_remove("\\..*$") %>%
       str_count("."),
-    space_to_add = if_else(!is.na(bound), 0L, pre_dec - act_pre_dec)
+    space_to_add = if_else(!is.na(bound) | rounded=="NA", 0L, pre_dec - act_pre_dec)
   )
 
   if(any(fmt_options$space_to_add < 0)){
@@ -83,9 +75,9 @@ apply_fmt <- function(vals, fmt){
                                      fmt_options$rounded))
 
 
-  start <- fmt$rounding %>%
+  start <- fmt$expression %>%
     str_extract("^[^X|^x]*(?=[X|x])")
-  end <- fmt$rounding %>%
+  end <- fmt$expression %>%
     str_extract("(?<=[X|x])[^X|^x]*$")
 
   # Combining the additional formatting
@@ -113,6 +105,7 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
   if(!setequal(names(fmt_combine$fmt_ls), param_vals)){
     stop("The values in the expression don't match the names of the given formats ")
   }
+
   out <- map_dfr(param_vals, function(var){
     fmt <- fmt_combine$fmt_ls[[var]]
     .data %>%
@@ -145,52 +138,8 @@ apply_combo_fmt <- function(.data, fmt_combine, param, values){
 
 
 
-#' Create string of the expression needed to test against a dataset
-#'
-#' @param param parameter value symbol
-#' @param val value from the fmt
-#'
-#' @noRd
-#' @importFrom rlang as_label
-expr_to_filter <- function(param, val){
-  if(all(val == ".default")){ # This is all so it works when there is a list
-    out <- "TRUE"
-  } else {
-    out <- as_label(param) %>%
-      paste0(" %in% c('",
-             paste0(val, collapse = "', '"),
-             "')")
-  }
-  out
-}
 
-#' Create string of the expression needed to test against a dataset (for PARAM OLNY)
-#'
-#'
-#' @param param param symbol should only be one
-#' @param fmt_ls potentially named list of formats
-#'
-#' @return string
-#' @noRd
-expr_for_param <- function(param, fmt_str){
-  if(class(fmt_str$fmt[[1]]) == "fmt_combine"){
-    fmt <- fmt_str$fmt[[1]]$fmt_ls
-  } else {
-    fmt <- fmt_str$fmt
-  }
 
-  nms <- names(fmt)
-  if(!is.null(nms)){
-    out <- as_label(param) %>%
-      paste0(" %in% c('",
-             paste0(nms, collapse = "', '"),
-             "')")
-
-  } else {
-    out <- "TRUE"
-  }
-  out
-}
 #' Test of the frmt of the data
 #'
 #' @param cur_fmt current formatting
@@ -202,31 +151,11 @@ expr_for_param <- function(param, fmt_str){
 #' @return vector of the rows which this format could be applied to
 #' @noRd
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
+  #get filters for each column type
+  grp_expr <- expr_to_filter(group, cur_fmt$group_val)
 
-  if(length(group) == 1){
-    grp_expr <- expr_to_filter(group[[1]], cur_fmt$group_val)
-  } else {
-    #TODO add test when names don't match
-    if(length(cur_fmt$group_val) == 1){
-      grp_expr <- group %>%
-        map(as_label) %>%
-        map_chr(~expr_to_filter(., cur_fmt$group_val)) %>%
-        paste(collapse = " & ")
-    } else {
-      grp_str <- group %>%
-        map(as_label)
-
-      if(length(setdiff(grp_str, names(cur_fmt$group_val))) > 0){
-        stop("The group names don't mathc the group vairables provided")
-      }
-      grp_expr <- group %>%
-        map2_chr(grp_str, ~expr_to_filter(.x, cur_fmt$group_val[.y])) %>%
-        paste(collapse = " & ")
-    }
-  }
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
-
-  parm_expr <- expr_for_param(param, cur_fmt)
+  parm_expr <- expr_to_filter(param, cur_fmt$param_val)
 
   filter_expr <- paste(lbl_expr,
                        "&",
@@ -238,6 +167,43 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
   .data %>%
     filter(!!filter_expr) %>%
     pull(TEMP_row)
+}
+
+
+expr_to_filter <- function(cols, val){
+  UseMethod("expr_to_filter", cols)
+}
+
+expr_to_filter.quosure <- function(cols, val){
+  if(all(val == ".default")){ # This is all so it works when there is a list
+    out <- "TRUE"
+  } else {
+    out <- as_label(cols) %>%
+      paste0(" %in% c('",
+             paste0(val, collapse = "', '"),
+             "')")
+  }
+  out
+}
+
+expr_to_filter.quosures <- function(cols, val){
+  if(!is.list(val) & length(cols) == 1){
+    cols <- cols[[1]]
+    out <- expr_to_filter(cols,val)
+  } else if(!is.list(val) && val == ".default"){
+    out <- "TRUE"
+  }else if(!is.list(val)){
+    stop("If multiple groups are provided group_val must be a named list")
+  }else{
+    stopifnot(all(names(val) %in% map_chr(cols, as_label)))
+    out <- map2_chr(names(val), val, function(col, x){
+      paste0(col, " %in% c('",
+             paste0(x, collapse = "', '"),
+             "')")
+    }) %>%
+      paste0(collapse = "&")
+  }
+  out
 }
 
 
@@ -255,14 +221,14 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
 #' @importFrom purrr map map_dfr
 #' @importFrom tidyr unnest
 #' @importFrom rlang !!
-apply_all_fmts <- function(.data, element_style, group, label, param, values){
-
+apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values){
   .data <- .data %>%
+    ungroup() %>%
     mutate(TEMP_row = row_number())
 
-  TEMP_appl_row = element_style$all_fmts %>%
+  TEMP_appl_row = table_frmt_plan %>%
     map(fmt_test_data, .data, label, group, param)
-  TEMP_fmt_to_apply = element_style$all_fmts %>% map(~.$fmt[[1]])
+  TEMP_fmt_to_apply = table_frmt_plan %>% map(~.$frmt_to_apply[[1]])
 
   dat_plus_fmt <- tibble(TEMP_appl_row,
                          TEMP_fmt_to_apply) %>%
@@ -279,7 +245,6 @@ apply_all_fmts <- function(.data, element_style, group, label, param, values){
 
   dat_plus_fmt %>%
     map_dfr(function(x){
-
       cur_fmt <- x %>%
         pull(TEMP_fmt_to_apply) %>%
         .[1] %>%
@@ -301,9 +266,9 @@ apply_all_fmts <- function(.data, element_style, group, label, param, values){
           paste("The following rows of the given dataset have no format applied to them", .) %>%
           message()
 
-      } else if(class(cur_fmt) == "fmt_combine"){
+      } else if(is_frmt_combine(cur_fmt)){
         out <- apply_combo_fmt(data_only, cur_fmt, param, values)
-      } else if(class(cur_fmt) == "fmt"){
+      } else if(is_frmt(cur_fmt)){
         out <- data_only %>%
           mutate(!!values := apply_fmt(!!values, cur_fmt)) %>%
           select(-!!param)
