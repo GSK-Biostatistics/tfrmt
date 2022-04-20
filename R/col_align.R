@@ -8,17 +8,20 @@
 #' @examples
 #'
 #' col <- c("xx.xx","  x", " xx (xx, xx)", "  x (xx.x, xx.x)", "xx, xx")
-#' col_align_char(col, char = "\\.|,")
+#' col_align_char(col, char_val = c(".", " ", ","))
 #'
-col_align_char <- function(col, char = NULL){
+col_align_char <- function(col, char_val){
 
-  if (is.null(char)){
-    char <- "\\."
+  if (is.null(char_val)){
+    char_val <- "."
   }
-  char <- paste0("(?=[", char, "|\\s])") # center on first decimal or space (if no dec)
+
+  char_val <- paste(paste0("\\", char_val), collapse = "|")
+
+  char_val <- paste0("(?=[", char_val, "])")
 
   tibble(col = trimws(col)) %>%
-    separate(col, c("string_left","string_right"), sep = char, extra = "merge", fill = "right", remove = FALSE) %>%
+    separate(col, c("string_left","string_right"), sep = char_val, extra = "merge", fill = "right", remove = FALSE) %>%
     mutate(across(c(string_left, string_right), ~replace_na(.x, "") %>% nchar)) %>%
     mutate(col_out = str_c(
                         str_dup(" ", max(string_left)-string_left),
@@ -64,7 +67,7 @@ col_align_lr <- function(col, side){
 col_align_all <- function(.data, col_align){
 
   .data %>%
-    mutate(across(col_align$dec_pl %>% map(quo_name) %>% unlist, ~col_align_char(.x, char = "\\.|,")),
+    mutate(across(col_align$char %>% map(quo_name) %>% unlist, ~col_align_char(.x, char_val = col_align$char_val)),
            across(col_align$left  %>% map(quo_name) %>% unlist, ~col_align_lr(.x, side = "left")),
            across(col_align$right %>% map(quo_name) %>% unlist, ~col_align_lr(.x, side = "right")))
 

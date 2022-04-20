@@ -20,7 +20,8 @@ fmt_spec <- tfmt(
   column = vars(column)[[1]],
   col_align = element_align(left = "total",
                             right = vars(Placebo),
-                            dec_pl = c(`Xanomeline High Dose`, `Xanomeline Low Dose`)), # specify by values of column var, can leave any empty
+                            char = c(`Xanomeline High Dose`, `Xanomeline Low Dose`),
+                            char_val = c(" ", ",", ".")),
   #This controls how the rows are sorted
   sorting_cols = vars(ord_layer_1, ord_layer_2),
   body_style = element_style(
@@ -59,5 +60,5 @@ apply_tfmt(data, fmt_spec) %>%
     style = gt::cell_text(font = gt::google_font("PT Mono"), whitespace = "pre"),
     locations = gt::cells_body(columns = everything())
   ) %>%
-  gt::cols_align(align = "left", columns = everything()) # also check right, center to see how white space is added/preserved
+  gt::cols_align(align = "right", columns = everything()) # also check right, center to see how white space is added/preserved
 
