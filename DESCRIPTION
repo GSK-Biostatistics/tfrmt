@@ -7,7 +7,7 @@ Authors@R:
              role = c("aut", "cre"),
              email = "christina.e.fillmore@gsk.com",
              comment = c(ORCID = "0000-0003-0595-2302")),
-             person("GlaxoSmithKline LLC", role = c("cph", "fnd")),
+             person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")),
              person("Atorus Research LLC", role = c("cph", "fnd")),
              person(given = "Ellis",
                     family = "Hughes",
