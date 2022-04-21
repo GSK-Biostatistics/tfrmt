@@ -2,9 +2,12 @@
 % Please edit documentation in R/theme_frmt.R
 \name{frmt}
 \alias{frmt}
+\alias{frmt_when}
 \title{Table Formatting}
 \usage{
 frmt(expression, padding = "", missing = NULL, ...)
+
+frmt_when(...)
 }
 \arguments{
 \item{expression}{a string representing the intended format. See details: expression for more

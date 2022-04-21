@@ -21,21 +21,20 @@ apply_frmt <- function(frmt_def, .data, values, ...){
 
 #' Apply formatting
 #'
-#'
-#' SCIENFIC NOTATION????
-#' @param vals vector of numeric values
+#' Applying the most basic frmt element. All other frmt type eventually call this
 #' @param frmt_def formatting to be applied
+#' @param .data data, but only the rows getting changed
+#' @param values value column as a quosure
+#' @param ... additional arguments
 #'
 #' @return
 #' @noRd
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract
-#' @importFrom dplyr case_when tibble
-#' @importFrom purrr pluck
+#' @importFrom dplyr case_when tibble pull
 apply_frmt.frmt <- function( frmt_def, .data, values, ...){
 
   vals <- .data %>%
-    select(!!values) %>%
-    pluck(1)
+    pull(!!values)
 
   if(length(vals) == 0){
     return(.data)
@@ -90,10 +89,14 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
 
 #' Apply frmt_combine information to data
 #'
-#' @param .data data, but only what is getting changed
-#' @param fmt_combine
-#' @param param
-#' @param values
+#' @param frmt_def frmt_combine object
+#' @param .data data, but only the rows getting changed
+#' @param param param column as a quosure
+#' @param values value column as a quosure
+#' @param column column column as a quosure
+#' @param label label column as a quosure
+#' @param group group column as a quosure
+#' @param ... additional arguments for applying a basic frmt
 #'
 #' @return rounded and formatted df
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
@@ -177,9 +180,84 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
 
 }
 
+#' Apply form for frmt_when formats
+#'
+#' @param frmt_def formatting to be applied
+#' @param .data data, but only what is getting changed
+#' @param values values symbol should only be one
+#' @param ... additional arguments for methods
+#'
+#' @return rounded and formatted df
+#' @noRd
+#' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
+#' @importFrom dplyr pull if_else mutate
+#' @importFrom purrr map map_chr
+apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
+  values_str <- as_label(values)
+  n <- length(frmt_def)
+
+  val_len <- length(pull(.data, !!values))
+  right <- frmt_def %>%
+    map(f_rhs) %>%
+    map(function(x) {
+      if("frmt" %in% class(x)){
+        out <- apply_frmt(x, .data, values, ...) %>% pull(!!values)
+      } else {
+        out <- rep(x, val_len)
+      }
+      out
+      })
+
+  left <- frmt_def %>%
+    map_chr(f_lhs) %>%
+    if_else(. == "TRUE", ., paste0(values_str, .)) %>%
+    parse_exprs() %>%
+    map(eval_tidy, .data)
+
+
+  out <- rep(NA_character_, val_len)
+  replaced <- rep(FALSE, val_len)
+
+  for(i in seq_len(n)){
+    out <- replace_val(out, left[[i]] & !replaced, right[[i]])
+    replaced <- replaced | (left[[i]] & !is.na(left[[i]]))
+  }
+
+  .data %>%
+    mutate(
+      !!values := out
+    )
+}
+
 #' @importFrom rlang parse_expr eval_bare
 all_missing <- function(cols, .data){
   paste0("is.na(.data$",cols,")", collapse = " & ") %>%
     parse_expr() %>%
     eval_bare(env = environment())
 }
+
+
+#' Replace values
+#'
+#' based on dplyr replace_with function
+#' @param x Current vector
+#' @param i vector of TRUE/FALSE if should be replaced
+#' @param val New value tos replace with
+#'
+#' @noRd
+replace_val <- function(x, i, val) {
+  if (is.null(val)) {
+    return(x)
+  }
+
+  i[is.na(i)] <- FALSE
+
+  if (length(val) == 1L) {
+    x[i] <- val
+  } else {
+    x[i] <- val[i]
+  }
+
+  x
+}
+

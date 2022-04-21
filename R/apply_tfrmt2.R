@@ -210,6 +210,7 @@ expr_to_filter.quosures <- function(cols, val){
 }
 
 
+
 #' Apply the formatting to all values in the dataset
 #'
 #' @param .data data

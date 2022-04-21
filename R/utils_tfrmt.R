@@ -1,12 +1,10 @@
 #' Title
 #'
-#' @param .data
-#' @param tfrmt
+#' @param .data Data to apply the tfrmt to
+#' @param tfrmt tfrmt object to apply to the data
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @return formatted tibble
+#' @noRd
 apply_tfrmt <- function(.data, tfrmt_spec){
 
   apply_table_frmt_plan(
@@ -44,3 +42,4 @@ tentative_process <- function(.data, fx, param){
   }
   out
 }
+

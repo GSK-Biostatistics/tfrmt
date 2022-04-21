@@ -122,10 +122,19 @@ table_body_plan <- function(...){
 
 
 #' @rdname frmt
-#' @importFrom rlang list2
+#' @importFrom rlang list2 f_rhs f_rhs<-
+#' @importFrom purrr map
 frmt_when <- function(...){
+  frmts <- list2(...)
+
+  frmts_eval <-frmts %>%
+    map(function(x){
+      f_rhs(x) <- eval(f_rhs(x))
+      x
+    })
+
   structure(
-    list2(...),
-    class = c("fmt_when","frmt")
+    frmts_eval,
+    class = c("frmt_when","frmt")
   )
 }
