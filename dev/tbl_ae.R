@@ -1,4 +1,4 @@
-
+devtools::load_all()
 
 # Source data creation--------------------------------------------------
 
@@ -6,38 +6,39 @@ source("dev/data/tbl_ae_data.R")
 
 tbl_ae_data <- create_tbl_ae_data()
 
-fmt_spec <- tfmt(
+fmt_spec <- tfrmt(
   group = vars(AEBODSYS),
   label = quo(AETERM),
   param = quo(param),
   column = quo(column),
   value = quo(value),
   sorting_cols = vars(ord1, ord2),
-  col_select = vars(-starts_with("ord")),
-  body_style = element_style(
-    fmt_str(group_val = ".default", label_val = ".default",
-            fmt_combine("{n} {pct}",
-                        n = fmt(rounding = "XXX"),
-                        pct = fmt(rounding = "(xX.X %)",  bounds = element_bounds(upper_exp = "==100", upper_lab = "",
-                                                                                  lower_exp = "==0", lower_lab = ""))
-            )
+  body_style = table_body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{n} {pct}",
+                                n = frmt("XXX"),
+                                pct = frmt("(xX.X %)",
+                                           bounds = element_bounds(upper_exp = "==100", upper_lab = "",
+                                                                   lower_exp = "==0", lower_lab = ""))
+                   )
     ),
-    fmt_str(group_val = ".default", label_val = ".default", AEs = fmt("[XXX]")),
-    fmt_str(group_val = ".default", label_val = ".default", pval = fmt(rounding = "x.xxx",
-                                                                       bounds = element_bounds(upper_exp = ">0.99", upper_lab = ">0.99",
-                                                                                               lower_exp = "<0.001", lower_lab = "<0.001"),
-                                                                       missing = "--"))
-  ))
+    frmt_structure(group_val = ".default", label_val = ".default", AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", pval = frmt("x.xxx",
+                                                                               bounds = element_bounds(upper_exp = ">0.99", upper_lab = ">0.99",
+                                                                                                       lower_exp = "<0.001", lower_lab = "<0.001"),
+                                                                               missing = "--"))
+  ),
+  col_select = vars(-starts_with("ord")))
 
 #temp
 library(rlang)
 library(gt)
 
 # tfmt values
-apply_tfmt(tbl_ae_data,fmt_spec)
+apply_tfrmt(tbl_ae_data,fmt_spec)
 
 # make full table
-apply_tfmt(tbl_ae_data,fmt_spec) %>%
+apply_tfrmt(tbl_ae_data,fmt_spec) %>%
   gt() %>%
   # groupname_col = as_label(fmt_spec$group[[1]]),
   # rowname_col = as_label(fmt_spec$label)) %>%
