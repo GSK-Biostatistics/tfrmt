@@ -1,23 +1,23 @@
-test_that("basic tfmt - title", {
+test_that("basic tfrmt - title", {
 
-  t_fmt <- tfmt(
+  t_frmt <- tfrmt(
     title = "Table Title"
   )
 
-  expect_s3_class(t_fmt, "tfmt")
+  expect_s3_class(t_frmt, "tfrmt")
 
-  expect_equal(t_fmt$title, "Table Title")
-  expect_equal(t_fmt$group,vars())
-  expect_equal(t_fmt$label,quo())
-  expect_equal(t_fmt$param,quo())
-  expect_equal(t_fmt$values,quo())
-  expect_equal(t_fmt$column,quo())
+  expect_equal(t_frmt$title, "Table Title")
+  expect_equal(t_frmt$group,vars())
+  expect_equal(t_frmt$label,quo())
+  expect_equal(t_frmt$param,quo())
+  expect_equal(t_frmt$values,quo())
+  expect_equal(t_frmt$column,quo())
 
 })
 
-test_that("basic tfmt - selecting group/label/param/values/column - quo", {
+test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
 
-  t_fmt <- tfmt(
+  t_frmt <- tfrmt(
     title = "Table Title",
     group = vars(row_label1),
     label = quo(row_label2),
@@ -26,19 +26,19 @@ test_that("basic tfmt - selecting group/label/param/values/column - quo", {
     column = quo(column)
   )
 
-  expect_s3_class(t_fmt,"tfmt")
+  expect_s3_class(t_frmt,"tfrmt")
 
-  expect_equal( t_fmt$title, "Table Title")
-  expect_equal( t_fmt$group, vars(row_label1))
-  expect_equal( t_fmt$label, quo(row_label2))
-  expect_equal( t_fmt$param, quo(param))
-  expect_equal( t_fmt$values, quo(values))
-  expect_equal( t_fmt$column, quo(column))
+  expect_equal( t_frmt$title, "Table Title")
+  expect_equal( t_frmt$group, vars(row_label1))
+  expect_equal( t_frmt$label, quo(row_label2))
+  expect_equal( t_frmt$param, quo(param))
+  expect_equal( t_frmt$values, quo(values))
+  expect_equal( t_frmt$column, quo(column))
 })
 
-test_that("basic tfmt - selecting group/label/param/values/column - char", {
+test_that("basic tfrmt - selecting group/label/param/values/column - char", {
 
-  t_fmt <- tfmt(
+  t_frmt <- tfrmt(
     title = "Table Title",
     group = c("row_label1"),
     label = c("row_label2"),
@@ -47,19 +47,19 @@ test_that("basic tfmt - selecting group/label/param/values/column - char", {
     column = c("column")
   )
 
-  expect_s3_class(t_fmt,"tfmt")
+  expect_s3_class(t_frmt,"tfrmt")
 
-  expect_equal( t_fmt$title, "Table Title")
-  expect_equal( t_fmt$group, vars(row_label1), ignore_attr = TRUE )
-  expect_equal( t_fmt$label, quo(row_label2), ignore_attr = TRUE)
-  expect_equal( t_fmt$param, quo(param), ignore_attr = TRUE)
-  expect_equal( t_fmt$values, quo(values), ignore_attr = TRUE)
-  expect_equal( t_fmt$column, quo(column), ignore_attr = TRUE)
+  expect_equal( t_frmt$title, "Table Title")
+  expect_equal( t_frmt$group, vars(row_label1), ignore_attr = TRUE )
+  expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE)
+  expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE)
+  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE)
+  expect_equal( t_frmt$column, quo(column), ignore_attr = TRUE)
 })
 
-test_that("basic tfmt - selecting group/label/param/values/column - bare", {
+test_that("basic tfrmt - selecting group/label/param/values/column - bare", {
 
-  t_fmt <- tfmt(
+  t_frmt <- tfrmt(
     title = "Table Title",
     group = c(row_label1, row_label4),
     label = row_label2,
@@ -68,21 +68,19 @@ test_that("basic tfmt - selecting group/label/param/values/column - bare", {
     column = column
   )
 
-  expect_s3_class(t_fmt,"tfmt")
-
-  expect_equal( t_fmt$title, "Table Title")
-  expect_equal( t_fmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
-  expect_equal( t_fmt$label, quo(row_label2), ignore_attr = TRUE)
-  expect_equal( t_fmt$param, quo(param), ignore_attr = TRUE)
-  expect_equal( t_fmt$values, quo(values), ignore_attr = TRUE)
-  expect_equal( t_fmt$column, quo(column), ignore_attr = TRUE)
-
+  expect_s3_class(t_frmt,"tfrmt")
+  expect_equal( t_frmt$title, "Table Title")
+  expect_equal( t_frmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
+  expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE)
+  expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE)
+  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE)
+  expect_equal( t_frmt$column, quo(column), ignore_attr = TRUE)
 })
 
-test_that("basic tfmt - length one quo warning", {
+test_that("basic tfrmt - length one quo warning", {
 
   single_warning <- capture_warnings({
-    tfmt(
+    tfrmt(
       title = "Table Title",
       group = row_label1,
       label = vars(row_label2,row_label3),
@@ -102,7 +100,7 @@ test_that("basic tfmt - length one quo warning", {
   )
 
   multi_warning <- capture_warnings({
-    tfmt(
+    tfrmt(
       title = "Table Title",
       group = row_label1,
       label = vars(row_label2,row_label3),
@@ -124,10 +122,10 @@ test_that("basic tfmt - length one quo warning", {
 
 })
 
-test_that("basic tfmt - bare/char mix error", {
+test_that("basic tfrmt - bare/char mix error", {
 
   expect_error(
-    tfmt(
+    tfrmt(
       title = "Table Title",
       group = c(row_label1, "row_label4"),
       label = row_label2,
@@ -149,176 +147,226 @@ test_that("basic tfmt - bare/char mix error", {
 
 })
 
+test_that("layering tfrmt - default table elements - func/tfrmt",{
 
-
-test_that("layering tfmt - default table elements - func/tfmt",{
-
-  t_fmt_title <- tfmt(
+  t_frmt_title <- tfrmt(
     title = "Table Title"
   )
 
-  t_fmt_layered <- t_fmt_title %>%
-    layer_tfmt(
-      tfmt(
+  t_frmt_layered <- t_frmt_title %>%
+    layer_tfrmt(
+      tfrmt(
         subtitle = "Table Subtitle"
     ))
 
   expect_s3_class(
-    t_fmt_layered,
-    "tfmt"
+    t_frmt_layered,
+    "tfrmt"
   )
 
   expect_equal(
-    t_fmt_layered$title,
+    t_frmt_layered$title,
     "Table Title"
   )
 
   expect_equal(
-    t_fmt_layered$subtitle,
+    t_frmt_layered$subtitle,
     "Table Subtitle"
   )
 
-  expect_equal(t_fmt_layered$group,vars())
-  expect_equal(t_fmt_layered$label,quo())
-  expect_equal(t_fmt_layered$param,quo())
-  expect_equal(t_fmt_layered$values,quo())
-  expect_equal(t_fmt_layered$column,quo())
+  expect_equal(t_frmt_layered$group,vars())
+  expect_equal(t_frmt_layered$label,quo())
+  expect_equal(t_frmt_layered$param,quo())
+  expect_equal(t_frmt_layered$values,quo())
+  expect_equal(t_frmt_layered$column,quo())
 
 })
 
-test_that("layering tfmt - select latest table elements",{
+test_that("layering tfrmt - select latest table elements",{
 
-  t_fmt_title <- tfmt(
+  t_frmt_title <- tfrmt(
     title = "Table Title"
   )
 
-  t_fmt_layered <- t_fmt_title %>%
-    layer_tfmt(
-      tfmt(
+  t_frmt_layered <- t_frmt_title %>%
+    layer_tfrmt(
+      tfrmt(
         title = "Table Title 2",
         subtitle = "Table Subtitle"
     ))
 
 
-  expect_s3_class( t_fmt_layered,"tfmt"  )
-  expect_equal( t_fmt_layered$title, "Table Title 2")
-  expect_equal( t_fmt_layered$subtitle, "Table Subtitle")
+  expect_s3_class( t_frmt_layered,"tfrmt"  )
+  expect_equal( t_frmt_layered$title, "Table Title 2")
+  expect_equal( t_frmt_layered$subtitle, "Table Subtitle")
 
 })
 
-test_that("layering tfmt - body style elements",{
+test_that("layering tfrmt - body style elements",{
 
-  t_fmt_title <- tfmt(
+  t_frmt_title <- tfrmt(
     title = "Table Title",
-    body_style = element_style(
-      fmt_str(
-        group = c("group1"),
-        fmt(rounding = "XXX")
+    body_style = table_body_plan(
+      frmt_structure(
+        group_val = c("group1"),
+        label_val = ".default",
+        frmt("XXX")
         )
       )
     )
 
 
-  t_fmt_layered <- t_fmt_title %>%
-    layer_tfmt(
-      tfmt(
-        body_style = element_style(
-          fmt_str(
-            group = c("group2"),
-            fmt("xx.x")
+  t_frmt_layered <- t_frmt_title %>%
+    layer_tfrmt(
+      tfrmt(
+        body_style = table_body_plan(
+          frmt_structure(
+            group_val = c("group2"),
+            label_val = ".default",
+            frmt("xx.x")
           )
         )
       )
     )
 
-  expect_s3_class(t_fmt_layered, "tfmt")
+  expect_s3_class(t_frmt_layered, "tfrmt")
 
-  expect_equal( t_fmt_layered$title, "Table Title")
-  expect_equal(t_fmt_layered$body_style,
-               element_style(fmt_str(group = "group1",
-                                     fmt(rounding = "XXX")),
-                             fmt_str(group = "group2",
-                                     fmt("xx.x"))))
+  expect_equal( t_frmt_layered$title, "Table Title")
+  expect_equal(t_frmt_layered$body_style,
+               table_body_plan(frmt_structure(group_val = "group1",
+                                              label_val = ".default",
+                                              frmt("XXX")),
+                               frmt_structure(group_val = "group2",
+                                              label_val = ".default",
+                                              frmt("xx.x"))))
 
 })
 
-test_that("layering tfmt - body style elements - multiple",{
+test_that("layering tfrmt - body style elements - multiple",{
 
-  t_fmt_title <- tfmt(
+  t_frmt_title <- tfrmt(
     title = "Table Title",
-    body_style = element_style(
-      fmt_str(
-        group = "group1",
-        fmt(rounding = "XXX")
+    body_style = table_body_plan(
+      frmt_structure(
+        group_val = "group1",
+        label_val = ".default",
+        frmt("XXX")
       )
     )
   )
 
-  t_fmt_layered <- t_fmt_title %>%
-    layer_tfmt(
-      tfmt(subtitle = "Table Subtitle",
-           body_style = element_style(
-             fmt_str(group = "group2",fmt("xx.x")),
-             fmt_str(group = "group3",fmt("xx.xx"))
+  t_frmt_layered <- t_frmt_title %>%
+    layer_tfrmt(
+      tfrmt(subtitle = "Table Subtitle",
+           body_style = table_body_plan(
+             frmt_structure(group_val = "group2",label_val = ".default", frmt("xx.x")),
+             frmt_structure(group_val = "group3",label_val = ".default", frmt("xx.xx"))
              )
            )
     )
 
-  expect_s3_class(t_fmt_layered,"tfmt")
+  expect_s3_class(t_frmt_layered,"tfrmt")
 
 
-  expect_equal(t_fmt_layered$title, "Table Title")
-  expect_equal(t_fmt_layered$subtitle, "Table Subtitle")
+  expect_equal(t_frmt_layered$title, "Table Title")
+  expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
 
   expect_equal(
-    t_fmt_layered$body_style,
-    element_style(
-      fmt_str(group_val = "group1",fmt("XXX")),
-      fmt_str(group_val = "group2",fmt("xx.x")),
-      fmt_str(group_val = "group3",fmt("xx.xx"))
+    t_frmt_layered$body_style,
+    table_body_plan(
+      frmt_structure(group_val = "group1",label_val = ".default",frmt("XXX")),
+      frmt_structure(group_val = "group2",label_val = ".default",frmt("xx.x")),
+      frmt_structure(group_val = "group3",label_val = ".default",frmt("xx.xx"))
     )
   )
 
 })
 
-test_that("layering tfmt - body style elements - join_body_style FALSE",{
+test_that("layering tfrmt - body style elements - join_body_style FALSE",{
 
-  t_fmt_title <- tfmt(
+  t_frmt_title <- tfrmt(
     title = "Table Title",
-    body_style = element_style(
-      fmt_str(
+    body_style = table_body_plan(
+      frmt_structure(
         group_val = "group1",
-        fmt(rounding = "XXX")
+        label_val = ".default",
+        frmt("XXX")
       )
     )
   )
 
-  t_fmt_layered <- t_fmt_title %>%
-    layer_tfmt(
-      tfmt(subtitle = "Table Subtitle",
-           body_style = element_style(
-             fmt_str(group_val = "group2",fmt("xx.x")),
-             fmt_str(group_val = "group3",fmt("xx.xx"))
+  t_frmt_layered <- t_frmt_title %>%
+    layer_tfrmt(
+      tfrmt(subtitle = "Table Subtitle",
+           body_style = table_body_plan(
+             frmt_structure(group_val = "group2",label_val = ".default",frmt("xx.x")),
+             frmt_structure(group_val = "group3",label_val = ".default",frmt("xx.xx"))
            )
       ),
       join_body_styles = FALSE
     )
 
 
-  expect_s3_class(t_fmt_layered,"tfmt")
+  expect_s3_class(t_frmt_layered,"tfrmt")
 
 
-  expect_equal(t_fmt_layered$title, "Table Title")
-  expect_equal(t_fmt_layered$subtitle, "Table Subtitle")
+  expect_equal(t_frmt_layered$title, "Table Title")
+  expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
 
   expect_equal(
-    t_fmt_layered$body_style,
-    element_style(
-      fmt_str(group_val = "group2",fmt("xx.x")),
-      fmt_str(group_val = "group3",fmt("xx.xx"))
+    t_frmt_layered$body_style,
+    table_body_plan(
+      frmt_structure(group_val = "group2",label_val = ".default",frmt("xx.x")),
+      frmt_structure(group_val = "group3",label_val = ".default",frmt("xx.xx"))
     )
   )
 
 })
 
+test_that("layering tfrmt - keeping original var/quo",{
 
+  t_frmt_o <- tfrmt(
+    title = "Table Title",
+    group = c(Group1, Group2),
+    label = label1
+  )
+
+  t_frmt_layered <- t_frmt_o %>%
+    layer_tfrmt(
+      tfrmt(
+        title = "Table Title 2",
+        subtitle = "Table Subtitle"
+      ))
+
+  expect_s3_class( t_frmt_layered,"tfrmt"  )
+  expect_equal( t_frmt_layered$title, "Table Title 2")
+  expect_equal( t_frmt_layered$subtitle, "Table Subtitle")
+  expect_equal( t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
+  expect_equal( t_frmt_layered$label, quo(label1), ignore_attr = TRUE )
+
+})
+
+test_that("layering tfrmt - Mixing var/quo",{
+
+  t_frmt_o <- tfrmt(
+    title = "Table Title",
+    group = c(Group1, Group2),
+    label = label1
+  )
+
+  t_frmt_layered <- t_frmt_o %>%
+    layer_tfrmt(
+      tfrmt(
+        title = "Table Title 2",
+        subtitle = "Table Subtitle",
+        label = label3
+
+      ))
+
+  expect_s3_class( t_frmt_layered,"tfrmt"  )
+  expect_equal( t_frmt_layered$title, "Table Title 2")
+  expect_equal( t_frmt_layered$subtitle, "Table Subtitle")
+  expect_equal( t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
+  expect_equal( t_frmt_layered$label, quo(label3), ignore_attr = TRUE )
+
+})
