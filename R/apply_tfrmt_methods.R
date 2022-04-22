@@ -54,13 +54,20 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
       str_remove("\\..*$") %>%
       str_count("[X|x]")
 
+    # used When scientific notation supplied:
+    num <- str_extract(format(rounded_vals, scientific = TRUE), "[^e]+")
+    index <- str_extract(format(vals, scientific = TRUE), "[^e]+$") %>% as.numeric()
+    multiply <- str_extract(frmt_def$scientific, "(.*)(?!$)")
+    sci_vals <- paste0(num, multiply, index)
+
     fmt_options <- tibble(
       rounded = rounded_vals,
+      scientific = sci_vals,
       act_pre_dec = rounded_vals %>%
         str_remove("\\..*$") %>%
         str_count(".")) %>%
       mutate(
-        space_to_add = pmax(pre_dec - .data$act_pre_dec,0) ## keep from being negative
+        space_to_add = pmax(pre_dec - .data$act_pre_dec, 0) ## keep from being negative
       )
 
     if(!is.null(frmt_def$missing)){
@@ -69,7 +76,9 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
       miss_val <- NA_character_
     }
 
-    fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded)
+    # when scientific is null paste rounded value, if not then append scientific expression
+    fmt_vals <- case_when(is.null(frmt_def$scientific) ~ str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded),
+                          !is.null(frmt_def$scientific) ~ str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$scientific))
 
     expr_start <- frmt_def$expression %>%
       str_extract("^[^X|^x]*(?=[X|x])")
