@@ -11,7 +11,7 @@
 #' @importFrom dplyr tibble mutate group_by arrange slice bind_cols group_split pull select starts_with
 #' @importFrom purrr map map_dfr
 #' @importFrom tidyr unnest
-#' @importFrom rlang !!
+#' @importFrom rlang !! :=
 apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values, column, ...){
 
   ## identify which formatting needs to be applied where
@@ -128,6 +128,9 @@ expr_to_filter.quosure <- function(cols, val){
   out
 }
 
+
+
+#' @importFrom purrr map2_chr
 expr_to_filter.quosures <- function(cols, val){
   if(!is.list(val) & length(cols) == 1){
     cols <- cols[[1]]

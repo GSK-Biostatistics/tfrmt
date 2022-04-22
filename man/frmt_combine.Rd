@@ -23,7 +23,7 @@ layered to be more specific and general cell styling can be done first.
 frmt_combine(
  "{param1} {param2}",
  param1 = frmt("XXX \%"),
- param2 frmt("XX.XXX", padding = " ")
+ param2 = frmt("XX.XXX")
 )
 
 }

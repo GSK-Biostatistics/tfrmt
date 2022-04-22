@@ -6,7 +6,6 @@
 #'
 #' @param expression a string representing the intended format. See details: expression for more
 #' detailed description.
-#' @param padding when padding the string based on the expression, what value to pad with. "" indicates no padding.
 #' @param missing when a value is missing that is intended to be formatted, what value to place?
 #' @param ...  these dots are for future extensions and must be empty.
 #'
@@ -14,12 +13,12 @@
 #'
 #' frmt("XXX %")
 #'
-#' frmt("XX.XXX", padding = " ")
+#' frmt("XX.XXX")
 #'
 
-frmt <- function(expression, padding = "", missing = NULL,...){
+frmt <- function(expression, missing = NULL,...){
   structure(
-    list(expression = expression, missing = missing, padding = padding),
+    list(expression = expression, missing = missing),
     class = c("frmt")
   )
 }
@@ -39,7 +38,7 @@ frmt <- function(expression, padding = "", missing = NULL,...){
 #' frmt_combine(
 #'  "{param1} {param2}",
 #'  param1 = frmt("XXX %"),
-#'  param2 frmt("XX.XXX", padding = " ")
+#'  param2 = frmt("XX.XXX")
 #' )
 #'
 frmt_combine <- function(expression, ..., missing = NULL){

@@ -5,15 +5,13 @@
 \alias{frmt_when}
 \title{Table Formatting}
 \usage{
-frmt(expression, padding = "", missing = NULL, ...)
+frmt(expression, missing = NULL, ...)
 
 frmt_when(...)
 }
 \arguments{
 \item{expression}{a string representing the intended format. See details: expression for more
 detailed description.}
-
-\item{padding}{when padding the string based on the expression, what value to pad with. "" indicates no padding.}
 
 \item{missing}{when a value is missing that is intended to be formatted, what value to place?}
 
@@ -28,6 +26,6 @@ layered to be more specific and general cell styling can be done first.
 
 frmt("XXX \%")
 
-frmt("XX.XXX", padding = " ")
+frmt("XX.XXX")
 
 }

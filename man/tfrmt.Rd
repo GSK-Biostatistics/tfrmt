@@ -102,6 +102,3 @@ headers, span headers, and cell formats. In addition, tfrmt's can be layered,
 building from one table format to the next. For cases where only one value
 can be used, the newly defined tfrmt accepts the latest tfrmt
 }
-\details{
-
-}

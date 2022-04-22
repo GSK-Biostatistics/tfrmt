@@ -37,7 +37,6 @@
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'
-#' @details
 #'
 #' @rdname tfrmt
 #'

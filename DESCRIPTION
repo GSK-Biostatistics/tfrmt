@@ -23,7 +23,7 @@ Authors@R:
                     role = c("aut"),
                     email = c("karima.j.ahmad@gsk.com"))
              )
-Description: table formatting
+Description: Creates a language around defining table metadata. It also applies the metadata to ARD. 
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -38,5 +38,6 @@ Imports:
     purrr,
     rlang,
     stringr,
-    tidyr
+    tidyr,
+    gt
 Config/testthat/edition: 3

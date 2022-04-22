@@ -1,5 +1,6 @@
 #' Check if input is a frmt
 #'
+#' @param x Object to check
 #' @export
 #'
 #' @rdname frmt_utils
@@ -9,6 +10,7 @@ is_frmt <- function(x){
 
 #' Check if input is a frmt_combine
 #'
+#' @param x Object to check
 #' @export
 #'
 #' @rdname frmt_utils
@@ -18,6 +20,7 @@ is_frmt_combine <- function(x){
 
 #' Check if input is a frmt_structure
 #'
+#' @param x Object to check
 #' @export
 #'
 #' @rdname frmt_utils
