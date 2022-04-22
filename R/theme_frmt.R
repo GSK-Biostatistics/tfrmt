@@ -1,15 +1,47 @@
-# Do we need to add any formating for txt? like the ability to convert to sentence case?
-#' @rdname frmt
+#' Table Formatting
+#'
+#' frmt provide an abstracted way to approach to define formatting of table
+#' contents. By defining in this way, the formats can be
+#' layered to be more specific and general cell styling can be done first.
+#'
+#' @param expression a string representing the intended format. See details: expression for more
+#' detailed description.
+#' @param padding when padding the string based on the expression, what value to pad with. "" indicates no padding.
+#' @param missing when a value is missing that is intended to be formatted, what value to place?
+#' @param ...  these dots are for future extensions and must be empty.
+#'
+#' @examples
+#'
+#' frmt("XXX %")
+#'
+#' frmt("XX.XXX", padding = " ")
+#'
 
-frmt <- function(expression, padding = "", missing = NULL, ...){
+frmt <- function(expression, padding = "", missing = NULL,...){
   structure(
-    list(expression = expression, missing = missing, padding = padding, ...),
+    list(expression = expression, missing = missing, padding = padding),
     class = c("frmt")
   )
-
 }
 
-#' @rdname frmt
+#' Table Formatting - Combine
+#'
+#' frmt_combine provide an abstracted way to approach to define formatting of table
+#' contents. By defining in this way, the formats can be
+#' layered to be more specific and general cell styling can be done first.
+#'
+#' @param expression a string representing the intended combined format.
+#' @param ... named frmts, where the name is the name of the param to apply the frmt to
+#' @param missing when all values are missing that is intended to be formatted, what value to place
+
+#' @examples
+#'
+#' frmt_combine(
+#'  "{param1} {param2}",
+#'  param1 = frmt("XXX %"),
+#'  param2 frmt("XX.XXX", padding = " ")
+#' )
+#'
 frmt_combine <- function(expression, ..., missing = NULL){
 
   everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
@@ -33,7 +65,6 @@ frmt_combine <- function(expression, ..., missing = NULL){
 }
 
 #' @importFrom tidyr expand_grid
-#' @rdname frmt
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   param_frmt <- list(...)
   param_val <- names(param_frmt)
@@ -72,8 +103,6 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   )
 }
 
-
-#' @rdname frmt
 table_body_plan <- function(...){
 
   frmt_structure_list <- list(...)
@@ -87,5 +116,16 @@ table_body_plan <- function(...){
   structure(
     frmt_structure_list,
     class = c("table_body_plan", "frmt_table")
+  )
+}
+
+
+
+#' @rdname frmt
+#' @importFrom rlang list2
+frmt_when <- function(...){
+  structure(
+    list2(...),
+    class = c("fmt_when","frmt")
   )
 }
