@@ -44,7 +44,8 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
   if(str_detect(frmt_def$expression, "[x|X]")){
     #Apply Expression
     dig <- frmt_def$expression %>%
-      str_count("(?<=\\.)[X|x]")
+      str_extract("(?<=\\.)[X|x]+") %>%
+      str_count(pattern = "[X|x]")
 
     rounded_vals <- format(round(vals, dig)) %>%
       str_trim()
