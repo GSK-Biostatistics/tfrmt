@@ -33,10 +33,10 @@ element_align <- function(left = vars(), right = vars(), dec_pl = vars()){
 }
 
 
-element_grp <- function(grp_ord = vars(), collapse_into = vars(), remove_dups = NULL){
+element_stub <- function(collapse_ord = vars(), collapse_into = vars(), remove_dups = NULL){
   structure(
-    list(grp_ord = grp_ord, collapse_into = collapse_into, remove_dups = remove_dups),
-    class = c("element_grp", "element")
+    list(collapse_ord = collapse_ord, collapse_into = collapse_into, remove_dups = remove_dups),
+    class = c("element_stub", "element")
   )
 }
 
