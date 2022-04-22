@@ -1,5 +1,5 @@
 library(safetyData)
-library(gsktable, lib.loc = "~/lib_internal")
+library(gsktable)
 library(tidyr)
 
 
