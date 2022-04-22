@@ -229,35 +229,4 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
     )
 }
 
-#' @importFrom rlang parse_expr eval_bare
-all_missing <- function(cols, .data){
-  paste0("is.na(.data$",cols,")", collapse = " & ") %>%
-    parse_expr() %>%
-    eval_bare(env = environment())
-}
-
-
-#' Replace values
-#'
-#' based on dplyr replace_with function
-#' @param x Current vector
-#' @param i vector of TRUE/FALSE if should be replaced
-#' @param val New value tos replace with
-#'
-#' @noRd
-replace_val <- function(x, i, val) {
-  if (is.null(val)) {
-    return(x)
-  }
-
-  i[is.na(i)] <- FALSE
-
-  if (length(val) == 1L) {
-    x[i] <- val
-  } else {
-    x[i] <- val[i]
-  }
-
-  x
-}
 
