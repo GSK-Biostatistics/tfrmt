@@ -67,7 +67,7 @@ col_align_lr <- function(col, side){
 col_align_all <- function(.data, col_align){
 
   .data %>%
-    mutate(across(col_align$char %>% map(quo_name) %>% unlist, ~col_align_char(.x, char_val = col_align$char_val)),
+    mutate(across(col_align$char %>% map_chr(quo_name), ~col_align_char(.x, char_val = col_align$char_val)),
            across(col_align$left  %>% map(quo_name) %>% unlist, ~col_align_lr(.x, side = "left")),
            across(col_align$right %>% map(quo_name) %>% unlist, ~col_align_lr(.x, side = "right")))
 
