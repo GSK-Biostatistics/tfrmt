@@ -29,10 +29,10 @@ apply_frmt <- function(frmt_def, .data, values, ...){
 #'
 #' @return
 #' @noRd
-#' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract
-#' @importFrom dplyr case_when tibble pull
+#' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
+#' @importFrom dplyr case_when tibble pull mutate
+#' @importFrom rlang :=
 apply_frmt.frmt <- function( frmt_def, .data, values, ...){
-
   vals <- .data %>%
     pull(!!values)
 
@@ -40,44 +40,49 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
     return(.data)
   }
 
-  #Apply Expression
-  dig <- frmt_def$expression %>%
-    str_count("(?<=\\.)[X|x]")
+  if(str_detect(frmt_def$expression, "[x|X]")){
+    #Apply Expression
+    dig <- frmt_def$expression %>%
+      str_count("(?<=\\.)[X|x]")
 
-  rounded_vals <- format(round(vals, dig)) %>%
-    str_trim()
+    rounded_vals <- format(round(vals, dig)) %>%
+      str_trim()
 
-  pre_dec <- frmt_def$expression %>%
-    str_remove("\\..*$") %>%
-    str_count("[X|x]")
-
-  fmt_options <- tibble(
-    rounded = rounded_vals,
-    act_pre_dec = rounded_vals %>%
+    pre_dec <- frmt_def$expression %>%
       str_remove("\\..*$") %>%
-      str_count("."),
-    space_to_add = pmax(pre_dec - act_pre_dec,0) ## keep from being negative
-  )
+      str_count("[X|x]")
 
-  if(!is.null(frmt_def$missing)){
-    miss_val <- frmt_def$missing
-  } else {
-    miss_val <- NA_character_
-  }
+    fmt_options <- tibble(
+      rounded = rounded_vals,
+      act_pre_dec = rounded_vals %>%
+        str_remove("\\..*$") %>%
+        str_count(".")) %>%
+      mutate(
+        space_to_add = pmax(pre_dec - .data$act_pre_dec,0) ## keep from being negative
+      )
 
-  fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded)
+    if(!is.null(frmt_def$missing)){
+      miss_val <- frmt_def$missing
+    } else {
+      miss_val <- NA_character_
+    }
 
-  expr_start <- frmt_def$expression %>%
-    str_extract("^[^X|^x]*(?=[X|x])")
+    fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded)
 
-  expr_end <- frmt_def$expression %>%
-    str_extract("(?<=[X|x])[^X|^x]*$")
+    expr_start <- frmt_def$expression %>%
+      str_extract("^[^X|^x]*(?=[X|x])")
 
-  # Combining the additional formatting
-  fmt_val_output <- case_when(
-    fmt_options$rounded == "NA" ~ miss_val,
-    TRUE ~ str_c(frmt_def$padding, expr_start, fmt_vals, expr_end)
+    expr_end <- frmt_def$expression %>%
+      str_extract("(?<=[X|x])[^X|^x]*$")
+
+    # Combining the additional formatting
+    fmt_val_output <- case_when(
+      fmt_options$rounded == "NA" ~ miss_val,
+      TRUE ~ str_c(expr_start, fmt_vals, expr_end)
     )
+  } else {
+    fmt_val_output <- frmt_def$expression
+  }
 
   .data %>%
     mutate(
@@ -103,6 +108,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
 #' @importFrom dplyr case_when tibble filter pull left_join
 #' @importFrom tidyr pivot_wider
 #' @importFrom purrr map_dfr map_chr
+#' @importFrom rlang :=
 #' @noRd
 apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, label, group, ...){
 
@@ -129,7 +135,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
         label = label,
         group = group,
         ...
-        )
+      )
   })
 
   #Test if common information exists
@@ -140,7 +146,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
 
   if(length(miss_param_from_data) > 0 ){
     stop(paste0("Unable to create formatting combination because the following parameters are missing from the data:\n ",
-                paste0(miss_from_data, collapse = " \n")))
+                paste0(miss_param_from_data, collapse = " \n")))
   }
 
   .tmp_data_wide <- .tmp_data %>%
@@ -148,7 +154,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
     pivot_wider(
       values_from = !!values,
       names_from = !!param
-      ) %>%
+    ) %>%
     mutate(
       .is_all_missing =  all_missing(fmt_param_vals,.)
     )
@@ -163,11 +169,11 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
   .tmp_data_fmted <- .tmp_data_wide %>%
     mutate(
       !!values := case_when(
-        .is_all_missing ~ frmt_def$missing,
+        .data$.is_all_missing ~ frmt_def$missing,
         TRUE ~ str_glue(frmt_def$expression) %>% as.character()
-        )
-      ) %>%
-    select(-all_of(fmt_param_vals), -.is_all_missing)
+      )
+    ) %>%
+    select(-all_of(fmt_param_vals), -.data$.is_all_missing)
 
   ## keep only the first case of param, and add the joined values
   .data %>%
@@ -192,6 +198,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
 #' @importFrom dplyr pull if_else mutate
 #' @importFrom purrr map map_chr
+#' @importFrom rlang :=
 apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
   values_str <- as_label(values)
   n <- length(frmt_def)
@@ -206,7 +213,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
         out <- rep(x, val_len)
       }
       out
-      })
+    })
 
   left <- frmt_def %>%
     map_chr(f_lhs) %>%
