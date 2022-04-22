@@ -12,9 +12,9 @@ NULL
 #' @param values values symbol should only be one
 #' @param ... additional arguments for methods
 #'
-#' @noRd
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove
 #' @importFrom dplyr if_else case_when tibble
+#' @export
 apply_frmt <- function(frmt_def, .data, values, ...){
   UseMethod("apply_frmt", frmt_def)
 }
@@ -27,11 +27,12 @@ apply_frmt <- function(frmt_def, .data, values, ...){
 #' @param values value column as a quosure
 #' @param ... additional arguments
 #'
-#' @return
-#' @noRd
+#' @return formatted dataset
+#'
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
 #' @importFrom dplyr case_when tibble pull mutate
 #' @importFrom rlang :=
+#' @export
 apply_frmt.frmt <- function( frmt_def, .data, values, ...){
   vals <- .data %>%
     pull(!!values)
@@ -109,7 +110,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
 #' @importFrom tidyr pivot_wider
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom rlang :=
-#' @noRd
+#' @export
 apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, label, group, ...){
 
   fmt_param_vals <- frmt_def$expression %>%
@@ -194,7 +195,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
 #' @param ... additional arguments for methods
 #'
 #' @return rounded and formatted df
-#' @noRd
+#' @export
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
 #' @importFrom dplyr pull if_else mutate
 #' @importFrom purrr map map_chr

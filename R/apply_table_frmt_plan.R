@@ -31,10 +31,10 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     unnest(cols = c(TEMP_appl_row)) %>%
     group_by(TEMP_appl_row) %>%
     #TODO add warning if there are rows not covered
-    arrange(TEMP_appl_row, desc(TEMP_fmt_rank)) %>%
+    arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
     slice(1) %>%
     left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
-    group_by(TEMP_fmt_rank) %>%
+    group_by(.data$TEMP_fmt_rank) %>%
     group_split()
 
   ## apply formatting
@@ -57,7 +57,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 
         # Add message
         x %>%
-          pull(TEMP_row) %>%
+          pull(.data$TEMP_row) %>%
           paste0(collapse = ", ") %>%
           paste("The following rows of the given dataset have no format applied to them", .) %>%
           message()
@@ -106,7 +106,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
 
   .data %>%
     filter(!!filter_expr) %>%
-    pull(TEMP_row)
+    pull(.data$TEMP_row)
 }
 
 

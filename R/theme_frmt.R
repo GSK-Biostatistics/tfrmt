@@ -9,13 +9,13 @@
 #' @param missing when a value is missing that is intended to be formatted, what value to place?
 #' @param ...  these dots are for future extensions and must be empty.
 #'
+#' @export
 #' @examples
 #'
 #' frmt("XXX %")
 #'
 #' frmt("XX.XXX")
 #'
-
 frmt <- function(expression, missing = NULL,...){
   structure(
     list(expression = expression, missing = missing),
@@ -32,7 +32,8 @@ frmt <- function(expression, missing = NULL,...){
 #' @param expression a string representing the intended combined format.
 #' @param ... named frmts, where the name is the name of the param to apply the frmt to
 #' @param missing when all values are missing that is intended to be formatted, what value to place
-
+#' @export
+#'
 #' @examples
 #'
 #' frmt_combine(
@@ -63,7 +64,20 @@ frmt_combine <- function(expression, ..., missing = NULL){
   )
 }
 
+#' Format Structure Object
+#'
+#' Function needed to create a frmt_structure object, which is a building block
+#' of [table_body_plan()]
+#'
+#' @param group_val A string or a named list of strings which represent the
+#'   value of group should be when the given frmt is implemented
+#' @param label_val A string which represent the value of label should be when
+#'   the given frmt is implemented
+#' @param ... either a [frmt()], [frmt_combine()], or a [frmt_when()] object.
+#'   This can be named to also specify the parameter value
+#'
 #' @importFrom tidyr expand_grid
+#' @export
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   param_frmt <- list(...)
   param_val <- names(param_frmt)
@@ -102,6 +116,13 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   )
 }
 
+#' Table Body Plan
+#'
+#' @param ... list of frmt_structure
+#'
+#' @return table_body_plan object
+#' @export
+#'
 table_body_plan <- function(...){
 
   frmt_structure_list <- list(...)
@@ -121,6 +142,7 @@ table_body_plan <- function(...){
 
 
 #' @rdname frmt
+#' @export
 #' @importFrom rlang list2 f_rhs f_rhs<-
 #' @importFrom purrr map
 frmt_when <- function(...){

@@ -73,7 +73,7 @@ tfrmt(
 
 \item{row_grp_style}{style of the row groups blocking}
 
-\item{body_style}{combination and formatting of the input data \link{look at renaming?}}
+\item{body_style}{combination and formatting of the input data}
 
 \item{body_txt_style}{style of the cell text contents of the table}
 

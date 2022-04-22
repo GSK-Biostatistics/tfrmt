@@ -24,7 +24,7 @@
 #' @param row_grp_txt_style style of the grouping level row headers
 #' @param row_txt_style style of the row headers
 #' @param row_grp_style style of the row groups blocking
-#' @param body_style combination and formatting of the input data [look at renaming?]
+#' @param body_style combination and formatting of the input data
 #' @param body_txt_style style of the cell text contents of the table
 #' @param col_align how to align columns? left, right, decimal
 #' @param sorting_cols which columns determine sorting of output

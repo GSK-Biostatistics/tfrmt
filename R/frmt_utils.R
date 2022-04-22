@@ -69,7 +69,7 @@ format.frmt_structure <- function(x,...){
   if(is.list(groups)){
     group_string <- paste0(
       sapply(names(groups), function(x) {
-        paste0(" `",x,"` - ", paste0("\"", groups_val[[x]], "\"", collapse = ", "))
+        paste0(" `",x,"` - ", paste0("\"", group_val[[x]], "\"", collapse = ", "))
       }),
       collapse = ";"
     )
