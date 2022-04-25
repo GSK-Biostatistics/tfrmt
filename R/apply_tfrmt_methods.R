@@ -46,7 +46,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
     dig <- frmt_def$expression %>%
       str_count("(?<=\\.)[X|x]")
 
-    rounded_vals <- format(round(vals, dig)) %>%
+    rounded_vals <- format(round(vals, dig), decimal.mark = ".") %>%
       str_trim()
 
     pre_dec <- frmt_def$expression %>%
