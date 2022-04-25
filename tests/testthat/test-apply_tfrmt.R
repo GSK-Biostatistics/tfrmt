@@ -60,6 +60,84 @@ test_that("applying frmt_combine - 2x", {
 
 })
 
+test_that("applying frmt_combine missing",{
+  #Both missing
+  sample_df <- tibble(
+    group = "group",
+    lab = rep(paste("lab",1:5),2),
+    col = "col",
+    y = rep(c("A","B"),each = 5),
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, NA,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, NA)
+  )
+
+  sample_frmt <- frmt_combine(
+    "{A} {B}",
+    A = frmt("xxx.x"),
+    B = frmt("(X.X%)"),
+    missing = "Missing"
+  )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    values = quo(x),
+    param = quo(y),
+    column = quo(col),
+    label = quo(lab),
+    group = vars(group)
+  )
+
+  expect_equal(
+    sample_df_frmted,
+    tibble(
+      group = "group",
+      lab = paste("lab",1:5),
+      col = "col",
+      y = "A",
+      x = c("1234.6 (1.2%)", "2345.7 (2.3%)", "3456.8 (3.5%)", "4567.9 (4.6%)", "Missing")
+    )
+  )
+  #One Missing
+  sample_df <- tibble(
+    group = "group",
+    lab = rep(paste("lab",1:5),2),
+    col = "col",
+    y = rep(c("A","B"),each = 5),
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, NA,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101)
+  )
+
+  sample_frmt <- frmt_combine(
+    "{A} {B}",
+    A = frmt("xxx.x"),
+    B = frmt("(X.X%)"),
+    missing = "Missing"
+  )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    values = quo(x),
+    param = quo(y),
+    column = quo(col),
+    label = quo(lab),
+    group = vars(group)
+  )
+
+  expect_equal(
+    sample_df_frmted,
+    tibble(
+      group = "group",
+      lab = paste("lab",1:5),
+      col = "col",
+      y = "A",
+      x = c("1234.6 (1.2%)", "2345.7 (2.3%)", "3456.8 (3.5%)", "4567.9 (4.6%)", "NA (5.7%)")
+    )
+  )
+
+})
+
 test_that("applying frmt_combine - 3x", {
 
   sample_df <- tibble(
