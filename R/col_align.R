@@ -72,11 +72,12 @@ col_align_lr <- function(col, side = c("left", "right")){
 #' @param col_align element_align object
 #' @importFrom purrr map_chr
 #' @importFrom dplyr mutate across
+#' @importFrom rlang as_name
 col_align_all <- function(.data, col_align){
 
   .data %>%
-    mutate(across(col_align$char %>% map_chr(quo_name), ~col_align_char(.x, char_val = col_align$char_val)),
-           across(col_align$left  %>% map_chr(quo_name), ~col_align_lr(.x, side = "left")),
-           across(col_align$right %>% map_chr(quo_name), ~col_align_lr(.x, side = "right")))
+    mutate(across(col_align$char %>% map_chr(as_name), ~col_align_char(.x, char_val = col_align$char_val)),
+           across(col_align$left  %>% map_chr(as_name), ~col_align_lr(.x, side = "left")),
+           across(col_align$right %>% map_chr(as_name), ~col_align_lr(.x, side = "right")))
 
 }
