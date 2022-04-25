@@ -4,10 +4,12 @@
 \alias{col_align_lr}
 \title{Left or right align a column}
 \usage{
-col_align_lr(col, side)
+col_align_lr(col, side = c("left", "right"))
 }
 \arguments{
 \item{col}{Character vector containing data values}
+
+\item{side}{Side to align to, either left or right}
 }
 \description{
 Left or right align a column

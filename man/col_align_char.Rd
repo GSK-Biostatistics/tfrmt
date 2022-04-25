@@ -9,7 +9,7 @@ col_align_char(col, char_val)
 \arguments{
 \item{col}{Character vector containing data values}
 
-\item{char}{Character to align on. Will be used in regular expressions. If NULL, values will be aligned on first decimal place or space.}
+\item{char_val}{Character to align on. Will be used in regular expressions. If NULL, values will be aligned on first decimal place or space.}
 }
 \value{
 Character vector containing aligned data values
@@ -20,6 +20,6 @@ Align a column on character
 \examples{
 
 col <- c("xx.xx","  x", " xx (xx, xx)", "  x (xx.x, xx.x)", "xx, xx")
-col_align_char(col, char_val = c(".", " ", ","))
+tlang:::col_align_char(col, char_val = c(".", " ", ","))
 
 }
