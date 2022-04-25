@@ -31,6 +31,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
     covr,
+    tibble,
     testthat (>= 3.0.0)
 Imports: 
     magrittr,
