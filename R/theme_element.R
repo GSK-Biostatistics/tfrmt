@@ -26,6 +26,7 @@ element_style <- function(...){
 #' @param char_val Vector of one or more characters to align on. If NULL, data values in `char` variable(s) will be aligned on the first occurrence of a decimal place or space. If more than one
 #' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
 #'
+#' @importFrom purrr map
 #'
 #' @export
 element_align <- function(left = vars(), right = vars(), char = vars(), char_val = "."){

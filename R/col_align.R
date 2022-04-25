@@ -12,7 +12,7 @@
 #' tlang:::col_align_char(col, char_val = c(".", " ", ","))
 #'
 #' @importFrom tidyr separate replace_na
-#' @importFrom dplyr mutate across pull
+#' @importFrom dplyr mutate across pull tibble
 #' @importFrom stringr str_dup str_c
 #'
 col_align_char <- function(col, char_val){
@@ -41,7 +41,7 @@ col_align_char <- function(col, char_val){
 #' @param col Character vector containing data values
 #' @param side Side to align to, either left or right
 #' @importFrom stringr str_dup str_c
-#' @importFrom dplyr mutate pull
+#' @importFrom dplyr mutate pull tibble
 col_align_lr <- function(col, side = c("left", "right")){
 
   tbl_dat <- tibble(col = col) %>%
