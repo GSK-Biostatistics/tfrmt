@@ -71,3 +71,4 @@ element_bounds <- function(upper_exp = NULL, lower_exp = NULL, upper_lab = NULL,
     class = c("element_bounds", "element")
   )
 }
+

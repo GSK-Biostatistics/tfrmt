@@ -1,7 +1,7 @@
 #' Align a column on character
 #'
 #' @param col Character vector containing data values
-#' @param char_val Character to align on. Will be used in regular expressions. If NULL, values will be aligned on first decimal place or space.
+#' @param char_val Character to align on. If NULL, values will be aligned on first decimal place or space.
 #'
 #' @return Character vector containing aligned data values
 #'
