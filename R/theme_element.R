@@ -23,7 +23,9 @@ element_style <- function(...){
 #' @param left Variables to align to the left
 #' @param right Variables to align to the right
 #' @param char Variable to align on a provided character
-#' @param char_val Vector of characters to align on. If none supplied, values will be aligned on first decimal point and/or first space.
+#' @param char_val Vector of one or more characters to align on. If NULL, data values in `char` variable(s) will be aligned on the first occurrence of a decimal place or space. If more than one
+#' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#'
 #'
 #' @export
 element_align <- function(left = vars(), right = vars(), char = vars(), char_val = "."){

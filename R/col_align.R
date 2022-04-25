@@ -1,7 +1,8 @@
 #' Align a column on character
 #'
 #' @param col Character vector containing data values
-#' @param char_val Character to align on. If NULL, values will be aligned on first decimal place or space.
+#' @param char_val Vector of one or more characters to align on. If NULL, data values will be aligned on the first occurrence of a decimal place or space. If more than one
+#' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
 #'
 #' @return Character vector containing aligned data values
 #'
@@ -12,6 +13,7 @@
 #'
 #' @importFrom tidyr separate replace_na
 #' @importFrom dplyr mutate across pull
+#' @importFrom stringr str_dup str_c
 #'
 col_align_char <- function(col, char_val){
 
