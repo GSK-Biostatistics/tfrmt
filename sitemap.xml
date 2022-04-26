@@ -13,7 +13,25 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_tfrmt.html</loc>
+    <loc>/reference/apply_frmt.frmt.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_frmt.frmt_combine.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_frmt.frmt_when.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_frmt.html</loc>
+  </url>
+  <url>
+    <loc>/reference/col_align_all.html</loc>
+  </url>
+  <url>
+    <loc>/reference/col_align_char.html</loc>
+  </url>
+  <url>
+    <loc>/reference/col_align_lr.html</loc>
   </url>
   <url>
     <loc>/reference/element_align.html</loc>
@@ -23,6 +41,9 @@
   </url>
   <url>
     <loc>/reference/frmt_combine.html</loc>
+  </url>
+  <url>
+    <loc>/reference/frmt_structure.html</loc>
   </url>
   <url>
     <loc>/reference/frmt_utils.html</loc>
@@ -35,6 +56,12 @@
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/print_to_gt.html</loc>
+  </url>
+  <url>
+    <loc>/reference/table_body_plan.html</loc>
   </url>
   <url>
     <loc>/reference/tfrmt.html</loc>

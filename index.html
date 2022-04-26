@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="What the Package Does (One Line, Title Case)">
-<meta property="og:description" content="table formatting">
+<meta property="og:description" content="Creates a language around defining table metadata. It also applies the metadata to ARD. ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -60,7 +60,6 @@
 <div class="page-header"><h1 id="tlang">tlang<a class="anchor" aria-label="anchor" href="#tlang"></a>
 </h1></div>
 <!-- badges: start -->
-
 <p>tfmt( title = "“, group = vars(), label = vars(), param = vars(), values = vars(), column = vars(), title_txt_style = element_text(), subtitle =”“, subtitle_txt_style = element_text(), col_label_txt_style = element_text(), spanning_label_txt_style = element_text(), footer =”“, footer_txt_style = element_text(), txt_style = element_text(), row_grp_txt_style = element_text(), ?maybe pass a named list row_txt_style = element_text(), row_grp_style = list(”lab1" = element_block(), “lab2” = element_block(post_space = “—”)), #the style between blocking rounding = 1, body_style = element_style( fmt_str(group = “.default”, label = “.default”,<br>
 fmt_combine(“{count} ({percent})%”, count = fmt(), percent = fmt() ) ), fmt_str(group = “Age”, label = “Min., Max.”, fmt_combine(“{min}, {min}”, min = fmt(), max = fmt() ) ), fmt_str(group = c(“Age”, “Weight”), label = “n”, fmt()) ), body_align = element_align(left = vars(), right = vars(), dec_pl = vars()), #And now the things that do this!! sorting_cols = vars(sort_ord1, -TRTA, TRTB, TRTC), page_vars = vars(), row_grp = element_grp(cols, out_col?) #assume col_labels = element_label(…, wrap_txt = 30), spanning_label_grp = list(“span” = vars(), “sapn2” = vars()), col_select = “default” )</p>
 <p>body_style = element_style(rowwise = element_rowwise(ref_col, c(“.default” = fmt_str(), “n” = fmt_str(“{COLNAME1} ({COLNAME2}%)”, fmt(rounding = “XX”, bounds = element_bounds(upper_exp = “&gt;5”, lower_exp, upper_lab, lower_lab), padding = " “), fmt(…), cols = NULL, output = NULL),”mean" = fmt_str( "{(.*)_mean} ({(.*)_std}%)“, fmt(rounding =”XX“, padding =” “, bounds = element_bounds(upper_exp =”&gt;5“, lower_exp, upper_lab, lower_lab)), fmt(…), cols = vars(palcebo_mean:total_std),output =”(.*)“),”CV%" = fmt_str(“X.XX %”) ect.)), colwise = element_colwise(fmt_str(“{P_VAL}”, p_val_fmt())),</p>
@@ -104,7 +103,7 @@ fmt_combine(“{count} ({percent})%”, count = fmt(), percent = fmt() ) ), fmt_
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Christina Fillmore <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0595-2302" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>GlaxoSmithKline LLC <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li>GlaxoSmithKline Research &amp; Development Limited <br><small class="roles"> Copyright holder, funder </small>  </li>
 <li>Atorus Research LLC <br><small class="roles"> Copyright holder, funder </small>  </li>
 <li>Ellis Hughes <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0637-4436" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Becca Krouse <br><small class="roles"> Author </small>  </li>
@@ -126,12 +125,12 @@ fmt_combine(“{count} ({percent})%”, count = fmt(), percent = fmt() ) ), fmt_
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Christina Fillmore, GlaxoSmithKline LLC, Atorus Research LLC, Ellis Hughes, Becca Krouse, Karima Ahmad.</p>
+<p>Developed by Christina Fillmore, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC, Ellis Hughes, Becca Krouse, Karima Ahmad.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
