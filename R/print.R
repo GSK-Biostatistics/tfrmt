@@ -26,7 +26,7 @@ print_to_gt <- function(tfrmt_spec, .data){
 #' @param gt gt object  to potentially add a footnote to
 #' @param footer footnote text (should become a footnote element at somepoint )
 #'
-#' @return gt objest
+#' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_source_note md
