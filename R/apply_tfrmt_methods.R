@@ -208,7 +208,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
   right <- frmt_def %>%
     map(f_rhs) %>%
     map(function(x) {
-      if("frmt" %in% class(x)){
+      if(is_frmt(x)){
         out <- apply_frmt(x, .data, values, ...) %>% pull(!!values)
       } else {
         out <- rep(x, val_len)
