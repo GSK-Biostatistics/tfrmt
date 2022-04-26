@@ -6,7 +6,7 @@
 #' @return formatted tibble
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt){
-  validat_cols_match(.data, tfrmt)
+  validate_cols_match(.data, tfrmt)
 
   apply_table_frmt_plan(
     .data = .data,
