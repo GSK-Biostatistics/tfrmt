@@ -4,14 +4,16 @@
 \alias{element_align}
 \title{Element Align}
 \usage{
-element_align(left = vars(), right = vars(), dec_pl = vars())
+element_align(left = vars(), right = vars(), char = vars(), char_val = ".")
 }
 \arguments{
 \item{left}{Variables to align to the left}
 
 \item{right}{Variables to align to the right}
 
-\item{dec_pl}{Variable to align around decimal places}
+\item{char}{Variable to align on a provided character}
+
+\item{char_val}{Vector of characters to align on. If none supplied, values will be aligned on first decimal point and/or first space.}
 }
 \description{
 Element Align

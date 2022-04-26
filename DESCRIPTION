@@ -7,7 +7,7 @@ Authors@R:
              role = c("aut", "cre"),
              email = "christina.e.fillmore@gsk.com",
              comment = c(ORCID = "0000-0003-0595-2302")),
-             person("GlaxoSmithKline LLC", role = c("cph", "fnd")),
+             person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")),
              person("Atorus Research LLC", role = c("cph", "fnd")),
              person(given = "Ellis",
                     family = "Hughes",
@@ -23,7 +23,7 @@ Authors@R:
                     role = c("aut"),
                     email = c("karima.j.ahmad@gsk.com"))
              )
-Description: table formatting
+Description: Creates a language around defining table metadata. It also applies the metadata to ARD. 
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -31,6 +31,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
     covr,
+    tibble,
     testthat (>= 3.0.0)
 Imports: 
     magrittr,
@@ -38,5 +39,6 @@ Imports:
     purrr,
     rlang,
     stringr,
-    tidyr
+    tidyr,
+    gt
 Config/testthat/edition: 3

@@ -29,7 +29,10 @@ tfrmt_spec  <- tfrmt(
                    frmt_combine(
                      "{count} {percent}",
                      count = frmt("XXX"),
-                     percent = frmt("(XXX.X%)")
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XXX.X%)")
+                     )
                    )),
     frmt_structure(
       group_val = c("Age", "Weight"), #Values in the group column where you would want to apply this fmt

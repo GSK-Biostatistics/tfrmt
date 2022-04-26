@@ -1,5 +1,6 @@
 #' Check if input is a frmt
 #'
+#' @param x Object to check
 #' @export
 #'
 #' @rdname frmt_utils
@@ -9,6 +10,7 @@ is_frmt <- function(x){
 
 #' Check if input is a frmt_combine
 #'
+#' @param x Object to check
 #' @export
 #'
 #' @rdname frmt_utils
@@ -18,6 +20,7 @@ is_frmt_combine <- function(x){
 
 #' Check if input is a frmt_structure
 #'
+#' @param x Object to check
 #' @export
 #'
 #' @rdname frmt_utils
@@ -65,8 +68,8 @@ format.frmt_structure <- function(x,...){
 
   if(is.list(groups)){
     group_string <- paste0(
-      sapply(names(groups), function(x) {
-        paste0(" `",x,"` - ", paste0("\"", groups_val[[x]], "\"", collapse = ", "))
+      sapply(names(groups), function(y) {
+        paste0(" `",y,"` - ", paste0("\"", x$group_val[[y]], "\"", collapse = ", "))
       }),
       collapse = ";"
     )

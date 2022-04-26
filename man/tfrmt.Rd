@@ -73,7 +73,7 @@ tfrmt(
 
 \item{row_grp_style}{style of the row groups blocking}
 
-\item{body_style}{combination and formatting of the input data \link{look at renaming?}}
+\item{body_style}{combination and formatting of the input data}
 
 \item{body_txt_style}{style of the cell text contents of the table}
 
@@ -81,11 +81,9 @@ tfrmt(
 
 \item{sorting_cols}{which columns determine sorting of output}
 
+\item{page_vars}{which column determine paging of table (splitting)}
 
-\item{page_vars}{which colums determing paging of table (splitting)}
-
-\item{row_group}{which columns deterimine row groups}
-
+\item{row_group}{which columns determine row groups}
 
 \item{col_labels}{values to display for the columns in the dataset}
 
@@ -103,7 +101,4 @@ of your tables, and how the data will be handled once added: i.e. title, footers
 headers, span headers, and cell formats. In addition, tfrmt's can be layered,
 building from one table format to the next. For cases where only one value
 can be used, the newly defined tfrmt accepts the latest tfrmt
-}
-\details{
-
 }

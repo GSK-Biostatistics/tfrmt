@@ -8,7 +8,6 @@
 #' @param join_body_styles should the body styles be uniquely combined, or just keep styling in y
 #'
 #' @export
-#'
 #' @examples
 #'
 #' tfrmt_1 <- tfrmt(title = "title1")

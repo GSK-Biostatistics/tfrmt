@@ -12,6 +12,9 @@ is_frmt_combine(x)
 
 is_frmt_structure(x)
 }
+\arguments{
+\item{x}{Object to check}
+}
 \description{
 Check if input is a frmt
 

@@ -24,7 +24,7 @@
 #' @param row_grp_txt_style style of the grouping level row headers
 #' @param row_txt_style style of the row headers
 #' @param row_grp_style style of the row groups blocking
-#' @param body_style combination and formatting of the input data [look at renaming?]
+#' @param body_style combination and formatting of the input data
 #' @param body_txt_style style of the cell text contents of the table
 #' @param col_align how to align columns? left, right, decimal
 #' @param sorting_cols which columns determine sorting of output
@@ -37,7 +37,6 @@
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'
-#' @details
 #'
 #' @rdname tfrmt
 #'
@@ -125,7 +124,8 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   vals
 }
 
-#' @importFrom rlang abort vars
+#' @importFrom rlang abort
+#' @importFrom dplyr vars
 quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame()){
   arg_set <- lapply(args, function(arg){
     tryCatch({
