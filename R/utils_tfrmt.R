@@ -55,7 +55,7 @@ tentative_process <- function(.data, fx, param){
 #' @importFrom purrr map safely
 #' @importFrom rlang !! !!!
 #' @importFrom dplyr select
-validat_cols_match <- function(.data, tfrmt){
+validate_cols_match <- function(.data, tfrmt){
   #Required variables
   c("label", "param", "values", "column") %>%
     map(function(x){
