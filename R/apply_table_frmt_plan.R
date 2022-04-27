@@ -1,7 +1,7 @@
 #' Apply the formatting to all values in the dataset
 #'
 #' @param .data data
-#' @param element_style styling element needed
+#' @param table_frmt_plan styling element needed
 #' @param group symbolic list of grouping
 #' @param label symbolic label
 #' @param param symbolic parameter

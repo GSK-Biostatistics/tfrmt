@@ -22,21 +22,27 @@ element_style <- function(...){
 #'
 #' @param left Variables to align to the left
 #' @param right Variables to align to the right
-#' @param dec_pl Variable to align around decimal places
+#' @param char Variable to align on a provided character
+#' @param char_val Vector of characters to align on. If none supplied, values will be aligned on first decimal point and/or first space.
 #'
 #' @export
-element_align <- function(left = vars(), right = vars(), dec_pl = vars()){
+element_align <- function(left = vars(), right = vars(), char = vars(), char_val = "."){
+
+  args <- c("left", "right", "char")
+
   structure(
-    list(left = left, right = right, dec_pl = dec_pl),
+    c(
+      quo_get(args, as_var_args = args) %>% map(~as_vars(.x)),
+      char_val = list(char_val)),
     class = c("element_align", "element")
   )
 }
 
 
-element_grp <- function(grp_ord = vars(), collapse_into = vars(), remove_dups = NULL){
+element_stub <- function(collapse_ord = vars(), collapse_into = vars(), remove_dups = NULL){
   structure(
-    list(grp_ord = grp_ord, collapse_into = collapse_into, remove_dups = remove_dups),
-    class = c("element_grp", "element")
+    list(collapse_ord = collapse_ord, collapse_into = collapse_into, remove_dups = remove_dups),
+    class = c("element_stub", "element")
   )
 }
 
@@ -65,3 +71,4 @@ element_bounds <- function(upper_exp = NULL, lower_exp = NULL, upper_lab = NULL,
     class = c("element_bounds", "element")
   )
 }
+

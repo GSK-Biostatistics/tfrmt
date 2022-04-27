@@ -124,7 +124,8 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   vals
 }
 
-#' @importFrom rlang abort vars
+#' @importFrom rlang abort
+#' @importFrom dplyr vars
 quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame()){
   arg_set <- lapply(args, function(arg){
     tryCatch({

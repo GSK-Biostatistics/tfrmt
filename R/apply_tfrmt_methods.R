@@ -47,7 +47,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
       str_extract("(?<=\\.)[X|x]+") %>%
       str_count(pattern = "[X|x]")
 
-    rounded_vals <- format(round(vals, dig)) %>%
+    rounded_vals <- format(round(vals, dig), decimal.mark = ".") %>%
       str_trim()
 
     pre_dec <- frmt_def$expression %>%
@@ -218,7 +218,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
   right <- frmt_def %>%
     map(f_rhs) %>%
     map(function(x) {
-      if("frmt" %in% class(x)){
+      if(is_frmt(x)){
         out <- apply_frmt(x, .data, values, ...) %>% pull(!!values)
       } else {
         out <- rep(x, val_len)

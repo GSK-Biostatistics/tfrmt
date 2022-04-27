@@ -7,7 +7,7 @@
 #' @param tfrmt_spec tfrmt object that will dictate the structure of the table
 #' @param .data Data to style in order to make the table
 #'
-#' @return a stykized GT object
+#' @return a stylized gt object
 #' @export
 #' @importFrom gt gt tab_header
 print_to_gt <- function(tfrmt_spec, .data){
@@ -26,7 +26,7 @@ print_to_gt <- function(tfrmt_spec, .data){
 #' @param gt gt object  to potentially add a footnote to
 #' @param footer footnote text (should become a footnote element at somepoint )
 #'
-#' @return gt objest
+#' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_source_note md
