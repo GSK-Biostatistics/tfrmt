@@ -20,6 +20,31 @@ test_that("applying frmt", {
 
 })
 
+test_that("applying frmt - scientific", {
+
+  sample_df <- data.frame(
+    x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101)
+  )
+
+  sample_frmt <- frmt(expression = "xxx.x", scientific = " x10^x")
+
+  sample_df_frmted <- apply_frmt.frmt(
+    .data = sample_df,
+    values = sym("x"),
+    frmt_def = sample_frmt
+  )
+
+  expect_equal(
+    sample_df_frmted$x,
+    c("1234.6 x10^3",
+      "345.7  x10^2",
+      " 56.8   x10^1",
+      "4567.9 x10^3",
+      "  8.9    x10^0")
+  )
+
+})
+
 test_that("applying frmt_combine - 2x", {
 
   sample_df <- tibble(
@@ -254,3 +279,4 @@ test_that("appling frmt_when", {
 
 
 })
+
