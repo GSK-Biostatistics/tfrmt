@@ -20,6 +20,7 @@ apply_tfrmt <- function(.data, tfrmt){
     pivot_wider(names_from = !!tfrmt$column,
                 values_from = !!tfrmt$values) %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
+    apply_row_grp_plan(tfrmt$row_grp_style, tfrmt$group) %>%
     tentative_process(select, tfrmt$col_select)%>%
     col_align_all(tfrmt$col_align)
 }
