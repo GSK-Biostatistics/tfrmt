@@ -11,6 +11,7 @@
 #' @importFrom rlang !!!
 apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
 
+  # determine which rows each block applies to
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
@@ -18,6 +19,8 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
     map(grp_row_test_data, .data, group)
   TEMP_block_to_apply <- row_grp_plan %>% map(~.$block_to_apply[[1]])
 
+  # similar to frmts, only allow 1 element_block for a given row
+  #   - within block-specific data, split data further by grouping vars
   dat_plus_block <- tibble(
     TEMP_appl_row,
     TEMP_block_to_apply) %>%
@@ -35,6 +38,7 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
     )) %>%
     unnest(data)
 
+  # apply group block function to data subsets
   map2_dfr(dat_plus_block$data,
            dat_plus_block$TEMP_block_to_apply,
            function(x,y) {
