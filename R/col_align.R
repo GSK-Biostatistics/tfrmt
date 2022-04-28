@@ -1,7 +1,8 @@
 #' Align a column on character
 #'
 #' @param col Character vector containing data values
-#' @param char_val Character to align on. If NULL, values will be aligned on first decimal place or space.
+#' @param char_val Vector of one or more characters to align on. If NULL, data values will be aligned on the first occurrence of a decimal place or space. If more than one
+#' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
 #'
 #' @return Character vector containing aligned data values
 #'
@@ -11,7 +12,8 @@
 #' tlang:::col_align_char(col, char_val = c(".", " ", ","))
 #'
 #' @importFrom tidyr separate replace_na
-#' @importFrom dplyr mutate across pull
+#' @importFrom dplyr mutate across pull tibble
+#' @importFrom stringr str_dup str_c
 #'
 col_align_char <- function(col, char_val){
 
@@ -39,7 +41,7 @@ col_align_char <- function(col, char_val){
 #' @param col Character vector containing data values
 #' @param side Side to align to, either left or right
 #' @importFrom stringr str_dup str_c
-#' @importFrom dplyr mutate pull
+#' @importFrom dplyr mutate pull tibble
 col_align_lr <- function(col, side = c("left", "right")){
 
   tbl_dat <- tibble(col = col) %>%
@@ -70,11 +72,12 @@ col_align_lr <- function(col, side = c("left", "right")){
 #' @param col_align element_align object
 #' @importFrom purrr map_chr
 #' @importFrom dplyr mutate across
+#' @importFrom rlang as_name
 col_align_all <- function(.data, col_align){
 
   .data %>%
-    mutate(across(col_align$char %>% map_chr(quo_name), ~col_align_char(.x, char_val = col_align$char_val)),
-           across(col_align$left  %>% map_chr(quo_name), ~col_align_lr(.x, side = "left")),
-           across(col_align$right %>% map_chr(quo_name), ~col_align_lr(.x, side = "right")))
+    mutate(across(col_align$char %>% map_chr(as_name), ~col_align_char(.x, char_val = col_align$char_val)),
+           across(col_align$left  %>% map_chr(as_name), ~col_align_lr(.x, side = "left")),
+           across(col_align$right %>% map_chr(as_name), ~col_align_lr(.x, side = "right")))
 
 }

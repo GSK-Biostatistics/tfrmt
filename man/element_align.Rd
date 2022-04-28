@@ -13,7 +13,8 @@ element_align(left = vars(), right = vars(), char = vars(), char_val = ".")
 
 \item{char}{Variable to align on a provided character}
 
-\item{char_val}{Vector of characters to align on. If none supplied, values will be aligned on first decimal point and/or first space.}
+\item{char_val}{Vector of one or more characters to align on. If NULL, data values in \code{char} variable(s) will be aligned on the first occurrence of a decimal place or space. If more than one
+character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.}
 }
 \description{
 Element Align
