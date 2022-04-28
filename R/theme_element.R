@@ -1,6 +1,6 @@
 
-element_block <- function(background_fill,
-                          outline,
+element_block <- function(background_fill = NULL,
+                          outline = NULL,
                           post_space = c(NULL, " ", "", "------")){
   structure(
     list(background_fill = background_fill, outline = outline, post_space = post_space),

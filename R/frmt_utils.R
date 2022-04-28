@@ -28,6 +28,15 @@ is_frmt_structure <- function(x){
   inherits(x, "frmt_structure")
 }
 
+#' Check if input is a row_grp_structure
+#'
+#' @param x Object to check
+#' @export
+#'
+#' @rdname frmt_utils
+is_row_grp_structure <- function(x){
+  inherits(x, "row_grp_structure")
+}
 
 #' @export
 format.frmt <- function(x, ...){
