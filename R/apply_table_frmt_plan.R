@@ -130,7 +130,7 @@ expr_to_filter.quosure <- function(cols, val){
 
 
 
-#' @importFrom purrr map2_chr
+#' @importFrom purrr map2_chr map_chr
 expr_to_filter.quosures <- function(cols, val){
   if(!is.list(val) & length(cols) == 1){
     cols <- cols[[1]]
@@ -138,15 +138,13 @@ expr_to_filter.quosures <- function(cols, val){
   } else if(!is.list(val) && val == ".default"){
     out <- "TRUE"
   }else if(!is.list(val)){
-    stop("If multiple groups are provided group_val must be a named list")
+    stop("If multiple cols are provided, val must be a named list")
   }else{
-    stopifnot(all(names(val) %in% map_chr(cols, as_label)))
-    out <- map2_chr(names(val), val, function(col, x){
-      paste0(col, " %in% c('",
-             paste0(x, collapse = "', '"),
-             "')")
-    }) %>%
-      paste0(collapse = "&")
+    if(!all(names(val) %in% map_chr(cols, as_label))){
+      stop("Names of val entries do not all match col values")
+    }
+    out <- map2_chr(cols, val[map_chr(cols, as_label)], ~ expr_to_filter(.x, .y)) %>%
+      paste0(collapse = " & ")
   }
   out
 }
