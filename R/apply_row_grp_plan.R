@@ -6,9 +6,9 @@
 #'
 #' @noRd
 #' @importFrom dplyr tibble mutate group_by arrange slice group_map case_when left_join row_number select
-#' @importFrom purrr map map_dfr
-#' @importFrom tidyr unnest
-#' @importFrom rlang !!! :=
+#' @importFrom purrr map map2_dfr
+#' @importFrom tidyr unnest nest
+#' @importFrom rlang !!!
 apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
 
   .data <- .data %>%
@@ -31,7 +31,7 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
     nest() %>%
     mutate(data = case_when(
       is.na(TEMP_block_rank) ~ map(data, list),
-      TRUE ~ map(data, ~ .x %>%  group_by(!!!group) %>% group_map(as_tibble, .keep = TRUE))
+      TRUE ~ map(data, ~ .x %>%  group_by(!!!group) %>% group_map(~as_tibble(.x), .keep = TRUE))
     )) %>%
     unnest(data)
 
@@ -83,17 +83,17 @@ grp_row_test_data <- function(cur_block, .data, group){
 #' @importFrom dplyr slice n mutate across bind_rows
 #' @importFrom tidyr fill
 #' @importFrom purrr map_chr
-#' @importFrom tidyselect where
+#' @importFrom tidyselect vars_select_helpers
 #' @importFrom rlang !!!
 #'
 #' @export
 apply_grp_block <- function(.data, group, element_block){
 
-  # create add-on row
+    # create add-on row
   # utilize TEMP_row to retain the ordering
   grp_row_add <- .data %>%
     slice(n()) %>%
-    mutate(across(c(-map_chr(group, as_name), -where(is.numeric)),
+    mutate(across(c(-map_chr(group, as_name), -vars_select_helpers$where(is.numeric)),
                   ~ replace(.x, values = element_block$post_space)),
            TEMP_row = TEMP_row + 0.1)
 

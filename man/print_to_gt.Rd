@@ -12,7 +12,7 @@ print_to_gt(tfrmt_spec, .data)
 \item{.data}{Data to style in order to make the table}
 }
 \value{
-a stykized GT object
+a stylized gt object
 }
 \description{
 Print to gt

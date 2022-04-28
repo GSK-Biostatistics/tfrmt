@@ -1,9 +1,18 @@
 
+#' Element block
+#'
+#' @param background_fill Option to fill background for group block
+#' @param border Option to add a solid border to group block (rectangle or just bottom border)
+#' @param post_space Option to add a line after the group block
+#'
+#' @return element block object
+#'
+#' @export
 element_block <- function(background_fill = NULL,
-                          outline = NULL,
+                          border = c(NULL, "outline", "bottom"),
                           post_space = c(NULL, " ", "", "------")){
   structure(
-    list(background_fill = background_fill, outline = outline, post_space = post_space),
+    list(background_fill = background_fill, border = border, post_space = post_space),
     class = c("element_block", "element")
   )
 
