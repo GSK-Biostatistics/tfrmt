@@ -4,7 +4,7 @@
 \alias{apply_frmt.frmt}
 \title{Apply formatting}
 \usage{
-\method{apply_frmt}{frmt}(frmt_def, .data, values, ...)
+\method{apply_frmt}{frmt}(frmt_def, .data, values, mock = FALSE, ...)
 }
 \arguments{
 \item{frmt_def}{formatting to be applied}
@@ -12,6 +12,8 @@
 \item{.data}{data, but only the rows getting changed}
 
 \item{values}{value column as a quosure}
+
+\item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
 \item{...}{additional arguments}
 }

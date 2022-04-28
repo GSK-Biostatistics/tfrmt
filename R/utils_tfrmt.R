@@ -2,21 +2,23 @@
 #'
 #' @param .data Data to apply the tfrmt to
 #' @param tfrmt tfrmt object to apply to the data
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #'
 #' @return formatted tibble
 #' @noRd
-apply_tfrmt <- function(.data, tfrmt){
-  validate_cols_match(.data, tfrmt)
+apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
+  validate_cols_match(.data, tfrmt, mock)
 
-  apply_table_frmt_plan(
+  foo <- apply_table_frmt_plan(
     .data = .data,
     table_frmt_plan = tfrmt$body_style,
     group = tfrmt$group,
     label = tfrmt$label,
     param = tfrmt$param,
     values = tfrmt$values,
-    column = tfrmt$column
-    ) %>%
+    column = tfrmt$column,
+    mock = mock
+  ) %>%
     pivot_wider(names_from = !!tfrmt$column,
                 values_from = !!tfrmt$values) %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
@@ -37,9 +39,17 @@ apply_tfrmt <- function(.data, tfrmt){
 tentative_process <- function(.data, fx, param){
   if(is.null(param)){
     out <- .data
-  } else {
-    out <- .data %>%
-      fx(!!!param)
+  } else{
+    exsits_test <- param %>%
+      map_chr(as_label) %>%
+      all(. %in% names(.data))
+    if(exsits_test){
+      out <- .data %>%
+        fx(!!!param)
+    } else {
+      out <- .data
+      message("Unable to complete formatting because COLNAME isn't in the dataset")
+    }
   }
   out
 }
@@ -49,15 +59,21 @@ tentative_process <- function(.data, fx, param){
 #'
 #' @param .data Data to apply the tfrmt to
 #' @param tfrmt tfrmt object to apply to the data
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #'
 #' @return formatted tibble
 #' @noRd
 #' @importFrom purrr map safely
 #' @importFrom rlang !! !!!
 #' @importFrom dplyr select
-validate_cols_match <- function(.data, tfrmt){
+validate_cols_match <- function(.data, tfrmt, mock){
   #Required variables
-  c("label", "param", "values", "column") %>%
+  if(mock){
+    req_var <- c("label", "param", "column")
+  } else {
+    req_var <- c("label", "param", "values", "column")
+  }
+  req_var %>%
     map(function(x){
       var_test <- tfrmt[[x]]
       check <- safely(select)(.data, !!var_test)

@@ -4,7 +4,17 @@
 \alias{apply_frmt.frmt_combine}
 \title{Apply frmt_combine information to data}
 \usage{
-\method{apply_frmt}{frmt_combine}(frmt_def, .data, values, param, column, label, group, ...)
+\method{apply_frmt}{frmt_combine}(
+  frmt_def,
+  .data,
+  values,
+  param,
+  column,
+  label,
+  group,
+  mock = FALSE,
+  ...
+)
 }
 \arguments{
 \item{frmt_def}{frmt_combine object}
@@ -20,6 +30,8 @@
 \item{label}{label column as a quosure}
 
 \item{group}{group column as a quosure}
+
+\item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
 \item{...}{additional arguments for applying a basic frmt}
 }
