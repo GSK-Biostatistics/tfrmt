@@ -56,7 +56,8 @@
 <dt>char</dt>
 <dd><p>Variable to align on a provided character</p></dd>
 <dt>char_val</dt>
-<dd><p>Vector of characters to align on. If none supplied, values will be aligned on first decimal point and/or first space.</p></dd>
+<dd><p>Vector of one or more characters to align on. If NULL, data values in <code>char</code> variable(s) will be aligned on the first occurrence of a decimal place or space. If more than one
+character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.</p></dd>
 </dl></div>
 
   </div>
