@@ -30,13 +30,13 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
     arrange(TEMP_appl_row, desc(.data$TEMP_block_rank)) %>%
     slice(1) %>%
     left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
-    group_by(TEMP_block_rank, TEMP_block_to_apply ) %>%
+    group_by(.data$TEMP_block_rank, .data$TEMP_block_to_apply ) %>%
     nest() %>%
     mutate(data = case_when(
-      is.na(TEMP_block_rank) ~ map(data, list),
-      TRUE ~ map(data, ~ .x %>%  group_by(!!!group) %>% group_map(~as_tibble(.x), .keep = TRUE))
+      is.na(TEMP_block_rank) ~ map(.data$data, list),
+      TRUE ~ map(.data$data, ~ .x %>%  group_by(!!!group) %>% group_map(~as_tibble(.x), .keep = TRUE))
     )) %>%
-    unnest(data)
+    unnest(.data$data)
 
   # apply group block function to data subsets
   map2_dfr(dat_plus_block$data,
@@ -48,8 +48,8 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
                apply_grp_block(x, group = group, y)
              }
            }) %>%
-    arrange(TEMP_row) %>%
-    select(-TEMP_row)
+    arrange(.data$TEMP_row) %>%
+    select(-.data$TEMP_row)
 }
 
 
@@ -99,7 +99,7 @@ apply_grp_block <- function(.data, group, element_block){
     slice(n()) %>%
     mutate(across(c(-map_chr(group, as_name), -vars_select_helpers$where(is.numeric)),
                   ~ replace(.x, values = element_block$post_space)),
-           TEMP_row = TEMP_row + 0.1)
+           TEMP_row = .data$TEMP_row + 0.1)
 
   # combine with original data
   bind_rows(.data, grp_row_add) %>%
