@@ -20,11 +20,9 @@ apply_tfrmt <- function(.data, tfrmt){
     pivot_wider(names_from = !!tfrmt$column,
                 values_from = !!tfrmt$values) %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
-    apply_row_grp_plan(
-      row_grp_plan = tfrmt$row_grp_style,
-      group = tfrmt$group) %>%
+    tentative_fx(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group) %>%
     tentative_process(select, tfrmt$col_select)%>%
-    col_align_all(tfrmt$col_align)
+    tentative_fx(col_align_all, tfrmt$col_align)
 }
 
 
@@ -44,6 +42,30 @@ tentative_process <- function(.data, fx, param){
   } else {
     out <- .data %>%
       fx(!!!param)
+  }
+  out
+}
+
+#' Tentatively apply functions
+#'
+#' Will only apply the functions to the data if the arguments aren't NULL
+#'
+#' @param .data data to process
+#' @param fx function
+#' @param ... inputs supplied to function arguments
+#'
+#' @return processed data
+#' @importFrom purrr map_lgl
+#' @noRd
+tentative_fx <- function(.data, fx, ...){
+
+  args <- list(...)
+
+  if(all(map_lgl(args, is.null))){
+    out <- .data
+  } else {
+    out <- .data %>%
+      fx(...)
   }
   out
 }
