@@ -1,9 +1,3 @@
-library(tibble)
-library(tidyr)
-library(dplyr)
-
-
-
 test_that("Check apply_tfrmt", {
 
   set.seed(1234)

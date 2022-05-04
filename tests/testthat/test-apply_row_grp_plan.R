@@ -1,6 +1,3 @@
-library(dplyr)
-library(tidyr)
-
 test_that("insert post space - single grouping variable",{
 
   df <- tibble(

@@ -1,4 +1,3 @@
-library(tibble)
 test_that("applying frmt", {
 
   sample_df <- data.frame(
