@@ -5,11 +5,16 @@
 #' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #'
 #' @return formatted tibble
+#'
+#' @importFrom purrr quietly
+#' @importFrom tidyr pivot_wider unnest
+#' @importFrom dplyr arrange select
+#'
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   validate_cols_match(.data, tfrmt, mock)
 
-  foo <- apply_table_frmt_plan(
+  tbl_dat <- apply_table_frmt_plan(
     .data = .data,
     table_frmt_plan = tfrmt$body_style,
     group = tfrmt$group,
@@ -18,9 +23,22 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     values = tfrmt$values,
     column = tfrmt$column,
     mock = mock
-  ) %>%
-    pivot_wider(names_from = !!tfrmt$column,
-                values_from = !!tfrmt$values) %>%
+  )
+
+  tbl_dat_wide <- quietly(pivot_wider)(tbl_dat,
+                                 names_from = !!tfrmt$column,
+                                 values_from = !!tfrmt$values)
+
+  if (mock == TRUE &&
+      length(tbl_dat_wide$warnings)>0 &&
+      str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
+    message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
+    tbl_dat_wide <- tbl_dat_wide$result %>% unnest(cols = everything())
+  } else {
+    tbl_dat_wide <- tbl_dat_wide$result
+  }
+
+  tbl_dat_wide %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
     tentative_process(select, tfrmt$col_select)
 }
@@ -40,10 +58,11 @@ tentative_process <- function(.data, fx, param){
   if(is.null(param)){
     out <- .data
   } else{
-    exsits_test <- param %>%
-      map_chr(as_label) %>%
-      all(. %in% names(.data))
-    if(exsits_test){
+    exists_test <- .data %>%
+      safely(select)(!!!param) %>%
+      .[["error"]] %>%
+      is.null()
+    if(exists_test){
       out <- .data %>%
         fx(!!!param)
     } else {

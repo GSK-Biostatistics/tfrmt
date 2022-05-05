@@ -1,5 +1,12 @@
-
-
+#' Make mock data for display shells
+#'
+#' @param tfrmt tfrmt object
+#' @param .default Number of unique levels to create for group/label values set to ".default"
+#' @param n_cols Number of columns in the output table (not including group/label variables)
+#'
+#' @return tibble containing mock data
+#' @export
+#'
 #' @importFrom tidyr crossing
 #' @importFrom dplyr rowwise mutate pull rename ungroup
 #' @importFrom purrr reduce
@@ -28,6 +35,14 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
 
 
 
+#' Given the body_style, generate values to be used for mock data
+#'
+#' @param body_style
+#' @param column
+#' @param .default
+#'
+#' @return list of values
+#' @noRd
 process_for_mock <-function(body_style, column, .default = 1:3){
   body_style %>%
     map(function(x){
@@ -41,4 +56,6 @@ process_for_mock <-function(body_style, column, .default = 1:3){
       out
     })
 }
+
+
 
