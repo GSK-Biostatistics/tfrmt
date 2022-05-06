@@ -55,10 +55,12 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
       str_count("[X|x]")
 
     # used When scientific notation supplied:
-    num <- str_extract(format(rounded_vals, scientific = TRUE), "[^e]+")
-    index <- str_extract(format(vals, scientific = TRUE), "[^e]+$") %>% as.numeric()
+    num_sci <- format(vals, scientific = TRUE)
+    num_pre_e <- as.numeric(str_extract(as.character(num_sci), "[^e]+"))
+    round_num <- format(round(num_pre_e, dig), decimal.mark = ".") %>% str_trim()
+    index <- str_extract(format(num_sci, scientific = TRUE), "[^e]+$") %>% as.numeric()
     multiply <- str_extract(frmt_def$scientific, "(.*)(?!$)")
-    sci_vals <- paste0(num, multiply, index)
+    sci_vals <- paste0(round_num, multiply, index)
 
     fmt_options <- tibble(
       rounded = rounded_vals,

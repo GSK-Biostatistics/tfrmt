@@ -36,11 +36,11 @@ test_that("applying frmt - scientific", {
 
   expect_equal(
     sample_df_frmted$x,
-    c("1234.6 x10^3",
-      "345.7  x10^2",
-      " 56.8   x10^1",
-      "4567.9 x10^3",
-      "  8.9    x10^0")
+    c("  1.2 x10^3",
+      "  3.5 x10^2",
+      "  5.7 x10^1",
+      "  4.6 x10^3",
+      "  8.9 x10^0")
   )
 
 })
@@ -97,7 +97,7 @@ test_that("applying frmt_combine missing",{
   )
 
   sample_frmt <- frmt_combine(
-    "{A} {B}",
+    expression = "{A} {B}",
     A = frmt("xxx.x"),
     B = frmt("(X.X%)"),
     missing = "Missing"
