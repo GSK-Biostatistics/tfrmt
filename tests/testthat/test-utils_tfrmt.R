@@ -139,7 +139,7 @@ test_that("Check apply_tfrmt for mock data",{
     values = "val2",
     column = "col",
     body_style = table_body_plan(
-      frmt_structure(group_val = "A", label_val = c("z","y","x","w"),
+      frmt_structure(group_val = ".default", label_val = ".default",
                      frmt_combine(
                        "{count} {pct}",
                        count = frmt("XXX"),
@@ -151,19 +151,21 @@ test_that("Check apply_tfrmt for mock data",{
                      frmt("XXX")),
       frmt_structure(group_val = "B", label_val = c("i", "k"), frmt("xx.x")),
       frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
-    )
+    ),
+    # These are the variables to keep
+    col_select = vars(everything(), -starts_with("ord"))
   )
-  mock_dat <- make_mock_data(plan, .default = 1, n_cols = 4)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 4)
   mock_man_df <-  tribble(
-    ~group, ~label,   ~ col1,        ~col2,        ~ col3,        ~ col4,
-    "A",     "w",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "A",     "x",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "A",     "y",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "A",     "z",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "B",     "w",     "XXX"         , "XXX"          ,"XXX"          ,"XXX",
-    "B",     "i",     "xx.x"        , "xx.x"         ,"xx.x"         ,"xx.x",
-    "B",     "k",     "xx.x"        , "xx.x"         ,"xx.x"         ,"xx.x",
-    "B",     "j",     "xx.xx"       , "xx.xx"        ,"xx.xx"        ,"xx.xx"
+    ~group,  ~label,   ~ col1,         ~col2,        ~ col3,        ~ col4,
+    "group1", "label1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group1", "label2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group2", "label1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group2", "label2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "B"     , "w",     "XXX"          , "XXX"          ,"XXX"          ,"XXX",
+    "B"     , "i",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
+    "B"     , "k",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
+    "B"     , "j",     "xx.xx"        , "xx.xx"        ,"xx.xx"        ,"xx.xx"
   )
 
   expect_equal(
