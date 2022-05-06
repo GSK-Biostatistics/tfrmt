@@ -49,6 +49,23 @@ test_that("decimal align works", {
                c(" xx.xx   ", "  x, x   ", "xxx      ", "  x (x.x)"))
 })
 
+test_that("error if column doesn't exist", {
+
+  dat <- tibble(
+    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
+    two = c(" 12 (34%)"," 12.3", "  4.34", " 14", "(10, 20)"),
+    three = c(" 24 (58%)"," 15.4", "  8.25", " 16", "(11, 22)"),
+    four = c("","<0.001","","0.05","")
+  )
+
+  element <- element_align(left = "my_var",
+                           char = vars(two, three),
+                           right = vars(four),
+                           char_val = c(".", ",", " "))
+
+  expect_error(col_align_all(dat, element))
+ })
+
 test_that("alignment of multiple columns works", {
 
   dat <- tibble(

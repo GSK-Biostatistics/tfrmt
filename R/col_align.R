@@ -72,14 +72,24 @@ col_align_lr <- function(col, side = c("left", "right")){
 #' @param col_align element_align object
 #' @importFrom dplyr mutate across select
 #' @importFrom tidyselect all_of
+#' @importFrom purrr safely
 col_align_all <- function(.data, col_align){
 
-  left_vars  <- .data %>% select(!!!col_align$left) %>% names
-  right_vars <- .data %>% select(!!!col_align$right) %>% names
-  char_vars  <- .data %>% select(!!!col_align$char) %>% names
+  selections <- col_align[which(names(col_align)!="char_val")] %>%
+    map(function(x) safely(select)(.data, !!!x))
+
+  map(selections, function(x){
+    if(!is.null(x$error)){
+      stop(paste0("Variable Specified in element_align doesn't exist in the supplied dataset. Please check the tfrmt and try again."),
+           call. = FALSE)
+    }
+  })
+
+  selected_vars <- map(selections, function(x) names(x$result))
+
 
   .data %>%
-    mutate(across(all_of(char_vars), ~col_align_char(.x, char_val = col_align$char_val)),
-           across(all_of(left_vars), ~col_align_lr(.x, side = "left")),
-           across(all_of(right_vars), ~col_align_lr(.x, side = "right")))
+    mutate(across(all_of(selected_vars$char), ~col_align_char(.x, char_val = col_align$char_val)),
+           across(all_of(selected_vars$left), ~col_align_lr(.x, side = "left")),
+           across(all_of(selected_vars$right), ~col_align_lr(.x, side = "right")))
 }
