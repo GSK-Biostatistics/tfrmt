@@ -70,14 +70,16 @@ col_align_lr <- function(col, side = c("left", "right")){
 #'
 #' @param .data data
 #' @param col_align element_align object
-#' @importFrom purrr map_chr
-#' @importFrom dplyr mutate across
-#' @importFrom rlang as_name
+#' @importFrom dplyr mutate across select
+#' @importFrom tidyselect all_of
 col_align_all <- function(.data, col_align){
 
-  .data %>%
-    mutate(across(col_align$char %>% map_chr(as_name), ~col_align_char(.x, char_val = col_align$char_val)),
-           across(col_align$left  %>% map_chr(as_name), ~col_align_lr(.x, side = "left")),
-           across(col_align$right %>% map_chr(as_name), ~col_align_lr(.x, side = "right")))
+  left_vars  <- .data %>% select(!!!col_align$left) %>% names
+  right_vars <- .data %>% select(!!!col_align$right) %>% names
+  char_vars  <- .data %>% select(!!!col_align$char) %>% names
 
+  .data %>%
+    mutate(across(all_of(char_vars), ~col_align_char(.x, char_val = col_align$char_val)),
+           across(all_of(left_vars), ~col_align_lr(.x, side = "left")),
+           across(all_of(right_vars), ~col_align_lr(.x, side = "right")))
 }

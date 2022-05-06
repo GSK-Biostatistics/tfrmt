@@ -25,6 +25,7 @@ test_that("element_align - char", {
 
 })
 
+
 test_that("left & right align works", {
 
   vec <- c(" xx.xxx","xx", " x,  x")
@@ -76,5 +77,40 @@ test_that("alignment of multiple columns works", {
                       two =   c(" 12 (34%)", "     12.3", "     4.34", "       14", " (10, 20)"),
                       three = c(" 24 (58%)", "     15.4", "     8.25", "       16", " (11, 22)"),
                       four =  c("      ",    "<0.001",    "      ",    "  0.05",    "      ")))
+
+})
+
+
+test_that("tidyselect works", {
+
+  dat <- tibble(
+    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
+    trt1 = c(" 12 (34%)"," 12.3", "  4.34", " 14", "(10, 20)"),
+    trt2 = c(" 24 (58%)"," 15.4", "  8.25", " 16", "(11, 22)"),
+    four = c("","<0.001","","0.05","")
+  )
+
+  element <- element_align(left = vars(one),
+                           char = vars(starts_with("trt")),
+                           right = vars(four),
+                           char_val = c(".", ",", " "))
+
+  expect_equal(col_align_all(dat, element),
+               tribble(~one,      ~trt1,        ~trt2,      ~four,
+                       "n (%)   " , " 12 (34%)", " 24 (58%)", "      ",
+                       "mean    " , " 12.3    ", " 15.4    ", "<0.001",
+                       "sd      " , "  4.34   ", "  8.25   ", "      ",
+                       "median  " , " 14      ", " 16      ", "  0.05" ,
+                       "(q1, q3)" , "(10, 20) ", "(11, 22) ", "      "))
+
+  element <- element_align(right = vars(starts_with("trt")))
+
+  expect_equal(col_align_all(dat, element),
+               tribble(~one,      ~trt1,        ~trt2,      ~four,
+                      "n (%)"   , " 12 (34%)", " 24 (58%)", "",
+                      "mean"    , "     12.3", "     15.4" , "<0.001",
+                      "sd"      , "     4.34", "     8.25" , ""   ,
+                      "median"  , "       14", "       16" , "0.05"  ,
+                      "(q1, q3)", " (10, 20)", " (11, 22)" , ""   ))
 
 })
