@@ -50,27 +50,27 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
     rounded_vals <- format(round(vals, dig), decimal.mark = ".") %>%
       str_trim()
 
-    pre_dec <- frmt_def$expression %>%
-      str_remove("\\..*$") %>%
-      str_count("[X|x]")
-
-    # used When scientific notation supplied:
+        # used When scientific notation supplied:
     num_sci <- format(vals, scientific = TRUE)
     num_pre_e <- as.numeric(str_extract(as.character(num_sci), "[^e]+"))
-    round_num <- format(round(num_pre_e, dig), decimal.mark = ".") %>% str_trim()
+    num_rounded <- format(round(num_pre_e, dig), decimal.mark = ".") %>% str_trim()
     index <- str_extract(format(num_sci, scientific = TRUE), "[^e]+$") %>% as.numeric()
     multiply <- str_extract(frmt_def$scientific, "(.*)(?!$)")
-    sci_vals <- paste0(round_num, multiply, index)
+    sci_vals <- paste0(num_rounded, multiply, index)
 
     fmt_options <- tibble(
       rounded = rounded_vals,
       scientific = sci_vals,
-      act_pre_dec = rounded_vals %>%
+      act_pre_dec = num_rounded %>%
         str_remove("\\..*$") %>%
         str_count(".")) %>%
       mutate(
         space_to_add = pmax(pre_dec - .data$act_pre_dec, 0) ## keep from being negative
       )
+
+    pre_dec <- frmt_def$expression %>%
+      str_remove("\\..*$") %>%
+      str_count("[X|x]")
 
     if(!is.null(frmt_def$missing)){
       miss_val <- frmt_def$missing
