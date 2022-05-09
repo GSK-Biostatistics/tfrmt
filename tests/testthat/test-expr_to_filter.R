@@ -20,6 +20,7 @@ test_that("expr_to_filter - quosures", {
   var_list_named <- list(col1 = "value1", col2 = "value2")
   var_list_default <- list(col1 = ".default", col2 = "value2")
   var_list_misnamed <- list(col1 = ".default", col12 = "value2")
+  var_list_missing <- list(col2 = "value2")
   quos_val_1 <- vars(col1)
   quos_val_2 <- vars(col1,col2)
 
@@ -30,13 +31,23 @@ test_that("expr_to_filter - quosures", {
   expect_equal(filter_var, "col1 %in% c('value1')")
   expect_equal(filter_default, "TRUE")
 
-  ## length 2 vars & length one var is error unless is default
+  ## length 2 vars & length one var
+
+  ### Must be a list
   expect_error(
     expr_to_filter.quosures(cols = quos_val_2, val = var),
     "If multiple cols are provided, val must be a named list",
     fixed = TRUE
   )
 
+  ### must have all cols defined
+  expect_error(
+    expr_to_filter.quosures(cols = quos_val_2, val = var_list_missing),
+    "Every col must have a val defined. If all values of the col is to be used, set to \".default\"",
+    fixed = TRUE
+  )
+
+  ### .default is allowed
   expect_equal(
     expr_to_filter.quosures(cols = quos_val_2, val = default),
     "TRUE"
@@ -55,6 +66,8 @@ test_that("expr_to_filter - quosures", {
     "Names of val entries do not all match col values",
     fixed = TRUE
   )
+
+
 
 })
 
