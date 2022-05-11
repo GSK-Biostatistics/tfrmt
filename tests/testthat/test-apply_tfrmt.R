@@ -15,7 +15,7 @@ test_that("applying frmt", {
 
   expect_equal(
     sample_df_frmted$x,
-    c("1234.6", "345.7", " 56.8", "4567.9", "  8.9")
+    c("1234.6", " 345.7", "  56.8", "4567.9", "   8.9")
   )
 
 })
@@ -23,7 +23,7 @@ test_that("applying frmt", {
 test_that("applying frmt - scientific", {
 
   sample_df <- data.frame(
-    x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101)
+    x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101, 0.0678)
   )
 
   sample_frmt <- frmt(expression = "xxx.x", scientific = " x10^x")
@@ -40,7 +40,8 @@ test_that("applying frmt - scientific", {
       "  3.5 x10^2",
       "  5.7 x10^1",
       "  4.6 x10^3",
-      "  8.9 x10^0")
+      "  8.9 x10^0",
+      "  6.8 x10^-2")
   )
 
 })

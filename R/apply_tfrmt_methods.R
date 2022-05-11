@@ -42,35 +42,47 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
   }
 
   if(str_detect(frmt_def$expression, "[x|X]")){
-    #Apply Expression
+
+    # digits following period in expression
     dig <- frmt_def$expression %>%
       str_extract("(?<=\\.)[X|x]+") %>%
       str_count(pattern = "[X|x]")
 
+    # vals rounded and trimmed
     rounded_vals <- format(round(vals, dig), decimal.mark = ".") %>%
       str_trim()
 
-        # used When scientific notation supplied:
-    num_sci <- format(vals, scientific = TRUE)
-    num_pre_e <- as.numeric(str_extract(as.character(num_sci), "[^e]+"))
-    num_rounded <- format(round(num_pre_e, dig), decimal.mark = ".") %>% str_trim()
+    # digits preceding period in expression
+    pre_dec_expr <- frmt_def$expression %>%
+      str_remove("\\..*$") %>%
+      str_count("[X|x]")
+
+    # variables used When scientific argument supplied:
+    num_sci <- format(vals, scientific = TRUE) # vals converted to standard notation
+    num_pre_e <- as.numeric(str_extract(as.character(num_sci), "[^e]+")) # digits preceding 'e'
+    num_rounded <- format(round(num_pre_e, dig), decimal.mark = ".") %>% str_trim() # num_pre_e rounded
     index <- str_extract(format(num_sci, scientific = TRUE), "[^e]+$") %>% as.numeric()
-    multiply <- str_extract(frmt_def$scientific, "(.*)(?!$)")
+    multiply <- str_extract(frmt_def$scientific, "(.*)(?!$)") # character scientific argument
     sci_vals <- paste0(num_rounded, multiply, index)
 
     fmt_options <- tibble(
       rounded = rounded_vals,
       scientific = sci_vals,
-      act_pre_dec = num_rounded %>%
+      # digits preceding period in vals
+      pre_dec_vals_max = rounded_vals %>%
+        str_remove("\\..*$") %>%
+        str_count(".") %>% max(),
+      pre_dec_vals_sci = num_rounded %>%
+        str_remove("\\..*$") %>%
+        str_count("."),
+      pre_dec_vals_not_sci = rounded_vals %>%
         str_remove("\\..*$") %>%
         str_count(".")) %>%
       mutate(
-        space_to_add = pmax(pre_dec - .data$act_pre_dec, 0) ## keep from being negative
+        # keep from being negative
+        space_to_add_sci = pmax(pre_dec_expr - .data$pre_dec_vals_sci, 0),
+        space_to_add_not_sci = pmax(pre_dec_vals_max - .data$pre_dec_vals_not_sci, 0)
       )
-
-    pre_dec <- frmt_def$expression %>%
-      str_remove("\\..*$") %>%
-      str_count("[X|x]")
 
     if(!is.null(frmt_def$missing)){
       miss_val <- frmt_def$missing
@@ -79,8 +91,8 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
     }
 
     # when scientific is null paste rounded value, if not then append scientific expression
-    fmt_vals <- case_when(is.null(frmt_def$scientific) ~ str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded),
-                          !is.null(frmt_def$scientific) ~ str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$scientific))
+    fmt_vals <- case_when(is.null(frmt_def$scientific) ~ str_c(str_dup(" ", fmt_options$space_to_add_not_sci), fmt_options$rounded),
+                          !is.null(frmt_def$scientific) ~ str_c(str_dup(" ", fmt_options$space_to_add_sci), fmt_options$scientific))
 
     expr_start <- frmt_def$expression %>%
       str_extract("^[^X|^x]*(?=[X|x])")
@@ -93,6 +105,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
       fmt_options$rounded == "NA" ~ miss_val,
       TRUE ~ str_c(expr_start, fmt_vals, expr_end)
     )
+
   } else {
     fmt_val_output <- frmt_def$expression
   }
