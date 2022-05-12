@@ -40,7 +40,8 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   tbl_dat_wide %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
-    tentative_process(select, tfrmt$col_select)
+    tentative_process(select, tfrmt$col_select)%>%
+    col_align_all(tfrmt$col_align)
 }
 
 
