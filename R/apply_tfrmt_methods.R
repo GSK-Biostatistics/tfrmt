@@ -107,10 +107,10 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #' @param .data data, but only the rows getting changed
 #' @param param param column as a quosure
 #' @param values value column as a quosure
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param column column column as a quosure
 #' @param label label column as a quosure
 #' @param group group column as a quosure
-#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments for applying a basic frmt
 #'
 #' @return rounded and formatted df
@@ -120,7 +120,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom rlang :=
 #' @export
-apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, label, group, mock = FALSE, ...){
+apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param, column, label, group, ...){
 
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%

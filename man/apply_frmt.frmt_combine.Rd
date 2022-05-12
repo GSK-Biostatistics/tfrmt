@@ -8,11 +8,11 @@
   frmt_def,
   .data,
   values,
+  mock = FALSE,
   param,
   column,
   label,
   group,
-  mock = FALSE,
   ...
 )
 }
@@ -23,6 +23,8 @@
 
 \item{values}{value column as a quosure}
 
+\item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
+
 \item{param}{param column as a quosure}
 
 \item{column}{column column as a quosure}
@@ -30,8 +32,6 @@
 \item{label}{label column as a quosure}
 
 \item{group}{group column as a quosure}
-
-\item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
 \item{...}{additional arguments for applying a basic frmt}
 }
