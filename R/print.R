@@ -13,7 +13,7 @@
 #' @importFrom gt gt tab_header
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
   if(is.null(.data)){
-    .data <- make_mock_data(tfrmt_spec, .default, n_cols)
+    .data <- make_mock_data(tfrmt, .default, n_cols)
   }
 
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%

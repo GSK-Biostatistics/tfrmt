@@ -92,6 +92,9 @@ validate_cols_match <- function(.data, tfrmt, mock){
   } else {
     req_var <- c("label", "param", "values", "column")
   }
+
+  .data <- .data %>% ungroup
+
   req_var %>%
     map(function(x){
       var_test <- tfrmt[[x]]
