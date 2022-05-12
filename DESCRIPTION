@@ -40,5 +40,6 @@ Imports:
     rlang,
     stringr,
     tidyr,
-    gt
+    gt,
+    tidyselect
 Config/testthat/edition: 3
