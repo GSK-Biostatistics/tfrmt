@@ -158,18 +158,81 @@ test_that("Check apply_tfrmt for mock data",{
   mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 4)
   mock_man_df <-  tribble(
     ~group,  ~label,   ~ col1,         ~col2,        ~ col3,        ~ col4,
-    "group1", "label1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "group1", "label2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "group2", "label1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "group2", "label2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "B"     , "w",     "XXX"          , "XXX"          ,"XXX"          ,"XXX",
-    "B"     , "i",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
-    "B"     , "k",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
-    "B"     , "j",     "xx.xx"        , "xx.xx"        ,"xx.xx"        ,"xx.xx"
+    "group_1", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_1", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_2", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_2", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "B"      , "w",     "XXX"          , "XXX"          ,"XXX"          ,"XXX",
+    "B"      , "i",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
+    "B"      , "k",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
+    "B"      , "j",     "xx.xx"        , "xx.xx"        ,"xx.xx"        ,"xx.xx"
   )
 
   expect_equal(
     apply_tfrmt(mock_dat, plan, mock = TRUE),
     mock_man_df)
+
+
+  # plan with multiple group variables
+  plan  <- tfrmt(
+    group = vars(grp1, grp2, grp3, grp4),
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    body_style = table_body_plan(
+      frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
+    )
+  )
+  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>% apply_tfrmt(plan, mock =TRUE)
+
+  expect_equal(
+    mock_dat,
+    tribble(
+      ~grp1,   ~grp2,   ~grp3,      ~grp4,   ~my_label,   ~col1,
+      "A"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "A"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "B"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "B"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"C"      ,"a"      ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"C"      ,"b"      ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"D"      ,"a"      ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"D"      ,"b"      ,"my_label_1" ,"xx.x"
+    )
+  )
+
+  # duplicate params for a single group/label combo
+  plan  <- tfrmt(
+    group = "grp1",
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    body_style = table_body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xxx")),
+      frmt_structure(group_val = ".default", label_val = ".default", mean = frmt("xx.x"))
+    )
+  )
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE),
+                "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
+
+  expect_equal(mock_dat %>% quietly(apply_tfrmt)(plan, mock =TRUE) %>% .[["result"]],
+               tribble(
+                 ~grp1,   ~my_label,   ~col1,  ~col2,
+                  "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
+                  "grp1_1", "my_label_1", "xx.x",  "xx.x" ,
+                  "grp1_1", "my_label_2", "xxx" ,  "xxx"  ,
+                  "grp1_1", "my_label_2", "xx.x",  "xx.x" ,
+                  "grp1_2", "my_label_1", "xxx" ,  "xxx"  ,
+                  "grp1_2", "my_label_1", "xx.x",  "xx.x" ,
+                  "grp1_2", "my_label_2", "xxx" ,  "xxx"  ,
+                  "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
+               ))
+
 })
 
