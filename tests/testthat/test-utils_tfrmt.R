@@ -39,7 +39,7 @@ plan  <- tfrmt(
   column = "col",
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
-  col_align = element_align(left = "groups",
+  col_align = element_align(left = "group",
                             right = vars(label),
                             char = vars(starts_with("Var")),
                             char_val = c(" ", ",", ".")),
@@ -65,16 +65,17 @@ plan  <- tfrmt(
 
 test_that("Check apply_tfrmt", {
 
+
   man_df <-  tribble(
     ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
-   "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
-   "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
-   "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
-   "A",     "w",     "135         ", "141         ", "143         ", "137         ",
-   "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
-   "B",     "j",     " 10.8       ", " 11.1       ", "  8.8       ", "  5.7       ",
-   "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
-   "B",     "w",     "147         ", "149         ", "143         ", "159         "
+    "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
+    "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
+    "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
+    "A",     "w",     "135         ", "141         ", "143         ", "137         ",
+    "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
+    "B",     "j",     " 10.8       ", " 11.1       ", "  8.8       ", "  5.7       ",
+    "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
+    "B",     "w",     "147         ", "149         ", "143         ", "159         "
   )
 
   expect_equal(apply_tfrmt(raw_dat, plan),
@@ -119,10 +120,10 @@ test_that("Check apply_tfrmt for mock data",{
     "A",     "y",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "A",     "x",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "A",     "w",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "B",     "i",     "xx.x"        , "xx.x"         ,"xx.x"         ,"xx.x",
-    "B",     "j",     "xx.xx"       , "xx.xx"        ,"xx.xx"        ,"xx.xx",
-    "B",     "k",     "xx.x"        , "xx.x"         ,"xx.x"         ,"xx.x",
-    "B",     "w",     "XXX"         , "XXX"          ,"XXX"          ,"XXX",
+    "B",     "i",     " xx.x       ", " xx.x       " ," xx.x       " ," xx.x       ",
+    "B",     "j",     " xx.xx      ", " xx.xx      " ," xx.xx      " ," xx.xx      ",
+    "B",     "k",     " xx.x       ", " xx.x       " ," xx.x       " ," xx.x       ",
+    "B",     "w",     "XXX         ", "XXX         " ,"XXX         " ,"XXX         ",
   )
 
   expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE),
@@ -180,10 +181,10 @@ test_that("Check apply_tfrmt for mock data",{
     values = "val2",
     column = "col",
     body_style = table_body_plan(
-      frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
-      frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
-      frmt_structure(group_val = list(grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
-      frmt_structure(group_val = list(grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
+      frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
     )
   )
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>% apply_tfrmt(plan, mock =TRUE)
