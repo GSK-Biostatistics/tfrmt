@@ -41,6 +41,9 @@ test_that("Check apply_tfrmt", {
                               right = vars(label),
                               char = vars(`Var 1`, `Var 2`, `Var 3`, `Var 4`),
                               char_val = c(" ", ",", ".")),
+    row_grp_style = row_grp_plan(
+      row_grp_structure(group_val = list(group = "A"), element_block(post_space = " "))
+    ),
     body_style = table_body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
       frmt_structure(group_val = ".default", label_val = ".default",
@@ -66,6 +69,7 @@ test_that("Check apply_tfrmt", {
    "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
    "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
    "A",     "w",     "135         ", "141         ", "143         ", "137         ",
+   "A",     " ",     "            ", "            ", "            ", "            ",
    "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
    "B",     "j",     " 10.8       ", " 11.1       ", "  8.8       ", "  5.7       ",
    "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
@@ -81,6 +85,7 @@ test_that("Check apply_tfrmt", {
     mutate(foo = case_when(label == "w" ~ 1,
                            label == "i" ~ 2,
                            label == "k" ~ 3,
+                           label ==" " ~ 5,
                            TRUE ~ 4)) %>%
     arrange(group, foo, label) %>%
     select(-foo)

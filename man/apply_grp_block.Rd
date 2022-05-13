@@ -4,7 +4,7 @@
 \alias{apply_grp_block}
 \title{Apply row group element blocks}
 \usage{
-apply_grp_block(.data, group, element_block)
+apply_grp_block(.data, group, element_block, widths)
 }
 \arguments{
 \item{.data}{data, but only what is getting changed}
@@ -12,6 +12,8 @@ apply_grp_block(.data, group, element_block)
 \item{group}{list of the group parameters}
 
 \item{element_block}{element_block to be applied}
+
+\item{widths}{tibble of widths for each column}
 }
 \value{
 dataset with element block applied

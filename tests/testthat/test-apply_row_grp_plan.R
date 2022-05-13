@@ -16,13 +16,13 @@ test_that("insert post space - single grouping variable",{
     tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
        "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "A",  " "       , " "       , " ",
+       "A",  "        ", "        ", "        ",
        "B",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "B",  " "       , " "       , " "     ,
+       "B",  "        ", "        ", "        ",
        "C",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "C",  " "       , " "       , " "     ,
+       "C",  "        ", "        ", "        ",
        "D",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "D",  " "       , " "       , " "
+       "D",  "        ", "        ", "        "
     ))
 
 })
@@ -47,13 +47,13 @@ test_that("insert post space - two grouping variables",{
       ~grp1,    ~grp2,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "b",     " "       , " "       , " "       ,
+      "A",     "b",     "        ", "        ", "        ",
       "B",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "B",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "b",     " "       , " "       , " "       ,
+      "B",     "b",     "        ", "        ", "        ",
       "C",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "b",     " "       , " "       , " "
+      "C",     "b",     "        ", "        ", "        "
   ))
 
 })
@@ -78,11 +78,11 @@ test_that("insert mix - single grouping variable",{
     tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
-      "A",  "---",      "---"      , "---",
-      "B",  "xx (xx%)", "xx (xx%)" , "xx (xx%)",
-      "B",  " " ,       " "     ,    " "     ,
-      "C",  "xx (xx%)", "xx (xx%)" , "xx (xx%)",
-      "C",  "---",      "---"     ,  "---"     ,
+      "A",  "--------", "--------",  "--------",
+      "B",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "B",  "        ", "        ",  "        ",
+      "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "C",  "--------", "--------",  "--------",
       "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)"
     ))
 })
@@ -109,7 +109,7 @@ test_that("insert post space after specific value",{
       ~grp1,    ~grp2,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "b",     " "       , " "       , " "       ,
+      "A",     "b",     "        ", "        ", "        ",
       "B",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "B",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -141,17 +141,71 @@ test_that("overlapping row_grp_structures - prefers latest",{
     tribble(
       ~grp1,    ~grp2,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "a",     " "       , " "       , " "       ,
+      "A",     "a",     "        ", "        ", "        ",
       "A",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "b",     "***"     , "***"     , "***"     ,
+      "A",     "b",     "********", "********", "********",
       "B",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "a",     " "       , " "       , " "       ,
+      "B",     "a",     "        ", "        ", "        ",
       "B",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "b",     " "       , " "       , " "       ,
+      "B",     "b",     "        ", "        ", "        ",
       "C",     "a",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "a",     " "       , " "       , " "       ,
+      "C",     "a",     "        ", "        ", "        ",
       "C",     "b",     "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "b",     " "       , " "       , " "
+      "C",     "b",     "        ", "        ", "        "
     ))
 
+})
+
+
+test_that("no post space added if NULL",{
+
+  df <- tibble(
+    grp1 = c("A","B","C","D"),
+    trtA = rep("xx (xx%)", 4),
+    trtB = rep("xx (xx%)", 4),
+    trtC = rep("xx (xx%)", 4),
+  )
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = NULL))
+  )
+
+  expect_equal(
+    apply_row_grp_plan(df, sample_grp_plan, vars(grp1)),
+    tribble(
+      ~grp1, ~trtA,      ~trtB,      ~trtC,
+      "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "B",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "C",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "D",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    ))
+})
+
+
+
+test_that("post space is truncated to data width",{
+
+  df <- tibble(
+    grp1 = c("A","B","C","D"),
+    trtA = rep("xx (xx%)", 4),
+    trtB = rep("xx (xx%)", 4),
+    trtC = rep("xx (xx%)", 4),
+  )
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space ="----------------------"))
+  )
+
+  expect_equal(
+    apply_row_grp_plan(df, sample_grp_plan, vars(grp1)),
+    tribble(
+      ~grp1, ~trtA,      ~trtB,      ~trtC,
+      "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "A",  "--------", "--------",  "--------",
+      "B",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "B",  "--------", "--------",  "--------",
+      "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "C",  "--------", "--------",  "--------",
+      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "D",  "--------", "--------",  "--------"))
 })
