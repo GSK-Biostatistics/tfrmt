@@ -4,15 +4,15 @@
 \alias{print_to_gt}
 \title{Print to gt}
 \usage{
-print_to_gt(tfrmt_spec, .data)
+print_to_gt(tfrmt, .data)
 }
 \arguments{
-\item{tfrmt_spec}{tfrmt object that will dictate the structure of the table}
+\item{tfrmt}{tfrmt object that will dictate the structure of the table}
 
 \item{.data}{Data to style in order to make the table}
 }
 \value{
-a stykized GT object
+a stylized gt object
 }
 \description{
 Print to gt

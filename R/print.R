@@ -1,23 +1,47 @@
-# print_mock_gt <- function(tfmt) {
-#
-# }
+#' Print mock table to GT
+#'
+#' @param tfrmt tfrmt the mock table will be based off of
+#' @param .data Optional data. If this is missing, group values, labels values
+#'   and parameter values will be estimated based on the tfrmt
+#' @param .default sequence to replace the default values if a dataset isn't
+#'   provided
+#' @param n_cols the number of columns this will only be used if mock data isn't
+#'   provided
+#'
+#' @return a stylized gt object
+#' @export
+#' @importFrom gt gt tab_header
+print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
+  if(is.null(.data)){
+    .data <- make_mock_data(tfrmt, .default, n_cols)
+  }
+
+  apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
+    gt(
+      groupname_col = as_label(tfrmt$group[[1]]),
+      rowname_col = as_label(tfrmt$label)) %>%
+    tab_header(title = tfrmt$title,
+               subtitle = tfrmt$subtitle) %>%
+    apply_gt_footnote(tfrmt$footer)
+
+}
 
 #' Print to gt
 #'
-#' @param tfrmt_spec tfrmt object that will dictate the structure of the table
+#' @param tfrmt tfrmt object that will dictate the structure of the table
 #' @param .data Data to style in order to make the table
 #'
 #' @return a stylized gt object
 #' @export
 #' @importFrom gt gt tab_header
-print_to_gt <- function(tfrmt_spec, .data){
-  apply_tfrmt(.data, tfrmt_spec) %>%
+print_to_gt <- function(tfrmt, .data){
+  apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     gt(
-      groupname_col = as_label(tfrmt_spec$group[[1]]),
-      rowname_col = as_label(tfrmt_spec$label)) %>%
-    tab_header(title = tfrmt_spec$title,
-               subtitle = tfrmt_spec$subtitle) %>%
-    apply_gt_footnote(tfrmt_spec$footer)
+      groupname_col = as_label(tfrmt$group[[1]]),
+      rowname_col = as_label(tfrmt$label)) %>%
+    tab_header(title = tfrmt$title,
+               subtitle = tfrmt$subtitle) %>%
+    apply_gt_footnote(tfrmt$footer)
 }
 
 
