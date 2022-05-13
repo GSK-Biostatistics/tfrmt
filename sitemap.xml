@@ -55,7 +55,13 @@
     <loc>/reference/layer_tfrmt.html</loc>
   </url>
   <url>
+    <loc>/reference/make_mock_data.html</loc>
+  </url>
+  <url>
     <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/print_mock_gt.html</loc>
   </url>
   <url>
     <loc>/reference/print_to_gt.html</loc>
