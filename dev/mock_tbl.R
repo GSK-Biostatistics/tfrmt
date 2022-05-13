@@ -50,7 +50,14 @@ tfrmt_spec  <- tfrmt(
     frmt_structure(group_val = c("Age", "Weight"), label_val = "Std", frmt("xx.xx"))
   ),
   # These are the variables to keep
-  col_select = vars(-total, everything(), -starts_with("ord"))
+  col_select = vars(-total, everything(), -starts_with("ord")),
+
+  spanning_label_grp = span_structure(
+    span_frmt(
+      "Treatment",
+      vars(starts_with("Xanomeline"))
+    )
+  )
 )
 
 
