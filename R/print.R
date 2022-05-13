@@ -17,7 +17,8 @@ print_to_gt <- function(tfrmt_spec, .data){
       rowname_col = as_label(tfrmt_spec$label)) %>%
     tab_header(title = tfrmt_spec$title,
                subtitle = tfrmt_spec$subtitle) %>%
-    apply_gt_footnote(tfrmt_spec$footer)
+    apply_gt_footnote(tfrmt_spec$footer) %>%
+    apply_gt_spanning_labels(spanning_lab_struct = tfrmt_spec$spanning_label_grp)
 }
 
 
