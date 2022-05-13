@@ -4,7 +4,7 @@
 \alias{apply_frmt.frmt_when}
 \title{Apply form for frmt_when formats}
 \usage{
-\method{apply_frmt}{frmt_when}(frmt_def, .data, values, ...)
+\method{apply_frmt}{frmt_when}(frmt_def, .data, values, mock = FALSE, ...)
 }
 \arguments{
 \item{frmt_def}{formatting to be applied}
@@ -12,6 +12,8 @@
 \item{.data}{data, but only what is getting changed}
 
 \item{values}{values symbol should only be one}
+
+\item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
 \item{...}{additional arguments for methods}
 }

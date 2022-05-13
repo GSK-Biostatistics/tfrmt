@@ -253,3 +253,66 @@ test_that("appling frmt_when", {
 
 
 })
+
+
+test_that("mocks return correctly", {
+
+  #frmt
+  frmt_mock <- apply_frmt.frmt(
+    frmt_def = frmt("xxx.x"),
+    .data = iris,
+    values = quo(mock),
+    mock = TRUE
+  )%>%
+    pull(mock)
+  expect_equal(frmt_mock, rep("xxx.x", nrow(iris)))
+
+  # frmt_when
+  frmt_when_true <- apply_frmt.frmt_when(frmt_when("==100"~ frmt(""),
+                                 "==0"~ "",
+                                 "TRUE" ~ frmt("(XXX.X%)")),
+                       .data = iris, sym("value"),mock = TRUE) %>%
+    pull(value)
+  expect_equal(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
+
+
+  frmt_when_no_true <-apply_frmt.frmt_when(frmt_when("==100"~ frmt("Hello"),
+                                 "==0"~ ""),
+                       .data = iris, sym("value"),mock = TRUE) %>%
+    pull(value)
+  expect_equal(frmt_when_no_true, rep("Hello", nrow(iris)))
+
+  #frmt_combine
+  sample_df <- tibble(
+    group = "group",
+    lab = rep(paste("lab",1:5),2),
+    col = "col",
+    y = rep(c("A","B"),each = 5)
+  )
+
+  sample_frmt <- frmt_combine(
+    "{A} {B}",
+    A = frmt("xxx.x"),
+    B = frmt("(X.X%)"),
+    missing = "Missing"
+  )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    values = quo(x),
+    param = quo(y),
+    column = quo(col),
+    label = quo(lab),
+    group = vars(group),
+    mock = TRUE
+  ) %>%
+    pull(x)
+
+  expect_equal(sample_df_frmted, rep("xxx.x (X.X%)", 5))
+
+
+
+
+
+})

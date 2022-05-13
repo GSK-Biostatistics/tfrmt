@@ -6,14 +6,14 @@
 #' @param label symbolic label
 #' @param param symbolic parameter
 #' @param values symbolic value
+#' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
 #' @importFrom dplyr tibble mutate group_by arrange slice bind_cols group_split pull select starts_with
 #' @importFrom purrr map map_dfr
 #' @importFrom tidyr unnest
 #' @importFrom rlang !! :=
-apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values, column, ...){
-
+apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values, column, mock = FALSE,...){
   ## identify which formatting needs to be applied where
   .data <- .data %>%
     ungroup() %>%
@@ -36,6 +36,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
     group_by(.data$TEMP_fmt_rank) %>%
     group_split()
+
 
   ## apply formatting
   dat_plus_fmt %>%
@@ -71,7 +72,8 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
           param = param,
           column = column,
           label = label,
-          group = group
+          group = group,
+          mock = mock
         ) %>%
           select(-!!param)
       }
@@ -117,7 +119,9 @@ expr_to_filter <- function(cols, val){
 }
 
 expr_to_filter.quosure <- function(cols, val){
-  if(all(val == ".default")){ # This is all so it works when there is a list
+
+  # This is all so it works when there is a list
+  if(all(val == ".default")){
     out <- "TRUE"
   } else {
     out <- as_label(cols) %>%
@@ -130,7 +134,7 @@ expr_to_filter.quosure <- function(cols, val){
 
 
 
-#' @importFrom purrr map2_chr
+#' @importFrom purrr map2_chr map_chr
 expr_to_filter.quosures <- function(cols, val){
   if(!is.list(val) & length(cols) == 1){
     cols <- cols[[1]]
@@ -138,15 +142,16 @@ expr_to_filter.quosures <- function(cols, val){
   } else if(!is.list(val) && val == ".default"){
     out <- "TRUE"
   }else if(!is.list(val)){
-    stop("If multiple groups are provided group_val must be a named list")
+    stop("If multiple cols are provided, val must be a named list")
   }else{
-    stopifnot(all(names(val) %in% map_chr(cols, as_label)))
-    out <- map2_chr(names(val), val, function(col, x){
-      paste0(col, " %in% c('",
-             paste0(x, collapse = "', '"),
-             "')")
-    }) %>%
-      paste0(collapse = "&")
+    if(!all(names(val) %in% map_chr(cols, as_label))){
+      stop("Names of val entries do not all match col values")
+    }
+    if(!all(map_chr(cols, as_label) %in% names(val) )){
+      stop("Every col must have a val defined. If all values of the col is to be used, set to \".default\"")
+    }
+    out <- map2_chr(cols, val[map_chr(cols, as_label)], ~ expr_to_filter(.x, .y)) %>%
+      paste0(collapse = " & ")
   }
   out
 }

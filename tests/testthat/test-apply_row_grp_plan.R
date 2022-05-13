@@ -38,7 +38,7 @@ test_that("insert post space - two grouping variables",{
   )
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = list(grp2 = "b"), element_block(post_space = " "))
+    row_grp_structure(group_val = list(grp1 = ".default", grp2 = "b"), element_block(post_space = " "))
   )
 
   expect_equal(
