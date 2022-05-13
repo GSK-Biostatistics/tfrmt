@@ -24,7 +24,7 @@ tfrmt_spec  <- tfrmt(
                             char = c(`Xanomeline High Dose`, `Xanomeline Low Dose`),
                             char_val = c(" ", ",", ".")),
   body_style = table_body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
+    # frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
                      "{count} {percent}",
@@ -42,7 +42,7 @@ tfrmt_spec  <- tfrmt(
       group_val = c("Age", "Weight"),
       label_val = "Min., Max.",
       frmt_combine("{Min}, {Max}",
-                   Min = frmt("XXX"),
+                   Min = frmt("XX"),
                    Max = frmt("XXX")
       )
     ),
@@ -62,6 +62,8 @@ tfrmt_spec  <- tfrmt(
 
 
 print_to_gt(tfrmt_spec , data)
+
+print_mock_gt(tfrmt_spec)
 
 
 
