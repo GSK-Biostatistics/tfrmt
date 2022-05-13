@@ -1,80 +1,88 @@
 #' Define the Column Spanning Headers
 #'
-#' Using span_frmts, define the spanned column names, and the label to apply.
-#' span_frmts can be nested to allow for layered spanning headers.
+#' Using span_structures, define the spanned column names, and the label to apply.
+#' span_structures can be nested to allow for layered spanning headers.
 #'
-#' @rdname span_structure
+#' @rdname span_plan
 #'
-#' @param ... for a span_structure, this is a series of span_frmt. for span_frmt,
-#'            this can be nested span_frmt, or a definition of the columns to span across within a
+#' @param ... For a span_plan, this is a series of span_structure. For span_structure,
+#'            this can be nested span_structure, or a definition of the columns to span across within a
 #'            vars().
 #' @export
 #' @examples
+#' library(dplyr)
 #'
-#' span_structure(
-#'  span_frmt(
+#' span_plan(
+#'  span_structure(
 #'    label = "Top Label Level 1",
-#'    span_frmt(
+#'    span_structure(
 #'      label = "Second Label Level 1.1",
 #'      vars(col_1, col_2)
 #'    ),
-#'    span_frmt(
+#'    span_structure(
 #'      label = "Second Label Level 1.2",
 #'      vars(starts_with("B"))
 #'    ),
 #'    vars(col_4)
 #'  ),
-#'  span_frmt(
+#'  span_structure(
 #'    label = "Top Label Level 2",
 #'    span_content = vars(col_5,col_6)
 #'  )
 #' )
 #'
-span_structure <- function(...){
+span_plan <- function(...){
 
   dots <- list(...)
 
-  if(any(!sapply(dots, is_span_frmt))){
-    stop("All entries in span_structure must be a span_frmt")
+  if(any(!sapply(dots, is_span_structure))){
+    stop("All entries in span_plan must be a span_structure")
   }
 
   structure(
     dots,
-    class = "span_struct_grp"
+    class = "span_plan_grp"
   )
 }
 
-#' @rdname span_structure
+#' @rdname span_plan
 #'
 #' @param label text label to span across the defined columns
+#' @param order_cols order the columns based on the order in which they are
+#'              listed in the structure. Overrides the tfrmts col_select ordering.
+#'              Value defaults to `TRUE`.
 #'
 #' @export
-span_frmt <- function(label, ...){
-  stopifnot(is.character(label))
+span_structure <- function(label, ..., order_cols = TRUE){
+  if(!(is.character(label) | is_element_label(label))){
+    stop("`label` must be a character vector or element_label")
+  }
+  stopifnot(is.logical(order_cols))
   span_cols <- list(...)
-  check_span_frmt_dots(span_cols)
-  any_dots_span_frmt <- any(sapply(span_cols, is_span_frmt))
+  check_span_structure_dots(span_cols)
+  any_dots_span_structure <- any(sapply(span_cols, is_span_structure))
   structure(
     list(
       label = label,
-      span_cols = span_cols
+      span_cols = span_cols,
+      order_cols = order_cols
     ),
-    class = c("span_frmts"[any_dots_span_frmt],"span_frmt")
+    class = c("span_structures"[any_dots_span_structure],"span_structure")
   )
 }
 
-is_span_frmt <- function(x){
-  inherits(x, "span_frmt")
+is_span_structure <- function(x){
+  inherits(x, "span_structure")
 }
 
-is_span_frmts <- function(x){
-  inherits(x, "span_frmts")
+is_span_structures <- function(x){
+  inherits(x, "span_structures")
 }
 
-check_span_frmt_dots <- function(x){
+check_span_structure_dots <- function(x){
   x <- lapply(x,function(x){
-    if(!inherits(x, c("quosures","span_frmt"))){
-      stop("Only objects of type quosures (`var()`), or span_frmt (`span_frmt()`)",
+    if(!inherits(x, c("quosures","span_structure"))){
+      stop("Only objects of type quosures (`var()`), or span_structure (`span_structure()`)",
            " can be entered as contents to span a label across")
     }
     invisible()
@@ -113,27 +121,37 @@ create_span_group <- function(x, data){
   create_span_group_function(x, data)
 }
 
-#' @importFrom gt tab_spanner
-create_span_group.span_frmt <- function(x, data){
+#' @importFrom gt tab_spanner cols_move
+create_span_group.span_structure <- function(x, data){
+
   cols <- span_col_select(x, data = data)
+  label <- format(x$label)
+
   list(function(gt_tab){
-    tab_spanner(gt_tab,label = x$label, columns = cols)
-  })
+    gt_tab <- tab_spanner(gt_tab,label = label, columns = cols)
+    if(x$order_cols){
+      gt_tab <- cols_move(
+        gt_tab,
+        columns = cols[-1],
+        after = cols[1]
+      )
+    }
+  });
 }
 
-create_span_group.span_frmts <- function(x, data){
+create_span_group.span_structures <- function(x, data){
 
-  ## for child span_frmts, create tab_spanner funcs
-  child_span_frmts <- x$span_cols[sapply(x$span_cols, is_span_frmt)]
-  span_frmt_span_func <- do.call('c',lapply(child_span_frmts, create_span_group, data = data))
+  ## for child span_structures, create tab_spanner funcs
+  child_span_structures <- x$span_cols[sapply(x$span_cols, is_span_structure)]
+  span_structure_span_func <- do.call('c',lapply(child_span_structures, create_span_group, data = data))
 
-  ## for parent span_frmt, create tab_spanner funcs
-  span_frmts_span_func <- create_span_group.span_frmt(x, data)
+  ## for parent span_structure, create tab_spanner funcs
+  span_structures_span_func <- create_span_group.span_structure(x, data)
 
   ## combine together
   c(
-    span_frmt_span_func,
-    span_frmts_span_func
+    span_structure_span_func,
+    span_structures_span_func
   )
 }
 
@@ -145,14 +163,14 @@ span_col_select <- function(x, data){
 }
 
 span_col_select.quosures <- function(x, data){
-  tidyselect::eval_select(expr(c(!!!x)), data = data)
+  names(tidyselect::eval_select(expr(c(!!!x)), data = data))
 }
 
-span_col_select.span_frmt <- function(x, data){
+span_col_select.span_structure <- function(x, data){
   do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
 
-span_col_select.span_frmts <- function(x, data){
+span_col_select.span_structures <- function(x, data){
   do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
 
