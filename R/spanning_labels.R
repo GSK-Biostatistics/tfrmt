@@ -109,12 +109,13 @@ apply_spanning_labels <- function(data, spanning_lab_struct){
 }
 
 create_span_group <- function(x, data){
-  UseMethod("create_span_group")
+  create_span_group_function <- get(paste0("create_span_group.",class(x)[1]),envir = asNamespace("tlang"))
+  create_span_group_function(x, data)
 }
 
 #' @importFrom gt tab_spanner
 create_span_group.span_frmt <- function(x, data){
-  cols <- span_col_select(x, data)
+  cols <- span_col_select(x, data = data)
   list(function(gt_tab){
     tab_spanner(gt_tab,label = x$label, columns = cols)
   })
@@ -138,21 +139,21 @@ create_span_group.span_frmts <- function(x, data){
 
 
 ## determine which columns to span across
-span_col_select <- function(x, .data){
+span_col_select <- function(x, data){
   span_col_select_function <- get(paste0("span_col_select.",class(x)[1]),envir = asNamespace("tlang"))
-  span_col_select_function(x, .data)
+  span_col_select_function(x, data = data)
 }
 
-span_col_select.quosures <- function(x, .data){
-  tidyselect::eval_select(expr(c(!!!x)), data = .data)
+span_col_select.quosures <- function(x, data){
+  tidyselect::eval_select(expr(c(!!!x)), data = data)
 }
 
-span_col_select.span_frmt <- function(x, .data){
-  do.call('c',lapply(x$span_cols, span_col_select, .data = .data))
+span_col_select.span_frmt <- function(x, data){
+  do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
 
-span_col_select.span_frmts <- function(x, .data){
-  do.call('c',lapply(x$span_cols, span_col_select, .data = .data))
+span_col_select.span_frmts <- function(x, data){
+  do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
 
 
