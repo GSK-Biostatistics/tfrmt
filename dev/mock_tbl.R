@@ -52,8 +52,8 @@ tfrmt_spec  <- tfrmt(
   # These are the variables to keep
   col_select = vars(-total, everything(), -starts_with("ord")),
 
-  spanning_label_grp = span_structure(
-    span_frmt(
+  spanning_label_grp = span_plan(
+    span_structure(
       "Treatment",
       vars(starts_with("Xanomeline"))
     )
