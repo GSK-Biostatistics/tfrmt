@@ -1,13 +1,10 @@
-library(tidyr)
-
-
 test_that("element_align - quo/vars/bare", {
 
   element <- element_align(left = n_tot,
                            right = vars(p),
                            char = c(trt1, trt2))
 
-  # expect_equal(el$left, vars(n_tot), ignore_attr = TRUE) # on hold til quo_get fixed
+  expect_equal(element$left, vars(n_tot), ignore_attr = TRUE) # on hold til quo_get fixed
   expect_equal(element$right, vars(p), ignore_attr = TRUE)
   expect_equal(element$char, vars(trt1, trt2), ignore_attr = TRUE)
 })

@@ -1,10 +1,19 @@
 
-element_block <- function(spanning_header,
-                          background_fill,
-                          outline,
-                          post_space = c(NULL, " ", "", "------")){
+
+#' Element block
+#'
+#' @param post_space Option to create a new line after group block; specified characters will fill the cells
+#' @param background_fill Option to fill background for group block
+#' @param border Option to add a solid border to group block (rectangle or just bottom border)
+#'
+#' @return element block object
+#'
+#' @export
+element_block <- function(post_space = c(NULL, " ", "-"),
+                          background_fill = NULL,
+                          border = c(NULL, "outline", "bottom")){
   structure(
-    list(background_fill = background_fill, outline = outline, post_space = post_space),
+    list(post_space = post_space, background_fill = background_fill, border = border),
     class = c("element_block", "element")
   )
 
