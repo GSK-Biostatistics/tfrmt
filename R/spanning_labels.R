@@ -108,6 +108,8 @@ apply_gt_spanning_labels <- function(gt_table, spanning_lab_struct){
 apply_spanning_labels <- function(data, spanning_lab_struct){
   span_lab_groups <- list()
   for(span_lab_grp in spanning_lab_struct){
+
+    ## do.call('c') quickly concatenates list into vector.
     span_lab_groups <- do.call('c',
       list(create_span_group(span_lab_grp, data),
       span_lab_groups
@@ -143,6 +145,8 @@ create_span_group.span_structures <- function(x, data){
 
   ## for child span_structures, create tab_spanner funcs
   child_span_structures <- x$span_cols[sapply(x$span_cols, is_span_structure)]
+
+  ## do.call('c') quickly concatenates list into vector.
   span_structure_span_func <- do.call('c',lapply(child_span_structures, create_span_group, data = data))
 
   ## for parent span_structure, create tab_spanner funcs
@@ -162,8 +166,9 @@ span_col_select <- function(x, data){
   span_col_select_function(x, data = data)
 }
 
+#' @importFrom tidyselect eval_select
 span_col_select.quosures <- function(x, data){
-  names(tidyselect::eval_select(expr(c(!!!x)), data = data))
+  names(eval_select(expr(c(!!!x)), data = data))
 }
 
 span_col_select.span_structure <- function(x, data){
