@@ -1,5 +1,6 @@
 
-element_block <- function(background_fill,
+element_block <- function(spanning_header,
+                          background_fill,
                           outline,
                           post_space = c(NULL, " ", "", "------")){
   structure(
@@ -9,14 +10,13 @@ element_block <- function(background_fill,
 
 }
 
-
-
-element_style <- function(...){
-  structure(
-    list(all_fmts = list(...)),
-    class = c("element_style", "element")
-  )
-}
+# PROBABLY NEEDS DELETING
+# element_style <- function(...){
+#   structure(
+#     list(all_fmts = list(...)),
+#     class = c("element_style", "element")
+#   )
+# }
 
 #' Element Align
 #'
