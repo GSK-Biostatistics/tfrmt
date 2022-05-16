@@ -10,7 +10,8 @@
 #'
 #' @return a stylized gt object
 #' @export
-#' @importFrom gt gt tab_header
+#' @importFrom gt gt tab_header tab_style cell_text cells_body
+#' @importFrom tidyselect everything
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
   if(is.null(.data)){
     .data <- make_mock_data(tfrmt, .default, n_cols)
@@ -21,7 +22,11 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
-    apply_gt_footnote(tfrmt$footer)
+    apply_gt_footnote(tfrmt$footer)%>%
+    tab_style(
+      style = cell_text(whitespace = "pre"),
+      locations = cells_body(columns = everything())
+    )
 
 }
 
@@ -32,15 +37,19 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 #'
 #' @return a stylized gt object
 #' @export
-#' @importFrom gt gt tab_header
+#' @importFrom gt gt tab_header tab_style cell_text cells_body
+#' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data){
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     gt(
-      groupname_col = as_label(tfrmt$group[[1]]),
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
-    apply_gt_footnote(tfrmt$footer)
+    apply_gt_footnote(tfrmt$footer) %>%
+    tab_style(
+      style = cell_text(whitespace = "pre"),
+      locations = cells_body(columns = everything())
+    )
 }
 
 

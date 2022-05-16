@@ -177,6 +177,7 @@ table_body_plan <- function(...){
 #' Row Group Plan
 #'
 #' @param ...  Row group structure objects separated by commas
+#' @param spanning_label Boolean specifying whether or not the top-level group should be a spanning label
 #'
 #' @return row_grp_plan object
 #' @export

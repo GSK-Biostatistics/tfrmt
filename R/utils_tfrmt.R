@@ -90,7 +90,7 @@ tentative_fx <- function(.data, fx, ...){
 
   args <- list(...)
 
-  if(all(map_lgl(args, is.null))){
+  if(any(map_lgl(args, is.null))){
     out <- .data
   } else {
     out <- .data %>%

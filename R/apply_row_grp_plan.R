@@ -69,10 +69,10 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, label, ...){
   } else if (row_grp_plan$spanning_label &length(group) > 1){
     add_ln_df <- add_ln_df %>%
       group_by(!!group[[1]]) %>%
-      select(-(!!!group[-1]))
+      select(-c(!!!group[-1]))
   } else {
     add_ln_df <- add_ln_df %>%
-      select(-(!!!group))
+      select(-c(!!!group))
   }
   add_ln_df
 }
@@ -164,7 +164,7 @@ fill_post_space <- function(post_space, width){
 #' @param .data Pre-processed data that just needs columns combining
 #' @param group list of the group parameters
 #' @param label label symbol should only be one
-#' @param spanning_label Boolean of whether or not the highest group should be spanning
+#' @param spanning_label Boolean specifying whether or not the top-level group should be a spanning label
 #'
 #' @return dataset with the group columns combines
 #' @noRd
