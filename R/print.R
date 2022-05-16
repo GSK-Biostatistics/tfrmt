@@ -18,7 +18,6 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     gt(
-      groupname_col = as_label(tfrmt$group[[1]]),
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%

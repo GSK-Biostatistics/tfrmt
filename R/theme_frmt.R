@@ -181,18 +181,19 @@ table_body_plan <- function(...){
 #' @return row_grp_plan object
 #' @export
 #'
-row_grp_plan <- function(...){
+row_grp_plan <- function(..., spanning_label = TRUE){
 
   row_grp_structure_list <- list(...)
 
   for(struct_idx in seq_along(row_grp_structure_list)){
     if(!is_row_grp_structure(row_grp_structure_list[[struct_idx]])){
-      stop(paste0("Entry number ",struct_idx," is not an object of class `row_grp_structure`."))
+      stop(paste0("Entry number ",struct_idx," is not an object of class `row_grp_structure`.
+                  If you want specify `spanning_label` please enter 'spanning_label ='"))
     }
   }
 
   structure(
-    row_grp_structure_list,
+    list(struct_ls = row_grp_structure_list, spanning_label = spanning_label),
     class = c("row_grp_plan", "frmt_table")
   )
 }

@@ -40,7 +40,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   tbl_dat_wide %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
-    tentative_fx(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group) %>%
+    tentative_fx(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label) %>%
     tentative_process(select, tfrmt$col_select)%>%
     tentative_fx(col_align_all, tfrmt$col_align)
 }

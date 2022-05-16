@@ -2,6 +2,7 @@ test_that("insert post space - single grouping variable",{
 
   df <- tibble(
     grp1 = c("A","B","C","D"),
+    label = grp1,
     trtA = rep("xx (xx%)", 4),
     trtB = rep("xx (xx%)", 4),
     trtC = rep("xx (xx%)", 4),
@@ -12,17 +13,17 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1)),
+    apply_row_grp_plan(df, sample_grp_plan, vars(grp1), sym("label")),
     tribble(
-      ~grp1, ~trtA,      ~trtB,      ~trtC,
-       "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "A",  "        ", "        ", "        ",
-       "B",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "B",  "        ", "        ", "        ",
-       "C",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "C",  "        ", "        ", "        ",
-       "D",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-       "D",  "        ", "        ", "        "
+      ~grp1,~label, ~trtA,      ~trtB,      ~trtC,
+       "A",  "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+       "A",  " ",  "        ", "        ", "        ",
+       "B",  "B",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+       "B",  " ",  "        ", "        ", "        ",
+       "C",  "C",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+       "C",  " ",  "        ", "        ", "        ",
+       "D",  "D",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
+       "D",  " ",  "        ", "        ", "        "
     ))
 
 })
@@ -223,23 +224,25 @@ test_that("Check combine_group_cols with a single group", {
 
   auto_test_no_span <- combine_group_cols(mock_single_grp,
                      group = vars(grp1), label = sym("lab"),
-                     spanning_header = FALSE)
-  man_test_no_span <- tribble(  ~lab,   ~trtA,     ~trtB,   ~trtC,
-             "A"  , NA,         NA,       NA,
-             "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-             "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-             "B"  , NA,         NA,       NA,
-             "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-             "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-             "C"  , NA,         NA,       NA,
-             "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-             "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)")
+                     spanning_label = FALSE)
+  man_test_no_span <- tribble(
+         ~grp1,  ~lab,   ~trtA,     ~trtB,   ~trtC,
+          "A",  "A"  , NA,         NA,       NA,
+          "A",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+          "A",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+          "B",  "B"  , NA,         NA,       NA,
+          "B",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+          "B",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+          "C",  "C"  , NA,         NA,       NA,
+          "C",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+          "C",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)")
+
 
   expect_equal(auto_test_no_span, man_test_no_span)
   #With spanning (so no change to the data)
   expect_equal(combine_group_cols(mock_single_grp,
                                   group = vars(grp1), label = sym("lab"),
-                                  spanning_header = TRUE),
+                                  spanning_label = TRUE),
                mock_single_grp
                )
 })
@@ -265,35 +268,36 @@ test_that("Check combine_group_cols with a multi groups", {
 
   auto_test_no_span <- combine_group_cols(mock_multi_grp,
                      group = vars(grp1, grp2), label = sym("my_label"),
-                     spanning_header = FALSE)
+                     spanning_label = FALSE)
+
   man_test_no_span <- tribble(
-    ~my_label,         ~trtA,     ~trtB,     ~trtC,
-    "grp1_1"        , NA      , NA      , NA      ,
-    "  grp2_1"      , NA      , NA      , NA      ,
-    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "  grp2_2"      , NA      , NA      , NA      ,
-    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2"        , NA      , NA      , NA      ,
-    "  grp2_1"      , NA      , NA      , NA      ,
-    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "  grp2_2"      , NA      , NA      , NA      ,
-    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)"
+    ~grp1,     ~my_label,      ~grp2,   ~trtA,     ~trtB,     ~trtC,
+    "grp1_1", "grp1_1"        ,NA     , NA      , NA      , NA      ,
+    "grp1_1", "  grp2_1"      ,"grp2_1", NA      , NA      , NA      ,
+    "grp1_1", "    my_label_1","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "    my_label_2","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "  grp2_2"      ,"grp2_2", NA      , NA      , NA      ,
+    "grp1_1", "    my_label_1","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "    my_label_2","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp1_2"        , NA     , NA      , NA      , NA      ,
+    "grp1_2", "  grp2_1"      ,"grp2_1", NA      , NA      , NA      ,
+    "grp1_2", "    my_label_1","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "    my_label_2","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "  grp2_2"      ,"grp2_2", NA      , NA      , NA      ,
+    "grp1_2", "    my_label_1","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "    my_label_2","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)"
   )
 
   expect_equal(auto_test_no_span, man_test_no_span)
 
   auto_test_with_span <- combine_group_cols(mock_multi_grp,
                                           group = vars(grp1, grp2), label = sym("my_label"),
-                                          spanning_header = TRUE)
+                                          spanning_label = TRUE)
 
   #Should be the same as removing a group
   man_test_with_span <- combine_group_cols(mock_multi_grp,
                      group = vars(grp1), label = sym("my_label"),
-                     spanning_header = FALSE)
+                     spanning_label = FALSE)
   expect_equal(auto_test_with_span, man_test_with_span)
 
 })

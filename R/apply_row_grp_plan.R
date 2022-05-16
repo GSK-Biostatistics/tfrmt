@@ -10,15 +10,19 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
-apply_row_grp_plan <- function(.data, row_grp_plan, group, ...){
+apply_row_grp_plan <- function(.data, row_grp_plan, group, label, ...){
 
   # determine which rows each block applies to
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
-  TEMP_appl_row <- row_grp_plan %>%
+  .data <- .data %>% combine_group_cols(group,
+                               label,
+                               row_grp_plan$spanning_label)
+
+  TEMP_appl_row <- row_grp_plan$struct_ls %>%
     map(grp_row_test_data, .data, group)
-  TEMP_block_to_apply <- row_grp_plan %>% map(~.$block_to_apply[[1]])
+  TEMP_block_to_apply <- row_grp_plan$struct_ls %>% map(~.$block_to_apply[[1]])
 
   # similar to frmts, only allow 1 element_block for a given row
   #   - within block-specific data, split data further by grouping vars
@@ -146,12 +150,12 @@ fill_post_space <- function(post_space, width){
 #' @param .data Pre-processed data that just needs columns combining
 #' @param group list of the group parameters
 #' @param label label symbol should only be one
-#' @param spanning_header Boolean of whether or not the highest group should be spanning
+#' @param spanning_label Boolean of whether or not the highest group should be spanning
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-combine_group_cols <- function(.data, group, label, spanning_header){
-  if(spanning_header == TRUE & length(group) > 0){
+combine_group_cols <- function(.data, group, label, spanning_label){
+  if(spanning_label == TRUE & length(group) > 0){
     group = group[-length(group)]
   }
 
@@ -163,11 +167,11 @@ combine_group_cols <- function(.data, group, label, spanning_header){
     .data<- split_dat %>%
       map_dfr(function(lone_dat){
         new_row <- lone_dat %>%
-          select(!!!group, !!label := !!last(group)) %>%
+          select(!!!group, !!label) %>%
+          mutate(!!label := !!last(group)) %>%
           distinct()
         lone_dat %>%
           mutate(!!label := str_c("  ", !!label)) %>%
-          select(-!!last(group)) %>%
           bind_rows(new_row, .)
       })
     group = group[-length(group)]
