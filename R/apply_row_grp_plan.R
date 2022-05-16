@@ -11,14 +11,15 @@
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
 apply_row_grp_plan <- function(.data, row_grp_plan, group, label, ...){
+  # Step 1: combine any grouping columns that need combining into label
+  .data <- .data %>% combine_group_cols(group,
+                                        label,
+                                        row_grp_plan$spanning_label)
 
+  # Step 2 Locate which groups need which formatting
   # determine which rows each block applies to
   .data <- .data %>%
     mutate(TEMP_row = row_number())
-
-  .data <- .data %>% combine_group_cols(group,
-                               label,
-                               row_grp_plan$spanning_label)
 
   TEMP_appl_row <- row_grp_plan$struct_ls %>%
     map(grp_row_test_data, .data, group)
@@ -44,23 +45,36 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, label, ...){
     unnest(.data$data)
 
   # get max character width for each column in the full data
-  dat_max_widths <- .data %>% summarise(across(everything(), ~max(nchar(.x))))
+  dat_max_widths <- .data %>% summarise(across(everything(), ~max(nchar(.x), na.rm = TRUE)))
 
   # apply group block function to data subsets
-  map2_dfr(dat_plus_block$data,
-           dat_plus_block$TEMP_block_to_apply,
-           function(x,y) {
-             if(is.null(y)){
-               x
-             } else {
-               apply_grp_block(.data = x,
-                               group = group,
-                               element_block = y,
-                               widths = dat_max_widths)
-             }
-           }) %>%
+  add_ln_df <- map2_dfr(dat_plus_block$data,
+                        dat_plus_block$TEMP_block_to_apply,
+                        function(x,y) {
+                          if(is.null(y)){
+                            x
+                          } else {
+                            apply_grp_block(.data = x,
+                                            group = group,
+                                            element_block = y,
+                                            widths = dat_max_widths)
+                          }
+                        }) %>%
     arrange(.data$TEMP_row) %>%
     select(-.data$TEMP_row)
+
+  if(row_grp_plan$spanning_label &length(group) == 1){
+    add_ln_df <- add_ln_df %>%
+      group_by(!!group[[1]])
+  } else if (row_grp_plan$spanning_label &length(group) > 1){
+    add_ln_df <- add_ln_df %>%
+      group_by(!!group[[1]]) %>%
+      select(-(!!!group[-1]))
+  } else {
+    add_ln_df <- add_ln_df %>%
+      select(-(!!!group))
+  }
+  add_ln_df
 }
 
 
@@ -155,26 +169,31 @@ fill_post_space <- function(post_space, width){
 #' @return dataset with the group columns combines
 #' @noRd
 combine_group_cols <- function(.data, group, label, spanning_label){
+  top_grouping <- group #used for spliting in case of spanning label
   if(spanning_label == TRUE & length(group) > 0){
-    group = group[-length(group)]
+    group = group[-1]
   }
+
 
   while(length(group) > 0){
     split_dat <- .data %>%
-      group_by(!!!group) %>%
+      group_by(!!!top_grouping) %>%
       group_split()
 
     .data<- split_dat %>%
       map_dfr(function(lone_dat){
         new_row <- lone_dat %>%
-          select(!!!group, !!label) %>%
+          select(!!!top_grouping, !!label) %>%
           mutate(!!label := !!last(group)) %>%
           distinct()
+
         lone_dat %>%
           mutate(!!label := str_c("  ", !!label)) %>%
-          bind_rows(new_row, .)
+          bind_rows(new_row, .) %>%
+          mutate(across(-(!!!group), ~replace_na(., "")))
       })
     group = group[-length(group)]
+    top_grouping = top_grouping[-length(top_grouping)]
   }
   .data
 
