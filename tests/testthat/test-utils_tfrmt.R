@@ -43,9 +43,9 @@ test_that("Check apply_tfrmt", {
     column = "col",
     #This controls how the rows are sorted
     sorting_cols = vars(ord1, ord2),
-    col_align = element_align(left = "groups",
+    col_align = element_align(left = "group",
                               right = vars(label),
-                              char = vars(starts_with("Var")),
+                              char = vars(`Var 1`, `Var 2`, `Var 3`, `Var 4`),
                               char_val = c(" ", ",", ".")),
     body_style = table_body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
@@ -68,14 +68,14 @@ test_that("Check apply_tfrmt", {
 
   man_df <-  tribble(
     ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
-   "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)" ,"142 (  3.9%)" ,"156 ( 94.6%)",
-   "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)" ,"165 ( 66.8%)" ,"167 ( 89.9%)",
-   "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)" ,"153 ( 24.4%)" ,"158 ( 15.3%)",
-   "A",     "w",     "135 "        , "141 "         ,"143 "         ,"137 ",
-   "B",     "i",     "83.5"        , "68.9"         ,"78.2"         ,"79.2",
-   "B",     "j",     "10.8"        , "11.1"         ," 8.8"         ," 5.7",
-   "B",     "k",     "80.3"        , "72.5"         ,"87.3"         ,"71.6",
-   "B",     "w",     "147"         , "149"          ,"143"          ,"159",
+   "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
+   "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
+   "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
+   "A",     "w",     "135         ", "141         ", "143         ", "137         ",
+   "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
+   "B",     "j",     " 10.8       ", " 11.1       ", "  8.8       ", "  5.7       ",
+   "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
+   "B",     "w",     "147         ", "149         ", "143         ", "159         "
   )
 
   expect_equal(apply_tfrmt(raw_dat, plan),

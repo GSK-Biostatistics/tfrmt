@@ -9,7 +9,8 @@ col_align_char(col, char_val)
 \arguments{
 \item{col}{Character vector containing data values}
 
-\item{char_val}{Character to align on. If NULL, values will be aligned on first decimal place or space.}
+\item{char_val}{Vector of one or more characters to align on. If NULL, data values will be aligned on the first occurrence of a decimal place or space. If more than one
+character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.}
 }
 \value{
 Character vector containing aligned data values
