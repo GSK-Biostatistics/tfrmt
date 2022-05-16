@@ -139,3 +139,39 @@ fill_post_space <- function(post_space, width){
   return(fill_val)
 
 }
+
+
+#' Combine group cols into the Labels
+#'
+#' @param .data Pre-processed data that just needs columns combining
+#' @param group list of the group parameters
+#' @param label label symbol should only be one
+#' @param spanning_header Boolean of whether or not the highest group should be spanning
+#'
+#' @return dataset with the group columns combines
+#' @noRd
+combine_group_cols <- function(.data, group, label, spanning_header){
+  if(spanning_header == TRUE & length(group) > 0){
+    group = group[-length(group)]
+  }
+
+  while(length(group) > 0){
+    split_dat <- .data %>%
+      group_by(!!!group) %>%
+      group_split()
+
+    .data<- split_dat %>%
+      map_dfr(function(lone_dat){
+        new_row <- lone_dat %>%
+          select(!!!group, !!label := !!last(group)) %>%
+          distinct()
+        lone_dat %>%
+          mutate(!!label := str_c("  ", !!label)) %>%
+          select(-!!last(group)) %>%
+          bind_rows(new_row, .)
+      })
+    group = group[-length(group)]
+  }
+  .data
+
+}

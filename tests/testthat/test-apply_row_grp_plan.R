@@ -209,3 +209,92 @@ test_that("post space is truncated to data width",{
       "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "D",  "--------", "--------",  "--------"))
 })
+
+
+test_that("Check combine_group_cols with a single group", {
+
+  mock_single_grp <- tibble(
+    crossing(grp1 = c("A","B","C"),
+             lab = c("a","b")),
+    trtA = rep("xx (xx%)", 6),
+    trtB = rep("xx (xx%)", 6),
+    trtC = rep("xx (xx%)", 6),
+  )
+
+  auto_test_no_span <- combine_group_cols(mock_single_grp,
+                     group = vars(grp1), label = sym("lab"),
+                     spanning_header = FALSE)
+  man_test_no_span <- tribble(  ~lab,   ~trtA,     ~trtB,   ~trtC,
+             "A"  , NA,         NA,       NA,
+             "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+             "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+             "B"  , NA,         NA,       NA,
+             "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+             "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+             "C"  , NA,         NA,       NA,
+             "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+             "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)")
+
+  expect_equal(auto_test_no_span, man_test_no_span)
+  #With spanning (so no change to the data)
+  expect_equal(combine_group_cols(mock_single_grp,
+                                  group = vars(grp1), label = sym("lab"),
+                                  spanning_header = TRUE),
+               mock_single_grp
+               )
+})
+
+
+test_that("Check combine_group_cols with a multi groups", {
+  mock_multi_grp <- tribble(
+    ~grp1,    ~grp2,     ~ my_label,
+    "grp1_1", "grp2_1", "my_label_1",
+    "grp1_1", "grp2_1", "my_label_2",
+    "grp1_1", "grp2_2", "my_label_1",
+    "grp1_1", "grp2_2", "my_label_2",
+    "grp1_2", "grp2_1", "my_label_1",
+    "grp1_2", "grp2_1", "my_label_2",
+    "grp1_2", "grp2_2", "my_label_1",
+    "grp1_2", "grp2_2", "my_label_2",
+  ) %>%
+    mutate(
+      trtA = rep("xx (xx%)", 8),
+      trtB = rep("xx (xx%)", 8),
+      trtC = rep("xx (xx%)", 8),
+    )
+
+  auto_test_no_span <- combine_group_cols(mock_multi_grp,
+                     group = vars(grp1, grp2), label = sym("my_label"),
+                     spanning_header = FALSE)
+  man_test_no_span <- tribble(
+    ~my_label,         ~trtA,     ~trtB,     ~trtC,
+    "grp1_1"        , NA      , NA      , NA      ,
+    "  grp2_1"      , NA      , NA      , NA      ,
+    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "  grp2_2"      , NA      , NA      , NA      ,
+    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2"        , NA      , NA      , NA      ,
+    "  grp2_1"      , NA      , NA      , NA      ,
+    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "  grp2_2"      , NA      , NA      , NA      ,
+    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)"
+  )
+
+  expect_equal(auto_test_no_span, man_test_no_span)
+
+  auto_test_with_span <- combine_group_cols(mock_multi_grp,
+                                          group = vars(grp1, grp2), label = sym("my_label"),
+                                          spanning_header = TRUE)
+
+  #Should be the same as removing a group
+  man_test_with_span <- combine_group_cols(mock_multi_grp,
+                     group = vars(grp1), label = sym("my_label"),
+                     spanning_header = FALSE)
+  expect_equal(auto_test_with_span, man_test_with_span)
+
+})
+
