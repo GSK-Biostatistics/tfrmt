@@ -105,7 +105,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
         ) %>%
         mutate(
           # keep from being negative
-          space_to_add = pmax(pre_dec_expr - act_pre_dec, 0),
+          space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0),
         )
 
 
