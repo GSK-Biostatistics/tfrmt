@@ -10,12 +10,13 @@ NULL
 #' @param .data data, but only what is getting changed
 #' @param frmt_def formatting to be applied
 #' @param values values symbol should only be one
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments for methods
 #'
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove
 #' @importFrom dplyr if_else case_when tibble
 #' @export
-apply_frmt <- function(frmt_def, .data, values, ...){
+apply_frmt <- function(frmt_def, .data, values, mock = FALSE, ...){
   UseMethod("apply_frmt", frmt_def)
 }
 
@@ -25,6 +26,7 @@ apply_frmt <- function(frmt_def, .data, values, ...){
 #' @param frmt_def formatting to be applied
 #' @param .data data, but only the rows getting changed
 #' @param values value column as a quosure
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments
 #'
 #' @return formatted dataset
@@ -33,104 +35,112 @@ apply_frmt <- function(frmt_def, .data, values, ...){
 #' @importFrom dplyr case_when tibble pull mutate
 #' @importFrom rlang :=
 #' @export
-apply_frmt.frmt <- function( frmt_def, .data, values, ...){
+apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
+  if(mock){
+    out <- .data %>%
+      mutate(!!values := frmt_def$expression)
+  } else {
 
-  vals <- .data %>%
-    pull(!!values)
+    vals <- .data %>%
+      pull(!!values)
 
-  if(length(vals) == 0){
-    return(.data)
-  }
-
-  if(str_detect(frmt_def$expression, "[x|X]")){
-
-    # digits following period in expression
-    dig <- frmt_def$expression %>%
-      str_extract("(?<=\\.)[X|x]+") %>%
-      str_count("[X|x]")
-
-    ## There were no x's after a `.` to extract, so assume none
-    if(is.na(dig)){
-      dig <- 0
+    if(length(vals) == 0){
+      return(.data)
     }
 
-    ## convert to scientific if scientific
-    if(!is.null(frmt_def$scientific)){
+    if(str_detect(frmt_def$expression, "[x|X]")){
 
-      vals_sci <- format(vals, scientific = TRUE)
-
-      vals <- vals_sci %>%
-        str_extract("[^e]+") %>%
-        as.numeric()
-
-      ## remove x's from end of scientific
-      multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
-      sci_width <- str_extract(frmt_def$scientific, "[xX]+(?<=$)") %>%
+      # digits following period in expression
+      dig <- frmt_def$expression %>%
+        str_extract("(?<=\\.)[X|x]+") %>%
         str_count("[X|x]")
 
-      vals_sci_post <- vals_sci %>%
-        str_extract("[^e]+$") %>%
-        as.numeric() %>%
-        format(trim = TRUE,width = sci_width) %>%
-        paste0(multiply,.)
+      ## There were no x's after a `.` to extract, so assume none
+      if(is.na(dig)){
+        dig <- 0
+      }
 
-    }else{
-      vals_sci_post <- ""
-    }
+      ## convert to scientific if scientific
+      if(!is.null(frmt_def$scientific)){
 
-    # digits preceding period in expression
-    pre_dec_expr <- frmt_def$expression %>%
-      str_remove("\\..*$") %>%
-      str_count("[X|x]")
+        vals_sci <- format(vals, scientific = TRUE)
 
-    # vals rounded and trimmed
-    rounded_vals <- format(
-      round(vals, dig),
-      decimal.mark = "."
-      ) %>%
-      str_trim()
+        vals <- vals_sci %>%
+          str_extract("[^e]+") %>%
+          as.numeric()
 
-    fmt_options <- tibble(
-      rounded = rounded_vals,
-      # digits preceding period in vals
-      act_pre_dec  = rounded_vals %>%
+        ## remove x's from end of scientific
+        multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
+        sci_width <- str_extract(frmt_def$scientific, "[xX]+(?<=$)") %>%
+          str_count("[X|x]")
+
+        vals_sci_post <- vals_sci %>%
+          str_extract("[^e]+$") %>%
+          as.numeric() %>%
+          format(trim = TRUE,width = sci_width) %>%
+          paste0(multiply,.)
+
+      }else{
+        vals_sci_post <- ""
+      }
+
+      # digits preceding period in expression
+      pre_dec_expr <- frmt_def$expression %>%
         str_remove("\\..*$") %>%
-        str_count(".")
-      ) %>%
-      mutate(
-        # keep from being negative
-        space_to_add = pmax(pre_dec_expr - act_pre_dec, 0),
+        str_count("[X|x]")
+
+      # vals rounded and trimmed
+      rounded_vals <- format(
+        round(vals, dig),
+        decimal.mark = "."
+        ) %>%
+        str_trim()
+
+      fmt_options <- tibble(
+        rounded = rounded_vals,
+        # digits preceding period in vals
+        act_pre_dec  = rounded_vals %>%
+          str_remove("\\..*$") %>%
+          str_count(".")
+        ) %>%
+        mutate(
+          # keep from being negative
+          space_to_add = pmax(pre_dec_expr - act_pre_dec, 0),
+        )
+
+
+      # when scientific is null paste rounded value, if not then append scientific expression
+      fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded, vals_sci_post)
+
+      expr_start <- frmt_def$expression %>%
+          str_extract("^[^X|^x]*(?=[X|x])")
+
+      expr_end <- frmt_def$expression %>%
+          str_extract("(?<=[X|x])[^X|^x]*$")
+
+      if(!is.null(frmt_def$missing)){
+        miss_val <- frmt_def$missing
+      } else {
+        miss_val <- NA_character_
+      }
+
+      # Combining the additional formatting
+      fmt_val_output <- case_when(
+        fmt_options$rounded == "NA" ~ miss_val,
+        TRUE ~ str_c(expr_start, fmt_vals, expr_end)
       )
 
-    if(!is.null(frmt_def$missing)){
-      miss_val <- frmt_def$missing
     } else {
-      miss_val <- NA_character_
+      fmt_val_output <- frmt_def$expression
     }
 
-    # when scientific is null paste rounded value, if not then append scientific expression
-    fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded, vals_sci_post)
-
-    expr_start <- frmt_def$expression %>%
-      str_extract("^[^X|^x]*(?=[X|x])")
-
-    expr_end <- frmt_def$expression %>%
-      str_extract("(?<=[X|x])[^X|^x]*$")
-
-    # Combining the additional formatting
-    fmt_val_output <- case_when(
-      fmt_options$rounded == "NA" ~ miss_val,
-      TRUE ~ str_c(expr_start, fmt_vals, expr_end)
-    )
-
-  } else {
-    fmt_val_output <- frmt_def$expression
+    out <- .data %>%
+      mutate(
+        !!values := fmt_val_output
+      )
   }
 
-  .data %>%
-    mutate(
-      !!values := fmt_val_output
-    )
+  out
 
 }
 
@@ -141,6 +151,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
 #' @param .data data, but only the rows getting changed
 #' @param param param column as a quosure
 #' @param values value column as a quosure
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param column column column as a quosure
 #' @param label label column as a quosure
 #' @param group group column as a quosure
@@ -153,7 +164,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, ...){
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom rlang :=
 #' @export
-apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, label, group, ...){
+apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param, column, label, group, ...){
 
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
@@ -179,6 +190,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
         param = param,
         label = label,
         group = group,
+        mock=mock,
         ...
       )
   })
@@ -221,14 +233,23 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
     select(-all_of(fmt_param_vals), -.data$.is_all_missing)
 
   ## keep only the first case of param, and add the joined values
-  .data %>%
-    filter(!!param == fmt_param_vals[[1]]) %>%
-    select(-!!values) %>%
-    left_join(
-      .tmp_data_fmted,
-      by = map_chr(c(column, label, group), as_label)
-    )
-
+  if(!mock){
+    out <- .data %>%
+      filter(!!param == fmt_param_vals[[1]]) %>%
+      select(-!!values) %>%
+      left_join(
+        .tmp_data_fmted,
+        by = map_chr(c(column, label, group), as_label)
+      )
+  } else {
+    out <- .data %>%
+      filter(!!param == fmt_param_vals[[1]]) %>%
+      left_join(
+        .tmp_data_fmted,
+        by = map_chr(c(column, label, group), as_label)
+      )
+  }
+  out
 }
 
 #' Apply form for frmt_when formats
@@ -236,49 +257,65 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, param, column, labe
 #' @param frmt_def formatting to be applied
 #' @param .data data, but only what is getting changed
 #' @param values values symbol should only be one
+#' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments for methods
 #'
 #' @return rounded and formatted df
 #' @export
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
 #' @importFrom dplyr pull if_else mutate
-#' @importFrom purrr map map_chr
+#' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
-apply_frmt.frmt_when <- function(frmt_def, .data, values, ...){
-  values_str <- as_label(values)
-  n <- length(frmt_def)
+apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
-  val_len <- length(pull(.data, !!values))
-  right <- frmt_def %>%
-    map(f_rhs) %>%
-    map(function(x) {
-      if(is_frmt(x)){
-        out <- apply_frmt(x, .data, values, ...) %>% pull(!!values)
-      } else {
-        out <- rep(x, val_len)
-      }
-      out
-    })
+  if(mock){
+    frmt_to_prt <- frmt_def %>%
+      keep(~f_lhs(.) == "TRUE")
+    if(length(frmt_to_prt) < 1){
+      frmt_to_prt <- frmt_def
+    }
+    str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
+    out <- .data %>%
+      mutate(!!values := str_to_prnt)
 
-  left <- frmt_def %>%
-    map_chr(f_lhs) %>%
-    if_else(. == "TRUE", ., paste0(values_str, .)) %>%
-    parse_exprs() %>%
-    map(eval_tidy, .data)
+  } else {
+    values_str <- as_label(values)
+    n <- length(frmt_def)
+
+    val_len <- length(pull(.data, !!values))
+    right <- frmt_def %>%
+      map(f_rhs) %>%
+      map(function(x) {
+        if(is_frmt(x)){
+          out <- apply_frmt(x, .data, values, ...) %>% pull(!!values)
+        } else {
+          out <- rep(x, val_len)
+        }
+        out
+      })
+
+    left <- frmt_def %>%
+      map_chr(f_lhs) %>%
+      if_else(. == "TRUE", ., paste0(values_str, .)) %>%
+      parse_exprs() %>%
+      map(eval_tidy, .data)
 
 
-  out <- rep(NA_character_, val_len)
-  replaced <- rep(FALSE, val_len)
+    out <- rep(NA_character_, val_len)
+    replaced <- rep(FALSE, val_len)
 
-  for(i in seq_len(n)){
-    out <- replace_val(out, left[[i]] & !replaced, right[[i]])
-    replaced <- replaced | (left[[i]] & !is.na(left[[i]]))
+    for(i in seq_len(n)){
+      out <- replace_val(out, left[[i]] & !replaced, right[[i]])
+      replaced <- replaced | (left[[i]] & !is.na(left[[i]]))
+    }
+
+    out <- .data %>%
+      mutate(
+        !!values := out
+      )
   }
+  out
 
-  .data %>%
-    mutate(
-      !!values := out
-    )
 }
 
 

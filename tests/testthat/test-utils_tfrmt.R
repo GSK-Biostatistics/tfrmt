@@ -2,79 +2,79 @@ library(tibble)
 library(tidyr)
 library(dplyr)
 
+set.seed(1234)
+
+raw_data_cat <- crossing(group = "A",label = c("w", "x", "y", "z"),
+                         col = paste("Var", 1:4), param2 = c("count", "pct")) %>%
+  rowwise() %>%
+  mutate(ord1 = 1,
+         ord2 = 26-which(label==letters),
+         val2 = case_when(
+           label == "w" & param2 == "pct" ~100.0,
+           param2=="count" ~ as.double(rpois(n=1, lambda = 150)),
+           param2 == "pct" ~runif(n=1,max = 100)
+         )
+  )
+
+raw_data_cont <- crossing(group = "B",label = c("w", "i", "j", "k"),
+                          col = paste("Var", 1:4), param2 = c("val")) %>%
+  rowwise() %>%
+  mutate(ord1 = 2,
+         ord2 = which(label==letters),
+         val2 = case_when(
+           label == "w" ~ as.double(rpois(n=1, lambda = 150)),
+           label == "i" ~ rnorm(n=1, mean = 75, 13),
+           label == "j" ~ rnorm(n=1, mean = 10, 3),
+           label == "k" ~ rnorm(n=1, mean = 72, 7)
+         )
+  )
+raw_dat <- bind_rows(raw_data_cat, raw_data_cont)
+
+plan  <- tfrmt(
+  #These are the columns that control the general structure of the data
+  group = vars(group),
+  label = "label",
+  param = "param2",
+  values = "val2",
+  column = "col",
+  #This controls how the rows are sorted
+  sorting_cols = vars(ord1, ord2),
+  col_align = element_align(left = "group",
+                            right = vars(label),
+                            char = vars(starts_with("Var")),
+                            char_val = c(" ", ",", ".")),
+  body_style = table_body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {pct}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XXX.X%)"))
+                   )),
+    frmt_structure(group_val = c("B"), label_val = "w", # Value(s) in the label column where you would want to apply this fmt
+                   frmt("XXX")),
+    frmt_structure(group_val = "B", label_val = c("i", "k"), frmt("xx.x")),
+    frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
+  ),
+  # These are the variables to keep
+  col_select = vars(everything(), -starts_with("ord"))
+)
 
 test_that("Check apply_tfrmt", {
 
-  set.seed(1234)
-
-  raw_data_cat <- crossing(group = "A",label = c("w", "x", "y", "z"),
-                       col = paste("Var", 1:4), param2 = c("count", "pct")) %>%
-    rowwise() %>%
-    mutate(ord1 = 1,
-           ord2 = 26-which(label==letters),
-           val2 = case_when(
-             label == "w" & param2 == "pct" ~100.0,
-             param2=="count" ~ as.double(rpois(n=1, lambda = 150)),
-             param2 == "pct" ~runif(n=1,max = 100)
-           )
-    )
-
-  raw_data_cont <- crossing(group = "B",label = c("w", "i", "j", "k"),
-                          col = paste("Var", 1:4), param2 = c("val")) %>%
-    rowwise() %>%
-    mutate(ord1 = 2,
-           ord2 = which(label==letters),
-           val2 = case_when(
-             label == "w" ~ as.double(rpois(n=1, lambda = 150)),
-             label == "i" ~ rnorm(n=1, mean = 75, 13),
-             label == "j" ~ rnorm(n=1, mean = 10, 3),
-             label == "k" ~ rnorm(n=1, mean = 72, 7)
-           )
-    )
-  raw_dat <- bind_rows(raw_data_cat, raw_data_cont)
-
-  plan  <- tfrmt(
-    #These are the columns that control the general structure of the data
-    group = vars(group),
-    label = "label",
-    param = "param2",
-    values = "val2",
-    column = "col",
-    #This controls how the rows are sorted
-    sorting_cols = vars(ord1, ord2),
-    col_align = element_align(left = "group",
-                              right = vars(label),
-                              char = vars(`Var 1`, `Var 2`, `Var 3`, `Var 4`),
-                              char_val = c(" ", ",", ".")),
-    body_style = table_body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
-      frmt_structure(group_val = ".default", label_val = ".default",
-                     frmt_combine(
-                       "{count} {pct}",
-                       count = frmt("XXX"),
-                       percent = frmt_when("==100"~ frmt(""),
-                                           "==0"~ "",
-                                           "TRUE" ~ frmt("(XXX.X%)"))
-                     )),
-      frmt_structure(group_val = c("B"), label_val = "w", # Value(s) in the label column where you would want to apply this fmt
-        frmt("XXX")),
-      frmt_structure(group_val = "B", label_val = c("i", "k"), frmt("xx.x")),
-      frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
-    ),
-    # These are the variables to keep
-    col_select = vars(everything(), -starts_with("ord"))
-  )
 
   man_df <-  tribble(
     ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
-   "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
-   "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
-   "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
-   "A",     "w",     "135         ", "141         ", "143         ", "137         ",
-   "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
-   "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      ",
-   "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
-   "B",     "w",     "147         ", "149         ", "143         ", "159         "
+    "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
+    "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
+    "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
+    "A",     "w",     "135         ", "141         ", "143         ", "137         ",
+    "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
+    "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      ",
+    "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
+    "B",     "w",     "147         ", "149         ", "143         ", "159         "
   )
 
   expect_equal(apply_tfrmt(raw_dat, plan),
@@ -104,6 +104,136 @@ test_that("Check apply_tfrmt", {
       group = "label2")),
       "Variable Specified in 'group' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
     )
+
+})
+
+test_that("Check apply_tfrmt for mock data",{
+
+  # mock for example data above
+
+  mock_dat <- raw_dat %>% select(-val2)
+
+  mock_man_df <-  tribble(
+    ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
+    "A",     "z",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "A",     "y",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "A",     "x",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "A",     "w",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "B",     "i",     " xx.x       ", " xx.x       " ," xx.x       " ," xx.x       ",
+    "B",     "j",     " xx.xx      ", " xx.xx      " ," xx.xx      " ," xx.xx      ",
+    "B",     "k",     " xx.x       ", " xx.x       " ," xx.x       " ," xx.x       ",
+    "B",     "w",     "XXX         ", "XXX         " ,"XXX         " ,"XXX         ",
+  )
+
+  expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE),
+               mock_man_df)
+
+
+  # mock for plan alone
+  plan  <- tfrmt(
+    #These are the columns that control the general structure of the data
+    group = vars(group),
+    label = "label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    body_style = table_body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default",
+                     frmt_combine(
+                       "{count} {pct}",
+                       count = frmt("XXX"),
+                       percent = frmt_when("==100"~ frmt(""),
+                                           "==0"~ "",
+                                           "TRUE" ~ frmt("(XXX.X%)"))
+                     )),
+      frmt_structure(group_val = c("B"), label_val = "w", # Value(s) in the label column where you would want to apply this fmt
+                     frmt("XXX")),
+      frmt_structure(group_val = "B", label_val = c("i", "k"), frmt("xx.x")),
+      frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
+    ),
+    # These are the variables to keep
+    col_select = vars(everything(), -starts_with("ord"))
+  )
+
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 4)
+  mock_man_df <-  tribble(
+    ~group,  ~label,   ~ col1,         ~col2,        ~ col3,        ~ col4,
+    "group_1", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_1", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_2", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_2", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "B"      , "w",     "XXX"          , "XXX"          ,"XXX"          ,"XXX",
+    "B"      , "i",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
+    "B"      , "k",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
+    "B"      , "j",     "xx.xx"        , "xx.xx"        ,"xx.xx"        ,"xx.xx"
+  )
+
+  expect_equal(
+    apply_tfrmt(mock_dat, plan, mock = TRUE),
+    mock_man_df)
+
+
+  # plan with multiple group variables
+  plan  <- tfrmt(
+    group = vars(grp1, grp2, grp3, grp4),
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    body_style = table_body_plan(
+      frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
+    )
+  )
+  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>% apply_tfrmt(plan, mock =TRUE)
+
+  expect_equal(
+    mock_dat,
+    tribble(
+      ~grp1,   ~grp2,   ~grp3,      ~grp4,   ~my_label,   ~col1,
+      "A"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "A"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "B"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "B"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"C"      ,"a"      ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"C"      ,"b"      ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"D"      ,"a"      ,"my_label_1" ,"xx.x" ,
+      "grp1_1" ,"grp2_1" ,"D"      ,"b"      ,"my_label_1" ,"xx.x"
+    )
+  )
+
+  # duplicate params for a single group/label combo
+  plan  <- tfrmt(
+    group = "grp1",
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    body_style = table_body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xxx")),
+      frmt_structure(group_val = ".default", label_val = ".default", mean = frmt("xx.x"))
+    )
+  )
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE),
+                "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
+
+  expect_equal(mock_dat %>% quietly(apply_tfrmt)(plan, mock =TRUE) %>% .[["result"]],
+               tribble(
+                 ~grp1,   ~my_label,   ~col1,  ~col2,
+                  "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
+                  "grp1_1", "my_label_1", "xx.x",  "xx.x" ,
+                  "grp1_1", "my_label_2", "xxx" ,  "xxx"  ,
+                  "grp1_1", "my_label_2", "xx.x",  "xx.x" ,
+                  "grp1_2", "my_label_1", "xxx" ,  "xxx"  ,
+                  "grp1_2", "my_label_1", "xx.x",  "xx.x" ,
+                  "grp1_2", "my_label_2", "xxx" ,  "xxx"  ,
+                  "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
+               ))
 
 })
 

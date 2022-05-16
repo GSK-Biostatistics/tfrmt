@@ -4,7 +4,7 @@
 \alias{apply_frmt}
 \title{Apply formatting}
 \usage{
-apply_frmt(frmt_def, .data, values, ...)
+apply_frmt(frmt_def, .data, values, mock = FALSE, ...)
 }
 \arguments{
 \item{frmt_def}{formatting to be applied}
@@ -12,6 +12,8 @@ apply_frmt(frmt_def, .data, values, ...)
 \item{.data}{data, but only what is getting changed}
 
 \item{values}{values symbol should only be one}
+
+\item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
 \item{...}{additional arguments for methods}
 }
