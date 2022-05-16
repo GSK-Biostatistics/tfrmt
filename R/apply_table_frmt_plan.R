@@ -6,14 +6,14 @@
 #' @param label symbolic label
 #' @param param symbolic parameter
 #' @param values symbolic value
+#' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
 #' @importFrom dplyr tibble mutate group_by arrange slice bind_cols group_split pull select starts_with
 #' @importFrom purrr map map_dfr
 #' @importFrom tidyr unnest
 #' @importFrom rlang !! :=
-apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values, column, ...){
-
+apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values, column, mock = FALSE,...){
   ## identify which formatting needs to be applied where
   .data <- .data %>%
     ungroup() %>%
@@ -36,6 +36,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
     group_by(.data$TEMP_fmt_rank) %>%
     group_split()
+
 
   ## apply formatting
   dat_plus_fmt %>%
@@ -71,7 +72,8 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
           param = param,
           column = column,
           label = label,
-          group = group
+          group = group,
+          mock = mock
         ) %>%
           select(-!!param)
       }
