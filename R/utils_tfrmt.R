@@ -27,6 +27,11 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     mock = mock
   )
 
+  if(!is.null(tfrmt$col_plan)){
+    tfrmt$column <- ammend_col_plan_column(tfrmt$column, tfrmt$col_plan)
+    tbl_dat <- ammend_col_plan_spanners(tfrmt$column, tfrmt$col_plan)
+  }
+
   tbl_dat_wide <- quietly(pivot_wider)(
     tbl_dat,
     names_from = names(eval_select(expr(c(!!!tfrmt$column)), tbl_dat)),

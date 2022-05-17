@@ -268,7 +268,37 @@ check_column_and_col_plan <- function(x){.
 
 }
 
+ammend_col_plan_column <- function(original_column, col_plan){
+  if(!is.null(col_plan$span_structures)){
+    levels <- nested_span_structures_n(col_plan$span_structures)
+    original_column <- do.call(vars,
+                               c(
+                                 lapply(paste0("__span_structure_column_",rev(seq_len(levels))),
+                                        as_length_one_quo.character),
+                                 original_column
+                               ))
+  }
+  original_column
+}
 
+ammend_col_plan_data <- function(data, col_plan){
+  if(!is.null(col_plan$span_structures)){
+
+    levels <- nested_span_structures_df(col_plan$span_structures)
+
+    original_column <- do.call(vars,
+                               c(
+                                 lapply(paste0("__span_structure_column_",seq_len(levels)),
+                                        as_length_one_quo.character),
+                                 original_column
+                               ))
+
+    left_join(
+
+    )
+  }
+  data
+}
 
 select_col_plan <- function(data, col_plan){
   select(
