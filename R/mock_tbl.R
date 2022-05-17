@@ -54,7 +54,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     group_by(.data$frmt_num) %>%
     expand(!!!tfrmt$group, !!tfrmt$label, !!tfrmt$param) %>%
     ungroup %>%
-    crossing(!!tfrmt$column := col_names) %>%
+    crossing(!!(tfrmt$column[[length(tfrmt$column)]]) := col_names) %>%
     select(-.data$frmt_num)
 
 }

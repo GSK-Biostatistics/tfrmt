@@ -9,9 +9,11 @@
 #' @importFrom purrr quietly
 #' @importFrom tidyr pivot_wider unnest
 #' @importFrom dplyr arrange select
+#' @importFrom tidyselect eval_select
 #'
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
+
   validate_cols_match(.data, tfrmt, mock)
 
   tbl_dat <- apply_table_frmt_plan(
@@ -25,9 +27,12 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     mock = mock
   )
 
-  tbl_dat_wide <- quietly(pivot_wider)(tbl_dat,
-                                 names_from = !!tfrmt$column,
-                                 values_from = !!tfrmt$values)
+  tbl_dat_wide <- quietly(pivot_wider)(
+    tbl_dat,
+    names_from = names(eval_select(expr(c(!!!tfrmt$column)), tbl_dat)),
+    names_sep = .tlang_delim,
+    values_from = !!tfrmt$values
+    )
 
   if (mock == TRUE &&
       length(tbl_dat_wide$warnings)>0 &&
@@ -87,16 +92,18 @@ tentative_process <- function(.data, fx, param){
 #' @importFrom rlang !! !!!
 #' @importFrom dplyr select
 validate_cols_match <- function(.data, tfrmt, mock){
+
   #Required variables
   if(mock){
-    req_var <- c("label", "param", "column")
+    req_quo <- c("label", "param")
   } else {
-    req_var <- c("label", "param", "values", "column")
+    req_quo <- c("label", "param", "values")
   }
+  req_var <- c("group","column")
 
   .data <- .data %>% ungroup
 
-  req_var %>%
+  req_quo %>%
     map(function(x){
       var_test <- tfrmt[[x]]
       check <- safely(select)(.data, !!var_test)
@@ -107,7 +114,7 @@ validate_cols_match <- function(.data, tfrmt, mock){
     }
     )
 
-  c("group") %>%
+  req_var %>%
     map(function(x){
       var_test <- tfrmt[[x]]
       check <- safely(select)(.data, !!!var_test)

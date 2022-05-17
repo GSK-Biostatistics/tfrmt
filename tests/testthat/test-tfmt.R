@@ -11,7 +11,7 @@ test_that("basic tfrmt - title", {
   expect_equal(t_frmt$label,quo())
   expect_equal(t_frmt$param,quo())
   expect_equal(t_frmt$values,quo())
-  expect_equal(t_frmt$column,quo())
+  expect_equal(t_frmt$column,vars())
 
 })
 
@@ -23,7 +23,7 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
     label = quo(row_label2),
     param = quo(param),
     values = quo(values),
-    column = quo(column)
+    column = vars(column)
   )
 
   expect_s3_class(t_frmt,"tfrmt")
@@ -33,7 +33,7 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
   expect_equal( t_frmt$label, quo(row_label2))
   expect_equal( t_frmt$param, quo(param))
   expect_equal( t_frmt$values, quo(values))
-  expect_equal( t_frmt$column, quo(column))
+  expect_equal( t_frmt$column, vars(column))
 })
 
 test_that("basic tfrmt - selecting group/label/param/values/column - char", {
@@ -54,7 +54,7 @@ test_that("basic tfrmt - selecting group/label/param/values/column - char", {
   expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE)
   expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE)
-  expect_equal( t_frmt$column, quo(column), ignore_attr = TRUE)
+  expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
 test_that("basic tfrmt - selecting group/label/param/values/column - bare", {
@@ -74,7 +74,7 @@ test_that("basic tfrmt - selecting group/label/param/values/column - bare", {
   expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE)
   expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE)
-  expect_equal( t_frmt$column, quo(column), ignore_attr = TRUE)
+  expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
 test_that("basic tfrmt - length one quo warning", {
@@ -115,8 +115,7 @@ test_that("basic tfrmt - length one quo warning", {
     c(
       "Passed more than one quosure to the argument `label`. Selecting the first entry.",
       "Passed more than one quosure to the argument `param`. Selecting the first entry.",
-      "Passed more than one quosure to the argument `values`. Selecting the first entry.",
-      "Passed more than one quosure to the argument `column`. Selecting the first entry."
+      "Passed more than one quosure to the argument `values`. Selecting the first entry."
     )
   )
 
@@ -178,7 +177,7 @@ test_that("layering tfrmt - default table elements - func/tfrmt",{
   expect_equal(t_frmt_layered$label,quo())
   expect_equal(t_frmt_layered$param,quo())
   expect_equal(t_frmt_layered$values,quo())
-  expect_equal(t_frmt_layered$column,quo())
+  expect_equal(t_frmt_layered$column,vars())
 
 })
 

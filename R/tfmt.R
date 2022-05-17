@@ -47,7 +47,7 @@ tfrmt <- function(
   label = quo(),
   param = quo(),
   values = quo(),
-  column = quo(),
+  column = vars(),
   title,
   title_txt_style,
   subtitle,
@@ -107,8 +107,8 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   ## and as_quo_args into length one quo's
   vals <- quo_get(
     args,
-    as_var_args = c("group"),
-    as_quo_args = c("label","param","values","column"),
+    as_var_args = c("group","column"),
+    as_quo_args = c("label","param","values"),
     envir = env
     )
 
