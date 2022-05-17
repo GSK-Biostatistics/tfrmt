@@ -269,3 +269,10 @@ check_column_and_col_plan <- function(x){.
 }
 
 
+
+select_col_plan <- function(data, col_plan){
+  select(
+    data,
+    !!!col_plan$dots
+  )
+}

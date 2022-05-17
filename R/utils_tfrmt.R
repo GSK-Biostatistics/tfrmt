@@ -32,6 +32,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     names_from = names(eval_select(expr(c(!!!tfrmt$column)), tbl_dat)),
     names_sep = .tlang_delim,
     values_from = !!tfrmt$values
+    ) %>%
+    rename_with(
+      function(x){gsub(paste0("NA",.tlang_delim),"",x)},
+      .cols = starts_with(paste0("NA",.tlang_delim))
     )
 
   if (mock == TRUE &&
@@ -45,7 +49,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   tbl_dat_wide %>%
     tentative_process(arrange, tfrmt$sorting_cols) %>%
-    tentative_process(select, tfrmt$col_select)%>%
+    tentative_process(select_col_plan, tfrmt$col_plan)%>% ## select the columns & rename per col_plan
     col_align_all(tfrmt$col_align)
 }
 
