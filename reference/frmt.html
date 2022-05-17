@@ -48,7 +48,7 @@ layered to be more specific and general cell styling can be done first.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">frmt</span><span class="op">(</span><span class="va">expression</span>, missing <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">frmt</span><span class="op">(</span><span class="va">expression</span>, missing <span class="op">=</span> <span class="cn">NULL</span>, scientific <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="fu">frmt_when</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
@@ -60,6 +60,8 @@ layered to be more specific and general cell styling can be done first.</p>
 detailed description.</p></dd>
 <dt>missing</dt>
 <dd><p>when a value is missing that is intended to be formatted, what value to place?</p></dd>
+<dt>scientific</dt>
+<dd><p>a string representing the intended scientific notation to be appended to the expression</p></dd>
 <dt>...</dt>
 <dd><p>these dots are for future extensions and must be empty.</p></dd>
 </dl></div>
