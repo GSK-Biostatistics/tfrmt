@@ -55,9 +55,12 @@ col_plan <- function(...){
     span_struct_entries <- NULL
   }
 
+  ## convert dots into a vars list (list of quosures)
+  dots_as_vars <- do.call(vars, dots)
+
   structure(
     list(
-      dots = dots,
+      dots = dots_as_vars,
       span_structures = span_struct_entries
     ),
     class = c("col_plan","plan")
@@ -246,6 +249,23 @@ get_span_structure_dots.span_structures <- function(x){
   do.call('c',lapply(x$span_cols, get_span_structure_dots))
 }
 
+check_column_and_col_plan <- function(x){.
+  multi_column_defined <- length(x$column) > 1
+  span_structures_defined <- if(!is.null(x$col_plan)){
+    !is.null(x$col_plan$span_structures)
+  }else{
+    FALSE
+  }
 
+  if(multi_column_defined & span_structures_defined){
+    stop(
+      "Multiple columns defined in `column` argument of tfrmt ",
+      "as well as span_structures in `col_plan`.\n",
+      "The use of only one approach is permitted. ",
+      "Select a single column or remove span_structures from `col_plan()`"
+    )
+  }
+
+}
 
 

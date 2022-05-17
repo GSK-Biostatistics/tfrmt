@@ -66,10 +66,8 @@ tfrmt <- function(
   sorting_cols,
   page_vars,
   row_group, # col which is used to make the row grps
-  col_labels,
+  col_plan,
   col_widths,
-  spanning_label_grp,
-  col_select,
   ...
   ){
 
@@ -86,6 +84,10 @@ tfrmt <- function(
       new_tfrmt
     )
   }
+
+  ## check to confirm user has not defined multiple columns and
+  ## any span_structures in col_plan
+  check_columns_and_col_plan(new_tfrmt)
 
   new_tfrmt
 
