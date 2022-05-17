@@ -40,6 +40,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
     out <- .data %>%
       mutate(!!values := frmt_def$expression)
   } else {
+
     vals <- .data %>%
       pull(!!values)
 
@@ -48,25 +49,74 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
     }
 
     if(str_detect(frmt_def$expression, "[x|X]")){
-      #Apply Expression
+
+      # digits following period in expression
       dig <- frmt_def$expression %>%
-        str_count("(?<=\\.)[X|x]")
+        str_extract("(?<=\\.)[X|x]+") %>%
+        str_count("[X|x]")
 
-      rounded_vals <- format(round(vals, dig), decimal.mark = ".") %>%
-        str_trim()
+      ## There were no x's after a `.` to extract, so assume none
+      if(is.na(dig)){
+        dig <- 0
+      }
 
-      pre_dec <- frmt_def$expression %>%
+      ## convert to scientific if scientific
+      if(!is.null(frmt_def$scientific)){
+
+        vals_sci <- format(vals, scientific = TRUE)
+
+        vals <- vals_sci %>%
+          str_extract("[^e]+") %>%
+          as.numeric()
+
+        ## remove x's from end of scientific
+        multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
+        sci_width <- str_extract(frmt_def$scientific, "[xX]+(?<=$)") %>%
+          str_count("[X|x]")
+
+        vals_sci_post <- vals_sci %>%
+          str_extract("[^e]+$") %>%
+          as.numeric() %>%
+          format(trim = TRUE,width = sci_width) %>%
+          paste0(multiply,.)
+
+      }else{
+        vals_sci_post <- ""
+      }
+
+      # digits preceding period in expression
+      pre_dec_expr <- frmt_def$expression %>%
         str_remove("\\..*$") %>%
         str_count("[X|x]")
 
+      # vals rounded and trimmed
+      rounded_vals <- format(
+        round(vals, dig),
+        decimal.mark = "."
+        ) %>%
+        str_trim()
+
       fmt_options <- tibble(
         rounded = rounded_vals,
-        act_pre_dec = rounded_vals %>%
+        # digits preceding period in vals
+        act_pre_dec  = rounded_vals %>%
           str_remove("\\..*$") %>%
-          str_count(".")) %>%
+          str_count(".")
+        ) %>%
         mutate(
-          space_to_add = pmax(pre_dec - .data$act_pre_dec,0) ## keep from being negative
+          # keep from being negative
+          space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0),
         )
+
+
+      # when scientific is null paste rounded value, if not then append scientific expression
+      fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded, vals_sci_post)
+
+      expr_start <- frmt_def$expression %>%
+          str_extract("^[^X|^x]*(?=[X|x])")
+
+      expr_end <- frmt_def$expression %>%
+          str_extract("(?<=[X|x])[^X|^x]*$")
 
       if(!is.null(frmt_def$missing)){
         miss_val <- frmt_def$missing
@@ -74,19 +124,12 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
         miss_val <- NA_character_
       }
 
-      fmt_vals <- str_c(str_dup(" ", fmt_options$space_to_add), fmt_options$rounded)
-
-      expr_start <- frmt_def$expression %>%
-        str_extract("^[^X|^x]*(?=[X|x])")
-
-      expr_end <- frmt_def$expression %>%
-        str_extract("(?<=[X|x])[^X|^x]*$")
-
       # Combining the additional formatting
       fmt_val_output <- case_when(
         fmt_options$rounded == "NA" ~ miss_val,
         TRUE ~ str_c(expr_start, fmt_vals, expr_end)
       )
+
     } else {
       fmt_val_output <- frmt_def$expression
     }
@@ -96,6 +139,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
         !!values := fmt_val_output
       )
   }
+
   out
 
 }
@@ -125,6 +169,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
     unlist()
+
   # Check if unspecified param values are in the dataset
 
   if(!setequal(names(frmt_def$fmt_ls), fmt_param_vals)){
@@ -134,6 +179,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   ## format params as needed
   .tmp_data <- map_dfr(fmt_param_vals, function(var){
     fmt_to_apply <- frmt_def$fmt_ls[[var]]
+
     .data %>%
       filter(!!param == var) %>%
       apply_frmt(

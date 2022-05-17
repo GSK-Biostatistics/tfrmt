@@ -5,7 +5,7 @@
 \alias{frmt_when}
 \title{Table Formatting}
 \usage{
-frmt(expression, missing = NULL, ...)
+frmt(expression, missing = NULL, scientific = NULL, ...)
 
 frmt_when(...)
 }
@@ -14,6 +14,8 @@ frmt_when(...)
 detailed description.}
 
 \item{missing}{when a value is missing that is intended to be formatted, what value to place?}
+
+\item{scientific}{a string representing the intended scientific notation to be appended to the expression}
 
 \item{...}{these dots are for future extensions and must be empty.}
 }
