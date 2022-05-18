@@ -94,8 +94,6 @@ tfrmt(
 \item{col_select}{which columns to display. defaults to everything(). uses tidyselect semantics}
 
 \item{...}{These dots are for future extensions and must be empty.}
-
-\item{row_grp_loc}{Location of the row group label}
 }
 \description{
 tfrmt, or "table format" is a way to pre-define the non-data components

@@ -4,10 +4,12 @@
 \alias{row_grp_plan}
 \title{Row Group Plan}
 \usage{
-row_grp_plan(...)
+row_grp_plan(..., label_loc = element_row_grp_loc(location = "indented"))
 }
 \arguments{
 \item{...}{Row group structure objects separated by commas}
+
+\item{label_loc}{Boolean specifying whether or not the top-level group should be a spanning label}
 }
 \value{
 row_grp_plan object
