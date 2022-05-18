@@ -29,10 +29,10 @@ test_that("left & right align works", {
 
   vec <- c(" xx.xxx","xx", " x,  x")
 
-  expect_equal(col_align_lr(vec, align = "left"),
+  expect_equal(apply_col_align(vec, align = "left"),
                c(" xx.xxx","xx     ", " x,  x "))
 
-  expect_equal(col_align_lr(vec, align = "right"),
+  expect_equal(apply_col_align(vec, align = "right"),
                c(" xx.xxx","     xx", "  x,  x"))
 
 })
@@ -41,10 +41,10 @@ test_that("decimal align works", {
 
     vec <- c(" xx.xx", " x, x", "xxx", " x (x.x)")
 
-  expect_equal(col_align_char(vec, align = c("."," ")),
+  expect_equal(apply_col_align(vec, align = c("."," ")),
                c(" xx.xx   ", " x, x    ", "xxx      ", "  x (x.x)"))
 
-  expect_equal(col_align_char(vec, align = c(".", ",", " ")),
+  expect_equal(apply_col_align(vec, align = c(".", ",", " ")),
                c(" xx.xx   ", "  x, x   ", "xxx      ", "  x (x.x)"))
 })
 

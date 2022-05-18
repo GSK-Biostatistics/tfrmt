@@ -1,4 +1,4 @@
-#' Align a column on character
+#' Apply alignment to a column
 #'
 #' @param col Character vector containing data values
 #' @param align Vector of one or more characters to align on. If NULL, data values will be aligned on the first occurrence of a decimal place or space. If more than one
@@ -10,52 +10,41 @@
 #' @importFrom dplyr mutate across pull tibble
 #' @importFrom stringr str_dup str_c
 #' @noRd
-col_align_char <- function(col, align){
+apply_col_align <- function(col, align){
 
-  if (is.null(align)){
-    align <- "."
+  if (!all(align %in% c("left","right"))){
+    align <- paste(paste0("\\", align), collapse = "|")
+    align <- paste0("(?=[", align, "])")
+
+    tbl_dat <-  tibble(col = trimws(col)) %>%
+      separate(col, c("add_left","add_right"), sep = align, extra = "merge", fill = "right", remove = FALSE) %>%
+      mutate(across(c(.data$add_left, .data$add_right), function(x) {
+               replace_na(x, "") %>%
+                 nchar() %>%
+                 {max(.)-.} %>%
+                 {str_dup(" ", .)}
+             }))
+  } else {
+
+    tbl_dat <-  tibble(col = col) %>%
+      mutate(string_col = nchar(.data$col),
+             string_tot = max(.data$string_col),
+             space_to_add = str_dup(" ", .data$string_tot-.data$string_col)) %>%
+      rowwise %>%
+      mutate(add_left = ifelse(align=="left", "", .data$space_to_add),
+             add_right = ifelse(align=="right", "", .data$space_to_add))
+
   }
 
-  align <- paste(paste0("\\", align), collapse = "|")
-
-  align <- paste0("(?=[", align, "])")
-
-  tibble(col = trimws(col)) %>%
-    separate(col, c("string_left","string_right"), sep = align, extra = "merge", fill = "right", remove = FALSE) %>%
-    mutate(across(c(.data$string_left, .data$string_right), ~replace_na(.x, "") %>% nchar)) %>%
-    mutate(col_out = str_c(
-                        str_dup(" ", max(.data$string_left)-.data$string_left),
-                        col,
-                        str_dup(" ", max(.data$string_right)-.data$string_right))) %>%
+  tbl_dat %>%
+    rowwise %>%
+    mutate(col_out = str_c(.data$add_left,
+                           .data$col,
+                           .data$add_right)) %>%
     pull(.data$col_out)
 
 }
 
-#' Left or right align a column
-#'
-#' @param col Character vector containing data values
-#' @param align Side to align to, either left or right
-#' @importFrom stringr str_dup str_c
-#' @importFrom dplyr mutate pull tibble
-#' @noRd
-col_align_lr <- function(col, align){
-
-  tbl_dat <- tibble(col = col) %>%
-    mutate(string_col = nchar(col),
-           string_tot = max(.data$string_col),
-           space_to_add = str_dup(" ", .data$string_tot-.data$string_col)) %>%
-    rowwise %>%
-    mutate(add_left = ifelse(align=="left", "", .data$space_to_add),
-           add_right = ifelse(align=="right", "", .data$space_to_add))
-
-    tbl_dat %>%
-      rowwise %>%
-      mutate(col_out = str_c(.data$add_left,
-                             .data$col,
-                             .data$add_right)) %>%
-      pull(.data$col_out)
-
-}
 
 #' Apply column alignment plan
 #'
@@ -100,19 +89,3 @@ apply_col_align_plan <- function(.data, align_plan){
     }))
 }
 
-#' Apply alignment to a column
-#'
-#' @param col Vector to align
-#' @param align  Alignment to be applied to column
-#'
-#' @return
-#' @noRd
-apply_col_align <- function(col, align){
-
-  if (all(align %in% c("left","right"))){
-    col_align_lr(col, align)
-  } else{
-    col_align_char(col, align)
-  }
-
- }
