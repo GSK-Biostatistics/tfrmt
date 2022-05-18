@@ -20,25 +20,38 @@ element_style <- function(...){
 
 #' Element Align
 #'
-#' @param left Variables to align to the left
-#' @param right Variables to align to the right
-#' @param char Variable to align on a provided character
-#' @param char_val Vector of one or more characters to align on. If NULL, data values in `char` variable(s) will be aligned on the first occurrence of a decimal place or space. If more than one
-#' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param align Alignment to be applied to column. Acceptable values: "left" for left alignment, "right" for right alignment",
+#' or supply a vector of character(s) to align on. For the case of character alignment, if more
+#' than one character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param col Variable to align on
 #'
 #' @importFrom purrr map
 #'
 #' @export
-element_align <- function(left = vars(), right = vars(), char = vars(), char_val = "."){
+#' @rdname theme_element
+element_align <- function(align = "left",
+                          col = vars()){
 
-  args <- c("left", "right", "char")
+  cols <- quo_get("col", as_var_args = "col") %>% map(~as_vars(.x))
 
   structure(
     c(
-      quo_get(args, as_var_args = args) %>% map(~as_vars(.x)),
-      char_val = list(char_val)),
+      list(align = align),
+      cols
+      ),
     class = c("element_align", "element")
   )
+}
+
+
+#' Check if input is an element_align object
+#'
+#' @param x Object to check
+#' @export
+#'
+#' @rdname theme_element
+is_element_align <- function(x){
+  inherits(x, "element_align")
 }
 
 

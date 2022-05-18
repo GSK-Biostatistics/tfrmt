@@ -42,7 +42,7 @@ print_to_gt <- function(tfrmt, .data){
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer)%>%
-    apply_gt_spanning_labels(spanning_lab_struct = tfrmt_spec$spanning_label_grp)
+    apply_gt_spanning_labels(spanning_lab_struct = tfrmt$spanning_label_grp)
 }
 
 
