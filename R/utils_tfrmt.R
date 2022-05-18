@@ -49,10 +49,15 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     tbl_dat_wide <- tbl_dat_wide$result
   }
 
-  tbl_dat_wide %>%
+  tbl_dat_wide <- tbl_dat_wide %>%
     tentative_process(arrange, tfrmt$sorting_cols, "Unable to arrange dataset") %>%
     tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") %>% ## select the columns & rename per col_plan
     col_align_all(tfrmt$col_align)
+
+  list(
+    data = tbl_dat_wide,
+    tfrmt = tfrmt
+  )
 }
 
 

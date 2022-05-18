@@ -137,7 +137,7 @@ test_that("Apply the col_plan to a simple gt", {
 
 })
 
-test_that("Build simple tfrmt with multiple columns and apply to basic data",{
+test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure",{
 
   basic_multi_column_template <- tfrmt(
     group = group,
@@ -147,6 +147,17 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data",{
     column = c(test1,test2),
     col_plan = col_plan(
       group, label, col4, col1, col2, col3, -col5
+    )
+  )
+
+  spanned_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    values = val,
+    column = c(test2),
+    col_plan = col_plan(
+      group, label, col4, span_structure("span 1",col1, col2), col3, -col5
     )
   )
 
@@ -170,9 +181,16 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data",{
   )
 
   suppressWarnings({
-    processed_data <- apply_tfrmt(basic_example_dataset,tfrmt = basic_multi_column_template)
     processed_gt <- print_to_gt(tfrmt_spec = basic_multi_column_template, .data = basic_example_dataset)
+    processed_gt_2 <- print_to_gt(tfrmt_spec = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
   })
+
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
 
 
 

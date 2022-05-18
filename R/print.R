@@ -11,7 +11,12 @@
 #' @export
 #' @importFrom gt gt tab_header
 print_to_gt <- function(tfrmt_spec, .data){
-  apply_tfrmt(.data, tfrmt_spec) %>%
+
+  processed_tfrmt <- apply_tfrmt(.data, tfrmt_spec)
+  tfrmt_spec <- processed_tfrmt$tfrmt
+  .data <- processed_tfrmt$data
+
+  .data %>%
     gt(
       groupname_col = as_label(tfrmt_spec$group[[1]]),
       rowname_col = as_label(tfrmt_spec$label)) %>%

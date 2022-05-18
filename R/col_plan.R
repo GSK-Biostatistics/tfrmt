@@ -241,6 +241,11 @@ span_col_select.quosures <- function(x, data){
   names(eval_select(expr(c(!!!x)), data = data))
 }
 
+span_col_select.quosure <- function(x, data){
+  names(eval_select(expr(c(!!x)), data = data))
+}
+
+
 span_col_select.span_structure <- function(x, data){
   do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
@@ -301,7 +306,7 @@ amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
     select(!!!tfrmt_obj$column)
 
   ## remove cases where there are no spanning columns as all
-  tmp_df_idx <- tbl_dat %>%
+  tmp_df_idx <- tmp_df %>%
     apply(MARGIN = 2,FUN = is.na) %>%
     bind_cols() %>%
     select(-ncol(.)) %>%
@@ -321,7 +326,7 @@ amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
   new_span_structs <- as_span_struct_from_df(x = tmp_df)
 
   ## replace tfrmt contents with corrected values
-  tfrmt_obj$col_plan$span_structures <- new_span_structs
+  tfrmt_obj$col_plan$span_structures <- new_span_structs[[1]]
   tfrmt_obj$column <- tfrmt_obj$column[length(tfrmt_obj$column)]
 
   ## return edited values
@@ -339,9 +344,9 @@ as_span_struct_from_df <- function(x){
   x_sub <- x[,-1, drop = FALSE]
 
   if(ncol(x_sub) == 1){
-    do.call('c',lapply(labels, function(lab){
-      x_sub_rows <- x_sub[x[[1]] %in% lab,1]
-      col_span_vals <- unlist(lapply(x_sub_rows, as.name))
+    lapply(labels, function(lab){
+      x_sub_rows <- x_sub[x[[1]] %in% lab,1, drop = TRUE]
+      col_span_vals <- lapply(unique(x_sub_rows), as.name)
       if(is.na(lab)){
         col_span_vals
       }else{
@@ -353,7 +358,7 @@ as_span_struct_from_df <- function(x){
           )
         ))
       }
-    }))
+    })
   }else{
     lapply(labels, function(lab){
       x_sub_rows <- x_sub[x[[1]] %in% lab,,drop = FALSE]
