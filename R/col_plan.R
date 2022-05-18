@@ -107,19 +107,23 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
     }else if(is.call(x)){
       if(is_valid_tidyselect_call(x)){
         quo(!!x)
-      }else if(is_valid_span_structure_call(x)){
+      }else if(is_valid_span_structure_call(x) | is_valid_quo_call(x)){
         return(rlang::eval_tidy(x))
       }else{
-        browser()
         stop(
           "Invalid entry: `",format(x),"`\n",
           "Only span_structures (`span_structure()`), ",
           "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
           " or unquoted expressions representing variable names ",
           " can be entered as contents.",
-          " Changes the names of individual variables using new_name = old_name syntax is allowable"
+          " Changes the names of individual variables using new_name = old_name syntax is allowable",
+          call. = FALSE
           )
       }
+    }else if(is_span_structure(x)){
+      return(x)
+    }else if(is.character(x)){
+      return(as_length_one_quo.character(x))
     }else{
       stop("Unexpected entry type")
     }
@@ -141,14 +145,29 @@ is_valid_tidyselect_call <- function(x){
   as.character(as.list(x)[[1]]) %in% c("starts_with","ends_with","contains","matches","num_range","all_of","any_of","everything","last_col", "where")
 }
 
+is_valid_quo_call <- function(x){
+  ## drop - from determining if
+  if(as.character(as.list(x)[[1]]) == "-"){
+    x <- x[[-1]]
+    if(is.name(x)){
+      return(TRUE)
+    }
+  }
+  as.character(as.list(x)[[1]]) %in% c("vars","quo")
+}
+
 check_col_plan_dots <- check_span_structure_dots
 
-apply_gt_spanning_labels <- function(gt_table, spanning_lab_struct){
-  if(!is.null(spanning_lab_struct)){
 
+## ---------------------------------------
+## apply col_plan
+## ---------------------------------------
+apply_gt_spanning_labels <- function(gt_table, col_plan){
+
+  spanning_lab_structs <- col_plan$span_structures
+  if(!is.null(spanning_lab_structs)){
     # get set of tab_spanner functions to apply
-    spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_struct)
-
+    spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_structs = spanning_lab_structs)
     #loop over the tab_spanners to add to the gt table
     for(spanning_lab_apply_idx in seq_along(spanning_lab_grps)){
       spanning_lab_func <- spanning_lab_grps[[spanning_lab_apply_idx]]
@@ -158,10 +177,9 @@ apply_gt_spanning_labels <- function(gt_table, spanning_lab_struct){
   gt_table
 }
 
-apply_spanning_labels <- function(data, spanning_lab_struct){
+apply_spanning_labels <- function(data, spanning_lab_structs){
   span_lab_groups <- list()
-  for(span_lab_grp in spanning_lab_struct){
-
+  for(span_lab_grp in spanning_lab_structs){
     ## do.call('c') quickly concatenates list into vector.
     span_lab_groups <- do.call('c',
       list(create_span_group(span_lab_grp, data),
@@ -171,6 +189,10 @@ apply_spanning_labels <- function(data, spanning_lab_struct){
   span_lab_groups
 }
 
+
+## ---------------------------------------
+## create list of tab_spanners based on span_structures
+## ---------------------------------------
 create_span_group <- function(x, data){
   create_span_group_function <- get(paste0("create_span_group.",class(x)[1]),envir = asNamespace("tlang"))
   create_span_group_function(x, data)
@@ -183,14 +205,7 @@ create_span_group.span_structure <- function(x, data){
   label <- format(x$label)
 
   list(function(gt_tab){
-    gt_tab <- tab_spanner(gt_tab,label = label, columns = cols)
-    if(x$order_cols){
-      gt_tab <- cols_move(
-        gt_tab,
-        columns = cols[-1],
-        after = cols[1]
-      )
-    }
+    tab_spanner(gt_tab,label = label, columns = cols, gather = FALSE)
   });
 }
 
@@ -213,7 +228,9 @@ create_span_group.span_structures <- function(x, data){
 }
 
 
+## ---------------------------------------
 ## determine which columns to span across
+## ---------------------------------------
 span_col_select <- function(x, data){
   span_col_select_function <- get(paste0("span_col_select.",class(x)[1]),envir = asNamespace("tlang"))
   span_col_select_function(x, data = data)
@@ -232,6 +249,9 @@ span_col_select.span_structures <- function(x, data){
   do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
 
+## -----------------------------------------------
+## get the span cols entries from a span structure
+## -----------------------------------------------
 get_span_structure_dots <- function(x){
   get_span_structure_dots_function <- get(paste0("get_span_structure_dots.",class(x)[1]),envir = asNamespace("tlang"))
   get_span_structure_dots_function(x)
@@ -241,6 +261,8 @@ get_span_structure_dots.quosure <- function(x){
   x
 }
 
+get_span_structure_dots.quosures <- get_span_structure_dots.quosure
+
 get_span_structure_dots.span_structure <- function(x){
   x$span_cols
 }
@@ -249,7 +271,7 @@ get_span_structure_dots.span_structures <- function(x){
   do.call('c',lapply(x$span_cols, get_span_structure_dots))
 }
 
-check_column_and_col_plan <- function(x){.
+check_column_and_col_plan <- function(x){
   multi_column_defined <- length(x$column) > 1
   span_structures_defined <- if(!is.null(x$col_plan)){
     !is.null(x$col_plan$span_structures)
@@ -268,37 +290,91 @@ check_column_and_col_plan <- function(x){.
 
 }
 
-ammend_col_plan_column <- function(original_column, col_plan){
-  if(!is.null(col_plan$span_structures)){
-    levels <- nested_span_structures_n(col_plan$span_structures)
-    original_column <- do.call(vars,
-                               c(
-                                 lapply(paste0("__span_structure_column_",rev(seq_len(levels))),
-                                        as_length_one_quo.character),
-                                 original_column
-                               ))
-  }
-  original_column
+
+### amend the tfrmt column argument to include new spanning columns
+amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
+
+
+
+  ## create temp df with columns based on
+  tmp_df <- tbl_dat %>%
+    select(!!!tfrmt_obj$column)
+
+  ## remove cases where there are no spanning columns as all
+  tmp_df_idx <- tbl_dat %>%
+    apply(MARGIN = 2,FUN = is.na) %>%
+    bind_cols() %>%
+    select(-ncol(.)) %>%
+    mutate(across(everything(), `!`)) %>%
+    mutate(
+      keep_idx = rowSums(.) != 0
+    ) %>%
+    pull(keep_idx)
+
+  tmp_df <- tmp_df[tmp_df_idx,]
+
+  ## remove extra columns since they are defining spanning headers and are no longer needed
+  out_tbl_dat <- tbl_dat %>%
+    select(-(!!!(tfrmt_obj$column[-length(tfrmt_obj$column)])))
+
+  ## evaluate columns from col_plan
+  new_span_structs <- as_span_struct_from_df(x = tmp_df)
+
+  ## replace tfrmt contents with corrected values
+  tfrmt_obj$col_plan$span_structures <- new_span_structs
+  tfrmt_obj$column <- tfrmt_obj$column[length(tfrmt_obj$column)]
+
+  ## return edited values
+  list(
+    tbl_dat = out_tbl_dat,
+    tfrmt = tfrmt_obj
+  )
 }
 
-ammend_col_plan_data <- function(data, col_plan){
-  if(!is.null(col_plan$span_structures)){
 
-    levels <- nested_span_structures_df(col_plan$span_structures)
+as_span_struct_from_df <- function(x){
 
-    original_column <- do.call(vars,
-                               c(
-                                 lapply(paste0("__span_structure_column_",seq_len(levels)),
-                                        as_length_one_quo.character),
-                                 original_column
-                               ))
+  labels <- unique(x[[1]])
 
-    left_join(
+  x_sub <- x[,-1, drop = FALSE]
 
-    )
+  if(ncol(x_sub) == 1){
+    do.call('c',lapply(labels, function(lab){
+      x_sub_rows <- x_sub[x[[1]] %in% lab,1]
+      col_span_vals <- unlist(lapply(x_sub_rows, as.name))
+      if(is.na(lab)){
+        col_span_vals
+      }else{
+        list(do.call(
+          span_structure,
+          c(
+            label = lab,
+            col_span_vals
+          )
+        ))
+      }
+    }))
+  }else{
+    lapply(labels, function(lab){
+      x_sub_rows <- x_sub[x[[1]] %in% lab,,drop = FALSE]
+      col_span_vals <- as_span_struct_from_df(x_sub_rows)
+      if(is.na(lab)){
+        col_span_vals
+      }else{
+        do.call(
+          span_structure,
+          c(
+            label = lab,
+            col_span_vals
+          )
+        )
+      }
+    })
   }
-  data
+
 }
+
+
 
 select_col_plan <- function(data, col_plan){
   select(

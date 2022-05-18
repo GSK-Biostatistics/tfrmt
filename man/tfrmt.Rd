@@ -10,7 +10,7 @@ tfrmt(
   label = quo(),
   param = quo(),
   values = quo(),
-  column = quo(),
+  column = vars(),
   title,
   title_txt_style,
   subtitle,

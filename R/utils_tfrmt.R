@@ -27,20 +27,17 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     mock = mock
   )
 
-  if(!is.null(tfrmt$col_plan)){
-    tfrmt$column <- ammend_col_plan_column(tfrmt$column, tfrmt$col_plan)
-    tbl_dat <- ammend_col_plan_spanners(tfrmt$column, tfrmt$col_plan)
+  if(length(tfrmt$column) > 1){
+    amended_values <- amend_col_plan_and_column(tfrmt, tbl_dat)
+    tbl_dat <- amended_values$tbl_dat
+    tfrmt <- amended_values$tfrmt
   }
 
-  tbl_dat_wide <- quietly(pivot_wider)(
+  tbl_dat_wide <- safely(pivot_wider)(
     tbl_dat,
-    names_from = names(eval_select(expr(c(!!!tfrmt$column)), tbl_dat)),
-    names_sep = .tlang_delim,
-    values_from = !!tfrmt$values
-    ) %>%
-    rename_with(
-      function(x){gsub(paste0("NA",.tlang_delim),"",x)},
-      .cols = starts_with(paste0("NA",.tlang_delim))
+    names_from = !!(tfrmt$column[[1]]),
+    values_from = !!tfrmt$values,
+    names_repair = "minimal"
     )
 
   if (mock == TRUE &&
@@ -53,8 +50,8 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   }
 
   tbl_dat_wide %>%
-    tentative_process(arrange, tfrmt$sorting_cols) %>%
-    tentative_process(select_col_plan, tfrmt$col_plan)%>% ## select the columns & rename per col_plan
+    tentative_process(arrange, tfrmt$sorting_cols, "Unable to arrange dataset") %>%
+    tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") %>% ## select the columns & rename per col_plan
     col_align_all(tfrmt$col_align)
 }
 
@@ -69,20 +66,21 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 #'
 #' @return processed data
 #' @noRd
-tentative_process <- function(.data, fx, param){
+tentative_process <- function(.data, fx, param, fail_desc = NULL){
   if(is.null(param)){
     out <- .data
   } else{
-    exists_test <- .data %>%
-      safely(select)(!!!param) %>%
-      .[["error"]] %>%
-      is.null()
-    if(exists_test){
-      out <- .data %>%
-        fx(!!!param)
-    } else {
+    out <- .data %>%
+      safely(fx)(param)
+    if(!is.null(out[["error"]])){
       out <- .data
-      message("Unable to complete formatting because COLNAME isn't in the dataset")
+      if(is.null(fail_desc)){
+        message("Unable to to apply formatting", format(substitute(fx)))
+      }else{
+        message(fail_desc)
+      }
+    }else{
+      out <- out$result
     }
   }
   out

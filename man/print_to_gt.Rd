@@ -4,10 +4,10 @@
 \alias{print_to_gt}
 \title{Print to gt}
 \usage{
-print_to_gt(tfrmt, .data)
+print_to_gt(tfrmt_spec, .data)
 }
 \arguments{
-\item{tfrmt}{tfrmt object that will dictate the structure of the table}
+\item{tfrmt_spec}{tfrmt object that will dictate the structure of the table}
 
 \item{.data}{Data to style in order to make the table}
 }
