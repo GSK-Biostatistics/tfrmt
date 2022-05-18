@@ -177,12 +177,12 @@ table_body_plan <- function(...){
 #' Row Group Plan
 #'
 #' @param ...  Row group structure objects separated by commas
-#' @param spanning_label Boolean specifying whether or not the top-level group should be a spanning label
+#' @param label_loc Boolean specifying whether or not the top-level group should be a spanning label
 #'
 #' @return row_grp_plan object
 #' @export
 #'
-row_grp_plan <- function(..., spanning_label = TRUE){
+row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indented")){
 
   row_grp_structure_list <- list(...)
 
@@ -194,7 +194,7 @@ row_grp_plan <- function(..., spanning_label = TRUE){
   }
 
   structure(
-    list(struct_ls = row_grp_structure_list, spanning_label = spanning_label),
+    list(struct_ls = row_grp_structure_list, label_loc = label_loc),
     class = c("row_grp_plan", "frmt_table")
   )
 }

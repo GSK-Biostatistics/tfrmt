@@ -1,4 +1,25 @@
 
+#' Element Row Group Location
+#'
+#' @param location Location of the grouping. Where 'indented' has all groups in
+#'   the same column with each sub-group indented under its parent. 'spanning'
+#'   has the highest level group spanning across the table and all sub-groups indented.
+#' @param indent A string of the number of spaces you want to indent
+#'
+#' @export
+element_row_grp_loc <- function(location = c("indented", "spanning", "column"),
+                                indent = "  "){
+  location = match.arg(location)
+  structure(
+    list(location= location, indent = indent),
+    class = c("element_row_grp_loc", "element")
+  )
+}
+
+is_element_row_grp_loc <- function(x){
+  inherits(x, "element_row_grp_loc")
+}
+
 
 #' Element block
 #'
