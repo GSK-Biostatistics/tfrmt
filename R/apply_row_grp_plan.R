@@ -3,6 +3,7 @@
 #' @param .data data
 #' @param row_grp_plan row group plan object
 #' @param group symbolic list of grouping
+#' @param label symbolic label column
 #'
 #' @noRd
 #' @importFrom dplyr tibble mutate group_by arrange slice group_map case_when left_join row_number select summarise across
@@ -10,11 +11,13 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
-apply_row_grp_plan <- function(.data, row_grp_plan, group, label, ...){
+apply_row_grp_plan <- function(.data, row_grp_plan, group, label = NULL, ...){
+  element_row_grp_loc <- row_grp_plan$label_loc
+
   # Step 1: combine any grouping columns that need combining into label
   .data <- .data %>% combine_group_cols(group,
                                         label,
-                                        row_grp_plan$spanning_label)
+                                        element_row_grp_loc)
 
   # Step 2 Locate which groups need which formatting
   # determine which rows each block applies to
@@ -63,17 +66,19 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, label, ...){
     arrange(.data$TEMP_row) %>%
     select(-.data$TEMP_row)
 
-  if(row_grp_plan$spanning_label &length(group) == 1){
+
+  if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
+    add_ln_df <- add_ln_df %>%
+      select(-c(!!!group))
+  } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
     add_ln_df <- add_ln_df %>%
       group_by(!!group[[1]])
-  } else if (row_grp_plan$spanning_label &length(group) > 1){
+  } else { # Using the grouping in gt, but needs to drop all groups in label
     add_ln_df <- add_ln_df %>%
       group_by(!!group[[1]]) %>%
       select(-c(!!!group[-1]))
-  } else {
-    add_ln_df <- add_ln_df %>%
-      select(-c(!!!group))
   }
+
   add_ln_df
 }
 
@@ -164,18 +169,23 @@ fill_post_space <- function(post_space, width){
 #' @param .data Pre-processed data that just needs columns combining
 #' @param group list of the group parameters
 #' @param label label symbol should only be one
-#' @param spanning_label Boolean specifying whether or not the top-level group should be a spanning label
+#' @param element_row_grp_loc row group location element. If null then will just indent
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-combine_group_cols <- function(.data, group, label, spanning_label){
+combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   top_grouping <- group #used for spliting in case of spanning label
-  if(spanning_label == TRUE & length(group) > 0){
+
+  if(is.null(element_row_grp_loc)){
+    indent = "  "
+  } else if(element_row_grp_loc$location %in% c("spanning", "column") & length(group) > 0){
     group = group[-1]
+    indent = element_row_grp_loc$indent
+  } else {
+    indent = element_row_grp_loc$indent
   }
 
-
-  while(length(group) > 0){
+  while(length(group) > 0 & !is.null(label)){
     split_dat <- .data %>%
       group_by(!!!top_grouping) %>%
       group_split()
@@ -188,7 +198,7 @@ combine_group_cols <- function(.data, group, label, spanning_label){
           distinct()
 
         lone_dat %>%
-          mutate(!!label := str_c("  ", !!label)) %>%
+          mutate(!!label := str_c(indent, !!label)) %>%
           bind_rows(new_row, .) %>%
           mutate(across(-(!!!group), ~replace_na(., "")))
       })

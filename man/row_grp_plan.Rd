@@ -4,12 +4,10 @@
 \alias{row_grp_plan}
 \title{Row Group Plan}
 \usage{
-row_grp_plan(..., spanning_label = TRUE)
+row_grp_plan(...)
 }
 \arguments{
 \item{...}{Row group structure objects separated by commas}
-
-\item{spanning_label}{Boolean specifying whether or not the top-level group should be a spanning label}
 }
 \value{
 row_grp_plan object

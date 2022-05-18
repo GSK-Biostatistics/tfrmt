@@ -9,7 +9,8 @@ test_that("insert post space - single grouping variable",{
   )
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " "))
+    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "spanning")
   )
 
   expect_equal(
@@ -28,8 +29,7 @@ test_that("insert post space - single grouping variable",{
 
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    spanning_label = FALSE
+    row_grp_structure(group_val = ".default", element_block(post_space = " "))
   )
 
   expect_equal(
@@ -64,7 +64,8 @@ test_that("insert post space - two grouping variables",{
   )
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = list(grp1 = ".default", grp2 = "b"), element_block(post_space = " "))
+    row_grp_structure(group_val = list(grp1 = ".default", grp2 = "b"), element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "spanning")
   )
 
   expect_equal(
@@ -108,7 +109,8 @@ test_that("insert mix - single grouping variable",{
 
   sample_grp_plan <- row_grp_plan(
     row_grp_structure(group_val = c("A","C"), element_block(post_space = "---")),
-    row_grp_structure(group_val = c("B"), element_block(post_space = " "))
+    row_grp_structure(group_val = c("B"), element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "spanning")
   )
 
   expect_equal(
@@ -141,7 +143,8 @@ test_that("insert post space after specific value",{
   )
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+    row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "spanning")
   )
 
   expect_equal(
@@ -183,7 +186,8 @@ test_that("overlapping row_grp_structures - prefers latest",{
 
   sample_grp_plan <- row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = "***"))
+    row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = "***")),
+    label_loc = element_row_grp_loc(location = "column")
   )
 
   expect_equal(
@@ -224,7 +228,8 @@ test_that("no post space added if NULL",{
   )
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = NULL))
+    row_grp_structure(group_val = ".default", element_block(post_space = NULL)),
+    label_loc = element_row_grp_loc(location = "spanning")
   )
 
   expect_equal(
@@ -251,7 +256,8 @@ test_that("post space is truncated to data width",{
   )
 
   sample_grp_plan <- row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space ="----------------------"))
+    row_grp_structure(group_val = ".default", element_block(post_space ="----------------------")),
+    label_loc =element_row_grp_loc(location = "spanning")
   )
 
   expect_equal(
@@ -281,8 +287,7 @@ test_that("Check combine_group_cols with a single group", {
   )
 
   auto_test_no_span <- combine_group_cols(mock_single_grp,
-                                          group = vars(grp1), label = sym("lab"),
-                                          spanning_label = FALSE)
+                                          group = vars(grp1), label = sym("lab"))
   man_test_no_span <- tribble(
     ~grp1,  ~lab,   ~trtA,     ~trtB,   ~trtC,
     "A",  "A"  , "",         "",       "",
@@ -300,7 +305,7 @@ test_that("Check combine_group_cols with a single group", {
   #With spanning (so no change to the data)
   expect_equal(combine_group_cols(mock_single_grp,
                                   group = vars(grp1), label = sym("lab"),
-                                  spanning_label = TRUE),
+                                  element_row_grp_loc(location = "spanning")),
                mock_single_grp
   )
 })
@@ -326,7 +331,7 @@ test_that("Check combine_group_cols with a multi groups", {
 
   auto_test_no_span <- combine_group_cols(mock_multi_grp,
                                           group = vars(grp1, grp2), label = sym("my_label"),
-                                          spanning_label = FALSE)
+                                          element_row_grp_loc(location = "indented"))
 
   man_test_no_span <- tribble(
     ~grp1,     ~my_label,      ~grp2,   ~trtA,     ~trtB,     ~trtC,
@@ -350,14 +355,13 @@ test_that("Check combine_group_cols with a multi groups", {
 
   auto_test_with_span <- combine_group_cols(mock_multi_grp,
                                             group = vars(grp1, grp2), label = sym("my_label"),
-                                            spanning_label = TRUE)
+                                            element_row_grp_loc(location = "spanning"))
 
   #Should be the same as removing a group
   man_test_with_span <- mock_multi_grp %>%
     group_by(grp1) %>%
     group_split() %>%
-    map_dfr(combine_group_cols,group = vars(grp2), label = sym("my_label"),
-                                           spanning_label = FALSE) %>%
+    map_dfr(combine_group_cols,group = vars(grp2), label = sym("my_label")) %>%
     select(grp1, grp2, everything()) %>%
     mutate(grp1 = ifelse(grp1=="", NA, grp1)) %>%
     fill(grp1, .direction = "up")
@@ -386,7 +390,6 @@ test_that("> 2 groups with and without spanner_label", {
     )
 
   plan_no_span <- row_grp_plan(
-    spanning_label = FALSE
   )
 
   expect_equal(
@@ -411,9 +414,7 @@ test_that("> 2 groups with and without spanner_label", {
     )
   )
 
-  plan_with_span <- row_grp_plan(
-    spanning_label = TRUE
-  )
+  plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
     apply_row_grp_plan(mock_multi_grp, plan_with_span, vars(grp1, grp2, grp3), sym("my_label")),
@@ -435,7 +436,6 @@ test_that("> 2 groups with and without spanner_label", {
      "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
     ) %>% group_by(grp1)
   )
-
 
 })
 
