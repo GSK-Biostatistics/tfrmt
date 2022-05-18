@@ -88,6 +88,9 @@ element_label <- function(..., wrap_txt = 30){
   )
 }
 
+is_element_label <- function(x){
+  inherits(x, "element_label")
+}
 
 # element_bounds(upper_exp = ">5", lower_exp, upper_lab, lower_lab)
 element_bounds <- function(upper_exp = NULL, lower_exp = NULL, upper_lab = NULL, lower_lab = NULL){

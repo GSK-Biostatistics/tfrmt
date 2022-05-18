@@ -58,6 +58,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
+    apply_gt_spanning_labels(spanning_lab_struct = tfrmt$spanning_label_grp) %>%
     tab_style(
       style = cell_text(whitespace = "pre"),
       locations = cells_body(columns = everything())
@@ -68,9 +69,6 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       tab_options(row_group.as_column = TRUE)
   }
   gt_out
-
-
-
 
 }
 
@@ -95,3 +93,19 @@ apply_gt_footnote<- function(gt, footer){
 
   }
 }
+
+apply_gt_spanning_labels <- function(gt_table, spanning_lab_struct){
+  if(!is.null(spanning_lab_struct)){
+
+    # get set of tab_spanner functions to apply
+    spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_struct)
+
+    #loop over the tab_spanners to add to the gt table
+    for(spanning_lab_apply_idx in seq_along(spanning_lab_grps)){
+      spanning_lab_func <- spanning_lab_grps[[spanning_lab_apply_idx]]
+      gt_table <- spanning_lab_func(gt_table)
+    }
+  }
+  gt_table
+}
+

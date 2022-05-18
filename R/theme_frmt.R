@@ -7,6 +7,7 @@
 #' @param expression a string representing the intended format. See details: expression for more
 #' detailed description.
 #' @param missing when a value is missing that is intended to be formatted, what value to place?
+#' @param scientific a string representing the intended scientific notation to be appended to the expression
 #' @param ...  these dots are for future extensions and must be empty.
 #'
 #' @export
@@ -16,9 +17,9 @@
 #'
 #' frmt("XX.XXX")
 #'
-frmt <- function(expression, missing = NULL,...){
+frmt <- function(expression, missing = NULL, scientific = NULL, ...){
   structure(
-    list(expression = expression, missing = missing),
+    list(expression = expression, missing = missing, scientific = scientific),
     class = c("frmt")
   )
 }
