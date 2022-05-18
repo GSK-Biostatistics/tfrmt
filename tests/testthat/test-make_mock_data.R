@@ -13,6 +13,7 @@ test_that("Mock data column names are correct", {
   )
   mock_dat <- make_mock_data(plan)
 
+
   expect_equal(c("my_group", "my_label", "param2", "col"),
                names(mock_dat))
 })
