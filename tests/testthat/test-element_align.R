@@ -1,6 +1,3 @@
-library(tidyr)
-
-
 test_that("element_align - quo/vars/bare", {
 
   element_l <- element_align(align = "left", col = n_tot)
@@ -10,6 +7,7 @@ test_that("element_align - quo/vars/bare", {
   expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
   expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
   expect_equal(element_c$col, vars(trt1, trt2), ignore_attr = TRUE)
+
 })
 
 test_that("element_align - char", {

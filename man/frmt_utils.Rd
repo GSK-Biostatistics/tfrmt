@@ -4,6 +4,7 @@
 \alias{is_frmt}
 \alias{is_frmt_combine}
 \alias{is_frmt_structure}
+\alias{is_row_grp_structure}
 \title{Check if input is a frmt}
 \usage{
 is_frmt(x)
@@ -11,6 +12,8 @@ is_frmt(x)
 is_frmt_combine(x)
 
 is_frmt_structure(x)
+
+is_row_grp_structure(x)
 }
 \arguments{
 \item{x}{Object to check}
@@ -21,4 +24,6 @@ Check if input is a frmt
 Check if input is a frmt_combine
 
 Check if input is a frmt_structure
+
+Check if input is a row_grp_structure
 }

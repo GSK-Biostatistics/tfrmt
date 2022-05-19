@@ -1,22 +1,57 @@
 
-element_block <- function(background_fill,
-                          outline,
-                          post_space = c(NULL, " ", "", "------")){
+#'Element Row Group Location
+#'
+#'
+#'@param location Location of the row group labels. Specifying 'indented'
+#'  combines all group and label variables into a single column with each
+#'  sub-group indented under its parent. 'spanning' and 'column' retain the
+#'  highest level group variable in its own column and combine all remaining
+#'  group and label variables into a single column with sub-groups indented. The
+#'  highest level group column will either be printed as a spanning header or in
+#'  its own column in the gt.
+#'@param indent A string of the number of spaces you want to indent
+#'
+#'@export
+element_row_grp_loc <- function(location = c("indented", "spanning", "column"),
+                                indent = "  "){
+  location = match.arg(location)
   structure(
-    list(background_fill = background_fill, outline = outline, post_space = post_space),
+    list(location= location, indent = indent),
+    class = c("element_row_grp_loc", "element")
+  )
+}
+
+is_element_row_grp_loc <- function(x){
+  inherits(x, "element_row_grp_loc")
+}
+
+
+#' Element block
+#'
+#' @param post_space Option to create a new line after group block; specified characters will fill the cells
+#' @param background_fill Option to fill background for group block
+#' @param border Option to add a solid border to group block (rectangle or just bottom border)
+#'
+#' @return element block object
+#'
+#' @export
+element_block <- function(post_space = c(NULL, " ", "-"),
+                          background_fill = NULL,
+                          border = c(NULL, "outline", "bottom")){
+  structure(
+    list(post_space = post_space, background_fill = background_fill, border = border),
     class = c("element_block", "element")
   )
 
 }
 
-
-
-element_style <- function(...){
-  structure(
-    list(all_fmts = list(...)),
-    class = c("element_style", "element")
-  )
-}
+# PROBABLY NEEDS DELETING
+# element_style <- function(...){
+#   structure(
+#     list(all_fmts = list(...)),
+#     class = c("element_style", "element")
+#   )
+# }
 
 #' Element Align
 #'
