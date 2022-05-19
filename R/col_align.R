@@ -29,10 +29,16 @@ apply_col_align <- function(col, align){
     tbl_dat <-  tibble(col = col) %>%
       mutate(string_col = nchar(.data$col),
              string_tot = max(.data$string_col),
-             space_to_add = str_dup(" ", .data$string_tot-.data$string_col)) %>%
-      rowwise %>%
-      mutate(add_left = ifelse(align=="left", "", .data$space_to_add),
-             add_right = ifelse(align=="right", "", .data$space_to_add))
+             space_to_add = str_dup(" ", .data$string_tot-.data$string_col))
+    if(align == "left"){
+      tbl_dat <- tibble(add_left = "",
+             add_right = tbl_dat$space_to_add) %>%
+        bind_cols(tbl_dat, .)
+    } else {
+      tbl_dat <- tibble(add_left = tbl_dat$space_to_add,
+             add_right = "") %>%
+        bind_cols(tbl_dat, .)
+    }
 
   }
 
