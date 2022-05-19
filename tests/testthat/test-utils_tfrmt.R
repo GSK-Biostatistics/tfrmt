@@ -1,6 +1,3 @@
-library(tibble)
-library(tidyr)
-library(dplyr)
 
 set.seed(1234)
 
