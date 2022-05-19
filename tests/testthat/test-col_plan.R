@@ -78,6 +78,62 @@ test_that("From the spanning structure get cols to span across", {
 
 })
 
+test_that("From col plan spanning structures, get df to add to data",{
+
+  tfrmt_obj_one_span <- tfrmt(column = vars(columns),
+                              col_plan = col_plan(span_structure("test label", col3)))
+
+  tfrmt_obj_nested_spans <- tfrmt(column = vars(columns),
+                                  col_plan = col_plan(
+                                    span_structure(
+                                      "test label1",
+                                      span_structure("test label1.1",
+                                                     col1,
+                                                     span_structure("test label1.1.1",
+                                                                    col2)),
+                                      col3,
+                                      span_structure("test label1.2", col5)
+                                    ),
+                                    span_structure("test label2", col3)
+                                  ))
+
+  input_data <- tibble(
+    group = "groupvar",
+    label = "labels",
+    param = "params",
+    columns = paste0("col",1:10)
+  )
+
+  one_span_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_one_span, x = input_data)
+
+  expect_equal(
+    one_span_wide_data,
+    tibble(
+      `__tlang_span_structure_column__1` = c(NA, NA, "test label", rep(NA, 7)),
+      columns = paste0("col",1:10),
+      group = "groupvar",
+      label = "labels",
+      param = "params",
+    )
+  )
+
+  nested_spans_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans, x = input_data)
+
+  expect_equal(
+    nested_spans_wide_data,
+    input_data <- tibble(
+      `__tlang_span_structure_column__1` = c("test label1", "test label1", "test label1", "test label2", NA, "test label1", NA, NA, NA, NA, NA),
+      `__tlang_span_structure_column__2` = c("test label1.1", "test label1.1", NA, NA, NA, "test label1.2", NA, NA, NA, NA, NA),
+      `__tlang_span_structure_column__3` = c(NA, "test label1.1.1", rep(NA, 8)),
+      columns = paste0("col",1:10),
+      group = "groupvar",
+      label = "labels",
+      param = "params",
+    )
+  )
+
+})
+
 test_that("Apply the col_plan to a simple gt", {
 
   col_plan_obj <- col_plan(

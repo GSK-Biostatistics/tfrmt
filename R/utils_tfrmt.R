@@ -27,17 +27,21 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     mock = mock
   )
 
-  if(length(tfrmt$column) > 1){
-    amended_values <- amend_col_plan_and_column(tfrmt, tbl_dat)
-    tbl_dat <- amended_values$tbl_dat
-    tfrmt <- amended_values$tfrmt
+  ## append span structures to dataset for handling post-this function
+  if(!is.null(tfrmt$col_plan$span_structures)){
+    tbl_dat_span_cols <- apply_span_structs_to_data(
+      tfrmt,
+      tbl_dat
+    )
+  }else{
+    tbl_dat_span_cols <- tbl_dat
   }
 
   tbl_dat_wide <- safely(pivot_wider)(
-    tbl_dat,
-    names_from = !!(tfrmt$column[[1]]),
-    values_from = !!tfrmt$values,
-    names_repair = "minimal"
+    tbl_dat_span_cols,
+    names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
+    names_sep = .tlang_delim,
+    values_from = !!tfrmt$values
     )
 
   if (mock == TRUE &&
@@ -50,14 +54,16 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   }
 
   tbl_dat_wide <- tbl_dat_wide %>%
-    col_align_all(tfrmt$col_align) %>%
     tentative_process(arrange_enquo, tfrmt$sorting_cols, "Unable to arrange dataset") %>%
-    tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") ## select the columns & rename per col_plan
+    col_align_all(tfrmt$col_align)
 
-  list(
-    data = tbl_dat_wide,
-    tfrmt = tfrmt
-  )
+    ## TODO: I don't think this is where we need to do the sub-seting, but open to sort it out. This is assuming the
+    ## column names are as they were typed in, which we know to be incorrect at this point due to
+    ## the pivoted spanning cols. However, something like this will still be needed.
+    # tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") ## select the columns & rename per col_plan
+
+  tbl_dat_wide
+
 }
 
 

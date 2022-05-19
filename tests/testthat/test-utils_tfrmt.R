@@ -78,7 +78,7 @@ test_that("Check apply_tfrmt", {
   )
 
 
-  expect_equal(apply_tfrmt(raw_dat, plan)$data,
+  expect_equal(apply_tfrmt(raw_dat, plan),
                man_df)
 
   plan$sorting_cols <- NULL
@@ -91,7 +91,7 @@ test_that("Check apply_tfrmt", {
     arrange(group, foo, label) %>%
     select(-foo)
 
-  expect_equal(apply_tfrmt(raw_dat, plan)$data,
+  expect_equal(apply_tfrmt(raw_dat, plan),
                man_df_ord)
 
   expect_error(
@@ -126,7 +126,7 @@ test_that("Check apply_tfrmt for mock data",{
     "B",     "w",     "XXX         ", "XXX         " ,"XXX         " ,"XXX         ",
   )
 
-  expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE)$data,
+  expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE),
                mock_man_df)
 
 
@@ -171,7 +171,7 @@ test_that("Check apply_tfrmt for mock data",{
   )
 
   expect_equal(
-    apply_tfrmt(mock_dat, plan, mock = TRUE)$data,
+    apply_tfrmt(mock_dat, plan, mock = TRUE),
     mock_man_df)
 
 
@@ -190,8 +190,7 @@ test_that("Check apply_tfrmt for mock data",{
     )
   )
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>%
-    apply_tfrmt(plan, mock =TRUE) %>%
-    `[[`("data")
+    apply_tfrmt(plan, mock =TRUE)
 
   expect_equal(
     mock_dat,
@@ -222,10 +221,10 @@ test_that("Check apply_tfrmt for mock data",{
   )
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
 
-  expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE) %>% `[[`("data"),
+  expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE),
                 "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
 
-  expect_equal(mock_dat %>% quietly(apply_tfrmt)(plan, mock =TRUE) %>% .[["result"]] %>% `[[`("data"),
+  expect_equal(mock_dat %>% quietly(apply_tfrmt)(plan, mock =TRUE) %>% .[["result"]],
                tribble(
                  ~grp1,   ~my_label,   ~col1,  ~col2,
                   "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,

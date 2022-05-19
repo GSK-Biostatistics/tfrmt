@@ -245,7 +245,6 @@ span_col_select.quosure <- function(x, data){
   names(eval_select(expr(c(!!x)), data = data))
 }
 
-
 span_col_select.span_structure <- function(x, data){
   do.call('c',lapply(x$span_cols, span_col_select, data = data))
 }
@@ -256,6 +255,7 @@ span_col_select.span_structures <- function(x, data){
 
 ## -----------------------------------------------
 ## get the span cols entries from a span structure
+## We need to keep this
 ## -----------------------------------------------
 get_span_structure_dots <- function(x){
   get_span_structure_dots_function <- get(paste0("get_span_structure_dots.",class(x)[1]),envir = asNamespace("tlang"))
@@ -276,6 +276,11 @@ get_span_structure_dots.span_structures <- function(x){
   do.call('c',lapply(x$span_cols, get_span_structure_dots))
 }
 
+
+## -----------------------------------------------
+## check in tfrmt that the column and col_plan
+## are compatable
+##-----------------------------------------------
 check_column_and_col_plan <- function(x){
   multi_column_defined <- length(x$column) > 1
   span_structures_defined <- if(!is.null(x$col_plan)){
@@ -298,8 +303,6 @@ check_column_and_col_plan <- function(x){
 
 ### amend the tfrmt column argument to include new spanning columns
 amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
-
-
 
   ## create temp df with columns based on
   tmp_df <- tbl_dat %>%
@@ -336,7 +339,8 @@ amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
   )
 }
 
-
+## we can probably get rid of this - this was reverse engineering
+## span structures from
 as_span_struct_from_df <- function(x){
 
   labels <- unique(x[[1]])
@@ -379,11 +383,97 @@ as_span_struct_from_df <- function(x){
 
 }
 
-
-
 select_col_plan <- function(data, col_plan){
   select(
     data,
     !!!col_plan$dots
   )
 }
+
+## -----------------------------------------------
+## When we have span structures in the col_plan,
+## edit data to add in columns with the spanners to allow
+## us to have consistent behavior across multi-column
+## dfs and span_structs
+##-----------------------------------------------
+apply_span_structures_to_data <- function(tfrmt_obj, x){
+
+  ## create temp df with columns based on
+  tmp_df <- x %>%
+    select(!!(tfrmt_obj$column[[1]])) %>%
+    mutate(val = 0) %>%
+    pivot_wider(names_from = !!(tfrmt_obj$column[[1]]),
+                values_from = val) %>%
+    slice(0)
+
+  ## create df of span structures
+  span_struct_df <- tfrmt_obj$col_plan$span_structures %>%
+    map_dfr(span_struct_to_df, tmp_df) %>%
+    relocate(.original_col, .after = last_col()) %>%
+    rename(!!as_label(tfrmt_obj$column[[1]]) := ".original_col")
+
+  ## merge together data and span df on column arrange
+  left_join(x,
+            span_struct_df,
+            by = as_label(tfrmt_obj$column[[1]])) %>%
+    select(starts_with(.tlang_struct_col_prefix),
+           !!(tfrmt_obj$column[[1]]),
+           everything())
+}
+
+##----------------------------------------------------
+## convert span_structure to a data.frame representation
+##----------------------------------------------------
+
+span_struct_to_df <- function(span_struct, data_col, depth = 1){
+  span_struct_to_df_function <- get(paste0("span_struct_to_df.",class(span_struct)[1]),envir = asNamespace("tlang"))
+  span_struct_to_df_function(span_struct=span_struct, data_col = data_col, depth = depth)
+}
+
+span_struct_to_df.span_structure <- function(span_struct, data_col, depth = 1){
+  lab <- span_struct$label
+  contents <- span_col_select(
+    span_struct, data_col
+  )
+
+  tibble(
+    lab = lab,
+    .original_col = contents
+    ) %>%
+    rename(
+      !!paste0(.tlang_struct_col_prefix,depth) := lab
+    )
+}
+
+span_struct_to_df.span_structures <- function(span_struct, data_col, depth = 1){
+
+
+  lab <- span_struct$label
+  span_across <- span_struct$span_cols
+
+  span_across %>%
+    map_dfr(function(x) {
+      if (is_span_structure(x)) {
+        span_struct_to_df(span_struct = x, data_col, depth = depth + 1)
+      } else{
+        contents <- span_col_select(x, data_col)
+        tibble(.original_col = contents)
+      }
+    }) %>%
+    mutate(lab = lab) %>%
+    rename(!!paste0(.tlang_struct_col_prefix, depth) := lab) %>%
+    relocate(!!paste0(.tlang_struct_col_prefix, depth), .before = 1)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
