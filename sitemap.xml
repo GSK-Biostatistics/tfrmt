@@ -13,6 +13,9 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/apply_col_align_plan.html</loc>
+  </url>
+  <url>
     <loc>/reference/apply_frmt.frmt.html</loc>
   </url>
   <url>
@@ -28,16 +31,7 @@
     <loc>/reference/apply_grp_block.html</loc>
   </url>
   <url>
-    <loc>/reference/col_align_all.html</loc>
-  </url>
-  <url>
-    <loc>/reference/col_align_char.html</loc>
-  </url>
-  <url>
-    <loc>/reference/col_align_lr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/element_align.html</loc>
+    <loc>/reference/col_align_plan.html</loc>
   </url>
   <url>
     <loc>/reference/element_block.html</loc>
@@ -89,5 +83,8 @@
   </url>
   <url>
     <loc>/reference/tfrmt.html</loc>
+  </url>
+  <url>
+    <loc>/reference/theme_element.html</loc>
   </url>
 </urlset>
