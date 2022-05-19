@@ -29,10 +29,8 @@ tfrmt(
   sorting_cols,
   page_vars,
   row_group,
-  col_labels,
+  col_plan,
   col_widths,
-  spanning_label_grp,
-  col_select,
   ...
 )
 }
@@ -85,15 +83,15 @@ tfrmt(
 
 \item{row_group}{which columns determine row groups}
 
-\item{col_labels}{values to display for the columns in the dataset}
-
 \item{col_widths}{special column widths. otherwise fits contents}
+
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{col_labels}{values to display for the columns in the dataset}
 
 \item{spanning_label_grp}{named list detailing which columns are spanned by what text}
 
 \item{col_select}{which columns to display. defaults to everything(). uses tidyselect semantics}
-
-\item{...}{These dots are for future extensions and must be empty.}
 }
 \description{
 tfrmt, or "table format" is a way to pre-define the non-data components
