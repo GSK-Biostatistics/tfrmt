@@ -42,12 +42,9 @@ apply_col_align <- function(col, align){
 
   }
 
-  tbl_dat %>%
-    rowwise %>%
-    mutate(col_out = str_c(.data$add_left,
-                           .data$col,
-                           .data$add_right)) %>%
-    pull(.data$col_out)
+    str_c(tbl_dat$add_left, 
+        tbl_dat$col,
+        tbl_dat$add_right)
 
 }
 
