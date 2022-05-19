@@ -50,9 +50,9 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   }
 
   tbl_dat_wide <- tbl_dat_wide %>%
-    tentative_process(arrange, tfrmt$sorting_cols, "Unable to arrange dataset") %>%
-    tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") %>% ## select the columns & rename per col_plan
-    col_align_all(tfrmt$col_align)
+    col_align_all(tfrmt$col_align) %>%
+    tentative_process(arrange_enquo, tfrmt$sorting_cols, "Unable to arrange dataset") %>%
+    tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") ## select the columns & rename per col_plan
 
   list(
     data = tbl_dat_wide,
@@ -137,4 +137,8 @@ validate_cols_match <- function(.data, tfrmt, mock){
     }
     )
 
+}
+
+arrange_enquo <- function(dat, param){
+  arrange(dat, !!!param)
 }
