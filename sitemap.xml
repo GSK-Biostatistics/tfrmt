@@ -25,6 +25,9 @@
     <loc>/reference/apply_frmt.html</loc>
   </url>
   <url>
+    <loc>/reference/apply_grp_block.html</loc>
+  </url>
+  <url>
     <loc>/reference/col_align_all.html</loc>
   </url>
   <url>
@@ -35,6 +38,12 @@
   </url>
   <url>
     <loc>/reference/element_align.html</loc>
+  </url>
+  <url>
+    <loc>/reference/element_block.html</loc>
+  </url>
+  <url>
+    <loc>/reference/element_row_grp_loc.html</loc>
   </url>
   <url>
     <loc>/reference/frmt.html</loc>
@@ -65,6 +74,12 @@
   </url>
   <url>
     <loc>/reference/print_to_gt.html</loc>
+  </url>
+  <url>
+    <loc>/reference/row_grp_plan.html</loc>
+  </url>
+  <url>
+    <loc>/reference/row_grp_structure.html</loc>
   </url>
   <url>
     <loc>/reference/span_plan.html</loc>
