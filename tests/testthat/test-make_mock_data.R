@@ -162,4 +162,40 @@ test_that("Mock data contains all levels", {
 })
 
 
+test_that("Check mock when value it missing", {
+  data <- crossing(
+    label = c("Intent-To-Treat (ITT)",
+              "Safety",
+              "Efficacy",
+              "Complete Week 24",
+              "Complete Study"
+    ),
+    column = c("Placebo\n(N=XX)",
+               "Xanomeline\nLow Dose\n(N=XX)",
+               "Xanomeline\nHigh Dose\n(N=XX)",
+               "Total\n(N=XXX)"
+    ),
+    param = c("n", "percent")
+  )
+
+  plan <- tfrmt(
+    label = "label",
+    column = "column",
+    param = "param",
+    title = "Summary of Populations",
+    body_style = table_body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  #Make mock
+  auto_gt <- print_mock_gt(plan, data)
+  expect_snapshot(auto_gt)
+})
+
 
