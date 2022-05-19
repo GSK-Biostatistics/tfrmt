@@ -218,3 +218,28 @@ frmt_when <- function(...){
     class = c("frmt_when","frmt")
   )
 }
+
+
+#' Column Alignment Plan
+#'
+#' @param ... list of frmt_structure
+#'
+#' @return table_body_plan object
+#' @export
+#'
+col_align_plan <- function(...){
+
+  element_align_list <- list(...)
+
+  for(el_idx in seq_along(element_align_list)){
+    if(!is_element_align(element_align_list[[el_idx]])){
+      stop(paste0("Entry number ",el_idx," is not an object of class `element_align`."))
+    }
+  }
+
+  structure(
+    element_align_list,
+    class = c("col_align_plan", "frmt_table")
+  )
+}
+

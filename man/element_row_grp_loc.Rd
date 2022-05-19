@@ -10,9 +10,13 @@ element_row_grp_loc(
 )
 }
 \arguments{
-\item{location}{Location of the grouping. Where 'indented' has all groups in
-the same column with each sub-group indented under its parent. 'spanning'
-has the highest level group spanning across the table and all sub-groups indented.}
+\item{location}{Location of the row group labels. Specifying 'indented'
+combines all group and label variables into a single column with each
+sub-group indented under its parent. 'spanning' and 'column' retain the
+highest level group variable in its own column and combine all remaining
+group and label variables into a single column with sub-groups indented. The
+highest level group column will either be printed as a spanning header or in
+its own column in the gt.}
 
 \item{indent}{A string of the number of spaces you want to indent}
 }
