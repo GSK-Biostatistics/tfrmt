@@ -200,7 +200,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
         lone_dat %>%
           mutate(!!label := str_c(indent, !!label)) %>%
           bind_rows(new_row, .) %>%
-          mutate(across(-(!!!group), ~replace_na(., "")))
+          mutate(across(-c(!!!group), ~replace_na(., "")))
       })
     group = group[-length(group)]
     top_grouping = top_grouping[-length(top_grouping)]
