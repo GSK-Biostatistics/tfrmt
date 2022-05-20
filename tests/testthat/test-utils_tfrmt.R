@@ -1,6 +1,3 @@
-library(tibble)
-library(tidyr)
-library(dplyr)
 
 set.seed(1234)
 
@@ -39,10 +36,10 @@ plan  <- tfrmt(
   column = "col",
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
-  col_align = element_align(left = "group",
-                            right = vars(label),
-                            char = vars(starts_with("Var")),
-                            char_val = c(" ", ",", ".")),
+  col_align = col_align_plan(
+    element_align(align = "left", col = "group"),
+    element_align(align = "right", col = vars(label)),
+    element_align(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
     frmt_structure(group_val = ".default", label_val = ".default",

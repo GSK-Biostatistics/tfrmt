@@ -1,44 +1,92 @@
 
-element_block <- function(background_fill,
-                          outline,
-                          post_space = c(NULL, " ", "", "------")){
+#'Element Row Group Location
+#'
+#'
+#'@param location Location of the row group labels. Specifying 'indented'
+#'  combines all group and label variables into a single column with each
+#'  sub-group indented under its parent. 'spanning' and 'column' retain the
+#'  highest level group variable in its own column and combine all remaining
+#'  group and label variables into a single column with sub-groups indented. The
+#'  highest level group column will either be printed as a spanning header or in
+#'  its own column in the gt.
+#'@param indent A string of the number of spaces you want to indent
+#'
+#'@export
+element_row_grp_loc <- function(location = c("indented", "spanning", "column"),
+                                indent = "  "){
+  location = match.arg(location)
   structure(
-    list(background_fill = background_fill, outline = outline, post_space = post_space),
+    list(location= location, indent = indent),
+    class = c("element_row_grp_loc", "element")
+  )
+}
+
+is_element_row_grp_loc <- function(x){
+  inherits(x, "element_row_grp_loc")
+}
+
+
+#' Element block
+#'
+#' @param post_space Option to create a new line after group block; specified characters will fill the cells
+#' @param background_fill Option to fill background for group block
+#' @param border Option to add a solid border to group block (rectangle or just bottom border)
+#'
+#' @return element block object
+#'
+#' @export
+element_block <- function(post_space = c(NULL, " ", "-"),
+                          background_fill = NULL,
+                          border = c(NULL, "outline", "bottom")){
+  structure(
+    list(post_space = post_space, background_fill = background_fill, border = border),
     class = c("element_block", "element")
   )
 
 }
 
-
-
-element_style <- function(...){
-  structure(
-    list(all_fmts = list(...)),
-    class = c("element_style", "element")
-  )
-}
+# PROBABLY NEEDS DELETING
+# element_style <- function(...){
+#   structure(
+#     list(all_fmts = list(...)),
+#     class = c("element_style", "element")
+#   )
+# }
 
 #' Element Align
 #'
-#' @param left Variables to align to the left
-#' @param right Variables to align to the right
-#' @param char Variable to align on a provided character
-#' @param char_val Vector of one or more characters to align on. If NULL, data values in `char` variable(s) will be aligned on the first occurrence of a decimal place or space. If more than one
-#' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param align Alignment to be applied to column. Acceptable values: "left" for left alignment, "right" for right alignment",
+#' or supply a vector of character(s) to align on. For the case of character alignment, if more
+#' than one character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param col Variable to align on
 #'
 #' @importFrom purrr map
 #'
 #' @export
-element_align <- function(left = vars(), right = vars(), char = vars(), char_val = "."){
+#' @rdname theme_element
+element_align <- function(align = "left",
+                          col = vars()){
 
-  args <- c("left", "right", "char")
+  cols <- quo_get("col", as_var_args = "col") %>% map(~as_vars(.x))
 
   structure(
     c(
-      quo_get(args, as_var_args = args) %>% map(~as_vars(.x)),
-      char_val = list(char_val)),
+      list(align = align),
+      cols
+      ),
     class = c("element_align", "element")
   )
+}
+
+
+#' Check if input is an element_align object
+#'
+#' @param x Object to check
+#' @export
+#'
+#' @rdname theme_element
+is_element_align <- function(x){
+  inherits(x, "element_align")
 }
 
 

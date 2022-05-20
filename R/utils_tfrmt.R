@@ -64,6 +64,12 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   tbl_dat_wide
 
+  # From main
+  # tbl_dat_wide %>%
+  #   tentative_process(arrange, tfrmt$sorting_cols) %>%
+  #   tentative_fx(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label) %>%
+  #   tentative_process(select, tfrmt$col_select)%>%
+  #   tentative_fx(apply_col_align_plan, tfrmt$col_align)
 }
 
 
@@ -97,6 +103,29 @@ tentative_process <- function(.data, fx, param, fail_desc = NULL){
   out
 }
 
+#' Tentatively apply functions
+#'
+#' Will only apply the functions to the data if the arguments aren't NULL
+#'
+#' @param .data data to process
+#' @param fx function
+#' @param ... inputs supplied to function arguments
+#'
+#' @return processed data
+#' @importFrom purrr map_lgl
+#' @noRd
+tentative_fx <- function(.data, fx, ...){
+
+  args <- list(...)
+
+  if(any(map_lgl(args, is.null))){
+    out <- .data
+  } else {
+    out <- .data %>%
+      fx(...)
+  }
+  out
+}
 
 #' Checks required columns exsist
 #'
