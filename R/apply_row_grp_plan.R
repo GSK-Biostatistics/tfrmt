@@ -176,9 +176,11 @@ fill_post_space <- function(post_space, width){
 #' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map_dfr map_chr
 #' @importFrom tidyselect vars_select_helpers
+#' @importFrom forcats fct_inorder
 combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
+  orig_group_names <- map_chr(group, as_name)
   top_grouping <- group #used for spliting in case of spanning label
 
   if(is.null(element_row_grp_loc)){
@@ -189,6 +191,10 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   } else {
     indent = element_row_grp_loc$indent
   }
+
+ # to retain the order of the data when splitting by group
+  .data <- .data %>%
+    mutate(across(c(!!!group), fct_inorder))
 
   while(length(group) > 0 & !is.null(label)){
 
@@ -217,12 +223,15 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
                                    !!label,
                                    str_c(indent, !!label))) %>%
           select(-.data$..tlang_summary_row) %>%
-          bind_rows(new_row, .) %>%
-          mutate(across(c(vars_select_helpers$where(is.character), -c(!!!group)), ~replace_na(., "")))
+          bind_rows(new_row, .)
       })
     group = group[-length(group)]
     top_grouping = top_grouping[-length(top_grouping)]
   }
-  .data
+
+  .data%>%
+    mutate(across(any_of(orig_group_names), as.character),
+           across(-c(vars_select_helpers$where(is.numeric)), ~replace_na(., "")))
+
 
 }
