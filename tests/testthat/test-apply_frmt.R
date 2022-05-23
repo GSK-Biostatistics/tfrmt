@@ -412,8 +412,4 @@ test_that("mocks return correctly", {
 
   expect_equal(sample_df_frmted, rep("xxx.x (X.X%)", 5))
 
-
-
-
-
 })

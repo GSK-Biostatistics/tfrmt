@@ -102,7 +102,7 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   ## get args of parent function
   arg_parent <- names(formals(sys.function(sys.parent(1))))
   ## don't try to get the tftmt obj
-  args <- setdiff(arg_parent,"tfmt_obj")
+  args <- setdiff(arg_parent,"tfrmt_obj")
 
   ## get the values from the parent env. turn the
   ## as_var_args call into vars

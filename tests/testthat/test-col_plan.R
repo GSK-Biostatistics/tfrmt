@@ -38,6 +38,12 @@ test_that("Defining the col plan", {
   expect_s3_class(s1,"col_plan")
   expect_s3_class(s1,"plan")
 
+  #Go into object
+  tfrmt_test <- tfrmt(column = vars(columns),
+        col_plan = col_plan(span_structure("test label", vars(col3))))
+
+  expect_true(!is.null(tfrmt_test$col_plan))
+
 })
 
 test_that("From the spanning structure get cols to span across", {
@@ -81,20 +87,21 @@ test_that("From the spanning structure get cols to span across", {
 test_that("From col plan spanning structures, get df to add to data",{
 
   tfrmt_obj_one_span <- tfrmt(column = vars(columns),
-                              col_plan = col_plan(span_structure("test label", col3)))
+                              col_plan = col_plan(span_structure("test label",
+                                                                 vars(col3))))
 
   tfrmt_obj_nested_spans <- tfrmt(column = vars(columns),
                                   col_plan = col_plan(
                                     span_structure(
                                       "test label1",
                                       span_structure("test label1.1",
-                                                     col1,
+                                                     vars(col1),
                                                      span_structure("test label1.1.1",
-                                                                    col2)),
-                                      col3,
-                                      span_structure("test label1.2", col5)
+                                                                    vars(col2))),
+                                      vars(col3),
+                                      span_structure("test label1.2", vars(col5))
                                     ),
-                                    span_structure("test label2", col3)
+                                    span_structure("test label2", vars(col7))
                                   ))
 
   input_data <- tibble(
@@ -119,17 +126,18 @@ test_that("From col plan spanning structures, get df to add to data",{
 
   nested_spans_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans, x = input_data)
 
+  input_data <- tibble(
+    `__tlang_span_structure_column__1` = c("test label1", "test label1", "test label1", "test label2", NA, "test label1", NA, NA, NA, NA),
+    `__tlang_span_structure_column__2` = c("test label1.1", "test label1.1", NA, NA, NA, "test label1.2", NA, NA, NA, NA),
+    `__tlang_span_structure_column__3` = c(NA, "test label1.1.1", rep(NA, 8)),
+    columns = paste0("col",1:10),
+    group = "groupvar",
+    label = "labels",
+    param = "params",
+  )
   expect_equal(
     nested_spans_wide_data,
-    input_data <- tibble(
-      `__tlang_span_structure_column__1` = c("test label1", "test label1", "test label1", "test label2", NA, "test label1", NA, NA, NA, NA, NA),
-      `__tlang_span_structure_column__2` = c("test label1.1", "test label1.1", NA, NA, NA, "test label1.2", NA, NA, NA, NA, NA),
-      `__tlang_span_structure_column__3` = c(NA, "test label1.1.1", rep(NA, 8)),
-      columns = paste0("col",1:10),
-      group = "groupvar",
-      label = "labels",
-      param = "params",
-    )
+    input_data
   )
 
 })

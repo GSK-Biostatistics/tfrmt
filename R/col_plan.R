@@ -162,32 +162,32 @@ check_col_plan_dots <- check_span_structure_dots
 ## ---------------------------------------
 ## apply col_plan
 ## ---------------------------------------
-apply_gt_spanning_labels <- function(gt_table, col_plan){
-
-  spanning_lab_structs <- col_plan$span_structures
-  if(!is.null(spanning_lab_structs)){
-    # get set of tab_spanner functions to apply
-    spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_structs = spanning_lab_structs)
-    #loop over the tab_spanners to add to the gt table
-    for(spanning_lab_apply_idx in seq_along(spanning_lab_grps)){
-      spanning_lab_func <- spanning_lab_grps[[spanning_lab_apply_idx]]
-      gt_table <- spanning_lab_func(gt_table)
-    }
-  }
-  gt_table
-}
-
-apply_spanning_labels <- function(data, spanning_lab_structs){
-  span_lab_groups <- list()
-  for(span_lab_grp in spanning_lab_structs){
-    ## do.call('c') quickly concatenates list into vector.
-    span_lab_groups <- do.call('c',
-      list(create_span_group(span_lab_grp, data),
-      span_lab_groups
-      ))
-  }
-  span_lab_groups
-}
+# apply_gt_spanning_labels <- function(gt_table, col_plan){
+#
+#   spanning_lab_structs <- col_plan$span_structures
+#   if(!is.null(spanning_lab_structs)){
+#     # get set of tab_spanner functions to apply
+#     spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_structs = spanning_lab_structs)
+#     #loop over the tab_spanners to add to the gt table
+#     for(spanning_lab_apply_idx in seq_along(spanning_lab_grps)){
+#       spanning_lab_func <- spanning_lab_grps[[spanning_lab_apply_idx]]
+#       gt_table <- spanning_lab_func(gt_table)
+#     }
+#   }
+#   gt_table
+# }
+#
+# apply_spanning_labels <- function(data, spanning_lab_structs){
+#   span_lab_groups <- list()
+#   for(span_lab_grp in spanning_lab_structs){
+#     ## do.call('c') quickly concatenates list into vector.
+#     span_lab_groups <- do.call('c',
+#       list(create_span_group(span_lab_grp, data),
+#       span_lab_groups
+#       ))
+#   }
+#   span_lab_groups
+# }
 
 
 ## ---------------------------------------
@@ -341,47 +341,47 @@ amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
 
 ## we can probably get rid of this - this was reverse engineering
 ## span structures from
-as_span_struct_from_df <- function(x){
-
-  labels <- unique(x[[1]])
-
-  x_sub <- x[,-1, drop = FALSE]
-
-  if(ncol(x_sub) == 1){
-    lapply(labels, function(lab){
-      x_sub_rows <- x_sub[x[[1]] %in% lab,1, drop = TRUE]
-      col_span_vals <- lapply(unique(x_sub_rows), as.name)
-      if(is.na(lab)){
-        col_span_vals
-      }else{
-        list(do.call(
-          span_structure,
-          c(
-            label = lab,
-            col_span_vals
-          )
-        ))
-      }
-    })
-  }else{
-    lapply(labels, function(lab){
-      x_sub_rows <- x_sub[x[[1]] %in% lab,,drop = FALSE]
-      col_span_vals <- as_span_struct_from_df(x_sub_rows)
-      if(is.na(lab)){
-        col_span_vals
-      }else{
-        do.call(
-          span_structure,
-          c(
-            label = lab,
-            col_span_vals
-          )
-        )
-      }
-    })
-  }
-
-}
+# as_span_struct_from_df <- function(x){
+#
+#   labels <- unique(x[[1]])
+#
+#   x_sub <- x[,-1, drop = FALSE]
+#
+#   if(ncol(x_sub) == 1){
+#     lapply(labels, function(lab){
+#       x_sub_rows <- x_sub[x[[1]] %in% lab,1, drop = TRUE]
+#       col_span_vals <- lapply(unique(x_sub_rows), as.name)
+#       if(is.na(lab)){
+#         col_span_vals
+#       }else{
+#         list(do.call(
+#           span_structure,
+#           c(
+#             label = lab,
+#             col_span_vals
+#           )
+#         ))
+#       }
+#     })
+#   }else{
+#     lapply(labels, function(lab){
+#       x_sub_rows <- x_sub[x[[1]] %in% lab,,drop = FALSE]
+#       col_span_vals <- as_span_struct_from_df(x_sub_rows)
+#       if(is.na(lab)){
+#         col_span_vals
+#       }else{
+#         do.call(
+#           span_structure,
+#           c(
+#             label = lab,
+#             col_span_vals
+#           )
+#         )
+#       }
+#     })
+#   }
+#
+# }
 
 select_col_plan <- function(data, col_plan){
   select(
