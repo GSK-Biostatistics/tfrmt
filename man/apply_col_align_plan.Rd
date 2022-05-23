@@ -4,7 +4,7 @@
 \alias{apply_col_align_plan}
 \title{Apply column alignment plan}
 \usage{
-apply_col_align_plan(.data, align_plan)
+apply_col_align_plan(.data, align_plan, columns, val_col)
 }
 \arguments{
 \item{.data}{data}

@@ -13,8 +13,10 @@
 #'
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
-
   validate_cols_match(.data, tfrmt, mock)
+  if(!is_tfrmt(tfrmt)){
+    stop("Requires a tfrmt object")
+  }
 
   tbl_dat <- apply_table_frmt_plan(
     .data = .data,
@@ -25,7 +27,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     values = tfrmt$values,
     column = tfrmt$column,
     mock = mock
-  )
+  ) %>%
+    tentative_process(apply_col_align_plan, tfrmt$col_align,
+                      tfrmt$column, tfrmt$values,
+                      fail_desc= "Unable to align dataset")
 
   ## append span structures to dataset for handling post-this function
   if(!is.null(tfrmt$col_plan$span_structures)){
@@ -48,14 +53,18 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       length(tbl_dat_wide$warnings)>0 &&
       str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
     message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
-    tbl_dat_wide <- tbl_dat_wide$result %>% unnest(cols = everything())
+    tbl_dat_wide <- tbl_dat_wide$result %>%
+      unnest(cols = everything()) %>%
+      clean_spanning_col_names()
   } else {
-    tbl_dat_wide <- tbl_dat_wide$result
+    tbl_dat_wide <- tbl_dat_wide$result %>%
+      clean_spanning_col_names()
   }
 
   tbl_dat_wide <- tbl_dat_wide %>%
-    tentative_process(arrange_enquo, tfrmt$sorting_cols, "Unable to arrange dataset") %>%
-    col_align_all(tfrmt$col_align)
+    tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
+    tentative_process(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label) %>%
+    tentative_process(select_col_plan, tfrmt$col_plan, fail_desc = "Unable to subset dataset columns")
 
     ## TODO: I don't think this is where we need to do the sub-seting, but open to sort it out. This is assuming the
     ## column names are as they were typed in, which we know to be incorrect at this point due to
@@ -63,13 +72,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     # tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") ## select the columns & rename per col_plan
 
   tbl_dat_wide
-
-  # From main
-  # tbl_dat_wide %>%
-  #   tentative_process(arrange, tfrmt$sorting_cols) %>%
-  #   tentative_fx(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label) %>%
-  #   tentative_process(select, tfrmt$col_select)%>%
-  #   tentative_fx(apply_col_align_plan, tfrmt$col_align)
 }
 
 
@@ -79,16 +81,19 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 #'
 #' @param .data data to process
 #' @param fx processing function
-#' @param param parameter to control processing
+#' @param ... inputs supplied to function arguments
 #'
 #' @return processed data
+#' @importFrom purrr map_lgl
 #' @noRd
-tentative_process <- function(.data, fx, param, fail_desc = NULL){
-  if(is.null(param)){
+tentative_process <- function(.data, fx, ..., fail_desc = NULL){
+  args <- list(...)
+
+  if(any(map_lgl(args, is.null))){
     out <- .data
   } else{
     out <- .data %>%
-      safely(fx)(param)
+      safely(fx)(...)
     if(!is.null(out[["error"]])){
       out <- .data
       if(is.null(fail_desc)){
@@ -103,29 +108,6 @@ tentative_process <- function(.data, fx, param, fail_desc = NULL){
   out
 }
 
-#' Tentatively apply functions
-#'
-#' Will only apply the functions to the data if the arguments aren't NULL
-#'
-#' @param .data data to process
-#' @param fx function
-#' @param ... inputs supplied to function arguments
-#'
-#' @return processed data
-#' @importFrom purrr map_lgl
-#' @noRd
-tentative_fx <- function(.data, fx, ...){
-
-  args <- list(...)
-
-  if(any(map_lgl(args, is.null))){
-    out <- .data
-  } else {
-    out <- .data %>%
-      fx(...)
-  }
-  out
-}
 
 #' Checks required columns exsist
 #'
@@ -176,4 +158,23 @@ validate_cols_match <- function(.data, tfrmt, mock){
 
 arrange_enquo <- function(dat, param){
   arrange(dat, !!!param)
+}
+
+#' Clean Spanning column names
+#'
+#' This function removes the prefix on columns that aren't nested
+#' @param data data to rename
+#'
+#' @return dataset with renaming in needed
+#' @noRd
+#' @importFrom stringr str_count str_remove
+clean_spanning_col_names <- function(data){
+  # Get number of layers
+  lyrs <- names(data) %>%
+    str_count(.tlang_delim) %>%
+    max()
+  # remove the layering for unnested columns
+  empty_layers <- strrep(paste0("NA", .tlang_delim), lyrs)
+  data %>%
+    rename_with(~str_remove(., empty_layers))
 }

@@ -90,59 +90,59 @@ check_span_structure_dots <- function(x){
   invisible()
 }
 
-apply_spanning_labels <- function(data, spanning_lab_struct){
-  span_lab_groups <- list()
-  for(span_lab_grp in spanning_lab_struct){
+# apply_spanning_labels <- function(data, spanning_lab_struct){
+#   span_lab_groups <- list()
+#   for(span_lab_grp in spanning_lab_struct){
+#
+#     ## do.call('c') quickly concatenates list into vector.
+#     span_lab_groups <- do.call('c',
+#       list(create_span_group(span_lab_grp, data),
+#       span_lab_groups
+#       ))
+#   }
+#   span_lab_groups
+# }
 
-    ## do.call('c') quickly concatenates list into vector.
-    span_lab_groups <- do.call('c',
-      list(create_span_group(span_lab_grp, data),
-      span_lab_groups
-      ))
-  }
-  span_lab_groups
-}
-
-create_span_group <- function(x, data){
-  create_span_group_function <- get(paste0("create_span_group.",class(x)[1]),envir = asNamespace("tlang"))
-  create_span_group_function(x, data)
-}
-
-#' @importFrom gt tab_spanner cols_move
-create_span_group.span_structure <- function(x, data){
-
-  cols <- span_col_select(x, data = data)
-  label <- format(x$label)
-
-  list(function(gt_tab){
-    gt_tab <- tab_spanner(gt_tab,label = label, columns = cols)
-    if(x$order_cols){
-      gt_tab <- cols_move(
-        gt_tab,
-        columns = cols[-1],
-        after = cols[1]
-      )
-    }
-  });
-}
-
-create_span_group.span_structures <- function(x, data){
-
-  ## for child span_structures, create tab_spanner funcs
-  child_span_structures <- x$span_cols[sapply(x$span_cols, is_span_structure)]
-
-  ## do.call('c') quickly concatenates list into vector.
-  span_structure_span_func <- do.call('c',lapply(child_span_structures, create_span_group, data = data))
-
-  ## for parent span_structure, create tab_spanner funcs
-  span_structures_span_func <- create_span_group.span_structure(x, data)
-
-  ## combine together
-  c(
-    span_structure_span_func,
-    span_structures_span_func
-  )
-}
+#' create_span_group <- function(x, data){
+#'   create_span_group_function <- get(paste0("create_span_group.",class(x)[1]),envir = asNamespace("tlang"))
+#'   create_span_group_function(x, data)
+#' }
+#'
+#' #' @importFrom gt tab_spanner cols_move
+#' create_span_group.span_structure <- function(x, data){
+#'
+#'   cols <- span_col_select(x, data = data)
+#'   label <- format(x$label)
+#'
+#'   list(function(gt_tab){
+#'     gt_tab <- tab_spanner(gt_tab,label = label, columns = cols)
+#'     if(x$order_cols){
+#'       gt_tab <- cols_move(
+#'         gt_tab,
+#'         columns = cols[-1],
+#'         after = cols[1]
+#'       )
+#'     }
+#'   });
+#' }
+#'
+#' create_span_group.span_structures <- function(x, data){
+#'
+#'   ## for child span_structures, create tab_spanner funcs
+#'   child_span_structures <- x$span_cols[sapply(x$span_cols, is_span_structure)]
+#'
+#'   ## do.call('c') quickly concatenates list into vector.
+#'   span_structure_span_func <- do.call('c',lapply(child_span_structures, create_span_group, data = data))
+#'
+#'   ## for parent span_structure, create tab_spanner funcs
+#'   span_structures_span_func <- create_span_group.span_structure(x, data)
+#'
+#'   ## combine together
+#'   c(
+#'     span_structure_span_func,
+#'     span_structures_span_func
+#'   )
+#' }
 
 
 ## determine which columns to span across
