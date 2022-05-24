@@ -236,3 +236,28 @@ test_that("Check apply_tfrmt for mock data",{
 
 })
 
+test_that("Test body_plan missing", {
+  input_data <- tibble(
+    group = "groupvar",
+    label = paste0("label", 1:10),
+    param = "params",
+    column = "col1",
+    val = 1:10
+  )
+
+  empty_body_plan <- tfrmt(
+    group = group,
+    label = label,
+    param = param,
+    column = column,
+    values = val
+  ) %>%
+    apply_tfrmt(input_data, .)
+
+  expect_equal(empty_body_plan,
+               input_data %>%
+                 select(-param) %>%
+                 mutate(val = as.character(val)) %>%
+                 pivot_wider(names_from = column, values_from = val))
+})
+

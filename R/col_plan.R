@@ -36,11 +36,11 @@
 #' )
 #'
 col_plan <- function(...){
-
   ## selectively evaluate dots (only if is a span_structure)
   ## confirm contents otherwise
   dots <- as.list(substitute(substitute(...)))[-1]
   dots <- check_col_plan_dots(dots)
+  #Add the new spanning columns to the dots.
 
   ## get columns of the span structures
   span_struct_entries_locs <- sapply(dots, is_span_structure)
@@ -57,6 +57,8 @@ col_plan <- function(...){
 
   ## convert dots into a vars list (list of quosures)
   dots_as_vars <- do.call(vars, dots)
+
+  ##TODO: check for duplicate variable calls?
 
   structure(
     list(
@@ -269,7 +271,7 @@ get_span_structure_dots.quosure <- function(x){
 get_span_structure_dots.quosures <- get_span_structure_dots.quosure
 
 get_span_structure_dots.span_structure <- function(x){
-  x$span_cols
+   x$span_cols %>% unlist()
 }
 
 get_span_structure_dots.span_structures <- function(x){
@@ -302,91 +304,75 @@ check_column_and_col_plan <- function(x){
 
 
 ### amend the tfrmt column argument to include new spanning columns
-amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
-
-  ## create temp df with columns based on
-  tmp_df <- tbl_dat %>%
-    select(!!!tfrmt_obj$column)
-
-  ## remove cases where there are no spanning columns as all
-  tmp_df_idx <- tmp_df %>%
-    apply(MARGIN = 2,FUN = is.na) %>%
-    bind_cols() %>%
-    select(-ncol(.)) %>%
-    mutate(across(everything(), `!`)) %>%
-    mutate(
-      keep_idx = rowSums(.) != 0
-    ) %>%
-    pull(keep_idx)
-
-  tmp_df <- tmp_df[tmp_df_idx,]
-
-  ## remove extra columns since they are defining spanning headers and are no longer needed
-  out_tbl_dat <- tbl_dat %>%
-    select(-(!!!(tfrmt_obj$column[-length(tfrmt_obj$column)])))
-
-  ## evaluate columns from col_plan
-  new_span_structs <- as_span_struct_from_df(x = tmp_df)
-
-  ## replace tfrmt contents with corrected values
-  tfrmt_obj$col_plan$span_structures <- new_span_structs[[1]]
-  tfrmt_obj$column <- tfrmt_obj$column[length(tfrmt_obj$column)]
-
-  ## return edited values
-  list(
-    tbl_dat = out_tbl_dat,
-    tfrmt = tfrmt_obj
-  )
-}
-
-## we can probably get rid of this - this was reverse engineering
-## span structures from
-# as_span_struct_from_df <- function(x){
+# amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
 #
-#   labels <- unique(x[[1]])
+#   ## create temp df with columns based on
+#   tmp_df <- tbl_dat %>%
+#     select(!!!tfrmt_obj$column)
 #
-#   x_sub <- x[,-1, drop = FALSE]
+#   ## remove cases where there are no spanning columns as all
+#   tmp_df_idx <- tmp_df %>%
+#     apply(MARGIN = 2,FUN = is.na) %>%
+#     bind_cols() %>%
+#     select(-ncol(.)) %>%
+#     mutate(across(everything(), `!`)) %>%
+#     mutate(
+#       keep_idx = rowSums(.) != 0
+#     ) %>%
+#     pull(keep_idx)
 #
-#   if(ncol(x_sub) == 1){
-#     lapply(labels, function(lab){
-#       x_sub_rows <- x_sub[x[[1]] %in% lab,1, drop = TRUE]
-#       col_span_vals <- lapply(unique(x_sub_rows), as.name)
-#       if(is.na(lab)){
-#         col_span_vals
-#       }else{
-#         list(do.call(
-#           span_structure,
-#           c(
-#             label = lab,
-#             col_span_vals
-#           )
-#         ))
-#       }
-#     })
-#   }else{
-#     lapply(labels, function(lab){
-#       x_sub_rows <- x_sub[x[[1]] %in% lab,,drop = FALSE]
-#       col_span_vals <- as_span_struct_from_df(x_sub_rows)
-#       if(is.na(lab)){
-#         col_span_vals
-#       }else{
-#         do.call(
-#           span_structure,
-#           c(
-#             label = lab,
-#             col_span_vals
-#           )
-#         )
-#       }
-#     })
-#   }
+#   tmp_df <- tmp_df[tmp_df_idx,]
 #
+#   ## remove extra columns since they are defining spanning headers and are no longer needed
+#   out_tbl_dat <- tbl_dat %>%
+#     select(-(!!!(tfrmt_obj$column[-length(tfrmt_obj$column)])))
+#
+#   ## evaluate columns from col_plan
+#   new_span_structs <- as_span_struct_from_df(x = tmp_df)
+#
+#   ## replace tfrmt contents with corrected values
+#   tfrmt_obj$col_plan$span_structures <- new_span_structs[[1]]
+#   tfrmt_obj$column <- tfrmt_obj$column[length(tfrmt_obj$column)]
+#
+#   ## return edited values
+#   list(
+#     tbl_dat = out_tbl_dat,
+#     tfrmt = tfrmt_obj
+#   )
 # }
 
+#' @importFrom tidyr unite
 select_col_plan <- function(data, col_plan){
+  #make a dummy dataset based on the last section of the column
+  if(length(col_plan$span_structures) > 0){
+    tpm_data <- names(data) %>%
+      str_split(.tlang_delim) %>%
+      map_chr(last) %>%
+      as_tibble() %>%
+      mutate(val = 0) %>%
+      pivot_wider(names_from = value,
+                  values_from = val) %>%
+      slice(0)
+
+    # Get the new names
+    new_name_df <- col_plan$span_structures %>%
+      map_dfr(span_struct_to_df, tpm_data) %>%
+      relocate(.original_col, .after = last_col()) %>%
+      tidyr::unite("new_name", everything(), sep = .tlang_delim, remove = FALSE) %>%
+      mutate(new_name_quo = map(new_name, sym))
+
+    new_dots <- tibble(dots = col_plan$dots,
+                       chr_dots = map_chr(col_plan$dots, as_label)) %>%
+      left_join(new_name_df, by =c("chr_dots"=".original_col")) %>%
+      mutate(dot2 = ifelse(!is.na(new_name), new_name_quo, dots))%>%
+      pull(dot2)
+  } else {
+    new_dots <- col_plan$dots
+  }
+
   select(
     data,
-    !!!col_plan$dots
+    !!!new_dots
   )
 }
 

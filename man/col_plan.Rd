@@ -7,7 +7,7 @@
 \usage{
 col_plan(...)
 
-span_structure(label, ..., order_cols = TRUE)
+span_structure(label, ...)
 }
 \arguments{
 \item{...}{For a col_plan and span_structure, <\code{\link[=dplyr_tidy_select]{tidy-select}}> arguments,

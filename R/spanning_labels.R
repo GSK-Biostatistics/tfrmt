@@ -2,7 +2,7 @@
 ## determine which columns to span across
 # span_col_select <- function(x, data){
 #   span_col_select_function <- get(paste0("span_col_select.",class(x)[1]),envir = asNamespace("tlang"))
-#   span_col_select_function(x, data = data)
+#   span_col_select_function(x$dots, data = data)
 # }
 #
 # #' @importFrom tidyselect eval_select
