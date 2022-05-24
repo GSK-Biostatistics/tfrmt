@@ -23,6 +23,12 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$values <- vars(val)[[1]]
   }
 
+  if(is.null(tfrmt$body_style)){
+    tfrmt$body_style <- table_body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    )
+  }
+
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     cleaned_data_to_gt(tfrmt)
 
