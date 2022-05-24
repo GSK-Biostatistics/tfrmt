@@ -14,6 +14,7 @@
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   validate_cols_match(.data, tfrmt, mock)
+
   if(!is_tfrmt(tfrmt)){
     stop("Requires a tfrmt object")
   }
@@ -34,7 +35,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   ## append span structures to dataset for handling post-this function
   if(!is.null(tfrmt$col_plan$span_structures)){
-    tbl_dat_span_cols <- apply_span_structs_to_data(
+    tbl_dat_span_cols <- apply_span_structures_to_data(
       tfrmt,
       tbl_dat
     )
@@ -48,6 +49,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     names_sep = .tlang_delim,
     values_from = !!tfrmt$values
     )
+
 
   if (mock == TRUE &&
       length(tbl_dat_wide$warnings)>0 &&
@@ -175,6 +177,9 @@ clean_spanning_col_names <- function(data){
     max()
   # remove the layering for unnested columns
   empty_layers <- strrep(paste0("NA", .tlang_delim), lyrs)
-  data %>%
-    rename_with(~str_remove(., empty_layers))
+  if(empty_layers != ""){
+    data <- data %>%
+      rename_with(~str_remove(., empty_layers))
+  }
+  data
 }
