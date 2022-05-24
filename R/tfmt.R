@@ -175,7 +175,8 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
           get(arg, envir = envir,inherits = FALSE)
         }
       },error = function(e){
-        if(inherits(e,"group_vars_error")){
+        # This might be too common, but it was stopping valid errors from getting through
+        if(!str_detect(e$message, "missing")){
           stop(e)
         }else{
           quote(expr = )
