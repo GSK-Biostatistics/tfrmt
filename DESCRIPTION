@@ -31,7 +31,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Suggests: 
     covr,
-    tibble,
     testthat (>= 3.0.0)
 Imports: 
     magrittr,
@@ -42,5 +41,6 @@ Imports:
     tidyr,
     gt (>= 0.5.0),
     tidyselect,
-    forcats
+    forcats,
+    tibble
 Config/testthat/edition: 3

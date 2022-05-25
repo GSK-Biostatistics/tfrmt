@@ -30,10 +30,8 @@
 #' @param sorting_cols which columns determine sorting of output
 #' @param page_vars which column determine paging of table (splitting)
 #' @param row_group which columns determine row groups
-#' @param col_labels values to display for the columns in the dataset
+#' @param col_plan a col_plan object which is used to select, rename, and nest columns
 #' @param col_widths special column widths. otherwise fits contents
-#' @param spanning_label_grp named list detailing which columns are spanned by what text
-#' @param col_select which columns to display. defaults to everything(). uses tidyselect semantics
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'

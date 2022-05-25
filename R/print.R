@@ -135,18 +135,18 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       str_split(.tlang_delim, simplify = TRUE) %>%
       as_tibble( .name_repair = ~paste0("V", 1:length(.))) %>%
       mutate(cols = spanning) %>%
-      pivot_longer(-cols)
+      pivot_longer(-.data$cols)
 
 
-    lowest_lvl <- work_df %>% filter(name == max(name))
+    lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
 
     spans_to_apply <- work_df %>%
-      filter(name != max(name)) %>%
-      arrange(desc(name)) %>%
-      group_by(value) %>%
+      filter(.data$name != max(.data$name)) %>%
+      arrange(desc(.data$name)) %>%
+      group_by(.data$value) %>%
       nest(set = "cols") %>%
-      mutate(set = map(set, ~pull(.,cols))) %>%
-      filter(value != "NA")
+      mutate(set = map(.data$set, ~pull(.,cols))) %>%
+      filter(.data$value != "NA")
 
     for(i in 1:nrow(spans_to_apply)){
       gt_table <- gt_table %>%
@@ -154,9 +154,9 @@ apply_gt_spanning_labels <- function(gt_table, .data){
     }
 
     renm_vals <- lowest_lvl %>%
-      pull(value)
+      pull(.data$value)
     names(renm_vals) <-lowest_lvl %>%
-      pull(cols)
+      pull(.data$cols)
 
     gt_table <- gt_table %>%
       cols_label(.list = renm_vals)

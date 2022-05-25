@@ -107,7 +107,7 @@ apply_col_align_plan <- function(.data, align_plan, column, value){
       }
       x
     }) %>%
-    select(-align) %>%
+    select(-.data$align) %>%
     mutate(across(c(!!!column), as.character))
 }
 

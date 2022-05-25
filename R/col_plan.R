@@ -353,22 +353,22 @@ select_col_plan <- function(data, tfrmt){
         map_chr(last) %>%
         as_tibble() %>%
         mutate(val = 0) %>%
-        pivot_wider(names_from = value,
-                    values_from = val) %>%
+        pivot_wider(names_from = .data$value,
+                    values_from = .data$val) %>%
         slice(0)
 
       # Get the new names
       new_name_df <- tfrmt$col_plan$span_structures %>%
         map_dfr(span_struct_to_df, tpm_data) %>%
-        relocate(.original_col, .after = last_col()) %>%
-        tidyr::unite("new_name", everything(), sep = .tlang_delim, remove = FALSE) %>%
-        mutate(new_name_quo = map(new_name, sym))
+        relocate(.data$.original_col, .after = last_col()) %>%
+        unite("new_name", everything(), sep = .tlang_delim, remove = FALSE) %>%
+        mutate(new_name_quo = map(.data$new_name, sym))
 
       new_dots <- tibble(dots = tfrmt$col_plan$dots,
                          chr_dots = map_chr(tfrmt$col_plan$dots, as_label)) %>%
         left_join(new_name_df, by =c("chr_dots"=".original_col")) %>%
-        mutate(dot2 = ifelse(!is.na(new_name), new_name_quo, dots))%>%
-        pull(dot2)
+        mutate(dot2 = ifelse(!is.na(.data$new_name), .data$new_name_quo, .data$dots))%>%
+        pull(.data$dot2)
     } else if(length(tfrmt$column) > 1){
       kernal_name <- names(data) %>%
         str_split(.tlang_delim) %>%
@@ -383,11 +383,12 @@ select_col_plan <- function(data, tfrmt){
 
       new_dots <- tibble(dat_nm = names(data),
              kernal_name = kernal_name,
-             new_name = map(dat_nm, sym)
+             new_name = map(.data$dat_nm, sym)
              ) %>%
         left_join(dots_df, ., by = c("dots_chr" = "kernal_name")) %>%
-        mutate(dot2 = ifelse(!is.na(dat_nm), new_name, dots))%>%
-        pull(dot2)
+        mutate(
+          dot2 = ifelse(!is.na(.data$dat_nm), .data$new_name, .data$dots))%>%
+        pull(.data$dot2)
 
     } else {
       new_dots <- tfrmt$col_plan$dots
@@ -418,7 +419,7 @@ apply_span_structures_to_data <- function(tfrmt_obj, x){
     select(!!(tfrmt_obj$column[[1]])) %>%
     mutate(val = 0) %>%
     quietly(pivot_wider)(names_from = !!(tfrmt_obj$column[[1]]),
-                values_from = val
+                values_from = .data$val
                 ) %>%
     .$result %>%
     slice(0)
@@ -426,7 +427,7 @@ apply_span_structures_to_data <- function(tfrmt_obj, x){
   ## create df of span structures
   span_struct_df <- tfrmt_obj$col_plan$span_structures %>%
     map_dfr(span_struct_to_df, tmp_df) %>%
-    relocate(.original_col, .after = last_col()) %>%
+    relocate(.data$.original_col, .after = last_col()) %>%
     rename(!!as_label(tfrmt_obj$column[[1]]) := ".original_col")
 
   ## merge together data and span df on column arrange
