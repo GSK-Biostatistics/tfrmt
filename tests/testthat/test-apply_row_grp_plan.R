@@ -440,3 +440,58 @@ test_that("> 2 groups with and without spanner_label", {
 })
 
 
+test_that("Summary rows are not indented", {
+  mock_multi_grp <- tribble(
+    ~grp1,    ~grp2, ~my_label,
+    "cat_1", "cat_1", "cat_1",
+    "cat_2", "cat_2", "cat_2",
+    "cat_2", "sub_cat_2", "sub_cat_2",
+    "cat_2", "sub_cat_2", "sub_cat_3",
+    "cat_3", "cat_3", "cat_3",
+    "cat_3", "sub_cat_3a", "sub_cat_3a",
+    "cat_3", "sub_cat_3b", "sub_cat_3b_1",
+    "cat_3", "sub_cat_3b", "sub_cat_3b_3",
+  ) %>%    mutate(
+      trtA = rep("xx (xx%)", 8),
+      trtB = rep("xx (xx%)", 8),
+      trtC = rep("xx (xx%)", 8),
+    )
+
+  plan_no_span <- row_grp_plan(
+  )
+
+  expect_equal(
+    apply_row_grp_plan(mock_multi_grp, plan_no_span, vars(grp1, grp2), sym("my_label")),
+    tribble(
+      ~my_label ,        ~trtA       , ~trtB       , ~trtC,
+      "cat_1"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_2"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "  sub_cat_2"      ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "    sub_cat_3"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_3"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "  sub_cat_3a"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "  sub_cat_3b"     ,""         ,""         ,""        ,
+      "    sub_cat_3b_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "    sub_cat_3b_3" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
+    )
+  )
+
+  plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
+
+  expect_equal(
+    apply_row_grp_plan(mock_multi_grp, plan_with_span, vars(grp1, grp2), sym("my_label")),
+    tribble(
+      ~grp1,   ~my_label ,        ~trtA       , ~trtB       , ~trtC,
+       "cat_1", "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_2", "cat_2"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_2", "sub_cat_2"      ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_2", "  sub_cat_3"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_3", "cat_3"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_3", "sub_cat_3a"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_3", "sub_cat_3b"     ,""         ,""         ,""        ,
+       "cat_3", "  sub_cat_3b_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+       "cat_3", "  sub_cat_3b_3" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
+    ) %>% group_by(grp1)
+  )
+
+})
