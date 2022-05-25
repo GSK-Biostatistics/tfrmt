@@ -91,7 +91,7 @@ Much of the tfrmt is divided into "plans" which provide the blueprint for how th
  
 <p align="center"><img src="vignettes/table_plans.png" width="1000px"></p>
 
-**3. Structures:** `_structure()`
+**3. Structures:** `*_structure()`
 
 Within a plan, one or more structures may be provided. Each structure specifies the layers within a plan. For example, in the body plan, each "frmt_structure" object defines how a set of values (e.g., all "p-values") should be formatted. Structures are inherently row-oriented, and can range from broad (e.g., apply to all relevant rows in the data) to specific (e.g., apply to all relevant rows within a specific grouping value).
 

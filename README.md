@@ -117,7 +117,7 @@ for how the table will look. These plans are as follows:
 <img src="vignettes/table_plans.png" width="1000px">
 </p>
 
-**3. Structures:** `_structure()`
+**3. Structures:** `*_structure()`
 
 Within a plan, one or more structures may be provided. Each structure
 specifies the layers within a plan. For example, in the body plan, each
