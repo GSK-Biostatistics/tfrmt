@@ -212,12 +212,6 @@ test_that("Test when no body_style is present", {
       vars(col4:col10)
       ))
 
-  foo <- col_plan(
-    group,label,
-    col1, col2,
-    span_structure("test label", col3),
-    vars(col4:col10)
-  )
   input_data <- tibble(
     group = "groupvar",
     label = "labels",

@@ -342,38 +342,66 @@ check_column_and_col_plan <- function(x){
 # }
 
 #' @importFrom tidyr unite
-select_col_plan <- function(data, col_plan){
-  #make a dummy dataset based on the last section of the column
-  if(length(col_plan$span_structures) > 0){
-    tpm_data <- names(data) %>%
-      str_split(.tlang_delim) %>%
-      map_chr(last) %>%
-      as_tibble() %>%
-      mutate(val = 0) %>%
-      pivot_wider(names_from = value,
-                  values_from = val) %>%
-      slice(0)
-
-    # Get the new names
-    new_name_df <- col_plan$span_structures %>%
-      map_dfr(span_struct_to_df, tpm_data) %>%
-      relocate(.original_col, .after = last_col()) %>%
-      tidyr::unite("new_name", everything(), sep = .tlang_delim, remove = FALSE) %>%
-      mutate(new_name_quo = map(new_name, sym))
-
-    new_dots <- tibble(dots = col_plan$dots,
-                       chr_dots = map_chr(col_plan$dots, as_label)) %>%
-      left_join(new_name_df, by =c("chr_dots"=".original_col")) %>%
-      mutate(dot2 = ifelse(!is.na(new_name), new_name_quo, dots))%>%
-      pull(dot2)
+select_col_plan <- function(data, tfrmt){
+  if(is.null(tfrmt$col_plan)){
+    out <- data
   } else {
-    new_dots <- col_plan$dots
-  }
+    #make a dummy dataset based on the last section of the column
+    if(length(tfrmt$col_plan$span_structures) > 0){
+      tpm_data <- names(data) %>%
+        str_split(.tlang_delim) %>%
+        map_chr(last) %>%
+        as_tibble() %>%
+        mutate(val = 0) %>%
+        pivot_wider(names_from = value,
+                    values_from = val) %>%
+        slice(0)
 
-  select(
-    data,
-    !!!new_dots
-  )
+      # Get the new names
+      new_name_df <- tfrmt$col_plan$span_structures %>%
+        map_dfr(span_struct_to_df, tpm_data) %>%
+        relocate(.original_col, .after = last_col()) %>%
+        tidyr::unite("new_name", everything(), sep = .tlang_delim, remove = FALSE) %>%
+        mutate(new_name_quo = map(new_name, sym))
+
+      new_dots <- tibble(dots = tfrmt$col_plan$dots,
+                         chr_dots = map_chr(tfrmt$col_plan$dots, as_label)) %>%
+        left_join(new_name_df, by =c("chr_dots"=".original_col")) %>%
+        mutate(dot2 = ifelse(!is.na(new_name), new_name_quo, dots))%>%
+        pull(dot2)
+    } else if(length(tfrmt$column) > 1){
+      kernal_name <- names(data) %>%
+        str_split(.tlang_delim) %>%
+        map_chr(last)
+      if(length(unique(kernal_name)) != length(kernal_name)){
+        stop("Unable to select columns due to duplicate naming.
+             If you would like to set the order consider using span structures rather than multiple columns.")
+      }
+
+      dots_df <-tibble(dots = tfrmt$col_plan$dots,
+        dots_chr = tfrmt$col_plan$dots %>% map_chr(as_label))
+
+      new_dots <- tibble(dat_nm = names(data),
+             kernal_name = kernal_name,
+             new_name = map(dat_nm, sym)
+             ) %>%
+        left_join(dots_df, ., by = c("dots_chr" = "kernal_name")) %>%
+        mutate(dot2 = ifelse(!is.na(dat_nm), new_name, dots))%>%
+        pull(dot2)
+
+    } else {
+      new_dots <- tfrmt$col_plan$dots
+    }
+    #Adding in labels and grouping if people forgot it
+    # because the order of these are set by the GT I don't it will matter
+    new_dots <- c(new_dots, tfrmt$label, tfrmt$group)
+
+    out<- select(
+      data,
+      !!!new_dots
+    )
+  }
+  out
 }
 
 ## -----------------------------------------------
@@ -382,14 +410,17 @@ select_col_plan <- function(data, col_plan){
 ## us to have consistent behavior across multi-column
 ## dfs and span_structs
 ##-----------------------------------------------
+#' @importFrom purrr quietly
 apply_span_structures_to_data <- function(tfrmt_obj, x){
 
   ## create temp df with columns based on
   tmp_df <- x %>%
     select(!!(tfrmt_obj$column[[1]])) %>%
     mutate(val = 0) %>%
-    pivot_wider(names_from = !!(tfrmt_obj$column[[1]]),
-                values_from = val) %>%
+    quietly(pivot_wider)(names_from = !!(tfrmt_obj$column[[1]]),
+                values_from = val
+                ) %>%
+    .$result %>%
     slice(0)
 
   ## create df of span structures

@@ -65,13 +65,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   tbl_dat_wide <- tbl_dat_wide %>%
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
-    tentative_process(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label) %>%
-    tentative_process(select_col_plan, tfrmt$col_plan, fail_desc = "Unable to subset dataset columns")
+    #Select before grouping to not have to deal with if it indents or not
+    tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
+    tentative_process(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label)
 
-    ## TODO: I don't think this is where we need to do the sub-seting, but open to sort it out. This is assuming the
-    ## column names are as they were typed in, which we know to be incorrect at this point due to
-    ## the pivoted spanning cols. However, something like this will still be needed.
-    # tentative_process(select_col_plan, tfrmt$col_plan, "Unable to subset dataset columns") ## select the columns & rename per col_plan
 
   tbl_dat_wide
 }

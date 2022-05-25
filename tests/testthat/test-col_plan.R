@@ -124,8 +124,10 @@ test_that("From col plan spanning structures, get df to add to data",{
                                       vars(col3),
                                       span_structure("test label1.2", vars(col5))
                                     ),
-                                    span_structure("test label2", vars(col7))
-                                  ))
+                                    span_structure("test label2", vars(col7)),
+                                    starts_with("col")
+                                  )
+                                  )
 
   input_data <- tibble(
     group = "groupvar",
@@ -166,64 +168,6 @@ test_that("From col plan spanning structures, get df to add to data",{
 
 })
 
-test_that("Apply the col_plan to a simple gt", {
-
-  col_plan_obj <- col_plan(
-    span_structure(
-      label = "Top Label Level 1",
-      span_structure(
-        label = "Second Label Level 1.1",
-        vars(mpg, hp)
-      ),
-      span_structure(
-        label = "Second Label Level 1.2",
-        vars(starts_with("d"))
-      ),
-      vars(cyl)
-    ),
-    span_structure(
-      label = "Top Label Level 2",
-      vars(wt,qsec)
-    )
-  )
-
-  basic_sorted_gt <- mtcars  %>%
-    select_col_plan(col_plan_obj) %>%
-    gt::gt()
-
-  # spanned_cols_gt <- basic_sorted_gt %>%
-  #   apply_gt_spanning_labels(
-  #     col_plan = col_plan_obj
-  #   )
-  #
-  # ## make sure spanning columns applied properly
-  # expect_equal(
-  #   spanned_cols_gt$`_spanners`$spanner_id,
-  #   c("Top Label Level 2", "Second Label Level 1.1", "Second Label Level 1.2","Top Label Level 1")
-  # )
-  #
-  # expect_equal(
-  #   spanned_cols_gt$`_spanners`$spanner_label,
-  #   list(c("Top Label Level 2"),
-  #        c("Second Label Level 1.1"),
-  #        c("Second Label Level 1.2"),
-  #        c("Top Label Level 1"))
-  # )
-  #
-  # expect_equal(
-  #   spanned_cols_gt$`_spanners`$vars,
-  #   list(c("wt", "qsec"),
-  #        c("mpg", "hp"),
-  #        c("disp", "drat"),
-  #        c("mpg", "hp", "disp", "drat", "cyl"))
-  # )
-  #
-  # expect_equal(
-  #   spanned_cols_gt$`_boxhead`$var,
-  #   c("mpg", "hp", "disp", "drat", "cyl","wt", "qsec")
-  # )
-
-})
 
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure",{
 
@@ -269,8 +213,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   )
 
   suppressWarnings({
-    processed_gt <- print_to_gt(tfrmt_spec = basic_multi_column_template, .data = basic_example_dataset)
-    processed_gt_2 <- print_to_gt(tfrmt_spec = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
+    processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+    processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
   })
 
 
@@ -278,10 +222,6 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     processed_gt,
     processed_gt_2
   )
-
-
-
-
 
 })
 
