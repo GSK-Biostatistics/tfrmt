@@ -220,7 +220,10 @@ test_that("Check apply_tfrmt for mock data",{
   expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE),
                 "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
 
-  expect_equal(mock_dat %>% quietly(apply_tfrmt)(plan, mock =TRUE) %>% .[["result"]],
+  expect_equal(mock_dat %>%
+                 quietly(apply_tfrmt)(plan, mock =TRUE) %>%
+                 .[["result"]] %>%
+                 unnest(starts_with("col")),
                tribble(
                  ~grp1,   ~my_label,   ~col1,  ~col2,
                   "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
