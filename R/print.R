@@ -13,14 +13,14 @@
 #' @export
 #' @importFrom gt gt tab_header tab_style cell_text cells_body
 #' @importFrom tidyselect everything
-#' @importFrom rlang quo_is_missing
+#' @importFrom rlang quo_is_missing sym quo
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
   if(is.null(.data)){
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }
 
   if(quo_is_missing(tfrmt$values)){
-    tfrmt$values <- vars(val)[[1]]
+    tfrmt$values <- quo(!!sym("val"))
   }
 
   if(is.null(tfrmt$body_style)){

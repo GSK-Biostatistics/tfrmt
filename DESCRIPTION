@@ -41,5 +41,6 @@ Imports:
     stringr,
     tidyr,
     gt (>= 0.5.0),
-    tidyselect
+    tidyselect,
+    forcats
 Config/testthat/edition: 3
