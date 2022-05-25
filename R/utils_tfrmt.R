@@ -43,7 +43,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     tbl_dat_span_cols <- tbl_dat
   }
 
-  tbl_dat_wide <- safely(pivot_wider)(
+  tbl_dat_wide <- quietly(pivot_wider)(
     tbl_dat_span_cols,
     names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
     names_sep = .tlang_delim,
