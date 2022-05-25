@@ -8,7 +8,7 @@
 #'
 #' @importFrom tidyr separate replace_na
 #' @importFrom dplyr mutate across pull tibble
-#' @importFrom stringr str_dup str_c
+#' @importFrom stringr str_dup str_c str_trim
 #' @noRd
 apply_col_align <- function(col, align){
 
@@ -26,7 +26,7 @@ apply_col_align <- function(col, align){
              }))
   } else {
 
-    tbl_dat <-  tibble(col = col) %>%
+    tbl_dat <-  tibble(col = str_trim(col, side = "right")) %>%
       mutate(string_col = nchar(.data$col),
              string_tot = max(.data$string_col),
              space_to_add = str_dup(" ", .data$string_tot-.data$string_col))
@@ -53,15 +53,18 @@ apply_col_align <- function(col, align){
 #'
 #' @param .data data
 #' @param align_plan col_align_plan object
+#' @param column symbolic list of columns
+#' @param value symbolic value column
 #' @importFrom dplyr mutate across select tibble group_by slice n filter cur_column pull ungroup
 #' @importFrom tidyr unnest
 #' @importFrom tidyselect everything
 #' @importFrom purrr safely list_modify map_dfr
 #' @importFrom rlang as_name
 #' @importFrom tibble as_tibble_row
-apply_col_align_plan <- function(.data, align_plan, columns, val_col){
+#' @importFrom forcats fct_inorder
+apply_col_align_plan <- function(.data, align_plan, column, value){
 
-  last_col <- columns[[length(columns)]]
+  last_col <- column[[length(column)]]
 
   cols <- .data %>%
     pull(!!last_col) %>%
@@ -69,7 +72,8 @@ apply_col_align_plan <- function(.data, align_plan, columns, val_col){
   dummy_dat <- rep(" ",length(cols))
   names(dummy_dat) <- cols
   dummy_dat <- dummy_dat %>%
-    tibble::as_tibble_row()
+    as_tibble_row()
+
 
   selections <- align_plan %>%
     map(function(x) list_modify(x, col_checked = safely(select)(dummy_dat, !!!x$col)))
@@ -82,7 +86,6 @@ apply_col_align_plan <- function(.data, align_plan, columns, val_col){
     }
   })
 
-
   # keep the last col align for each col
   align_spec <- selections %>%
     map_dfr(~tibble(align = list(.x$align), column = list(.x$col_checked$result %>% names))) %>%
@@ -94,15 +97,17 @@ apply_col_align_plan <- function(.data, align_plan, columns, val_col){
 
   .data %>%
     left_join(align_spec, by = as_label(last_col)) %>%
-    group_by(!!!columns) %>%
+    mutate(across(c(!!!column), fct_inorder)) %>%
+    group_by(!!!column) %>%
     group_split() %>%
     map_dfr(function(x){
       if(!is.null(x$align[[1]])){
-        x %>%
-          mutate(!!val_col := apply_col_align(!!val_col, x$align[[1]]))
+      x <-  x %>%
+          mutate(!!value := apply_col_align(!!value, x$align[[1]]))
       }
       x
     }) %>%
-    select(-align)
+    select(-align) %>%
+    mutate(across(c(!!!column), as.character))
 }
 
