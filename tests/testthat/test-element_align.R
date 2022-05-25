@@ -112,7 +112,6 @@ test_that("alignment of multiple columns works", {
     "sd"       ,"four"   ,"      ",
     "median"   ,"four"   ,"  0.05",
     "(q1, q3)" ,"four"   ,"      "
-
   )
 
   dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
@@ -185,7 +184,6 @@ test_that("tidyselect works", {
     column = vars(column),
     values = value,
     col_align = col_align_plan(
-      # element_align(align = "left", col = vars(one)),
       element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))),
       element_align(align = "right", col = vars(four)))
 
@@ -208,6 +206,7 @@ test_that("tidyselect works", {
     "sd"       ,"four"  ,"      "   ,
     "median"   ,"four"  ,"  0.05"   ,
     "(q1, q3)" ,"four"  ,"      "  )
+
   dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
