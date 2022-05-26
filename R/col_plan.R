@@ -118,7 +118,7 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
           "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
           " or unquoted expressions representing variable names ",
           " can be entered as contents.",
-          " Changes the names of individual variables using new_name = old_name syntax is allowable",
+          " Changing the names of individual variables using new_name = old_name syntax is allowable",
           call. = FALSE
           )
       }
