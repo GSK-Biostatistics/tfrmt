@@ -247,7 +247,7 @@ test_that("col_plan returns correct errors",{
       "Only span_structures (`span_structure()`),",
       " selection helpers (See <https://tidyselect.r-lib.org/reference>),",
       "  or unquoted expressions representing variable names  can be entered",
-      " as contents. Changes the names of individual variables using",
+      " as contents. Changing the names of individual variables using",
       " new_name = old_name syntax is allowable"
     ),
     fixed = TRUE
