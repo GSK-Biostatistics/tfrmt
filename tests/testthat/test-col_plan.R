@@ -149,7 +149,6 @@ test_that("From col plan spanning structures, get df to add to data",{
   )
 
   nested_spans_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans, x = input_data)
-  print_mock_gt(tfrmt_obj_nested_spans, input_data)
 
   output_data <- tibble(
     `__tlang_span_structure_column__1` = c("test label1", "test label1", "test label1", NA, "test label1", NA, "test label2", NA, NA, NA),
