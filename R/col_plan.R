@@ -393,13 +393,21 @@ select_col_plan <- function(data, tfrmt){
     } else {
       new_dots <- tfrmt$col_plan$dots
     }
+
     #Adding in labels and grouping if people forgot it
     # because the order of these are set by the GT I don't it will matter
-    new_dots <- c(new_dots, tfrmt$label, tfrmt$group)
+    new_dots_combined <- c(new_dots, tfrmt$group, tfrmt$label)
+
+    # determining which variables are to be dropped (provided by new_dots)
+    vars_to_keep <- select(
+      data,
+      c(everything(), !!!new_dots)
+    ) %>% names
+    vars_to_drop <- setdiff(names(data), vars_to_keep)
 
     out<- select(
       data,
-      !!!new_dots
+      c(!!!new_dots_combined, everything(), -all_of(vars_to_drop))
     )
   }
   out
