@@ -21,7 +21,6 @@ test_that("Defining the spanning structure", {
 
   expect_equal(s1$label, "Test Label")
   expect_equal(s2$label, "Test Label")
-  expect_equal(s2$label, "Test Label")
 
   expect_equal(s1$span_cols, list(vars(A,B)), ignore_attr = TRUE)
   expect_equal(s2$span_cols, list(span_structure(label = "Test Sub Label",vars(A,B)),vars(C,D)), ignore_attr = TRUE)
