@@ -83,7 +83,7 @@ source("dev/data/tbl_demog_data.R")
 demog_dat <- create_tbl_demog_data() %>% 
   select(rowlbl1, grp, rowlbl2, column, param, ord1, ord2) %>% 
   ungroup %>% 
-  mutate(column = ifelse(column=="p","p-value",column))
+  mutate(column = ifelse(column=="p","p-value",column)) 
 tfrmt <- tfrmt(
   
   # specify columns in the data
@@ -104,7 +104,8 @@ tfrmt <- tfrmt(
     frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
     frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
     frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt_when(">0.99" ~ ">0.99",
+    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
+    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
                                                                                  "<0.001" ~ "<0.001",
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
   ),
