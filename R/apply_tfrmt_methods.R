@@ -152,9 +152,9 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #' @param param param column as a quosure
 #' @param values value column as a quosure
 #' @param mock Logical value is this is for a mock or not. By default `FALSE`
-#' @param column column column as a quosure
+#' @param column column columns as a list of quosures
 #' @param label label column as a quosure
-#' @param group group column as a quosure
+#' @param group group column as a list of quosures
 #' @param ... additional arguments for applying a basic frmt
 #'
 #' @return rounded and formatted df
@@ -207,7 +207,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   }
 
   .tmp_data_wide <- .tmp_data %>%
-    select(!!values, !!param, !!column, !!label, !!!group) %>%
+    select(!!values, !!param, !!!column, !!label, !!!group) %>%
     pivot_wider(
       values_from = !!values,
       names_from = !!param

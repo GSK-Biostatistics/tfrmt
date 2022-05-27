@@ -30,10 +30,8 @@
 #' @param sorting_cols which columns determine sorting of output
 #' @param page_vars which column determine paging of table (splitting)
 #' @param row_group which columns determine row groups
-#' @param col_labels values to display for the columns in the dataset
+#' @param col_plan a col_plan object which is used to select, rename, and nest columns
 #' @param col_widths special column widths. otherwise fits contents
-#' @param spanning_label_grp named list detailing which columns are spanned by what text
-#' @param col_select which columns to display. defaults to everything(). uses tidyselect semantics
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'
@@ -47,7 +45,7 @@ tfrmt <- function(
   label = quo(),
   param = quo(),
   values = quo(),
-  column = quo(),
+  column = vars(),
   title,
   title_txt_style,
   subtitle,
@@ -66,10 +64,8 @@ tfrmt <- function(
   sorting_cols,
   page_vars,
   row_group, # col which is used to make the row grps
-  col_labels,
+  col_plan,
   col_widths,
-  spanning_label_grp,
-  col_select,
   ...
   ){
 
@@ -87,6 +83,10 @@ tfrmt <- function(
     )
   }
 
+  ## check to confirm user has not defined multiple columns and
+  ## any span_structures in col_plan
+  check_column_and_col_plan(new_tfrmt)
+
   new_tfrmt
 
 }
@@ -100,15 +100,15 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   ## get args of parent function
   arg_parent <- names(formals(sys.function(sys.parent(1))))
   ## don't try to get the tftmt obj
-  args <- setdiff(arg_parent,"tfmt_obj")
+  args <- setdiff(arg_parent,"tfrmt_obj")
 
   ## get the values from the parent env. turn the
   ## as_var_args call into vars
   ## and as_quo_args into length one quo's
   vals <- quo_get(
     args,
-    as_var_args = c("group"),
-    as_quo_args = c("label","param","values","column"),
+    as_var_args = c("group","column"),
+    as_quo_args = c("label","param","values"),
     envir = env
     )
 
@@ -173,7 +173,8 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
           get(arg, envir = envir,inherits = FALSE)
         }
       },error = function(e){
-        if(inherits(e,"group_vars_error")){
+        # This might be too common, but it was stopping valid errors from getting through
+        if(!str_detect(e$message, "missing")){
           stop(e)
         }else{
           quote(expr = )

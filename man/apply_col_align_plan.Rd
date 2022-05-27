@@ -4,12 +4,16 @@
 \alias{apply_col_align_plan}
 \title{Apply column alignment plan}
 \usage{
-apply_col_align_plan(.data, align_plan)
+apply_col_align_plan(.data, align_plan, column, value)
 }
 \arguments{
 \item{.data}{data}
 
 \item{align_plan}{col_align_plan object}
+
+\item{column}{symbolic list of columns}
+
+\item{value}{symbolic value column}
 }
 \description{
 Apply column alignment plan

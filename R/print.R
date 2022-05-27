@@ -1,3 +1,4 @@
+
 #' Print mock table to GT
 #'
 #' @param tfrmt tfrmt the mock table will be based off of
@@ -22,6 +23,12 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$values <- quo(!!sym("val"))
   }
 
+  if(is.null(tfrmt$body_style)){
+    tfrmt$body_style <- table_body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    )
+  }
+
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     cleaned_data_to_gt(tfrmt)
 
@@ -37,7 +44,13 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
 #' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data){
+  if(!is_tfrmt(tfrmt)){
+    stop("Requires a tfrmt object")
+  }
 
+  if(!is.data.frame(.data)){
+    stop("Requires data, if not avaliable please use `print_mock_gt()`")
+  }
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     cleaned_data_to_gt(tfrmt)
 
@@ -63,7 +76,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
-    apply_gt_spanning_labels(spanning_lab_struct = tfrmt$spanning_label_grp) %>%
+    apply_gt_spanning_labels(.data)%>%
     tab_style(
       style = cell_text(whitespace = "pre"),
       locations = cells_body(columns = everything())
@@ -99,18 +112,57 @@ apply_gt_footnote<- function(gt, footer){
   }
 }
 
-apply_gt_spanning_labels <- function(gt_table, spanning_lab_struct){
-  if(!is.null(spanning_lab_struct)){
+#' Applies gt spanning labels
+#'
+#' Makes a gt objectt and applies the spanning labels if relevent
+#'
+#' @param .data dataset to convert to a gt
+#' @param tfrmt tfrmt object
+#'
+#' @return gt object
+#' @noRd
+#' @importFrom tidyr pivot_longer
+#' @importFrom stringr str_split
+#' @importFrom gt cols_label
+#'
+apply_gt_spanning_labels <- function(gt_table, .data){
 
-    # get set of tab_spanner functions to apply
-    spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_struct)
+  spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
+  if(length(spanning) > 0){
 
-    #loop over the tab_spanners to add to the gt table
-    for(spanning_lab_apply_idx in seq_along(spanning_lab_grps)){
-      spanning_lab_func <- spanning_lab_grps[[spanning_lab_apply_idx]]
-      gt_table <- spanning_lab_func(gt_table)
+    work_df<- names(.data) %>%
+      keep(str_detect, .tlang_delim) %>%
+      str_split(.tlang_delim, simplify = TRUE) %>%
+      as_tibble( .name_repair = ~paste0("V", 1:length(.))) %>%
+      mutate(cols = spanning) %>%
+      pivot_longer(-.data$cols)
+
+
+    lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
+
+    spans_to_apply <- work_df %>%
+      filter(.data$name != max(.data$name)) %>%
+      arrange(desc(.data$name)) %>%
+      group_by(.data$value) %>%
+      nest(set = "cols") %>%
+      mutate(set = map(.data$set, ~pull(.,cols))) %>%
+      filter(.data$value != "NA")
+
+    for(i in 1:nrow(spans_to_apply)){
+      gt_table <- gt_table %>%
+        tab_spanner(spans_to_apply$value[i], columns = spans_to_apply$set[[i]])
     }
+
+    renm_vals <- lowest_lvl %>%
+      pull(.data$value)
+    names(renm_vals) <-lowest_lvl %>%
+      pull(.data$cols)
+
+    gt_table <- gt_table %>%
+      cols_label(.list = renm_vals)
+
   }
   gt_table
+
 }
 

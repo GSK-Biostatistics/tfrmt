@@ -27,11 +27,11 @@
 
 \item{param}{param column as a quosure}
 
-\item{column}{column column as a quosure}
+\item{column}{column columns as a list of quosures}
 
 \item{label}{label column as a quosure}
 
-\item{group}{group column as a quosure}
+\item{group}{group column as a list of quosures}
 
 \item{...}{additional arguments for applying a basic frmt}
 }

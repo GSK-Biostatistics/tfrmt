@@ -9,10 +9,15 @@
 #' @importFrom purrr quietly
 #' @importFrom tidyr pivot_wider unnest
 #' @importFrom dplyr arrange select
+#' @importFrom tidyselect eval_select
 #'
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   validate_cols_match(.data, tfrmt, mock)
+
+  if(!is_tfrmt(tfrmt)){
+    stop("Requires a tfrmt object")
+  }
 
   tbl_dat <- apply_table_frmt_plan(
     .data = .data,
@@ -23,26 +28,49 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     values = tfrmt$values,
     column = tfrmt$column,
     mock = mock
-  )
+  ) %>%
+    tentative_process(apply_col_align_plan, tfrmt$col_align,
+                      tfrmt$column, tfrmt$values,
+                      fail_desc= "Unable to align dataset")
 
-  tbl_dat_wide <- quietly(pivot_wider)(tbl_dat,
-                                 names_from = !!tfrmt$column,
-                                 values_from = !!tfrmt$values)
+  ## append span structures to dataset for handling post-this function
+  if(!is.null(tfrmt$col_plan$span_structures)){
+    tbl_dat_span_cols <- apply_span_structures_to_data(
+      tfrmt,
+      tbl_dat
+    )
+  }else{
+    tbl_dat_span_cols <- tbl_dat
+  }
+
+  tbl_dat_wide <- quietly(pivot_wider)(
+    tbl_dat_span_cols,
+    names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
+    names_sep = .tlang_delim,
+    values_from = !!tfrmt$values
+    )
+
 
   if (mock == TRUE &&
       length(tbl_dat_wide$warnings)>0 &&
       str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
     message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
-    tbl_dat_wide <- tbl_dat_wide$result %>% unnest(cols = everything())
+    tbl_dat_wide <- tbl_dat_wide$result %>%
+      unnest(cols = everything()) %>%
+      clean_spanning_col_names()
   } else {
-    tbl_dat_wide <- tbl_dat_wide$result
+    tbl_dat_wide <- tbl_dat_wide$result %>%
+      clean_spanning_col_names()
   }
 
-  tbl_dat_wide %>%
-    tentative_process(arrange, tfrmt$sorting_cols) %>%
-    tentative_fx(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label) %>%
-    tentative_process(select, tfrmt$col_select)%>%
-    tentative_fx(apply_col_align_plan, tfrmt$col_align)
+  tbl_dat_wide <- tbl_dat_wide %>%
+    tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
+    #Select before grouping to not have to deal with if it indents or not
+    tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
+    tentative_process(apply_row_grp_plan, tfrmt$row_grp_style, tfrmt$group, tfrmt$label)
+
+
+  tbl_dat_wide
 }
 
 
@@ -52,52 +80,33 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 #'
 #' @param .data data to process
 #' @param fx processing function
-#' @param param parameter to control processing
-#'
-#' @return processed data
-#' @noRd
-tentative_process <- function(.data, fx, param){
-  if(is.null(param)){
-    out <- .data
-  } else{
-    exists_test <- .data %>%
-      safely(select)(!!!param) %>%
-      .[["error"]] %>%
-      is.null()
-    if(exists_test){
-      out <- .data %>%
-        fx(!!!param)
-    } else {
-      out <- .data
-      message("Unable to complete formatting because COLNAME isn't in the dataset")
-    }
-  }
-  out
-}
-
-#' Tentatively apply functions
-#'
-#' Will only apply the functions to the data if the arguments aren't NULL
-#'
-#' @param .data data to process
-#' @param fx function
 #' @param ... inputs supplied to function arguments
 #'
 #' @return processed data
 #' @importFrom purrr map_lgl
 #' @noRd
-tentative_fx <- function(.data, fx, ...){
-
+tentative_process <- function(.data, fx, ..., fail_desc = NULL){
   args <- list(...)
 
   if(any(map_lgl(args, is.null))){
     out <- .data
-  } else {
+  } else{
     out <- .data %>%
-      fx(...)
+      safely(fx)(...)
+    if(!is.null(out[["error"]])){
+      out <- .data
+      if(is.null(fail_desc)){
+        message("Unable to to apply formatting", format(substitute(fx)))
+      }else{
+        message(fail_desc)
+      }
+    }else{
+      out <- out$result
+    }
   }
   out
 }
+
 
 #' Checks required columns exsist
 #'
@@ -111,16 +120,18 @@ tentative_fx <- function(.data, fx, ...){
 #' @importFrom rlang !! !!!
 #' @importFrom dplyr select
 validate_cols_match <- function(.data, tfrmt, mock){
+
   #Required variables
   if(mock){
-    req_var <- c("label", "param", "column")
+    req_quo <- c("label", "param")
   } else {
-    req_var <- c("label", "param", "values", "column")
+    req_quo <- c("label", "param", "values")
   }
+  req_var <- c("group","column")
 
   .data <- .data %>% ungroup
 
-  req_var %>%
+  req_quo %>%
     map(function(x){
       var_test <- tfrmt[[x]]
       check <- safely(select)(.data, !!var_test)
@@ -131,7 +142,7 @@ validate_cols_match <- function(.data, tfrmt, mock){
     }
     )
 
-  c("group") %>%
+  req_var %>%
     map(function(x){
       var_test <- tfrmt[[x]]
       check <- safely(select)(.data, !!!var_test)
@@ -142,4 +153,30 @@ validate_cols_match <- function(.data, tfrmt, mock){
     }
     )
 
+}
+
+arrange_enquo <- function(dat, param){
+  arrange(dat, !!!param)
+}
+
+#' Clean Spanning column names
+#'
+#' This function removes the prefix on columns that aren't nested
+#' @param data data to rename
+#'
+#' @return dataset with renaming in needed
+#' @noRd
+#' @importFrom stringr str_count str_remove
+clean_spanning_col_names <- function(data){
+  # Get number of layers
+  lyrs <- names(data) %>%
+    str_count(.tlang_delim) %>%
+    max()
+  # remove the layering for unnested columns
+  empty_layers <- strrep(paste0("NA", .tlang_delim), lyrs)
+  if(empty_layers != ""){
+    data <- data %>%
+      rename_with(~str_remove(., empty_layers))
+  }
+  data
 }

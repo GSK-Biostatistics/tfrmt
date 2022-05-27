@@ -93,11 +93,11 @@ test_that("Mock data contains all levels", {
 
   expect_equal(mock_dat,
                tribble(
-                ~ grp1  , ~ grp2, ~ my_label, ~ param2, ~ col,
-                "grp1_1", "c"   , "e"       , "mean"  , "col1",
-                "grp1_1", "c"   , "f"       , "mean"  , "col1",
-                "grp1_1", "d"   , "e"       , "mean"  , "col1",
-                "grp1_1", "d"   , "f"       , "mean"  , "col1"
+                 ~ grp1  , ~ grp2, ~ my_label, ~ param2, ~ col,
+                 "grp1_1", "c"   , "e"       , "mean"  , "col1",
+                 "grp1_1", "c"   , "f"       , "mean"  , "col1",
+                 "grp1_1", "d"   , "e"       , "mean"  , "col1",
+                 "grp1_1", "d"   , "f"       , "mean"  , "col1"
                ))
 
 
@@ -196,6 +196,39 @@ test_that("Check mock when value it missing", {
   #Make mock
   quietly(print_mock_gt)(plan, data)$warnings %>%
     expect_equal(character())
+})
+
+
+test_that("Test when no body_style is present", {
+  tfrmt_obj_one_span <- tfrmt(
+    label = label,
+    group = group,
+    param = param,
+    column = vars(columns),
+    col_plan = col_plan(
+      group,label,
+      col1, col2,
+      span_structure("test label", col3),
+      vars(col4:col10)
+      ))
+
+  input_data <- tibble(
+    group = "groupvar",
+    label = "labels",
+    param = "params",
+    columns = paste0("col",1:10)
+  )
+
+  gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data)
+
+  expect_equal(gt_out$`_data`,
+               input_data %>%
+                 mutate(val = "X.X") %>%
+                 pivot_wider(names_from = columns, values_from = val) %>%
+                 select(-param) %>%
+                 rename(`test label___tlang_delim___col3` = col3))
+
+
 })
 
 

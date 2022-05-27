@@ -37,7 +37,7 @@ test_that("left & right align works", {
 
 test_that("decimal align works", {
 
-    vec <- c(" xx.xx", " x, x", "xxx", " x (x.x)")
+  vec <- c(" xx.xx", " x, x", "xxx", " x (x.x)")
 
   expect_equal(apply_col_align(vec, align = c("."," ")),
                c(" xx.xx   ", " x, x    ", "xxx      ", "  x (x.x)"))
@@ -62,46 +62,95 @@ test_that("error if column doesn't exist", {
   )
 
   expect_error(col_align_all(dat, plan))
- })
+})
 
 test_that("alignment of multiple columns works", {
 
-  dat <- tibble(
-    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
-    two = c(" 12 (34%)"," 12.3", "  4.34", " 14", "(10, 20)"),
-    three = c(" 24 (58%)"," 15.4", "  8.25", " 16", "(11, 22)"),
-    four = c("","<0.001","","0.05","")
+  dat <- tribble(
+    ~ one, ~ column, ~ value,
+    "n (%)",    "two"    ," 12 (34%)",
+    "n (%)",    "three"  ," 24 (58%)",
+    "n (%)",    "four"   ,""         ,
+    "mean",     "two"    ," 12.3"    ,
+    "mean",     "three"  ," 15.4"    ,
+    "mean",     "four"   ,"<0.001"   ,
+    "sd",       "two"    ,"  4.34"   ,
+    "sd",       "three"  ,"  8.25"   ,
+    "sd",       "four"   ,""         ,
+    "median",   "two"    ," 14"      ,
+    "median",   "three"  ," 16"      ,
+    "median",   "four"   ,"0.05"     ,
+    "(q1, q3)", "two"    ,"(10, 20)" ,
+    "(q1, q3)", "three"  ,"(11, 22)" ,
+    "(q1, q3)", "four"   ,""   )
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align = col_align_plan(
+      # element_align(align = "left", col = vars(one)),
+      element_align(align = "right", col = vars(four)),
+      element_align(align = c(".", ",", " "), col = vars(two, three))
+    )
   )
 
-  plan <- col_align_plan(
-    element_align(align = "left", col = vars(one)),
-    element_align(align = "right", col = vars(four)),
-    element_align(align = c(".", ",", " "), col = vars(two, three))
+  dat_aligned_man <- tribble(
+    ~ one, ~ column, ~ value,
+    "n (%)"    ,"two"    ," 12 (34%)",
+    "mean"     ,"two"    ," 12.3    ",
+    "sd"       ,"two"    ,"  4.34   ",
+    "median"   ,"two"    ," 14      ",
+    "(q1, q3)" ,"two"    ,"(10, 20) ",
+    "n (%)"    ,"three"  ," 24 (58%)",
+    "mean"     ,"three"  ," 15.4    ",
+    "sd"       ,"three"  ,"  8.25   ",
+    "median"   ,"three"  ," 16      ",
+    "(q1, q3)" ,"three"  ,"(11, 22) ",
+    "n (%)"    ,"four"   ,"      ",
+    "mean"     ,"four"   ,"<0.001",
+    "sd"       ,"four"   ,"      ",
+    "median"   ,"four"   ,"  0.05",
+    "(q1, q3)" ,"four"   ,"      "
   )
 
-  dat_aligned_man <- tibble(one =   c("n (%)   ",  "mean    ",  "sd      ",  "median  ",  "(q1, q3)"),
-                            two =   c(" 12 (34%)", " 12.3    ", "  4.34   ", " 14      ", "(10, 20) "),
-                            three = c(" 24 (58%)", " 15.4    ", "  8.25   ", " 16      ", "(11, 22) "),
-                            four =  c("      ",    "<0.001",    "      ",    "  0.05",    "      "))
-
-  dat_aligned <- apply_col_align_plan(dat, plan)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
 
   expect_equal(dat_aligned,
                dat_aligned_man)
 
 
-
-  plan <- col_align_plan(
-    element_align(align = "left", col = vars(one)),
-    element_align(align = "right", col = vars(two, three, four))
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align = col_align_plan(
+      # element_align(align = "left", col = vars(one)),
+      element_align(align = "right", col = vars(two, three, four))
+    )
   )
 
-  dat_aligned_man <- tibble(one =   c("n (%)   ",  "mean    ",  "sd      ",  "median  ",  "(q1, q3)"),
-                            two =   c(" 12 (34%)", "     12.3", "     4.34", "       14", " (10, 20)"),
-                            three = c(" 24 (58%)", "     15.4", "     8.25", "       16", " (11, 22)"),
-                            four =  c("      ",    "<0.001",    "      ",    "  0.05",    "      "))
+  dat_aligned_man <- tribble(
+    ~ one, ~ column, ~ value,
+    "n (%)"    ,"two"    ," 12 (34%)",
+    "mean"     ,"two"    ,"     12.3",
+    "sd"       ,"two"    ,"     4.34",
+    "median"   ,"two"    ,"       14",
+    "(q1, q3)" ,"two"    ," (10, 20)",
+    "n (%)"    ,"three"  ," 24 (58%)",
+    "mean"     ,"three"  ,"     15.4",
+    "sd"       ,"three"  ,"     8.25",
+    "median"   ,"three"  ,"       16",
+    "(q1, q3)" ,"three"  ," (11, 22)",
+    "n (%)"    ,"four"   ,"      "   ,
+    "mean"     ,"four"   ,"<0.001"   ,
+    "sd"       ,"four"   ,"      "   ,
+    "median"   ,"four"   ,"  0.05"   ,
+    "(q1, q3)" ,"four"   ,"      "
 
-  dat_aligned <- apply_col_align_plan(dat, plan)
+  )
+
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
 
   expect_equal(dat_aligned,
                dat_aligned_man)
@@ -111,40 +160,82 @@ test_that("alignment of multiple columns works", {
 
 test_that("tidyselect works", {
 
-  dat <- tibble(
-    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
-    trt1 = c(" 12 (34%)"," 12.3", "  4.34", " 14", "(10, 20)"),
-    trt2 = c(" 24 (58%)"," 15.4", "  8.25", " 16", "(11, 22)"),
-    four = c("","<0.001","","0.05","")
+  dat <- tribble(
+    ~one      , ~column , ~ value,
+    "n (%)"    ,"trt1" ," 12 (34%)",
+    "n (%)"    ,"trt2" ," 24 (58%)",
+    "n (%)"    ,"four" , ""         ,
+    "mean"     ,"trt1" ," 12.3"    ,
+    "mean"     ,"trt2" , " 15.4"    ,
+    "mean"     ,"four" ,"<0.001"   ,
+    "sd"       ,"trt1" , "  4.34"   ,
+    "sd"       ,"trt2" ,"  8.25"   ,
+    "sd"       ,"four" , ""         ,
+    "median"   ,"trt1" ," 14"      ,
+    "median"   ,"trt2" , " 16"      ,
+    "median"   ,"four" ,"0.05"     ,
+    "(q1, q3)" ,"trt1" , "(10, 20)" ,
+    "(q1, q3)" ,"trt2" ,"(11, 22)" ,
+    "(q1, q3)" ,"four" , ""         )
+
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align = col_align_plan(
+      element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))),
+      element_align(align = "right", col = vars(four)))
+
   )
 
-  plan <- col_align_plan(
-    element_align(align = "left", col = vars(one)),
-    element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))),
-    element_align(align = "right", col = vars(four)))
+  dat_aligned_man <- tribble(
+    ~one      , ~column , ~ value,
+    "n (%)"    ,"trt1"  ," 12 (34%)",
+    "mean"     ,"trt1"  ," 12.3    ",
+    "sd"       ,"trt1"  ,"  4.34   ",
+    "median"   ,"trt1"  ," 14      ",
+    "(q1, q3)" ,"trt1"  ,"(10, 20) ",
+    "n (%)"    ,"trt2"  ," 24 (58%)",
+    "mean"     ,"trt2"  ," 15.4    ",
+    "sd"       ,"trt2"  ,"  8.25   ",
+    "median"   ,"trt2"  ," 16      ",
+    "(q1, q3)" ,"trt2"  ,"(11, 22) ",
+    "n (%)"    ,"four"  ,"      "   ,
+    "mean"     ,"four"  ,"<0.001"   ,
+    "sd"       ,"four"  ,"      "   ,
+    "median"   ,"four"  ,"  0.05"   ,
+    "(q1, q3)" ,"four"  ,"      "  )
 
-  dat_aligned_man <- tribble(~one,      ~trt1,        ~trt2,      ~four,
-                             "n (%)   " , " 12 (34%)", " 24 (58%)", "      ",
-                             "mean    " , " 12.3    ", " 15.4    ", "<0.001",
-                             "sd      " , "  4.34   ", "  8.25   ", "      ",
-                             "median  " , " 14      ", " 16      ", "  0.05" ,
-                             "(q1, q3)" , "(10, 20) ", "(11, 22) ", "      ")
-  dat_aligned <- apply_col_align_plan(dat, plan)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
 
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align = col_align_plan(
+      element_align(align = "right", col = vars(starts_with("trt")))
+    ))
 
-  plan <- col_align_plan(
-    element_align(align = "right", col = vars(starts_with("trt")))
-                  )
-
-  dat_aligned_man <- tribble(~one,      ~trt1,        ~trt2,      ~four,
-                             "n (%)"   , " 12 (34%)", " 24 (58%)", "",
-                             "mean"    , "     12.3", "     15.4" , "<0.001",
-                             "sd"      , "     4.34", "     8.25" , ""   ,
-                             "median"  , "       14", "       16" , "0.05"  ,
-                             "(q1, q3)", " (10, 20)", " (11, 22)" , ""   )
-  dat_aligned <- apply_col_align_plan(dat, plan)
+  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+                             "n (%)"    ,"trt1"   ," 12 (34%)",
+                             "mean"     ,"trt1"   ,"     12.3",
+                             "sd"       ,"trt1"   ,"     4.34",
+                             "median"   ,"trt1"   ,"       14",
+                             "(q1, q3)" ,"trt1"   ," (10, 20)",
+                             "n (%)"    ,"trt2"   ," 24 (58%)",
+                             "mean"     ,"trt2"   ,"     15.4",
+                             "sd"       ,"trt2"   ,"     8.25",
+                             "median"   ,"trt2"   ,"       16",
+                             "(q1, q3)" ,"trt2"   ," (11, 22)",
+                             "n (%)"    ,"four"   ,""         ,
+                             "mean"     ,"four"   ,"<0.001"   ,
+                             "sd"       ,"four"   ,""         ,
+                             "median"   ,"four"   ,"0.05"     ,
+                             "(q1, q3)" ,"four"   ,""         )
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
 
@@ -152,26 +243,49 @@ test_that("tidyselect works", {
 
 test_that("Overlapping element_aligns favors last one",{
 
-  dat <- tibble(
-    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
-    trt1 = c(" 12 (34%)","12.35", " 4.345", "14", "(10, 20)"),
-    trt2 = c(" 24 (58%)","15.44", " 8.258", "16", "(11, 22)"),
-    four = c("","<0.001","","0.05","")
-  )
+  dat <- tribble(
+    ~one      , ~column , ~ value,
+    "n (%)"    ,"trt1"  ," 12 (34%)",
+    "mean"     ,"trt1"  ," 12.3    ",
+    "sd"       ,"trt1"  ,"  4.34   ",
+    "median"   ,"trt1"  ," 14      ",
+    "(q1, q3)" ,"trt1"  ,"(10, 20) ",
+    "n (%)"    ,"trt2"  ," 24 (58%)",
+    "mean"     ,"trt2"  ," 15.4    ",
+    "sd"       ,"trt2"  ,"  8.25   ",
+    "median"   ,"trt2"  ," 16      ",
+    "(q1, q3)" ,"trt2"  ,"(11, 22) ",
+    "n (%)"    ,"four"  ,""         ,
+    "mean"     ,"four"  ,"<0.001"   ,
+    "sd"       ,"four"  ,""         ,
+    "median"   ,"four"  ,"0.05"   ,
+    "(q1, q3)" ,"four"  ,""  )
 
-  plan <- col_align_plan(
-    element_align(align = "right", col = vars(starts_with("trt"))),
-    element_align(align = c(".",","," "), col = trt1))
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align =  col_align_plan(
+      element_align(align = "right", col = vars(starts_with("trt"))),
+      element_align(align = c(".",","," "), col = trt1)))
 
-  dat_aligned_man <- tribble(
-    ~one      , ~trt1      , ~trt2      ,  ~four  ,
-    "n (%)"   , " 12 (34%)", " 24 (58%)", ""      ,
-    "mean"    , " 12.35   ", "    15.44", "<0.001",
-    "sd"      , "  4.345  ", "    8.258", ""      ,
-    "median"  , " 14      ", "       16", "0.05"  ,
-    "(q1, q3)", "(10, 20) ", " (11, 22)", ""
-  )
-  dat_aligned <- apply_col_align_plan(dat, plan)
+  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+                             "n (%)"    ,"trt1"   ," 12 (34%)",
+                             "mean"     ,"trt1"   ," 12.3    ",
+                             "sd"       ,"trt1"   ,"  4.34   ",
+                             "median"   ,"trt1"   ," 14      ",
+                             "(q1, q3)" ,"trt1"   ,"(10, 20) ",
+                             "n (%)"    ,"trt2"   ," 24 (58%)",
+                             "mean"     ,"trt2"   ,"     15.4",
+                             "sd"       ,"trt2"   ,"     8.25",
+                             "median"   ,"trt2"   ,"       16",
+                             "(q1, q3)" ,"trt2"   ," (11, 22)",
+                             "n (%)"    ,"four"   ,""         ,
+                             "mean"     ,"four"   ,"<0.001"   ,
+                             "sd"       ,"four"   ,""         ,
+                             "median"   ,"four"   ,"0.05"     ,
+                             "(q1, q3)" ,"four"   ,""         )
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
 })

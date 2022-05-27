@@ -37,8 +37,7 @@ plan  <- tfrmt(
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
   col_align = col_align_plan(
-    element_align(align = "left", col = "group"),
-    element_align(align = "right", col = vars(label)),
+    # element_align(align = "right", col = vars(label)),
     element_align(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
@@ -56,7 +55,7 @@ plan  <- tfrmt(
     frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
   ),
   # These are the variables to keep
-  col_select = vars(everything(), -starts_with("ord"))
+  col_plan= col_plan(everything(), -starts_with("ord"))
 )
 
 test_that("Check apply_tfrmt", {
@@ -73,6 +72,7 @@ test_that("Check apply_tfrmt", {
     "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
     "B",     "w",     "147         ", "149         ", "143         ", "159         "
   )
+
 
   expect_equal(apply_tfrmt(raw_dat, plan),
                man_df)
@@ -185,7 +185,8 @@ test_that("Check apply_tfrmt for mock data",{
       frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
     )
   )
-  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>% apply_tfrmt(plan, mock =TRUE)
+  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>%
+    apply_tfrmt(plan, mock =TRUE)
 
   expect_equal(
     mock_dat,
@@ -219,7 +220,11 @@ test_that("Check apply_tfrmt for mock data",{
   expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE),
                 "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
 
-  expect_equal(mock_dat %>% quietly(apply_tfrmt)(plan, mock =TRUE) %>% .[["result"]],
+  test_dat <- mock_dat %>%
+    quietly(apply_tfrmt)(plan, mock =TRUE) %>%
+    .[["result"]]
+
+  expect_equal(test_dat,
                tribble(
                  ~grp1,   ~my_label,   ~col1,  ~col2,
                   "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
@@ -232,5 +237,30 @@ test_that("Check apply_tfrmt for mock data",{
                   "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
                ))
 
+})
+
+test_that("Test body_plan missing", {
+  input_data <- tibble(
+    group = "groupvar",
+    label = paste0("label", 1:10),
+    param = "params",
+    column = "col1",
+    val = 1:10
+  )
+
+  empty_body_plan <- tfrmt(
+    group = group,
+    label = label,
+    param = param,
+    column = column,
+    values = val
+  ) %>%
+    apply_tfrmt(input_data, .)
+
+  expect_equal(empty_body_plan,
+               input_data %>%
+                 select(-param) %>%
+                 mutate(val = as.character(val)) %>%
+                 pivot_wider(names_from = column, values_from = val))
 })
 
