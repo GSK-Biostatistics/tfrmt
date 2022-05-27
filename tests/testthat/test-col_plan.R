@@ -21,7 +21,6 @@ test_that("Defining the spanning structure", {
 
   expect_equal(s1$label, "Test Label")
   expect_equal(s2$label, "Test Label")
-  expect_equal(s2$label, "Test Label")
 
   expect_equal(s1$span_cols, list(vars(A,B)), ignore_attr = TRUE)
   expect_equal(s2$span_cols, list(span_structure(label = "Test Sub Label",vars(A,B)),vars(C,D)), ignore_attr = TRUE)
@@ -64,10 +63,6 @@ test_that("From the spanning structure get cols to span across", {
     vars(A,B)
   )
 
-  s1 <- span_structure(
-    label = "Test Label",
-    vars(A,B)
-  )
 
   s2 <- span_structure(
     label = "Test Label",
@@ -88,16 +83,58 @@ test_that("From the spanning structure get cols to span across", {
     vars(B)
   )
 
+  s4 <- span_structure(
+    label = "Test Label",
+    vars(-A)
+  )
+
+
   sample_df <- data.frame(A = character(), B = character(), C = character(), D = character())
 
   s1_cols <- span_col_select(s1, data = sample_df)
   s2_cols <- span_col_select(s2, data = sample_df)
   s3_cols <- span_col_select(s3, data = sample_df)
+  s4_cols <- span_col_select(s4, data = sample_df)
 
   expect_equal(s1_cols,c("A","B"))
   expect_equal(s2_cols,c("A","B","C","D"))
   expect_equal(s3_cols,c("D","C","A","B"))
+  expect_equal(s4_cols,c("B","C","D"))
 
+})
+
+test_that("Order is kept for multi-col columns",{
+  test <- tibble(col_1 = "test",
+                 col_2 = c("this", "other"),
+                 col_3 = c("delm", "delm"),
+                 label = "label",
+                 param = "pam",
+                 value = c(1.08089, 9.23948))
+
+
+  tfrmt<-tfrmt(
+    label = label,
+    param = param,
+    values = value,
+    column = vars(col_1, col_2, col_3),
+    body_style = table_body_plan(
+      frmt_structure(pam = frmt("x.xx"))
+    ),
+    col_align = col_align_plan(element_align(align = ".", col = vars(delm)),
+                               element_align(align = "right"))
+  )
+
+
+  new_name_ord <- apply_tfrmt(test, tfrmt) %>%
+    select(-label) %>%
+    names()
+
+  new_name_ord_in_dat <- test %>%
+    select(starts_with("col")) %>%
+    unite("new", sep=.tlang_delim) %>%
+    pull(new)
+
+  expect_equal(new_name_ord, new_name_ord_in_dat)
 })
 
 test_that("From col plan spanning structures, get df to add to data",{
@@ -248,7 +285,7 @@ test_that("col_plan returns correct errors",{
       "Only span_structures (`span_structure()`),",
       " selection helpers (See <https://tidyselect.r-lib.org/reference>),",
       "  or unquoted expressions representing variable names  can be entered",
-      " as contents. Changes the names of individual variables using",
+      " as contents. Changing the names of individual variables using",
       " new_name = old_name syntax is allowable"
     ),
     fixed = TRUE
@@ -275,7 +312,6 @@ test_that("tfrmt returns error when defining multiple columns and span_structure
     ),
     fixed = TRUE
   )
-
 
 })
 

@@ -118,7 +118,7 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
           "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
           " or unquoted expressions representing variable names ",
           " can be entered as contents.",
-          " Changes the names of individual variables using new_name = old_name syntax is allowable",
+          " Changing the names of individual variables using new_name = old_name syntax is allowable",
           call. = FALSE
           )
       }
@@ -160,36 +160,6 @@ is_valid_quo_call <- function(x){
 
 check_col_plan_dots <- check_span_structure_dots
 
-
-## ---------------------------------------
-## apply col_plan
-## ---------------------------------------
-# apply_gt_spanning_labels <- function(gt_table, col_plan){
-#
-#   spanning_lab_structs <- col_plan$span_structures
-#   if(!is.null(spanning_lab_structs)){
-#     # get set of tab_spanner functions to apply
-#     spanning_lab_grps <- apply_spanning_labels( gt_table$`_data`, spanning_lab_structs = spanning_lab_structs)
-#     #loop over the tab_spanners to add to the gt table
-#     for(spanning_lab_apply_idx in seq_along(spanning_lab_grps)){
-#       spanning_lab_func <- spanning_lab_grps[[spanning_lab_apply_idx]]
-#       gt_table <- spanning_lab_func(gt_table)
-#     }
-#   }
-#   gt_table
-# }
-#
-# apply_spanning_labels <- function(data, spanning_lab_structs){
-#   span_lab_groups <- list()
-#   for(span_lab_grp in spanning_lab_structs){
-#     ## do.call('c') quickly concatenates list into vector.
-#     span_lab_groups <- do.call('c',
-#       list(create_span_group(span_lab_grp, data),
-#       span_lab_groups
-#       ))
-#   }
-#   span_lab_groups
-# }
 
 
 ## ---------------------------------------
@@ -302,44 +272,6 @@ check_column_and_col_plan <- function(x){
 
 }
 
-
-### amend the tfrmt column argument to include new spanning columns
-# amend_col_plan_and_column <- function(tfrmt_obj, tbl_dat){
-#
-#   ## create temp df with columns based on
-#   tmp_df <- tbl_dat %>%
-#     select(!!!tfrmt_obj$column)
-#
-#   ## remove cases where there are no spanning columns as all
-#   tmp_df_idx <- tmp_df %>%
-#     apply(MARGIN = 2,FUN = is.na) %>%
-#     bind_cols() %>%
-#     select(-ncol(.)) %>%
-#     mutate(across(everything(), `!`)) %>%
-#     mutate(
-#       keep_idx = rowSums(.) != 0
-#     ) %>%
-#     pull(keep_idx)
-#
-#   tmp_df <- tmp_df[tmp_df_idx,]
-#
-#   ## remove extra columns since they are defining spanning headers and are no longer needed
-#   out_tbl_dat <- tbl_dat %>%
-#     select(-(!!!(tfrmt_obj$column[-length(tfrmt_obj$column)])))
-#
-#   ## evaluate columns from col_plan
-#   new_span_structs <- as_span_struct_from_df(x = tmp_df)
-#
-#   ## replace tfrmt contents with corrected values
-#   tfrmt_obj$col_plan$span_structures <- new_span_structs[[1]]
-#   tfrmt_obj$column <- tfrmt_obj$column[length(tfrmt_obj$column)]
-#
-#   ## return edited values
-#   list(
-#     tbl_dat = out_tbl_dat,
-#     tfrmt = tfrmt_obj
-#   )
-# }
 
 #' @importFrom tidyr unite
 select_col_plan <- function(data, tfrmt){
