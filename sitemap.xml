@@ -34,6 +34,9 @@
     <loc>/reference/col_align_plan.html</loc>
   </url>
   <url>
+    <loc>/reference/col_plan.html</loc>
+  </url>
+  <url>
     <loc>/reference/element_block.html</loc>
   </url>
   <url>
@@ -74,9 +77,6 @@
   </url>
   <url>
     <loc>/reference/row_grp_structure.html</loc>
-  </url>
-  <url>
-    <loc>/reference/span_plan.html</loc>
   </url>
   <url>
     <loc>/reference/table_body_plan.html</loc>
