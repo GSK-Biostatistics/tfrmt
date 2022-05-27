@@ -150,7 +150,6 @@ test_that("From col plan spanning structures, get df to add to data",{
   )
 
   nested_spans_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans, x = input_data)
-  print_mock_gt(tfrmt_obj_nested_spans, input_data)
 
   output_data <- tibble(
     `__tlang_span_structure_column__1` = c("test label1", "test label1", "test label1", NA, "test label1", NA, "test label2", NA, NA, NA),
@@ -279,3 +278,64 @@ test_that("tfrmt returns error when defining multiple columns and span_structure
 
 
 })
+
+
+
+
+# this happens in the select_col_plan, rather than the row_grp_plan
+test_that("Suppress printing of groups", {
+  mock_multi_grp <- tribble(
+    ~grp1,    ~grp2,     ~ my_label,
+    "grp1_1", "grp2_1", "my_label_1",
+    "grp1_1", "grp2_1", "my_label_2",
+    "grp1_1", "grp2_2", "my_label_1",
+    "grp1_1", "grp2_2", "my_label_2",
+    "grp1_2", "grp2_1", "my_label_1",
+    "grp1_2", "grp2_1", "my_label_2",
+    "grp1_2", "grp2_2", "my_label_1",
+    "grp1_2", "grp2_2", "my_label_2",
+  ) %>%
+    mutate(
+      trtA = rep("xx (xx%)", 8),
+      trtB = rep("xx (xx%)", 8),
+      trtC = rep("xx (xx%)", 8),
+    )
+
+  #option 1
+  spec_noprint_row_grp <- tfrmt(
+    group = c(grp1, grp2),
+    label = my_label,
+    row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
+  )
+  #option 2
+  spec_noprint_col_plan1 <- tfrmt(
+    group = c(grp1, grp2),
+    label = my_label,
+    col_plan = col_plan(my_label, starts_with("trt"))
+  )
+  #option 3
+  spec_noprint_col_plan2 <- tfrmt(
+    group = c(grp1, grp2),
+    label = my_label,
+    col_plan = col_plan(-starts_with("grp"))
+  )
+
+  df_no_grp <- tribble(
+    ~my_label,   ~trtA,     ~trtB,     ~trtC  ,
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+  )
+
+  expect_equal(select_col_plan(mock_multi_grp, spec_noprint_row_grp), df_no_grp)
+  expect_equal(select_col_plan(mock_multi_grp, spec_noprint_col_plan1), df_no_grp)
+  expect_equal(select_col_plan(mock_multi_grp, spec_noprint_col_plan2), df_no_grp)
+
+})
+
+

@@ -87,7 +87,6 @@ apply_row_grp_lbl <- function(.data, row_grp_plan, group, label = NULL, ...){
   lbl_avail <- safely(select)(.data, !!label)$result %>% names() %>% {!is.null(.)}
 
   if(sum(grps_avail)==0 || lbl_avail==FALSE){
-    message("Missing group or label variable: cannot modify group labels")
     add_ln_df <- .data
   } else{
 
