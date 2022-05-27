@@ -32,6 +32,10 @@ RoxygenNote: 7.2.0
 Suggests: 
     covr,
     testthat (>= 3.0.0)
+    tibble,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
 Imports: 
     magrittr,
     dplyr,
@@ -44,3 +48,4 @@ Imports:
     forcats,
     tibble
 Config/testthat/edition: 3
+VignetteBuilder: knitr

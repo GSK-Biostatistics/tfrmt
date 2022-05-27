@@ -195,9 +195,12 @@ create_tbl_demog_data <- function(){
   # code for tlang ----------------------------------------------------------
 
   final_0 <- final  %>%
-    mutate(grp = case_when(
-      rowlbl2 %in% c("n","Mean","SD","Median","Min","Max") ~ "cont",
-      TRUE ~ "cat"),
+    mutate(grp_num = cumsum(!is.na(p))) %>%
+    group_by(grp_num) %>%
+    mutate(grp = ifelse("Mean" %in% rowlbl2, "cont", "cat")) %>%
+    ungroup %>%
+    select(-grp_num) %>%
+    mutate(
       ord1 = fct_inorder(rowlbl1) %>% as.numeric) %>%
     nest_by(rowlbl1) %>%
     mutate(data = data %>% mutate(ord2 = fct_inorder(rowlbl2) %>% as.numeric) %>% list) %>%
