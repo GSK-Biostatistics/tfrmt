@@ -29,8 +29,9 @@ Much of the tfrmt is divided into "plans" which provide the blueprint for how th
 - Body plan (`body_plan`): define how cells will be formatted
 - Column plan (`col_plan`): define column and spanning headers, order columns, and drop unnecessary columns
 - Row group plan (`row_grp_plan`): define labeling for groups of rows and add styling to groups of rows
+- Column alignment plan (`col_align_plan`): define how column values will be aligned 
  
-<p align="center"><img src="table_plans.png" width="1000px"></p>
+<p align="center"><img src="table_plans.png" width="900px"></p>
 
 **3. Structures:** `*_structure()`
 
@@ -50,3 +51,4 @@ The following structures are available:
 **4. Elements:** `element_*()`
 
 Inspired by ggplot2, elements are a way to apply styling that is purely aesthetic in nature, such as how a column should be aligned (`element_align`). These are passed through plan or structure objects. 
+
