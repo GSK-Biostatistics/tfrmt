@@ -5,7 +5,7 @@
 \title{Element Row Group Location}
 \usage{
 element_row_grp_loc(
-  location = c("indented", "spanning", "column"),
+  location = c("indented", "spanning", "column", "noprint"),
   indent = "  "
 )
 }
@@ -16,7 +16,8 @@ sub-group indented under its parent. 'spanning' and 'column' retain the
 highest level group variable in its own column and combine all remaining
 group and label variables into a single column with sub-groups indented. The
 highest level group column will either be printed as a spanning header or in
-its own column in the gt.}
+its own column in the gt. Finally, the 'noprint' option allows the user to
+suppress group values from being printed.}
 
 \item{indent}{A string of the number of spaces you want to indent}
 }

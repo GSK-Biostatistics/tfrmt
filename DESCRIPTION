@@ -31,8 +31,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Suggests: 
     covr,
-    testthat (>= 3.0.0)
-    tibble,
     testthat (>= 3.0.0),
     knitr,
     rmarkdown
