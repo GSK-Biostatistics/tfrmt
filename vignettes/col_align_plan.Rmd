@@ -1,0 +1,19 @@
+---
+title: "Column Alignment plan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Column Alignment Plan}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tlang)
+```
