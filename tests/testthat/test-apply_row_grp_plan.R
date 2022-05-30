@@ -25,7 +25,7 @@ test_that("insert post space - single grouping variable",{
       "C",  " ",  "        ", "        ", "        ",
       "D",  "4",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "D",  " ",  "        ", "        ", "        "
-    ) %>% group_by(grp1))
+    ))
 
 
   sample_grp_plan <- row_grp_plan(
@@ -35,19 +35,15 @@ test_that("insert post space - single grouping variable",{
   expect_equal(
     apply_row_grp_plan(df, sample_grp_plan, vars(grp1), sym("label")),
     tribble(
-      ~label, ~trtA,      ~trtB,       ~trtC,
-      "A" ,  ""        , ""        , ""        ,
-      "  1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "   ", "        ", "        ", "        ",
-      "B" ,  ""        , ""        , ""        ,
-      "  2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "   ", "        ", "        ", "        ",
-      "C" ,  ""        , ""        , ""        ,
-      "  3", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "   ", "        ", "        ", "        ",
-      "D" ,  ""        , ""        , ""        ,
-      "  4", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "   ", "        ", "        ", "        ",
+      ~grp1, ~label, ~trtA,      ~trtB,       ~trtC,
+      "A", "1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "A", " ", "        ", "        ", "        ",
+      "B", "2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "B", " ", "        ", "        ", "        ",
+      "C", "3", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "C", " ", "        ", "        ", "        ",
+      "D", "4", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "D", " ", "        ", "        ", "        ",
     ))
 
 })
@@ -71,29 +67,23 @@ test_that("insert post space - two grouping variables",{
   expect_equal(
     apply_row_grp_plan(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
     tribble(
-      ~grp1, ~label,   ~trtA,       ~trtB,     ~trtC,
-      "A",     "a"  , ""         ,""        , ""        ,
-      "A",     "  1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "A",     "  2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "A",     "b"  , ""         ,""        , ""        ,
-      "A",     "  1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "A",     "  2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "A",     "   ", "        " ,"        ", "        ",
-      "B",     "a"  , ""         ,""        , ""        ,
-      "B",     "  1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "B",     "  2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "B",     "b"  , ""         ,""        , ""        ,
-      "B",     "  1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "B",     "  2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "B",     "   ", "        " ,"        ", "        ",
-      "C",     "a"  , ""         ,""        , ""        ,
-      "C",     "  1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",     "  2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",     "b"  , ""         ,""        , ""        ,
-      "C",     "  1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",     "  2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",     "   ", "        " ,"        ", "        ",
-    ) %>% group_by(grp1))
+      ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
+      "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "A",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "A",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "A",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "A",  "b",   " ", "        " ,"        ", "        ",
+      "B",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "B",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "B",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "B",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "B",  "b",   " ", "        " ,"        ", "        ",
+      "C",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "C",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "C",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "C",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+      "C",  "b",   " ", "        " ,"        ", "        ",
+    ))
 
 })
 
@@ -124,8 +114,7 @@ test_that("insert mix - single grouping variable",{
       "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "C",  "--------", "--------",  "--------",
       "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)"
-    ) %>%
-      group_by(grp1)
+    )
     )
 })
 
@@ -150,22 +139,15 @@ test_that("insert post space after specific value",{
   expect_equal(
     apply_row_grp_plan(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
     tribble(
-      ~grp1,    ~label,   ~trtA,       ~trtB,     ~trtC,
-      "A",     "a",     ""        , ""        , ""        ,
-      "A",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "b",     ""        , ""        , ""        ,
-      "A",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "   ",   "        ", "        ", "        ",
-      "B",     "a",     ""        , ""        , ""        ,
-      "B",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "b",     ""        , ""        , ""        ,
-      "B",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "a",     ""        , ""        , ""        ,
-      "C",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "b",     ""        , ""        , ""        ,
-      "C",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)"
-    ) %>%
-      group_by(grp1)
+      ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
+      "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "A",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "A",     "b", " ",   "        ", "        ", "        ",
+      "B",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "B",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "C",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "C",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)"
+    )
     )
 
 })
@@ -193,27 +175,20 @@ test_that("overlapping row_grp_structures - prefers latest",{
   expect_equal(
     apply_row_grp_plan(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
     tribble(
-      ~grp1,    ~label,   ~trtA,       ~trtB,     ~trtC,
-      "A",     "a",     ""        , ""        , ""        ,
-      "A",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "   ",   "        ", "        ", "        ",
-      "A",     "b",     ""        , ""        , ""        ,
-      "A",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "***",   "********", "********", "********",
-      "B",     "a",     ""        , ""        , ""        ,
-      "B",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "   ",   "        ", "        ", "        ",
-      "B",     "b",     ""        , ""        , ""        ,
-      "B",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "   ",   "        ", "        ", "        ",
-      "C",     "a",     ""        , ""        , ""        ,
-      "C",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "   ",   "        ", "        ", "        ",
-      "C",     "b",     ""        , ""        , ""        ,
-      "C",     "  1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "   ",   "        ", "        ", "        ",
-    ) %>%
-      group_by(grp1))
+      ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
+      "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "A",     "a", " ",   "        ", "        ", "        ",
+      "A",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "A",     "b", "*",   "********", "********", "********",
+      "B",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "B",     "a", " ",   "        ", "        ", "        ",
+      "B",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "B",     "b", " ",   "        ", "        ", "        ",
+      "C",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "C",     "a", " ",   "        ", "        ", "        ",
+      "C",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
+      "C",     "b", " ",   "        ", "        ", "        ",
+    ) )
 
 })
 
@@ -240,8 +215,7 @@ test_that("no post space added if NULL",{
       "B",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "D",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    ) %>%
-      group_by(grp1))
+    ))
 })
 
 
@@ -271,8 +245,7 @@ test_that("post space is truncated to data width",{
       "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "C",  "--------", "--------",  "--------",
       "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
-      "D",  "--------", "--------",  "--------") %>%
-      group_by(grp1))
+      "D",  "--------", "--------",  "--------"))
 })
 
 
@@ -393,7 +366,7 @@ test_that("> 2 groups with and without spanner_label", {
   )
 
   expect_equal(
-    apply_row_grp_plan(mock_multi_grp, plan_no_span, vars(grp1, grp2, grp3), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_no_span, vars(grp1, grp2, grp3), sym("my_label")),
     tribble(
       ~my_label        , ~trtA     , ~trtB     , ~trtC   ,
       "grp1_1"          ,""          ,""         ,""        ,
@@ -417,7 +390,7 @@ test_that("> 2 groups with and without spanner_label", {
   plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
-    apply_row_grp_plan(mock_multi_grp, plan_with_span, vars(grp1, grp2, grp3), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_with_span, vars(grp1, grp2, grp3), sym("my_label")),
     tribble(
      ~grp1,   ~my_label        , ~trtA     , ~trtB     , ~trtC   ,
      "grp1_1", "grp2_1"         ,""         ,""         ,"",
@@ -461,7 +434,7 @@ test_that("Summary rows are not indented", {
   )
 
   expect_equal(
-    apply_row_grp_plan(mock_multi_grp, plan_no_span, vars(grp1, grp2), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_no_span, vars(grp1, grp2), sym("my_label")),
     tribble(
       ~my_label ,        ~trtA       , ~trtB       , ~trtC,
       "cat_1"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
@@ -479,7 +452,7 @@ test_that("Summary rows are not indented", {
   plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
-    apply_row_grp_plan(mock_multi_grp, plan_with_span, vars(grp1, grp2), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_with_span, vars(grp1, grp2), sym("my_label")),
     tribble(
       ~grp1,   ~my_label ,        ~trtA       , ~trtB       , ~trtC,
        "cat_1", "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",

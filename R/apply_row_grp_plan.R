@@ -12,14 +12,8 @@
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
 apply_row_grp_plan <- function(.data, row_grp_plan, group, label = NULL, ...){
-  element_row_grp_loc <- row_grp_plan$label_loc
 
-  # Step 1: combine any grouping columns that need combining into label
-  .data <- .data %>% combine_group_cols(group,
-                                        label,
-                                        element_row_grp_loc)
-
-  # Step 2 Locate which groups need which formatting
+  # Locate which groups need which formatting
   # determine which rows each block applies to
   .data <- .data %>%
     mutate(TEMP_row = row_number())
@@ -66,21 +60,60 @@ apply_row_grp_plan <- function(.data, row_grp_plan, group, label = NULL, ...){
     arrange(.data$TEMP_row) %>%
     select(-.data$TEMP_row)
 
+  add_ln_df
+}
 
-  if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
-    add_ln_df <- add_ln_df %>%
-      select(-c(!!!group))
-  } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
-    add_ln_df <- add_ln_df %>%
-      group_by(!!group[[1]])
-  } else { # Using the grouping in gt, but needs to drop all groups in label
-    add_ln_df <- add_ln_df %>%
-      group_by(!!group[[1]]) %>%
-      select(-c(!!!group[-1]))
+
+
+#' Apply row group block labeling to data
+#'
+#' @param .data data
+#' @param row_grp_plan row group plan object
+#' @param group symbolic list of grouping
+#' @param label symbolic label column
+#'
+#' @noRd
+#' @importFrom dplyr select group_by
+#' @importFrom rlang !!!
+apply_row_grp_lbl <- function(.data, row_grp_plan, group, label = NULL, ...){
+
+  element_row_grp_loc <- row_grp_plan$label_loc
+
+  # check which group/label columns are available
+  grps_avail <- group %>%
+    map(function(x) safely(select)(.data, !!x)$result) %>%
+    map_lgl(~!is.null(.x)) # capture if there was an error and what index; drop that index from the tfrmt$group
+
+  lbl_avail <- safely(select)(.data, !!label)$result %>% names() %>% {!is.null(.)}
+
+  if(sum(grps_avail)==0 || lbl_avail==FALSE){
+    add_ln_df <- .data
+  } else{
+
+    group <- group[grps_avail]
+
+    # Step 1: combine any grouping columns that need combining into label
+    add_ln_df <- .data %>% combine_group_cols(group[grps_avail],
+                                          label,
+                                          element_row_grp_loc)
+
+
+    if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
+      add_ln_df <- add_ln_df %>%
+        select(-c(!!!group))
+    } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
+      add_ln_df <- add_ln_df %>%
+        group_by(!!group[[1]])
+    } else { # Using the grouping in gt, but needs to drop all groups in label
+      add_ln_df <- add_ln_df %>%
+        group_by(!!group[[1]]) %>%
+        select(-c(!!!group[-1]))
+    }
   }
 
   add_ln_df
 }
+
 
 
 

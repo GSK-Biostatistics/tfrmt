@@ -275,8 +275,16 @@ check_column_and_col_plan <- function(x){
 
 #' @importFrom tidyr unite
 select_col_plan <- function(data, tfrmt){
-  if(is.null(tfrmt$col_plan)){
-    out <- data
+
+  if (is.null(tfrmt$col_plan)){
+    if(!is.null(tfrmt$row_grp_style$label_loc$location)&&
+       tfrmt$row_grp_style$label_loc$location=="noprint"){
+
+      out <- data %>% select(-c(!!!tfrmt$group))
+
+    } else {
+      out <- data
+    }
   } else {
     #make a dummy dataset based on the last section of the column
     if(length(tfrmt$col_plan$span_structures) > 0){
@@ -311,12 +319,12 @@ select_col_plan <- function(data, tfrmt){
       }
 
       dots_df <-tibble(dots = tfrmt$col_plan$dots,
-        dots_chr = tfrmt$col_plan$dots %>% map_chr(as_label))
+                       dots_chr = tfrmt$col_plan$dots %>% map_chr(as_label))
 
       new_dots <- tibble(dat_nm = names(data),
-             kernal_name = kernal_name,
-             new_name = map(.data$dat_nm, sym)
-             ) %>%
+                         kernal_name = kernal_name,
+                         new_name = map(.data$dat_nm, sym)
+      ) %>%
         left_join(dots_df, ., by = c("dots_chr" = "kernal_name")) %>%
         mutate(
           dot2 = ifelse(!is.na(.data$dat_nm), .data$new_name, .data$dots))%>%
@@ -325,9 +333,18 @@ select_col_plan <- function(data, tfrmt){
     } else {
       new_dots <- tfrmt$col_plan$dots
     }
+
     #Adding in labels and grouping if people forgot it
     # because the order of these are set by the GT I don't it will matter
-    new_dots <- c(new_dots, tfrmt$label, tfrmt$group)
+  #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
+
+    if((!is.null(tfrmt$row_grp_style) &&
+        !is.null(tfrmt$row_grp_style$label_loc)&&
+        tfrmt$row_grp_style$label_loc=="noprint")){
+
+      new_dots <- setdiff(new_dots, tfrmt$group)
+
+    }
 
     out<- select(
       data,
@@ -351,8 +368,8 @@ apply_span_structures_to_data <- function(tfrmt_obj, x){
     select(!!(tfrmt_obj$column[[1]])) %>%
     mutate(val = 0) %>%
     quietly(pivot_wider)(names_from = !!(tfrmt_obj$column[[1]]),
-                values_from = .data$val
-                ) %>%
+                         values_from = .data$val
+    ) %>%
     .$result %>%
     slice(0)
 
@@ -389,7 +406,7 @@ span_struct_to_df.span_structure <- function(span_struct, data_col, depth = 1){
   tibble(
     lab = lab,
     .original_col = contents
-    ) %>%
+  ) %>%
     rename(
       !!paste0(.tlang_struct_col_prefix,depth) := lab
     )
