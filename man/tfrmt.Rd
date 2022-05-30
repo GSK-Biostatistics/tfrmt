@@ -14,7 +14,7 @@ tfrmt(
   title,
   subtitle,
   footer,
-  row_grp_style,
+  row_grp_plan,
   body_style,
   col_align,
   sorting_cols,
@@ -44,7 +44,7 @@ tfrmt(
 
 \item{footer}{footers of the table}
 
-\item{row_grp_style}{style of the row groups blocking}
+\item{row_grp_plan}{plan of the row groups blocking. Takes a \code{row_grp_plan}}
 
 \item{body_style}{combination and formatting of the input data}
 

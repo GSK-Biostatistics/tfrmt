@@ -18,7 +18,7 @@ fmt_spec1 <- tfrmt(
   column = quo(column),
   value = quo(value),
   sorting_cols = vars(ord1, ord2),
-  row_grp_style = row_grp_plan(
+  row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = "   "))
     ),
   body_style = table_body_plan(

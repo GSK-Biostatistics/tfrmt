@@ -45,7 +45,7 @@ my_tfrmt <- tfrmt(
   param = param, 
   values = value,
   column = column,
-  row_grp_style = row_grp_plan(
+  row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = "   "))
     ),
   body_style = table_body_plan(
@@ -70,7 +70,7 @@ my_tfrmt <- tfrmt(
   param = param, 
   values = value,
   column = column,
-  row_grp_style = row_grp_plan(
+  row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = "grp1_1", element_block(post_space = "   "))
     ),
   body_style = table_body_plan(
@@ -107,7 +107,7 @@ my_tfrmt <- tfrmt(
   param = param, 
   values = value,
   column = column,
-  row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
@@ -132,7 +132,7 @@ my_tfrmt <- tfrmt(
   param = param, 
   values = value,
   column = column,
-  row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "spanning")),
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "spanning")),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
@@ -158,7 +158,7 @@ my_tfrmt <- tfrmt(
   param = param, 
   values = value,
   column = column,
-  row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
@@ -182,7 +182,7 @@ my_tfrmt <- tfrmt(
   param = param, 
   values = value,
   column = column,
-  row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
   body_style = table_body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )

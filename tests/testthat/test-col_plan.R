@@ -341,7 +341,7 @@ test_that("Suppress printing of groups", {
   spec_noprint_row_grp <- tfrmt(
     group = c(grp1, grp2),
     label = my_label,
-    row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
   )
   #option 2
   spec_noprint_col_plan1 <- tfrmt(
