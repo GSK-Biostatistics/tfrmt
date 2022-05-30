@@ -4,14 +4,14 @@
 \alias{layer_tfrmt}
 \title{Layer tfrmt objects together}
 \usage{
-layer_tfrmt(x, y, ..., join_body_styles = TRUE)
+layer_tfrmt(x, y, ..., join_body_plans = TRUE)
 }
 \arguments{
 \item{x, y}{tfrmt objects that need to be combined}
 
 \item{...}{arguments passed to layer_tfrmt_arg functions for combining different tfrmt elements}
 
-\item{join_body_styles}{should the body styles be uniquely combined, or just keep styling in y}
+\item{join_body_plans}{should the body styles be uniquely combined, or just keep styling in y}
 }
 \description{
 Provide utility for layering tfrmt objects together. If both tmft's have

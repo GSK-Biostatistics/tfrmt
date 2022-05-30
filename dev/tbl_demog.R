@@ -21,7 +21,7 @@ fmt_spec1 <- tfrmt(
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = "   "))
     ),
-  body_style = table_body_plan(
+  body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine("{n} {pct}",
                                 n = frmt("XXX"),
@@ -47,7 +47,7 @@ fmt_spec2 <- tfrmt(
   value = quo(value),
   sorting_cols = vars(ord1, ord2),
   col_select = vars( -starts_with("ord")),
-  body_style = table_body_plan(
+  body_plan = body_plan(
     frmt_structure(group_val = ".default",
                    label_val = ".default",
                    frmt_combine("{n} {pct}",

@@ -13,11 +13,11 @@
 #' @importFrom rlang as_name
 #' @importFrom tidyselect everything all_of
 make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
-  body_style <- tfrmt$body_style
+  body_plan <- tfrmt$body_plan
   grp_vars <- tfrmt$group %>% map_chr(as_name)
 
   # create tibble of all frmt_structure grp/label/param: 1 row per group_val per frmt_structure
-  all_frmt_spec <- body_style %>%
+  all_frmt_spec <- body_plan %>%
     map_dfr(
       function(x){
         crossing(

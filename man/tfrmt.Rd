@@ -15,7 +15,7 @@ tfrmt(
   subtitle,
   footer,
   row_grp_plan,
-  body_style,
+  body_plan,
   col_align,
   sorting_cols,
   page_vars,
@@ -46,7 +46,7 @@ tfrmt(
 
 \item{row_grp_plan}{plan of the row groups blocking. Takes a \code{row_grp_plan}}
 
-\item{body_style}{combination and formatting of the input data}
+\item{body_plan}{combination and formatting of the input data}
 
 \item{col_align}{how to align columns? left, right, decimal}
 

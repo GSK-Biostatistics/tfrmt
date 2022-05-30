@@ -18,5 +18,5 @@ This can be named to also specify the parameter value}
 }
 \description{
 Function needed to create a frmt_structure object, which is a building block
-of \code{\link[=table_body_plan]{table_body_plan()}}
+of \code{\link[=body_plan]{body_plan()}}
 }

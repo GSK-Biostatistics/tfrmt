@@ -117,7 +117,7 @@ print.frmt_structure <- function(x, ...){
 }
 
 
-format.table_body_plan <- function(x,...){
+format.body_plan <- function(x,...){
 
   table_body_plan_str <- c(
     "Table Body Plan",
@@ -146,7 +146,7 @@ format.table_body_plan <- function(x,...){
 
 }
 
-print.table_body_plan <- function(x, ...){
+print.body_plan <- function(x, ...){
   cat(format(x, ...), sep = "\n")
 }
 

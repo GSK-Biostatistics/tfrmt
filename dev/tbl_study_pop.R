@@ -18,7 +18,7 @@ plan <- tfrmt(
   column = "column",
   param = "param",
   title = "Summary of Populations",
-  body_style = table_body_plan(
+  body_plan = body_plan(
     frmt_structure(
       group_val = ".default", label_val = ".default",
       frmt_combine("{n} ({percent}%)",

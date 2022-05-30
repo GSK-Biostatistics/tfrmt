@@ -21,7 +21,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
 tbl_dat <- apply_table_frmt_plan(
     .data = .data,
-    table_frmt_plan = tfrmt$body_style,
+    table_frmt_plan = tfrmt$body_plan,
     group = tfrmt$group,
     label = tfrmt$label,
     param = tfrmt$param,

@@ -99,7 +99,7 @@ A user can be as specific as they'd like, by providing any of these in combinati
 The user may provide as many `frmt_structure` objects as needed. It is important to note that if there are overlapping `frmt_structure` objects, the last one specified will supercede the previous. In our CDISC demographics table example, the following `frmt_structures` are needed to cover all values:
 
 ```
-table_body_plan(
+body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine("{n} {pct}",
                                 n = frmt("XXX"),

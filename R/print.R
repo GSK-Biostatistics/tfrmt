@@ -23,8 +23,8 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$values <- quo(!!sym("val"))
   }
 
-  if(is.null(tfrmt$body_style)){
-    tfrmt$body_style <- table_body_plan(
+  if(is.null(tfrmt$body_plan)){
+    tfrmt$body_plan <- body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
     )
   }

@@ -16,7 +16,7 @@
 #' @param subtitle subtitle of the table
 #' @param footer footers of the table
 #' @param row_grp_plan plan of the row groups blocking. Takes a `row_grp_plan`
-#' @param body_style combination and formatting of the input data
+#' @param body_plan combination and formatting of the input data
 #' @param col_align how to align columns? left, right, decimal
 #' @param sorting_cols which columns determine sorting of output
 #' @param page_vars which column determine paging of table (splitting)
@@ -41,7 +41,7 @@ tfrmt <- function(
   subtitle,
   footer,
   row_grp_plan, #the style between blocking
-  body_style,
+  body_plan,
   col_align,
   sorting_cols,
   page_vars,
