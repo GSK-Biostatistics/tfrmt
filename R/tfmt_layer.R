@@ -5,7 +5,7 @@
 #'
 #' @param x,y tfrmt objects that need to be combined
 #' @param ... arguments passed to layer_tfrmt_arg functions for combining different tfrmt elements
-#' @param join_body_styles should the body styles be uniquely combined, or just keep styling in y
+#' @param join_body_plans should the body styles be uniquely combined, or just keep styling in y
 #'
 #' @export
 #' @examples
@@ -16,7 +16,7 @@
 #'
 #' layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 #'
-layer_tfrmt <- function(x, y, ..., join_body_styles = TRUE){
+layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
 
   stopifnot(is_tfrmt(x))
   stopifnot(is_tfrmt(y))
@@ -29,10 +29,10 @@ layer_tfrmt <- function(x, y, ..., join_body_styles = TRUE){
 
   args <- union(names(x), names(y))
 
-  arg_list <- lapply(args, function(argname, x, y, ..., join_body_styles){
+  arg_list <- lapply(args, function(argname, x, y, ..., join_body_plans){
     func <- get_layer_tfrmt_arg_method(argname)
-    func(x, y, argname, ..., join_body_styles = join_body_styles)
-  },x=x, y = y, ..., join_body_styles = join_body_styles)
+    func(x, y, argname, ..., join_body_plans = join_body_plans)
+  },x=x, y = y, ..., join_body_plans = join_body_plans)
 
   names(arg_list) <- args
 
@@ -86,17 +86,17 @@ layer_tfrmt_arg.values <- layer_tfrmt_arg.label
 layer_tfrmt_arg.column <- layer_tfrmt_arg.label
 
 
-layer_tfrmt_arg.body_style <- function(x, y, ...,  join_body_styles = TRUE){
-  x_body_style <- x[["body_style"]]
-  y_body_style <- y[["body_style"]]
+layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
+  x_body_plan <- x[["body_plan"]]
+  y_body_plan <- y[["body_plan"]]
 
-  if(join_body_styles){
-    body_style_el <- unique(c(x_body_style, y_body_style))
+  if(join_body_plans){
+    body_plan_el <- unique(c(x_body_plan, y_body_plan))
   }else{
-    body_style_el <- y_body_style
+    body_plan_el <- y_body_plan
   }
 
-  do.call(table_body_plan,body_style_el)
+  do.call(body_plan,body_plan_el)
 }
 
 

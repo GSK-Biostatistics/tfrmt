@@ -14,8 +14,8 @@ fmt_spec <- tfrmt(
   value = quo(value),
   sorting_cols = vars(ord1, ord2),
   col_select = vars(-starts_with("ord")),
-  row_grp_style = row_grp_plan(),
-  body_style = table_body_plan(
+  row_grp_plan = row_grp_plan(),
+  body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
             frmt_combine("{n} {pct}",
                         n = frmt("XXX"),

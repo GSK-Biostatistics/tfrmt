@@ -1,5 +1,5 @@
 ---
-title: "Column plan"
+title: "Column Plan"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Column Plan}

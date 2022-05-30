@@ -23,7 +23,7 @@ tfrmt_spec  <- tfrmt(
                             right = vars(Placebo),
                             char = c(`Xanomeline High Dose`, `Xanomeline Low Dose`),
                             char_val = c(" ", ",", ".")),
-  body_style = table_body_plan(
+  body_plan = body_plan(
     # frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
@@ -75,7 +75,7 @@ demog_tbl <- function(){
     #These are the columns that control the general structure of the data
     #This controls how the rows are sorted
     sorting_cols = vars(ord_layer_1, ord_layer_2),
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
       frmt_structure(group_val = ".default", label_val = ".default",
                      frmt_combine(

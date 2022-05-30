@@ -7,7 +7,7 @@ test_that("Mock data column names are correct", {
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
     )
   )
@@ -27,7 +27,7 @@ test_that("Mock data contains all levels", {
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
     )
   )
@@ -53,7 +53,7 @@ test_that("Mock data contains all levels", {
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
       frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
       frmt_structure(group_val = list(grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
@@ -85,7 +85,7 @@ test_that("Mock data contains all levels", {
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = ".default", grp2 = c("c","d")), label_val = c("e","f"), mean = frmt("xx.x"))
     )
   )
@@ -132,7 +132,7 @@ test_that("Mock data contains all levels", {
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = ".default", grp2 = c("c","d")), label_val = c("e","f"), mean = frmt("xx.x")),
       frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xx"))
     )
@@ -183,7 +183,7 @@ test_that("Check mock when value it missing", {
     column = "column",
     param = "param",
     title = "Summary of Populations",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(
         group_val = ".default", label_val = ".default",
         frmt_combine("{n} ({percent}%)",

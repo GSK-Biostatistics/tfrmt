@@ -68,7 +68,7 @@ frmt_combine <- function(expression, ..., missing = NULL){
 #' Format Structure Object
 #'
 #' Function needed to create a frmt_structure object, which is a building block
-#' of [table_body_plan()]
+#' of [body_plan()]
 #'
 #' @param group_val A string or a named list of strings which represent the
 #'   value of group should be when the given frmt is implemented
@@ -156,10 +156,10 @@ row_grp_structure <- function(group_val = ".default", ...){
 #'
 #' @param ... list of frmt_structure
 #'
-#' @return table_body_plan object
+#' @return body_plan object
 #' @export
 #'
-table_body_plan <- function(...){
+body_plan <- function(...){
 
   frmt_structure_list <- list(...)
 
@@ -171,7 +171,7 @@ table_body_plan <- function(...){
 
   structure(
     frmt_structure_list,
-    class = c("table_body_plan", "frmt_table")
+    class = c("body_plan", "frmt_table")
   )
 }
 

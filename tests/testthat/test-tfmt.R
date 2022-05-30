@@ -205,7 +205,7 @@ test_that("layering tfrmt - body style elements",{
 
   t_frmt_title <- tfrmt(
     title = "Table Title",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(
         group_val = c("group1"),
         label_val = ".default",
@@ -218,7 +218,7 @@ test_that("layering tfrmt - body style elements",{
   t_frmt_layered <- t_frmt_title %>%
     layer_tfrmt(
       tfrmt(
-        body_style = table_body_plan(
+        body_plan = body_plan(
           frmt_structure(
             group_val = c("group2"),
             label_val = ".default",
@@ -231,8 +231,8 @@ test_that("layering tfrmt - body style elements",{
   expect_s3_class(t_frmt_layered, "tfrmt")
 
   expect_equal( t_frmt_layered$title, "Table Title")
-  expect_equal(t_frmt_layered$body_style,
-               table_body_plan(frmt_structure(group_val = "group1",
+  expect_equal(t_frmt_layered$body_plan,
+               body_plan(frmt_structure(group_val = "group1",
                                               label_val = ".default",
                                               frmt("XXX")),
                                frmt_structure(group_val = "group2",
@@ -245,7 +245,7 @@ test_that("layering tfrmt - body style elements - multiple",{
 
   t_frmt_title <- tfrmt(
     title = "Table Title",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(
         group_val = "group1",
         label_val = ".default",
@@ -257,7 +257,7 @@ test_that("layering tfrmt - body style elements - multiple",{
   t_frmt_layered <- t_frmt_title %>%
     layer_tfrmt(
       tfrmt(subtitle = "Table Subtitle",
-           body_style = table_body_plan(
+            body_plan = body_plan(
              frmt_structure(group_val = "group2",label_val = ".default", frmt("xx.x")),
              frmt_structure(group_val = "group3",label_val = ".default", frmt("xx.xx"))
              )
@@ -271,8 +271,8 @@ test_that("layering tfrmt - body style elements - multiple",{
   expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
 
   expect_equal(
-    t_frmt_layered$body_style,
-    table_body_plan(
+    t_frmt_layered$body_plan,
+    body_plan(
       frmt_structure(group_val = "group1",label_val = ".default",frmt("XXX")),
       frmt_structure(group_val = "group2",label_val = ".default",frmt("xx.x")),
       frmt_structure(group_val = "group3",label_val = ".default",frmt("xx.xx"))
@@ -285,7 +285,7 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE",{
 
   t_frmt_title <- tfrmt(
     title = "Table Title",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(
         group_val = "group1",
         label_val = ".default",
@@ -297,12 +297,12 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE",{
   t_frmt_layered <- t_frmt_title %>%
     layer_tfrmt(
       tfrmt(subtitle = "Table Subtitle",
-           body_style = table_body_plan(
+            body_plan = body_plan(
              frmt_structure(group_val = "group2",label_val = ".default",frmt("xx.x")),
              frmt_structure(group_val = "group3",label_val = ".default",frmt("xx.xx"))
            )
       ),
-      join_body_styles = FALSE
+      join_body_plans = FALSE
     )
 
 
@@ -313,8 +313,8 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE",{
   expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
 
   expect_equal(
-    t_frmt_layered$body_style,
-    table_body_plan(
+    t_frmt_layered$body_plan,
+    body_plan(
       frmt_structure(group_val = "group2",label_val = ".default",frmt("xx.x")),
       frmt_structure(group_val = "group3",label_val = ".default",frmt("xx.xx"))
     )

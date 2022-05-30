@@ -95,7 +95,7 @@ tfrmt <- tfrmt(
   sorting_cols = vars(ord1, ord2),
   
   # Specify body plan
-  body_style = table_body_plan(
+  body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
                                                                                 n = frmt("xxx"),
                                                                                 pct = frmt_when("==100" ~ "",
@@ -111,7 +111,7 @@ tfrmt <- tfrmt(
   ),
   
   # Specify row group plan
-  row_grp_style = row_grp_plan(
+  row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   ),
@@ -158,10 +158,10 @@ gt_out <- print_mock_gt(tfrmt, demog_dat) %>%
     columns = c(rowlbl1, rowlbl2)
   )
  
-invisible(gtsave(gt_out, "vignettes/gt_readme.png"))
+invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
 ```
  
 
-<p align="center"><img src="vignettes/gt_readme.png" width="700px"></p>
+<p align="center"><img src="man/figures/gt_readme.png" width="700px"></p>
 
 

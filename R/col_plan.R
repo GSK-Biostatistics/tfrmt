@@ -277,8 +277,8 @@ check_column_and_col_plan <- function(x){
 select_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
-    if(!is.null(tfrmt$row_grp_style$label_loc$location)&&
-       tfrmt$row_grp_style$label_loc$location=="noprint"){
+    if(!is.null(tfrmt$row_grp_plan$label_loc$location)&&
+       tfrmt$row_grp_plan$label_loc$location=="noprint"){
 
       out <- data %>% select(-c(!!!tfrmt$group))
 
@@ -338,9 +338,9 @@ select_col_plan <- function(data, tfrmt){
     # because the order of these are set by the GT I don't it will matter
   #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
 
-    if((!is.null(tfrmt$row_grp_style) &&
-        !is.null(tfrmt$row_grp_style$label_loc)&&
-        tfrmt$row_grp_style$label_loc=="noprint")){
+    if((!is.null(tfrmt$row_grp_plan) &&
+        !is.null(tfrmt$row_grp_plan$label_loc)&&
+        tfrmt$row_grp_style$label_loc$location=="noprint")){
 
       new_dots <- setdiff(new_dots, tfrmt$group)
 

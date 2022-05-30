@@ -1,5 +1,5 @@
 ---
-title: "Column Alignment plan"
+title: "Column Alignment Plan"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Column Alignment Plan}

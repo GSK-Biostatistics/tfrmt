@@ -142,7 +142,7 @@ test_that("applying frmt_combine - 2x", {
     .data = sample_df,
     values = quo(x),
     param = quo(y),
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group)
   )
@@ -183,7 +183,7 @@ test_that("applying frmt_combine missing",{
     .data = sample_df,
     values = quo(x),
     param = quo(y),
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group)
   )
@@ -220,7 +220,7 @@ test_that("applying frmt_combine missing",{
     .data = sample_df,
     values = quo(x),
     param = quo(y),
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group)
   )
@@ -262,7 +262,7 @@ test_that("applying frmt_combine - 3x", {
     .data = sample_df,
     values = quo(x),
     param = quo(y),
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group)
   )
@@ -301,7 +301,7 @@ test_that("appling frmt_when", {
     .data = sample_df,
     values = quo(x),
     param = "y",
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group)
   )

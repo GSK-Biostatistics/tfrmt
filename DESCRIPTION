@@ -47,3 +47,5 @@ Imports:
     tibble
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: http://gsk-biostatistics.github.io/tlang/
+BugReports: https://github.com/GSK-Biostatistics/tlang/issues

@@ -39,7 +39,7 @@ plan  <- tfrmt(
   col_align = col_align_plan(
     # element_align(align = "right", col = vars(label)),
     element_align(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
-  body_style = table_body_plan(
+  body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
@@ -134,7 +134,7 @@ test_that("Check apply_tfrmt for mock data",{
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default",
                      frmt_combine(
                        "{count} {pct}",
@@ -178,7 +178,7 @@ test_that("Check apply_tfrmt for mock data",{
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
       frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
       frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
@@ -210,7 +210,7 @@ test_that("Check apply_tfrmt for mock data",{
     param = "param2",
     values = "val2",
     column = "col",
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xxx")),
       frmt_structure(group_val = ".default", label_val = ".default", mean = frmt("xx.x"))
     )

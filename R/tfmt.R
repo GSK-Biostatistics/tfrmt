@@ -13,19 +13,10 @@
 #' @param values what is the values column of the input dataset
 #' @param column what is the column names column in the input dataset
 #' @param title title of the table
-#' @param title_txt_style the styling of the table title
 #' @param subtitle subtitle of the table
-#' @param subtitle_txt_style the styling of the table subtitle
-#' @param col_label_txt_style the styling of the headers of the table
-#' @param spanning_label_txt_style the styling of the column spanners of the table
 #' @param footer footers of the table
-#' @param footer_txt_style style of the footers of the table
-#' @param txt_style style of the text contents of the table
-#' @param row_grp_txt_style style of the grouping level row headers
-#' @param row_txt_style style of the row headers
-#' @param row_grp_style style of the row groups blocking
-#' @param body_style combination and formatting of the input data
-#' @param body_txt_style style of the cell text contents of the table
+#' @param row_grp_plan plan of the row groups blocking. Takes a `row_grp_plan`
+#' @param body_plan combination and formatting of the input data
 #' @param col_align how to align columns? left, right, decimal
 #' @param sorting_cols which columns determine sorting of output
 #' @param page_vars which column determine paging of table (splitting)
@@ -47,19 +38,10 @@ tfrmt <- function(
   values = quo(),
   column = vars(),
   title,
-  title_txt_style,
   subtitle,
-  subtitle_txt_style,
-  col_label_txt_style,
-  spanning_label_txt_style,
   footer,
-  footer_txt_style,
-  txt_style,
-  row_grp_txt_style, # style of the grouping level
-  row_txt_style,#Style of the rest of the rows
-  row_grp_style, #the style between blocking
-  body_style,
-  body_txt_style,
+  row_grp_plan, #the style between blocking
+  body_plan,
   col_align,
   sorting_cols,
   page_vars,

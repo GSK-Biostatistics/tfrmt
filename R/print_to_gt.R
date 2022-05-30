@@ -23,8 +23,8 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$values <- quo(!!sym("val"))
   }
 
-  if(is.null(tfrmt$body_style)){
-    tfrmt$body_style <- table_body_plan(
+  if(is.null(tfrmt$body_plan)){
+    tfrmt$body_plan <- body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
     )
   }
@@ -65,7 +65,7 @@ print_to_gt <- function(tfrmt, .data){
 #' @return GT object
 #' @noRd
 cleaned_data_to_gt <- function(.data, tfrmt){
-  if(is.null(tfrmt$row_grp_style) && length(tfrmt$group) > 0){
+  if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     .data <- .data %>%
       group_by(!!!tfrmt$group)
   }
@@ -82,7 +82,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = cells_body(columns = everything())
     )
 
-  if(!is.null(tfrmt$row_grp_style) && tfrmt$row_grp_style$label_loc$location == "column"){
+  if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }

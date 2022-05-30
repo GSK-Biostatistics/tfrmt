@@ -117,7 +117,7 @@ test_that("Order is kept for multi-col columns",{
     param = param,
     values = value,
     column = vars(col_1, col_2, col_3),
-    body_style = table_body_plan(
+    body_plan = body_plan(
       frmt_structure(pam = frmt("x.xx"))
     ),
     col_align = col_align_plan(element_align(align = ".", col = vars(delm)),
@@ -341,7 +341,7 @@ test_that("Suppress printing of groups", {
   spec_noprint_row_grp <- tfrmt(
     group = c(grp1, grp2),
     label = my_label,
-    row_grp_style = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
   )
   #option 2
   spec_noprint_col_plan1 <- tfrmt(
