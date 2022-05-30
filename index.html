@@ -42,6 +42,42 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/body_plan.html">Body plan</a>
+    </li>
+    <li>
+      <a href="articles/building_blocks.html">Building Blocks</a>
+    </li>
+    <li>
+      <a href="articles/col_align_plan.html">Column Alignment plan</a>
+    </li>
+    <li>
+      <a href="articles/col_plan.html">Column plan</a>
+    </li>
+    <li>
+      <a href="articles/examples.html">Examples</a>
+    </li>
+    <li>
+      <a href="articles/faq.html">FAQ</a>
+    </li>
+    <li>
+      <a href="articles/layer.html">Reuse and layer tfrmts</a>
+    </li>
+    <li>
+      <a href="articles/mocks.html">Mock tables</a>
+    </li>
+    <li>
+      <a href="articles/row_grp_plan.html">Row group plan</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -60,24 +96,68 @@
 <div class="page-header"><h1 id="tlang">tlang<a class="anchor" aria-label="anchor" href="#tlang"></a>
 </h1></div>
 <!-- badges: start -->
-<p>tfmt( title = "“, group = vars(), label = vars(), param = vars(), values = vars(), column = vars(), title_txt_style = element_text(), subtitle =”“, subtitle_txt_style = element_text(), col_label_txt_style = element_text(), spanning_label_txt_style = element_text(), footer =”“, footer_txt_style = element_text(), txt_style = element_text(), row_grp_txt_style = element_text(), ?maybe pass a named list row_txt_style = element_text(), row_grp_style = list(”lab1" = element_block(), “lab2” = element_block(post_space = “—”)), #the style between blocking rounding = 1, body_style = element_style( fmt_str(group = “.default”, label = “.default”,<br>
-fmt_combine(“{count} ({percent})%”, count = fmt(), percent = fmt() ) ), fmt_str(group = “Age”, label = “Min., Max.”, fmt_combine(“{min}, {min}”, min = fmt(), max = fmt() ) ), fmt_str(group = c(“Age”, “Weight”), label = “n”, fmt()) ), body_align = element_align(left = vars(), right = vars(), dec_pl = vars()), #And now the things that do this!! sorting_cols = vars(sort_ord1, -TRTA, TRTB, TRTC), page_vars = vars(), row_grp = element_grp(cols, out_col?) #assume col_labels = element_label(…, wrap_txt = 30), spanning_label_grp = list(“span” = vars(), “sapn2” = vars()), col_select = “default” )</p>
-<p>body_style = element_style(rowwise = element_rowwise(ref_col, c(“.default” = fmt_str(), “n” = fmt_str(“{COLNAME1} ({COLNAME2}%)”, fmt(rounding = “XX”, bounds = element_bounds(upper_exp = “&gt;5”, lower_exp, upper_lab, lower_lab), padding = " “), fmt(…), cols = NULL, output = NULL),”mean" = fmt_str( "{(.*)_mean} ({(.*)_std}%)“, fmt(rounding =”XX“, padding =” “, bounds = element_bounds(upper_exp =”&gt;5“, lower_exp, upper_lab, lower_lab)), fmt(…), cols = vars(palcebo_mean:total_std),output =”(.*)“),”CV%" = fmt_str(“X.XX %”) ect.)), colwise = element_colwise(fmt_str(“{P_VAL}”, p_val_fmt())),</p>
+<p>The tlang package provides a language for defining display-related metadata, which can then be used to automate and easily update output formats.</p>
+<p>In clinical trials, displays are generally quite standard, but frequent, highly specific formatting tweaks (e.g., rounding, footnotes, headers) are very common. Prior to data analysis, study teams often generate mock displays to represent the desired end product for sponsors to approve or programmers to replicate. This process is typically highly manual and separate from the programming itself. There is also a high importance placed on verifying the accuracy of the results via a QC process such as double programming. Finally, there is a movement toward an industry standard data structure for Analysis Results Data “ARD”, which means analysis results datasets will have consistent structures and column names. Specifically, the ARD is long, with 1 record per computed value.</p>
+<p>tlang supports a vision where:</p>
+<ul>
+<li>Mock displays are integrated with the programming workflow</li>
+<li>Results are QC’ed prior to formatting to reduce rework</li>
+<li>Standard formatting styles can be applied in as little as one line of code</li>
+<li>The ARD structure can be leveraged to accommodate a variety of tables</li>
+</ul>
+<p>By reducing the amount of repetitive tasks, study teams can focus on the quality and interpretation of the results themselves.</p>
 </div>
 <div class="section level1">
-<h1 id="how-to-identify-what-i-am-talking-about">How to identify what I am talking about<a class="anchor" aria-label="anchor" href="#how-to-identify-what-i-am-talking-about"></a>
+<h1 id="why-tlang">Why tlang?<a class="anchor" aria-label="anchor" href="#why-tlang"></a>
 </h1>
-<p>fmt_combo()</p>
-<p>fmt_id(ref_col = vars(row_lab2), ref_val = “Mean”, cols = vars(across(is.numeric)), grp = c(“row_label1” = “weight”)) fmt_id(ref_col = vars(row_lab2), ref_val = “Std”, cols = vars(across(is.numeric)), grp = c(“row_label1” = “weight”))</p>
-<p>#Function to help make this a bit easier to deal with gsk_tfmt() %&gt;% pull_current_fmt(“footer”) #Bucketlist print_preview(tfmt, output_type = c(“gt”, “flextable”)) print_preview(c(“gt”, “flextable”))</p>
-<p>#Create Mocks print_preview(tfmt, output_type = “gt”)</p>
-<p>#Layerable gsk_tfmt() %&gt;% demog_tfmt() %&gt;% tfmt(title = “Hello World”) %&gt;% print_to_gt(, .data)</p>
-<p>#Flexible print_to_gt(tfmt, .data) print_to_flextable(tfmt, .data) print_to_dt(tfmt, .data)</p>
-<p>sumstatrow_tfmt &lt;- function(og_tfmt, base_round, n_df){ thingy &lt;- pull_current_fmt(og_fmt) old_lbs &lt;- thingy$col_labels str_extract(old_labels, (&lt;?=\{).(?=}))</p>
-<p>}</p>
-<p>pt_profile &lt;- function(usubjid, ADSL, plot_dt){ gt &lt;- adsl %&gt;% filter(USUBJID == usubjid) %&gt;% print_to_get(pp_tfmt, .)</p>
-<p>}</p>
-<p>gsk_tfmt &lt;- tfm(title = “hello”)</p>
+<p>While there are many existing table-making packages in the R ecosystem, they typically fall into one of two categories:</p>
+<ul>
+<li>Table packages that perform analyses and format the results</li>
+<li>Table packages that format and output existing data</li>
+</ul>
+<p>By design, tlang is more of the latter, as it is intended to be used after the results have been computed. What makes tlang unique, however, is that it offers an intuitive interface for defining and layering standard or custom formats that are often specific to clinical trials. It also offers the novel ability to easily generate mock displays using metadata that will be used for the actual displays. tlang is built on top of the powerful gt package, which is intended to support a variety of output formats in the future.</p>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<p>The development version of tlang can be installed with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GSK-Biostatistics/tlang"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level1">
+<h1 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
+</h1>
+<p>We expect an input dataset that is long, with 1 record per computed value. Required columns include:</p>
+<ul>
+<li>[Optional] 1 or more <strong>group</strong> columns, containing grouping values</li>
+<li>A single <strong>label</strong> column, containing row label values</li>
+<li>1 or more <strong>column</strong> columns, containing column values</li>
+<li>A single <strong>param</strong> column, which provides a label for distinct types of values</li>
+<li>A single <strong>values</strong> column, containing the computed, raw data values</li>
+<li>[Optional] 1 or more <strong>sorting_cols</strong> columns, containing numeric vlaues to be used in the row ordering</li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="functionality">Functionality<a class="anchor" aria-label="anchor" href="#functionality"></a>
+</h1>
+<p>Here is an overview of what is possible with tlang:</p>
+<ul>
+<li>Create a “tfrmt” metadata object containing all formatting and labeling for the display</li>
+<li>Layer tfrmt objects to combine standard formatting with user-specific formatting</li>
+<li>Create mock displays based on existing sample data or no prior data</li>
+<li>ARD-standard compliant facilitates reuse and automation</li>
+</ul>
+<p>Other benefits of tlang:</p>
+<ul>
+<li>Provides a tidyverse-friendly, pipeable interface</li>
+<li>Leverages gt as output engine, which allows for further customizations within gt itself</li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="more-info">More Info<a class="anchor" aria-label="anchor" href="#more-info"></a>
+</h1>
+<p>For more information about how to build your own tlang mocks/tables (like the one below!), please explore the vignettes.</p>
+<p align="center"><img src="articles/gt_readme.png" width="700px"></p>
 </div>
 
   </div>

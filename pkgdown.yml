@@ -1,6 +1,15 @@
 pandoc: 2.7.3
 pkgdown: 2.0.3
 pkgdown_sha: ~
-articles: {}
-last_built: 2022-05-27T11:58Z
+articles:
+  body_plan: body_plan.html
+  building_blocks: building_blocks.html
+  col_align_plan: col_align_plan.html
+  col_plan: col_plan.html
+  examples: examples.html
+  faq: faq.html
+  layer: layer.html
+  mocks: mocks.html
+  row_grp_plan: row_grp_plan.html
+last_built: 2022-05-30T08:57Z
 
