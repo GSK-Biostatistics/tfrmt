@@ -158,10 +158,10 @@ gt_out <- print_mock_gt(tfrmt, demog_dat) %>%
     columns = c(rowlbl1, rowlbl2)
   )
  
-invisible(gtsave(gt_out, "vignettes/gt_readme.png"))
+invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
 ```
  
 
-<p align="center"><img src="vignettes/gt_readme.png" width="700px"></p>
+<p align="center"><img src="man/figures/gt_readme.png" width="700px"></p>
 
 
