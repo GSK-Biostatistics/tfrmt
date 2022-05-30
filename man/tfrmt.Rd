@@ -12,19 +12,10 @@ tfrmt(
   values = quo(),
   column = vars(),
   title,
-  title_txt_style,
   subtitle,
-  subtitle_txt_style,
-  col_label_txt_style,
-  spanning_label_txt_style,
   footer,
-  footer_txt_style,
-  txt_style,
-  row_grp_txt_style,
-  row_txt_style,
   row_grp_style,
   body_style,
-  body_txt_style,
   col_align,
   sorting_cols,
   page_vars,
@@ -49,31 +40,13 @@ tfrmt(
 
 \item{title}{title of the table}
 
-\item{title_txt_style}{the styling of the table title}
-
 \item{subtitle}{subtitle of the table}
 
-\item{subtitle_txt_style}{the styling of the table subtitle}
-
-\item{col_label_txt_style}{the styling of the headers of the table}
-
-\item{spanning_label_txt_style}{the styling of the column spanners of the table}
-
 \item{footer}{footers of the table}
-
-\item{footer_txt_style}{style of the footers of the table}
-
-\item{txt_style}{style of the text contents of the table}
-
-\item{row_grp_txt_style}{style of the grouping level row headers}
-
-\item{row_txt_style}{style of the row headers}
 
 \item{row_grp_style}{style of the row groups blocking}
 
 \item{body_style}{combination and formatting of the input data}
-
-\item{body_txt_style}{style of the cell text contents of the table}
 
 \item{col_align}{how to align columns? left, right, decimal}
 
