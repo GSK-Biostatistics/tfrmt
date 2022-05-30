@@ -73,7 +73,8 @@
 
 
 
-<script src="body_plan_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Body Plan</h1>
             
@@ -95,11 +96,11 @@
 <p>The <code>frmt</code> object is used to specify how a value should appear in a table: its number of digits, any white space padding, or extra characters, such as percents or parentheses. In pharma, it is a common convention to use x’s to represent data values in mock tables. As such, the <code>frmt</code> complies with this familiar convention. For example:</p>
 <ul>
 <li>
-<code>frmt(expression = "xxx.x%")</code> displays 3.829765 as " 3.8%" (note the leading whitespace!)</li>
+<code>frmt(expression = "xxx.x%")</code> displays 3.829765 as ” 3.8%” (note the leading whitespace!)</li>
 <li>
 <code>frmt(expression = "xxx.x%", missing = "Missing")</code> displays NA as “Missing”</li>
 <li>
-<code>frmt(expression = "xxx.x", scientific = " x10^x")</code> displays 1234.5678 as " 1.2 x10^ 3"</li>
+<code>frmt(expression = "xxx.x", scientific = " x10^x")</code> displays 1234.5678 as ” 1.2 x10^ 3”</li>
 </ul>
 </div>
 <div class="section level3">
@@ -120,7 +121,7 @@
 <ul>
 <li><p><code>frmt_combine("({lower}, {upper})", lower = frmt("xx.x"), upper = frmt("xx.x"))</code> will combine lower and upper bounds of a confidence interval into: “(xx.x, xx.x)”.</p></li>
 <li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""))</code> will print “n (%)” if the percentage is non-missing, but just “n” otherwise.</p></li>
-<li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""), missing = "")</code> will print “n (%)” if the percentage is non-missing, “n” if the percentage is missing but n is non-missing, and "" if both n and pct are missing.</p></li>
+<li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""), missing = "")</code> will print “n (%)” if the percentage is non-missing, “n” if the percentage is missing but n is non-missing, and “” if both n and pct are missing.</p></li>
 </ul>
 </div>
 </div>
