@@ -64,6 +64,7 @@ print_to_gt <- function(tfrmt, .data){
 #'
 #' @return GT object
 #' @noRd
+#' @importFrom gt cells_stub cells_row_groups
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     .data <- .data %>%
@@ -86,7 +87,13 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }
-  gt_out
+  gt_out %>%
+    tab_style(
+      style = list(
+        cell_text(align = "left")
+      ),
+      locations = list(cells_stub(), cells_row_groups())
+    )
 
 }
 

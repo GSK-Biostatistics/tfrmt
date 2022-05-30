@@ -79,13 +79,12 @@ Other benefits of tlang:
 For more information about how to build your own tlang mocks/tables (like the one below!), please explore the vignettes.
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-source("dev/data/tbl_demog_data.R")
-demog_dat <- create_tbl_demog_data() %>% 
+library(dplyr)
+demog_dat <- demog_data %>% 
   select(rowlbl1, grp, rowlbl2, column, param, ord1, ord2) %>% 
   ungroup %>% 
   mutate(column = ifelse(column=="p","p-value",column)) 
 tfrmt <- tfrmt(
-  
   # specify columns in the data
   group = vars(rowlbl1,grp),
   label = rowlbl2,
@@ -139,12 +138,6 @@ gt_out <- print_mock_gt(tfrmt, demog_dat) %>%
     ),
     cells_stub(), cells_row_groups())
   )%>% 
-  tab_style(
-    style = list(
-      cell_text(align = "left")
-    ),
-    locations = list(cells_stub(), cells_row_groups())
-  ) %>% 
   tab_options(
     stub.border.color = "transparent",
     stub_row_group.border.color = "transparent",
@@ -152,16 +145,10 @@ gt_out <- print_mock_gt(tfrmt, demog_dat) %>%
     row_group.border.top.color = "transparent",
     table.font.size = 13,
     data_row.padding = gt::px(1), row_group.padding = gt::px(1)
-  )%>%
-  cols_align(
-    align = "left",
-    columns = c(rowlbl1, rowlbl2)
   )
- 
-invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
+# invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
+gt_out
 ```
  
-
-<p align="center"><img src="man/figures/gt_readme.png" width="700px"></p>
 
 

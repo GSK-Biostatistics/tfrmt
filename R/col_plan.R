@@ -340,7 +340,7 @@ select_col_plan <- function(data, tfrmt){
 
     if((!is.null(tfrmt$row_grp_plan) &&
         !is.null(tfrmt$row_grp_plan$label_loc)&&
-        tfrmt$row_grp_style$label_loc$location=="noprint")){
+        tfrmt$row_grp_plan$label_loc$location=="noprint")){
 
       new_dots <- setdiff(new_dots, tfrmt$group)
 
