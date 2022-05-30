@@ -82,7 +82,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = cells_body(columns = everything())
     )
 
-  if(!is.null(tfrmt$row_grp_style) && tfrmt$row_grp_style$label_loc == "column"){
+  if(!is.null(tfrmt$row_grp_style) && tfrmt$row_grp_style$label_loc$location == "column"){
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }
