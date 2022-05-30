@@ -1,120 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/body_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/body_plan.html</loc>
   </url>
   <url>
-    <loc>/articles/building_blocks.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/building_blocks.html</loc>
   </url>
   <url>
-    <loc>/articles/col_align_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/col_align_plan.html</loc>
   </url>
   <url>
-    <loc>/articles/col_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/col_plan.html</loc>
   </url>
   <url>
-    <loc>/articles/examples.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/examples.html</loc>
   </url>
   <url>
-    <loc>/articles/faq.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/faq.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/layer.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/layer.html</loc>
   </url>
   <url>
-    <loc>/articles/mocks.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/mocks.html</loc>
   </url>
   <url>
-    <loc>/articles/row_grp_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/articles/row_grp_plan.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/index.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_col_align_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/apply_col_align_plan.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_frmt.frmt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/apply_frmt.frmt.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_frmt.frmt_combine.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/apply_frmt.frmt_combine.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_frmt.frmt_when.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/apply_frmt.frmt_when.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_frmt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/apply_frmt.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_grp_block.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/apply_grp_block.html</loc>
   </url>
   <url>
-    <loc>/reference/col_align_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/body_plan.html</loc>
   </url>
   <url>
-    <loc>/reference/col_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/col_align_plan.html</loc>
   </url>
   <url>
-    <loc>/reference/element_block.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/col_plan.html</loc>
   </url>
   <url>
-    <loc>/reference/element_row_grp_loc.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/element_block.html</loc>
   </url>
   <url>
-    <loc>/reference/frmt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/element_row_grp_loc.html</loc>
   </url>
   <url>
-    <loc>/reference/frmt_combine.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/frmt.html</loc>
   </url>
   <url>
-    <loc>/reference/frmt_structure.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/frmt_combine.html</loc>
   </url>
   <url>
-    <loc>/reference/frmt_utils.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/frmt_structure.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/frmt_utils.html</loc>
   </url>
   <url>
-    <loc>/reference/layer_tfrmt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/make_mock_data.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/layer_tfrmt.html</loc>
   </url>
   <url>
-    <loc>/reference/pipe.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/make_mock_data.html</loc>
   </url>
   <url>
-    <loc>/reference/print_mock_gt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>/reference/print_to_gt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/print_mock_gt.html</loc>
   </url>
   <url>
-    <loc>/reference/row_grp_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/print_to_gt.html</loc>
   </url>
   <url>
-    <loc>/reference/row_grp_structure.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/row_grp_plan.html</loc>
   </url>
   <url>
-    <loc>/reference/table_body_plan.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/row_grp_structure.html</loc>
   </url>
   <url>
-    <loc>/reference/tfrmt.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/tfrmt.html</loc>
   </url>
   <url>
-    <loc>/reference/theme_element.html</loc>
+    <loc>http://gsk-biostatistics.github.io/tlang/reference/theme_element.html</loc>
   </url>
 </urlset>
