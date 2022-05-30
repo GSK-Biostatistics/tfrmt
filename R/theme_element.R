@@ -8,11 +8,12 @@
 #'  highest level group variable in its own column and combine all remaining
 #'  group and label variables into a single column with sub-groups indented. The
 #'  highest level group column will either be printed as a spanning header or in
-#'  its own column in the gt.
+#'  its own column in the gt. Finally, the 'noprint' option allows the user to
+#'  suppress group values from being printed.
 #'@param indent A string of the number of spaces you want to indent
 #'
 #'@export
-element_row_grp_loc <- function(location = c("indented", "spanning", "column"),
+element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint"),
                                 indent = "  "){
   location = match.arg(location)
   structure(
