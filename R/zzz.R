@@ -1,4 +1,4 @@
-globalVariables(c("."))
+globalVariables(c(".", ".data"))
 
 
 ## Shared variables

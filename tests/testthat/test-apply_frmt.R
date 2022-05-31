@@ -337,7 +337,7 @@ test_that("appling frmt_when", {
     .data = sample_df,
     values = quo(x),
     param = quo(y),
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group)
   )
@@ -403,7 +403,7 @@ test_that("mocks return correctly", {
     .data = sample_df,
     values = quo(x),
     param = quo(y),
-    column = quo(col),
+    column = vars(col),
     label = quo(lab),
     group = vars(group),
     mock = TRUE

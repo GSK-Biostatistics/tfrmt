@@ -168,6 +168,7 @@ arrange_enquo <- function(dat, param){
 #' @return dataset with renaming in needed
 #' @noRd
 #' @importFrom stringr str_count str_remove
+#' @importFrom dplyr rename_with
 clean_spanning_col_names <- function(data){
   # Get number of layers
   lyrs <- names(data) %>%

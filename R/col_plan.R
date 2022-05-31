@@ -209,6 +209,7 @@ span_col_select <- function(x, data){
 }
 
 #' @importFrom tidyselect eval_select
+#' @importFrom dplyr expr
 span_col_select.quosures <- function(x, data){
   names(eval_select(expr(c(!!!x)), data = data))
 }
@@ -272,8 +273,8 @@ check_column_and_col_plan <- function(x){
 
 }
 
-
 #' @importFrom tidyr unite
+#' @importFrom dplyr as_tibble relocate last_col
 select_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
