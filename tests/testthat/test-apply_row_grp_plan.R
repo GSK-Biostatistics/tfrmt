@@ -14,7 +14,7 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1), sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1), sym("label")),
     tribble(
       ~grp1,~label, ~trtA,      ~trtB,      ~trtC,
       "A",  "1",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -33,7 +33,7 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1), sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1), sym("label")),
     tribble(
       ~grp1, ~label, ~trtA,      ~trtB,       ~trtC,
       "A", "1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -65,7 +65,7 @@ test_that("insert post space - two grouping variables",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
     tribble(
       ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
@@ -104,7 +104,7 @@ test_that("insert mix - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1)),
     tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
@@ -137,7 +137,7 @@ test_that("insert post space after specific value",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
     tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -173,7 +173,7 @@ test_that("overlapping row_grp_structures - prefers latest",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
     tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -208,7 +208,7 @@ test_that("no post space added if NULL",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1)),
     tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -235,7 +235,7 @@ test_that("post space is truncated to data width",{
   )
 
   expect_equal(
-    apply_row_grp_plan(df, sample_grp_plan, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan, vars(grp1)),
     tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",

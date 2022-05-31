@@ -1,4 +1,4 @@
-#' Apply row group block formatting to data
+#' Apply row group structure formatting to data
 #'
 #' @param .data data
 #' @param row_grp_plan row group plan object
@@ -11,7 +11,7 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
-apply_row_grp_plan <- function(.data, row_grp_plan, group, label = NULL, ...){
+apply_row_grp_struct <- function(.data, row_grp_plan, group, label = NULL, ...){
 
   # Locate which groups need which formatting
   # determine which rows each block applies to

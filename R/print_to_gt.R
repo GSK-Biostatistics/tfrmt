@@ -91,6 +91,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }
+
   gt_out %>%
     tab_style(
       style = list(

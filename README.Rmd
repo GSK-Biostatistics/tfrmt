@@ -83,6 +83,8 @@ For more information about how to build your own tlang mocks/tables (like the on
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
+demog_data <- demog_data %>% 
+  select(-value)
 tfrmt <- tfrmt(
   # specify columns in the data
   group = vars(rowlbl1,grp),
