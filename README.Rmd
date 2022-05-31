@@ -83,10 +83,6 @@ For more information about how to build your own tlang mocks/tables (like the on
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
-demog_dat <- demog_data %>% 
-  select(rowlbl1, grp, rowlbl2, column, param, ord1, ord2) %>% 
-  ungroup %>% 
-  mutate(column = ifelse(column=="p","p-value",column)) 
 tfrmt <- tfrmt(
   # specify columns in the data
   group = vars(rowlbl1,grp),
@@ -128,7 +124,7 @@ tfrmt <- tfrmt(
                       -starts_with("ord") )
 ) 
 
-gt_out <- print_mock_gt(tfrmt, demog_dat) %>% 
+gt_out <- print_mock_gt(tfrmt, demog_data) %>% 
   tab_style(
     style = cell_borders(
       sides = c("top","bottom"),
