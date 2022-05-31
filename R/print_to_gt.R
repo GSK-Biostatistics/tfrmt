@@ -67,8 +67,12 @@ print_to_gt <- function(tfrmt, .data){
 #' @importFrom gt cells_stub cells_row_groups
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
+    exsisting_grp <- tfrmt$group %>%
+      keep(function(x){
+        as_label(x) %in% names(.data)
+      })
     .data <- .data %>%
-      group_by(!!!tfrmt$group)
+      group_by(!!!exsisting_grp)
   }
 
   gt_out <- .data %>%
