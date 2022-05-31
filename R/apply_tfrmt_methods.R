@@ -1,10 +1,4 @@
 
-#' @import dplyr
-#'
-#'
-NULL
-
-
 #' Apply formatting
 #'
 #' @param .data data, but only what is getting changed
