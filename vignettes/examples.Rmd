@@ -19,7 +19,8 @@ library(tlang)
 library(dplyr)
 ```
 
-\# Demography Table For this demography table we are going to use `demog_data` an example analysis results table found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are going for a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and a grouping column, `grp`, which we can use for more complex controls.
+# Demography Table
+For this demography table we are going to use `demog_data` an example analysis results table found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are going for a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and a grouping column, `grp`, which we can use for more complex controls.
 
 ```{r, echo = FALSE}
 head(demog_data)
