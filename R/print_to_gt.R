@@ -95,7 +95,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   gt_out %>%
     tab_style(
       style = list(
-        cell_text(align = "left")
+        cell_text(whitespace = "pre", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
     )
