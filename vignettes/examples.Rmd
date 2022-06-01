@@ -30,7 +30,7 @@ The mock we are going to match looks like this:
 
 ![Mock demographics table](images/gt_readme.png)
 
-For this table we have three dose columns, a total column and a p-value column as well as a mix of categorical and continuous analysis. 
+For this table, we have three columns for each of the treatment groups, a total column for all groups combined, and a p-value column. The table also contains a mix of categorical and continuous analysis. 
 
 The first thing we are going to do when building out the `tfrmt` is specify all our columns 
 ```{r}
