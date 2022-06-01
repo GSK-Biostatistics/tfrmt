@@ -77,17 +77,25 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       group_by(!!!exsisting_grp)
   }
 
+
+  if (!is.null(tfrmt$col_align)){
+    align <- "left"
+  } else {
+    align <- NULL
+  }
+
   gt_out <- .data %>%
     gt(
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
-    apply_gt_spanning_labels(.data)%>%
+    apply_gt_spanning_labels(.data) %>%
     tab_style(
-      style = cell_text(whitespace = "pre"),
+      style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
     )
+
 
   if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
     gt_out <- gt_out %>%
