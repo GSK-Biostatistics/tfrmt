@@ -67,8 +67,12 @@ print_to_gt <- function(tfrmt, .data){
 #' @importFrom gt cells_stub cells_row_groups
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
+    existing_grp <- tfrmt$group %>%
+      keep(function(x){
+        as_label(x) %in% names(.data)
+      })
     .data <- .data %>%
-      group_by(!!!tfrmt$group)
+      group_by(!!!existing_grp)
   }
 
   gt_out <- .data %>%
@@ -87,10 +91,11 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }
+
   gt_out %>%
     tab_style(
       style = list(
-        cell_text(align = "left")
+        cell_text(whitespace = "pre", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
     )
@@ -131,6 +136,7 @@ apply_gt_footnote<- function(gt, footer){
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
 #' @importFrom gt cols_label
+#' @importFrom dplyr as_tibble desc
 #'
 apply_gt_spanning_labels <- function(gt_table, .data){
 

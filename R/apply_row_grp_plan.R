@@ -1,4 +1,4 @@
-#' Apply row group block formatting to data
+#' Apply row group structure formatting to data
 #'
 #' @param .data data
 #' @param row_grp_plan row group plan object
@@ -11,7 +11,7 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
-apply_row_grp_plan <- function(.data, row_grp_plan, group, label = NULL, ...){
+apply_row_grp_struct <- function(.data, row_grp_plan, group, label = NULL, ...){
 
   # Locate which groups need which formatting
   # determine which rows each block applies to
@@ -206,7 +206,7 @@ fill_post_space <- function(post_space, width){
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last
+#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last any_of
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr

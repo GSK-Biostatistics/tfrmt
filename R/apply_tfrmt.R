@@ -65,7 +65,7 @@ tbl_dat <- apply_table_frmt_plan(
 
   tbl_dat_wide <- tbl_dat_wide %>%
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
-    tentative_process(apply_row_grp_plan, tfrmt$row_grp_plan, tfrmt$group, tfrmt$label) %>%
+    tentative_process(apply_row_grp_struct, tfrmt$row_grp_plan, tfrmt$group, tfrmt$label) %>%
     #Select before grouping to not have to deal with if it indents or not
     tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
     tentative_process(apply_row_grp_lbl, tfrmt$row_grp_plan, tfrmt$group, tfrmt$label)
@@ -168,6 +168,7 @@ arrange_enquo <- function(dat, param){
 #' @return dataset with renaming in needed
 #' @noRd
 #' @importFrom stringr str_count str_remove
+#' @importFrom dplyr rename_with
 clean_spanning_col_names <- function(data){
   # Get number of layers
   lyrs <- names(data) %>%
