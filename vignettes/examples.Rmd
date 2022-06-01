@@ -105,7 +105,7 @@ tfrmt(
   print_to_gt(demog_data)
 ```
 
-Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To fit the alignment we are going to add a `col_algn_plan` which takes a series of `element_align`s. This was columns could be aligned differently if needed. This is a fairly straight forward and we want all the columns to algin on either ".", "," or " " so our `element_align` looks like `element_align(align = c(".",","," "), col = vars(everything()))`. 
+Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_align_plan` which accepts a series of `element_align`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_align` looks like `element_align(align = c(".",","," "), col = vars(everything()))`. 
 After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change. 
 ```{r}
 demog_data %>% 
