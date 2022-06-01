@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(tlang)
+library(tibble)
+library(dplyr)
 ```
 
 
@@ -66,7 +68,13 @@ tfrmt(
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("XX"))
   ),
-  row_grp_plan = row_grp_plan(label_loc =element_row_grp_loc("column"))
+  row_grp_plan = row_grp_plan(label_loc =element_row_grp_loc("column")),
+  col_plan = col_plan(
+    `Pooled Id`,  `Site Id`,
+    contains("Placebo"),
+    contains("High Dose"),
+    everything()
+  )
 ) %>%
   print_to_gt(data)
 ```
