@@ -244,10 +244,10 @@ select_col_plan <- function(data, tfrmt){
       kernal_name <- names(data) %>%
         str_split(.tlang_delim) %>%
         map_chr(last)
-      if(length(unique(kernal_name)) != length(kernal_name)){
-        stop("Unable to select columns due to duplicate naming.
-             If you would like to set the order consider using span structures rather than multiple columns.")
-      }
+      # if(length(unique(kernal_name)) != length(kernal_name)){
+      #   stop("Unable to select columns due to duplicate naming.
+      #        If you would like to set the order consider using span structures rather than multiple columns.")
+      # }
 
       dots_df <-tibble(dots = tfrmt$col_plan$dots,
                        dots_chr = tfrmt$col_plan$dots %>% map_chr(as_label))
