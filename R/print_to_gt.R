@@ -69,12 +69,12 @@ print_to_gt <- function(tfrmt, .data){
 #'   cells_body cells_column_labels
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
-    exsisting_grp <- tfrmt$group %>%
+    existing_grp <- tfrmt$group %>%
       keep(function(x){
         as_label(x) %in% names(.data)
       })
     .data <- .data %>%
-      group_by(!!!exsisting_grp)
+      group_by(!!!existing_grp)
   }
 
 
