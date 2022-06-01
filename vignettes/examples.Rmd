@@ -28,7 +28,7 @@ head(demog_data)
 
 The mock we are going to match looks like this:
 
-![Mock deemographics table](images/gt_readme.png)
+![Mock demographics table](images/gt_readme.png)
 
 For this table we have three dose columns, a total column and a p-value column as well as a mix of categorical and continuous analysis. 
 
