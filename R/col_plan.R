@@ -218,11 +218,23 @@ select_col_plan <- function(data, tfrmt){
         # Get the new names
         new_name_df <- tfrmt$col_plan$span_structures %>%
           map_dfr(span_struct_to_df, tpm_data) %>%
+          mutate(
+            .rename_col = case_when(
+              .rename_col != "" ~ .rename_col,
+              TRUE ~ .original_col
+            )
+          ) %>%
           relocate(.data$.original_col, .after = last_col()) %>%
           relocate(.data$.rename_col, .after = last_col()) %>%
           unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE) %>%
           unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE) %>%
-          mutate(new_name_quo = map(.data$new_name_in_df, sym))
+          mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
+          mutate(
+            new_name_in_df = case_when(
+              new_name_in_df == .original_col ~ NA_character_,
+              TRUE ~ new_name_in_df
+            )
+          )
 
       } else if(length(tfrmt$column) > 1){
 
@@ -233,7 +245,13 @@ select_col_plan <- function(data, tfrmt){
           .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
           .rename_col = names(tfrmt$col_plan$dots)
           ) %>%
-          right_join(
+          mutate(
+            .rename_col = case_when(
+              .rename_col != "" ~ .rename_col,
+              TRUE ~ .original_col
+            )
+          ) %>%
+          left_join(
             df_col_names,
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
           ) %>%
@@ -241,7 +259,13 @@ select_col_plan <- function(data, tfrmt){
           relocate(.data$.rename_col, .after = last_col()) %>%
           unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
           unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
-          mutate(new_name_quo = map(.data$new_name_in_df, sym))
+          mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
+          mutate(
+            new_name_in_df = case_when(
+              new_name_in_df == .original_col ~ NA_character_,
+              TRUE ~ new_name_in_df
+            )
+          )
 
       }
 

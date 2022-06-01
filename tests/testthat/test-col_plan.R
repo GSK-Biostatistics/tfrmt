@@ -311,6 +311,63 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
 })
 
+test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure - with renaming",{
+
+  basic_multi_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    values = val,
+    column = c(test1,test2),
+    col_plan = col_plan(
+      group, label, new_col_4 = col4, new_col_1 = col1, col2, col3, -col5
+    )
+  )
+
+  spanned_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    values = val,
+    column = c(test2),
+    col_plan = col_plan(
+      group, label, new_col_4 = col4, span_structure("span 1", new_col_1 = col1, col2), col3, -col5
+    )
+  )
+
+  basic_example_dataset <- tibble::tribble(
+    ~group,     ~label,    ~test1, ~test2,    ~parm, ~val,
+    "g1", "rowlabel1",  "span 1", "col1",  "value",    1,
+    "g1", "rowlabel1",  "span 1", "col2",  "value",    1,
+    "g1", "rowlabel1",        NA, "col3",  "value",    1,
+    "g1", "rowlabel1",        NA, "col4",  "value",    1,
+    "g1", "rowlabel1",        NA, "col5",  "value",    1,
+    "g1", "rowlabel2",  "span 1", "col1",  "value",    2,
+    "g1", "rowlabel2",  "span 1", "col2",  "value",    2,
+    "g1", "rowlabel2",        NA, "col3",  "value",    2,
+    "g1", "rowlabel2",        NA, "col4",  "value",    2,
+    "g1", "rowlabel2",        NA, "col5",  "value",    2,
+    "g2", "rowlabel3",  "span 1", "col1",  "value",    3,
+    "g2", "rowlabel3",  "span 1", "col2",  "value",    3,
+    "g2", "rowlabel3",        NA, "col3",  "value",    3,
+    "g2", "rowlabel3",        NA, "col4",  "value",    3,
+    "g2", "rowlabel3",        NA, "col5",  "value",    3,
+  )
+
+  suppressMessages({
+    suppressWarnings({
+      processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+      processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
+    })
+  })
+
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
 
 test_that("span_structure returns correct errors",{
 
