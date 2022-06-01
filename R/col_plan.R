@@ -317,16 +317,19 @@ span_struct_to_df <- function(span_struct, data_col, depth = 1){
   span_struct_to_df_function(span_struct=span_struct, data_col = data_col, depth = depth)
 }
 
+#' @importFrom rlang %||%
 span_struct_to_df.span_structure <- function(span_struct, data_col, depth = 1){
 
   lab <- span_struct$label
 
   contents <- eval_tidyselect_on_colvec(span_struct, data_col)
 
+  new_names <- names(contents) %||% NA_character_
+
   tibble(
     lab = lab,
     .original_col = contents,
-    .rename_col = names(contents)
+    .rename_col = new_names
   ) %>%
     rename(
       !!paste0(.tlang_struct_col_prefix,depth) := lab
@@ -345,7 +348,7 @@ span_struct_to_df.span_structures <- function(span_struct, data_col, depth = 1){
         span_struct_to_df(span_struct = x, data_col, depth = depth + 1)
       } else{
         contents <- eval_tidyselect_on_colvec(x, data_col)
-        tibble(.original_col = contents)
+        tibble(.original_col = contents, .rename_col = names(x))
       }
     }) %>%
     mutate(lab = lab) %>%
