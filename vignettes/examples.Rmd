@@ -14,9 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message = FALSE, warning = FALSE}
 library(tlang)
 library(dplyr)
+library(gt)
+library(tidyr)
 ```
 
 # Demography Table
@@ -28,7 +30,53 @@ head(demog_data)
 
 The mock we are going to match looks like this:
 
-![Mock deemographics table](images/gt_readme.png)
+```{r echo = FALSE} 
+tfrmt(
+  # specify columns in the data
+  group = vars(rowlbl1,grp),
+  label = rowlbl2,
+  column = column, 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2),
+  
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
+                                                                                n = frmt("xxx"),
+                                                                                pct = frmt_when("==100" ~ "",
+                                                                                                "==0" ~ "",
+                                                                                                TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
+    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
+    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
+    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
+                                                                                 "<0.001" ~ "<0.001",
+                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
+  ),
+  
+  # Specify row group plan
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "column")
+  ),
+  
+  # Specify column alignment plan
+  col_align = col_align_plan(
+    element_align(align = c(".",","," "), col = vars(everything()))
+  ),
+  
+  # remove extra cols
+  col_plan = col_plan(-grp, 
+                      -starts_with("ord") )
+) %>% 
+  print_mock_gt(demog_data %>% select(-value)) %>% 
+  tab_options(
+    container.width = 900
+  )
+```
+ 
 
 For this table we have three dose columns, a total column and a p-value column as well as a mix of categorical and continuous analysis. 
 
@@ -42,7 +90,10 @@ tfrmt(
   param = param,
   values = value,
   sorting_cols = vars(ord1, ord2)) %>% 
-  print_to_gt(demog_data)
+  print_to_gt(demog_data) %>% 
+  tab_options(
+    container.width = 900
+  )
 ```
 
 While this make a table it isn't a very nice table and defiantly doesn't match the mock. So lets start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`.  This will be a fairly quick explanation of `body_plan`s but if you like more information see `vignettes("Body Plan")` 
@@ -71,9 +122,12 @@ tfrmt(
                                                                                  "<0.001" ~ "<0.001",
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
   )) %>% 
-  print_to_gt(demog_data)
+  print_to_gt(demog_data) %>% 
+  tab_options(
+    container.width = 900
+  )
 ```
-Now the numbers looks all correct, we can drop the order columns and the `grp` column. To do this we use a `col_plan` which uses `tidy-select` nomenclature to drop/move columns. 
+Now the numbers looks all correct, we can drop the order columns and the `grp` column (note that while we do not want to display the `grp` column, it plays a role behind the scenes, which will be addressed in the next step). To do this we use a `col_plan` which uses `tidy-select` nomenclature to drop/move columns. 
 
 ```{r}
 tfrmt(
@@ -102,7 +156,10 @@ tfrmt(
   # remove extra cols
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )) %>% 
-  print_to_gt(demog_data)
+  print_to_gt(demog_data) %>% 
+  tab_options(
+    container.width = 900
+  )
 ```
 
 Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To fit the alignment we are going to add a `col_algn_plan` which takes a series of `element_align`s. This was columns could be aligned differently if needed. This is a fairly straight forward and we want all the columns to algin on either ".", "," or " " so our `element_align` looks like `element_align(align = c(".",","," "), col = vars(everything()))`. 
@@ -152,10 +209,320 @@ tfrmt(
   )
   
   ) %>% 
-  print_to_gt(demog_data)
+  print_to_gt(demog_data) %>% 
+  tab_options(
+    container.width = 900
+  )
 ```
 
 
-# AE tabel 
+# AE table
+
+For the adverse events (AE) table, we will use the `ae_data` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns; these can be used in lieu of a `col_plan`, if desired. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
+
+```{r, echo = FALSE}
+ae_data2 <- ae_data %>% 
+  group_by(AEBODSYS, AETERM) %>% 
+  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
+  ungroup %>% 
+  filter(pct_high >10) %>% 
+  select(-pct_high)
+
+head(ae_data2)
+```
+
+The mock we are going to match looks like this:
+
+```{r echo = FALSE}
+
+fmt_spec <- tfrmt(
+  group = vars(AEBODSYS),
+  label = quo(AETERM),
+  param = quo(param),
+  column = vars(col2, col1),
+  value = quo(value),
+  row_grp_plan = row_grp_plan(),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+            frmt_combine("{n} {pct}",
+                        n = frmt("XXX"),
+                        pct = frmt_when(
+                          "==100" ~ "",
+                          "==0" ~ "",
+                          TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "--")))
+  ), col_plan = col_plan(-starts_with("ord")))
+
+ae_data2 %>%  
+  select(-value) %>% 
+  arrange(ord1, ord2 ) %>% 
+  print_mock_gt(fmt_spec, . )  %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+ 
+For this table we have three treatment group columns (Placebo, Low, and High Dose) which each have the following values reported: # of subjects with at least one AE (n), percent of subjects with at least one AE (pct), and # of AEs (AEs). We also have two p-value columns (Low Dose vs. Placebo, High Dose vs. Placebo). 
+
+Like the demography example, the first thing we are going to do when building out the `tfrmt` is specify all our columns. Note that `col2` contains our spanning labels and `col1` contains our lower level column headers: 
+```{r}
+tfrmt(
+  # specify columns in the data
+  group = AEBODSYS,
+  label = AETERM,
+  column = vars(col2, col1), 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2)) %>% 
+  print_to_gt(ae_data2) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+
+Next, we need to format the values using the `body_plan`. Recall that our body plan will be made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. Our AE table boils down to the following values: # of subjects with at least one AE (n), percent of subjects with at least one AE (pct), # of AEs (AEs), and p-value (pval). Because our n and pct will be combined using `frmt_combine`, we will have 3 `frmt_structure` objects. Note the use of `frmt_when` to format the p-values.
+```{r}
+tfrmt(
+  # specify columns in the data
+  group = AEBODSYS,
+  label = AETERM,
+  column = vars(col2, col1), 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2),
+  # specify value formatting 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{n} {pct}",
+                                n = frmt("XXX"),
+                                pct = frmt_when(
+                                  "==100" ~ "",
+                                  "==0" ~ "",
+                                  TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing ="--")))
+  )) %>% 
+  print_to_gt(., ae_data2) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+
+Almost there! Our AE table contains data for both Preferred Terms and System Organ Classes. Therefore, we do not want a typical group-level header. Instead, we want to display the System Organ Class label inline with its data, and nest the Preferred Term data underneath. Fortunately, we are able to achieve this formatting with a `row_grp_plan`: 
+
+```{r}
+tfrmt(
+  # specify columns in the data
+  group = AEBODSYS,
+  label = AETERM,
+  column = vars(col2, col1), 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2),
+  # specify value formatting 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{n} {pct}",
+                                n = frmt("XXX"),
+                                pct = frmt_when(
+                                  "==100" ~ "",
+                                  "==0" ~ "",
+                                  TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing ="--")))
+  ),
+  # Nest Preferred terms under SOC
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
+  ) %>% 
+  print_to_gt(ae_data2) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+
+Our column alignment looks good as-is, except for the p-values. We can use the `col_align_plan` to tweak those.
+
+```{r}
+tfrmt(
+  # specify columns in the data
+  group = AEBODSYS,
+  label = AETERM,
+  column = vars(col2, col1), 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2),
+  # specify value formatting 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{n} {pct}",
+                                n = frmt("XXX"),
+                                pct = frmt_when(
+                                  "==100" ~ "",
+                                  "==0" ~ "",
+                                  TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing ="--")))
+  ),
+  # Nest Preferred terms under SOC
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+  # alignment
+  
+  # Specify column alignment plan
+  col_align = col_align_plan(
+    element_align(align = c(".",","," "), col = vars(starts_with("p_")))
+  )
+  ) %>% 
+  print_to_gt(ae_data2) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+
+Notice that we still have our order columns and the column labels could benefit from some renaming. We can add a `col_plan` to help with the ordering:
+
+```{r }
+
+tfrmt(
+  # specify columns in the data
+  group = AEBODSYS,
+  label = AETERM,
+  column = vars(col2, col1), 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2),
+  # specify value formatting 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{n} {pct}",
+                                n = frmt("XXX"),
+                                pct = frmt_when(
+                                  "==100" ~ "",
+                                  "==0" ~ "",
+                                  TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing ="--")))
+  ),
+  # Nest Preferred terms under SOC
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+  
+  # Specify column alignment plan
+  col_align = col_align_plan(
+    element_align(align = c(".",","," "), col = vars(contains("pval")))
+  ),
+  
+  # columns
+  col_plan = col_plan(
+    -starts_with("ord")
+  )
+  ) %>% 
+  print_to_gt(ae_data2)  %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
 
 
+For better control over our column labels, we can provide a single column in lieu of the two columns. This allows us to make use of `col_plan`'s `span_structure`s to define the column labels and spanners:
+
+```{r }
+ae_data3 <- ae_data2 %>% 
+  unite("col", c(col2, col1), sep = "-")
+
+tfrmt(
+  # specify columns in the data
+  group = AEBODSYS,
+  label = AETERM,
+  column = vars(col), 
+  param = param,
+  values = value,
+  sorting_cols = vars(ord1, ord2),
+  # specify value formatting 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{n} {pct}",
+                                n = frmt("XXX"),
+                                pct = frmt_when(
+                                  "==100" ~ "",
+                                  "==0" ~ "",
+                                  TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing ="--")))
+  ),
+  # Nest Preferred terms under SOC
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+  
+  # Specify column alignment plan
+  col_align = col_align_plan(
+    element_align(align = c(".",","," "), col = vars(contains("pval")))
+  ),
+  
+  # columns
+  col_plan = col_plan(
+    -starts_with("ord"),
+        span_structure(
+      "Xanomeline High Dose (N=84)",
+       `n (%)` = `Xanomeline High Dose-n_pct` ,
+       `[AEs]` = `Xanomeline High Dose-AEs` 
+    ),
+    span_structure(
+      "Xanomeline Low Dose (N=84)",
+       `n (%)` = `Xanomeline Low Dose-n_pct` ,
+       `[AEs]` = `Xanomeline Low Dose-AEs` 
+    ),
+    span_structure(
+      "Placebo (N=86)",
+       `n (%)` = `Placebo-n_pct` ,
+       `[AEs]` = `Placebo-AEs` 
+    ), 
+    span_structure(
+      "Fisher's Exact p-values",
+       `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
+       `Placebo vs. High Dose` = `fisher_pval-p_high` 
+    )
+  )
+  ) %>% 
+  print_to_gt(ae_data3)  %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+
+Our AE table is now complete!

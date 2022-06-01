@@ -64,7 +64,9 @@ print_to_gt <- function(tfrmt, .data){
 #'
 #' @return GT object
 #' @noRd
-#' @importFrom gt cells_stub cells_row_groups
+#' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
+#'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
+#'   cells_body cells_column_labels
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     exsisting_grp <- tfrmt$group %>%
@@ -95,11 +97,60 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   gt_out %>%
     tab_style(
       style = list(
-        cell_text(align = "left")
+        cell_text(whitespace = "pre", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
-    )
+    ) %>%
+    tab_options(
+      table.font.size = 14,
+      data_row.padding = gt::px(1),
+      summary_row.padding = gt::px(1),
+      grand_summary_row.padding = gt::px(1),
+      footnotes.padding = gt::px(1),
+      source_notes.padding = gt::px(1),
+      row_group.padding = gt::px(1),
+      stub.border.color = "transparent",
+      stub_row_group.border.color = "transparent",
+      row_group.border.bottom.color = "transparent",
+      row_group.border.top.color = "transparent") %>%
 
+    tab_style(
+      style = cell_borders(
+        sides = c("top","bottom"),
+        color = "transparent"
+      ),
+      locations= list(
+        cells_body(
+          columns = everything(),
+          rows = everything()
+        ),
+        cells_stub(), cells_row_groups())
+    )  %>%
+
+    tab_style(
+      style = cell_borders(
+        sides = c("top"),
+        color = "transparent",
+        weight = px(0),
+      ),
+      locations= list(
+        cells_column_labels()
+    )) %>%
+
+    tab_style(
+      style = cell_borders(
+        sides = c("bottom"),
+        weight = px(0),
+        color = "transparent"
+      ),
+      locations= list(
+        cells_column_spanners()
+      )) %>%
+    tab_style(
+      style = cell_text(font = c("Courier", default_fonts())),
+      locations = list(cells_body(), cells_row_groups(), cells_stub(),
+                       cells_column_labels(), cells_column_spanners())
+    )
 }
 
 
