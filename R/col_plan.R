@@ -201,22 +201,49 @@ select_col_plan <- function(data, tfrmt){
     }
   } else {
 
-    #make a dummy dataset based on the last section of the column
-    if(length(tfrmt$col_plan$span_structures) > 0){
+    ## triple dots passed to select
+    new_dots <- tfrmt$col_plan$dots
 
-      tpm_data <- names(data) %>%
-        str_split(.tlang_delim) %>%
-        map_chr(last) %>%
-        unique()
+    ### if there are span_structures or multiple columns, modify new_dots
+    if(length(tfrmt$col_plan$span_structures) > 0 | length(tfrmt$column) > 1){
 
-      # Get the new names
-      new_name_df <- tfrmt$col_plan$span_structures %>%
-        map_dfr(span_struct_to_df, tpm_data) %>%
-        relocate(.data$.original_col, .after = last_col()) %>%
-        relocate(.data$.rename_col, .after = last_col()) %>%
-        unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE) %>%
-        unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE) %>%
-        mutate(new_name_quo = map(.data$new_name_in_df, sym))
+      #make a dummy dataset based on the last section of the column
+      if(length(tfrmt$col_plan$span_structures) > 0){
+
+        tpm_data <- names(data) %>%
+          str_split(.tlang_delim) %>%
+          map_chr(last) %>%
+          unique()
+
+        # Get the new names
+        new_name_df <- tfrmt$col_plan$span_structures %>%
+          map_dfr(span_struct_to_df, tpm_data) %>%
+          relocate(.data$.original_col, .after = last_col()) %>%
+          relocate(.data$.rename_col, .after = last_col()) %>%
+          unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE) %>%
+          unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE) %>%
+          mutate(new_name_quo = map(.data$new_name_in_df, sym))
+
+      } else if(length(tfrmt$column) > 1){
+
+        df_col_names <- tibble(df_names = names(data)) %>%
+          separate(df_names, map_chr(tfrmt$column, as_label), sep = .tlang_delim, fill = "left")
+
+        new_name_df <- tibble(
+          .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
+          .rename_col = names(tfrmt$col_plan$dots)
+          ) %>%
+          right_join(
+            df_col_names,
+            by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
+          ) %>%
+          relocate(.data$.original_col, .after = last_col()) %>%
+          relocate(.data$.rename_col, .after = last_col()) %>%
+          unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
+          unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
+          mutate(new_name_quo = map(.data$new_name_in_df, sym))
+
+      }
 
       new_dots_tmp <- tibble(
           dots = tfrmt$col_plan$dots,
@@ -228,54 +255,26 @@ select_col_plan <- function(data, tfrmt){
 
       new_dots_tmp_idx <- which(!is.na(new_dots_tmp$new_name_in_df))
 
-      new_dots <- tfrmt$col_plan$dots
       suppressWarnings({
         new_dots[new_dots_tmp_idx] <- new_dots_tmp$dot2[new_dots_tmp_idx]
         names(new_dots)[new_dots_tmp_idx] <- new_dots_tmp$new_name_in_df_output[new_dots_tmp_idx]
       })
 
-    } else if(length(tfrmt$column) > 1){
-      kernal_name <- names(data) %>%
-        str_split(.tlang_delim) %>%
-        map_chr(last)
-      if(length(unique(kernal_name)) != length(kernal_name)){
-        stop("Unable to select columns due to duplicate naming.
-             If you would like to set the order consider using span structures rather than multiple columns.")
-      }
-
-      dots_df <-tibble(dots = tfrmt$col_plan$dots,
-                       dots_chr = tfrmt$col_plan$dots %>% map_chr(as_label))
-
-      new_dots <- tibble(dat_nm = names(data),
-                         kernal_name = kernal_name,
-                         new_name = map(.data$dat_nm, sym)
-      ) %>%
-        left_join(dots_df, ., by = c("dots_chr" = "kernal_name")) %>%
-        mutate(
-          dot2 = ifelse(!is.na(.data$dat_nm), .data$new_name, .data$dots))%>%
-        pull(.data$dot2)
-
-    } else {
-      new_dots <- tfrmt$col_plan$dots
     }
 
-    #Adding in labels and grouping if people forgot it
+    # Adding in labels and grouping if people forgot it
     # because the order of these are set by the GT I don't it will matter
-  #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
+    #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
 
     if((!is.null(tfrmt$row_grp_plan) &&
         !is.null(tfrmt$row_grp_plan$label_loc)&&
         tfrmt$row_grp_plan$label_loc$location=="noprint")){
-
       new_dots <- setdiff(new_dots, tfrmt$group)
-
     }
 
-    out<- select(
-      data,
-      !!!new_dots
-    )
+    out <- select( data, !!!new_dots)
   }
+
   out
 }
 
