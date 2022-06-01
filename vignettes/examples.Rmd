@@ -168,7 +168,7 @@ After the alignment is sorted we can move on to the spacing. In order to match t
 demog_data %>% 
   distinct(rowlbl1,grp)
 ```
-This means that we can use a `row_grp_plan` with just a `".default"` as the group and it should handel all of the spacing. In addition to the spacing `row_grp_plan` will let us change the spanning group lables to an additional column by changing the `label_loc` to "column". 
+This means that we can use a `row_grp_plan` with just a `".default"` as the group and it should handle all of the spacing. In addition to the spacing `row_grp_plan` will let us change the spanning group labels to an additional column by changing the `label_loc` to "column". 
 
 ```{r}
 tfrmt(
