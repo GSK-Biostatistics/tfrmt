@@ -3,7 +3,7 @@
 \docType{data}
 \name{demog_data}
 \alias{demog_data}
-\title{Demograph Analysis Results Data}
+\title{Demography Analysis Results Data}
 \format{
 A data frame with 386 rows and 7 variables:
 \describe{
