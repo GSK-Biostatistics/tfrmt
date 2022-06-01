@@ -187,7 +187,7 @@ check_column_and_col_plan <- function(x){
 }
 
 #' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate last_col
+#' @importFrom dplyr as_tibble relocate last_col right_join
 select_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
@@ -324,7 +324,7 @@ span_struct_to_df.span_structure <- function(span_struct, data_col, depth = 1){
 
   contents <- eval_tidyselect_on_colvec(span_struct, data_col)
 
-  new_names <- names(contents) %||% NA_character_
+  new_names <- names(contents) %||% contents
 
   tibble(
     lab = lab,
