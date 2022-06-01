@@ -72,7 +72,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
         as_label(x) %in% names(.data)
       })
     .data <- .data %>%
-      group_by(!!!exsisting_grp)
+      group_by(!!!existing_grp)
   }
 
   gt_out <- .data %>%
