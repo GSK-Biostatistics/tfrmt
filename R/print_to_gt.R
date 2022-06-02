@@ -64,7 +64,9 @@ print_to_gt <- function(tfrmt, .data){
 #'
 #' @return GT object
 #' @noRd
-#' @importFrom gt cells_stub cells_row_groups
+#' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
+#'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
+#'   cells_body cells_column_labels
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
@@ -75,17 +77,25 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       group_by(!!!existing_grp)
   }
 
+
+  if (!is.null(tfrmt$col_align)){
+    align <- "left"
+  } else {
+    align <- NULL
+  }
+
   gt_out <- .data %>%
     gt(
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
-    apply_gt_spanning_labels(.data)%>%
+    apply_gt_spanning_labels(.data) %>%
     tab_style(
-      style = cell_text(whitespace = "pre"),
+      style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
     )
+
 
   if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
     gt_out <- gt_out %>%
@@ -98,8 +108,57 @@ cleaned_data_to_gt <- function(.data, tfrmt){
         cell_text(whitespace = "pre", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
-    )
+    ) %>%
+    tab_options(
+      table.font.size = 14,
+      data_row.padding = gt::px(1),
+      summary_row.padding = gt::px(1),
+      grand_summary_row.padding = gt::px(1),
+      footnotes.padding = gt::px(1),
+      source_notes.padding = gt::px(1),
+      row_group.padding = gt::px(1),
+      stub.border.color = "transparent",
+      stub_row_group.border.color = "transparent",
+      row_group.border.bottom.color = "transparent",
+      row_group.border.top.color = "transparent") %>%
 
+    tab_style(
+      style = cell_borders(
+        sides = c("top","bottom"),
+        color = "transparent"
+      ),
+      locations= list(
+        cells_body(
+          columns = everything(),
+          rows = everything()
+        ),
+        cells_stub(), cells_row_groups())
+    )  %>%
+
+    tab_style(
+      style = cell_borders(
+        sides = c("top"),
+        color = "transparent",
+        weight = px(0),
+      ),
+      locations= list(
+        cells_column_labels()
+    )) %>%
+
+    tab_style(
+      style = cell_borders(
+        sides = c("bottom"),
+        weight = px(0),
+        color = "transparent"
+      ),
+      locations= list(
+        cells_column_spanners()
+      )) %>%
+    tab_style(
+      style = cell_text(font = c("Courier", default_fonts())),
+      locations = list(cells_body(), cells_row_groups(), cells_stub(),
+                       cells_column_labels(), cells_column_spanners())
+    )
 }
 
 

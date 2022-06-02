@@ -14,6 +14,229 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
 library(tlang)
+library(dplyr)
 ```
+
+tlang offers the ability to align value columns in the following ways:
+
+- Left-align
+- Right-align
+- Align on one or more characters (e.g., decimal alignment)
+
+Alignment is specified via the `col_align_plan`, which accepts a series of `element_align`s as inputs. Note that the `col_align_plan` does not have any `*_structure` objects as inputs, as `*_structure`s are for modifying the *contents* (i.e., text) of the table, while `element_*`s are for modifying *aesthetics*. 
+
+Alignment is achieved by padding the values with character spaces; this padding ensures that alignment is robust and agnostic to the output format. 
+
+## Alignment examples
+
+Element aligns have two arguments: the alignment desired and the columns in the final table to be aligned. The column values that are specified are to match the contents of the `column` variable that is specified in the `tfrmt` object. 
+
+Let's take a look at how alignment can be applied to the example below, which contains a variety of different parameters which are formatted differently. 
+```{r echo = FALSE}
+
+dat <- tribble(
+  ~label     , ~param, ~column    , ~ value,   ~ord, 
+  "n"        ,"n"     , "trt1"     ,12,        1, 
+  "mean (sd)","mean"  , "trt1"     ,12.332837, 2,
+  "mean (sd)","sd"    , "trt1"     ,4.3454547, 2,
+  "median"   ,"median", "trt1"     ,14,        3, 
+  "[q1, q3]" ,"q1"    , "trt1"     ,10,        4,
+  "[q1, q3]" ,"q3"    , "trt1"     ,20,        4,
+  "n"        ,"n"     , "trt2"     ,24,        1,
+  "mean (sd)","mean"  , "trt2"     ,15.438737, 2,
+  "mean (sd)","sd"    , "trt2"     ,6.723827,  2, 
+  "median"   ,"median", "trt2"     ,16,        3, 
+  "[q1, q3]" ,"q1"    , "trt2"     ,11,        4, 
+  "[q1, q3]" ,"q3"    , "trt2"     ,22,        4,
+  "n"        ,"pval"  , "p-value"  ,NA,        1, 
+  "mean (sd)","pval"  , "p-value"  ,0.00002,   2, 
+  "median"   ,"pval"  , "p-value"  ,0.051211,  3, 
+  "[q1, q3]" ,"pval"  , "p-value"  ,NA,        4)
+```
+
+```{r}
+head(dat)
+
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = vars(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  )
+) %>% 
+  print_to_gt(dat)
+```
+
+Column alignment can improve this table by making it easier to read. Let's start by left-aligning our p-value column. Notice that by providing a `col_align_plan`, any variables that are not covered in the plan will be left-aligned by default.
+
+```{r}
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = vars(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  ), 
+  col_align =  col_align_plan(
+    element_align(align = "left", col = `p-value`))
+  ) %>% 
+  print_to_gt(dat)
+```
+
+
+This alignment isn't quite right as we have the `<` in one value but not the other. Applying a decimal alignment would be a better fit:
+
+```{r}
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = vars(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  ), 
+  col_align =  col_align_plan(
+    element_align(align = c("."), col = `p-value`))
+  ) %>% 
+  print_to_gt(dat)
+```
+
+For our other two columns, we have a mix of values represented. In this case, we want to align on the first set of digits. In other words, we will align on the first instance of a decimal, comma, or space:
+
+```{r}
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = vars(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  ), 
+  col_align =  col_align_plan(
+    element_align(align = c("."), col = `p-value`),
+    element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))))
+  ) %>% 
+  print_to_gt(dat)
+```
+
+
+Finally, for the purpose of demonstrating our options, we can align each column differently (left, right, character for the three columns respectively):
+```{r}
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = vars(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  ), 
+  col_align =  col_align_plan(
+    element_align(align = c("."), col = `p-value`),
+    element_align(align = "left", col = trt1),
+    element_align(align = "right", col = trt2))
+  ) %>% 
+  print_to_gt(dat)
+```
+
+## Alignment of group and label columns
+
+At this time, group and label columns will be left aligned by default. The user can adjust the alignment of these columns through gt directly.
+
+## Alignment via `body_plan`
+
+It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications  allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become "  9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_align_plan` is the preferred method. 
