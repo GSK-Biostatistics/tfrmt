@@ -64,7 +64,7 @@ tfrmt(
   column = column,
   param = param,
   values = value,
-  sorting_cols = vars(ord),
+  sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", 
@@ -97,7 +97,7 @@ tfrmt(
   column = column,
   param = param,
   values = value,
-  sorting_cols = vars(ord),
+  sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", 
@@ -133,7 +133,7 @@ tfrmt(
   column = column,
   param = param,
   values = value,
-  sorting_cols = vars(ord),
+  sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", 
@@ -168,7 +168,7 @@ tfrmt(
   column = column,
   param = param,
   values = value,
-  sorting_cols = vars(ord),
+  sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", 
@@ -204,7 +204,7 @@ tfrmt(
   column = column,
   param = param,
   values = value,
-  sorting_cols = vars(ord),
+  sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", 
