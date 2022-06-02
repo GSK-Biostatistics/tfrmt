@@ -29,8 +29,6 @@ Alignment is specified via the `col_align_plan`, which accepts a series of `elem
 
 Alignment is achieved by padding the values with character spaces; this padding ensures that alignment is robust and agnostic to the output format. 
 
-It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications  allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become "  9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_align_plan` is the preferred method. 
-
 ## Alignment examples
 
 Element aligns have two arguments: the alignment desired and the columns in the final table to be aligned. The column values that are specified are to match the contents of the `column` variable that is specified in the `tfrmt` object. 
@@ -63,7 +61,7 @@ head(dat)
 
 tfrmt(
   label = label,
-  column = vars(column),
+  column = column,
   param = param,
   values = value,
   sorting_cols = vars(ord),
@@ -91,12 +89,48 @@ tfrmt(
   print_to_gt(dat)
 ```
 
-Column alignment can improve this table by making it easier to read. In the case of the p-value column, we can easily align on decimal place as there is a decimal present in all values:
+Column alignment can improve this table by making it easier to read. Let's start by left-aligning our p-value column. Notice that by providing a `col_align_plan`, any variables that are not covered in the plan will be left-aligned by default.
 
 ```{r}
 tfrmt(
   label = label,
-  column = vars(column),
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = vars(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  ), 
+  col_align =  col_align_plan(
+    element_align(align = "left", col = `p-value`))
+  ) %>% 
+  print_to_gt(dat)
+```
+
+
+This alignment isn't quite right as we have the `<` in one value but not the other. Applying a decimal alignment would be a better fit:
+
+```{r}
+tfrmt(
+  label = label,
+  column = column,
   param = param,
   values = value,
   sorting_cols = vars(ord),
@@ -131,7 +165,7 @@ For our other two columns, we have a mix of values represented. In this case, we
 ```{r}
 tfrmt(
   label = label,
-  column = vars(column),
+  column = column,
   param = param,
   values = value,
   sorting_cols = vars(ord),
@@ -167,7 +201,7 @@ Finally, for the purpose of demonstrating our options, we can align each column 
 ```{r}
 tfrmt(
   label = label,
-  column = vars(column),
+  column = column,
   param = param,
   values = value,
   sorting_cols = vars(ord),
@@ -202,3 +236,7 @@ tfrmt(
 ## Alignment of group and label columns
 
 At this time, group and label columns will be left aligned by default. The user can adjust the alignment of these columns through gt directly.
+
+## Alignment via `body_plan`
+
+It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications  allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become "  9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_align_plan` is the preferred method. 
