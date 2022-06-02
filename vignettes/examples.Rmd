@@ -236,11 +236,11 @@ The mock we are going to match looks like this:
 ```{r echo = FALSE}
 
 fmt_spec <- tfrmt(
-  group = vars(AEBODSYS),
-  label = quo(AETERM),
-  param = quo(param),
-  column = vars(col2, col1),
-  value = quo(value),
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = c(col2, col1),
+  value = value,
   row_grp_plan = row_grp_plan(),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
