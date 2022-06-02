@@ -41,15 +41,20 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/body_plan.html">Body Plan</a>
+    <h6 class="dropdown-header" data-toc-skip>Table Components</h6>
     <a class="dropdown-item" href="../articles/building_blocks.html">Building Blocks</a>
-    <a class="dropdown-item" href="../articles/col_align_plan.html">Column Alignment Plan</a>
+    <a class="dropdown-item" href="../articles/body_plan.html">Body Plan</a>
+    <a class="dropdown-item" href="../articles/row_grp_plan.html">Row group plan</a>
     <a class="dropdown-item" href="../articles/col_plan.html">Column Plan</a>
+    <a class="dropdown-item" href="../articles/col_align_plan.html">Column Alignment Plan</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Building Tables</h6>
     <a class="dropdown-item" href="../articles/examples.html">Examples</a>
-    <a class="dropdown-item" href="../articles/faq.html">FAQ</a>
     <a class="dropdown-item" href="../articles/layer.html">Reuse and layer tfrmts</a>
     <a class="dropdown-item" href="../articles/mocks.html">Mock tables</a>
-    <a class="dropdown-item" href="../articles/row_grp_plan.html">Row group plan</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>More</h6>
+    <a class="dropdown-item" href="../articles/faq.html">FAQ</a>
   </div>
 </li>
       </ul>
@@ -113,22 +118,22 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">tab_style</span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu">cells_stub</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
+      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
+      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
-<div id="uahunvjnxk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nrmbyykdps" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uahunvjnxk .gt_table {
+#nrmbyykdps .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -147,7 +152,7 @@
   border-left-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_heading {
+#nrmbyykdps .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -159,7 +164,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_title {
+#nrmbyykdps .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -171,7 +176,7 @@
   border-bottom-width: 0;
 }
 
-#uahunvjnxk .gt_subtitle {
+#nrmbyykdps .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -183,13 +188,13 @@
   border-top-width: 0;
 }
 
-#uahunvjnxk .gt_bottom_border {
+#nrmbyykdps .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_col_headings {
+#nrmbyykdps .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -204,7 +209,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_col_heading {
+#nrmbyykdps .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -224,7 +229,7 @@
   overflow-x: hidden;
 }
 
-#uahunvjnxk .gt_column_spanner_outer {
+#nrmbyykdps .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -236,15 +241,15 @@
   padding-right: 4px;
 }
 
-#uahunvjnxk .gt_column_spanner_outer:first-child {
+#nrmbyykdps .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uahunvjnxk .gt_column_spanner_outer:last-child {
+#nrmbyykdps .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uahunvjnxk .gt_column_spanner {
+#nrmbyykdps .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -256,9 +261,9 @@
   width: 100%;
 }
 
-#uahunvjnxk .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#nrmbyykdps .gt_group_heading {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   color: #333333;
@@ -268,10 +273,10 @@
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   border-left-style: none;
   border-left-width: 1px;
   border-left-color: #D3D3D3;
@@ -281,7 +286,7 @@
   vertical-align: middle;
 }
 
-#uahunvjnxk .gt_empty_group_heading {
+#nrmbyykdps .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -289,24 +294,24 @@
   font-weight: initial;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   vertical-align: middle;
 }
 
-#uahunvjnxk .gt_from_md > :first-child {
+#nrmbyykdps .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uahunvjnxk .gt_from_md > :last-child {
+#nrmbyykdps .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uahunvjnxk .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#nrmbyykdps .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -323,7 +328,7 @@
   overflow-x: hidden;
 }
 
-#uahunvjnxk .gt_stub {
+#nrmbyykdps .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -331,12 +336,12 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uahunvjnxk .gt_stub_row_group {
+#nrmbyykdps .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -344,38 +349,38 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
   vertical-align: top;
 }
 
-#uahunvjnxk .gt_row_group_first td {
+#nrmbyykdps .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uahunvjnxk .gt_summary_row {
+#nrmbyykdps .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uahunvjnxk .gt_first_summary_row {
+#nrmbyykdps .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_first_summary_row.thick {
+#nrmbyykdps .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uahunvjnxk .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#nrmbyykdps .gt_last_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-bottom-style: solid;
@@ -383,19 +388,19 @@
   border-bottom-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_grand_summary_row {
+#nrmbyykdps .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uahunvjnxk .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#nrmbyykdps .gt_first_grand_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-style: double;
@@ -403,11 +408,11 @@
   border-top-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_striped {
+#nrmbyykdps .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uahunvjnxk .gt_table_body {
+#nrmbyykdps .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -416,7 +421,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_footnotes {
+#nrmbyykdps .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -430,16 +435,16 @@
   border-right-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_footnote {
+#nrmbyykdps .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uahunvjnxk .gt_sourcenotes {
+#nrmbyykdps .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -453,44 +458,44 @@
   border-right-color: #D3D3D3;
 }
 
-#uahunvjnxk .gt_sourcenote {
+#nrmbyykdps .gt_sourcenote {
   font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uahunvjnxk .gt_left {
+#nrmbyykdps .gt_left {
   text-align: left;
 }
 
-#uahunvjnxk .gt_center {
+#nrmbyykdps .gt_center {
   text-align: center;
 }
 
-#uahunvjnxk .gt_right {
+#nrmbyykdps .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uahunvjnxk .gt_font_normal {
+#nrmbyykdps .gt_font_normal {
   font-weight: normal;
 }
 
-#uahunvjnxk .gt_font_bold {
+#nrmbyykdps .gt_font_bold {
   font-weight: bold;
 }
 
-#uahunvjnxk .gt_font_italic {
+#nrmbyykdps .gt_font_italic {
   font-style: italic;
 }
 
-#uahunvjnxk .gt_super {
+#nrmbyykdps .gt_super {
   font-size: 65%;
 }
 
-#uahunvjnxk .gt_two_val_uncert {
+#nrmbyykdps .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -499,31 +504,31 @@
   margin-left: 0.1em;
 }
 
-#uahunvjnxk .gt_footnote_marks {
+#nrmbyykdps .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#uahunvjnxk .gt_asterisk {
+#nrmbyykdps .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uahunvjnxk .gt_slash_mark {
+#nrmbyykdps .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#uahunvjnxk .gt_fraction_numerator {
+#nrmbyykdps .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#uahunvjnxk .gt_fraction_denominator {
+#nrmbyykdps .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -532,58 +537,58 @@
 <table class="table gt_table">
 <thead class="gt_col_headings"><tr>
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col3</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp1_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">         </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">         </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp1_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">         </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">         </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
 </tr>
 </tbody>
 </table>
@@ -605,22 +610,22 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">tab_style</span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu">cells_stub</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
+      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
+      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
-<div id="obqyfrygrf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="fyswccrjly" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#obqyfrygrf .gt_table {
+#fyswccrjly .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -639,7 +644,7 @@
   border-left-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_heading {
+#fyswccrjly .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -651,7 +656,7 @@
   border-right-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_title {
+#fyswccrjly .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -663,7 +668,7 @@
   border-bottom-width: 0;
 }
 
-#obqyfrygrf .gt_subtitle {
+#fyswccrjly .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -675,13 +680,13 @@
   border-top-width: 0;
 }
 
-#obqyfrygrf .gt_bottom_border {
+#fyswccrjly .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_col_headings {
+#fyswccrjly .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -696,7 +701,7 @@
   border-right-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_col_heading {
+#fyswccrjly .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -716,7 +721,7 @@
   overflow-x: hidden;
 }
 
-#obqyfrygrf .gt_column_spanner_outer {
+#fyswccrjly .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -728,15 +733,15 @@
   padding-right: 4px;
 }
 
-#obqyfrygrf .gt_column_spanner_outer:first-child {
+#fyswccrjly .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#obqyfrygrf .gt_column_spanner_outer:last-child {
+#fyswccrjly .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#obqyfrygrf .gt_column_spanner {
+#fyswccrjly .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -748,9 +753,9 @@
   width: 100%;
 }
 
-#obqyfrygrf .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fyswccrjly .gt_group_heading {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   color: #333333;
@@ -760,10 +765,10 @@
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   border-left-style: none;
   border-left-width: 1px;
   border-left-color: #D3D3D3;
@@ -773,7 +778,7 @@
   vertical-align: middle;
 }
 
-#obqyfrygrf .gt_empty_group_heading {
+#fyswccrjly .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -781,24 +786,24 @@
   font-weight: initial;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   vertical-align: middle;
 }
 
-#obqyfrygrf .gt_from_md > :first-child {
+#fyswccrjly .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#obqyfrygrf .gt_from_md > :last-child {
+#fyswccrjly .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#obqyfrygrf .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fyswccrjly .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -815,7 +820,7 @@
   overflow-x: hidden;
 }
 
-#obqyfrygrf .gt_stub {
+#fyswccrjly .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -823,12 +828,12 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#obqyfrygrf .gt_stub_row_group {
+#fyswccrjly .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -836,38 +841,38 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
   vertical-align: top;
 }
 
-#obqyfrygrf .gt_row_group_first td {
+#fyswccrjly .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#obqyfrygrf .gt_summary_row {
+#fyswccrjly .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#obqyfrygrf .gt_first_summary_row {
+#fyswccrjly .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_first_summary_row.thick {
+#fyswccrjly .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#obqyfrygrf .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fyswccrjly .gt_last_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-bottom-style: solid;
@@ -875,19 +880,19 @@
   border-bottom-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_grand_summary_row {
+#fyswccrjly .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#obqyfrygrf .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fyswccrjly .gt_first_grand_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-style: double;
@@ -895,11 +900,11 @@
   border-top-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_striped {
+#fyswccrjly .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#obqyfrygrf .gt_table_body {
+#fyswccrjly .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -908,7 +913,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_footnotes {
+#fyswccrjly .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -922,16 +927,16 @@
   border-right-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_footnote {
+#fyswccrjly .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#obqyfrygrf .gt_sourcenotes {
+#fyswccrjly .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -945,44 +950,44 @@
   border-right-color: #D3D3D3;
 }
 
-#obqyfrygrf .gt_sourcenote {
+#fyswccrjly .gt_sourcenote {
   font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#obqyfrygrf .gt_left {
+#fyswccrjly .gt_left {
   text-align: left;
 }
 
-#obqyfrygrf .gt_center {
+#fyswccrjly .gt_center {
   text-align: center;
 }
 
-#obqyfrygrf .gt_right {
+#fyswccrjly .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#obqyfrygrf .gt_font_normal {
+#fyswccrjly .gt_font_normal {
   font-weight: normal;
 }
 
-#obqyfrygrf .gt_font_bold {
+#fyswccrjly .gt_font_bold {
   font-weight: bold;
 }
 
-#obqyfrygrf .gt_font_italic {
+#fyswccrjly .gt_font_italic {
   font-style: italic;
 }
 
-#obqyfrygrf .gt_super {
+#fyswccrjly .gt_super {
   font-size: 65%;
 }
 
-#obqyfrygrf .gt_two_val_uncert {
+#fyswccrjly .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -991,31 +996,31 @@
   margin-left: 0.1em;
 }
 
-#obqyfrygrf .gt_footnote_marks {
+#fyswccrjly .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#obqyfrygrf .gt_asterisk {
+#fyswccrjly .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#obqyfrygrf .gt_slash_mark {
+#fyswccrjly .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#obqyfrygrf .gt_fraction_numerator {
+#fyswccrjly .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#obqyfrygrf .gt_fraction_denominator {
+#fyswccrjly .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1024,52 +1029,52 @@
 <table class="table gt_table">
 <thead class="gt_col_headings"><tr>
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col3</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp1_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">         </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
-<td class="gt_row gt_left" style="white-space: pre;">  </td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">         </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  </td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp1_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 </tbody>
 </table>
@@ -1108,22 +1113,22 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">tab_style</span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu">cells_stub</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
+      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
+      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
-<div id="xrrtiqftyq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="bqbznfvizf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#xrrtiqftyq .gt_table {
+#bqbznfvizf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -1142,7 +1147,7 @@
   border-left-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_heading {
+#bqbznfvizf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1154,7 +1159,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_title {
+#bqbznfvizf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1166,7 +1171,7 @@
   border-bottom-width: 0;
 }
 
-#xrrtiqftyq .gt_subtitle {
+#bqbznfvizf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1178,13 +1183,13 @@
   border-top-width: 0;
 }
 
-#xrrtiqftyq .gt_bottom_border {
+#bqbznfvizf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_col_headings {
+#bqbznfvizf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1199,7 +1204,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_col_heading {
+#bqbznfvizf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1219,7 +1224,7 @@
   overflow-x: hidden;
 }
 
-#xrrtiqftyq .gt_column_spanner_outer {
+#bqbznfvizf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1231,15 +1236,15 @@
   padding-right: 4px;
 }
 
-#xrrtiqftyq .gt_column_spanner_outer:first-child {
+#bqbznfvizf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xrrtiqftyq .gt_column_spanner_outer:last-child {
+#bqbznfvizf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xrrtiqftyq .gt_column_spanner {
+#bqbznfvizf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1251,9 +1256,9 @@
   width: 100%;
 }
 
-#xrrtiqftyq .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#bqbznfvizf .gt_group_heading {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   color: #333333;
@@ -1263,10 +1268,10 @@
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   border-left-style: none;
   border-left-width: 1px;
   border-left-color: #D3D3D3;
@@ -1276,7 +1281,7 @@
   vertical-align: middle;
 }
 
-#xrrtiqftyq .gt_empty_group_heading {
+#bqbznfvizf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1284,24 +1289,24 @@
   font-weight: initial;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   vertical-align: middle;
 }
 
-#xrrtiqftyq .gt_from_md > :first-child {
+#bqbznfvizf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xrrtiqftyq .gt_from_md > :last-child {
+#bqbznfvizf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xrrtiqftyq .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#bqbznfvizf .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -1318,7 +1323,7 @@
   overflow-x: hidden;
 }
 
-#xrrtiqftyq .gt_stub {
+#bqbznfvizf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1326,12 +1331,12 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#xrrtiqftyq .gt_stub_row_group {
+#bqbznfvizf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1339,38 +1344,38 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
   vertical-align: top;
 }
 
-#xrrtiqftyq .gt_row_group_first td {
+#bqbznfvizf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xrrtiqftyq .gt_summary_row {
+#bqbznfvizf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#xrrtiqftyq .gt_first_summary_row {
+#bqbznfvizf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_first_summary_row.thick {
+#bqbznfvizf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xrrtiqftyq .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#bqbznfvizf .gt_last_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-bottom-style: solid;
@@ -1378,19 +1383,19 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_grand_summary_row {
+#bqbznfvizf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#xrrtiqftyq .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#bqbznfvizf .gt_first_grand_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-style: double;
@@ -1398,11 +1403,11 @@
   border-top-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_striped {
+#bqbznfvizf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xrrtiqftyq .gt_table_body {
+#bqbznfvizf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1411,7 +1416,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_footnotes {
+#bqbznfvizf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1425,16 +1430,16 @@
   border-right-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_footnote {
+#bqbznfvizf .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#xrrtiqftyq .gt_sourcenotes {
+#bqbznfvizf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1448,44 +1453,44 @@
   border-right-color: #D3D3D3;
 }
 
-#xrrtiqftyq .gt_sourcenote {
+#bqbznfvizf .gt_sourcenote {
   font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#xrrtiqftyq .gt_left {
+#bqbznfvizf .gt_left {
   text-align: left;
 }
 
-#xrrtiqftyq .gt_center {
+#bqbznfvizf .gt_center {
   text-align: center;
 }
 
-#xrrtiqftyq .gt_right {
+#bqbznfvizf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xrrtiqftyq .gt_font_normal {
+#bqbznfvizf .gt_font_normal {
   font-weight: normal;
 }
 
-#xrrtiqftyq .gt_font_bold {
+#bqbznfvizf .gt_font_bold {
   font-weight: bold;
 }
 
-#xrrtiqftyq .gt_font_italic {
+#bqbznfvizf .gt_font_italic {
   font-style: italic;
 }
 
-#xrrtiqftyq .gt_super {
+#bqbznfvizf .gt_super {
   font-size: 65%;
 }
 
-#xrrtiqftyq .gt_two_val_uncert {
+#bqbznfvizf .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1494,31 +1499,31 @@
   margin-left: 0.1em;
 }
 
-#xrrtiqftyq .gt_footnote_marks {
+#bqbznfvizf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#xrrtiqftyq .gt_asterisk {
+#bqbznfvizf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xrrtiqftyq .gt_slash_mark {
+#bqbznfvizf .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#xrrtiqftyq .gt_fraction_numerator {
+#bqbznfvizf .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#xrrtiqftyq .gt_fraction_denominator {
+#bqbznfvizf .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1527,94 +1532,94 @@
 <table class="table gt_table">
 <thead class="gt_col_headings"><tr>
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col3</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp1_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  grp2_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  grp2_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  grp2_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  grp2_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp1_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  grp2_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  grp2_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  grp2_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  grp2_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">    label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">    label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 </tbody>
 </table>
@@ -1638,22 +1643,22 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">tab_style</span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu">cells_stub</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
+      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
+      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
-<div id="lcnfnnnjpw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="fuijuuaxda" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lcnfnnnjpw .gt_table {
+#fuijuuaxda .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -1672,7 +1677,7 @@
   border-left-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_heading {
+#fuijuuaxda .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1684,7 +1689,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_title {
+#fuijuuaxda .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1696,7 +1701,7 @@
   border-bottom-width: 0;
 }
 
-#lcnfnnnjpw .gt_subtitle {
+#fuijuuaxda .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1708,13 +1713,13 @@
   border-top-width: 0;
 }
 
-#lcnfnnnjpw .gt_bottom_border {
+#fuijuuaxda .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_col_headings {
+#fuijuuaxda .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1729,7 +1734,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_col_heading {
+#fuijuuaxda .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1749,7 +1754,7 @@
   overflow-x: hidden;
 }
 
-#lcnfnnnjpw .gt_column_spanner_outer {
+#fuijuuaxda .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1761,15 +1766,15 @@
   padding-right: 4px;
 }
 
-#lcnfnnnjpw .gt_column_spanner_outer:first-child {
+#fuijuuaxda .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lcnfnnnjpw .gt_column_spanner_outer:last-child {
+#fuijuuaxda .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lcnfnnnjpw .gt_column_spanner {
+#fuijuuaxda .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1781,9 +1786,9 @@
   width: 100%;
 }
 
-#lcnfnnnjpw .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fuijuuaxda .gt_group_heading {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   color: #333333;
@@ -1793,10 +1798,10 @@
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   border-left-style: none;
   border-left-width: 1px;
   border-left-color: #D3D3D3;
@@ -1806,7 +1811,7 @@
   vertical-align: middle;
 }
 
-#lcnfnnnjpw .gt_empty_group_heading {
+#fuijuuaxda .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1814,24 +1819,24 @@
   font-weight: initial;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   vertical-align: middle;
 }
 
-#lcnfnnnjpw .gt_from_md > :first-child {
+#fuijuuaxda .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lcnfnnnjpw .gt_from_md > :last-child {
+#fuijuuaxda .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lcnfnnnjpw .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fuijuuaxda .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -1848,7 +1853,7 @@
   overflow-x: hidden;
 }
 
-#lcnfnnnjpw .gt_stub {
+#fuijuuaxda .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1856,12 +1861,12 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#lcnfnnnjpw .gt_stub_row_group {
+#fuijuuaxda .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1869,38 +1874,38 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
   vertical-align: top;
 }
 
-#lcnfnnnjpw .gt_row_group_first td {
+#fuijuuaxda .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lcnfnnnjpw .gt_summary_row {
+#fuijuuaxda .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#lcnfnnnjpw .gt_first_summary_row {
+#fuijuuaxda .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_first_summary_row.thick {
+#fuijuuaxda .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lcnfnnnjpw .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fuijuuaxda .gt_last_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-bottom-style: solid;
@@ -1908,19 +1913,19 @@
   border-bottom-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_grand_summary_row {
+#fuijuuaxda .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#lcnfnnnjpw .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#fuijuuaxda .gt_first_grand_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-style: double;
@@ -1928,11 +1933,11 @@
   border-top-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_striped {
+#fuijuuaxda .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lcnfnnnjpw .gt_table_body {
+#fuijuuaxda .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1941,7 +1946,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_footnotes {
+#fuijuuaxda .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1955,16 +1960,16 @@
   border-right-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_footnote {
+#fuijuuaxda .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#lcnfnnnjpw .gt_sourcenotes {
+#fuijuuaxda .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1978,44 +1983,44 @@
   border-right-color: #D3D3D3;
 }
 
-#lcnfnnnjpw .gt_sourcenote {
+#fuijuuaxda .gt_sourcenote {
   font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#lcnfnnnjpw .gt_left {
+#fuijuuaxda .gt_left {
   text-align: left;
 }
 
-#lcnfnnnjpw .gt_center {
+#fuijuuaxda .gt_center {
   text-align: center;
 }
 
-#lcnfnnnjpw .gt_right {
+#fuijuuaxda .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lcnfnnnjpw .gt_font_normal {
+#fuijuuaxda .gt_font_normal {
   font-weight: normal;
 }
 
-#lcnfnnnjpw .gt_font_bold {
+#fuijuuaxda .gt_font_bold {
   font-weight: bold;
 }
 
-#lcnfnnnjpw .gt_font_italic {
+#fuijuuaxda .gt_font_italic {
   font-style: italic;
 }
 
-#lcnfnnnjpw .gt_super {
+#fuijuuaxda .gt_super {
   font-size: 65%;
 }
 
-#lcnfnnnjpw .gt_two_val_uncert {
+#fuijuuaxda .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2024,31 +2029,31 @@
   margin-left: 0.1em;
 }
 
-#lcnfnnnjpw .gt_footnote_marks {
+#fuijuuaxda .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#lcnfnnnjpw .gt_asterisk {
+#fuijuuaxda .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lcnfnnnjpw .gt_slash_mark {
+#fuijuuaxda .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#lcnfnnnjpw .gt_fraction_numerator {
+#fuijuuaxda .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#lcnfnnnjpw .gt_fraction_denominator {
+#fuijuuaxda .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2057,88 +2062,88 @@
 <table class="table gt_table">
 <thead class="gt_col_headings"><tr>
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col3</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr class="gt_group_heading_row">
-<td colspan="4" class="gt_group_heading" style="text-align: left; white-space: pre;">grp1_1</td>
+<td colspan="4" class="gt_group_heading" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_1</td>
     </tr>
 <tr class="gt_row_group_first">
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr class="gt_group_heading_row">
-<td colspan="4" class="gt_group_heading" style="text-align: left; white-space: pre;">grp1_2</td>
+<td colspan="4" class="gt_group_heading" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_2</td>
     </tr>
 <tr class="gt_row_group_first">
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 </tbody>
 </table>
@@ -2162,22 +2167,22 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">tab_style</span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu">cells_stub</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
+      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
+      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
     <span class="op">)</span></code></pre></div>
-<div id="yhmhkrfrdj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ityzbrujpf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#yhmhkrfrdj .gt_table {
+#ityzbrujpf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -2196,7 +2201,7 @@
   border-left-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_heading {
+#ityzbrujpf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2208,7 +2213,7 @@
   border-right-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_title {
+#ityzbrujpf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2220,7 +2225,7 @@
   border-bottom-width: 0;
 }
 
-#yhmhkrfrdj .gt_subtitle {
+#ityzbrujpf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2232,13 +2237,13 @@
   border-top-width: 0;
 }
 
-#yhmhkrfrdj .gt_bottom_border {
+#ityzbrujpf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_col_headings {
+#ityzbrujpf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2253,7 +2258,7 @@
   border-right-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_col_heading {
+#ityzbrujpf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2273,7 +2278,7 @@
   overflow-x: hidden;
 }
 
-#yhmhkrfrdj .gt_column_spanner_outer {
+#ityzbrujpf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2285,15 +2290,15 @@
   padding-right: 4px;
 }
 
-#yhmhkrfrdj .gt_column_spanner_outer:first-child {
+#ityzbrujpf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yhmhkrfrdj .gt_column_spanner_outer:last-child {
+#ityzbrujpf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yhmhkrfrdj .gt_column_spanner {
+#ityzbrujpf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2305,9 +2310,9 @@
   width: 100%;
 }
 
-#yhmhkrfrdj .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#ityzbrujpf .gt_group_heading {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   color: #333333;
@@ -2317,10 +2322,10 @@
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   border-left-style: none;
   border-left-width: 1px;
   border-left-color: #D3D3D3;
@@ -2330,7 +2335,7 @@
   vertical-align: middle;
 }
 
-#yhmhkrfrdj .gt_empty_group_heading {
+#ityzbrujpf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2338,24 +2343,24 @@
   font-weight: initial;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   vertical-align: middle;
 }
 
-#yhmhkrfrdj .gt_from_md > :first-child {
+#ityzbrujpf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yhmhkrfrdj .gt_from_md > :last-child {
+#ityzbrujpf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yhmhkrfrdj .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#ityzbrujpf .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -2372,7 +2377,7 @@
   overflow-x: hidden;
 }
 
-#yhmhkrfrdj .gt_stub {
+#ityzbrujpf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2380,12 +2385,12 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#yhmhkrfrdj .gt_stub_row_group {
+#ityzbrujpf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2393,38 +2398,38 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
   vertical-align: top;
 }
 
-#yhmhkrfrdj .gt_row_group_first td {
+#ityzbrujpf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yhmhkrfrdj .gt_summary_row {
+#ityzbrujpf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#yhmhkrfrdj .gt_first_summary_row {
+#ityzbrujpf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_first_summary_row.thick {
+#ityzbrujpf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yhmhkrfrdj .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#ityzbrujpf .gt_last_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-bottom-style: solid;
@@ -2432,19 +2437,19 @@
   border-bottom-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_grand_summary_row {
+#ityzbrujpf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#yhmhkrfrdj .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#ityzbrujpf .gt_first_grand_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-style: double;
@@ -2452,11 +2457,11 @@
   border-top-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_striped {
+#ityzbrujpf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yhmhkrfrdj .gt_table_body {
+#ityzbrujpf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2465,7 +2470,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_footnotes {
+#ityzbrujpf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2479,16 +2484,16 @@
   border-right-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_footnote {
+#ityzbrujpf .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#yhmhkrfrdj .gt_sourcenotes {
+#ityzbrujpf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2502,44 +2507,44 @@
   border-right-color: #D3D3D3;
 }
 
-#yhmhkrfrdj .gt_sourcenote {
+#ityzbrujpf .gt_sourcenote {
   font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#yhmhkrfrdj .gt_left {
+#ityzbrujpf .gt_left {
   text-align: left;
 }
 
-#yhmhkrfrdj .gt_center {
+#ityzbrujpf .gt_center {
   text-align: center;
 }
 
-#yhmhkrfrdj .gt_right {
+#ityzbrujpf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yhmhkrfrdj .gt_font_normal {
+#ityzbrujpf .gt_font_normal {
   font-weight: normal;
 }
 
-#yhmhkrfrdj .gt_font_bold {
+#ityzbrujpf .gt_font_bold {
   font-weight: bold;
 }
 
-#yhmhkrfrdj .gt_font_italic {
+#ityzbrujpf .gt_font_italic {
   font-style: italic;
 }
 
-#yhmhkrfrdj .gt_super {
+#ityzbrujpf .gt_super {
   font-size: 65%;
 }
 
-#yhmhkrfrdj .gt_two_val_uncert {
+#ityzbrujpf .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2548,31 +2553,31 @@
   margin-left: 0.1em;
 }
 
-#yhmhkrfrdj .gt_footnote_marks {
+#ityzbrujpf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#yhmhkrfrdj .gt_asterisk {
+#ityzbrujpf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yhmhkrfrdj .gt_slash_mark {
+#ityzbrujpf .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#yhmhkrfrdj .gt_fraction_numerator {
+#ityzbrujpf .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#yhmhkrfrdj .gt_fraction_denominator {
+#ityzbrujpf .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2581,84 +2586,84 @@
 <table class="table gt_table">
 <thead class="gt_col_headings"><tr>
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="2"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col3</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr class="gt_row_group_first">
-<td rowspan="6" class="gt_row gt_right gt_stub_row_group" style="text-align: left; white-space: pre;">grp1_1</td>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td rowspan="6" class="gt_row gt_right gt_stub_row_group" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_1</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr class="gt_row_group_first">
-<td rowspan="6" class="gt_row gt_right gt_stub_row_group" style="text-align: left; white-space: pre;">grp1_2</td>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_1</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td rowspan="6" class="gt_row gt_right gt_stub_row_group" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp1_2</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">grp2_2</td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
-<td class="gt_row gt_left" style="white-space: pre;"></td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">grp2_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">  label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 </tbody>
 </table>
@@ -2682,18 +2687,18 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<div id="uoekprkrzl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="tzrsakhmrg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uoekprkrzl .gt_table {
+#tzrsakhmrg .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -2712,7 +2717,7 @@
   border-left-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_heading {
+#tzrsakhmrg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2724,7 +2729,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_title {
+#tzrsakhmrg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2736,7 +2741,7 @@
   border-bottom-width: 0;
 }
 
-#uoekprkrzl .gt_subtitle {
+#tzrsakhmrg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2748,13 +2753,13 @@
   border-top-width: 0;
 }
 
-#uoekprkrzl .gt_bottom_border {
+#tzrsakhmrg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_col_headings {
+#tzrsakhmrg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2769,7 +2774,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_col_heading {
+#tzrsakhmrg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2789,7 +2794,7 @@
   overflow-x: hidden;
 }
 
-#uoekprkrzl .gt_column_spanner_outer {
+#tzrsakhmrg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2801,15 +2806,15 @@
   padding-right: 4px;
 }
 
-#uoekprkrzl .gt_column_spanner_outer:first-child {
+#tzrsakhmrg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uoekprkrzl .gt_column_spanner_outer:last-child {
+#tzrsakhmrg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uoekprkrzl .gt_column_spanner {
+#tzrsakhmrg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2821,9 +2826,9 @@
   width: 100%;
 }
 
-#uoekprkrzl .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#tzrsakhmrg .gt_group_heading {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   color: #333333;
@@ -2833,10 +2838,10 @@
   text-transform: inherit;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   border-left-style: none;
   border-left-width: 1px;
   border-left-color: #D3D3D3;
@@ -2846,7 +2851,7 @@
   vertical-align: middle;
 }
 
-#uoekprkrzl .gt_empty_group_heading {
+#tzrsakhmrg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2854,24 +2859,24 @@
   font-weight: initial;
   border-top-style: solid;
   border-top-width: 2px;
-  border-top-color: #D3D3D3;
+  border-top-color: rgba(255, 255, 255, 0);
   border-bottom-style: solid;
   border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
+  border-bottom-color: rgba(255, 255, 255, 0);
   vertical-align: middle;
 }
 
-#uoekprkrzl .gt_from_md > :first-child {
+#tzrsakhmrg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uoekprkrzl .gt_from_md > :last-child {
+#tzrsakhmrg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uoekprkrzl .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#tzrsakhmrg .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -2888,7 +2893,7 @@
   overflow-x: hidden;
 }
 
-#uoekprkrzl .gt_stub {
+#tzrsakhmrg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2896,12 +2901,12 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uoekprkrzl .gt_stub_row_group {
+#tzrsakhmrg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2909,38 +2914,38 @@
   text-transform: inherit;
   border-right-style: solid;
   border-right-width: 2px;
-  border-right-color: #D3D3D3;
+  border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
   padding-right: 5px;
   vertical-align: top;
 }
 
-#uoekprkrzl .gt_row_group_first td {
+#tzrsakhmrg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uoekprkrzl .gt_summary_row {
+#tzrsakhmrg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uoekprkrzl .gt_first_summary_row {
+#tzrsakhmrg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_first_summary_row.thick {
+#tzrsakhmrg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uoekprkrzl .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#tzrsakhmrg .gt_last_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-bottom-style: solid;
@@ -2948,19 +2953,19 @@
   border-bottom-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_grand_summary_row {
+#tzrsakhmrg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uoekprkrzl .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+#tzrsakhmrg .gt_first_grand_summary_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-style: double;
@@ -2968,11 +2973,11 @@
   border-top-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_striped {
+#tzrsakhmrg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uoekprkrzl .gt_table_body {
+#tzrsakhmrg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2981,7 +2986,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_footnotes {
+#tzrsakhmrg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2995,16 +3000,16 @@
   border-right-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_footnote {
+#tzrsakhmrg .gt_footnote {
   margin: 0px;
   font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uoekprkrzl .gt_sourcenotes {
+#tzrsakhmrg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3018,44 +3023,44 @@
   border-right-color: #D3D3D3;
 }
 
-#uoekprkrzl .gt_sourcenote {
+#tzrsakhmrg .gt_sourcenote {
   font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-#uoekprkrzl .gt_left {
+#tzrsakhmrg .gt_left {
   text-align: left;
 }
 
-#uoekprkrzl .gt_center {
+#tzrsakhmrg .gt_center {
   text-align: center;
 }
 
-#uoekprkrzl .gt_right {
+#tzrsakhmrg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uoekprkrzl .gt_font_normal {
+#tzrsakhmrg .gt_font_normal {
   font-weight: normal;
 }
 
-#uoekprkrzl .gt_font_bold {
+#tzrsakhmrg .gt_font_bold {
   font-weight: bold;
 }
 
-#uoekprkrzl .gt_font_italic {
+#tzrsakhmrg .gt_font_italic {
   font-style: italic;
 }
 
-#uoekprkrzl .gt_super {
+#tzrsakhmrg .gt_super {
   font-size: 65%;
 }
 
-#uoekprkrzl .gt_two_val_uncert {
+#tzrsakhmrg .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -3064,31 +3069,31 @@
   margin-left: 0.1em;
 }
 
-#uoekprkrzl .gt_footnote_marks {
+#tzrsakhmrg .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#uoekprkrzl .gt_asterisk {
+#tzrsakhmrg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uoekprkrzl .gt_slash_mark {
+#tzrsakhmrg .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#uoekprkrzl .gt_fraction_numerator {
+#tzrsakhmrg .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#uoekprkrzl .gt_fraction_denominator {
+#tzrsakhmrg .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -3097,58 +3102,58 @@
 <table class="table gt_table">
 <thead class="gt_col_headings"><tr>
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">col3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: transparent; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;">col3</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_1</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_1</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 <tr>
-<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre;">label_2</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
-<td class="gt_row gt_left" style="white-space: pre;">xx</td>
+<td class="gt_row gt_right gt_stub" style="text-align: left; white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">label_2</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
+<td class="gt_row gt_left" style="white-space: pre; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">xx</td>
 </tr>
 </tbody>
 </table>

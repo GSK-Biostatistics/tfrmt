@@ -41,15 +41,20 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/body_plan.html">Body Plan</a>
+    <h6 class="dropdown-header" data-toc-skip>Table Components</h6>
     <a class="dropdown-item" href="../articles/building_blocks.html">Building Blocks</a>
-    <a class="dropdown-item" href="../articles/col_align_plan.html">Column Alignment Plan</a>
+    <a class="dropdown-item" href="../articles/body_plan.html">Body Plan</a>
+    <a class="dropdown-item" href="../articles/row_grp_plan.html">Row group plan</a>
     <a class="dropdown-item" href="../articles/col_plan.html">Column Plan</a>
+    <a class="dropdown-item" href="../articles/col_align_plan.html">Column Alignment Plan</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Building Tables</h6>
     <a class="dropdown-item" href="../articles/examples.html">Examples</a>
-    <a class="dropdown-item" href="../articles/faq.html">FAQ</a>
     <a class="dropdown-item" href="../articles/layer.html">Reuse and layer tfrmts</a>
     <a class="dropdown-item" href="../articles/mocks.html">Mock tables</a>
-    <a class="dropdown-item" href="../articles/row_grp_plan.html">Row group plan</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>More</h6>
+    <a class="dropdown-item" href="../articles/faq.html">FAQ</a>
   </div>
 </li>
       </ul>
@@ -98,7 +103,7 @@
 <p align="center">
 <img src="../reference/figures/table_plans.png" width="900px"></p>
 <p><strong>3. Structures:</strong> <code>*_structure()</code></p>
-<p>Within a plan, one or more structures may be provided. Each structure specifies the layers within a plan. For example, in the body plan, each “frmt_structure” object defines how a set of values (e.g., all “p-values”) should be formatted. Structures are inherently row-oriented, and can range from broad (e.g., apply to all relevant rows in the data) to specific (e.g., apply to all relevant rows within a specific grouping value).</p>
+<p>The structure objects are for defining how the <em>contents</em> of the table (i.e., text) should be displayed. Within a plan, one or more structures may be provided. Each structure specifies the layers within a plan. For example, in the body plan, each “frmt_structure” object defines how a set of values (e.g., all “p-values”) should be formatted. Structures are inherently row-oriented, and can range from broad (e.g., apply to all relevant rows in the data) to specific (e.g., apply to all relevant rows within a specific grouping value).</p>
 <p>In the figure below, each color represents a different format structure (<code>frmt_structure</code>) to be passed in the table body plan (<code>body_plan</code>).</p>
 <p align="center">
 <img src="../reference/figures/structure_objects.png" width="700px"></p>
@@ -109,7 +114,7 @@
 <li>Row group structure (<code>row_grp_structure</code>) inside of row group plan (<code>row_grp_plan</code>)</li>
 </ul>
 <p><strong>4. Elements:</strong> <code>element_*()</code></p>
-<p>Inspired by ggplot2, elements are a way to apply styling that is purely aesthetic in nature, such as how a column should be aligned (<code>element_align</code>). These are passed through plan or structure objects.</p>
+<p>The element objects are for defining the <em>aesthetics</em> of the table (i.e., non-text styling). Inspired by ggplot2, elements provide a mechanism for performing aesthetic modifications such as column alignment (<code>element_align</code>) or the positioning of group labels (<code>element_row_grp_loc</code>). These are passed through plan or structure objects.</p>
   </main>
 </div>
 
