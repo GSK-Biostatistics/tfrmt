@@ -36,6 +36,27 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
   expect_equal( t_frmt$column, vars(column))
 })
 
+test_that("basic tfrmt - selecting group/label/param/values/column - quo into var entries", {
+
+  t_frmt <- tfrmt(
+    title = "Table Title",
+    group = quo(row_label1),
+    label = quo(row_label2),
+    param = quo(param),
+    values = quo(values),
+    column = quo(column)
+  )
+
+  expect_s3_class(t_frmt,"tfrmt")
+
+  expect_equal( t_frmt$title, "Table Title")
+  expect_equal( t_frmt$group, vars(row_label1))
+  expect_equal( t_frmt$label, quo(row_label2))
+  expect_equal( t_frmt$param, quo(param))
+  expect_equal( t_frmt$values, quo(values))
+  expect_equal( t_frmt$column, vars(column))
+})
+
 test_that("basic tfrmt - selecting group/label/param/values/column - char", {
 
   t_frmt <- tfrmt(

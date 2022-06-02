@@ -89,7 +89,7 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   ## and as_quo_args into length one quo's
   vals <- quo_get(
     args,
-    as_var_args = c("group","column"),
+    as_var_args = c("group","column","sorting_cols"),
     as_quo_args = c("label","param","values"),
     envir = env
     )
@@ -211,6 +211,10 @@ as_vars <-  function(x){
 
 as_vars.quosures <- function(x){
   x
+}
+
+as_vars.quosure <- function(x){
+  vars(!!x)
 }
 
 as_vars.character <- function(x){
