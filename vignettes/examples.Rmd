@@ -277,7 +277,7 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = vars(col2, col1), 
+  column = c(col2, col1), 
   param = param,
   values = value,
   sorting_cols = vars(ord1, ord2)) %>% 
