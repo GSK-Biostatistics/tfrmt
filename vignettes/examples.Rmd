@@ -218,7 +218,7 @@ tfrmt(
 
 # AE table
 
-For the adverse events (AE) table, we will use the `ae_data` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns; these can be used in lieu of a `col_plan`, if desired. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
+For the adverse events (AE) table, we will use the `ae_data` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns; these can be used in lieu of a `col_plan` with `span_structures()`, if desired. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
 
 ```{r, echo = FALSE}
 ae_data2 <- ae_data %>% 
