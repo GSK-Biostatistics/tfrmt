@@ -194,7 +194,7 @@ apply_gt_footnote<- function(gt, footer){
 #' @noRd
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
-#' @importFrom gt cols_label
+#' @importFrom gt cols_label tab_spanner
 #' @importFrom dplyr as_tibble desc
 #'
 apply_gt_spanning_labels <- function(gt_table, .data){
