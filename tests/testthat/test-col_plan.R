@@ -91,10 +91,10 @@ test_that("From the spanning structure get cols to span across", {
 
   sample_df <- data.frame(A = character(), B = character(), C = character(), D = character())
 
-  s1_cols <- span_col_select(s1, data = sample_df)
-  s2_cols <- span_col_select(s2, data = sample_df)
-  s3_cols <- span_col_select(s3, data = sample_df)
-  s4_cols <- span_col_select(s4, data = sample_df)
+  s1_cols <- eval_tidyselect_on_colvec(s1, column_vec = c("A","B","C","D"))
+  s2_cols <- eval_tidyselect_on_colvec(s2, column_vec = c("A","B","C","D"))
+  s3_cols <- eval_tidyselect_on_colvec(s3, column_vec = c("A","B","C","D"))
+  s4_cols <- eval_tidyselect_on_colvec(s4, column_vec = c("A","B","C","D"))
 
   expect_equal(s1_cols,c("A","B"))
   expect_equal(s2_cols,c("A","B","C","D"))
@@ -147,6 +147,14 @@ test_that("From col plan spanning structures, get df to add to data",{
     col_plan = col_plan(span_structure("test label",
                                        col3)))
 
+  tfrmt_obj_one_span_rename <- tfrmt(
+    label = label,
+    group = group,
+    param = param,
+    column = vars(columns),
+    col_plan = col_plan(span_structure("test label",
+                                       new_col3 = col3)))
+
   tfrmt_obj_nested_spans <- tfrmt(label = label,
                                   group = group,
                                   param = param,
@@ -164,7 +172,26 @@ test_that("From col plan spanning structures, get df to add to data",{
                                     span_structure("test label2", vars(col7)),
                                     starts_with("col")
                                   )
-                                  )
+  )
+
+  tfrmt_obj_nested_spans_rename <- tfrmt(label = label,
+                                         group = group,
+                                         param = param,
+                                         column = vars(columns),
+                                         col_plan = col_plan(
+                                           span_structure(
+                                             "test label1",
+                                             span_structure("test label1.1",
+                                                            vars(col1),
+                                                            span_structure("test label1.1.1",
+                                                                           vars(col2))),
+                                             new_col3 = col3,
+                                             span_structure("test label1.2", vars(col5))
+                                           ),
+                                           span_structure("test label2", vars(col7)),
+                                           starts_with("col")
+                                         )
+  )
 
   input_data <- tibble(
     group = "groupvar",
@@ -186,6 +213,19 @@ test_that("From col plan spanning structures, get df to add to data",{
     )
   )
 
+  one_span_wide_data_rename <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_one_span_rename, x = input_data)
+
+  expect_equal(
+    one_span_wide_data_rename,
+    tibble(
+      `__tlang_span_structure_column__1` = c(NA, NA, "test label", rep(NA, 7)),
+      columns = paste0("col",1:10),
+      group = "groupvar",
+      label = "labels",
+      param = "params",
+    )
+  )
+
   nested_spans_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans, x = input_data)
 
   output_data <- tibble(
@@ -197,8 +237,16 @@ test_that("From col plan spanning structures, get df to add to data",{
     label = "labels",
     param = "params",
   )
+
   expect_equal(
     nested_spans_wide_data,
+    output_data
+  )
+
+  nested_spans_wide_data_rename <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans_rename, x = input_data)
+
+  expect_equal(
+    nested_spans_wide_data_rename,
     output_data
   )
 
@@ -229,7 +277,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     )
   )
 
-  basic_example_dataset <- tribble(
+  basic_example_dataset <- tibble::tribble(
     ~group,     ~label,    ~test1, ~test2,    ~parm, ~val,
     "g1", "rowlabel1",  "span 1", "col1",  "value",    1,
     "g1", "rowlabel1",  "span 1", "col2",  "value",    1,
@@ -248,9 +296,11 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     "g2", "rowlabel3",        NA, "col5",  "value",    3,
   )
 
+  suppressMessages({
   suppressWarnings({
     processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
     processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
+  })
   })
 
 
@@ -261,6 +311,63 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
 })
 
+test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure - with renaming",{
+
+  basic_multi_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    values = val,
+    column = c(test1,test2),
+    col_plan = col_plan(
+      group, label, new_col_4 = col4, new_col_1 = col1, col2, col3, -col5
+    )
+  )
+
+  spanned_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    values = val,
+    column = c(test2),
+    col_plan = col_plan(
+      group, label, new_col_4 = col4, span_structure("span 1", new_col_1 = col1, col2), col3, -col5
+    )
+  )
+
+  basic_example_dataset <- tibble::tribble(
+    ~group,     ~label,    ~test1, ~test2,    ~parm, ~val,
+    "g1", "rowlabel1",  "span 1", "col1",  "value",    1,
+    "g1", "rowlabel1",  "span 1", "col2",  "value",    1,
+    "g1", "rowlabel1",        NA, "col3",  "value",    1,
+    "g1", "rowlabel1",        NA, "col4",  "value",    1,
+    "g1", "rowlabel1",        NA, "col5",  "value",    1,
+    "g1", "rowlabel2",  "span 1", "col1",  "value",    2,
+    "g1", "rowlabel2",  "span 1", "col2",  "value",    2,
+    "g1", "rowlabel2",        NA, "col3",  "value",    2,
+    "g1", "rowlabel2",        NA, "col4",  "value",    2,
+    "g1", "rowlabel2",        NA, "col5",  "value",    2,
+    "g2", "rowlabel3",  "span 1", "col1",  "value",    3,
+    "g2", "rowlabel3",  "span 1", "col2",  "value",    3,
+    "g2", "rowlabel3",        NA, "col3",  "value",    3,
+    "g2", "rowlabel3",        NA, "col4",  "value",    3,
+    "g2", "rowlabel3",        NA, "col5",  "value",    3,
+  )
+
+  suppressMessages({
+    suppressWarnings({
+      processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+      processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
+    })
+  })
+
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
 
 test_that("span_structure returns correct errors",{
 
@@ -320,7 +427,8 @@ test_that("tfrmt returns error when defining multiple columns and span_structure
 
 # this happens in the select_col_plan, rather than the row_grp_plan
 test_that("Suppress printing of groups", {
-  mock_multi_grp <- tribble(
+
+  mock_multi_grp <- tibble::tribble(
     ~grp1,    ~grp2,     ~ my_label,
     "grp1_1", "grp2_1", "my_label_1",
     "grp1_1", "grp2_1", "my_label_2",
@@ -356,7 +464,7 @@ test_that("Suppress printing of groups", {
     col_plan = col_plan(-starts_with("grp"))
   )
 
-  df_no_grp <- tribble(
+  df_no_grp <- tibble::tribble(
     ~my_label,   ~trtA,     ~trtB,     ~trtC  ,
     "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",

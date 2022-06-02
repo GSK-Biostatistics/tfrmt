@@ -91,69 +91,52 @@ is_valid_quo_call <- function(x){
 check_col_plan_dots <- check_span_structure_dots
 
 
-
-## ---------------------------------------
-## create list of tab_spanners based on span_structures
-## ---------------------------------------
-create_span_group <- function(x, data){
-  create_span_group_function <- get(paste0("create_span_group.",class(x)[1]),envir = asNamespace("tlang"))
-  create_span_group_function(x, data)
-}
-
-#' @importFrom gt tab_spanner cols_move
-create_span_group.span_structure <- function(x, data){
-
-  cols <- span_col_select(x, data = data)
-  label <- format(x$label)
-
-  list(function(gt_tab){
-    tab_spanner(gt_tab,label = label, columns = cols, gather = FALSE)
-  });
-}
-
-create_span_group.span_structures <- function(x, data){
-
-  ## for child span_structures, create tab_spanner funcs
-  child_span_structures <- x$span_cols[sapply(x$span_cols, is_span_structure)]
-
-  ## do.call('c') quickly concatenates list into vector.
-  span_structure_span_func <- do.call('c',lapply(child_span_structures, create_span_group, data = data))
-
-  ## for parent span_structure, create tab_spanner funcs
-  span_structures_span_func <- create_span_group.span_structure(x, data)
-
-  ## combine together
-  c(
-    span_structure_span_func,
-    span_structures_span_func
-  )
-}
-
-
 ## ---------------------------------------
 ## determine which columns to span across
 ## ---------------------------------------
-span_col_select <- function(x, data){
-  span_col_select_function <- get(paste0("span_col_select.",class(x)[1]),envir = asNamespace("tlang"))
-  span_col_select_function(x, data = data)
+eval_tidyselect_on_colvec <- function(x, column_vec){
+  span_col_select_function <- get(paste0("eval_tidyselect_on_colvec.",class(x)[1]),envir = asNamespace("tlang"))
+  span_col_select_function(x, column_vec = column_vec)
 }
 
 #' @importFrom tidyselect eval_select
+#' @importFrom rlang !!!
 #' @importFrom dplyr expr
-span_col_select.quosures <- function(x, data){
+eval_tidyselect_on_colvec.quosures <- function(x, column_vec){
+
+  data <- data.frame(
+    matrix(data = rep(0, length(column_vec)), nrow = 1,
+           dimnames = list(
+             NULL, column_vec
+           )),
+    check.names = FALSE
+  )[-1,]
+
   names(eval_select(expr(c(!!!x)), data = data))
 }
 
-span_col_select.quosure <- function(x, data){
+#' @importFrom tidyselect eval_select
+#' @importFrom rlang !!
+#' @importFrom dplyr expr
+eval_tidyselect_on_colvec.quosure <- function(x, column_vec){
+
+  data <- data.frame(
+    matrix(data = rep(0, length(column_vec)), nrow = 1,
+           dimnames = list(
+             NULL, column_vec
+           )),
+    check.names = FALSE
+  )[-1,]
+
   names(eval_select(expr(c(!!x)), data = data))
 }
 
-span_col_select.span_structure <- function(x, data){
-  do.call('c',lapply(x$span_cols, span_col_select, data = data))
+eval_tidyselect_on_colvec.span_structure <- function(x, column_vec){
+  do.call('c',lapply(x$span_cols, eval_tidyselect_on_colvec, column_vec = column_vec))
 }
 
-span_col_select.span_structures <- function(x, data){
-  do.call('c',lapply(x$span_cols, span_col_select, data = data))
+eval_tidyselect_on_colvec.span_structures <- function(x, column_vec){
+  do.call('c',lapply(x$span_cols, eval_tidyselect_on_colvec, column_vec = column_vec))
 }
 
 ## -----------------------------------------------
@@ -204,7 +187,7 @@ check_column_and_col_plan <- function(x){
 }
 
 #' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate last_col
+#' @importFrom dplyr as_tibble relocate last_col right_join
 select_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
@@ -217,71 +200,105 @@ select_col_plan <- function(data, tfrmt){
       out <- data
     }
   } else {
-    #make a dummy dataset based on the last section of the column
-    if(length(tfrmt$col_plan$span_structures) > 0){
-      tpm_data <- names(data) %>%
-        str_split(.tlang_delim) %>%
-        map_chr(last) %>%
-        as_tibble() %>%
-        mutate(val = 0) %>%
-        pivot_wider(names_from = .data$value,
-                    values_from = .data$val) %>%
-        slice(0)
 
-      # Get the new names
-      new_name_df <- tfrmt$col_plan$span_structures %>%
-        map_dfr(span_struct_to_df, tpm_data) %>%
-        relocate(.data$.original_col, .after = last_col()) %>%
-        unite("new_name", everything(), sep = .tlang_delim, remove = FALSE) %>%
-        mutate(new_name_quo = map(.data$new_name, sym))
+    ## triple dots passed to select
+    new_dots <- tfrmt$col_plan$dots
 
-      new_dots <- tibble(dots = tfrmt$col_plan$dots,
-                         chr_dots = map_chr(tfrmt$col_plan$dots, as_label)) %>%
-        left_join(new_name_df, by =c("chr_dots"=".original_col")) %>%
-        mutate(dot2 = ifelse(!is.na(.data$new_name), .data$new_name_quo, .data$dots))%>%
-        pull(.data$dot2)
-    } else if(length(tfrmt$column) > 1){
-      kernal_name <- names(data) %>%
-        str_split(.tlang_delim) %>%
-        map_chr(last)
-      if(length(unique(kernal_name)) != length(kernal_name)){
-        stop("Unable to select columns due to duplicate naming.
-             If you would like to set the order consider using span structures rather than multiple columns.")
+    ### if there are span_structures or multiple columns, modify new_dots
+    if(length(tfrmt$col_plan$span_structures) > 0 | length(tfrmt$column) > 1){
+
+      #make a dummy dataset based on the last section of the column
+      if(length(tfrmt$col_plan$span_structures) > 0){
+
+        tpm_data <- names(data) %>%
+          str_split(.tlang_delim) %>%
+          map_chr(last) %>%
+          unique()
+
+        # Get the new names
+        new_name_df <- tfrmt$col_plan$span_structures %>%
+          map_dfr(span_struct_to_df, tpm_data) %>%
+          mutate(
+            .rename_col = case_when(
+              .rename_col != "" ~ .rename_col,
+              TRUE ~ .original_col
+            )
+          ) %>%
+          relocate(.data$.original_col, .after = last_col()) %>%
+          relocate(.data$.rename_col, .after = last_col()) %>%
+          unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE) %>%
+          unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE) %>%
+          mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
+          mutate(
+            new_name_in_df = case_when(
+              new_name_in_df == .original_col ~ NA_character_,
+              TRUE ~ new_name_in_df
+            )
+          )
+
+      } else if(length(tfrmt$column) > 1){
+
+        df_col_names <- tibble(df_names = names(data)) %>%
+          separate(df_names, map_chr(tfrmt$column, as_label), sep = .tlang_delim, fill = "left")
+
+        new_name_df <- tibble(
+          .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
+          .rename_col = names(tfrmt$col_plan$dots)
+          ) %>%
+          mutate(
+            .rename_col = case_when(
+              .rename_col != "" ~ .rename_col,
+              TRUE ~ .original_col
+            )
+          ) %>%
+          left_join(
+            df_col_names,
+            by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
+          ) %>%
+          relocate(.data$.original_col, .after = last_col()) %>%
+          relocate(.data$.rename_col, .after = last_col()) %>%
+          unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
+          unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
+          mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
+          mutate(
+            new_name_in_df = case_when(
+              new_name_in_df == .original_col ~ NA_character_,
+              TRUE ~ new_name_in_df
+            )
+          )
+
       }
 
-      dots_df <-tibble(dots = tfrmt$col_plan$dots,
-                       dots_chr = tfrmt$col_plan$dots %>% map_chr(as_label))
+      new_dots_tmp <- tibble(
+          dots = tfrmt$col_plan$dots,
+          dot_chr = map_chr(tfrmt$col_plan$dots, as_label),
+          dot_names = names(tfrmt$col_plan$dots)
+        ) %>%
+        left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
+        mutate(dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots))
 
-      new_dots <- tibble(dat_nm = names(data),
-                         kernal_name = kernal_name,
-                         new_name = map(.data$dat_nm, sym)
-      ) %>%
-        left_join(dots_df, ., by = c("dots_chr" = "kernal_name")) %>%
-        mutate(
-          dot2 = ifelse(!is.na(.data$dat_nm), .data$new_name, .data$dots))%>%
-        pull(.data$dot2)
+      new_dots_tmp_idx <- which(!is.na(new_dots_tmp$new_name_in_df))
 
-    } else {
-      new_dots <- tfrmt$col_plan$dots
+      suppressWarnings({
+        new_dots[new_dots_tmp_idx] <- new_dots_tmp$dot2[new_dots_tmp_idx]
+        names(new_dots)[new_dots_tmp_idx] <- new_dots_tmp$new_name_in_df_output[new_dots_tmp_idx]
+      })
+
     }
 
-    #Adding in labels and grouping if people forgot it
+    # Adding in labels and grouping if people forgot it
     # because the order of these are set by the GT I don't it will matter
-  #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
+    #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
 
     if((!is.null(tfrmt$row_grp_plan) &&
         !is.null(tfrmt$row_grp_plan$label_loc)&&
         tfrmt$row_grp_plan$label_loc$location=="noprint")){
-
       new_dots <- setdiff(new_dots, tfrmt$group)
-
     }
 
-    out<- select(
-      data,
-      !!!new_dots
-    )
+    out <- select( data, !!!new_dots)
   }
+
   out
 }
 
@@ -295,20 +312,16 @@ select_col_plan <- function(data, tfrmt){
 apply_span_structures_to_data <- function(tfrmt_obj, x){
 
   ## create temp df with columns based on
-  tmp_df <- x %>%
-    select(!!(tfrmt_obj$column[[1]])) %>%
-    mutate(val = 0) %>%
-    quietly(pivot_wider)(names_from = !!(tfrmt_obj$column[[1]]),
-                         values_from = .data$val
-    ) %>%
-    .$result %>%
-    slice(0)
+  tmp_df_name_vec <- x %>%
+    pull(!!(tfrmt_obj$column[[1]])) %>%
+    unique()
 
   ## create df of span structures
   span_struct_df <- tfrmt_obj$col_plan$span_structures %>%
-    map_dfr(span_struct_to_df, tmp_df) %>%
+    map_dfr(span_struct_to_df, tmp_df_name_vec) %>%
     relocate(.data$.original_col, .after = last_col()) %>%
-    rename(!!as_label(tfrmt_obj$column[[1]]) := ".original_col")
+    rename(!!as_label(tfrmt_obj$column[[1]]) := ".original_col") %>%
+    select(-.rename_col)
 
   ## merge together data and span df on column arrange
   left_join(x,
@@ -328,15 +341,19 @@ span_struct_to_df <- function(span_struct, data_col, depth = 1){
   span_struct_to_df_function(span_struct=span_struct, data_col = data_col, depth = depth)
 }
 
+#' @importFrom rlang %||%
 span_struct_to_df.span_structure <- function(span_struct, data_col, depth = 1){
+
   lab <- span_struct$label
-  contents <- span_col_select(
-    span_struct, data_col
-  )
+
+  contents <- eval_tidyselect_on_colvec(span_struct, data_col)
+
+  new_names <- names(contents) %||% contents
 
   tibble(
     lab = lab,
-    .original_col = contents
+    .original_col = contents,
+    .rename_col = new_names
   ) %>%
     rename(
       !!paste0(.tlang_struct_col_prefix,depth) := lab
@@ -354,8 +371,8 @@ span_struct_to_df.span_structures <- function(span_struct, data_col, depth = 1){
       if (is_span_structure(x)) {
         span_struct_to_df(span_struct = x, data_col, depth = depth + 1)
       } else{
-        contents <- span_col_select(x, data_col)
-        tibble(.original_col = contents)
+        contents <- eval_tidyselect_on_colvec(x, data_col)
+        tibble(.original_col = contents, .rename_col = names(x))
       }
     }) %>%
     mutate(lab = lab) %>%
