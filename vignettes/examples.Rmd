@@ -458,13 +458,13 @@ For better control over our column labels, we can provide a single column in lie
 
 ```{r }
 ae_data3 <- ae_data2 %>% 
-  unite("col", c(col2, col1), sep = "-")
+  unite("combined_col", c(col2, col1), sep = "-")
 
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col), 
+  column = combined_col, 
   param = param,
   values = value,
   sorting_cols = c(ord1, ord2),
