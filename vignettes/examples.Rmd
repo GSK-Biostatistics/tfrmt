@@ -95,7 +95,7 @@ tfrmt(
   )
 ```
 
-While this make a table it isn't a very nice table and defiantly doesn't match the mock. So lets start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`.  This will be a fairly quick explanation of `body_plan`s but if you like more information see `vignettes("Body Plan")` 
+While this make a table it isn't a very nice table and definitely doesn't match the mock. So lets start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`.  This will be a fairly quick explanation of `body_plan`s but if you like more information see `vignettes("Body Plan")` 
 
 Body plans are made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. The order of the `frmt_structure`s matter; they are always applied latest to oldest. This means the first `frmt_stucture` in the `body_plan` should be the most generic. You can use the groups, labels and parameters to specify which formatting applies to which values.  
 
