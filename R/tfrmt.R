@@ -82,7 +82,7 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   ## get args of parent function
   arg_parent <- names(formals(sys.function(sys.parent(1))))
   ## don't try to get the tftmt obj
-  args <- setdiff(arg_parent,"tfrmt_obj")
+  args <- setdiff(arg_parent,c("tfrmt_obj","..."))
 
   ## get the values from the parent env. turn the
   ## as_var_args call into vars
@@ -97,10 +97,15 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   ## remove the "missing" values from vals
   vals <- vals[!sapply(vals, is_missing)]
 
-  ## preserve the values included in ... input
-  new_args <- list(..., ... = NULL)
-  for (i in names(new_args)){
-    vals[[i]] <- new_args[[i]]
+  dot_subs <- as.list(substitute(substitute(...)))[-1]
+  for(dot_name in names(dot_subs)){
+    compare_dot_args_against_formals(dot_arg = dot_name, formals = args)
+    vals[[dot_name]] <- tryCatch(
+      eval(dot_subs[[dot_name]], envir = env),
+      error = function(e){
+        stop(e$message,call. = FALSE)
+      }
+    )
   }
 
   vals
@@ -215,4 +220,14 @@ as_vars.quosures <- function(x){
 
 as_vars.character <- function(x){
   do.call(vars,lapply(x,function(x){ quo(!!sym(x))}))
+}
+
+#' @importFrom rlang inform
+compare_dot_args_against_formals <- function(dot_arg, formals){
+  arg_message <- paste0("Argument '",dot_arg,"' passed to tfrmt is not a recognized argument.")
+  fuzzy_arg_match <- agrep(dot_arg, formals, ignore.case = TRUE, value = TRUE, max.distance = .25)
+  if(length(fuzzy_arg_match)){
+    arg_message <- paste0(arg_message,"\n","Did you intend to use the argument `",fuzzy_arg_match[[1]],"`?")
+  }
+  inform(arg_message, class = "tfrmt_unrecognized_argument_inform")
 }
