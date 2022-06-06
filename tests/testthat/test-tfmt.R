@@ -390,3 +390,41 @@ test_that("layering tfrmt - Mixing var/quo",{
   expect_equal( t_frmt_layered$label, quo(label3), ignore_attr = TRUE )
 
 })
+
+test_that("basic tfrmt - ... args",{
+
+  ## arg is not to actual arg
+  message_res <- capture_messages(
+    tfrmt(
+      totally_fake_arg = "my_col"
+    )
+  )
+  expect_equal(
+    message_res,
+    "Argument 'totally_fake_arg' passed to tfrmt is not a recognized argument."
+  )
+
+  ## arg is spelled close to actual arg
+  message_res <- capture_messages(
+    tfrmt(
+      colmn = "my_col",
+    )
+  )
+  expect_equal(
+    message_res,
+   "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?"
+  )
+
+  message_res <- capture_messages(
+    tfrmt(
+      colmn = "my_col",
+      lalbl = "label"
+    )
+  )
+  expect_equal(
+    message_res,
+    c("Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?",
+      "Argument 'lalbl' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `label`?")
+  )
+
+})
