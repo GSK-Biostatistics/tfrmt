@@ -252,7 +252,6 @@ test_that("From col plan spanning structures, get df to add to data",{
 
 })
 
-
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure",{
 
   basic_multi_column_template <- tfrmt(
@@ -302,7 +301,6 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
   })
   })
-
 
   expect_equal(
     processed_gt,
@@ -368,6 +366,97 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   )
 
 })
+
+test_that("Build simple tfrmt with multiple columns and with renaming duplicated colnames across spans",{
+
+  multi_col_df <- tribble(
+    ~label, ~col0, ~col1, ~col2, ~param, ~value,
+    "A",    "A_",  "A",    "AA",  "p1", 123,
+    "A",    "A_",  "A",    "AB",  "p1", 12,
+    "A",    "A_",  "B",    "AA",  "p1", 1,
+    "A",    "A_",  "B",    "AB",  "p1", 123,
+    "A",    "B_",  "C",    "AA",  "p1", 12,
+    "A",    "B_",  "C",    "AB",  "p1", 1,
+    "A",    "B_",  "D",    "BB",  "p1", 123,
+    "A",     NA,   NA,    "BB",  "p1", 12,
+    "B",    "A_",  "A",    "AA",  "p1", 123,
+    "B",    "A_",  "A",    "AB",  "p1", 12,
+    "B",    "A_",  "B",    "AA",  "p1", 1,
+    "B",    "A_",  "B",    "AB",  "p1", 123,
+    "B",    "B_",  "C",    "AA",  "p1", 12,
+    "B",    "B_",  "C",    "AB",  "p1", 1,
+    "B",    "B_",  "D",    "BB",  "p1", 123,
+    "B",     NA,   NA,    "BB",  "p1", 12,
+    "B",     NA,   NA,    "CC",  "p1", 12
+  )
+
+  multi_column_template <- tfrmt(
+    label = label,
+    column = c(col0, col1, col2),
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("XXXX"))
+    ),
+    col_plan = col_plan(
+      label,
+      starts_with("A_"),
+      renamed_A = AA,
+      AB,
+      renamed_BB = BB,
+      renamed_CC = CC
+      )
+    )
+
+  multi_column_template_spanners <- tfrmt(
+    label = label,
+    column = col_unite,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("XXXX"))
+    ),
+    col_plan = col_plan(
+      label,
+      span_structure(
+        "A_",
+        span_structure("A",
+                       renamed_A = A___A__AA,
+                       AB = A___A__AB),
+        span_structure("B",
+                       renamed_A = A___B__AA,
+                       AB = A___B__AB)
+      ),
+      span_structure(
+        "B_",
+        span_structure("C",
+                       renamed_A = B___C__AA,
+                       AB = B___C__AB
+        ),
+        span_structure("D",
+                       renamed_BB = B___D__BB
+        )
+      ),
+      renamed_BB = BB,
+      renamed_CC = CC
+      )
+  )
+
+  suppressMessages({
+    suppressWarnings({
+      processed_gt <- print_to_gt(tfrmt = multi_column_template, .data = multi_col_df)
+      processed_gt_2 <- print_to_gt(tfrmt = multi_column_template_spanners, .data = multi_col_df %>% unite(col0:col2,col = col_unite, sep = "__",remove = TRUE,na.rm = TRUE))
+    })
+  })
+
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
+
 
 test_that("span_structure returns correct errors",{
 

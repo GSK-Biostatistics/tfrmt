@@ -210,30 +210,31 @@ select_col_plan <- function(data, tfrmt){
       #make a dummy dataset based on the last section of the column
       if(length(tfrmt$col_plan$span_structures) > 0){
 
-        tpm_data <- names(data) %>%
-          str_split(.tlang_delim) %>%
-          map_chr(last) %>%
-          unique()
+        total_split_cols <- names(data) %>% str_split(.tlang_delim) %>% lengths() %>% max() %>% `-`(1)
+
+        new_cols <- c(paste0(.tlang_struct_col_prefix, seq_len(total_split_cols)), ".original_col")
+
+        tpm_data <- tibble(.original_col = names(data)) %>%
+          separate(.data$.original_col, into = new_cols, sep = .tlang_delim, fill = "left", remove = TRUE)
+
+        span_struct_cols <- tfrmt$col_plan$span_structures %>%
+          map_dfr(span_struct_to_df, tpm_data$.original_col)
+
+        rename_tpm <- tpm_data %>%
+          filter(!(.data$.original_col %in% span_struct_cols$.original_col)) %>%
+          left_join(
+            tibble(
+              .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
+              .rename_col = names(tfrmt$col_plan$dots)
+            ),
+            by = ".original_col"
+          )
+
 
         # Get the new names
-        new_name_df <- tfrmt$col_plan$span_structures %>%
-          map_dfr(span_struct_to_df, tpm_data) %>%
-          mutate(
-            .rename_col = case_when(
-              .rename_col != "" ~ .rename_col,
-              TRUE ~ .original_col
-            )
-          ) %>%
-          relocate(.data$.original_col, .after = last_col()) %>%
-          relocate(.data$.rename_col, .after = last_col()) %>%
-          unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE) %>%
-          unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE) %>%
-          mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
-          mutate(
-            new_name_in_df = case_when(
-              new_name_in_df == .original_col ~ NA_character_,
-              TRUE ~ new_name_in_df
-            )
+        col_name_df <-  span_struct_cols %>%
+          bind_rows(
+            rename_tpm
           )
 
       } else if(length(tfrmt$column) > 1){
@@ -241,33 +242,35 @@ select_col_plan <- function(data, tfrmt){
         df_col_names <- tibble(df_names = names(data)) %>%
           separate(df_names, map_chr(tfrmt$column, as_label), sep = .tlang_delim, fill = "left")
 
-        new_name_df <- tibble(
+        col_name_df <- tibble(
           .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
           .rename_col = names(tfrmt$col_plan$dots)
-          ) %>%
-          mutate(
-            .rename_col = case_when(
-              .rename_col != "" ~ .rename_col,
-              TRUE ~ .original_col
-            )
-          ) %>%
+          )  %>%
           left_join(
             df_col_names,
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
-          ) %>%
-          relocate(.data$.original_col, .after = last_col()) %>%
-          relocate(.data$.rename_col, .after = last_col()) %>%
-          unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
-          unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
-          mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
-          mutate(
-            new_name_in_df = case_when(
-              new_name_in_df == .original_col ~ NA_character_,
-              TRUE ~ new_name_in_df
-            )
           )
-
       }
+
+      new_name_df <- col_name_df %>%
+        mutate(
+          .rename_col = case_when(
+            .rename_col != "" ~ .rename_col,
+            TRUE ~ .original_col
+          )
+        ) %>%
+        relocate(.data$.original_col, .after = last_col()) %>%
+        relocate(.data$.rename_col, .after = last_col()) %>%
+        unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
+        unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
+        mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
+        mutate(
+          new_name_in_df = case_when(
+            new_name_in_df == .original_col ~ NA_character_,
+            TRUE ~ new_name_in_df
+          )
+        )
+
 
       new_dots_tmp <- tibble(
           dots = tfrmt$col_plan$dots,
@@ -275,14 +278,19 @@ select_col_plan <- function(data, tfrmt){
           dot_names = names(tfrmt$col_plan$dots)
         ) %>%
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
-        mutate(dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots))
+        mutate(
+          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
+          dot2_names = purrr::map2_chr(.data$new_name_in_df_output, .data$dot_chr , function(x, y){
+            if(!identical(x, y)){
+              x
+            }else{
+              ""
+            }
+            })
+          )
 
-      new_dots_tmp_idx <- which(!is.na(new_dots_tmp$new_name_in_df))
-
-      suppressWarnings({
-        new_dots[new_dots_tmp_idx] <- new_dots_tmp$dot2[new_dots_tmp_idx]
-        names(new_dots)[new_dots_tmp_idx] <- new_dots_tmp$new_name_in_df_output[new_dots_tmp_idx]
-      })
+      new_dots <- as.list(new_dots_tmp$dot2)
+      names(new_dots) <- new_dots_tmp$dot2_names
 
     }
 
