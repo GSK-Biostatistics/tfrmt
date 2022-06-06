@@ -37,7 +37,7 @@ whether they span the entire table or are nested as a column.
 
 }
 \seealso{
-\code{\link[=row_grp_stucture]{row_grp_stucture()}} for more details on how to specify row group
+\code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group
 structures, \code{\link[=element_block]{element_block()}} for more details on how to specify spacing
 between each group, \code{\link[=element_row_grp_loc]{element_row_grp_loc()}} for more details on how to
 specify whether row group titles span the entire table or collapse.

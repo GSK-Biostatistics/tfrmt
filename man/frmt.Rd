@@ -93,7 +93,7 @@ frmt_when(
 frmt_when(
   "==100"~ frmt(""),
   "==0"~ "",
-  "TRUE" ~ frmt("(XXX.X\%)"
+  "TRUE" ~ frmt("(XXX.X\%)")
   )
 
 }

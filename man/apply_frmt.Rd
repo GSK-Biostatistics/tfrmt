@@ -36,6 +36,8 @@ apply_frmt(frmt_def, .data, values, mock = FALSE, ...)
 
 \item{...}{additional arguments for methods}
 
+\item{param}{param column as a quosure}
+
 \item{column}{column columns as a list of quosures}
 
 \item{label}{label column as a quosure}
