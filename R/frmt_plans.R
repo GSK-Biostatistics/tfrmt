@@ -117,40 +117,7 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   )
 }
 
-#' Row Group Structure Object
-#'
-#' Function needed to create a row_grp_structure object, which is a building block
-#' of [row_grp_plan()]
-#'
-#' @param group_val A string or a named list of strings which represent the
-#'   value of group should be when the given frmt is implemented
-#' @param ... element_block() object
-#'
-#' @importFrom tidyr expand_grid
-#' @export
-row_grp_structure <- function(group_val = ".default", ...){
-  row_grp_block <- list(...)
 
-  if(length(row_grp_block) > 1){
-    stop("Can only handle one format per row_grp_structure function")
-  }
-
-  if(is.list(group_val)){
-    group_val_names <- names(group_val)
-    if(is.null(group_val_names)){
-      stop("when group_val is a list, must be a named list")
-    }else if(any(group_val_names == "")){
-      stop("when group_val is a list, each entry must be named")
-    }
-  }
-
-  structure(
-    list(
-      group_val = group_val,
-      block_to_apply = row_grp_block),
-    class = c("row_grp_structure","frmt_table")
-  )
-}
 
 #' Table Body Plan
 #'
@@ -175,30 +142,7 @@ body_plan <- function(...){
   )
 }
 
-#' Row Group Plan
-#'
-#' @param ...  Row group structure objects separated by commas
-#' @param label_loc Boolean specifying whether or not the top-level group should be a spanning label
-#'
-#' @return row_grp_plan object
-#' @export
-#'
-row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indented")){
 
-  row_grp_structure_list <- list(...)
-
-  for(struct_idx in seq_along(row_grp_structure_list)){
-    if(!is_row_grp_structure(row_grp_structure_list[[struct_idx]])){
-      stop(paste0("Entry number ",struct_idx," is not an object of class `row_grp_structure`.
-                  If you want specify `spanning_label` please enter 'spanning_label ='"))
-    }
-  }
-
-  structure(
-    list(struct_ls = row_grp_structure_list, label_loc = label_loc),
-    class = c("row_grp_plan", "frmt_table")
-  )
-}
 
 #' @rdname frmt
 #' @export

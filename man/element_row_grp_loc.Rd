@@ -24,3 +24,9 @@ suppress group values from being printed.}
 \description{
 Element Row Group Location
 }
+\seealso{
+\code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group
+structures, \code{\link[=row_grp_stucture]{row_grp_stucture()}} for more details on how to specify row group
+structures, \code{\link[=element_block]{element_block()}} for more details on how to specify spacing
+between each group.
+}
