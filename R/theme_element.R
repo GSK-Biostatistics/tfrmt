@@ -56,22 +56,21 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 
 }
 
-# PROBABLY NEEDS DELETING
-# element_style <- function(...){
-#   structure(
-#     list(all_fmts = list(...)),
-#     class = c("element_style", "element")
-#   )
-# }
 
 #' Element Align
 #'
-#' @param align Alignment to be applied to column. Acceptable values: "left" for left alignment, "right" for right alignment",
-#' or supply a vector of character(s) to align on. For the case of character alignment, if more
-#' than one character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param align Alignment to be applied to column. Acceptable values: "left" for
+#'   left alignment, "right" for right alignment", or supply a vector of
+#'   character(s) to align on. For the case of character alignment, if more than
+#'   one character is provided, alignment will be based on the first occurrence
+#'   of any of the characters. For alignment based on white space, leading white
+#'   spaces will be ignored.
 #' @param col Variable to align on
 #'
 #' @importFrom purrr map
+#'
+#' @seealso [col_align_plan()] for more information on how to combine
+#'   element_align()'s together to form a plan.
 #'
 #' @export
 #' @rdname theme_element
@@ -94,7 +93,7 @@ element_align <- function(align = "left",
 #'
 #' @param x Object to check
 #'
-#' @rdname theme_element
+#' @noRd
 is_element_align <- function(x){
   inherits(x, "element_align")
 }
