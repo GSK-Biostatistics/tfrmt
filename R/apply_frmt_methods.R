@@ -6,6 +6,7 @@
 #' @param values values symbol should only be one
 #' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments for methods
+#' @param param param column as a quosure
 #' @param column column columns as a list of quosures
 #' @param label label column as a quosure
 #' @param group group column as a list of quosures

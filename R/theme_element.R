@@ -13,7 +13,7 @@
 #'@param indent A string of the number of spaces you want to indent
 #'
 #' @seealso [row_grp_plan()] for more details on how to group row group
-#'   structures, [row_grp_stucture()] for more details on how to specify row group
+#'   structures, [row_grp_structure()] for more details on how to specify row group
 #'   structures, [element_block()] for more details on how to specify spacing
 #'   between each group.
 #'
@@ -41,7 +41,7 @@ is_element_row_grp_loc <- function(x){
 #' @return element block object
 #'
 #' @seealso [row_grp_plan()] for more details on how to group row group
-#'   structures, [row_grp_stucture()] for more details on how to specify row group
+#'   structures, [row_grp_structure()] for more details on how to specify row group
 #'   structures, [element_row_grp_loc()] for more details on how to
 #'   specify whether row group titles span the entire table or collapse.
 #'
