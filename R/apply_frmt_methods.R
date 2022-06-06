@@ -6,29 +6,28 @@
 #' @param values values symbol should only be one
 #' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments for methods
+#' @param column column columns as a list of quosures
+#' @param label label column as a quosure
+#' @param group group column as a list of quosures
+#'
+#' @return formatted dataset
 #'
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove
 #' @importFrom dplyr if_else case_when tibble
 #' @export
+#'
+#' @rdname apply_frmt
 apply_frmt <- function(frmt_def, .data, values, mock = FALSE, ...){
   UseMethod("apply_frmt", frmt_def)
 }
 
-#' Apply formatting
-#'
-#' Applying the most basic frmt element. All other frmt type eventually call this
-#' @param frmt_def formatting to be applied
-#' @param .data data, but only the rows getting changed
-#' @param values value column as a quosure
-#' @param mock Logical value is this is for a mock or not. By default `FALSE`
-#' @param ... additional arguments
-#'
-#' @return formatted dataset
-#'
+
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
 #' @importFrom dplyr case_when tibble pull mutate
 #' @importFrom rlang :=
 #' @export
+#'
+#' @rdname apply_frmt
 apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
   if(mock){
     out <- .data %>%
@@ -139,25 +138,14 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 }
 
 
-#' Apply frmt_combine information to data
-#'
-#' @param frmt_def frmt_combine object
-#' @param .data data, but only the rows getting changed
-#' @param param param column as a quosure
-#' @param values value column as a quosure
-#' @param mock Logical value is this is for a mock or not. By default `FALSE`
-#' @param column column columns as a list of quosures
-#' @param label label column as a quosure
-#' @param group group column as a list of quosures
-#' @param ... additional arguments for applying a basic frmt
-#'
-#' @return rounded and formatted df
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
 #' @importFrom dplyr case_when tibble filter pull left_join
 #' @importFrom tidyr pivot_wider
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom rlang :=
 #' @export
+#'
+#' @rdname apply_frmt
 apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param, column, label, group, ...){
 
   fmt_param_vals <- frmt_def$expression %>%
@@ -246,20 +234,13 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   out
 }
 
-#' Apply form for frmt_when formats
-#'
-#' @param frmt_def formatting to be applied
-#' @param .data data, but only what is getting changed
-#' @param values values symbol should only be one
-#' @param mock Logical value is this is for a mock or not. By default `FALSE`
-#' @param ... additional arguments for methods
-#'
-#' @return rounded and formatted df
 #' @export
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
 #' @importFrom dplyr pull if_else mutate
 #' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
+#'
+#' @rdname apply_frmt
 apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
   if(mock){

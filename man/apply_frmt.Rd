@@ -2,9 +2,28 @@
 % Please edit documentation in R/apply_tfrmt_methods.R
 \name{apply_frmt}
 \alias{apply_frmt}
+\alias{apply_frmt.frmt}
+\alias{apply_frmt.frmt_combine}
+\alias{apply_frmt.frmt_when}
 \title{Apply formatting}
 \usage{
 apply_frmt(frmt_def, .data, values, mock = FALSE, ...)
+
+\method{apply_frmt}{frmt}(frmt_def, .data, values, mock = FALSE, ...)
+
+\method{apply_frmt}{frmt_combine}(
+  frmt_def,
+  .data,
+  values,
+  mock = FALSE,
+  param,
+  column,
+  label,
+  group,
+  ...
+)
+
+\method{apply_frmt}{frmt_when}(frmt_def, .data, values, mock = FALSE, ...)
 }
 \arguments{
 \item{frmt_def}{formatting to be applied}
@@ -16,6 +35,15 @@ apply_frmt(frmt_def, .data, values, mock = FALSE, ...)
 \item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
 \item{...}{additional arguments for methods}
+
+\item{column}{column columns as a list of quosures}
+
+\item{label}{label column as a quosure}
+
+\item{group}{group column as a list of quosures}
+}
+\value{
+formatted dataset
 }
 \description{
 Apply formatting
