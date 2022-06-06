@@ -1,74 +1,11 @@
-#' Table Formatting
-#'
-#' frmt provide an abstracted way to approach to define formatting of table
-#' contents. By defining in this way, the formats can be
-#' layered to be more specific and general cell styling can be done first.
-#'
-#' @param expression a string representing the intended format. See details: expression for more
-#' detailed description.
-#' @param missing when a value is missing that is intended to be formatted, what value to place?
-#' @param scientific a string representing the intended scientific notation to be appended to the expression
-#' @param ...  these dots are for future extensions and must be empty.
-#'
-#' @export
-#' @examples
-#'
-#' frmt("XXX %")
-#'
-#' frmt("XX.XXX")
-#'
-frmt <- function(expression, missing = NULL, scientific = NULL, ...){
-  structure(
-    list(expression = expression, missing = missing, scientific = scientific),
-    class = c("frmt")
-  )
-}
-
-#' Table Formatting - Combine
-#'
-#' frmt_combine provide an abstracted way to approach to define formatting of table
-#' contents. By defining in this way, the formats can be
-#' layered to be more specific and general cell styling can be done first.
-#'
-#' @param expression a string representing the intended combined format.
-#' @param ... named frmts, where the name is the name of the param to apply the frmt to
-#' @param missing when all values are missing that is intended to be formatted, what value to place
-#' @export
-#'
-#' @examples
-#'
-#' frmt_combine(
-#'  "{param1} {param2}",
-#'  param1 = frmt("XXX %"),
-#'  param2 = frmt("XX.XXX")
-#' )
-#'
-frmt_combine <- function(expression, ..., missing = NULL){
-
-  everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
-
-  n_vars <- str_count(expression, everything_but_curly)
-  vars_to_fmt <- str_extract_all(expression, everything_but_curly, simplify = TRUE)
-  fmt_ls <- list(...)
-
-  if(n_vars != length(fmt_ls) & length(fmt_ls) > 1){
-    stop("The number of formats must be 1 or match the number of parameters", call. = FALSE)
-  } else if (n_vars > 1 & length(fmt_ls) == 1){
-    fmt_ls <- fmt_ls[rep(1,n_vars)]
-  }
-
-  names(fmt_ls) <- vars_to_fmt
-
-  structure(
-    list(expression = expression, fmt_ls = fmt_ls, missing = missing),
-    class = c("frmt_combine","frmt")
-  )
-}
-
 #' Format Structure Object
 #'
 #' Function needed to create a frmt_structure object, which is a building block
-#' of [body_plan()]
+#' of [body_plan()]. This specifies the rows the format will be applied to.
+#'
+#' @seealso [body_plan()] combines the frmt_structures to be applied to the
+#'   table body, and [frmt()], [frmt_combine()], and [frmt_when()] define the
+#'   format semantics.
 #'
 #' @param group_val A string or a named list of strings which represent the
 #'   value of group should be when the given frmt is implemented
@@ -76,6 +13,14 @@ frmt_combine <- function(expression, ..., missing = NULL){
 #'   the given frmt is implemented
 #' @param ... either a [frmt()], [frmt_combine()], or a [frmt_when()] object.
 #'   This can be named to also specify the parameter value
+#'
+#' @examples
+#'
+#' sample_structure <- frmt_structure(
+#'           group_val = c("group1"),
+#'           label_val = ".default",
+#'           frmt("XXX")
+#'         )
 #'
 #' @importFrom tidyr expand_grid
 #' @export
@@ -119,29 +64,119 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 
 
 
-#' Table Body Plan
+#' Table Value Formatting
 #'
-#' @param ... list of frmt_structure
+#' @description
+#' These functions provide an abstracted way to approach to define formatting of table
+#' contents. By defining in this way, the formats can be
+#' layered to be more specific and general cell styling can be done first.
 #'
-#' @return body_plan object
+#' `frmt()` is the base definition of a format. This defines spacing, rounding,
+#' and missing behavior.
+#'
+#' `frmt_combine()` is used when two or more rows need to be combined into a
+#' single cell in the table. Each of the rows needs to have a defined `frmt()`
+#' and need to share a label.
+#'
+#' `frmt_when()` is used when a rows format behavior is dependent on the value itself and is written similarly to [dplyr::case_when()].
+#'  The left hand side of the equation is a `"TRUE"`for the default case or the right hand side of a boolean expression `">50"`.
+#'
+#' @seealso [body_plan()] combines the frmt_structures to be applied to the
+#'   table body, and [frmt_structure()] defines which rows the formats will be applied
+#'   to.
+#'
+#' @param expression this is the string representing the intended format. See details: expression for more a detailed description.
+#' @param missing when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.
+#' @param scientific a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".
+#' @param ...  See details: `...` for a detailed description.
+#'
+#'
+#' @details
+#'
+#' ## expression
+#'  - `frmt()` All numbers are represented by "x". Any additional character are
+#'  printed as-is. If additional X's present to the left of the decimal point
+#'  than the value, they will be represented as spaces.
+#'  - `frmt_combine()` defines how the parameters will be combined as a
+#'  `glue::glue()` statement. Parameters need to be equal to the values in the
+#'  param column and defined in the expression as "{param1} {param2}".
+#'
+#' ## missing
+#'  - `frmt()` Value to enter when the value is missing. When NULL, the value
+#'  is "".
+#'  - `frmt_combine()` defines how when all values to be combined are missing.
+#'  When NULL the value is "".
+#'
+#' ## ...
+#'    - `frmt()` These dots are for future extensions and must be
+#'    empty.
+#'    - `frmt_combine()` accepts named arguments defining the `frmt()` to
+#'    be applied to which parameters before being combined.
+#'    - `frmt_when()`accepts a series of equations separated by commas, similar
+#'    to [dplyr::case_when()]. The left hand side of the equation is a `"TRUE"`for the
+#'    default case or the right hand side of a boolean expression `">50"`. The
+#'    right hand side of the equation is the `frmt()` to apply when the left
+#'    side evaluates to `TRUE`.
+#'
 #' @export
+#' @examples
 #'
-body_plan <- function(...){
-
-  frmt_structure_list <- list(...)
-
-  for(struct_idx in seq_along(frmt_structure_list)){
-    if(!is_frmt_structure(frmt_structure_list[[struct_idx]])){
-      stop(paste0("Entry number ",struct_idx," is not an object of class `frmt_structure`."))
-    }
-  }
-
+#' frmt("XXX %")
+#'
+#' frmt("XX.XXX")
+#'
+#' frmt("xx.xx", scientific = "x10^xx")
+#'
+#' frmt_combine(
+#'  "{param1} {param2}",
+#'  param1 = frmt("XXX %"),
+#'  param2 = frmt("XX.XXX")
+#' )
+#'
+#' frmt_when(
+#'   ">3" ~ frmt("(X.X%)"),
+#'   "<=3" ~ frmt("Undetectable")
+#'   )
+#'
+#' frmt_when(
+#'   "==100"~ frmt(""),
+#'   "==0"~ "",
+#'   "TRUE" ~ frmt("(XXX.X%)"
+#'   )
+#'
+#' @rdname frmt
+#'
+frmt <- function(expression, missing = NULL, scientific = NULL, ...){
   structure(
-    frmt_structure_list,
-    class = c("body_plan", "frmt_table")
+    list(expression = expression, missing = missing, scientific = scientific),
+    class = c("frmt")
   )
 }
 
+
+#' @export
+#' @rdname frmt
+frmt_combine <- function(expression, ..., missing = NULL){
+
+  everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
+
+  n_vars <- str_count(expression, everything_but_curly)
+  vars_to_fmt <- str_extract_all(expression, everything_but_curly, simplify = TRUE)
+  fmt_ls <- list(...)
+
+  if(n_vars != length(fmt_ls) & length(fmt_ls) > 1){
+    stop("The number of formats must be 1 or match the number of parameters", call. = FALSE)
+  } else if (n_vars > 1 & length(fmt_ls) == 1){
+    fmt_ls <- fmt_ls[rep(1,n_vars)]
+  }
+
+  names(fmt_ls) <- vars_to_fmt
+
+  structure(
+    list(expression = expression, fmt_ls = fmt_ls, missing = missing),
+    class = c("frmt_combine","frmt")
+  )
+}
 
 
 #' @rdname frmt
@@ -162,6 +197,9 @@ frmt_when <- function(...){
     class = c("frmt_when","frmt")
   )
 }
+
+
+
 
 
 

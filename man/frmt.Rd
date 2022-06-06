@@ -2,27 +2,74 @@
 % Please edit documentation in R/frmt_plans.R
 \name{frmt}
 \alias{frmt}
+\alias{frmt_combine}
 \alias{frmt_when}
-\title{Table Formatting}
+\title{Table Value Formatting}
 \usage{
 frmt(expression, missing = NULL, scientific = NULL, ...)
+
+frmt_combine(expression, ..., missing = NULL)
 
 frmt_when(...)
 }
 \arguments{
-\item{expression}{a string representing the intended format. See details: expression for more
-detailed description.}
+\item{expression}{this is the string representing the intended format. See details: expression for more a detailed description.}
 
-\item{missing}{when a value is missing that is intended to be formatted, what value to place?}
+\item{missing}{when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.}
 
-\item{scientific}{a string representing the intended scientific notation to be appended to the expression}
+\item{scientific}{a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".}
 
-\item{...}{these dots are for future extensions and must be empty.}
+\item{...}{See details: \code{...} for a detailed description.}
 }
 \description{
-frmt provide an abstracted way to approach to define formatting of table
+These functions provide an abstracted way to approach to define formatting of table
 contents. By defining in this way, the formats can be
 layered to be more specific and general cell styling can be done first.
+
+\code{frmt()} is the base definition of a format. This defines spacing, rounding,
+and missing behavior.
+
+\code{frmt_combine()} is used when two or more rows need to be combined into a
+single cell in the table. Each of the rows needs to have a defined \code{frmt()}
+and need to share a label.
+
+\code{frmt_when()} is used when a rows format behavior is dependent on the value itself and is written similarly to \code{\link[dplyr:case_when]{dplyr::case_when()}}.
+The left hand side of the equation is a \code{"TRUE"}for the default case or the right hand side of a boolean expression \code{">50"}.
+}
+\details{
+\subsection{expression}{
+\itemize{
+\item \code{frmt()} All numbers are represented by "x". Any additional character are
+printed as-is. If additional X's present to the left of the decimal point
+than the value, they will be represented as spaces.
+\item \code{frmt_combine()} defines how the parameters will be combined as a
+\code{glue::glue()} statement. Parameters need to be equal to the values in the
+param column and defined in the expression as "{param1} {param2}".
+}
+}
+
+\subsection{missing}{
+\itemize{
+\item \code{frmt()} Value to enter when the value is missing. When NULL, the value
+is "".
+\item \code{frmt_combine()} defines how when all values to be combined are missing.
+When NULL the value is "".
+}
+}
+
+\subsection{...}{
+\itemize{
+\item \code{frmt()} These dots are for future extensions and must be
+empty.
+\item \code{frmt_combine()} accepts named arguments defining the \code{frmt()} to
+be applied to which parameters before being combined.
+\item \code{frmt_when()}accepts a series of equations separated by commas, similar
+to \code{\link[dplyr:case_when]{dplyr::case_when()}}. The left hand side of the equation is a \code{"TRUE"}for the
+default case or the right hand side of a boolean expression \code{">50"}. The
+right hand side of the equation is the \code{frmt()} to apply when the left
+side evaluates to \code{TRUE}.
+}
+}
 }
 \examples{
 
@@ -30,4 +77,28 @@ frmt("XXX \%")
 
 frmt("XX.XXX")
 
+frmt("xx.xx", scientific = "x10^xx")
+
+frmt_combine(
+ "{param1} {param2}",
+ param1 = frmt("XXX \%"),
+ param2 = frmt("XX.XXX")
+)
+
+frmt_when(
+  ">3" ~ frmt("(X.X\%)"),
+  "<=3" ~ frmt("Undetectable")
+  )
+
+frmt_when(
+  "==100"~ frmt(""),
+  "==0"~ "",
+  "TRUE" ~ frmt("(XXX.X\%)"
+  )
+
+}
+\seealso{
+\code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the
+table body, and \code{\link[=frmt_structure]{frmt_structure()}} defines which rows the formats will be applied
+to.
 }
