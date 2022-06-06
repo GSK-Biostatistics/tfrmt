@@ -73,6 +73,7 @@ tfrmt(
     `Pooled Id`,  `Site Id`,
     contains("Placebo"),
     contains("High Dose"),
+    contains("Low Dose"),
     everything()
   )
 ) %>%
