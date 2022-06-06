@@ -33,12 +33,12 @@ The mock we are going to match looks like this:
 ```{r echo = FALSE} 
 tfrmt(
   # specify columns in the data
-  group = vars(rowlbl1,grp),
+  group = c(rowlbl1,grp),
   label = rowlbl2,
   column = column, 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   
   # Specify body plan
   body_plan = body_plan(
@@ -83,12 +83,12 @@ The first thing we are going to do when building out the `tfrmt` is specify all 
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = vars(rowlbl1,grp),
+  group = c(rowlbl1,grp),
   label = rowlbl2,
   column = column, 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2)) %>% 
+  sorting_cols = c(ord1, ord2)) %>% 
   print_to_gt(demog_data) %>% 
   tab_options(
     container.width = 900
@@ -103,12 +103,12 @@ To start, we are going to use all the rows that are "n (%)" as the default. This
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = vars(rowlbl1,grp),
+  group = c(rowlbl1,grp),
   label = rowlbl2,
   column = column, 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} ({pct} %)", 
@@ -131,12 +131,12 @@ Now the numbers looks all correct, we can drop the order columns and the `grp` c
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = vars(rowlbl1,grp),
+  group = c(rowlbl1,grp),
   label = rowlbl2,
   column = column, 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
@@ -173,12 +173,12 @@ This means that we can use a `row_grp_plan` with just a `".default"` as the grou
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = vars(rowlbl1,grp),
+  group = c(rowlbl1,grp),
   label = rowlbl2,
   column = column, 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
@@ -280,7 +280,7 @@ tfrmt(
   column = c(col2, col1), 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2)) %>% 
+  sorting_cols = c(ord1, ord2)) %>% 
   print_to_gt(ae_data2) %>% 
   tab_options(
     container.width = 1000
@@ -294,10 +294,10 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = vars(col2, col1), 
+  column = c(col2, col1), 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -329,10 +329,10 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = vars(col2, col1), 
+  column = c(col2, col1), 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -367,10 +367,10 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = vars(col2, col1), 
+  column = c(col2, col1), 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -412,10 +412,10 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = vars(col2, col1), 
+  column = c(col2, col1), 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -458,16 +458,16 @@ For better control over our column labels, we can provide a single column in lie
 
 ```{r }
 ae_data3 <- ae_data2 %>% 
-  unite("col", c(col2, col1), sep = "-")
+  unite("combined_col", c(col2, col1), sep = "-")
 
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = vars(col), 
+  column = combined_col, 
   param = param,
   values = value,
-  sorting_cols = vars(ord1, ord2),
+  sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
