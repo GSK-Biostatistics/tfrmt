@@ -251,7 +251,7 @@ tfrmt(
 ```
 
 
-In order to change the order of spanning groups, we will need use `contains()`. This can make change the order of the spanning headers relatively easy, but if we can't change the order of columns with the same name. 
+In order to change the order of spanning groups, we will need use `contains()`. This can make change the order of the spanning headers relatively easy, but because we have lost some control we have to be careful of the order we put things into `col_plan()`. So lets make a few changes to the tables above. If we want to move the "col 4" column to the beginning and also reorder "col1" and "col2" we are going to need to think about the order we put that in.  Here because everything has a unique name we can just select "col 4" and then "col2" and finally all the other columns. But, when there are repeating names in the lowest level, it is best to start with the lowest level and move up, that ways if there are any contradictions the latest will be used. For an example of this see the Unusal Tables Vingette. 
 ```{r}
 tfrmt(
     group = group,
@@ -266,6 +266,7 @@ tfrmt(
       group, 
       label, 
       contains("col 4"),
+      contains("col2"),
       starts_with("col"),
       new_col_3 = mycol3,  
       -mycol5            
