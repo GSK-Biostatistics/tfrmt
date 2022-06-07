@@ -108,7 +108,9 @@ tfrmt(
 
 ## Column spanners
 
- The `col_plan` accepts a combination of column names and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to add column spanners. These are placed strategically in the `col_plan` to inform `tlang` of the hierarchy of spanners vs. columns.
+ The `col_plan` accepts a combination of tidyselect expressions, column names, and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to add column spanners. These are placed strategically in the `col_plan` to inform `tlang` of the hierarchy of spanners and columns.
+ 
+A `span_structure` is constructed from a label which defines the spanner text, and a combination of tidyselect expressions and column names.
  
 Let's try putting a spanner over the columns starting with "col":
 
