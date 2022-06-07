@@ -62,6 +62,8 @@ apply_col_align <- function(col, align){
 #' @importFrom rlang as_name
 #' @importFrom tibble as_tibble_row
 #' @importFrom forcats fct_inorder
+#'
+#' @noRd
 apply_col_align_plan <- function(.data, align_plan, column, value){
 
   last_col <- column[[length(column)]]

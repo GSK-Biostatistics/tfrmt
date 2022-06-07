@@ -5,13 +5,14 @@
 #' @param n_cols Number of columns in the output table (not including group/label variables)
 #'
 #' @return tibble containing mock data
-#' @export
 #'
 #' @importFrom tidyr crossing unnest expand
 #' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble across cur_column
 #' @importFrom purrr map map_dfr map_chr
 #' @importFrom rlang as_name
 #' @importFrom tidyselect everything all_of
+#'
+#' @noRd
 make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
   body_plan <- tfrmt$body_plan
   grp_vars <- tfrmt$group %>% map_chr(as_name)

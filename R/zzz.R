@@ -1,4 +1,4 @@
-globalVariables(c(".", ".data"))
+globalVariables(c(".", ".data", ".rename_col", ".original_col","df_names","new_name_in_df"))
 
 
 ## Shared variables

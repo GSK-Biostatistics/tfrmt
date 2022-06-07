@@ -1,4 +1,22 @@
 url: https://gsk-biostatistics.github.io/tlang/
 template:
   bootstrap: 5
-
+articles:
+- title: Table Components
+  navbar: Table Components
+  contents:
+  - building_blocks
+  - body_plan
+  - row_grp_plan
+  - col_plan
+  - col_align_plan
+- title: Building Tables
+  navbar: Building Tables
+  contents:
+  - examples
+  - layer
+  - mocks
+- title:
+  navbar: More
+  contents:
+  - faq

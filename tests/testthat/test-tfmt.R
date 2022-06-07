@@ -36,6 +36,27 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
   expect_equal( t_frmt$column, vars(column))
 })
 
+test_that("basic tfrmt - selecting group/label/param/values/column - quo into var entries", {
+
+  t_frmt <- tfrmt(
+    title = "Table Title",
+    group = quo(row_label1),
+    label = quo(row_label2),
+    param = quo(param),
+    values = quo(values),
+    column = quo(column)
+  )
+
+  expect_s3_class(t_frmt,"tfrmt")
+
+  expect_equal( t_frmt$title, "Table Title")
+  expect_equal( t_frmt$group, vars(row_label1))
+  expect_equal( t_frmt$label, quo(row_label2))
+  expect_equal( t_frmt$param, quo(param))
+  expect_equal( t_frmt$values, quo(values))
+  expect_equal( t_frmt$column, vars(column))
+})
+
 test_that("basic tfrmt - selecting group/label/param/values/column - char", {
 
   t_frmt <- tfrmt(
@@ -367,5 +388,43 @@ test_that("layering tfrmt - Mixing var/quo",{
   expect_equal( t_frmt_layered$subtitle, "Table Subtitle")
   expect_equal( t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE )
   expect_equal( t_frmt_layered$label, quo(label3), ignore_attr = TRUE )
+
+})
+
+test_that("basic tfrmt - ... args",{
+
+  ## arg is not to actual arg
+  message_res <- capture_messages(
+    tfrmt(
+      totally_fake_arg = "my_col"
+    )
+  )
+  expect_equal(
+    message_res,
+    "Argument 'totally_fake_arg' passed to tfrmt is not a recognized argument."
+  )
+
+  ## arg is spelled close to actual arg
+  message_res <- capture_messages(
+    tfrmt(
+      colmn = "my_col",
+    )
+  )
+  expect_equal(
+    message_res,
+   "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?"
+  )
+
+  message_res <- capture_messages(
+    tfrmt(
+      colmn = "my_col",
+      lalbl = "label"
+    )
+  )
+  expect_equal(
+    message_res,
+    c("Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?",
+      "Argument 'lalbl' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `label`?")
+  )
 
 })

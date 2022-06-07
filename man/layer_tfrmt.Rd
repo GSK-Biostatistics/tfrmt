@@ -15,7 +15,8 @@ layer_tfrmt(x, y, ..., join_body_plans = TRUE)
 }
 \description{
 Provide utility for layering tfrmt objects together. If both tmft's have
-values, it will preferentially choose the second tfrmt by default.
+values, it will preferentially choose the second tfrmt by default. This is an
+alternative to piping together tfrmts
 }
 \examples{
 

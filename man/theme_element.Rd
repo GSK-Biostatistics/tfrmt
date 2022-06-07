@@ -2,24 +2,24 @@
 % Please edit documentation in R/theme_element.R
 \name{element_align}
 \alias{element_align}
-\alias{is_element_align}
 \title{Element Align}
 \usage{
 element_align(align = "left", col = vars())
-
-is_element_align(x)
 }
 \arguments{
-\item{align}{Alignment to be applied to column. Acceptable values: "left" for left alignment, "right" for right alignment",
-or supply a vector of character(s) to align on. For the case of character alignment, if more
-than one character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.}
+\item{align}{Alignment to be applied to column. Acceptable values: "left" for
+left alignment, "right" for right alignment", or supply a vector of
+character(s) to align on. For the case of character alignment, if more than
+one character is provided, alignment will be based on the first occurrence
+of any of the characters. For alignment based on white space, leading white
+spaces will be ignored.}
 
 \item{col}{Variable to align on}
-
-\item{x}{Object to check}
 }
 \description{
 Element Align
-
-Check if input is an element_align object
+}
+\seealso{
+\code{\link[=col_align_plan]{col_align_plan()}} for more information on how to combine
+element_align()'s together to form a plan.
 }
