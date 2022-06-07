@@ -369,7 +369,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
 test_that("Build simple tfrmt with multiple columns and with renaming duplicated colnames across spans",{
 
-  multi_col_df <- tribble(
+  multi_col_df <- tibble::tribble(
     ~label, ~col0, ~col1, ~col2, ~param, ~value,
     "A",    "A_",  "A",    "AA",  "p1", 123,
     "A",    "A_",  "A",    "AB",  "p1", 12,
@@ -449,6 +449,161 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
     })
   })
 
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
+
+test_that("Build simple tfrmt with spans with child spans that are and are not spanned",{
+
+  dat <- tibble::tribble(
+    ~group,      ~label,     ~top_span, ~child_span,  ~my_col,    ~parm, ~val,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col1",  "value",    1,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col2",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol3",  "value",    1,
+    "g1", "rowlabel1", "column cols",          NA,   "col4",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol5",  "value",    1,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col1",  "value",    2,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col2",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol3",  "value",    2,
+    "g1", "rowlabel2", "column cols",          NA,   "col4",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol5",  "value",    2,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col1",  "value",    3,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col2",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol3",  "value",    3,
+    "g2", "rowlabel3", "column cols",          NA,   "col4",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol5",  "value",    3
+  )
+
+  tfrmt_with_parial_child_span <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = my_col,
+    col_plan = col_plan(
+      group,
+      label,
+      span_structure(
+        "column cols",
+        span_structure(
+          "cols 1,2",
+          col1, col2
+        ),
+        col4
+      ),
+      span_structure(
+        "my cols",
+        new_col_3 = mycol3,
+        mycol5
+      ))
+  )
+
+  tfrmt_multiple_cols <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = c(top_span, child_span, my_col),
+    col_plan = col_plan(
+      group,
+      label,
+      col1,
+      col2,
+      col4,
+      new_col_3 = mycol3,
+      mycol5
+    )
+  )
+
+
+  suppressMessages({
+    suppressWarnings({
+      processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
+      processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
+    })
+  })
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
+
+test_that("Build simple tfrmt with spans with child spans that are and are not spanned - removal",{
+
+  dat <- tibble::tribble(
+    ~group,      ~label,     ~top_span, ~child_span,  ~my_col,    ~parm, ~val,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col1",  "value",    1,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col2",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol3",  "value",    1,
+    "g1", "rowlabel1", "column cols",          NA,   "col4",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol5",  "value",    1,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col1",  "value",    2,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col2",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol3",  "value",    2,
+    "g1", "rowlabel2", "column cols",          NA,   "col4",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol5",  "value",    2,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col1",  "value",    3,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col2",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol3",  "value",    3,
+    "g2", "rowlabel3", "column cols",          NA,   "col4",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol5",  "value",    3
+  )
+
+  tfrmt_with_parial_child_span <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = my_col,
+    col_plan = col_plan(
+      group,
+      label,
+      span_structure(
+        "column cols",
+        span_structure(
+          "cols 1,2",
+          col1, col2
+        ),
+        col4
+      ),
+      span_structure(
+        "my cols",
+        new_col_3 = mycol3
+      ),
+      -mycol5
+      )
+  )
+
+  tfrmt_multiple_cols <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = c(top_span, child_span, my_col),
+    col_plan = col_plan(
+      group,
+      label,
+      col1,
+      col2,
+      col4,
+      new_col_3 = mycol3,
+      -mycol5
+    )
+  )
+
+
+  suppressMessages({
+    suppressWarnings({
+      processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
+      processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
+    })
+  })
 
   expect_equal(
     processed_gt,
