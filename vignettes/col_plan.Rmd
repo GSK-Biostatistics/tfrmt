@@ -26,7 +26,7 @@ The specification and behavior of the `col_plan` is dependent on the number of c
 | col_plan options:        | 1 column variable | >1 column variable                |
 | ------------------------ | ----------------- | --------------------------------- |
 | **Rename columns**       | Yes               | Yes (lowest level col only)       |
-| **Reorder columns**      | Yes               | No                                |
+| **Reorder columns**      | Yes               | Yes                               |
 | **Add spanning labels**  | Yes               | No (provided by upper level cols) |
 
 As shown in the table, the `col_plan` is most powerful in conjunction with the use of a single `column` variable. However, in many cases, such as when a user performs the analysis by treatment group, these "by" variables can essentially be re-purposed as data-driven spanners in the form of upper level `column` variables. 
@@ -200,9 +200,7 @@ tfrmt(
 
 # Option 2: >1 `column` variable
 
-Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. With multiple `column` variables, specifying column ordering or column spanners in the `col_plan` is a bit trickier. `tlang` will display the columns as they appear in the data. Similarly, higher level variable values will be displayed as-is to form the spanning labels. As such, there is a higher importance for preparing the analysis results data for display. 
-
-However, the user can still remove and rename values from the lowest level `column` variable. 
+Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable. With multiple `column` variables, however, specifying column ordering in the `col_plan` is a bit trickier. By default, `tlang` will display the columns as they appear in the data but these can be customized in the `col_plan`. The main limitation with >1 `column` variable is the inability to specify column spanners in the `col_plan`; the spanning labels will be created using the higher level `column` variable values, which will be displayed as-is. As such, there is a higher importance for preparing the analysis results data for display. 
 
 Let's consider an example dataset with multiple `column` variables:
 
@@ -251,7 +249,9 @@ tfrmt(
 ```
 
 
-In order to change the order of spanning groups, we will need use `contains()`. This can make change the order of the spanning headers relatively easy, but because we have lost some control we have to be careful of the order we put things into `col_plan()`. So lets make a few changes to the tables above. If we want to move the "col 4" column to the beginning and also reorder "col1" and "col2" we are going to need to think about the order we put that in.  Here because everything has a unique name we can just select "col 4" and then "col2" and finally all the other columns. But, when there are repeating names in the lowest level, it is best to start with the lowest level and move up, that ways if there are any contradictions the latest will be used. For an example of this see the Unusal Tables Vingette. 
+When there are multiple `column` variables provided, `tlang` concatenates them behind the scenes using a special delimiter. Therefore, the underlying column names in the final table are a combination of the spanner(s) and the lowest level column label. In order to change the order of spanning groups, we may use`contains()` to reference any portion of those names. 
+
+Reordering with multiple `column` variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. Let's suppose we want to move the "col 4" column to the beginning and also reorder "col1" and "col2". To achieve this, we can just select "col 4" and then "col2" and finally all the other columns. 
 ```{r}
 tfrmt(
     group = group,
@@ -275,8 +275,19 @@ tfrmt(
   print_to_gt(dat)
 ```
 
+In many cases, we may not have uniqueness in the lower level column name. Take the following example:
 
+```{r}
+dat <- tribble(
+    ~group,     ~label,     ~span ,  ~my_col,    ~parm,   ~val,
+    "g1", "rowlabel1",  "Treament", "mean"   ,  "mean",    1.234,
+    "g1", "rowlabel1",  "Treament", "sd"     ,  "sd"  ,    2.123,
+    "g1", "rowlabel2",  "Placebo" , "mean"   ,  "mean",    2.843,
+    "g1", "rowlabel2",  "Placebo" , "sd"     ,  "sd"  ,    1.435
+  )
+```
 
+Notice that the columns `mean` and `sd` are repeated for each of the treatment groups, which are differentiated by the spanners (`span`). We are still able to modify the ordering, but we have lost a bit of control so we have to be careful of the order we put things into `col_plan`. When there are repeating names in the lowest level, it is best to start with the lowest level `column` variable values and move up the hierarchy, that ways if there are any contradictions, the latest will be used. For an example of this, see the Unusual Tables Vignette. 
 
 # Summary
 
