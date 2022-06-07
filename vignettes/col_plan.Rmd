@@ -138,7 +138,7 @@ tfrmt(
   print_to_gt(dat)
 ```
 
-We can also do any number of hierarchical spanners:
+A `span_structure` can also contain one or more child `span_structure` entries, defining a hierarchy of spanners:
 
 ```{r}
 tfrmt(
