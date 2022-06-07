@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(tlang)
 library(tibble)
 library(dplyr)
+library(tidyr)
 ```
 
 
