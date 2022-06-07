@@ -18,5 +18,19 @@ This can be named to also specify the parameter value}
 }
 \description{
 Function needed to create a frmt_structure object, which is a building block
-of \code{\link[=body_plan]{body_plan()}}
+of \code{\link[=body_plan]{body_plan()}}. This specifies the rows the format will be applied to.
+}
+\examples{
+
+sample_structure <- frmt_structure(
+          group_val = c("group1"),
+          label_val = ".default",
+          frmt("XXX")
+        )
+
+}
+\seealso{
+\code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the
+table body, and \code{\link[=frmt]{frmt()}}, \code{\link[=frmt_combine]{frmt_combine()}}, and \code{\link[=frmt_when]{frmt_when()}} define the
+format semantics.
 }
