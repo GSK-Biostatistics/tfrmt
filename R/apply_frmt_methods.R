@@ -86,7 +86,8 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
       # vals rounded and trimmed
       rounded_vals <- format(
         round(vals, dig),
-        decimal.mark = "."
+        decimal.mark = ".",
+        nsmall = dig
         ) %>%
         str_trim()
 

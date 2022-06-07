@@ -120,6 +120,66 @@ test_that("applying frmt - scientific", {
 
 })
 
+test_that("applying frmt - preserves decimal places after rounding", {
+
+
+  sample_df <- data.frame(
+    x = c(10, 12.3647, 3, 100, 167.299)
+  )
+
+  sample_frmt_1dec <- frmt(expression = "xxx.x")
+  sample_frmt_2dec <- frmt(expression = "xxx.xx")
+  sample_frmt_10x <- frmt(expression = "xxx.x", scientific = " x10^x")
+
+  sample_df_frmted_1dec <- apply_frmt.frmt(
+    .data = sample_df,
+    values = sym("x"),
+    frmt_def = sample_frmt_1dec
+  )
+
+  sample_df_frmted_2dec <- apply_frmt.frmt(
+    .data = sample_df,
+    values = sym("x"),
+    frmt_def = sample_frmt_2dec
+  )
+
+  sample_df_frmted_10x <- apply_frmt.frmt(
+    .data = sample_df,
+    values = sym("x"),
+    frmt_def = sample_frmt_10x
+  )
+
+
+  expect_equal(
+    sample_df_frmted_1dec$x,
+    c(" 10.0",
+      " 12.4",
+      "  3.0",
+      "100.0",
+      "167.3")
+  )
+
+  expect_equal(
+    sample_df_frmted_2dec$x,
+    c(" 10.00",
+      " 12.36",
+      "  3.00",
+      "100.00",
+      "167.30")
+  )
+
+  expect_equal(
+    sample_df_frmted_10x$x,
+    c("  1.0 x10^1",
+      "  1.2 x10^1",
+      "  3.0 x10^0",
+      "  1.0 x10^2",
+      "  1.7 x10^2")
+  )
+
+
+})
+
 test_that("applying frmt_combine - 2x", {
 
   sample_df <- tibble(
@@ -274,13 +334,13 @@ test_that("applying frmt_combine - 3x", {
       lab = paste("lab",1:5),
       col = "col",
       y = "A",
-      x = c("1234.6 (1.2%) - *  10", "2345.7 (2.3%) - * 111", "3456.8 (3.5%) - *1112", "4567.9 (4.6%) - *  13", "5678.9 (5.7%) - * 114")
+      x = c("1234.6 (1.2%) - *  10.0", "2345.7 (2.3%) - * 111.0", "3456.8 (3.5%) - *1112.0", "4567.9 (4.6%) - *  13.0", "5678.9 (5.7%) - * 114.0")
     )
   )
 
 })
 
-test_that("appling frmt_when", {
+test_that("applying frmt_when", {
   #Test frmt_when alone
   sample_df <- tibble(
     group = "group",
