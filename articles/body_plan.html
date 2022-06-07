@@ -173,7 +173,7 @@
 <p>The user may provide as many <code>frmt_structure</code> objects as needed. It is important to note that if there are overlapping <code>frmt_structure</code> objects, the last one specified will supercede the previous. In our CDISC demographics table example, the following <code>frmt_structures</code> are needed to cover all values:</p>
 <pre><code><span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
     <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,
-                   <span class="fu"><a href="../reference/frmt_combine.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{n} {pct}"</span>,
+                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{n} {pct}"</span>,
                                 n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,
                                 pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,
                                                 <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,

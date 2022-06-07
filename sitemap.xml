@@ -46,22 +46,7 @@
     <loc>https://gsk-biostatistics.github.io/tlang/reference/ae_data.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/apply_col_align_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/apply_frmt.frmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/apply_frmt.frmt_combine.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/apply_frmt.frmt_when.html</loc>
-  </url>
-  <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/apply_frmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/apply_grp_block.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/body_plan.html</loc>
@@ -85,9 +70,6 @@
     <loc>https://gsk-biostatistics.github.io/tlang/reference/frmt.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/frmt_combine.html</loc>
-  </url>
-  <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/frmt_structure.html</loc>
   </url>
   <url>
@@ -98,9 +80,6 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/layer_tfrmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tlang/reference/make_mock_data.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/pipe.html</loc>
