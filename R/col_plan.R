@@ -279,7 +279,7 @@ select_col_plan <- function(data, tfrmt){
           new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
         ) %>%
         mutate(
-          new_name_quo = purrr::map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y){
+          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y){
             x_call <- try(as.list(parse(text = x))[[1]], silent = TRUE)
             if(!inherits(x_call,"try-failure") & is_valid_tidyselect_call(x_call)){
               x_text <- x
@@ -307,7 +307,7 @@ select_col_plan <- function(data, tfrmt){
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
           dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dot_chr),
-          dot2_names = purrr::pmap_chr(data.frame(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
+          dot2_names = pmap_chr(data.frame(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
             if(!identical(x, y) & !z){
               x
             }else{
