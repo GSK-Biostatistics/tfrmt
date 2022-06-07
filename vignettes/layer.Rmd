@@ -16,11 +16,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(tlang)
+library(magrittr)
 ```
 
 A core design element of `tlang` was to offer the ability to layer and build template table formats that could be shared, improved, and eventually customized for a specific table. The idea being that organizations could develop a standard `tfrmt` object that would serve as the base format for the rest of the tables, and make it so programmers could focus on setting up the data as opposed to formatting of the table. 
 
-There are two ways that `tfrmt` objects may be layered. The preferred method is through the first argument of `tfrmt` - `tfrmt_obj`. The second, but perhaps more explicit method is using the `layer_tfrmt` method. We will go through their application below.  
+There are two ways that `tfrmt` objects may be layered. The preferred method is through the first argument of `tfrmt` - `tfrmt_obj`. The second, but perhaps more explicit method is using the `layer_tfrmt` function. We will go through their application below.  
 
 ## Creating a template
 
@@ -37,19 +38,19 @@ Next, we can apply standard to our organizations AE ARD format to ensure that na
   - `AEBODYSYS` defines the body systems and overall grouping of the data.
   - `AETERM` defines the labels to display in the table.
   - `value` defines the values to present in the table.
-  - `treatment` defines the treatments for each value.
+  - `treatment` defines the treatments and column for each value.
   - `param` is the column that describes the params of the `value` column. "AEs" indicates that the number in `value` represents the total counts, "n" represents the count for the specific AE, "pct" is the percent of the treatment population, and finally "pval" is the p-value.
   
 With this information we can construct a template AE `tfrmt`:
   
-```{r eval=FALSE}
+```{r}
 
 ae_tfrmt_template <- tfrmt(
-  group = AEBODSYS,
-  label = AETERM,
-  param = param,
-  column = treatment,
-  value = value,
+    group = AEBODSYS,
+    label = AETERM,
+    param = param,
+    column = treatment,
+    value = value,
   body_plan = body_plan(
     ## All entries where the param column is `AEs` (representing total counts)
     frmt_structure(
@@ -75,7 +76,7 @@ ae_tfrmt_template <- tfrmt(
       ),
     
     ## All entries where param column is `pval`, format conditionally.
-    ## When the pvalue is missing, replace the NA with "--".
+    ## When the value is missing, replace the NA with "--".
     frmt_structure(
        group_val = ".default", 
        label_val = ".default",
@@ -91,27 +92,90 @@ ae_tfrmt_template <- tfrmt(
 
 ```
 
-## Piping
+## Piping - two layer tfrmts
 
+Now that we have a template to work off of, we can create a `tfrmt` specifically for the table we are creating for our study. This can be done a few ways. The first method that can be used is to pipe another tfrmt. The first argument of `trfmt` is "tfrmt_obj". This allows for `tfrmt` to be layered directly using a pipe. 
 
-
-
-
-## Explicit Layering
-
-
-
-
-## Multi-layer Examples
-
-The previous example of a template tfrmt is very powerful in that it allows components to be reused across multiple projects and share the learning from prior work. However, the downside is that now this must be the "top level" `tfrmt`, as `tfrmt`'s may be layered off of this template, this must be at the beginning of the layering. 
-
-This is where we turn to using functions to define a template. By doing this we can build up layers from a basic organizations formatting, to a type of table, and then finally the specific table we are working on.
+We will create the new tfrmt with specific information that we know we have for this study, such as columns indicating order (ord1, ord2), we want to indent the row-groups as opposed to setting them into different columns, and how we want to align the columns
 
 ```{r}
 
+study_ae_tfrmt <- ae_tfrmt_template %>% 
+  tfrmt(
+    title = "Adverse Events for CDISC Pilot Study",
+    subtitle = "Data subset to AEs with >10% prevalence in the High Dose group",
+    
+    ## Sorting columns of rows
+    sorting_cols = c(ord1, ord2),
+    
+    ## Nest Preferred terms under SOC
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+    
+    ## alisgnment of columns
+    col_align = col_align_plan(
+      element_align(align = c(".",","," "), col = vars(starts_with("p_")))
+    ),
+    
+    ## remove order columns from final table
+    col_plan = col_plan(
+      -ord1,-ord2,
+      span_structure(
+        "Xanomeline High Dose (N=84)",
+        `n (%)` = `Xanomeline High Dose-n_pct` ,
+        `[AEs]` = `Xanomeline High Dose-AEs`
+      ),
+      span_structure(
+        "Xanomeline Low Dose (N=84)",
+        `n (%)` = `Xanomeline Low Dose-n_pct` ,
+        `[AEs]` = `Xanomeline Low Dose-AEs`
+      ),
+      span_structure("Placebo (N=86)",
+                     `n (%)` = `Placebo-n_pct` ,
+                     `[AEs]` = `Placebo-AEs`),
+      span_structure(
+        "Fisher's Exact p-values",
+        `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
+        `Placebo vs. High Dose` = `fisher_pval-p_high`
+      )
+    )
+  )
 
-ae_tfrmt_template <- function(tfrmt_obj = NULL){
+```
+
+Now that we have the study specific `tfrmt`, we can apply it to our data:
+
+```{r}
+
+## filter to keep only AEs with >10% prevalence in the High Dose group
+ae_data2 <- ae_data %>% 
+  group_by(AEBODSYS, AETERM) %>% 
+  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
+  ungroup %>% 
+  filter(pct_high >10) %>% 
+  select(-pct_high) %>% 
+  unite("treatment", c(col2, col1), sep = "-")
+
+study_ae_tfrmt %>% 
+  print_to_gt(ae_data2) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```
+
+## Multi-layer Example
+
+The previous example of a template tfrmt is very powerful in that it allows components to be reused across multiple projects and share the learning from prior work. However, the downside is that now this must be the "top level" `tfrmt`, as `tfrmt`'s may be layered off of this template, this must be at the beginning of the layering. 
+
+This is where we turn to using functions to define a template. By doing this we can build up layers from a basic organizations formatting, to a type of table, and then finally the specific table we are working on. 
+
+`tlang` offers the function `layer_tfrmt()`, which provides the ability for layering `tfrmt` together. The first two arguments are the `tfrmt` objects to be layered. By default the body_plans of the tfrmt are joined together.
+
+See below for an example of creating a template based on a function for layering `tfrmt` together. In this scenario the base AE template only has body_plan values for handling total counts, case counts, and percents, but not pvalues. We create another template for pvalues, and then finally layer it with the study specific tfrmt.
+
+```{r}
+
+ae_base_tfrmt_template <- function(tfrmt_obj = NULL){
   
   ae_layer <- tfrmt(
     group = AEBODSYS,
@@ -141,10 +205,25 @@ ae_tfrmt_template <- function(tfrmt_obj = NULL){
             TRUE ~ frmt("(xx.x %)")
             )
           )
-        ),
-      
+        )
+    )
+  )
+  
+  if(!is.null(tfrmt_obj)){
+    ae_layer <- layer_tfrmt(tfrmt_obj, ae_layer)
+  }
+  
+  ae_layer
+  
+}
+
+
+ae_pval_tfrmt_template <- function(tfrmt_obj){
+  
+  ae_pval_template <- tfrmt(
+    body_plan = body_plan(
       ## All entries where param column is `pval`, format conditionally.
-      ## When the pvalue is missing, replace the NA with "--".
+      ## When the value is missing, replace the NA with "--".
       frmt_structure(
          group_val = ".default", 
          label_val = ".default",
@@ -158,14 +237,80 @@ ae_tfrmt_template <- function(tfrmt_obj = NULL){
   )
   
   if(!is.null(tfrmt_obj)){
-    ae_layer <- layer_tfrmt(tfrmt_obj, ae_layer)
+    ae_pval_template <- layer_tfrmt(tfrmt_obj, ae_pval_template)
   }
   
-  ae_layer
+  ae_pval_template
   
 }
+
+```
+
+Now we can apply multiple templates cleanly within a pipe:
+
+```{r}
+
+study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>% 
+  ae_pval_tfrmt_template() %>% 
+  tfrmt(
+    title = "Adverse Events for CDISC Pilot Study",
+    subtitle = "Data subset to AEs with >10% prevalence in the High Dose group",
+    
+    ## Sorting columns of rows
+    sorting_cols = c(ord1, ord2),
+    
+    ## Nest Preferred terms under SOC
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+    
+    ## alisgnment of columns
+    col_align = col_align_plan(
+      element_align(align = c(".",","," "), col = vars(starts_with("p_")))
+    ),
+    
+    ## remove order columns from final table
+    col_plan = col_plan(
+      -ord1,-ord2,
+      span_structure(
+        "Xanomeline High Dose (N=84)",
+        `n (%)` = `Xanomeline High Dose-n_pct` ,
+        `[AEs]` = `Xanomeline High Dose-AEs`
+      ),
+      span_structure(
+        "Xanomeline Low Dose (N=84)",
+        `n (%)` = `Xanomeline Low Dose-n_pct` ,
+        `[AEs]` = `Xanomeline Low Dose-AEs`
+      ),
+      span_structure("Placebo (N=86)",
+                     `n (%)` = `Placebo-n_pct` ,
+                     `[AEs]` = `Placebo-AEs`),
+      span_structure(
+        "Fisher's Exact p-values",
+        `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
+        `Placebo vs. High Dose` = `fisher_pval-p_high`
+      )
+    )
+  )
 
 
 ```
 
+See how this results in the same table as above:
 
+```{r}
+
+## filter to keep only AEs with >10% prevalence in the High Dose group
+ae_data2 <- ae_data %>% 
+  group_by(AEBODSYS, AETERM) %>% 
+  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
+  ungroup %>% 
+  filter(pct_high >10) %>% 
+  select(-pct_high) %>% 
+  unite("treatment", c(col2, col1), sep = "-")
+
+study_ae_tfrmt_multi_layer %>% 
+  print_to_gt(ae_data2) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
+```

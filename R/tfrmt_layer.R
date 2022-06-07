@@ -84,7 +84,7 @@ layer_tfrmt_arg.label<- function(x, y, arg_name, ...){
 
 layer_tfrmt_arg.param <- layer_tfrmt_arg.label
 layer_tfrmt_arg.values <- layer_tfrmt_arg.label
-layer_tfrmt_arg.column <- layer_tfrmt_arg.label
+layer_tfrmt_arg.column <- layer_tfrmt_arg.group
 
 
 layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
