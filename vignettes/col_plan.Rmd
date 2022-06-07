@@ -200,7 +200,7 @@ tfrmt(
 
 # Option 2: >1 `column` variable
 
-Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. With multiple `column` variables, the user may NOT specify column ordering or column spanners in the `col_plan`. `tlang` will display the columns as they appear in the data. Similarly, higher level variable values will be displayed as-is to form the spanning labels. As such, there is a higher importance for preparing the analysis results data for display. 
+Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. With multiple `column` variables, specifying column ordering or column spanners in the `col_plan` is a bit trickier. `tlang` will display the columns as they appear in the data. Similarly, higher level variable values will be displayed as-is to form the spanning labels. As such, there is a higher importance for preparing the analysis results data for display. 
 
 However, the user can still remove and rename values from the lowest level `column` variable. 
 
@@ -249,6 +249,33 @@ tfrmt(
   ) %>% 
   print_to_gt(dat)
 ```
+
+
+In order to change the order of spanning groups, we will need use `contains()`. This can make change the order of the spanning headers relatively easy, but if we can't change the order of columns with the same name. 
+```{r}
+tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    col_plan = col_plan(
+      group, 
+      label, 
+      contains("col 4"),
+      starts_with("col"),
+      new_col_3 = mycol3,  
+      -mycol5            
+    )
+  ) %>% 
+  print_to_gt(dat)
+```
+
+
+
 
 # Summary
 
