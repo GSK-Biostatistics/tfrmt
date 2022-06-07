@@ -17,3 +17,155 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tlang)
 ```
+
+A core design element of `tlang` was to offer the ability to layer and build template table formats that could be shared, improved, and eventually customized for a specific table. The idea being that organizations could develop a standard `tfrmt` object that would serve as the base format for the rest of the tables, and make it so programmers could focus on setting up the data as opposed to formatting of the table. 
+
+There are two ways that `tfrmt` objects may be layered. The preferred method is through the first argument of `tfrmt` - `tfrmt_obj`. The second, but perhaps more explicit method is using the `layer_tfrmt` method. We will go through their application below.  
+
+## Creating a template
+
+Before we show how to layer a tfrmt, we need to create a template tfrmt. A template is intended to provide the basics values that an organization would expect to be repeated across multiple tables. For example, in a table such as an Adverse Events table, there are some standards that can be expected that allows us to constructing a basic `tfrmt`:
+
+First, we know that the cells should be consistently formatted as follows, which allows us to create a body_plan:
+
+  - Total counts to be whole numbers 
+  - Cells under each treatment to be a combination of a count and percent of that population. When percent is 100 or zero, value should be blank.
+  - p-values to be formatted where: >.99 is displayed as ">0.99", <0.001 is displayed as "<0.001", and any values between should be displayed to three decimal places. Missing p-values should be replaced with "--".
+  
+Next, we can apply standard to our organizations AE ARD format to ensure that names of are set consistently:
+
+  - `AEBODYSYS` defines the body systems and overall grouping of the data.
+  - `AETERM` defines the labels to display in the table.
+  - `value` defines the values to present in the table.
+  - `treatment` defines the treatments for each value.
+  - `param` is the column that describes the params of the `value` column. "AEs" indicates that the number in `value` represents the total counts, "n" represents the count for the specific AE, "pct" is the percent of the treatment population, and finally "pval" is the p-value.
+  
+With this information we can construct a template AE `tfrmt`:
+  
+```{r eval=FALSE}
+
+ae_tfrmt_template <- tfrmt(
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = treatment,
+  value = value,
+  body_plan = body_plan(
+    ## All entries where the param column is `AEs` (representing total counts)
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      AEs = frmt("[XXX]")
+      ),
+    
+    ## Combine entries where param column is `n` and `pct` to create a cell for
+    ## that population
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine(
+        "{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+          )
+        )
+      ),
+    
+    ## All entries where param column is `pval`, format conditionally.
+    ## When the pvalue is missing, replace the NA with "--".
+    frmt_structure(
+       group_val = ".default", 
+       label_val = ".default",
+       pval = frmt_when(
+         ">0.99" ~ ">0.99",
+         "<0.001" ~ "<0.001",
+         TRUE ~ frmt("x.xxx", missing = "--")
+         )
+    )
+  )
+)
+
+
+```
+
+## Piping
+
+
+
+
+
+## Explicit Layering
+
+
+
+
+## Multi-layer Examples
+
+The previous example of a template tfrmt is very powerful in that it allows components to be reused across multiple projects and share the learning from prior work. However, the downside is that now this must be the "top level" `tfrmt`, as `tfrmt`'s may be layered off of this template, this must be at the beginning of the layering. 
+
+This is where we turn to using functions to define a template. By doing this we can build up layers from a basic organizations formatting, to a type of table, and then finally the specific table we are working on.
+
+```{r}
+
+
+ae_tfrmt_template <- function(tfrmt_obj = NULL){
+  
+  ae_layer <- tfrmt(
+    group = AEBODSYS,
+    label = AETERM,
+    param = param,
+    column = treatment,
+    value = value,
+    body_plan = body_plan(
+      ## All entries where the param column is `AEs` (representing total counts)
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        AEs = frmt("[XXX]")
+        ),
+      
+      ## Combine entries where param column is `n` and `pct` to create a cell for
+      ## that population
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{n} {pct}",
+          n = frmt("XXX"),
+          pct = frmt_when(
+            "==100" ~ "",
+            "==0" ~ "",
+            TRUE ~ frmt("(xx.x %)")
+            )
+          )
+        ),
+      
+      ## All entries where param column is `pval`, format conditionally.
+      ## When the pvalue is missing, replace the NA with "--".
+      frmt_structure(
+         group_val = ".default", 
+         label_val = ".default",
+         pval = frmt_when(
+           ">0.99" ~ ">0.99",
+           "<0.001" ~ "<0.001",
+           TRUE ~ frmt("x.xxx", missing = "--")
+           )
+      )
+    )
+  )
+  
+  if(!is.null(tfrmt_obj)){
+    ae_layer <- layer_tfrmt(tfrmt_obj, ae_layer)
+  }
+  
+  ae_layer
+  
+}
+
+
+```
+
+
