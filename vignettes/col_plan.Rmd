@@ -59,7 +59,7 @@ dat <- tribble(
 ```
 
 
-## No column spanners
+## Simple Column Selection
 
 In the case of a single column variable with no column spanners, `col_plan` behaves identically to `dplyr::select`. 
 
