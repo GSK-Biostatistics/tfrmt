@@ -253,7 +253,7 @@ tfrmt(
 
 When there are multiple `column` variables provided, `tlang` concatenates them behind the scenes using a special delimiter. Therefore, the underlying column names in the final table are a combination of the spanner(s) and the lowest level column label. In order to change the order of spanning groups, we may use `contains()` to reference any portion of those names. 
 
-Reordering with multiple `column` variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. Let's suppose we want to move the "col 4" column to the beginning and also reorder "col1" and "col2". To achieve this, we can just select "col 4" and then "col2" and finally all the other columns. 
+Reordering with multiple `column` variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. Let's suppose we want to move the "col 4" column to the beginning and also reorder "col1" and "col2". To achieve this, we can select "col 4" and then "col2" and finally all the other columns. 
 ```{r}
 tfrmt(
     group = group,
