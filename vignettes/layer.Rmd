@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tlang)
 library(dplyr)
+library(gt)
+library(tidyr)
 ```
 
 A core design element of `tlang` is to offer the ability to layer and build template table formats that can be shared, improved, and eventually customized for a specific table. The idea being that organizations can develop a standard `tfrmt` object that can be reused across many different tables, and make it so programmers can focus on setting up the data as opposed to formatting of the table. 
