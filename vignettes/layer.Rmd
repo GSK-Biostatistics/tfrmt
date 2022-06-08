@@ -27,13 +27,13 @@ There are two ways that `tfrmt` objects may be layered. The preferred method is 
 
 Before we show how to layer a tfrmt, we need to create a template tfrmt. A template is intended to provide the conventions that an organization would expect to be repeated across multiple tables. For example, in a table such as an Adverse Events table, there are some standards that can be expected that allows us to constructing a basic `tfrmt`:
 
-First, we know that the cells should be consistently formatted as follows, which allows us to create a body_plan:
+First, we can provide instructions on cell formatting via the `body_plan`. We know that the cells should be consistently formatted as follows:
 
-  - Total counts to be whole numbers 
-  - Cells under each treatment to be a combination of a count and percent of that population. When percent is 100 or zero, value should be blank.
-  - p-values to be formatted where: >.99 is displayed as ">0.99", <0.001 is displayed as "<0.001", and any values between should be displayed to three decimal places. Missing p-values should be replaced with "--".
+  - Total counts should be whole numbers 
+  - Cells within each treatment group column should be a combination of a count and percent of that population. When percent is 100 or zero, value should be blank.
+  - p-values should be formatted where: >.99 is displayed as ">0.99", <0.001 is displayed as "<0.001", and any values between should be displayed to three decimal places. Missing p-values should be replaced with "--".
   
-Next, we can apply standard to our organizations AE ARD format to ensure that names of are set consistently:
+Next, because our data is standardized as an analysis results dataset, we can pre-fill the expected column names. This also ensures that the data abides to the standard and names are set consistently:
 
   - `AEBODYSYS` defines the body systems and overall grouping of the data.
   - `AETERM` defines the labels to display in the table.
@@ -94,9 +94,9 @@ ae_tfrmt_template <- tfrmt(
 
 ## Piping - two layer tfrmts
 
-Now that we have a template to work off of, we can create a `tfrmt` specifically for the table we are creating for our study. This can be done a few ways. The first method that can be used is to pipe another tfrmt. The first argument of `trfmt` is "tfrmt_obj". This allows for `tfrmt` to be layered directly using a pipe. 
+Now we have a template to serve as the basis for our AE tables, which reduces much of the overhead in our formatting. We can continue to build on this template by making a study-specific `tfrmt` to be layered on top. This can be done a few ways. The first method that can be used is to pipe another tfrmt. The first argument of `trfmt` is "tfrmt_obj". This allows for `tfrmt` to be layered directly using a pipe. 
 
-We will create the new tfrmt with specific information that we know we have for this study, such as columns indicating order (ord1, ord2), we want to indent the row-groups as opposed to setting them into different columns, and how we want to align the columns
+We will create the new tfrmt with specific information that we know we have for this study, such as the columns indicating order (ord1, ord2), formatting of the row group labels, column alignment, and column labels.
 
 ```{r}
 
@@ -111,7 +111,7 @@ study_ae_tfrmt <- ae_tfrmt_template %>%
     ## Nest Preferred terms under SOC
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
     
-    ## alisgnment of columns
+    ## alignment of columns
     col_align = col_align_plan(
       element_align(align = c(".",","," "), col = vars(starts_with("p_")))
     ),
@@ -165,9 +165,9 @@ study_ae_tfrmt %>%
 
 ## Multi-layer Example
 
-The previous example of a template tfrmt is very powerful in that it allows components to be reused across multiple projects and share the learning from prior work. However, the downside is that now this must be the "top level" `tfrmt`, as `tfrmt`'s may be layered off of this template, this must be at the beginning of the layering. 
+The previous example of a template `tfrmt` is very powerful in that it allows components to be reused across multiple projects and share the learning from prior work. However, the downside is that we are limited to 2 layers. Our template `tfrmt` must be specified first, followed by our study-specific format.
 
-This is where we turn to using functions to define a template. By doing this we can build up layers from a basic organizations formatting, to a type of table, and then finally the specific table we are working on. 
+This is where we turn to using functions to define a template. This allows us to have as many layers as we'd like. For example, we can have an organization-level template to be used across all tables, a domain-level template to be used across all tables in a given domain, and a project-level template to be used for study-specific tables. 
 
 `tlang` offers the function `layer_tfrmt()`, which provides the ability for layering `tfrmt` together. The first two arguments are the `tfrmt` objects to be layered. By default the body_plans of the tfrmt are joined together.
 
