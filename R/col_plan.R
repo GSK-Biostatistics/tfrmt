@@ -385,9 +385,6 @@ select_col_plan <- function(data, tfrmt){
           })
         )
 
-
-
-
       new_dots_tmp <- tibble(
           dots = tfrmt$col_plan$dots,
           dot_chr = map_chr(tfrmt$col_plan$dots, as_label) %>% str_remove("^-"),
@@ -397,7 +394,7 @@ select_col_plan <- function(data, tfrmt){
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
           dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dot_chr),
-          dot2_names = pmap_chr(data.frame(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
+          dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
             if(!identical(x, y) & !z){
               x
             }else{
