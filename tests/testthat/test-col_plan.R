@@ -442,12 +442,12 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
       )
   )
 
-  suppressMessages({
-    suppressWarnings({
+  # suppressMessages({
+    # suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = multi_column_template, .data = multi_col_df)
       processed_gt_2 <- print_to_gt(tfrmt = multi_column_template_spanners, .data = multi_col_df %>% unite(col0:col2,col = col_unite, sep = "__",remove = TRUE,na.rm = TRUE))
-    })
-  })
+    # })
+  # })
 
 
   expect_equal(
