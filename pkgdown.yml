@@ -11,7 +11,8 @@ articles:
   layer: layer.html
   mocks: mocks.html
   row_grp_plan: row_grp_plan.html
-last_built: 2022-06-08T08:55Z
+  unusual_tables: unusual_tables.html
+last_built: 2022-06-08T09:17Z
 urls:
   reference: https://gsk-biostatistics.github.io/tlang/reference
   article: https://gsk-biostatistics.github.io/tlang/articles
