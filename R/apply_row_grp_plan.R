@@ -154,7 +154,7 @@ grp_row_test_data <- function(cur_block, .data, group){
 #' @importFrom tidyselect vars_select_helpers
 #' @importFrom rlang !!!
 #'
-#' @export
+#' @noRd
 apply_grp_block <- function(.data, group, element_block, widths){
 
   if (!is.null(element_block$post_space)){

@@ -12,6 +12,11 @@
 #'  suppress group values from being printed.
 #'@param indent A string of the number of spaces you want to indent
 #'
+#' @seealso [row_grp_plan()] for more details on how to group row group
+#'   structures, [row_grp_structure()] for more details on how to specify row group
+#'   structures, [element_block()] for more details on how to specify spacing
+#'   between each group.
+#'
 #'@export
 element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint"),
                                 indent = "  "){
@@ -35,6 +40,11 @@ is_element_row_grp_loc <- function(x){
 #'
 #' @return element block object
 #'
+#' @seealso [row_grp_plan()] for more details on how to group row group
+#'   structures, [row_grp_structure()] for more details on how to specify row group
+#'   structures, [element_row_grp_loc()] for more details on how to
+#'   specify whether row group titles span the entire table or collapse.
+#'
 #' @export
 element_block <- function(post_space = c(NULL, " ", "-"),
                           background_fill = NULL,
@@ -46,22 +56,21 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 
 }
 
-# PROBABLY NEEDS DELETING
-# element_style <- function(...){
-#   structure(
-#     list(all_fmts = list(...)),
-#     class = c("element_style", "element")
-#   )
-# }
 
 #' Element Align
 #'
-#' @param align Alignment to be applied to column. Acceptable values: "left" for left alignment, "right" for right alignment",
-#' or supply a vector of character(s) to align on. For the case of character alignment, if more
-#' than one character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param align Alignment to be applied to column. Acceptable values: "left" for
+#'   left alignment, "right" for right alignment", or supply a vector of
+#'   character(s) to align on. For the case of character alignment, if more than
+#'   one character is provided, alignment will be based on the first occurrence
+#'   of any of the characters. For alignment based on white space, leading white
+#'   spaces will be ignored.
 #' @param col Variable to align on
 #'
 #' @importFrom purrr map
+#'
+#' @seealso [col_align_plan()] for more information on how to combine
+#'   element_align()'s together to form a plan.
 #'
 #' @export
 #' @rdname theme_element
@@ -83,9 +92,8 @@ element_align <- function(align = "left",
 #' Check if input is an element_align object
 #'
 #' @param x Object to check
-#' @export
 #'
-#' @rdname theme_element
+#' @noRd
 is_element_align <- function(x){
   inherits(x, "element_align")
 }

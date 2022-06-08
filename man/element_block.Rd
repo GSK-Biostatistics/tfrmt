@@ -23,3 +23,9 @@ element block object
 \description{
 Element block
 }
+\seealso{
+\code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group
+structures, \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group
+structures, \code{\link[=element_row_grp_loc]{element_row_grp_loc()}} for more details on how to
+specify whether row group titles span the entire table or collapse.
+}
