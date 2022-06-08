@@ -273,6 +273,7 @@ check_column_and_col_plan <- function(x){
 #' @importFrom stringr str_remove str_detect
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
+#' @importFrom rlang quo
 select_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
@@ -361,20 +362,27 @@ select_col_plan <- function(data, tfrmt){
           new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
         ) %>%
         mutate(
-          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y){
-            x_call <- try(as.list(parse(text = x))[[1]], silent = TRUE)
-            if(!inherits(x_call,"try-failure") & is_valid_tidyselect_call(x_call)){
-              x_text <- x
-            }else{
-              x_text <- capture.output(sym(x))
-            }
-            if(y){
-               expr_to_eval <- paste0("quo(-",x_text,")")
-              }else{
-                expr_to_eval <- paste0("quo(",x_text,")")
+          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y) {
+            x_call <- tryCatch({
+              x_lang <- str2lang(x)
+              if (is_valid_tidyselect_call(x_lang)) {
+                x
+              } else{
+                x_text <- paste0("`", x, "`")
               }
-             eval(parse(text = expr_to_eval))
+            },
+            error = function(e) {
+              x_text <- paste0("`", x, "`")
             })
+
+            if (y) {
+              expr_to_eval <- paste0("quo(-", x_text, ")")
+            } else{
+              expr_to_eval <- paste0("quo(", x_text, ")")
+            }
+
+            eval(str2lang(expr_to_eval))
+          })
         )
 
 

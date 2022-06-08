@@ -149,7 +149,7 @@ test_that("Check apply_tfrmt for mock data",{
       frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
     ),
     # These are the variables to keep
-    col_select = vars(everything(), -starts_with("ord"))
+    col_plan = col_plan(everything(), -starts_with("ord"))
   )
 
 
