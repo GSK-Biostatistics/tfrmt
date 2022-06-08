@@ -363,16 +363,16 @@ select_col_plan <- function(data, tfrmt){
         ) %>%
         mutate(
           new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y) {
-            x_call <- tryCatch({
+            x_text <- tryCatch({
               x_lang <- str2lang(x)
               if (is_valid_tidyselect_call(x_lang)) {
                 x
               } else{
-                x_text <- paste0("`", x, "`")
+                paste0("`", x, "`")
               }
             },
             error = function(e) {
-              x_text <- paste0("`", x, "`")
+              paste0("`", x, "`")
             })
 
             if (y) {
