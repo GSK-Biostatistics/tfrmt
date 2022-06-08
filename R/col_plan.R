@@ -364,7 +364,7 @@ select_col_plan <- function(data, tfrmt){
         mutate(
           new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y) {
             x_text <- tryCatch({
-              x_lang <- str2lang(x)
+              x_lang <- parse(text = x)[[1]]
               if (is_valid_tidyselect_call(x_lang)) {
                 x
               } else{
@@ -381,7 +381,7 @@ select_col_plan <- function(data, tfrmt){
               expr_to_eval <- paste0("quo(", x_text, ")")
             }
 
-            eval(str2lang(expr_to_eval))
+            eval(parse(text = expr_to_eval)[[1]])
           })
         )
 
