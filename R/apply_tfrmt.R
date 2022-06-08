@@ -6,11 +6,6 @@
 #'
 #' @return formatted tibble
 #'
-#' @importFrom purrr quietly
-#' @importFrom tidyr pivot_wider unnest
-#' @importFrom dplyr arrange select
-#' @importFrom tidyselect eval_select
-#'
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   validate_cols_match(.data, tfrmt, mock)
@@ -43,27 +38,8 @@ tbl_dat <- apply_table_frmt_plan(
     tbl_dat_span_cols <- tbl_dat
   }
 
-  tbl_dat_wide <- quietly(pivot_wider)(
-    tbl_dat_span_cols,
-    names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
-    names_sep = .tlang_delim,
-    values_from = !!tfrmt$values
-    )
-
-
-  if (mock == TRUE &&
-      length(tbl_dat_wide$warnings)>0 &&
-      str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
-    message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
-    tbl_dat_wide <- tbl_dat_wide$result %>%
-      unnest(cols = everything()) %>%
-      clean_spanning_col_names()
-  } else {
-    tbl_dat_wide <- tbl_dat_wide$result %>%
-      clean_spanning_col_names()
-  }
-
-  tbl_dat_wide <- tbl_dat_wide %>%
+ tbl_dat_wide <- tbl_dat_span_cols %>%
+   pivot_wider_tfrmt(tfrmt, mock) %>%
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
     tentative_process(apply_row_grp_struct, tfrmt$row_grp_plan, tfrmt$group, tfrmt$label) %>%
     #Select before grouping to not have to deal with if it indents or not
@@ -156,6 +132,13 @@ validate_cols_match <- function(.data, tfrmt, mock){
 
 }
 
+#' Arrange data based on quosures
+#'
+#' @param dat data to arrange
+#' @param param list of quosures to arrange on
+#'
+#' @noRd
+#' @importFrom dplyr arrange
 arrange_enquo <- function(dat, param){
   arrange(dat, !!!param)
 }
@@ -181,4 +164,55 @@ clean_spanning_col_names <- function(data){
       rename_with(~str_remove(., empty_layers))
   }
   data
+}
+
+
+
+#' Pivot formatted values into a wide dataset
+#'
+#' @param data
+#'
+#' @return data pivoted wider
+#' @noRd
+#'
+#' @importFrom purrr quietly
+#' @importFrom tidyselect starts_with everything
+#' @importFrom dplyr group_by across tally pull
+#' @importFrom stringr str_detect
+#' @importFrom tidyr unnest
+pivot_wider_tfrmt <- function(data, tfrmt, mock){
+
+  # check if data can be transformed wide w/o list columns
+  num_rec_by_grp <- data %>%
+    group_by(across(-!!tfrmt$values)) %>%
+    tally() %>%
+    pull(n)
+  if (any(num_rec_by_grp>1)){
+    val_fill <- list("")
+  } else {
+    val_fill <- ""
+  }
+
+  tbl_dat_wide <- quietly(pivot_wider)(
+    data,
+    names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
+    names_sep = .tlang_delim,
+    values_from = !!tfrmt$values,
+    values_fill = val_fill
+  )
+
+
+  if (mock == TRUE &&
+      length(tbl_dat_wide$warnings)>0 &&
+      str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
+    message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
+    tbl_dat_wide <- tbl_dat_wide$result %>%
+      unnest(cols = everything()) %>%
+      clean_spanning_col_names()
+  } else {
+    tbl_dat_wide <- tbl_dat_wide$result %>%
+      clean_spanning_col_names()
+  }
+
+  tbl_dat_wide
 }
