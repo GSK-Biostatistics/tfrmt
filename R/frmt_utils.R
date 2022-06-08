@@ -67,6 +67,7 @@ print.frmt_combine <- function(x,...){
   cat(format(x),sep = "\n")
 }
 
+
 #' @export
 format.frmt_when <- function(x, ...){
   frmt_str <- cat(
@@ -82,6 +83,7 @@ format.frmt_when <- function(x, ...){
 print.frmt_when <- function(x,...){
   cat(format(x),sep = "\n")
 }
+
 
 #' @export
 format.frmt_structure <- function(x,...){
