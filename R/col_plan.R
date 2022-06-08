@@ -291,7 +291,7 @@ select_col_plan <- function(data, tfrmt){
               }else{
                 expr_to_eval <- paste0("quo(",x_text,")")
               }
-             eval(str2expression(expr_to_eval))
+             eval(parse(text = expr_to_eval))
             })
         )
 
