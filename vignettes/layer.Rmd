@@ -16,16 +16,16 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(tlang)
-library(magrittr)
+library(dplyr)
 ```
 
-A core design element of `tlang` was to offer the ability to layer and build template table formats that could be shared, improved, and eventually customized for a specific table. The idea being that organizations could develop a standard `tfrmt` object that would serve as the base format for the rest of the tables, and make it so programmers could focus on setting up the data as opposed to formatting of the table. 
+A core design element of `tlang` is to offer the ability to layer and build template table formats that can be shared, improved, and eventually customized for a specific table. The idea being that organizations can develop a standard `tfrmt` object that can be reused across many different tables, and make it so programmers can focus on setting up the data as opposed to formatting of the table. 
 
-There are two ways that `tfrmt` objects may be layered. The preferred method is through the first argument of `tfrmt` - `tfrmt_obj`. The second, but perhaps more explicit method is using the `layer_tfrmt` function. We will go through their application below.  
+There are two ways that `tfrmt` objects may be layered. The preferred method is through the first argument of `tfrmt` - `tfrmt_obj`. The second, but perhaps more explicit method is using the `layer_tfrmt` function. We will go through their applications below.  
 
 ## Creating a template
 
-Before we show how to layer a tfrmt, we need to create a template tfrmt. A template is intended to provide the basics values that an organization would expect to be repeated across multiple tables. For example, in a table such as an Adverse Events table, there are some standards that can be expected that allows us to constructing a basic `tfrmt`:
+Before we show how to layer a tfrmt, we need to create a template tfrmt. A template is intended to provide the conventions that an organization would expect to be repeated across multiple tables. For example, in a table such as an Adverse Events table, there are some standards that can be expected that allows us to constructing a basic `tfrmt`:
 
 First, we know that the cells should be consistently formatted as follows, which allows us to create a body_plan:
 
