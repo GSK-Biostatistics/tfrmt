@@ -71,12 +71,17 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
     out <- .data %>%
       safely(fx)(...)
     if(!is.null(out[["error"]])){
-      out <- .data
       if(is.null(fail_desc)){
-        message("Unable to to apply formatting", format(substitute(fx)))
-      }else{
-        message(fail_desc)
+        fail_desc <- paste0("Unable to to apply ",format(substitute(fx)),".")
       }
+      fail_desc <-paste0(
+        fail_desc,"\n",
+        "Reason: ",
+        out[["error"]]$message
+      )
+      message(fail_desc)
+
+      out <- .data
     }else{
       out <- out$result
     }
@@ -154,19 +159,27 @@ arrange_enquo <- function(dat, param){
 #' @importFrom dplyr rename_with
 clean_spanning_col_names <- function(data){
   # Get number of layers
-  lyrs <- names(data) %>%
-    str_count(.tlang_delim) %>%
-    max()
+  lyrs <- count_spanning_layers(names(data))
   # remove the layering for unnested columns
-  empty_layers <- strrep(paste0("NA", .tlang_delim), lyrs)
-  if(empty_layers != ""){
+  if(lyrs > 0){
     data <- data %>%
-      rename_with(~str_remove(., empty_layers))
+      rename_with(~remove_empty_layers(.x, nlayers = lyrs))
   }
   data
 }
 
+count_spanning_layers <- function(x){
+  x %>%
+    str_count(.tlang_delim) %>%
+    max()
+}
 
+
+## also used in select_col_plan to process column names the same way
+remove_empty_layers <- function(x, nlayers = 1){
+  empty_str <- paste0("^",strrep(paste0("NA", .tlang_delim), nlayers))
+  str_remove(x, empty_str)
+}
 
 #' Pivot formatted values into a wide dataset
 #'
@@ -215,4 +228,5 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
   }
 
   tbl_dat_wide
+
 }

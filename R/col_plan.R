@@ -270,6 +270,10 @@ check_column_and_col_plan <- function(x){
 
 #' @importFrom tidyr unite
 #' @importFrom dplyr as_tibble relocate last_col right_join
+#' @importFrom stringr str_remove str_detect
+#' @importFrom purrr pmap_chr map2
+#' @importFrom utils capture.output
+#' @importFrom rlang quo
 select_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
@@ -300,14 +304,18 @@ select_col_plan <- function(data, tfrmt){
           separate(.data$.original_col, into = new_cols, sep = .tlang_delim, fill = "left", remove = TRUE)
 
         span_struct_cols <- tfrmt$col_plan$span_structures %>%
-          map_dfr(span_struct_to_df, tpm_data$.original_col)
+          map_dfr(span_struct_to_df, tpm_data$.original_col) %>%
+          mutate(
+            .removal_identifier_col = .data$.original_col %>% str_detect("^-")
+          )
 
         rename_tpm <- tpm_data %>%
           filter(!(.data$.original_col %in% span_struct_cols$.original_col)) %>%
           left_join(
             tibble(
-              .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
-              .rename_col = names(tfrmt$col_plan$dots)
+              .original_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_remove("^-"),
+              .rename_col = names(tfrmt$col_plan$dots),
+              .removal_identifier_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
             ),
             by = ".original_col"
           )
@@ -319,20 +327,24 @@ select_col_plan <- function(data, tfrmt){
             rename_tpm
           )
 
+
       } else if(length(tfrmt$column) > 1){
 
         df_col_names <- tibble(df_names = names(data)) %>%
           separate(df_names, map_chr(tfrmt$column, as_label), sep = .tlang_delim, fill = "left")
 
         col_name_df <- tibble(
-          .original_col = tfrmt$col_plan$dots %>% map_chr(as_label),
-          .rename_col = names(tfrmt$col_plan$dots)
+          .original_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_remove("^-"),
+          .rename_col = names(tfrmt$col_plan$dots),
+          .removal_identifier_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
           )  %>%
           left_join(
             df_col_names,
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
           )
       }
+
+      n_layers <- length(setdiff(names(col_name_df),c(".original_col",".rename_col",".removal_identifier_col")))
 
       new_name_df <- col_name_df %>%
         mutate(
@@ -343,27 +355,27 @@ select_col_plan <- function(data, tfrmt){
         ) %>%
         relocate(.data$.original_col, .after = last_col()) %>%
         relocate(.data$.rename_col, .after = last_col()) %>%
-        unite("new_name_in_df", -.rename_col , sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
-        unite("new_name_in_df_output", c(-.original_col, -new_name_in_df), sep = .tlang_delim, remove = FALSE, na.rm = TRUE) %>%
-        mutate(new_name_quo = map(.data$new_name_in_df, sym)) %>%
+        unite("new_name_in_df", c(-.data$.rename_col, -.data$.removal_identifier_col) , sep = .tlang_delim, remove = FALSE) %>%
+        unite("new_name_in_df_output", c(-.data$.original_col, -.data$new_name_in_df, -.data$.removal_identifier_col), sep = .tlang_delim, remove = FALSE) %>%
         mutate(
-          new_name_in_df = case_when(
-            new_name_in_df == .original_col ~ NA_character_,
-            TRUE ~ new_name_in_df
-          )
+          new_name_in_df = remove_empty_layers(.data$new_name_in_df, n_layers),
+          new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
+        ) %>%
+        mutate(
+          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, dot_char_as_quo)
         )
-
 
       new_dots_tmp <- tibble(
           dots = tfrmt$col_plan$dots,
-          dot_chr = map_chr(tfrmt$col_plan$dots, as_label),
-          dot_names = names(tfrmt$col_plan$dots)
+          dot_chr = map_chr(tfrmt$col_plan$dots, as_label) %>% str_remove("^-"),
+          dot_names = names(tfrmt$col_plan$dots),
+          dot_removal = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
         ) %>%
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
-          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
-          dot2_names = purrr::map2_chr(.data$new_name_in_df_output, .data$dot_chr , function(x, y){
-            if(!identical(x, y)){
+          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dot_chr),
+          dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
+            if(!identical(x, y) & !z){
               x
             }else{
               ""
@@ -386,10 +398,41 @@ select_col_plan <- function(data, tfrmt){
       new_dots <- setdiff(new_dots, tfrmt$group)
     }
 
-    out <- select( data, !!!new_dots)
+    out <- select(data, !!!new_dots)
   }
 
   out
+}
+
+
+## given a string - x - see how to convert to a quosure.
+##  if negative is TRUE, it will mark it as a `-`.
+dot_char_as_quo <- function(x, negative = FALSE) {
+
+
+  ## if x is a valid tidyselect call, leave it as is,
+  ## otherwise wrap it in "`". This is so we can pass
+  ## colnames with spaces (which are common in spanned columns)
+  ## to quo. IE `spanned col header__tlang_delim__col1`
+  x_text <- tryCatch({
+    x_lang <- parse(text = x)[[1]]
+    if (is_valid_tidyselect_call(x_lang)) {
+        x
+    } else{
+        paste0("`", x, "`")
+    }},
+    error = function(e) {
+      paste0("`", x, "`")
+    }
+  )
+
+  if (negative) {
+    expr_to_eval <- paste0("quo(-", x_text, ")")
+  } else{
+    expr_to_eval <- paste0("quo(", x_text, ")")
+  }
+
+  eval(parse(text = expr_to_eval)[[1]])
 }
 
 ## -----------------------------------------------
@@ -470,7 +513,6 @@ span_struct_to_df.span_structures <- function(span_struct, data_col, depth = 1){
     relocate(!!paste0(.tlang_struct_col_prefix, depth), .before = 1)
 
 }
-
 
 
 
