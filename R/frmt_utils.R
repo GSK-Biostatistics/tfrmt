@@ -68,6 +68,25 @@ print.frmt_combine <- function(x,...){
 }
 
 #' @export
+format.frmt_when <- function(x, ...){
+  lhs <- map_chr(x, f_lhs)
+  rhs <- map(x, f_rhs) %>% map_chr(format)
+
+  frmt_str <- cat(
+    "< frmt_when | ", "\n ",
+    paste0(map2_chr(lhs, rhs, paste, sep = " ~ "),
+    collapse = "\n  "),
+    "\n` >"
+    )
+  frmt_str
+}
+
+#' @export
+print.frmt_when <- function(x,...){
+  cat(format(x),sep = "\n")
+}
+
+#' @export
 format.frmt_structure <- function(x,...){
 
   groups <- unique(x$group_val)[[1]]
@@ -103,7 +122,7 @@ format.frmt_structure <- function(x,...){
   frmt_struct_str <- c(
     frmt_struct_str,
     paste0("  Format: ",format(fmts))
-    )
+  )
 
 
   frmt_struct_str
