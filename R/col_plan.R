@@ -362,27 +362,7 @@ select_col_plan <- function(data, tfrmt){
           new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
         ) %>%
         mutate(
-          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, function(x, y) {
-            x_text <- tryCatch({
-              x_lang <- parse(text = x)[[1]]
-              if (is_valid_tidyselect_call(x_lang)) {
-                x
-              } else{
-                paste0("`", x, "`")
-              }
-            },
-            error = function(e) {
-              paste0("`", x, "`")
-            })
-
-            if (y) {
-              expr_to_eval <- paste0("quo(-", x_text, ")")
-            } else{
-              expr_to_eval <- paste0("quo(", x_text, ")")
-            }
-
-            eval(parse(text = expr_to_eval)[[1]])
-          })
+          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, dot_char_as_quo)
         )
 
       new_dots_tmp <- tibble(
@@ -422,6 +402,37 @@ select_col_plan <- function(data, tfrmt){
   }
 
   out
+}
+
+
+## given a string - x - see how to convert to a quosure.
+##  if negative is TRUE, it will mark it as a `-`.
+dot_char_as_quo <- function(x, negative = FALSE) {
+
+
+  ## if x is a valid tidyselect call, leave it as is,
+  ## otherwise wrap it in "`". This is so we can pass
+  ## colnames with spaces (which are common in spanned columns)
+  ## to quo. IE `spanned col header__tlang_delim__col1`
+  x_text <- tryCatch({
+    x_lang <- parse(text = x)[[1]]
+    if (is_valid_tidyselect_call(x_lang)) {
+        x
+    } else{
+        paste0("`", x, "`")
+    }},
+    error = function(e) {
+      paste0("`", x, "`")
+    }
+  )
+
+  if (negative) {
+    expr_to_eval <- paste0("quo(-", x_text, ")")
+  } else{
+    expr_to_eval <- paste0("quo(", x_text, ")")
+  }
+
+  eval(parse(text = expr_to_eval)[[1]])
 }
 
 ## -----------------------------------------------
@@ -502,7 +513,6 @@ span_struct_to_df.span_structures <- function(span_struct, data_col, depth = 1){
     relocate(!!paste0(.tlang_struct_col_prefix, depth), .before = 1)
 
 }
-
 
 
 

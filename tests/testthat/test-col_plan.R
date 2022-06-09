@@ -296,10 +296,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   )
 
   suppressMessages({
-  suppressWarnings({
     processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
     processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
-  })
   })
 
   expect_equal(
@@ -353,10 +351,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   )
 
   suppressMessages({
-    suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
       processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
-    })
   })
 
 
@@ -443,10 +439,8 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
   )
 
   suppressMessages({
-    suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = multi_column_template, .data = multi_col_df)
       processed_gt_2 <- print_to_gt(tfrmt = multi_column_template_spanners, .data = multi_col_df %>% unite(col0:col2,col = col_unite, sep = "__",remove = TRUE,na.rm = TRUE))
-    })
   })
 
 
@@ -521,10 +515,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
 
 
   suppressMessages({
-    suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
       processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
-    })
   })
 
   expect_equal(
@@ -599,10 +591,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
 
 
   suppressMessages({
-    suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
       processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
-    })
   })
 
   expect_equal(
