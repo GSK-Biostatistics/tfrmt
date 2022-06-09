@@ -1,8 +1,8 @@
 ---
-title: "Reuse and layer tfrmts"
+title: "Creating Template tfrmts"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Reuse and layer tfrmts}
+  %\VignetteIndexEntry{Creating Template tfrmts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,13 +21,15 @@ library(gt)
 library(tidyr)
 ```
 
-A core design element of `tlang` is to offer the ability to layer and build template table formats that can be shared, improved, and eventually customized for a specific table. The idea being that organizations can develop a standard `tfrmt` object that can be reused across many different tables, and make it so programmers can focus on setting up the data as opposed to formatting of the table. 
+A core design element of `tlang` is to offer the ability to layer tfrmts together. This ability provides an opportunity for organizations to build template table formats that can be shared, improved, and reused across multiple projects. Through layering the users can customize the templates to create a specific table. 
 
-There are two ways that `tfrmt` objects may be layered. The preferred method is through the first argument of `tfrmt` - `tfrmt_obj`. The second, but perhaps more explicit method is using the `layer_tfrmt` function. We will go through their applications below.  
+The creation of a template is based on the standard development of a `tfrmt`, but wrapping its creation into a function. using the `layer_tfrmt` function. We will go through their applications below.  
 
-## Creating a template
+## Creating a standard tfrmt
 
-Before we show how to layer a tfrmt, we need to create a template tfrmt. A template is intended to provide the conventions that an organization would expect to be repeated across multiple tables. For example, in a table such as an Adverse Events table, there are some standards that can be expected that allows us to constructing a basic `tfrmt`:
+A template is based around creating a standard `tfrmt`, and then writing a function around it to provide the ability to layer multiple templates. 
+
+We will create an Adverse Events table template in this example. This requires there to be some standards that can be expected that allows the construction of the basic `tfrmt`:
 
 First, we can provide instructions on cell formatting via the `body_plan`. We know that the cells should be consistently formatted as follows:
 
@@ -94,80 +96,7 @@ ae_tfrmt_template <- tfrmt(
 
 ```
 
-## Piping - two layer tfrmts
-
-Now we have a template to serve as the basis for our AE tables, which reduces much of the overhead in our formatting. We can continue to build on this template by making a study-specific `tfrmt` to be layered on top. This can be done a few ways. The first method that can be used is to pipe another tfrmt. The first argument of `trfmt` is "tfrmt_obj". This allows for `tfrmt` to be layered directly using a pipe. 
-
-We will create the new tfrmt with specific information that we know we have for this study, such as the columns indicating order (ord1, ord2), formatting of the row group labels, column alignment, and column labels.
-
-```{r}
-
-study_ae_tfrmt <- ae_tfrmt_template %>% 
-  tfrmt(
-    title = "Adverse Events for CDISC Pilot Study",
-    subtitle = "Data subset to AEs with >10% prevalence in the High Dose group",
-    
-    ## Sorting columns of rows
-    sorting_cols = c(ord1, ord2),
-    
-    ## Nest Preferred terms under SOC
-    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
-    
-    ## alignment of columns
-    col_align = col_align_plan(
-      element_align(align = c(".",","," "), col = vars(starts_with("p_")))
-    ),
-    
-    ## remove order columns from final table
-    col_plan = col_plan(
-      -ord1,-ord2,
-      span_structure(
-        "Xanomeline High Dose (N=84)",
-        `n (%)` = `Xanomeline High Dose-n_pct` ,
-        `[AEs]` = `Xanomeline High Dose-AEs`
-      ),
-      span_structure(
-        "Xanomeline Low Dose (N=84)",
-        `n (%)` = `Xanomeline Low Dose-n_pct` ,
-        `[AEs]` = `Xanomeline Low Dose-AEs`
-      ),
-      span_structure("Placebo (N=86)",
-                     `n (%)` = `Placebo-n_pct` ,
-                     `[AEs]` = `Placebo-AEs`),
-      span_structure(
-        "Fisher's Exact p-values",
-        `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
-        `Placebo vs. High Dose` = `fisher_pval-p_high`
-      )
-    )
-  )
-
-```
-
-Now that we have the study specific `tfrmt`, we can apply it to our data:
-
-```{r}
-
-## filter to keep only AEs with >10% prevalence in the High Dose group
-ae_data2 <- ae_data %>% 
-  group_by(AEBODSYS, AETERM) %>% 
-  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
-  ungroup %>% 
-  filter(pct_high >10) %>% 
-  select(-pct_high) %>% 
-  unite("treatment", c(col2, col1), sep = "-")
-
-study_ae_tfrmt %>% 
-  print_to_gt(ae_data2) %>% 
-  tab_options(
-    container.width = 1000
-  )
-
-```
-
-## Multi-layer Example
-
-The previous example of a template `tfrmt` is very powerful in that it allows components to be reused across multiple projects and share the learning from prior work. However, the downside is that we are limited to 2 layers. Our template `tfrmt` must be specified first, followed by our study-specific format.
+## Functionalizing the template
 
 This is where we turn to using functions to define a template. This allows us to have as many layers as we'd like. For example, we can have an organization-level template to be used across all tables, a domain-level template to be used across all tables in a given domain, and a project-level template to be used for study-specific tables. 
 
@@ -248,7 +177,7 @@ ae_pval_tfrmt_template <- function(tfrmt_obj){
 
 ```
 
-Now we can apply multiple templates cleanly within a pipe:
+Using these templates and what we learned from the layering vignette, we can apply multiple templates cleanly within a pipe:
 
 ```{r}
 
