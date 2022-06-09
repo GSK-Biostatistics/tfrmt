@@ -67,13 +67,12 @@ print.frmt_combine <- function(x,...){
   cat(format(x),sep = "\n")
 }
 
-
 #' @export
 format.frmt_when <- function(x, ...){
   frmt_str <- cat(
     "< frmt_when | ", "\n",
-    "LHS: ", paste0(map(x, rlang::f_lhs) %>% map(format) %>% unlist(), collapse = ", "), "\n",
-    "RHS: ", paste0(map(x, rlang::f_rhs) %>% map(format) %>% unlist(), collapse = ", "), "\n",
+    "LHS: ", paste0(map(x, f_lhs) %>% map(format) %>% unlist(), collapse = ", "), "\n",
+    "RHS: ", paste0(map(x, f_rhs) %>% map(format) %>% unlist(), collapse = ", "), "\n",
     ">"
   )
   frmt_str
@@ -83,7 +82,6 @@ format.frmt_when <- function(x, ...){
 print.frmt_when <- function(x,...){
   cat(format(x),sep = "\n")
 }
-
 
 #' @export
 format.frmt_structure <- function(x,...){
@@ -121,7 +119,7 @@ format.frmt_structure <- function(x,...){
   frmt_struct_str <- c(
     frmt_struct_str,
     paste0("  Format: ",format(fmts))
-    )
+  )
 
 
   frmt_struct_str
