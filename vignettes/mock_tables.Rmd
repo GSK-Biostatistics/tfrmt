@@ -1,0 +1,358 @@
+---
+title: "Mock Table Examples"
+author: "Karima Ahmad"
+date: "10/06/2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Mock Tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, message=FALSE}
+library(tlang)
+library(dplyr)
+library(tidyr)
+```
+
+# AE Mocks
+
+Here is some mock data created using the `crossing()` function from the `tidyr` package.
+
+```{r mock data}
+df <- crossing(label = c("label 1", "label 2", "label 3"),
+               column = c("trt1", "trt2", "trt1&trt2", "pl"),
+               param = c("count", "percent")) %>%
+  # assign numerical order
+  mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+
+df
+```
+
+These mock tables don't contain numerical values as none have been supplied to 
+the tfrmt specification. If you would like to add values pass an argument 
+to the `value` parameter when applying the `tfrmt()` function.
+
+Note: Layering has been used to avoid repeating code; for more information 
+please see the "Reuse and layer tfrmts" article.
+
+
+```{r}
+mock_tbl <- function(tfrmt_obj){
+  tfrmt(
+    # Specify columns in the data
+    label = label,
+    column = column, 
+    param = param,
+    sorting_cols = c(ord1),
+    
+    # Specify body plan
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default",
+                     frmt_combine(
+                       "{count} {percent}",
+                       count = frmt("XXX"),
+                       percent = frmt_when("==100"~ frmt(""),
+                                           "==0"~ "",
+                                           "TRUE" ~ frmt("(XX.X%)"))))
+      ))
+}
+
+# Print table
+mock_tbl() %>%
+  print_mock_gt(df)
+```
+
+You can adjust column names and structure using the `col_plan` parameter. It 
+accepts selection helpers from the `tidyselect` package.
+
+For example, you can select `everything()` and remove columns that `starts_with("ord")`.
+
+To order and rename columns:
+
+```{r}
+# this example is currently not working...
+
+mock_tbl_adjust_cols <- function(){
+  mock_tbl() %>%
+  tfrmt(
+    col_plan = col_plan(
+      # -starts_with("ord"),
+      # span_structure(
+      #   "Treatment",
+      #   `T1` = `trt1`,
+      #   `T2` = `trt2`,
+      #   `T1&T2` = `trt1&trt2`
+      #   ),
+      # span_structure(
+      #   "Placebo",
+      #   `PL` = `pl`
+      #   )
+      
+      # -starts_with("ord"),
+      # T1 = trt1,
+      # T2 = trt2,
+      # `T1&T2` = `trt1&trt2`,
+      # PL = pl,
+      
+      -starts_with("ord"),
+      span_structure(
+        "Treatment",
+        T1 = trt1,
+        T2 = trt2,
+        `T1&T2`= `trt1&trt2`
+        ),
+      span_structure(
+        "Placebo",
+        PL = pl
+        )
+      
+      )
+  ) 
+}
+  
+mock_tbl_adjust_cols() %>%
+  print_mock_gt(df)
+```
+
+To add a title, subtitle or footer:
+
+```{r}
+mock_tbl_add_titles <- function(){
+  mock_tbl_adjust_cols() %>%
+    tfrmt(
+      # Specify title, subtitle, footer
+      title = "Table Name",
+      subtitle = "Study ID: GSK12345",
+      footer = "A footnote about stuff<br/>Here is a new line with more stuff")
+}
+  
+mock_tbl_add_titles() %>%
+  print_mock_gt(df)
+
+```
+
+Mock table with no groups:
+
+```{r}
+df <- bind_rows(
+  crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) )),
+  crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+  ) %>% arrange_all()
+
+tfrmt(
+  title = "Table Name",
+  subtitle = "Study ID: GSK12345",
+  footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+  # Specify columns in the data
+  label = "label",
+  param = "param",
+  column = "column",
+  sorting_cols = vars(ord1),
+  # Specify value formatting
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XX.X%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("XX.X"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%"))))
+    ),
+  # Specify column structure
+  col_plan = col_plan(
+    T1, T2, `T1&T2`, PL,
+    everything(),
+    -starts_with("ord")
+  )
+) %>%
+  print_mock_gt(df)
+```
+
+Mock table with one level of grouping:
+
+```{r}
+df <- bind_rows(
+  crossing(group = c("grp1", "grp2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label))),
+           ord2 = rep(seq(1,length(unique(.$label))), each = length(unique(.$column))*length(unique(.$param)),
+                      times = length(unique(.$group))) ),
+  crossing(group = c("grp1", "grp2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label))),
+           ord2 = rep(seq(1,length(unique(.$label))), each = length(unique(.$column))*length(unique(.$param)),
+                      times = length(unique(.$group))) )
+  ) %>% arrange_all()
+
+tfrmt(
+  title = "Table Name",
+  subtitle = "Study ID: GSK12345",
+  footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+  # Specify columns in the data
+  group = group,
+  label = "label",
+  param = "param",
+  column = "column",
+  sorting_cols = vars(ord1, ord2),
+  row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
+  # Specify value formatting
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XX.X%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("XX.X"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%"))))
+    ),
+  # Specify column structure
+  col_plan = col_plan(
+    T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
+    everything(),
+    -starts_with("ord"))
+) %>%
+  print_mock_gt(df)
+
+```
+
+Mock table with two levels of grouping: (style 1)
+
+```{r}
+df <- bind_rows(
+  crossing(grp1 = c("group 1.1", "group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")),
+  crossing(grp1 = c("group 1.1", "group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper"))
+  ) %>% arrange_all()
+
+tfrmt(
+  title = "Table Name",
+  subtitle = "Study ID: GSK12345",
+  footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+  # Specify columns in the data
+  group = c(grp1, grp2),
+  label = "label",
+  param = "param",
+  column = "column",
+  row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
+  # Specify value formatting
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XX.X%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("XX.X"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%"))))
+    ),
+  # Specify column structure
+  col_plan = col_plan(
+    T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
+    everything())
+) %>%
+  print_mock_gt(df)
+```
+
+Mock table with two levels of grouping: (style 2)
+
+```{r}
+df <- bind_rows(
+  crossing(grp1 = c("group 1.1", "group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")),
+  crossing(grp1 = c("group 1.1", "group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper"))
+  ) %>% arrange_all()
+
+tfrmt(
+  title = "Table Name",
+  subtitle = "Study ID: GSK12345",
+  footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+  # Specify columns in the data
+  group = c(grp1, grp2),
+  label = "label",
+  param = "param",
+  column = "column",
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),
+  # Specify value formatting
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XX.X%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("XX.X"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%"))))
+    ),
+  # Specify column structure
+  col_plan = col_plan(
+    T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
+    everything())
+) %>%
+  print_mock_gt(df)
+```
+
+
+
