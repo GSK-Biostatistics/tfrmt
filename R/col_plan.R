@@ -318,6 +318,12 @@ select_col_plan <- function(data, tfrmt){
               .removal_identifier_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
             ),
             by = ".original_col"
+          ) %>%
+          mutate(
+            .removal_identifier_col = case_when(
+              is.na(.data$.removal_identifier_col) ~ FALSE,
+              TRUE ~ .data$.removal_identifier_col
+            )
           )
 
 
@@ -343,6 +349,8 @@ select_col_plan <- function(data, tfrmt){
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
           )
       }
+
+      browser()
 
       n_layers <- length(setdiff(names(col_name_df),c(".original_col",".rename_col",".removal_identifier_col")))
 
@@ -373,7 +381,7 @@ select_col_plan <- function(data, tfrmt){
         ) %>%
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
-          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dot_chr),
+          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
           dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
             if(!identical(x, y) & !z){
               x
@@ -408,7 +416,6 @@ select_col_plan <- function(data, tfrmt){
 ## given a string - x - see how to convert to a quosure.
 ##  if negative is TRUE, it will mark it as a `-`.
 dot_char_as_quo <- function(x, negative = FALSE) {
-
 
   ## if x is a valid tidyselect call, leave it as is,
   ## otherwise wrap it in "`". This is so we can pass

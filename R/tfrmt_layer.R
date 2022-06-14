@@ -59,7 +59,7 @@ layer_tfrmt_arg.default<- function(x, y, arg_name, ...){
 }
 
 ## if group is an empty vars, keep the original value
-layer_tfrmt_arg_vars<- function(x, y, arg_name, ...){
+layer_tfrmt_arg.group<- function(x, y, arg_name, ...){
   x_arg_val <- x[[arg_name]]
   y_arg_val <- y[[arg_name]]
 
@@ -71,7 +71,7 @@ layer_tfrmt_arg_vars<- function(x, y, arg_name, ...){
 }
 
 ## if label/param/values/column is an empty quo, keep the original value
-layer_tfrmt_arg_quo<- function(x, y, arg_name, ...){
+layer_tfrmt_arg.label<- function(x, y, arg_name, ...){
   x_arg_val <- x[[arg_name]]
   y_arg_val <- y[[arg_name]]
 
@@ -82,12 +82,10 @@ layer_tfrmt_arg_quo<- function(x, y, arg_name, ...){
   }
 }
 
-layer_tfrmt_arg.group <- layer_tfrmt_arg_vars
-layer_tfrmt_arg.label <- layer_tfrmt_arg_quo
-layer_tfrmt_arg.param <- layer_tfrmt_arg_quo
-layer_tfrmt_arg.values <- layer_tfrmt_arg_quo
-layer_tfrmt_arg.column <- layer_tfrmt_arg_vars
-layer_tfrmt_arg.sorting_cols <- layer_tfrmt_arg_vars
+layer_tfrmt_arg.param <- layer_tfrmt_arg.label
+layer_tfrmt_arg.values <- layer_tfrmt_arg.label
+layer_tfrmt_arg.column <- layer_tfrmt_arg.group
+layer_tfrmt_arg.sorting_cols <- layer_tfrmt_arg.group
 
 
 layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){

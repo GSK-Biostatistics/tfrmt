@@ -133,8 +133,8 @@ demog_ARD <- adsl %>%
       ) %>%
       set_format_strings(
         "n_int"        = f_str("xx", n),
-        "American Indian or Alaska Native Count_int" = f_str("xx", n_american_indian_or_alaska_native),
-        "American Indian or Alaska Native Count_pct" = f_str("xx.xxxxxxx", pct_american_indian_or_alaska_native),
+        "American Indian or Alaska Native_int" = f_str("xx", n_american_indian_or_alaska_native),
+        "American Indian or Alaska Native_pct" = f_str("xx.xxxxxxx", pct_american_indian_or_alaska_native),
         "Asian_int" = f_str("xx", n_asian),
         "Asian_pct" = f_str("xx.xxxxxxx", pct_asian),
         "Black or African American_int" = f_str("xx", n_black_or_african_american),
@@ -194,8 +194,8 @@ demog_ARD <- adsl %>%
 tplyr_demog_template <- function(tfrmt_obj, sigfigs = 1){
 
   basic_int <- frmt("xx")
-  basic_pct_frmt <- frmt_when("==100" ~ "","==0" ~ "",TRUE ~ frmt("x.x"))
-  basic_int_pct_frmt <- frmt_combine("{int} ({pct})", int = basic_int, pct = basic_pct_frmt)
+  basic_pct_frmt <- frmt_when("==100" ~ "","==0" ~ "",TRUE ~ frmt("(x.x)"))
+  basic_int_pct_frmt <- frmt_combine("{int} {pct}", int = basic_int, pct = basic_pct_frmt)
 
   sig_fig_n <- function(sigfigs = 1) {frmt(paste0("xx.",paste0(rep("x", sigfigs),collapse="")))}
 
@@ -221,9 +221,10 @@ tplyr_demog_template <- function(tfrmt_obj, sigfigs = 1){
     # Specify body plan
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", basic_int_pct_frmt),
-      frmt_structure(group_val = ".default", label_val = ".default", basic_two_param_int("q1","q3")),
-      frmt_structure(group_val = ".default", label_val = ".default", basic_two_param_int("min","max")),
-      frmt_structure(group_val = ".default", label_val = c("Mean","SD","Median"), sig_fig_n(sigfigs = sigfigs)),
+      frmt_structure(group_val = ".default", label_val = "Q1, Q3", basic_two_param_int("q1","q3")),
+      frmt_structure(group_val = ".default", label_val = "Min, Max", basic_two_param_int("min","max")),
+      frmt_structure(group_val = ".default", label_val = c("Mean","Median"), sig_fig_n(sigfigs = sigfigs)),
+      frmt_structure(group_val = ".default", label_val = c("SD"), sig_fig_n(sigfigs = sigfigs+1)),
       frmt_structure(group_val = ".default", label_val = c("n","Missing"), basic_int)
     ),
 
@@ -239,7 +240,15 @@ tplyr_demog_template <- function(tfrmt_obj, sigfigs = 1){
     ),
 
     # remove extra cols
-    col_plan = col_plan(-starts_with("ord"))
+    col_plan = col_plan(
+      -starts_with("ord"),
+      span_structure(
+        label = "Xanomeline Dose",
+        "High" = `Xanomeline High Dose`,
+        "Low" = `Xanomeline Low Dose`
+      ),
+      Placebo
+      )
   )
 
 
@@ -251,16 +260,28 @@ tplyr_demog_template <- function(tfrmt_obj, sigfigs = 1){
 
 }
 
-tplr_demog_table_tfrmt <- tplyr_demog_template() %>%
-  tfrmt(
+tplr_demog_table_tfrmt <- tfrmt(
     title = "Table 7.1 Demography Summary",
-    subtitle = "Tplyr/tlang Example Demography Table",
-    footer = "Using Tplyr, the dataset were built and then this table is generated using tlang"
-  )
+    subtitle = "Tplyr/tlang Example Demography\n Table",
+    footer = "Using Tplyr, the dataset were built\n and then this table is generated using tlang"
+  ) %>%
+  tplyr_demog_template(sigfigs = 2)
 
+## real data
 tplr_demog_table_tfrmt %>%
   print_to_gt(demog_ARD)
 
+## mock
 tplr_demog_table_tfrmt %>%
   print_mock_gt(demog_ARD %>% select(-value))
 
+
+
+tplr_demog_table_tfrmt %>%
+  print_to_gt(demog_ARD %>%
+                mutate(
+                  row_label2 = gsub(" or "," or\n", row_label2)
+                )) %>%
+  cols_width(
+
+  )
