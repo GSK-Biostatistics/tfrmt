@@ -46,29 +46,43 @@ frmt_combine_builder <- function(param_combine, param, frmt_string){
 #' @param label_val A string which represent the value of label should be when the given frmt is implemented
 #' @param frmt_list List of `frmt` and/or `frmt_combine` objects to be applied to the group_val/label_val combination
 #'
-#' @return list of character strings representing `frmt_structure` objects
+#' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom purrr map
+#' @importFrom purrr map_chr map
 #' @importFrom rlang parse_expr
 frmt_structure_builder <- function(group_val, label_val, frmt_list){
-  map(frmt_list, ~ paste0("frmt_structure(group_val = ", group_val, ", label_val = ", label_val, ", ", .x, ")"))
+  map_chr(frmt_list, ~ paste0("frmt_structure(group_val = ", group_val, ", label_val = ", label_val, ", ", .x, ")")) %>%
+    map(parse_expr)
 }
 
-#' Set custom parameter-level significant digits
+#' Set custom parameter-level significant digits rounding
 #'
-#' @param ... Series of name-value pairs
+#' @param ... Series of name-value pairs, optionally formatted using
+#'   `glue::glue()` syntax (note `glue` syntax is required for combined
+#'   parameters). For combined parameters (e.g., "{min}, {max}"), value should
+#'   be a vector of the same length (e.g., c(1,1)).
 #'
-#' @examples param_set("mean" = 1, "sd" = 2)
+#' @details Type `param_set()` in console to view package defaults. Use of the
+#'   function will add to the defaults and/or override included defaults of the
+#'   same name.
 #'
-#' @return character vector of
+#' @examples
+#' # view included defaults
+#' param_set()
+#'
+#' # update the defaults
+#' param_set("{mean} ({sd})" = c(2,3), "pct" = 1)
+#'
+#' @return list of default parameter-level significant digits rounding
 #' @export
+#' @importFrom purrr map_lgl
 param_set <- function(...){
-  args <-  c(...)
+  args <-  list(...)
 
-  if (is.null(args)){
-    args <- numeric(0)
-  } else {
-    if (!is.numeric(args) || is.null(names(args))){
+  if (length(args)>0){
+    all_numeric_args <- map_lgl(args, is.numeric) %>% all()
+    all_named_args <- names(args) %>% nchar() %>% all(.>0)
+    if (!all_numeric_args || !all_named_args){
       stop("`param_set` entry must be named numeric vector.")
     }
   }
@@ -167,67 +181,48 @@ body_plan_builder <- function(data, group, label, param_set){
   }
 }
 
-#' Build body plan based on significant digits specifications
+#' Create tfrmt object from data formatting spec
 #'
-#' @param data significant digits data
-#' @param tfrmt tfrmt object
-#' @param param_set parameter-level significant digits specifications
+#' @param tfrmt_obj a tfrmt object to base this new format off of
+#' @param data data formatting spec with 1 record per group/label value, and
+#'   columns for relevant group and/or label variables, and supported
+#'   formatting-specific variables. Currently only supports significant digits
+#'   formatting - supply a numeric column `sigdig` containing the signficant
+#'   digits rounding to be applied in addition to the default.
+#' @param group what are the grouping vars of the input dataset
+#' @param label what is the label column of the input dataset
+#' @param param_set Option to override or add to default parameters.
+#' @param missing missing option to be included in all `frmt`s
+#' @param ... dots are for future extensions and must be empty
 #'
-#' @return `body_plan` object
+#' @return `tfrmt` object
 #' @noRd
-#' @importFrom purrr map transpose
-sigdig_body_plan <- function(data, group, label, param_set){
+#' @importFrom dplyr rowwise group_split
+#' @importFrom purrr map
+tfrmt_builder <- function(tfrmt_obj = NULL, data, group, label, param_set = param_set(), missing = NULL, ...){
+
+  tfrmt_el <- tfrmt_find_args(...)
 
   frmt_structure_list <- data %>%
-    transpose() %>%
-    map(as_tibble) %>%
-    map(body_plan_builder, group, label, param_set)
+    rowwise() %>%
+    group_split() %>%
+    map(body_plan_builder, tfrmt_el$group, tfrmt_el$label, tfrmt_el$param_set)
 
-  frmt_structure_list %>%
-    do.call("c", .) %>%
-    map(parse_expr) %>%
-    do.call("body_plan", .)
-}
-
-
-
-
-#' Significant digits specifications
-#'
-#' @param data Dataset containing significant digits to add on top of the
-#'   default (`sigdig`) as well as columns for relevant group and/or label
-#'   values. Group and label variable names must match `tfrmt` inputs.
-#' @param param_set Option to override or add to default parameters.
-#'
-#' @return sigdig_spec object
-#' @export
-#'
-#' @examples
-sigdig_spec <- function(data, param_set = param_set()){
-
-  structure(
-    list(
-      data = data,
-      param_set = param_set
-    ),
-    class = c("sigdig_spec","plan")
-  )
-}
-
-#' Create body plan based on `tfrmt` sigdig_spec and body_plan
-#'
-#' @param group tfrmt group
-#' @param label tfrmt label
-#' @param sigdig_plan tfrmt sigdig_plan
-#' @param body_plan tfrmt body_plan
-#'
-#' @return `body_plan` object
-#' @noRd
-create_body_plan <- function(group, label, sigdig_spec, body_plan){
-
-  spec_plans <- sigdig_body_plan(sigdig_spec$data, group, label, sigdig_spec$param_set)
-
-  unique(c(spec_plans, body_plan)) %>%
+  bp <- frmt_structure_list %>%
+    do.call("c",.) %>%
     do.call("body_plan", .)
 
+  new_tfrmt <- tfrmt(group = tfrmt_el$group,
+        label = tfrmt_el$label,
+        body_plan = bp)
+
+  # combine with previous tfrmt, if applicable
+  if(!missing(tfrmt_obj)){
+    new_tfrmt <- layer_tfrmt(
+      tfrmt_obj,
+      new_tfrmt
+    )
+  }
+
+  new_tfrmt
 }
