@@ -118,8 +118,6 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
 
   arg_set <- lapply(args, function(arg){
 
-    browser()
-
     ## try to get arg call
     arg_call <- do.call('substitute',list(as.symbol(arg)), envir = envir)
 
@@ -139,7 +137,7 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
         if(arg %in% c(as_var_args, as_quo_args)){
           ## for arg_var_args, we expect not a function. this means arguments can be
           ## entered such as `col`. convert into final forms respectively
-          if(!(is.function(arg_call_results$result) | is.list(arg_call_results$result))){
+          if(!(is.function(arg_call_results$result) | is_basic_list(arg_call_results$result))){
             if(arg %in% as_var_args){
               return(as_vars(arg_call_results$result))
             }else{
@@ -215,6 +213,11 @@ check_var_arg_call_valid <- function(var_list, arg){
       class = c("group_vars_error")
     )
   }
+}
+
+#' @importFrom rlang is_quosures
+is_basic_list <- function(x){
+  is.list(x) & !is_quosures(x)
 }
 
 is_missing <- function(x){
