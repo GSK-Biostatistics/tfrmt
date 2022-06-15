@@ -24,7 +24,6 @@
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns
 #' @param col_widths special column widths. otherwise fits contents
-#' @param sigdig_spec significant digits specifications
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'
@@ -50,7 +49,6 @@ tfrmt <- function(
   row_group, # col which is used to make the row grps
   col_plan,
   col_widths,
-  sigdig_spec,
   ...
   ){
 

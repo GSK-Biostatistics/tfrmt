@@ -14,15 +14,9 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     stop("Requires a tfrmt object")
   }
 
-  if(!is.null(tfrmt$sigdig_spec)){
-    body_plan <- create_body_plan(tfrmt$group, tfrmt$label, tfrmt$sigdig_spec, tfrmt$body_plan)
-  } else {
-    body_plan <- tfrmt$body_plan
-  }
-
 tbl_dat <- apply_table_frmt_plan(
     .data = .data,
-    table_frmt_plan = body_plan,
+    table_frmt_plan = tfrmt$body_plan,
     group = tfrmt$group,
     label = tfrmt$label,
     param = tfrmt$param,

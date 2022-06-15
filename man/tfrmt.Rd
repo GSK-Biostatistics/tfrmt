@@ -22,7 +22,6 @@ tfrmt(
   row_group,
   col_plan,
   col_widths,
-  sigdig_spec,
   ...
 )
 }
@@ -61,8 +60,6 @@ tfrmt(
 columns}
 
 \item{col_widths}{special column widths. otherwise fits contents}
-
-\item{sigdig_spec}{significant digits specifications}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
