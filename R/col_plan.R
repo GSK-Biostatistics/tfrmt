@@ -115,9 +115,13 @@ is_span_structures <- function(x){
 }
 
 check_span_structure_dots <- function(x, envir = parent.frame()){
-  lapply(x,function(x){
+  x_dots <- lapply(x,function(x){
     if(is.name(x)){
-      return(quo(!!x))
+      if(identical(as_label(x), "<empty>")){
+        return(NULL)
+      }else{
+        return(quo(!!x))
+      }
     }else if(is.call(x)){
       if(is_valid_tidyselect_call(x)){
         quo(!!x)
@@ -142,6 +146,8 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
       stop("Unexpected entry type")
     }
   })
+
+  x_dots[!sapply(x_dots, is.null)]
 }
 
 is_valid_span_structure_call <- function(x){
@@ -342,6 +348,7 @@ select_col_plan <- function(data, tfrmt){
             df_col_names,
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
           )
+
       }
 
       n_layers <- length(setdiff(names(col_name_df),c(".original_col",".rename_col",".removal_identifier_col")))
@@ -360,9 +367,6 @@ select_col_plan <- function(data, tfrmt){
         mutate(
           new_name_in_df = remove_empty_layers(.data$new_name_in_df, n_layers),
           new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
-        ) %>%
-        mutate(
-          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, dot_char_as_quo)
         )
 
       new_dots_tmp <- tibble(
@@ -373,10 +377,17 @@ select_col_plan <- function(data, tfrmt){
         ) %>%
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
-          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dot_chr),
+          new_name_quo = map2(.data$new_name_in_df, .data$dot_removal, dot_char_as_quo),
+          new_name_in_df_output = case_when(
+            is.na(.data$new_name_in_df_output) ~ "",
+            TRUE ~ .data$new_name_in_df_output
+          )
+        ) %>%
+        mutate(
+          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
           dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
             if(!identical(x, y) & !z){
-              x
+                x
             }else{
               ""
             }
@@ -398,7 +409,9 @@ select_col_plan <- function(data, tfrmt){
       new_dots <- setdiff(new_dots, tfrmt$group)
     }
 
-    out <- select(data, !!!new_dots)
+    dot_var <- do.call(vars,new_dots)
+
+    out <- select(data, !!!dot_var)
   }
 
   out
