@@ -46,13 +46,12 @@ frmt_combine_builder <- function(param_combine, param, frmt_string){
 #' @param label_val A string which represent the value of label should be when the given frmt is implemented
 #' @param frmt_list List of `frmt` and/or `frmt_combine` objects to be applied to the group_val/label_val combination
 #'
-#' @return list of `frmt_structure` objects
+#' @return vector of character strings representing `frmt_structure` objects
 #' @noRd
 #' @importFrom purrr map_chr map
 #' @importFrom rlang parse_expr
 frmt_structure_builder <- function(group_val, label_val, frmt_list){
-  map_chr(frmt_list, ~ paste0("frmt_structure(group_val = ", group_val, ", label_val = ", label_val, ", ", .x, ")")) %>%
-    map(parse_expr)
+  map_chr(frmt_list, ~ paste0("frmt_structure(group_val = ", group_val, ", label_val = ", label_val, ", ", .x, ")"))
 }
 
 #' Set custom parameter-level significant digits rounding
@@ -113,8 +112,8 @@ param_set <- function(...){
 #' @importFrom dplyr mutate group_by filter group_split select across
 #' @importFrom tidyr unnest
 #' @importFrom tidyselect everything
+#' @importFrom rlang as_name quo_is_missing
 body_plan_builder <- function(data, group, label, param_set){
-
 
   # prep params for frmt functions
   param_tbl <- seq_along(param_set) %>%
@@ -140,8 +139,8 @@ body_plan_builder <- function(data, group, label, param_set){
     })
 
   # group/label names from tfrmt
-  grp_names <- group %>% map_chr(as_name)
-  lbl_names <- label %>% map_chr(as_name)
+  grp_names <- if (length(group)==0) character(0) else group %>% map_chr(as_name)
+  lbl_names <- if(quo_is_missing(label)) character(0) else as_name(label)
 
   # significant digits data spec
   grp_data <- data %>% select(-sig_dig)
@@ -171,8 +170,7 @@ body_plan_builder <- function(data, group, label, param_set){
     }
 
     if(length(which_lbl)>0){
-      label_val <- grp_data[,which_lbl, drop = TRUE] %>%
-        mutate(across(everything(), ~ paste0("'", .x, "'")))
+      label_val <- grp_data[,which_lbl, drop = TRUE] %>% {paste0("'", ., "'")}
     } else {
       label_val <- "'.default'"
     }
@@ -183,7 +181,6 @@ body_plan_builder <- function(data, group, label, param_set){
 
 #' Create tfrmt object from data formatting spec
 #'
-#' @param tfrmt_obj a tfrmt object to base this new format off of
 #' @param data data formatting spec with 1 record per group/label value, and
 #'   columns for relevant group and/or label variables, and supported
 #'   formatting-specific variables. Currently only supports significant digits
@@ -193,13 +190,13 @@ body_plan_builder <- function(data, group, label, param_set){
 #' @param label what is the label column of the input dataset
 #' @param param_set Option to override or add to default parameters.
 #' @param missing missing option to be included in all `frmt`s
-#' @param ... dots are for future extensions and must be empty
+#' @param ... These dots are for future extensions and must be empty.
 #'
 #' @return `tfrmt` object
 #' @noRd
 #' @importFrom dplyr rowwise group_split
 #' @importFrom purrr map
-tfrmt_builder <- function(tfrmt_obj = NULL, data, group, label, param_set = param_set(), missing = NULL, ...){
+tfrmt_builder <- function(data, group, label, param_set = param_set(), missing = NULL, ...){
 
   tfrmt_el <- tfrmt_find_args(...)
 
@@ -210,19 +207,13 @@ tfrmt_builder <- function(tfrmt_obj = NULL, data, group, label, param_set = para
 
   bp <- frmt_structure_list %>%
     do.call("c",.) %>%
+    map(parse_expr) %>%
     do.call("body_plan", .)
 
-  new_tfrmt <- tfrmt(group = tfrmt_el$group,
-        label = tfrmt_el$label,
-        body_plan = bp)
 
-  # combine with previous tfrmt, if applicable
-  if(!missing(tfrmt_obj)){
-    new_tfrmt <- layer_tfrmt(
-      tfrmt_obj,
-      new_tfrmt
-    )
-  }
+  tfrmt(
+    group = tfrmt_el$group,
+    label = tfrmt_el$label,
+    body_plan = bp)
 
-  new_tfrmt
 }
