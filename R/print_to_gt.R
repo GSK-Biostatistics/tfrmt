@@ -13,8 +13,17 @@
 #' @export
 #' @importFrom gt gt tab_header tab_style cell_text cells_body
 #' @importFrom tidyselect everything
-#' @importFrom rlang quo_is_missing sym quo
+#' @importFrom rlang quo_is_missing sym quo is_empty
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
+
+  # fill param, column if not provided
+  if (quo_is_missing(tfrmt$param)){
+    tfrmt$param <- quo(param)
+  }
+  if (is_empty(tfrmt$column)){
+    tfrmt$column <- vars(column)
+  }
+
   if(is.null(.data)){
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }
