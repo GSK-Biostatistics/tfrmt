@@ -113,7 +113,7 @@ param_set <- function(...){
 #' @importFrom tidyr unnest
 #' @importFrom tidyselect everything
 #' @importFrom rlang as_name quo_is_missing
-body_plan_builder <- function(data, group, label, param_set){
+body_plan_builder <- function(data, group, label, param_set, missing){
 
   # prep params for frmt functions
   param_tbl <- seq_along(param_set) %>%
@@ -203,7 +203,7 @@ tfrmt_builder <- function(data, group, label, param_set = param_set(), missing =
   frmt_structure_list <- data %>%
     rowwise() %>%
     group_split() %>%
-    map(body_plan_builder, tfrmt_el$group, tfrmt_el$label, tfrmt_el$param_set)
+    map(body_plan_builder, tfrmt_el$group, tfrmt_el$label, param_set, missing)
 
   bp <- frmt_structure_list %>%
     do.call("c",.) %>%
