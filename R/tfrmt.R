@@ -111,7 +111,7 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   vals
 }
 
-#' @importFrom rlang abort
+#' @importFrom rlang abort frame_call
 #' @importFrom dplyr vars
 #' @importFrom purrr safely
 quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame()){
@@ -181,7 +181,7 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
             "`:\n",
             paste0(" ", arg_call_results$error, collapse = "")
           ),
-          call = rlang::frame_call(frame = envir)
+          call = frame_call(frame = envir)
         )
       }
     }
