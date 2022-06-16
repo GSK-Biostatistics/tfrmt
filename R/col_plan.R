@@ -4,6 +4,30 @@
 #' span_structures, define the spanned column names, and the label to apply.
 #' span_structures can be nested to allow for layered spanning headers.
 #'
+#' @details
+#'
+#' ## Column Selection
+#'
+#' When col_plan gets applied and is used to create the output table, the
+#' underlying logic becomes the input to \code{\link[dplyr]{select}}. Therefore,
+#' behavior falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
+#' and reordering the columns.
+#'
+#' Avoid beginning the \code{col_plan()} column selection with a deselection (ie
+#' \code{col_plan(-col1)}, \code{col_plan(-starts_with("value")))}. This will
+#' result in the table preserving all columns not "de-selected" in the
+#' statement, and the order of the columns not changed. It is preferred when
+#' creating the \code{col_plan()} to identify all the columns planned on
+#' preserving in the order they are wished to appear, or if
+#' <[`tidy-select`][dplyr_tidy_select]> arguments - such as
+#' \code{\link[dplyr]{everything}}- are used, identify the de-selection after
+#' the positive-selection. Experiment with the \code{\link[dplyr]{select}}
+#' function to understand this sort of behavior better.
+#'
+#' Alternatively, once the gt table is produced, use the \code{\link[gt]{cols_hide}}
+#' function to remove un-wanted columns.
+#'
+#'
 #' @rdname col_plan
 #'
 #' @param ... For a col_plan and span_structure,
