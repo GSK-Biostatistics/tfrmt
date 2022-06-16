@@ -2,13 +2,20 @@
 #' Create frmt character string from significant digits spec
 #'
 #' @param sigdig Number of significant digits to add to default setting for that param
+#' @param single_glue_to_frmt optional glue syntax for standalone (non-combined) parameters. NA if not applicable
 #'
 #' @return formatted spec as character string
 #' @noRd
 #'
-#' @importFrom stringr str_dup
-sigdig_frmt_string <- function(sigdig = 2) {
-  paste0("xxx.",str_dup("x", sigdig))
+#' @importFrom stringr str_dup str_replace
+sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
+
+  frmted_string <- paste0("xxx.",str_dup("x", sigdig))
+  if (is.na(single_glue_to_frmt)){
+     frmted_string
+  } else {
+    str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
+  }
 }
 
 
@@ -16,12 +23,19 @@ sigdig_frmt_string <- function(sigdig = 2) {
 #'
 #' @param param `param` value
 #' @param frmt_string formatted expression
+#' @param missing missing option to be included in all `frmt`s
 #'
 #' @return character string representing `frmt` object with `param` value as name
 #' @noRd
 #' @importFrom purrr map2
-frmt_builder <- function(param, frmt_string) {
-  map2(param, frmt_string, ~ paste0(as_name(.x), " = frmt('", .y, "')")) %>%
+frmt_builder <- function(param, frmt_string, missing = NULL) {
+
+  if (is.null(missing)){
+    miss_txt <- ""
+  } else {
+    miss_txt <- paste0(", missing = '", missing, "'")
+  }
+  map2(param, frmt_string, ~ paste0(as_name(.x), " = frmt('", .y, "'", miss_txt, ")")) %>%
     paste(., collapse = ", ")
 }
 
@@ -31,13 +45,21 @@ frmt_builder <- function(param, frmt_string) {
 #'   combined using `glue::glue()` syntax
 #' @param param vector of `param` values
 #' @param frmt_string vector of formatted expressions
+#' @param missing missing option to be included in all `frmt`s
 #'
 #' @return character string representing `frmt_combine` object
 #' @noRd
-frmt_combine_builder <- function(param_combine, param, frmt_string){
-  frmts <- frmt_builder(param, frmt_string)
+frmt_combine_builder <- function(param_combine, param, frmt_string, missing = NULL){
 
-  paste0("frmt_combine('", param_combine, "', ", frmts, ")")
+  if (is.null(missing)){
+    miss_txt <- ""
+  } else {
+    miss_txt <- paste0(", missing = '", missing, "'")
+  }
+
+  frmts <- frmt_builder(param, frmt_string, missing)
+
+  paste0("frmt_combine('", param_combine, "', ", frmts, miss_txt, ")")
 }
 
 #' Build format structure from a list of `frmt` and `frmt_combine` objects
@@ -103,38 +125,42 @@ param_set <- function(...){
 #'
 #' @param data significant digits data for a given set of group/label values
 #' @param tfrmt tfrmt object
-#' @param param_set parameter-level significant digits specifications
+#' @param param_defaults parameter-level significant digits specifications
+#' @param missing missing option to be included in all `frmt`s
 #'
 #' @return list of character strings representing `frmt_structure` objects
 #' @noRd
 #' @importFrom stringr str_detect str_extract_all
-#' @importFrom purrr map_dfr map map_chr quietly
+#' @importFrom purrr map_dfr map map_chr quietly pmap_chr
 #' @importFrom dplyr mutate group_by filter group_split select across
 #' @importFrom tidyr unnest
 #' @importFrom tidyselect everything
 #' @importFrom rlang as_name quo_is_missing
-body_plan_builder <- function(data, group, label, param_set, missing){
+body_plan_builder <- function(data, group, label, param_defaults, missing = NULL){
 
   # prep params for frmt functions
-  param_tbl <- seq_along(param_set) %>%
-    map_dfr(~tibble(param_combine = names(param_set)[.x],
-                    sig_dig = list(param_set[[.x]] + data$sig_dig),
+  param_tbl <- seq_along(param_defaults) %>%
+    map_dfr(~tibble(param_display = names(param_defaults)[.x],
+                    sig_dig = list(param_defaults[[.x]] + data$sig_dig),
                     pos = .x)) %>%
-    mutate(combined = str_detect(param_combine, "\\{.*\\}"),  # is this to be a frmt_combine
-           param = map2(param_combine, combined, ~ if(.y==TRUE){
+    mutate(contains_glue = str_detect(.data$param_display, "\\{.*\\}"),  # is this to be a frmt_combine
+           param = map2(.data$param_display, .data$contains_glue, ~ if(.y==TRUE){
              str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist
-           } else {.x})) %>%
+           } else {.x}),
+           single_glue_to_frmt = pmap_chr(list(.data$contains_glue, .data$param, .data$param_display), function(a,b,c){
+             if(a==TRUE & length(b) == 1) c else NA_character_
+           } )) %>%
     unnest(everything()) %>%
-    mutate(frmt_string = sigdig_frmt_string(sig_dig))
+    mutate(frmt_string = map2_chr(.data$sig_dig, .data$single_glue_to_frmt, sigdig_frmt_string))
 
-  frmt_list <- param_tbl %>%
-    group_by(pos) %>%
+    frmt_list <- param_tbl %>%
+    group_by(.data$pos) %>%
     group_split() %>%
     map(function(x){
-      if(all(x$combined==TRUE)){
-        frmt_combine_builder(x$param_combine[[1]], x$param, x$frmt_string)
+      if(sum(x$contains_glue)>1){
+        frmt_combine_builder(x$param_display[[1]], x$param, x$frmt_string, missing)
       } else{
-        frmt_builder(x$param, x$frmt_string)
+        frmt_builder(x$param, x$frmt_string, missing)
       }
     })
 
@@ -188,7 +214,7 @@ body_plan_builder <- function(data, group, label, param_set, missing){
 #'   digits rounding to be applied in addition to the default.
 #' @param group what are the grouping vars of the input dataset
 #' @param label what is the label column of the input dataset
-#' @param param_set Option to override or add to default parameters.
+#' @param param_defaults Option to override or add to default parameters.
 #' @param missing missing option to be included in all `frmt`s
 #' @param ... These dots are for future extensions and must be empty.
 #'
@@ -196,14 +222,14 @@ body_plan_builder <- function(data, group, label, param_set, missing){
 #' @noRd
 #' @importFrom dplyr rowwise group_split
 #' @importFrom purrr map
-tfrmt_builder <- function(data, group, label, param_set = param_set(), missing = NULL, ...){
+tfrmt_builder <- function(data, group, label, param_defaults = param_set(), missing = NULL, ...){
 
-  tfrmt_el <- tfrmt_find_args(...)
+  tfrmt_inputs <-  quo_get(c("group","label"), as_var_args = "group", as_quo_args = "label")
 
   frmt_structure_list <- data %>%
     rowwise() %>%
     group_split() %>%
-    map(body_plan_builder, tfrmt_el$group, tfrmt_el$label, param_set, missing)
+    map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = NULL)
 
   bp <- frmt_structure_list %>%
     do.call("c",.) %>%
@@ -212,8 +238,8 @@ tfrmt_builder <- function(data, group, label, param_set = param_set(), missing =
 
 
   tfrmt(
-    group = tfrmt_el$group,
-    label = tfrmt_el$label,
+    group = tfrmt_inputs$group,
+    label = tfrmt_inputs$label,
     body_plan = bp)
 
 }
