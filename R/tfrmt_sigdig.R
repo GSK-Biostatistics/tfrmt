@@ -192,7 +192,7 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
   lbl_names <- if(quo_is_missing(label)) character(0) else as_name(label)
 
   # significant digits data spec
-  grp_data <- data %>% select(-sig_dig)
+  grp_data <- data %>% select(-.data$sig_dig)
   grp_data_names <- names(grp_data)
   sig_dig <- data$sig_dig[[1]]
 
@@ -254,7 +254,7 @@ tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missi
   tfrmt_inputs <-  quo_get(c("group","label"), as_var_args = "group", as_quo_args = "label")
 
   frmt_structure_list <- data %>%
-    group_by(sig_dig) %>%
+    group_by(.data$sig_dig) %>%
     group_split() %>%
     map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = NULL)
 
