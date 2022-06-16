@@ -10,7 +10,16 @@
 #' @importFrom stringr str_dup str_replace
 sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 
-  frmted_string <- paste0("xxx.",str_dup("x", sigdig))
+  if (is.na(sigdig)){
+    frmted_string <- "xxx"
+  } else {
+    frmted_dec <- str_dup("x", sigdig)
+    if (!frmted_dec==""){
+      frmted_dec <- paste0(".", frmted_dec)
+    }
+    frmted_string <- paste0("xxx", frmted_dec)
+  }
+
   if (is.na(single_glue_to_frmt)){
      frmted_string
   } else {
@@ -101,7 +110,7 @@ param_set <- function(...){
   args <-  list(...)
 
   if (length(args)>0){
-    all_numeric_args <- map_lgl(args, is.numeric) %>% all()
+    all_numeric_args <- map_lgl(args, is.numeric)  %>% all()
     all_named_args <- names(args) %>% nchar() %>% all(.>0)
     if (!all_numeric_args || !all_named_args){
       stop("`param_set` entry must be named numeric vector.")
@@ -112,7 +121,8 @@ param_set <- function(...){
   param_list <- list(
     "max" = 0,
     "median" = 1,
-    "{mean} ({sd})" = c(1,2)
+    "{mean} ({sd})" = c(1,2),
+    "n" = NA
   )
 
   c(param_list[which(!names(param_list) %in% names(args))],

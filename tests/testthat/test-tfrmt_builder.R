@@ -1,14 +1,14 @@
 
 test_that("setting param sigdig defaults", {
 
-  defaults <- list(max = 0, median = 1, "{mean} ({sd})" = c(1,2))
+  defaults <- list(max = 0, median = 1, "{mean} ({sd})" = c(1,2), n = NA)
   expect_equal(param_set(), defaults)
 
   expect_equal(param_set(max = 1, "{mean} ({sd})" = c(2,3)),
-              list(median = 1, max = 1, "{mean} ({sd})" = c(2,3)))
+              list(median = 1, n = NA, max = 1, "{mean} ({sd})" = c(2,3)))
 
   expect_equal(param_set(new_prm = 4),
-              list(max = 0, median = 1, "{mean} ({sd})" = c(1,2), new_prm = 4))
+              list(max = 0, median = 1, "{mean} ({sd})" = c(1,2), n = NA, new_prm = 4))
 
 })
 
@@ -62,7 +62,8 @@ test_that("build frmt objects",{
   bp_1grp_1lbl <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_defaults = param_set())
   bp_1grp_1lbl_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', max = frmt('xxx.x'))",
                         "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', median = frmt('xxx.xx'))",
-                        "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))")
+                        "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))",
+                        "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', n = frmt('xxx'))")
 
   expect_equal(bp_1grp_1lbl,
                bp_1grp_1lbl_man)
@@ -71,17 +72,31 @@ test_that("build frmt objects",{
   bp_2grp_0lbl <- body_plan_builder(dat_sigdig[1,], group = vars(group1, group2), label = quo(), param_defaults = param_set())
   bp_2grp_0lbl_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', max = frmt('xxx.x'))",
                         "frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', median = frmt('xxx.xx'))",
-                        "frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))")
+                        "frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))",
+                        "frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', n = frmt('xxx'))")
 
   expect_equal(bp_2grp_0lbl,
                bp_2grp_0lbl_man)
 
+
   # custom params
-  bp_prm <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_defaults = param_set(max = 0, pct = 0))
+  bp_prm <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_defaults = param_set(max = 0, "{pct}%" = 0))
   bp_prm_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', median = frmt('xxx.xx'))",
                   "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))",
+                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', n = frmt('xxx'))",
                   "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', max = frmt('xxx.x'))",
-                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', pct = frmt('xxx.x'))")
+                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', pct = frmt('xxx.x%'))")
+  expect_equal(bp_prm,
+               bp_prm_man)
+
+
+  # custom params
+  bp_prm <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_defaults = param_set(max = 0, "{n} ({pct}%)" = c(NA, 0)))
+  bp_prm_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', median = frmt('xxx.xx'))",
+                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))",
+                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', n = frmt('xxx'))",
+                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', max = frmt('xxx.x'))",
+                  "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{n} ({pct}%)', n = frmt('xxx'), pct = frmt('xxx.x')))")
   expect_equal(bp_prm,
                bp_prm_man)
 })
