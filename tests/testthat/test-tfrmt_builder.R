@@ -20,12 +20,19 @@ test_that("build frmt objects",{
 
   expect_equal(frmt_spec, frmt_string)
 
-  # frmt_combine
-  frmt_spec <- frmt_combine_builder(param_combine = "{mean} ({sd})",
-                                    param = c("mean","sd"), frmt_string = c("xx.x","xx.xx"))
-  frmt_string <- "frmt_combine('{mean} ({sd})', mean = frmt('xx.x'), sd = frmt('xx.xx'))"
+  frmt_spec <- frmt_builder(param = c("mean","sd"), frmt_string = c("xx.x","xx.xx"), missing = "--")
+  frmt_string <- "mean = frmt('xx.x', missing = '--'), sd = frmt('xx.xx', missing = '--')"
 
   expect_equal(frmt_spec, frmt_string)
+
+
+  # frmt_combine
+  frmt_spec <- frmt_combine_builder(param_combine = "{mean} ({sd})",
+                                    param = c("mean","sd"), frmt_string = c("xx.x","xx.xx"), missing = "-")
+  frmt_string <- "frmt_combine('{mean} ({sd})', mean = frmt('xx.x', missing = '-'), sd = frmt('xx.xx', missing = '-'), missing = '-')"
+
+  expect_equal(frmt_spec, frmt_string)
+
 
 
   # frmt_structure
@@ -52,7 +59,7 @@ test_that("build frmt objects",{
 
   )
   # 1 group, 1 label
-  bp_1grp_1lbl <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_set = param_set())
+  bp_1grp_1lbl <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_defaults = param_set())
   bp_1grp_1lbl_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', max = frmt('xxx.x'))",
                         "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', median = frmt('xxx.xx'))",
                         "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))")
@@ -61,7 +68,7 @@ test_that("build frmt objects",{
                bp_1grp_1lbl_man)
 
   # 2 groups, no label
-  bp_2grp_0lbl <- body_plan_builder(dat_sigdig[1,], group = vars(group1, group2), label = quo(), param_set = param_set())
+  bp_2grp_0lbl <- body_plan_builder(dat_sigdig[1,], group = vars(group1, group2), label = quo(), param_defaults = param_set())
   bp_2grp_0lbl_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', max = frmt('xxx.x'))",
                         "frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', median = frmt('xxx.xx'))",
                         "frmt_structure(group_val = list(group1 = \"CHEM\", group2 = \"ALANINE AMINOTRANSFERASE\"), label_val = '.default', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))")
@@ -70,7 +77,7 @@ test_that("build frmt objects",{
                bp_2grp_0lbl_man)
 
   # custom params
-  bp_prm <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_set = param_set(max = 0, pct = 0))
+  bp_prm <- body_plan_builder(dat_sigdig[1,], group = vars(group1), label = quo(group2), param_defaults = param_set(max = 0, pct = 0))
   bp_prm_man <- c("frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', median = frmt('xxx.xx'))",
                   "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx')))",
                   "frmt_structure(group_val = list(group1 = \"CHEM\"), label_val = 'ALANINE AMINOTRANSFERASE', max = frmt('xxx.x'))",
@@ -108,7 +115,7 @@ test_that("tfrmt_builder returns a tfrmt", {
     data = dat_sigdig,
     group = group1,
     label = group2,
-    param_set = myprms
+    param_defaults = myprms
   )
   num_frmt_structures_act <- length(t_frmt$body_plan)
   num_frmt_structures_exp <-  nrow(dat_sigdig)*length(myprms)
