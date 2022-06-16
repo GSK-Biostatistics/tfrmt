@@ -118,20 +118,3 @@ element_label <- function(..., wrap_txt = 30){
 is_element_label <- function(x){
   inherits(x, "element_label")
 }
-
-# element_bounds(upper_exp = ">5", lower_exp, upper_lab, lower_lab)
-element_bounds <- function(upper_exp = NULL, lower_exp = NULL, upper_lab = NULL, lower_lab = NULL){
-  if(!is.null(upper_exp) & is.null(upper_lab)){
-    upper_lab = upper_exp
-  }
-
-  if(!is.null(lower_exp) & is.null(lower_lab)){
-    lower_lab = lower_exp
-  }
-  structure(
-    list(upper_exp = upper_exp, lower_exp = lower_exp,
-         upper_lab = upper_lab, lower_lab = lower_lab),
-    class = c("element_bounds", "element")
-  )
-}
-
