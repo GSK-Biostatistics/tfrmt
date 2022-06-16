@@ -13,7 +13,8 @@
 #' @export
 #' @importFrom gt gt tab_header tab_style cell_text cells_body
 #' @importFrom tidyselect everything
-#' @importFrom rlang quo_is_missing sym quo is_empty vars
+#' @importFrom rlang quo_is_missing sym quo is_empty
+#' @importFrom dplyr vars
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 
   # fill param, column if not provided
