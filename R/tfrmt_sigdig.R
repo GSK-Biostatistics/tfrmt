@@ -77,23 +77,28 @@ frmt_combine_builder <- function(param_combine, param, frmt_string, missing = NU
 #' @param label_val A string which represent the value of label should be when the given frmt is implemented
 #' @param frmt_vec Character vector of `frmt` and/or `frmt_combine` objects to be applied to the group_val/label_val combination
 #'
-#' @return vector of character strings representing `frmt_structure` objects
+#' @return list of `frmt_structure` objects
 #' @noRd
 #' @importFrom purrr map_chr map
 #' @importFrom rlang parse_expr
 frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 
-  if (is.list(group_val)) {
+    if (is.list(group_val)) {
     group_val <- group_val %>%
       {quietly(dput)(.)$result} %>% # so it won't print to console
-      deparse()
+       deparse() %>%
+      paste(., collapse = "")
     } else {
       group_val <- paste0("'", group_val,"'")
     }
-  grp_lbl_vec <- paste0("group_val = ", group_val, ", label_val = '", label_val, "'")
+  label_val <- paste(paste0("'", label_val, "'"), collapse = ", ")
+  grp_lbl_vec <- paste0("group_val = ", group_val, ", label_val = c(", label_val, ")")
+
   crossing(frmt_vec,
            grp_lbl_vec) %>%
-    {paste0("frmt_structure(", .$grp_lbl_vec, ", ", .$frmt_vec, ")")}
+    {paste0("frmt_structure(", .$grp_lbl_vec, ", ", .$frmt_vec, ")")} %>%
+    map(parse_expr) %>%
+    map(eval)
 
 }
 
@@ -131,7 +136,8 @@ param_set <- function(...){
 
   # make list of all params: default + user specified
   param_list <- list(
-    "max" = 0,
+    "min" = 1,
+    "max" = 1,
     "median" = 1,
     "{mean} ({sd})" = c(1,2),
     "n" = NA
@@ -150,7 +156,7 @@ param_set <- function(...){
 #' @param param_defaults parameter-level significant digits specifications
 #' @param missing missing option to be included in all `frmt`s
 #'
-#' @return list of character strings representing `frmt_structure` objects
+#' @return list of `frmt_structure` objects
 #' @noRd
 #' @importFrom stringr str_detect str_extract_all
 #' @importFrom purrr map_dfr map map_chr quietly pmap_chr
@@ -163,7 +169,7 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
   # prep params for frmt functions
   param_tbl <- seq_along(param_defaults) %>%
     map_dfr(~tibble(param_display = names(param_defaults)[.x],
-                    sig_dig = list(param_defaults[[.x]] + data$sig_dig[[1]]),
+                    sigdig = list(param_defaults[[.x]] + data$sigdig[[1]]),
                     pos = .x)) %>%
     mutate(contains_glue = str_detect(.data$param_display, "\\{.*\\}"),  # is this to be a frmt_combine
            param = map2(.data$param_display, .data$contains_glue, ~ if(.y==TRUE){
@@ -173,7 +179,7 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
              if(a==TRUE & length(b) == 1) c else NA_character_
            } )) %>%
     unnest(everything()) %>%
-    mutate(frmt_string = map2_chr(.data$sig_dig, .data$single_glue_to_frmt, sigdig_frmt_string))
+    mutate(frmt_string = map2_chr(.data$sigdig, .data$single_glue_to_frmt, sigdig_frmt_string))
 
     frmt_vec <- param_tbl %>%
     group_by(.data$pos) %>%
@@ -192,9 +198,9 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
   lbl_names <- if(quo_is_missing(label)) character(0) else as_name(label)
 
   # significant digits data spec
-  grp_data <- data %>% select(-.data$sig_dig)
+  grp_data <- data %>% select(-.data$sigdig)
   grp_data_names <- names(grp_data)
-  sig_dig <- data$sig_dig[[1]]
+  sigdig <- data$sigdig[[1]]
 
   # check if names of data are group or label vars in the trfrmt
   if (!all(grp_data_names %in% c(grp_names, lbl_names))){
@@ -211,13 +217,16 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
 
     if(length(which_grp)>0){
       group_val <- grp_data[,which_grp] %>%
-        as.list()
+        as.list() %>%
+        map(unique) %>%
+        map(~if (any(.x==".default")){ ".default"} else { .x})
     } else {
       group_val <- ".default"
     }
 
     if(length(which_lbl)>0){
-      label_val <- grp_data[,which_lbl, drop = TRUE]
+      label_val <- grp_data[,which_lbl, drop = TRUE] %>% unique()
+      label_val <- if(any(label_val==".default")){".default"} else {label_val}
     } else {
       label_val <- ".default"
     }
@@ -254,13 +263,12 @@ tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missi
   tfrmt_inputs <-  quo_get(c("group","label"), as_var_args = "group", as_quo_args = "label")
 
   frmt_structure_list <- data %>%
-    group_by(.data$sig_dig) %>%
+    group_by(.data$sigdig) %>%
     group_split() %>%
     map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = NULL)
 
   bp <- frmt_structure_list %>%
-    do.call("c",.) %>%
-    map(parse_expr) %>%
+    do.call("c",.)   %>%
     do.call("body_plan", .)
 
 
