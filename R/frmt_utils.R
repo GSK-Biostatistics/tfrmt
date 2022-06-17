@@ -112,10 +112,12 @@ format.frmt_structure <- function(x,...){
     paste0("  Label Values: ",paste0("\"",labels,"\"", collapse=", "))
   )
 
-  if(param != ".default"){
+
+
+  if(!identical(param,".default")){
     frmt_struct_str <- c(
       frmt_struct_str,
-      paste0("  Param Value: \"",param,"\"")
+      paste0("  Param Values: ",paste0("\"",param,"\"", collapse=", "))
     )
   }
 
