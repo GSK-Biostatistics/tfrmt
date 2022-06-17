@@ -39,13 +39,14 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' @importFrom purrr map2
 frmt_builder <- function(param, frmt_string, missing = NULL) {
 
-  if (is.null(missing)){
-    miss_txt <- ""
-  } else {
-    miss_txt <- paste0(", missing = '", missing, "'")
+  if(!missing(param)){
+    frmt_string <- setNames(frmt_string, param)
   }
-  map2(param, frmt_string, ~ paste0(as_name(.x), " = frmt('", .y, "'", miss_txt, ")")) %>%
-    paste(., collapse = ", ")
+
+  map(frmt_string, function(x, missing_val) {
+    do.call(frmt, list(expression = x, missing = missing_val ))
+  }, missing_val = missing)
+
 }
 
 #' Build frmt_combine for a given set of parameters
@@ -60,15 +61,9 @@ frmt_builder <- function(param, frmt_string, missing = NULL) {
 #' @noRd
 frmt_combine_builder <- function(param_combine, param, frmt_string, missing = NULL){
 
-  if (is.null(missing)){
-    miss_txt <- ""
-  } else {
-    miss_txt <- paste0(", missing = '", missing, "'")
-  }
-
   frmts <- frmt_builder(param, frmt_string, missing)
 
-  paste0("frmt_combine('", param_combine, "', ", frmts, miss_txt, ")")
+  list(do.call(frmt_combine, c(expression = param_combine, frmts, missing = missing)))
 }
 
 #' Build format structure from a list of `frmt` and `frmt_combine` objects
@@ -79,26 +74,30 @@ frmt_combine_builder <- function(param_combine, param, frmt_string, missing = NU
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom purrr map_chr map
-#' @importFrom rlang parse_expr
+#' @importFrom purrr pmap
 frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 
-    if (is.list(group_val)) {
-    group_val <- group_val %>%
-      {quietly(dput)(.)$result} %>% # so it won't print to console
-       deparse() %>%
-      paste(., collapse = "")
-    } else {
-      group_val <- paste0("'", group_val,"'")
-    }
-  label_val <- paste(paste0("'", label_val, "'"), collapse = ", ")
-  grp_lbl_vec <- paste0("group_val = ", group_val, ", label_val = c(", label_val, ")")
+  grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
+  frmt_vec_list <- map2(names(frmt_vec), frmt_vec, ~list(param = .x %||% "", frmt = .y))
 
-  crossing(frmt_vec,
-           grp_lbl_vec) %>%
-    {paste0("frmt_structure(", .$grp_lbl_vec, ", ", .$frmt_vec, ")")} %>%
-    map(parse_expr) %>%
-    map(eval)
+  crossing(frmt_vec_list,
+           grp_lbl_list) %>%
+    purrr::pmap(function(frmt_vec_list, grp_lbl_list){
+
+      if(is.list(grp_lbl_list$group_val) & length(grp_lbl_list$group_val) == 1 & is.null(names(grp_lbl_list$group_val))){
+        grp_lbl_list$group_val <- grp_lbl_list$group_val[[1]]
+      }
+
+      if(is.list(grp_lbl_list$label_val) & length(grp_lbl_list$label_val) == 1& is.null(names(grp_lbl_list$label_val))){
+        grp_lbl_list$label_val <- grp_lbl_list$label_val[[1]]
+      }
+
+      arg_list <- list(grp_lbl_list$group_val,  grp_lbl_list$label_val, frmt_vec_list$frmt)
+      names(arg_list) <- c("group_val","label_val",frmt_vec_list$param)
+
+      do.call(frmt_structure, arg_list)
+    }) %>%
+    unname()
 
 }
 
@@ -181,16 +180,18 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
     unnest(everything()) %>%
     mutate(frmt_string = map2_chr(.data$sigdig, .data$single_glue_to_frmt, sigdig_frmt_string))
 
-    frmt_vec <- param_tbl %>%
+  frmt_vec <- param_tbl %>%
     group_by(.data$pos) %>%
     group_split() %>%
-    map_chr(function(x){
+    map(function(x){
       if(sum(x$contains_glue)>1){
         frmt_combine_builder(x$param_display[[1]], x$param, x$frmt_string, missing)
       } else{
         frmt_builder(x$param, x$frmt_string, missing)
       }
     })
+
+  frmt_vec <-do.call(c, frmt_vec)
 
 
   # group/label names from tfrmt
@@ -223,6 +224,7 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
     } else {
       group_val <- ".default"
     }
+
 
     if(length(which_lbl)>0){
       label_val <- grp_data[,which_lbl, drop = TRUE] %>% unique()
