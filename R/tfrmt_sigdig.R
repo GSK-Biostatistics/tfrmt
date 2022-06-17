@@ -37,6 +37,7 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' @return character string representing `frmt` object with `param` value as name
 #' @noRd
 #' @importFrom purrr map2
+#' @importFrom stats setNames
 frmt_builder <- function(param, frmt_string, missing = NULL) {
 
   if(!missing(param)){

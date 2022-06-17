@@ -104,7 +104,6 @@ test_that("build frmt objects",{
   bp_prm_man <- list(frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), min = frmt('xxx.xx')),
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), median = frmt('xxx.xx')),
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
-                     frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), n = frmt('xxx')),
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), max = frmt('xxx.x')),
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), frmt_combine('{n} ({pct}%)', n = frmt('xxx'), pct = frmt('xxx.x')))
                      )
