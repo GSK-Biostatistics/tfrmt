@@ -29,6 +29,8 @@
 #'
 #' @rdname tfrmt
 #'
+#' @importFrom rlang caller_env
+#'
 #' @export
 tfrmt <- function(
   tfrmt_obj,
@@ -51,7 +53,7 @@ tfrmt <- function(
   ...
   ){
 
-  tfrmt_el <- tfrmt_find_args(...)
+  tfrmt_el <- tfrmt_find_args(..., env = environment(), parent_env = rlang::caller_env())
 
   new_tfrmt <- structure(
     tfrmt_el,
@@ -77,7 +79,7 @@ is_tfrmt <- function(x){
   inherits(x, "tfrmt")
 }
 
-tfrmt_find_args <- function(..., env = parent.frame()){
+tfrmt_find_args <- function(..., env = parent.frame(), parent_env = parent.env(env)){
 
   ## get args of parent function
   arg_parent <- names(formals(sys.function(sys.parent(1))))
@@ -91,7 +93,8 @@ tfrmt_find_args <- function(..., env = parent.frame()){
     args,
     as_var_args = c("group","column","sorting_cols"),
     as_quo_args = c("label","param","values"),
-    envir = env
+    envir = env,
+    parent_env = parent_env
     )
 
   ## remove the "missing" values from vals
@@ -101,7 +104,7 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   for(dot_name in names(dot_subs)){
     compare_dot_args_against_formals(dot_arg = dot_name, formals = args)
     vals[[dot_name]] <- tryCatch(
-      eval(dot_subs[[dot_name]], envir = env),
+      eval(dot_subs[[dot_name]], envir = env, enclos = parent_env),
       error = function(e){
         stop(e$message,call. = FALSE)
       }
@@ -114,7 +117,7 @@ tfrmt_find_args <- function(..., env = parent.frame()){
 #' @importFrom rlang abort frame_call
 #' @importFrom dplyr vars
 #' @importFrom purrr safely
-quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame()){
+quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame(), parent_env = parent.env(envir)){
 
   arg_set <- lapply(args, function(arg){
 
@@ -128,8 +131,22 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
 
     }else{
 
+      if(identical(arg_call, quo())){
+        return(arg_call)
+      }
+
       ## try to safely evaluate arg call
-      arg_call_results <-  safely(eval)(arg_call, envir = envir)
+      arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
+      arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
+
+      # browser()
+
+      if(is.null(arg_call_results_parent_env$error)){
+        arg_call_results <- arg_call_results_parent_env
+      }else{
+        arg_call_results <- arg_call_results_envir
+      }
+
 
       ## if expression evaluation was successful, move forward to confirming is correct class and returning the value
       if(is.null(arg_call_results$error)){
