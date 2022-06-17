@@ -4,12 +4,17 @@ test_that("setting param sigdig defaults", {
   defaults <- list(min = 1, max = 1, median = 1, "{mean} ({sd})" = c(1,2), n = NA)
   expect_equal(param_set(), defaults)
 
-  expect_equal(param_set(max = 1, "{mean} ({sd})" = c(2,3)),
-              list(min = 1, median = 1, n = NA, max = 1, "{mean} ({sd})" = c(2,3)))
+  expect_equal(param_set(max = 2, "{mean} ({sd})" = c(2,3)),
+              list(min = 1, median = 1, n = NA, max = 2, "{mean} ({sd})" = c(2,3)))
 
   expect_equal(param_set(new_prm = 4),
               list(min = 1, max = 1, median = 1, "{mean} ({sd})" = c(1,2), n = NA, new_prm = 4))
 
+  expect_equal(param_set(mean = 0),
+               list(min = 1, max = 1, median = 1, n = NA, mean = 0))
+
+  expect_equal(param_set("{n} ({pct}%)" = c(NA, 1)),
+               list(min = 1, max = 1, median = 1, "{mean} ({sd})" = c(1,2), "{n} ({pct}%)" = c(NA, 1)))
 })
 
 test_that("build frmt objects",{
@@ -103,8 +108,7 @@ test_that("build frmt objects",{
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), frmt_combine('{n} ({pct}%)', n = frmt('xxx'), pct = frmt('xxx.x'))),
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), max = frmt('xxx.x')),
                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), median = frmt('xxx.xx')),
-                     frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), min = frmt('xxx.xx')),
-                     frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), n = frmt('xxx')))
+                     frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL"), min = frmt('xxx.xx')))
   expect_equal(bp_prm,
                bp_prm_man)
 })

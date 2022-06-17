@@ -38,7 +38,6 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' @noRd
 #' @importFrom purrr map2
 frmt_builder <- function(param, frmt_string, missing = NULL) {
-
   if (is.null(missing)){
     miss_txt <- ""
   } else {
@@ -122,7 +121,7 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 #'
 #' @return list of default parameter-level significant digits rounding
 #' @export
-#' @importFrom purrr map_lgl
+#' @importFrom purrr map_lgl map2_lgl
 param_set <- function(...){
   args <-  list(...)
 
@@ -143,7 +142,24 @@ param_set <- function(...){
     "n" = NA
   )
 
-  c(param_list[which(!names(param_list) %in% names(args))],
+  # determine if any existing params need to be overwritten
+
+  args_params <- c(names(args), str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>% unlist)
+
+  idx_drop <- seq_along(param_list) %>%
+    map_dfr(~tibble(param_display = names(param_list)[.x],
+                    params = str_extract_all(.data$param_display, "(?<=\\{)[^\\}]+(?=\\})"))) %>%
+    mutate(idx = row_number()) %>%
+    unnest(.data$params, keep_empty = TRUE) %>%
+    mutate(drop = map2_lgl(.data$param_display, .data$params, ~  (.x %in% args_params || .y %in% args_params))) %>%
+    filter(drop == TRUE) %>%
+    pull(.data$idx) %>%
+    unique()
+
+  if(length(idx_drop)>0){
+    param_list <- param_list[-idx_drop]
+  }
+  c(param_list,
     args)
 
 }
