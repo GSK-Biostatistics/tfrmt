@@ -19,16 +19,16 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 
   # fill param, column if not provided
   if (quo_is_missing(tfrmt$param)){
-    message("`tfrmt` is not suitable for reuse as it does not contan `param` value")
+    message("`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable")
     tfrmt$param <- quo(!!sym("__tfrmt__param"))
   }
   if (is_empty(tfrmt$column)){
-    message("`tfrmt` is not suitable for reuse as it does not contan `column` value")
+    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable")
     tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
   if(quo_is_missing(tfrmt$values)){
-    message("`tfrmt` is not suitable for reuse as it does not contan `value` value")
+    message("`tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
     tfrmt$values <- quo(!!sym("__tfrmt__val"))
   }
 

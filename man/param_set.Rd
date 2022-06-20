@@ -21,13 +21,20 @@ Set custom parameter-level significant digits rounding
 \details{
 Type \code{param_set()} in console to view package defaults. Use of the
 function will add to the defaults and/or override included defaults of the
-same name.
+same name. For values that are integers, use \code{NA} so no demical places will
+be added.
 }
 \examples{
-# view included defaults
+# View included defaults
 param_set()
 
-# update the defaults
+# Update the defaults
 param_set("{mean} ({sd})" = c(2,3), "pct" = 1)
+
+# Separate mean and SD to different lines
+param_set("mean" = 2, "sd" = 3)
+
+# Add formatting using the glue syntax
+param_set("{pct} \%" = 1)
 
 }
