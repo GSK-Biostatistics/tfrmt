@@ -53,7 +53,7 @@ tfrmt <- function(
   ...
   ){
 
-  tfrmt_el <- tfrmt_find_args(..., env = environment(), parent_env = rlang::caller_env())
+  tfrmt_el <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
 
   new_tfrmt <- structure(
     tfrmt_el,
@@ -139,7 +139,6 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
       arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
       arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
 
-      # browser()
 
       if(is.null(arg_call_results_parent_env$error)){
         arg_call_results <- arg_call_results_parent_env
