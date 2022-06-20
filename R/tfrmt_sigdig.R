@@ -60,7 +60,7 @@ param_set <- function(...){
   args <-  list(...)
 
   if (length(args)>0){
-    all_numeric_args <- map_lgl(args, ~is.numeric(.) | is.na(.))  %>% all()
+    all_numeric_args <- map_lgl(args, ~is.numeric(.) || is.na(.))  %>% all()
     all_named_args <- names(args) %>% nchar() %>% all(.>0)
     if (!all_numeric_args || !all_named_args){
       stop("`param_set` entry must be named numeric vector.")
@@ -148,14 +148,14 @@ param_set <- function(...){
 #'
 #' @export
 #'
-#' @importFrom dplyr rowwise group_split desc
+#' @importFrom dplyr rowwise group_split desc unite
 #' @importFrom purrr map
 tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missing = NULL, ...){
 
   tfrmt_inputs <-  quo_get(c("group","label"), as_var_args = "group", as_quo_args = "label")
 
   frmt_structure_list <- data %>%
-    unite("def_ord", !!!group, remove = FALSE) %>%
+    unite("def_ord", !!!tfrmt_inputs$group, remove = FALSE) %>%
     mutate("def_ord" = str_count(.data$def_ord, ".default")) %>%
     group_by(def_ord = desc(.data$def_ord), .data$sigdig) %>%
     group_split() %>%

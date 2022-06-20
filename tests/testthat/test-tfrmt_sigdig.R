@@ -1,3 +1,4 @@
+library(tibble)
 
 test_that("setting param sigdig defaults", {
 
@@ -128,6 +129,11 @@ test_that("no redundant frmt_structures",{
                       frmt_structure(group_val = list(group1 = ".default"), label_val = c(".default"), median = frmt('xxx.xx')),
                       frmt_structure(group_val = list(group1 = ".default"), label_val = c(".default"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
                       frmt_structure(group_val = list(group1 = ".default"), label_val = c(".default"), n = frmt('xxx')),
+                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "BILIRUBIN"), min = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "BILIRUBIN"), max = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "BILIRUBIN"), median = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "BILIRUBIN"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
+                      frmt_structure(group_val = list(group1 = "CHEM"), label_val = c("ALANINE AMINOTRANSFERASE", "BILIRUBIN"), n = frmt('xxx')),
                       frmt_structure(group_val = list(group1 = c("CHEM", "HEM")), label_val = c("CHOLESTEROL", "EOSINOPHILS"), min = frmt('xxx.xxx')),
                       frmt_structure(group_val = list(group1 = c("CHEM", "HEM")), label_val = c("CHOLESTEROL", "EOSINOPHILS"), max = frmt('xxx.xxx')),
                       frmt_structure(group_val = list(group1 = c("CHEM", "HEM")), label_val = c("CHOLESTEROL", "EOSINOPHILS"), median = frmt('xxx.xxx')),
@@ -143,18 +149,29 @@ test_that("no redundant frmt_structures",{
     "HEM", "CHOLESTEROL", "v1",2,
     ".default", "EOSINOPHILS", "v1",2
   )
-  bp <- tfrmt_sigdig(dat_sigdig, group = c(group1, group2), label = lbl, param_defaults = param_set())$body_plan
+  bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, group2), label = lbl, param_defaults = param_set())$body_plan
   bp_man <-  body_plan(
-    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v1", "v2"), min = frmt('xxx.xx')),
-    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v1", "v2"), max = frmt('xxx.xx')),
-    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v1", "v2"), median = frmt('xxx.xx')),
-    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v1", "v2"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
-    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v1", "v2"), n = frmt('xxx')),
-    frmt_structure(group_val = list(group1 = ".default", group2 = c("CHOLESTEROL", "EOSINOPHILS")), label_val = c("v1"), min = frmt('xxx.xxx')),
-    frmt_structure(group_val = list(group1 = ".default", group2 = c("CHOLESTEROL", "EOSINOPHILS")), label_val = c("v1"), max = frmt('xxx.xxx')),
-    frmt_structure(group_val = list(group1 = ".default", group2 = c("CHOLESTEROL", "EOSINOPHILS")), label_val = c("v1"), median = frmt('xxx.xxx')),
-    frmt_structure(group_val = list(group1 = ".default", group2 = c("CHOLESTEROL", "EOSINOPHILS")), label_val = c("v1"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xxx'), sd = frmt('xxx.xxxx'))),
-    frmt_structure(group_val = list(group1 = ".default", group2 = c("CHOLESTEROL", "EOSINOPHILS")), label_val = c("v1"), n = frmt('xxx')))
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v2"), min = frmt('xxx.xx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v2"), max = frmt('xxx.xx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v2"), median = frmt('xxx.xx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v2"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = ".default"), label_val = c("v2"), n = frmt('xxx')),
+    frmt_structure(group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")), label_val = c("v1"), min = frmt('xxx.xxx')),
+    frmt_structure(group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")), label_val = c("v1"), max = frmt('xxx.xxx')),
+    frmt_structure(group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")), label_val = c("v1"), median = frmt('xxx.xxx')),
+    frmt_structure(group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")), label_val = c("v1"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xxx'), sd = frmt('xxx.xxxx'))),
+    frmt_structure(group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")), label_val = c("v1"), n = frmt('xxx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"), label_val = c("v1"), min = frmt('xxx.xx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"), label_val = c("v1"), max = frmt('xxx.xx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"), label_val = c("v1"), median = frmt('xxx.xx')),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"), label_val = c("v1"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
+    frmt_structure(group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"), label_val = c("v1"), n = frmt('xxx')),
+    frmt_structure(group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"), label_val = c("v1"), min = frmt('xxx.xxx')),
+    frmt_structure(group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"), label_val = c("v1"), max = frmt('xxx.xxx')),
+    frmt_structure(group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"), label_val = c("v1"), median = frmt('xxx.xxx')),
+    frmt_structure(group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"), label_val = c("v1"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xxx'), sd = frmt('xxx.xxxx'))),
+    frmt_structure(group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"), label_val = c("v1"), n = frmt('xxx'))
+    )
   expect_equal(bp,
                bp_man)
 })
