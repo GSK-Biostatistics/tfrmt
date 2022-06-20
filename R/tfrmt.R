@@ -112,68 +112,113 @@ tfrmt_find_args <- function(..., env = parent.frame()){
   vals
 }
 
-#' @importFrom rlang abort
+#' @importFrom rlang abort frame_call
 #' @importFrom dplyr vars
+#' @importFrom purrr safely
 quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame()){
+
   arg_set <- lapply(args, function(arg){
-    tryCatch({
-        if(arg %in% as_var_args){
-          arg_val <- tryCatch(
-            get(arg, envir = envir, inherits = FALSE),
-            error = function(e){
-              var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))
-              if(length(var_list) > 1){
-                var_list <- var_list[-1]
-              }
-              var_list_is_name <- sapply(var_list, is.name)
-              if(!all(var_list_is_name)){
-                new_arg_call <- paste0(
-                  "vars(",paste(sapply(var_list, as.character),collapse = ","),")"
-                )
-                abort(
-                  paste0(
-                    "Entries for `",
-                    arg,
-                    "` argument must be vars(), a character vector, or unquoted column name.\n",
-                    "  Consider updating the argument input to `",
-                    arg,
-                    "` to:\n\t",
-                    new_arg_call
-                  ),
-                  class = c("group_vars_error")
-                )
-              }
-              do.call('vars',var_list, envir = envir)
-            })
-          as_vars(arg_val)
-        }else if(arg %in% as_quo_args){
-          arg_val <- tryCatch(
-            get(arg, envir = envir, inherits = FALSE),
-            error = function(e){
-              var_list <- as.list(do.call('substitute',list(as.symbol(arg)), envir = envir))
-              if(length(var_list) > 1){
-                var_list <- var_list[-1]
-              }
-              do.call('vars',var_list, envir = envir)
-            })
-          as_length_one_quo(arg_val, arg = as.character(arg))
+
+    ## try to get arg call
+    arg_call <- do.call('substitute',list(as.symbol(arg)), envir = envir)
+
+    if(missing(arg_call)){
+
+      ## args not defined can quietly return empty expressions.
+      return(quote(expr = ))
+
+    }else{
+
+      ## try to safely evaluate arg call
+      arg_call_results <-  safely(eval)(arg_call, envir = envir)
+
+      ## if expression evaluation was successful, move forward to confirming is correct class and returning the value
+      if(is.null(arg_call_results$error)){
+
+        if(arg %in% c(as_var_args, as_quo_args)){
+          ## for arg_var_args, we expect not a function. this means arguments can be
+          ## entered such as `col`. convert into final forms respectively
+          if(!(is.function(arg_call_results$result) | is_basic_list(arg_call_results$result))){
+            if(arg %in% as_var_args){
+              return(as_vars(arg_call_results$result))
+            }else{
+              return(as_length_one_quo(arg_call_results$result, arg = as.character(arg)))
+            }
+          }
         }else{
-          get(arg, envir = envir,inherits = FALSE)
-        }
-      },error = function(e){
-        # This might be too common, but it was stopping valid errors from getting through
-        if(!str_detect(e$message, "missing")){
-          stop(e)
-        }else{
-          quote(expr = )
+          ## return value as normal if not a var or quo arg
+          return(arg_call_results$result)
         }
       }
-    )
+
+      ## Now assume expression evaluation was a failure/returned incorrect value
+
+      ## if not a var or quo and failed, return informative error message
+      if(arg %in% c(as_var_args, as_quo_args)){
+
+        arg_call_list <- as.list(arg_call)
+
+        ## minor clean up to remove leading function call in arg_call_list
+        ## if the arg_call_list is length > 1
+        if(length(arg_call_list) > 1){
+          arg_call_list <- arg_call_list[-1]
+        }
+
+        if(arg %in% as_var_args){
+          check_var_arg_call_valid(arg_call_list, arg)
+          arg_val <- as_vars(do.call('vars',arg_call_list, envir = envir))
+
+        }else{
+          arg_val <-as_length_one_quo(do.call('vars', arg_call_list, envir = envir), arg = as.character(arg))
+        }
+
+        return(arg_val)
+
+      }else{
+        abort(
+          paste0(
+            "Error in evaluating argument `",
+            arg,
+            "`:\n",
+            paste0(" ", arg_call_results$error, collapse = "")
+          ),
+          call = frame_call(frame = envir)
+        )
+      }
+    }
 
   })
 
   names(arg_set) <- args
   arg_set
+}
+
+
+check_var_arg_call_valid <- function(var_list, arg){
+
+  var_list_is_name <- sapply(var_list, is.name)
+  if(!all(var_list_is_name)){
+    new_arg_call <- paste0(
+      "vars(",paste(sapply(var_list, as.character),collapse = ","),")"
+    )
+    abort(
+      paste0(
+        "Entries for `",
+        arg,
+        "` argument must be vars(), a character vector, or unquoted column name.\n",
+        "  Consider updating the argument input to `",
+        arg,
+        "` to:\n\t",
+        new_arg_call
+      ),
+      class = c("group_vars_error")
+    )
+  }
+}
+
+#' @importFrom rlang is_quosures
+is_basic_list <- function(x){
+  is.list(x) & !is_quosures(x)
 }
 
 is_missing <- function(x){
