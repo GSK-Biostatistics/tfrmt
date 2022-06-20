@@ -146,7 +146,8 @@ param_set <- function(...){
 #'
 #' }
 #'
-#' @noRd
+#' @export
+#'
 #' @importFrom dplyr rowwise group_split desc
 #' @importFrom purrr map
 tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missing = NULL, ...){
