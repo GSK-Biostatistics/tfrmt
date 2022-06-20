@@ -1,10 +1,10 @@
 #' Table Format
 #'
-#' tfrmt, or "table format" is a way to pre-define the non-data components
-#' of your tables, and how the data will be handled once added: i.e. title, footers,
-#' headers, span headers, and cell formats. In addition, tfrmt's can be layered,
-#' building from one table format to the next. For cases where only one value
-#' can be used, the newly defined tfrmt accepts the latest tfrmt
+#' tfrmt, or "table format" is a way to pre-define the non-data components of
+#' your tables, and how the data will be handled once added: i.e. title,
+#' footers, headers, span headers, and cell formats. In addition, tfrmt's can be
+#' layered, building from one table format to the next. For cases where only one
+#' value can be used, the newly defined tfrmt accepts the latest tfrmt
 #'
 #' @param tfrmt_obj a tfrmt object to base this new format off of
 #' @param group what are the grouping vars of the input dataset
@@ -21,7 +21,8 @@
 #' @param sorting_cols which columns determine sorting of output
 #' @param page_vars which column determine paging of table (splitting)
 #' @param row_group which columns determine row groups
-#' @param col_plan a col_plan object which is used to select, rename, and nest columns
+#' @param col_plan a col_plan object which is used to select, rename, and nest
+#'   columns
 #' @param col_widths special column widths. otherwise fits contents
 #' @param ... These dots are for future extensions and must be empty.
 #'

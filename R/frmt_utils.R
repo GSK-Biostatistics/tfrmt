@@ -113,7 +113,6 @@ format.frmt_structure <- function(x,...){
   )
 
 
-
   if(!identical(param,".default")){
     frmt_struct_str <- c(
       frmt_struct_str,
@@ -169,5 +168,84 @@ format.body_plan <- function(x,...){
 
 print.body_plan <- function(x, ...){
   cat(format(x, ...), sep = "\n")
+}
+
+
+
+# Constructing frmt from strings ------------------------------------------
+
+#' Build frmt for a given parameter
+#'
+#' @param param `param` value
+#' @param frmt_string formatted expression
+#' @param missing missing option to be included in all `frmt`s
+#'
+#' @return character string representing `frmt` object with `param` value as name
+#' @noRd
+#' @importFrom purrr map2
+#' @importFrom stats setNames
+frmt_builder <- function(param, frmt_string, missing = NULL) {
+
+  if(!missing(param)){
+    frmt_string <- setNames(frmt_string, param)
+
+  }
+
+  map(frmt_string, function(x, missing_val) {
+    do.call(frmt, list(expression = x, missing = missing_val ))
+  }, missing_val = missing)
+
+}
+
+#' Build frmt_combine for a given set of parameters
+#'
+#' @param param_combine character string representing how `param` values will be
+#'   combined using `glue::glue()` syntax
+#' @param param vector of `param` values
+#' @param frmt_string vector of formatted expressions
+#' @param missing missing option to be included in all `frmt`s
+#'
+#' @return character string representing `frmt_combine` object
+#' @noRd
+frmt_combine_builder <- function(param_combine, param, frmt_string, missing = NULL){
+
+  frmts <- frmt_builder(param, frmt_string, missing)
+
+  list(do.call(frmt_combine, c(expression = param_combine, frmts, missing = missing)))
+}
+
+#' Build format structure from a list of `frmt` and `frmt_combine` objects
+#'
+#' @param group_val A string or a named list of strings which represent the value of group should be when the given frmt is implemented
+#' @param label_val A string which represent the value of label should be when the given frmt is implemented
+#' @param frmt_vec Character vector of `frmt` and/or `frmt_combine` objects to be applied to the group_val/label_val combination
+#'
+#' @return list of `frmt_structure` objects
+#' @noRd
+#' @importFrom purrr pmap
+frmt_structure_builder <- function(group_val, label_val, frmt_vec){
+
+  grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
+  frmt_vec_list <- map2(names(frmt_vec), frmt_vec, ~list(param = .x %||% "", frmt = .y))
+
+  crossing(frmt_vec_list,
+           grp_lbl_list) %>%
+    pmap(function(frmt_vec_list, grp_lbl_list){
+
+      if(is.list(grp_lbl_list$group_val) & length(grp_lbl_list$group_val) == 1 & is.null(names(grp_lbl_list$group_val))){
+        grp_lbl_list$group_val <- grp_lbl_list$group_val[[1]]
+      }
+
+      if(is.list(grp_lbl_list$label_val) & length(grp_lbl_list$label_val) == 1& is.null(names(grp_lbl_list$label_val))){
+        grp_lbl_list$label_val <- grp_lbl_list$label_val[[1]]
+      }
+
+      arg_list <- list(grp_lbl_list$group_val,  grp_lbl_list$label_val, frmt_vec_list$frmt)
+      names(arg_list) <- c("group_val","label_val",frmt_vec_list$param)
+
+      do.call(frmt_structure, arg_list)
+    }) %>%
+    unname()
+
 }
 
