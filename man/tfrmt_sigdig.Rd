@@ -44,7 +44,7 @@ Currently covers specifications for \code{frmt} and \code{frmt_combine}.
 is layered on.
 }
 \examples{
-\donotrun{
+\dontrun{
 
 data_input <- tibble::tribble(
   ~group1,   ~group2, ~sigdig,

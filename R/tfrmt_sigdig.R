@@ -122,7 +122,7 @@ param_set <- function(...){
 #'   is layered on.
 #'
 #' @examples
-#' \donotrun{
+#' \dontrun{
 #'
 #' data_input <- tibble::tribble(
 #'   ~group1,   ~group2, ~sigdig,
@@ -148,7 +148,8 @@ param_set <- function(...){
 #'
 #' @export
 #'
-#' @importFrom dplyr rowwise group_split desc unite
+#' @importFrom dplyr rowwise group_split desc
+#' @importFrom tidyr unite
 #' @importFrom purrr map
 tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missing = NULL, ...){
 

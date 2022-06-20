@@ -724,12 +724,14 @@ test_that("Tidyselect subtraction with span_structure",{
                  param = c("count", "percent")) %>%
     mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
 
+  df_fake_values <- df %>% mutate(values = runif(nrow(df)))
 
   tfrmt_minus_selection <-  tfrmt(
       # Specify columns in the data
       label = label,
       column = column,
       param = param,
+      values = values,
       sorting_cols = c(ord1),
       # Specify body plan
       body_plan = body_plan(
@@ -767,7 +769,18 @@ test_that("Tidyselect subtraction with span_structure",{
     )
   )
 
-  mock_gt2 <- tfrmt_minus_selection %>%
+  real_gt <- print_to_gt(tfrmt_minus_selection, df_fake_values)
+
+  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  expect_equal(
+    names(real_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+    )
+  )
+
+
+  tfrmt_minus_selection_2 <- tfrmt_minus_selection %>%
     tfrmt(
       col_plan = col_plan(
         span_structure(
@@ -780,7 +793,9 @@ test_that("Tidyselect subtraction with span_structure",{
           PL = pl),
         -starts_with("ord")
       )
-    ) %>%
+    )
+
+  mock_gt2 <- tfrmt_minus_selection_2 %>%
     print_mock_gt(df)
 
 
@@ -791,6 +806,16 @@ test_that("Tidyselect subtraction with span_structure",{
       "Treatment___tlang_delim___T2",
       "Treatment___tlang_delim___T1&T2",
       "Placebo___tlang_delim___PL"
+    )
+  )
+
+  real_gt2 <- print_to_gt(tfrmt_minus_selection_2, df_fake_values)
+
+  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  expect_equal(
+    names(real_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
     )
   )
 
