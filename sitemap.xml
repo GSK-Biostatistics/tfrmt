@@ -85,7 +85,13 @@
     <loc>https://gsk-biostatistics.github.io/tlang/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://gsk-biostatistics.github.io/tlang/reference/labs_data.html</loc>
+  </url>
+  <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/layer_tfrmt.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tlang/reference/param_set.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/pipe.html</loc>
@@ -104,6 +110,9 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/tfrmt.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tlang/reference/tfrmt_sigdig.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tlang/reference/theme_element.html</loc>
