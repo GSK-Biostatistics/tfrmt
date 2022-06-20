@@ -717,3 +717,81 @@ test_that("Suppress printing of groups", {
 })
 
 
+test_that("Tidyselect subtraction with span_structure",{
+
+  df <- crossing(label = c("label 1", "label 2", "label 3"),
+                 column = c("trt1", "trt2", "pl", "trt1&trt2"),
+                 param = c("count", "percent")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+
+
+  tfrmt_minus_selection <-  tfrmt(
+      # Specify columns in the data
+      label = label,
+      column = column,
+      param = param,
+      sorting_cols = c(ord1),
+      # Specify body plan
+      body_plan = body_plan(
+        frmt_structure(group_val = ".default", label_val = ".default",
+                       frmt_combine(
+                         "{count} {percent}",
+                         count = frmt("XXX"),
+                         percent = frmt_when("==100"~ frmt(""),
+                                             "==0"~ "",
+                                             "TRUE" ~ frmt("(XX.X%)"))
+                       ))
+      ),
+      # Remove extra cols and create spans
+      col_plan = col_plan(
+        -starts_with("ord"),
+        span_structure(
+          "Treatment",
+          T1 = trt1,
+          T2 = trt2,
+          `T1&T2`= `trt1&trt2`),
+        span_structure(
+          "Placebo",
+          PL = pl)
+      )
+    )
+
+
+  mock_gt <- print_mock_gt(tfrmt_minus_selection, df)
+
+  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  expect_equal(
+    names(mock_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+    )
+  )
+
+  mock_gt2 <- tfrmt_minus_selection %>%
+    tfrmt(
+      col_plan = col_plan(
+        span_structure(
+          "Treatment",
+          T1 = trt1,
+          T2 = trt2,
+          `T1&T2`= `trt1&trt2`),
+        span_structure(
+          "Placebo",
+          PL = pl),
+        -starts_with("ord")
+      )
+    ) %>%
+    print_mock_gt(df)
+
+
+  ## keeps only the spanners, label is dropped
+  expect_equal(
+    names(mock_gt2$`_data`),
+    c("Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T2",
+      "Treatment___tlang_delim___T1&T2",
+      "Placebo___tlang_delim___PL"
+    )
+  )
+
+})

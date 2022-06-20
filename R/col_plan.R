@@ -4,6 +4,30 @@
 #' span_structures, define the spanned column names, and the label to apply.
 #' span_structures can be nested to allow for layered spanning headers.
 #'
+#' @details
+#'
+#' ## Column Selection
+#'
+#' When col_plan gets applied and is used to create the output table, the
+#' underlying logic becomes the input to \code{\link[dplyr]{select}}. Therefore,
+#' behavior falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
+#' and reordering the columns.
+#'
+#' Avoid beginning the \code{col_plan()} column selection with a deselection (ie
+#' \code{col_plan(-col1)}, \code{col_plan(-starts_with("value")))}. This will
+#' result in the table preserving all columns not "de-selected" in the
+#' statement, and the order of the columns not changed. It is preferred when
+#' creating the \code{col_plan()} to identify all the columns planned on
+#' preserving in the order they are wished to appear, or if
+#' <[`tidy-select`][dplyr_tidy_select]> arguments - such as
+#' \code{\link[dplyr]{everything}}- are used, identify the de-selection after
+#' the positive-selection. Experiment with the \code{\link[dplyr]{select}}
+#' function to understand this sort of behavior better.
+#'
+#' Alternatively, once the gt table is produced, use the \code{\link[gt]{cols_hide}}
+#' function to remove un-wanted columns.
+#'
+#'
 #' @rdname col_plan
 #'
 #' @param ... For a col_plan and span_structure,
@@ -115,9 +139,13 @@ is_span_structures <- function(x){
 }
 
 check_span_structure_dots <- function(x, envir = parent.frame()){
-  lapply(x,function(x){
+  x_dots <- lapply(x,function(x){
     if(is.name(x)){
-      return(quo(!!x))
+      if(identical(as_label(x), "<empty>")){
+        return(NULL)
+      }else{
+        return(quo(!!x))
+      }
     }else if(is.call(x)){
       if(is_valid_tidyselect_call(x)){
         quo(!!x)
@@ -142,6 +170,8 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
       stop("Unexpected entry type")
     }
   })
+
+  x_dots[!sapply(x_dots, is.null)]
 }
 
 is_valid_span_structure_call <- function(x){
@@ -342,6 +372,7 @@ select_col_plan <- function(data, tfrmt){
             df_col_names,
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
           )
+
       }
 
       n_layers <- length(setdiff(names(col_name_df),c(".original_col",".rename_col",".removal_identifier_col")))
@@ -360,9 +391,6 @@ select_col_plan <- function(data, tfrmt){
         mutate(
           new_name_in_df = remove_empty_layers(.data$new_name_in_df, n_layers),
           new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
-        ) %>%
-        mutate(
-          new_name_quo = map2(.data$new_name_in_df, .data$.removal_identifier_col, dot_char_as_quo)
         )
 
       new_dots_tmp <- tibble(
@@ -373,10 +401,17 @@ select_col_plan <- function(data, tfrmt){
         ) %>%
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
-          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dot_chr),
+          new_name_quo = map2(.data$new_name_in_df, .data$dot_removal, dot_char_as_quo),
+          new_name_in_df_output = case_when(
+            is.na(.data$new_name_in_df_output) ~ "",
+            TRUE ~ .data$new_name_in_df_output
+          )
+        ) %>%
+        mutate(
+          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
           dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
             if(!identical(x, y) & !z){
-              x
+                x
             }else{
               ""
             }
@@ -398,7 +433,9 @@ select_col_plan <- function(data, tfrmt){
       new_dots <- setdiff(new_dots, tfrmt$group)
     }
 
-    out <- select(data, !!!new_dots)
+    dot_var <- do.call(vars,new_dots)
+
+    out <- select(data, !!!dot_var)
   }
 
   out
