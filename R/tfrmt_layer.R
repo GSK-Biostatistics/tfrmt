@@ -1,12 +1,24 @@
 #' Layer tfrmt objects together
 #'
-#' Provide utility for layering tfrmt objects together. If both tmft's have
+#' Provide utility for layering tfrmt objects together. If both tfrmt's have
 #' values, it will preferentially choose the second tfrmt by default. This is an
-#' alternative to piping together tfrmts
+#' alternative to piping together tfrmt's
 #'
 #' @param x,y tfrmt objects that need to be combined
 #' @param ... arguments passed to layer_tfrmt_arg functions for combining different tfrmt elements
-#' @param join_body_plans should the body styles be uniquely combined, or just keep styling in y
+#' @param join_body_plans should the `body_plans` be combined, or just keep styling in y. See details: join_body_plans for more details.
+#'
+#' @details
+#'
+#' ## join_body_plan
+#'
+#' When combining two body_plans, the body plans will stack together, first the
+#' body plan from x tfrmt then y tfrmt. This means that frmt_structures in y
+#' will take priority over those in x.
+#'
+#' Combining two tfrmt with large body_plans can lead to slow table evaluation.
+#' Consider setting `join_body_plan` to `FALSE`. Only the y `body_plan` will be
+#' preserved.
 #'
 #' @export
 #' @examples
@@ -19,14 +31,19 @@
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
 
-  stopifnot(is_tfrmt(x))
-  stopifnot(is_tfrmt(y))
+
+
 
   if(missing(x)){
+    stopifnot(is_tfrmt(y))
     return(y)
   }else if(missing(y)){
+    stopifnot(is_tfrmt(x))
     return(x)
   }
+
+  stopifnot(is_tfrmt(y))
+  stopifnot(is_tfrmt(x))
 
   args <- union(names(x), names(y))
 
