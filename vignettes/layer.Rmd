@@ -1,10 +1,12 @@
 ---
-title: "Reuse and layer tfrmts"
+title: "Layering tfrmts"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Reuse and layer tfrmts}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Layering tfrmts}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -14,6 +16,67 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message=FALSE}
 library(tfrmt)
+library(dplyr)
+```
+
+A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity to build template table formats that can be shared, improved, and reused across multiple projects. `tfrmt` provides a few tfrmt templates to facilitate the creation of basic tfrmts, but they require customization. This can be done through layering. 
+
+To layer tfrmts, you can pipe or use the `layer_tfrmt()` function. Piping is the preferred method for readability.
+
+When a tfrmt gets layered, the values in the first tfrmt are replaced with the values in the second tfrmt. The exception to this rule is the "body_plan", which will stack the plans together. To change this behavior see the `layer_tfrmt()` documentation.
+
+## Example
+
+Here is an example of laying through piping. We create a template from `tfrmt_sigdig()` and pipe it into the `tfrmt`. 
+
+We provide `tfrmt_sigdig()` with a data.frame detailing the groups and the significant digits the values are to be rounded to and it creates a `tfrmt` with a body_plan that supports this. 
+
+The second tfrmt defines the table specific information, including title, specific columns to use for row labels and output columns, as well as the col_plan.
+
+The output tfrmt generates a table with the subset `labs_data`.
+
+```{r}
+
+labs_data_subset <- tfrmt::labs_data %>% 
+  filter(
+    group2 %in% c("ALANINE AMINOTRANSFERASE" ,"ALBUMIN" ,"ALKALINE PHOSPHATASE","ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
+    rowlbl %in% c("Bsln", "End[1]")
+  )
+
+data_input <- tibble::tribble(
+  ~group1,   ~group2, ~sigdig,
+  "CHEMISTRY",   ".default", 3,
+  "CHEMISTRY",   "ALBUMIN",  1,
+  "CHEMISTRY",   "CALCIUM",   1,
+  ".default",    ".default",  2
+  )
+
+
+tfrmt_sigdig(
+  data = data_input,
+  group = vars(group1, group2),
+  label = rowlbl,
+  param_defaults = param_set("[{n}]" = NA)
+  ) %>%
+  tfrmt(
+    column = vars(col1, col2),
+    param = param,
+    values = value,
+    sorting_cols = vars(ord1, ord2, ord3),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "indent")
+    ),
+    col_plan = col_plan(
+      group1, group2,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+      )
+  ) %>%
+  print_to_gt(labs_data_subset)
+
 ```
