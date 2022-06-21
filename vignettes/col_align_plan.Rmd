@@ -23,7 +23,7 @@ tfrmt offers the ability to align value columns in the following ways:
 
 - Left-align
 - Right-align
-- Align on one or more characters (e.g., decimal alignment)
+- Align on one or more single characters (e.g., decimal alignment)
 
 Alignment is specified via the `col_align_plan`, which accepts a series of `element_align`s as inputs. Note that the `col_align_plan` does not have any `*_structure` objects as inputs, as `*_structure`s are for modifying the *contents* (i.e., text) of the table, while `element_*`s are for modifying *aesthetics*. 
 

@@ -289,3 +289,112 @@ test_that("Overlapping element_aligns favors last one",{
 
   expect_equal(dat_aligned, dat_aligned_man)
 })
+
+
+
+
+test_that("Align strings >1 in length",{
+
+  dat <- tribble(
+    ~one      , ~column , ~ value,
+    "n (%)"    ,"trt1"  ," 12 (34%)",
+    "mean"     ,"trt1"  ," 12.3    ",
+    "sd"       ,"trt1"  ,"  4.34   ",
+    "median"   ,"trt1"  ," 14      ",
+    "(q1, q3)" ,"trt1"  ,"(10, 20) ",
+    "n (%)"    ,"trt2"  ," 24 (58%)",
+    "mean"     ,"trt2"  ," 15.4    ",
+    "sd"       ,"trt2"  ,"  8.25   ",
+    "median"   ,"trt2"  ," 16      ",
+    "(q1, q3)" ,"trt2"  ,"(11, 22) ",
+    "n (%)"    ,"four"  ,""         ,
+    "mean"     ,"four"  ,"<0.001"   ,
+    "sd"       ,"four"  ,""         ,
+    "median"   ,"four"  ,"0.05"   ,
+    "(q1, q3)" ,"four"  ,""  )
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align_plan =  col_align_plan(
+      element_align(align = "right", col = vars(starts_with("trt"))),
+      element_align(align = c("...",",,,,"," "), col = trt1)))
+
+  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+                             "n (%)"    ,"trt1"   ," 12 (34%)",
+                             "mean"     ,"trt1"   ," 12.3    ",
+                             "sd"       ,"trt1"   ,"  4.34   ",
+                             "median"   ,"trt1"   ," 14      ",
+                             "(q1, q3)" ,"trt1"   ,"(10, 20) ",
+                             "n (%)"    ,"trt2"   ," 24 (58%)",
+                             "mean"     ,"trt2"   ,"     15.4",
+                             "sd"       ,"trt2"   ,"     8.25",
+                             "median"   ,"trt2"   ,"       16",
+                             "(q1, q3)" ,"trt2"   ," (11, 22)",
+                             "n (%)"    ,"four"   ,""         ,
+                             "mean"     ,"four"   ,"<0.001"   ,
+                             "sd"       ,"four"   ,""         ,
+                             "median"   ,"four"   ,"0.05"     ,
+                             "(q1, q3)" ,"four"   ,""         )
+
+  # informs user
+  expect_message(apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values))
+
+  dat_aligned <- suppressMessages(apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values))
+  expect_equal(dat_aligned, dat_aligned_man)
+})
+
+
+
+test_that("Alphanumeric align string supplied",{
+
+  dat <- tribble(
+    ~one      , ~column , ~ value,
+    "n (%)"    ,"trt1"  ," 12 (34%)",
+    "mean"     ,"trt1"  ," 12.3    ",
+    "sd"       ,"trt1"  ,"  4.34   ",
+    "median"   ,"trt1"  ," 14      ",
+    "(q1, q3)" ,"trt1"  ,"(10, 20) ",
+    "n (%)"    ,"trt2"  ," 24 (58%)",
+    "mean"     ,"trt2"  ," 15.4    ",
+    "sd"       ,"trt2"  ,"  8.25   ",
+    "median"   ,"trt2"  ," 16      ",
+    "(q1, q3)" ,"trt2"  ,"(11, 22) ",
+    "n (%)"    ,"four"  ,""         ,
+    "mean"     ,"four"  ,"<0.001"   ,
+    "sd"       ,"four"  ,""         ,
+    "median"   ,"four"  ,"0.05"   ,
+    "(q1, q3)" ,"four"  ,""  )
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_align_plan =  col_align_plan(
+      element_align(align = "right", col = vars(starts_with("trt"))),
+      element_align(align = c("2","4"), col = trt1)))
+
+  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+                             "n (%)"    ,"trt1"   ,"    12 (34%)",
+                             "mean"     ,"trt1"   ,"    12.3    ",
+                             "sd"       ,"trt1"   ,"     4.34   ",
+                             "median"   ,"trt1"   ,"    14      ",
+                             "(q1, q3)" ,"trt1"   ,"(10, 20)    ",
+                             "n (%)"    ,"trt2"   ," 24 (58%)",
+                             "mean"     ,"trt2"   ,"     15.4",
+                             "sd"       ,"trt2"   ,"     8.25",
+                             "median"   ,"trt2"   ,"       16",
+                             "(q1, q3)" ,"trt2"   ," (11, 22)",
+                             "n (%)"    ,"four"   ,""         ,
+                             "mean"     ,"four"   ,"<0.001"   ,
+                             "sd"       ,"four"   ,""         ,
+                             "median"   ,"four"   ,"0.05"     ,
+                             "(q1, q3)" ,"four"   ,""         )
+
+  # informs user
+  expect_warning(apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values))
+
+  dat_aligned <- suppressWarnings(apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values))
+  expect_equal(dat_aligned, dat_aligned_man)
+})
