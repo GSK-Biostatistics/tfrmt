@@ -207,7 +207,7 @@ check_col_plan_dots <- check_span_structure_dots
 ## determine which columns to span across
 ## ---------------------------------------
 eval_tidyselect_on_colvec <- function(x, column_vec){
-  span_col_select_function <- get(paste0("eval_tidyselect_on_colvec.",class(x)[1]),envir = asNamespace("tlang"))
+  span_col_select_function <- get(paste0("eval_tidyselect_on_colvec.",class(x)[1]),envir = asNamespace("tfrmt"))
   span_col_select_function(x, column_vec = column_vec)
 }
 
@@ -256,7 +256,7 @@ eval_tidyselect_on_colvec.span_structures <- function(x, column_vec){
 ## We need to keep this
 ## -----------------------------------------------
 get_span_structure_dots <- function(x){
-  get_span_structure_dots_function <- get(paste0("get_span_structure_dots.",class(x)[1]),envir = asNamespace("tlang"))
+  get_span_structure_dots_function <- get(paste0("get_span_structure_dots.",class(x)[1]),envir = asNamespace("tfrmt"))
   get_span_structure_dots_function(x)
 }
 
@@ -450,7 +450,7 @@ dot_char_as_quo <- function(x, negative = FALSE) {
   ## if x is a valid tidyselect call, leave it as is,
   ## otherwise wrap it in "`". This is so we can pass
   ## colnames with spaces (which are common in spanned columns)
-  ## to quo. IE `spanned col header__tlang_delim__col1`
+  ## to quo. IE `spanned col header__tfrmt_delim__col1`
   x_text <- tryCatch({
     x_lang <- parse(text = x)[[1]]
     if (is_valid_tidyselect_call(x_lang)) {
@@ -507,7 +507,7 @@ apply_span_structures_to_data <- function(tfrmt_obj, x){
 ##----------------------------------------------------
 
 span_struct_to_df <- function(span_struct, data_col, depth = 1){
-  span_struct_to_df_function <- get(paste0("span_struct_to_df.",class(span_struct)[1]),envir = asNamespace("tlang"))
+  span_struct_to_df_function <- get(paste0("span_struct_to_df.",class(span_struct)[1]),envir = asNamespace("tfrmt"))
   span_struct_to_df_function(span_struct=span_struct, data_col = data_col, depth = depth)
 }
 

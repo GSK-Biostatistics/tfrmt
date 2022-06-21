@@ -1,4 +1,4 @@
-Package: tlang
+Package: tfrmt
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
@@ -47,8 +47,8 @@ Imports:
     tibble
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://GSK-Biostatistics.github.io/tlang/,
-    https://gsk-biostatistics.github.io/tlang/
-BugReports: https://github.com/GSK-Biostatistics/tlang/issues
+URL: https://GSK-Biostatistics.github.io/tfrmt/,
+    https://gsk-biostatistics.github.io/tfrmt/
+BugReports: https://github.com/GSK-Biostatistics/tfrmt/issues
 Depends: 
     R (>= 2.10)

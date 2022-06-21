@@ -15,17 +15,17 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
-library(tlang)
+library(tfrmt)
 library(rlang)
 library(dplyr)
 library(gt)
 ```
 
-Performing many calculations within a group is easier than ever due to tools in the tidyverse. tlang's expectation of a standard, long data format is not only in alignment with tidy data principles and workflows, but it allows for the user to easy specify group-wise aesthetic formatting. tlang also allows the user to display row labels in a variety of ways. 
+Performing many calculations within a group is easier than ever due to tools in the tidyverse. tfrmt's expectation of a standard, long data format is not only in alignment with tidy data principles and workflows, but it allows for the user to easy specify group-wise aesthetic formatting. tfrmt also allows the user to display row labels in a variety of ways. 
 
 # Row group structure
 
-Like the `body_plan`, tlang's row group plan (`row_grp_plan`), allows the user to specify any number of row group structure (`row_grp_structure`) objects, which define how groups of rows should appear.
+Like the `body_plan`, tfrmt's row group plan (`row_grp_plan`), allows the user to specify any number of row group structure (`row_grp_structure`) objects, which define how groups of rows should appear.
 
 The `row_grp_structure` contains `group_val` argument to define the relevant group values; this behaves like a filter to the relevant values. From there, the `row_grp_structure` essentially performs a group_by to apply the formatting within each unique combination of group values. 
 
@@ -88,7 +88,7 @@ print_mock_gt(my_tfrmt, .default = 1:2)%>%
 
 # Row labels 
 
-The gt package offers default displays for group and row labels which do not cover all use cases, particularly if the user provides more than one group variable. As such, tlang offers multiple objects for display. Let's see how they differ for the following options:
+The gt package offers default displays for group and row labels which do not cover all use cases, particularly if the user provides more than one group variable. As such, tfrmt offers multiple objects for display. Let's see how they differ for the following options:
 
 - **indented:** Combined group/label variables
 - **spanning:** Group label as row spanning header
@@ -97,7 +97,7 @@ The gt package offers default displays for group and row labels which do not cov
 
 ## indented
 
-tlang will combine group and label variables into a single column, using indentation to distinguish the hierarchies:
+tfrmt will combine group and label variables into a single column, using indentation to distinguish the hierarchies:
 
 
 ```{r}
