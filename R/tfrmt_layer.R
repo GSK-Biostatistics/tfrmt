@@ -45,7 +45,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
 
 get_layer_tfrmt_arg_method <- function(argname){
   tryCatch(
-    get(paste0("layer_tfrmt_arg.",argname),envir = asNamespace("tlang"), inherits = FALSE),
+    get(paste0("layer_tfrmt_arg.",argname),envir = asNamespace("tfrmt"), inherits = FALSE),
     error = function(e){ layer_tfrmt_arg.default}
   )
 }
