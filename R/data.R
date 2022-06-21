@@ -34,3 +34,41 @@
 #'   \item{ord2}{more ordering controls}
 #'   }
 "ae_data"
+
+#' Efficacy Analysis Results Data
+#'
+#' A dataset containing the results needed for an Efficacy table. Using the
+#' CDISC pilot data for ADAS-Cog(11).
+#'
+#' @format A data frame with 70 rows and 7 variables:
+#'  \describe{
+#'   \item{group}{highest level row labels}
+#'   \item{label}{more specific row labels}
+#'   \item{column}{column names}
+#'   \item{param}{parameter to explain each value}
+#'   \item{value}{values to put in a table}
+#'   \item{ord1}{controls ordering}
+#'   \item{ord2}{more ordering controls}
+#'   }
+"efficacy_data"
+
+
+#' Labs Analysis Results Data
+#'
+#' A dataset containing the results needed for an labs results table. Using the
+#' CDISC pilot data.
+#'
+#' @format A data frame with 4,950 rows and 7 variables:
+#'  \describe{
+#'   \item{group1}{highest level row labels: Lab value class}
+#'   \item{group2}{more specific row labels: Lab parameter}
+#'   \item{rowlbl}{most specific row labels: Study visit}
+#'   \item{col1}{higher level column names (spanners)}
+#'   \item{col2}{lower level column names}
+#'   \item{param}{parameter to explain each value}
+#'   \item{value}{values to put in a table}
+#'   \item{ord1}{controls ordering}
+#'   \item{ord2}{more ordering controls}
+#'   \item{ord3}{more ordering controls}
+#'   }
+"labs_data"

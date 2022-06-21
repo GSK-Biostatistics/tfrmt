@@ -296,10 +296,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   )
 
   suppressMessages({
-  suppressWarnings({
     processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
     processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
-  })
   })
 
   expect_equal(
@@ -353,10 +351,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   )
 
   suppressMessages({
-    suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
       processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
-    })
   })
 
 
@@ -369,7 +365,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
 test_that("Build simple tfrmt with multiple columns and with renaming duplicated colnames across spans",{
 
-  multi_col_df <- tribble(
+  multi_col_df <- tibble::tribble(
     ~label, ~col0, ~col1, ~col2, ~param, ~value,
     "A",    "A_",  "A",    "AA",  "p1", 123,
     "A",    "A_",  "A",    "AB",  "p1", 12,
@@ -443,12 +439,161 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
   )
 
   suppressMessages({
-    suppressWarnings({
       processed_gt <- print_to_gt(tfrmt = multi_column_template, .data = multi_col_df)
       processed_gt_2 <- print_to_gt(tfrmt = multi_column_template_spanners, .data = multi_col_df %>% unite(col0:col2,col = col_unite, sep = "__",remove = TRUE,na.rm = TRUE))
-    })
   })
 
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
+
+test_that("Build simple tfrmt with spans with child spans that are and are not spanned",{
+
+  dat <- tibble::tribble(
+    ~group,      ~label,     ~top_span, ~child_span,  ~my_col,    ~parm, ~val,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col1",  "value",    1,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col2",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol3",  "value",    1,
+    "g1", "rowlabel1", "column cols",          NA,   "col4",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol5",  "value",    1,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col1",  "value",    2,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col2",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol3",  "value",    2,
+    "g1", "rowlabel2", "column cols",          NA,   "col4",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol5",  "value",    2,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col1",  "value",    3,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col2",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol3",  "value",    3,
+    "g2", "rowlabel3", "column cols",          NA,   "col4",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol5",  "value",    3
+  )
+
+  tfrmt_with_parial_child_span <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = my_col,
+    col_plan = col_plan(
+      group,
+      label,
+      span_structure(
+        "column cols",
+        span_structure(
+          "cols 1,2",
+          col1, col2
+        ),
+        col4
+      ),
+      span_structure(
+        "my cols",
+        new_col_3 = mycol3,
+        mycol5
+      ))
+  )
+
+  tfrmt_multiple_cols <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = c(top_span, child_span, my_col),
+    col_plan = col_plan(
+      group,
+      label,
+      col1,
+      col2,
+      col4,
+      new_col_3 = mycol3,
+      mycol5
+    )
+  )
+
+
+  suppressMessages({
+      processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
+      processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
+  })
+
+  expect_equal(
+    processed_gt,
+    processed_gt_2
+  )
+
+})
+
+test_that("Build simple tfrmt with spans with child spans that are and are not spanned - removal",{
+
+  dat <- tibble::tribble(
+    ~group,      ~label,     ~top_span, ~child_span,  ~my_col,    ~parm, ~val,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col1",  "value",    1,
+    "g1", "rowlabel1", "column cols",  "cols 1,2",   "col2",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol3",  "value",    1,
+    "g1", "rowlabel1", "column cols",          NA,   "col4",  "value",    1,
+    "g1", "rowlabel1",     "my cols",          NA, "mycol5",  "value",    1,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col1",  "value",    2,
+    "g1", "rowlabel2", "column cols",  "cols 1,2",   "col2",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol3",  "value",    2,
+    "g1", "rowlabel2", "column cols",          NA,   "col4",  "value",    2,
+    "g1", "rowlabel2",     "my cols",          NA, "mycol5",  "value",    2,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col1",  "value",    3,
+    "g2", "rowlabel3", "column cols",  "cols 1,2",   "col2",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol3",  "value",    3,
+    "g2", "rowlabel3", "column cols",          NA,   "col4",  "value",    3,
+    "g2", "rowlabel3",     "my cols",          NA, "mycol5",  "value",    3
+  )
+
+  tfrmt_with_parial_child_span <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = my_col,
+    col_plan = col_plan(
+      group,
+      label,
+      span_structure(
+        "column cols",
+        span_structure(
+          "cols 1,2",
+          col1, col2
+        ),
+        col4
+      ),
+      span_structure(
+        "my cols",
+        new_col_3 = mycol3
+      ),
+      -mycol5
+      )
+  )
+
+  tfrmt_multiple_cols <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = c(top_span, child_span, my_col),
+    col_plan = col_plan(
+      group,
+      label,
+      col1,
+      col2,
+      col4,
+      new_col_3 = mycol3,
+      -mycol5
+    )
+  )
+
+
+  suppressMessages({
+      processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
+      processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
+  })
 
   expect_equal(
     processed_gt,
@@ -572,3 +717,106 @@ test_that("Suppress printing of groups", {
 })
 
 
+test_that("Tidyselect subtraction with span_structure",{
+
+  df <- crossing(label = c("label 1", "label 2", "label 3"),
+                 column = c("trt1", "trt2", "pl", "trt1&trt2"),
+                 param = c("count", "percent")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+
+  df_fake_values <- df %>% mutate(values = runif(nrow(df)))
+
+  tfrmt_minus_selection <-  tfrmt(
+      # Specify columns in the data
+      label = label,
+      column = column,
+      param = param,
+      values = values,
+      sorting_cols = c(ord1),
+      # Specify body plan
+      body_plan = body_plan(
+        frmt_structure(group_val = ".default", label_val = ".default",
+                       frmt_combine(
+                         "{count} {percent}",
+                         count = frmt("XXX"),
+                         percent = frmt_when("==100"~ frmt(""),
+                                             "==0"~ "",
+                                             "TRUE" ~ frmt("(XX.X%)"))
+                       ))
+      ),
+      # Remove extra cols and create spans
+      col_plan = col_plan(
+        -starts_with("ord"),
+        span_structure(
+          "Treatment",
+          T1 = trt1,
+          T2 = trt2,
+          `T1&T2`= `trt1&trt2`),
+        span_structure(
+          "Placebo",
+          PL = pl)
+      )
+    )
+
+
+  mock_gt <- print_mock_gt(tfrmt_minus_selection, df)
+
+  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  expect_equal(
+    names(mock_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+    )
+  )
+
+  real_gt <- print_to_gt(tfrmt_minus_selection, df_fake_values)
+
+  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  expect_equal(
+    names(real_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+    )
+  )
+
+
+  tfrmt_minus_selection_2 <- tfrmt_minus_selection %>%
+    tfrmt(
+      col_plan = col_plan(
+        span_structure(
+          "Treatment",
+          T1 = trt1,
+          T2 = trt2,
+          `T1&T2`= `trt1&trt2`),
+        span_structure(
+          "Placebo",
+          PL = pl),
+        -starts_with("ord")
+      )
+    )
+
+  mock_gt2 <- tfrmt_minus_selection_2 %>%
+    print_mock_gt(df)
+
+
+  ## keeps only the spanners, label is dropped
+  expect_equal(
+    names(mock_gt2$`_data`),
+    c("Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T2",
+      "Treatment___tlang_delim___T1&T2",
+      "Placebo___tlang_delim___PL"
+    )
+  )
+
+  real_gt2 <- print_to_gt(tfrmt_minus_selection_2, df_fake_values)
+
+  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  expect_equal(
+    names(real_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+    )
+  )
+
+})

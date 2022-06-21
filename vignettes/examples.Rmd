@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, message = FALSE, warning = FALSE}
-library(tlang)
+library(tfrmt)
 library(dplyr)
 library(gt)
 library(tidyr)
@@ -526,3 +526,297 @@ tfrmt(
 ```
 
 Our AE table is now complete!
+
+# Efficacy
+
+For this example, we will use the `efficacy_data` dataset, an example analysis results dataset found in the package, which is based on the CDISC pilot data for the ADAS-Cog(11) score. The goal is to recreate table 14-3.01 from the CDISC pilot. 
+
+This data is relatively simple in that it contains only 1 `group` column and `column` column, but it adds complexity in that multiple analyses are stacked together - summary statistics of different values at different time points, and the results of several different ANCOVA models. Multiple treatment groups as well as the contrasts between groups are included.
+
+```{r, echo = FALSE}
+head(efficacy_data)
+```
+
+The mock we are going to match looks like this:
+ 
+```{r echo = FALSE} 
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = c(ord1, ord2),
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = list(group="Change from Baseline"), element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group="p-value (Dose Response)"), element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group="p-value (Xan - Placebo)"), element_block(post_space = " "))
+  ),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")), 
+    frmt_structure(group_val = ".default", label_val = "Median (Range)", frmt_combine("{median} ({min};{max})",
+                                                                                      median = frmt("xx.x"),
+                                                                                      min = frmt("xx"),
+                                                                                      max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)", frmt_combine("{mean} ({sd})",
+                                                                                      mean = frmt("xx.x"),
+                                                                                      sd = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", frmt_combine("{diff} ({diff_se})",
+                                                                                 diff = frmt("xx.x"),
+                                                                                 diff_se = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "95% CI", frmt_combine("({diff_lcl};{diff_ucl})",
+                                                                              diff_lcl = frmt("xx.x"),
+                                                                              diff_ucl = frmt("xx.x"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", p.value = frmt_when("<0.001" ~ "<0.001",
+                                                                                       ">0.99" ~ ">0.99",
+                                                                                       TRUE ~ frmt("x.xxx", missing = " ")))
+  ),
+  col_plan = col_plan(
+    group, label,
+    contains("Placebo"),
+    contains("Low"),
+    contains("High")
+  )
+) %>%
+  print_mock_gt(efficacy_data %>% select(-value))%>% 
+  tab_options(
+    container.width = 800
+  )
+
+```
+
+Let's first see how the table looks without any special formatting.
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value 
+) %>%
+  print_to_gt(efficacy_data) %>% 
+  tab_options(
+    container.width = 800
+  ) 
+  
+```
+
+Through judicious use of `body_plan`'s `frmt`, `frmt_combine`, and `frmt_when`, we can conditionally format each of the different pieces of results. For the summary statistics, we have the number of observations (n), the mean and standard deviation (mean, sd), and the median and range (median, min, max). For the models, we have the p-value (p.value) and the least squares mean difference (diff) as well as its associated standard error (diff_se) and 95% confidence interval (diff_lcl, diff_ucl). 
+
+The `label` column indicates which row the various measures belong on. First, let's format the standalone values: n and p-value. Notice that n always sits on a row labeled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`. 
+
+```{r} 
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value, 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", 
+                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   p.value = frmt_when("<0.001" ~ "<0.001",
+                                       ">0.99" ~ ">0.99",
+                                       TRUE ~ frmt("x.xxx", missing = " ")))
+  )
+) %>%
+  print_to_gt(efficacy_data) %>% 
+  tab_options(
+    container.width = 800
+  )
+
+```
+
+Next, the remaining param values are combined in twos or threes. Therefore, we use the `frmt_combine` utility to achieve desired formatting:
+
+
+```{r} 
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value, 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", 
+                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   p.value = frmt_when("<0.001" ~ "<0.001",
+                                       ">0.99" ~ ">0.99",
+                                       TRUE ~ frmt("x.xxx", missing = " "))),
+    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
+                   frmt_combine("{median} ({min};{max})",
+                                median = frmt("xx.x"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)",
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
+                   frmt_combine("{diff} ({diff_se})",
+                                diff = frmt("xx.x"),
+                                diff_se = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "95% CI", 
+                   frmt_combine("({diff_lcl};{diff_ucl})",
+                                diff_lcl = frmt("xx.x"),
+                                diff_ucl = frmt("xx.x"), missing = " "))
+  )
+) %>%
+  print_to_gt(efficacy_data) %>% 
+  tab_options(
+    container.width = 800
+  )
+
+```
+
+Now that our values are all formatted correctly, we can make sure the table is sorted appropriately by passing our order columns to `sorting_cols`. We can also drop these order columns from the final display using `col_plan`.
+
+```{r} 
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = c(ord1, ord2),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", 
+                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   p.value = frmt_when("<0.001" ~ "<0.001",
+                                       ">0.99" ~ ">0.99",
+                                       TRUE ~ frmt("x.xxx", missing = " "))),
+    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
+                   frmt_combine("{median} ({min};{max})",
+                                median = frmt("xx.x"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)", 
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
+                   frmt_combine("{diff} ({diff_se})",
+                                diff = frmt("xx.x"),
+                                diff_se = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "95% CI", 
+                   frmt_combine("({diff_lcl};{diff_ucl})",
+                                diff_lcl = frmt("xx.x"),
+                                diff_ucl = frmt("xx.x"), missing = " "))
+  ),
+  col_plan = col_plan(
+    group, label, Placebo, contains("Low"), contains("High")
+  )
+) %>%
+  print_to_gt(efficacy_data) %>% 
+  tab_options(
+    container.width = 800
+  )
+
+```
+
+Notice that our row labels are not quite right. First, we have a bit of a hierarchy with the `label` values nested under the `group` values, and it would be nice to add some indentation to make the nesting more obvious. Also, some cases, the `group` values also contain summary data, which means the ARD contains a matching `group` and `label` value. For summary rows, we want to suppress the printing of the extra group-level header, and display the summary data in-line. The `row_grp_plan` can help us with both via the `row_grp_loc` argument:
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = c(ord1, ord2),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", 
+                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   p.value = frmt_when("<0.001" ~ "<0.001",
+                                       ">0.99" ~ ">0.99",
+                                       TRUE ~ frmt("x.xxx", missing = " "))),
+    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
+                   frmt_combine("{median} ({min};{max})",
+                                median = frmt("xx.x"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)", 
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
+                   frmt_combine("{diff} ({diff_se})",
+                                diff = frmt("xx.x"),
+                                diff_se = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "95% CI", 
+                   frmt_combine("({diff_lcl};{diff_ucl})",
+                                diff_lcl = frmt("xx.x"),
+                                diff_ucl = frmt("xx.x"), missing = " "))
+  ),
+  col_plan = col_plan(
+    group, label, Placebo, contains("Low"), contains("High")
+  ),
+  row_grp_plan = row_grp_plan(
+    label_loc = element_row_grp_loc(location = "indented")
+  )
+) %>%
+  print_to_gt(efficacy_data) %>% 
+  tab_options(
+    container.width = 800
+  )
+```
+
+Almost done! Notice that the spec also contains empty rows after different groups of data. We can mimic this behavior by passing `row_grp_structure` objects in our `row_grp_plan`. These objects define "blocks" of rows and describe how to format them. In this case, we want to add a post space after specific blocks of data. We can reference the locations of each block based on the values of the `group` variable. 
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = c(ord1, ord2),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", 
+                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   p.value = frmt_when("<0.001" ~ "<0.001",
+                                       ">0.99" ~ ">0.99",
+                                       TRUE ~ frmt("x.xxx", missing = " "))),
+    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
+                   frmt_combine("{median} ({min};{max})",
+                                median = frmt("xx.x"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)", 
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
+                   frmt_combine("{diff} ({diff_se})",
+                                diff = frmt("xx.x"),
+                                diff_se = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "95% CI", 
+                   frmt_combine("({diff_lcl};{diff_ucl})",
+                                diff_lcl = frmt("xx.x"),
+                                diff_ucl = frmt("xx.x"), missing = " "))
+  ),
+  col_plan = col_plan(
+    group, label, Placebo, contains("Low"), contains("High")
+  ),
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = list(group="Change from Baseline"), 
+                      element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group="p-value (Dose Response)"),
+                      element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group="p-value (Xan - Placebo)"), 
+                      element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "indented")
+  )
+) %>%
+  print_to_gt(efficacy_data) %>% 
+  tab_options(
+    container.width = 800
+  )
+```
+
+There we have it, our efficacy table is complete!

@@ -56,16 +56,17 @@ tfrmt(
 
 \item{row_group}{which columns determine row groups}
 
-\item{col_plan}{a col_plan object which is used to select, rename, and nest columns}
+\item{col_plan}{a col_plan object which is used to select, rename, and nest
+columns}
 
 \item{col_widths}{special column widths. otherwise fits contents}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \description{
-tfrmt, or "table format" is a way to pre-define the non-data components
-of your tables, and how the data will be handled once added: i.e. title, footers,
-headers, span headers, and cell formats. In addition, tfrmt's can be layered,
-building from one table format to the next. For cases where only one value
-can be used, the newly defined tfrmt accepts the latest tfrmt
+tfrmt, or "table format" is a way to pre-define the non-data components of
+your tables, and how the data will be handled once added: i.e. title,
+footers, headers, span headers, and cell formats. In addition, tfrmt's can be
+layered, building from one table format to the next. For cases where only one
+value can be used, the newly defined tfrmt accepts the latest tfrmt
 }

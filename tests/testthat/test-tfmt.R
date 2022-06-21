@@ -29,11 +29,11 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
   expect_s3_class(t_frmt,"tfrmt")
 
   expect_equal( t_frmt$title, "Table Title")
-  expect_equal( t_frmt$group, vars(row_label1))
-  expect_equal( t_frmt$label, quo(row_label2))
-  expect_equal( t_frmt$param, quo(param))
-  expect_equal( t_frmt$values, quo(values))
-  expect_equal( t_frmt$column, vars(column))
+  expect_equal( t_frmt$group, vars(row_label1), ignore_attr = TRUE )
+  expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE )
+  expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE )
+  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE )
+  expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE )
 })
 
 test_that("basic tfrmt - selecting group/label/param/values/column - quo into var entries", {
@@ -50,11 +50,11 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo into va
   expect_s3_class(t_frmt,"tfrmt")
 
   expect_equal( t_frmt$title, "Table Title")
-  expect_equal( t_frmt$group, vars(row_label1))
-  expect_equal( t_frmt$label, quo(row_label2))
-  expect_equal( t_frmt$param, quo(param))
-  expect_equal( t_frmt$values, quo(values))
-  expect_equal( t_frmt$column, vars(column))
+  expect_equal( t_frmt$group, vars(row_label1), ignore_attr = TRUE )
+  expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE )
+  expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE )
+  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE )
+  expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE )
 })
 
 test_that("basic tfrmt - selecting group/label/param/values/column - char", {
@@ -428,3 +428,164 @@ test_that("basic tfrmt - ... args",{
   )
 
 })
+
+test_that("basic tfrmt - erroring args", {
+
+  expect_error(
+    tfrmt(
+        body_plan = body_plan(
+          frmt_structure(group_val = ".default", label_val = ".default", frmt("XX")),
+        )
+      ),
+    paste0("Error in evaluating argument `body_plan`:\n ",
+           "Error in body_plan(frmt_structure(group_val = \".default\",",
+           " label_val = \".default\", : argument is missing, with no default"
+           ),
+    fixed = TRUE
+  )
+
+})
+
+test_that("basic tfrmt - func calls into quo and var args", {
+
+  t_frmt <- tfrmt(
+    title = "Table Title",
+    group = c(col, df),
+    label = runif,
+    param = abs,
+    values = acos,
+    column = adist
+  )
+
+  expect_s3_class(t_frmt,"tfrmt")
+  expect_equal( t_frmt$title, "Table Title")
+  expect_equal( t_frmt$group, vars(col, df), ignore_attr = TRUE)
+  expect_equal( t_frmt$label, quo(runif), ignore_attr = TRUE)
+  expect_equal( t_frmt$param, quo(abs), ignore_attr = TRUE)
+  expect_equal( t_frmt$values, quo(acos), ignore_attr = TRUE)
+  expect_equal( t_frmt$column, vars(adist), ignore_attr = TRUE)
+})
+
+
+test_that("advanced tfrmt - tfrmt maker", {
+
+
+  tfrmt_maker <- function(title, group, label, param_val){
+
+    tfrmt(
+      title = title,
+      group = group,
+      label = label,
+      param = param_val
+    )
+
+  }
+
+  tfrmt_maker_2 <- function(title, group, label, param_val){
+
+    tfrmt_inputs <- quo_get(c("group","label","param_val"), as_var_args = "group", as_quo_args = c("label","param_val"))
+
+    tfrmt(
+      title = title,
+      group = tfrmt_inputs$group,
+      label = tfrmt_inputs$label,
+      param = tfrmt_inputs$param_val
+    )
+
+  }
+
+  tfrmt_maker_3 <- function(title, group, label, param_val, ...){
+
+    tfrmt_inputs <- quo_get(c("group","label","param_val"), as_var_args = "group", as_quo_args = c("label","param_val"))
+
+    bp <- body_plan(
+      ...
+    )
+
+    tfrmt(
+      title = title,
+      group = tfrmt_inputs$group,
+      label = tfrmt_inputs$label,
+      param = tfrmt_inputs$param_val,
+      body_plan = bp
+    )
+
+  }
+
+
+  new_tfrmt <- tfrmt_maker("Table Title", vars(value1, value2), quo(labs), "parameter")
+  new_tfrmt_char <- tfrmt_maker("Table Title", c("value1", "value2"), "labs", "parameter")
+  new_tfrmt_2 <- tfrmt_maker_2("Table Title", vars(value1, value2), quo(labs), "parameter")
+  new_tfrmt_2_char <- tfrmt_maker_2("Table Title", c("value1", "value2"), "labs", "parameter")
+
+  expect_s3_class(new_tfrmt,"tfrmt")
+  expect_equal( new_tfrmt$title, "Table Title")
+  expect_equal( new_tfrmt$group, vars(value1, value2), ignore_attr = TRUE)
+  expect_equal( new_tfrmt$label, quo(labs), ignore_attr = TRUE)
+  expect_equal( new_tfrmt$param, quo(parameter), ignore_attr = TRUE)
+
+  expect_s3_class(new_tfrmt_char,"tfrmt")
+  expect_equal( new_tfrmt_char$title, "Table Title")
+  expect_equal( new_tfrmt_char$group, vars(value1, value2), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_char$label, quo(labs), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_char$param, quo(parameter), ignore_attr = TRUE)
+
+  expect_s3_class(new_tfrmt_2,"tfrmt")
+  expect_equal( new_tfrmt_2$title, "Table Title")
+  expect_equal( new_tfrmt_2$group, vars(value1, value2), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_2$label, quo(labs), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_2$param, quo(parameter), ignore_attr = TRUE)
+
+  expect_s3_class(new_tfrmt_2_char,"tfrmt")
+  expect_equal( new_tfrmt_2_char$title, "Table Title")
+  expect_equal( new_tfrmt_2_char$group, vars(value1, value2), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_2_char$label, quo(labs), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_2_char$param, quo(parameter), ignore_attr = TRUE)
+
+  new_tfrmt_with_bp <- tfrmt_maker_3(
+    "Table Title",
+    vars(value1, value2),
+    quo(labs),
+    "parameter",
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.xx") ),
+    frmt_structure(group_val = "group1", label_val = ".default", frmt("xxx.xx") )
+  )
+
+  expect_s3_class(new_tfrmt_with_bp,"tfrmt")
+  expect_equal( new_tfrmt_with_bp$title, "Table Title")
+  expect_equal( new_tfrmt_with_bp$group, vars(value1, value2), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_with_bp$label, quo(labs), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_with_bp$param, quo(parameter), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_with_bp$body_plan, body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.xx") ),
+    frmt_structure(group_val = "group1", label_val = ".default", frmt("xxx.xx") )
+  ), ignore_attr = TRUE)
+
+
+  bp <- body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.xx") )
+  )
+
+  new_tfrmt_with_bp_2 <- tfrmt_maker_3(
+    "Table Title",
+    vars(value1, value2),
+    quo(labs),
+    "parameter",
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.xx") ),
+    frmt_structure(group_val = "group1", label_val = ".default", frmt("xxx.xx") )
+  )
+
+  expect_s3_class(new_tfrmt_with_bp_2,"tfrmt")
+  expect_equal( new_tfrmt_with_bp_2$title, "Table Title")
+  expect_equal( new_tfrmt_with_bp_2$group, vars(value1, value2), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_with_bp_2$label, quo(labs), ignore_attr = TRUE)
+  expect_equal( new_tfrmt_with_bp_2$param, quo(parameter), ignore_attr = TRUE)
+  ## make sure it selects the right bp (not the global env one first)
+  expect_equal( new_tfrmt_with_bp_2$body_plan, body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.xx") ),
+    frmt_structure(group_val = "group1", label_val = ".default", frmt("xxx.xx") )
+  ), ignore_attr = TRUE)
+
+
+})
+

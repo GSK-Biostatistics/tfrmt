@@ -1,4 +1,4 @@
-url: https://gsk-biostatistics.github.io/tlang/
+url: https://gsk-biostatistics.github.io/tfrmt/
 template:
   bootstrap: 5
 articles:
@@ -16,6 +16,7 @@ articles:
   - examples
   - layer
   - mocks
+  - unusual_tables
 - title:
   navbar: More
   contents:

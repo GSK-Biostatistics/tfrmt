@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
-library(tlang)
+library(tfrmt)
 library(dplyr)
 ```
 
-tlang offers the ability to align value columns in the following ways:
+tfrmt offers the ability to align value columns in the following ways:
 
 - Left-align
 - Right-align

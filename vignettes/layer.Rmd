@@ -1,8 +1,8 @@
 ---
-title: "Mock tables"
+title: "Reuse and layer tfrmts"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Mock tables}
+  %\VignetteIndexEntry{Reuse and layer tfrmts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

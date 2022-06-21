@@ -13,14 +13,27 @@
 #' @export
 #' @importFrom gt gt tab_header tab_style cell_text cells_body
 #' @importFrom tidyselect everything
-#' @importFrom rlang quo_is_missing sym quo
+#' @importFrom rlang quo_is_missing sym quo is_empty
+#' @importFrom dplyr vars
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
-  if(is.null(.data)){
-    .data <- make_mock_data(tfrmt, .default, n_cols)
+
+  # fill param, column if not provided
+  if (quo_is_missing(tfrmt$param)){
+    message("`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable")
+    tfrmt$param <- quo(!!sym("__tfrmt__param"))
+  }
+  if (is_empty(tfrmt$column)){
+    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable")
+    tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
   if(quo_is_missing(tfrmt$values)){
-    tfrmt$values <- quo(!!sym("val"))
+    message("`tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
+    tfrmt$values <- quo(!!sym("__tfrmt__val"))
+  }
+
+  if(is.null(.data)){
+    .data <- make_mock_data(tfrmt, .default, n_cols)
   }
 
   if(is.null(tfrmt$body_plan)){
