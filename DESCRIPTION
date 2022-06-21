@@ -1,5 +1,5 @@
 Package: tfrmt
-Title: What the Package Does (One Line, Title Case)
+Title: Applies Display Metadata To Analysis Results Datasets
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Christina",
@@ -23,7 +23,7 @@ Authors@R:
                     role = c("aut"),
                     email = c("karima.j.ahmad@gsk.com"))
              )
-Description: Creates a language around defining table metadata. It also applies the metadata to ARD. 
+Description: Creates a framework to store and apply display metadata to Analysis Results Datasets (ARDs)  
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
