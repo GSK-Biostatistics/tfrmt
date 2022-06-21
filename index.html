@@ -78,12 +78,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="tlang">tlang<a class="anchor" aria-label="anchor" href="#tlang"></a>
+<div class="page-header"><h1 id="tfrmt">tfrmt<a class="anchor" aria-label="anchor" href="#tfrmt"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end --><p>The tlang package provides a language for defining display-related metadata, which can then be used to automate and easily update output formats.</p>
+<!-- badges: end --><p>The tfrmt package provides a language for defining display-related metadata, which can then be used to automate and easily update output formats.</p>
 <p>In clinical trials, displays are generally quite standard, but frequent, highly specific formatting tweaks (e.g., rounding, footnotes, headers) are very common. Prior to data analysis, study teams often generate mock displays to represent the desired end product for sponsors to approve or programmers to replicate. This process is typically highly manual and separate from the programming itself. There is also a high importance placed on verifying the accuracy of the results via a QC process such as double programming. Finally, there is a movement toward an industry standard data structure for Analysis Results Data “ARD”, which means analysis results datasets will have consistent structures and column names. Specifically, the ARD is long, with 1 record per computed value.</p>
-<p>tlang supports a vision where:</p>
+<p>tfrmt supports a vision where:</p>
 <ul>
 <li>Mock displays are integrated with the programming workflow</li>
 <li>Results are QC’ed prior to formatting to reduce rework</li>
@@ -93,21 +93,21 @@
 <p>By reducing the amount of repetitive tasks, study teams can focus on the quality and interpretation of the results themselves.</p>
 </div>
 <div class="section level1">
-<h1 id="why-tlang">Why tlang?<a class="anchor" aria-label="anchor" href="#why-tlang"></a>
+<h1 id="why-tfrmt">Why tfrmt?<a class="anchor" aria-label="anchor" href="#why-tfrmt"></a>
 </h1>
 <p>While there are many existing table-making packages in the R ecosystem, they typically fall into one of two categories:</p>
 <ul>
 <li>Table packages that perform analyses and format the results</li>
 <li>Table packages that format and output existing data</li>
 </ul>
-<p>By design, tlang is more of the latter, as it is intended to be used after the results have been computed. What makes tlang unique, however, is that it offers an intuitive interface for defining and layering standard or custom formats that are often specific to clinical trials. It also offers the novel ability to easily generate mock displays using metadata that will be used for the actual displays. tlang is built on top of the powerful gt package, which is intended to support a variety of output formats in the future.</p>
+<p>By design, tfrmt is more of the latter, as it is intended to be used after the results have been computed. What makes tfrmt unique, however, is that it offers an intuitive interface for defining and layering standard or custom formats that are often specific to clinical trials. It also offers the novel ability to easily generate mock displays using metadata that will be used for the actual displays. tfrmt is built on top of the powerful gt package, which is intended to support a variety of output formats in the future.</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p>The development version of tlang can be installed with:</p>
+<p>The development version of tfrmt can be installed with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GSK-Biostatistics/tlang"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GSK-Biostatistics/tfrmt"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
@@ -125,14 +125,14 @@
 <div class="section level1">
 <h1 id="functionality">Functionality<a class="anchor" aria-label="anchor" href="#functionality"></a>
 </h1>
-<p>Here is an overview of what is possible with tlang:</p>
+<p>Here is an overview of what is possible with tfrmt:</p>
 <ul>
 <li>Create a “tfrmt” metadata object containing all formatting and labeling for the display</li>
 <li>Layer tfrmt objects to combine standard formatting with user-specific formatting</li>
 <li>Create mock displays based on existing sample data or no prior data</li>
 <li>ARD-standard compliant facilitates reuse and automation</li>
 </ul>
-<p>Other benefits of tlang:</p>
+<p>Other benefits of tfrmt:</p>
 <ul>
 <li>Provides a tidyverse-friendly, pipeable interface</li>
 <li>Leverages gt as output engine, which allows for further customizations within gt itself</li>
@@ -141,7 +141,7 @@
 <div class="section level1">
 <h1 id="more-info">More Info<a class="anchor" aria-label="anchor" href="#more-info"></a>
 </h1>
-<p>For more information about how to build your own tlang mocks/tables (like the one below!), please explore the vignettes.</p>
+<p>For more information about how to build your own tfrmt mocks/tables (like the one below!), please explore the vignettes.</p>
 <div class="figure">
 <img src="reference/figures/gt_readme.png" alt=""><p class="caption">Example GT Demog table</p>
 </div>
@@ -186,8 +186,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/GSK-Biostatistics/tlang/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/GSK-Biostatistics/tlang/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/GSK-Biostatistics/tlang?branch=main" class="external-link"><img src="https://codecov.io/gh/GSK-Biostatistics/tlang/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/GSK-Biostatistics/tfrmt?branch=main" class="external-link"><img src="https://codecov.io/gh/GSK-Biostatistics/tfrmt/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 
