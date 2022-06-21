@@ -88,7 +88,7 @@ test_that("alignment of multiple columns works", {
     label = one,
     column = vars(column),
     values = value,
-    col_align = col_align_plan(
+    col_align_plan = col_align_plan(
       # element_align(align = "left", col = vars(one)),
       element_align(align = "right", col = vars(four)),
       element_align(align = c(".", ",", " "), col = vars(two, three))
@@ -114,7 +114,7 @@ test_that("alignment of multiple columns works", {
     "(q1, q3)" ,"four"   ,"      "
   )
 
-  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values)
 
   expect_equal(dat_aligned,
                dat_aligned_man)
@@ -124,7 +124,7 @@ test_that("alignment of multiple columns works", {
     label = one,
     column = vars(column),
     values = value,
-    col_align = col_align_plan(
+    col_align_plan = col_align_plan(
       # element_align(align = "left", col = vars(one)),
       element_align(align = "right", col = vars(two, three, four))
     )
@@ -150,7 +150,7 @@ test_that("alignment of multiple columns works", {
 
   )
 
-  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values)
 
   expect_equal(dat_aligned,
                dat_aligned_man)
@@ -183,7 +183,7 @@ test_that("tidyselect works", {
     label = one,
     column = vars(column),
     values = value,
-    col_align = col_align_plan(
+    col_align_plan = col_align_plan(
       element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))),
       element_align(align = "right", col = vars(four)))
 
@@ -207,7 +207,7 @@ test_that("tidyselect works", {
     "median"   ,"four"  ,"  0.05"   ,
     "(q1, q3)" ,"four"  ,"      "  )
 
-  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
 
@@ -215,7 +215,7 @@ test_that("tidyselect works", {
     label = one,
     column = vars(column),
     values = value,
-    col_align = col_align_plan(
+    col_align_plan = col_align_plan(
       element_align(align = "right", col = vars(starts_with("trt")))
     ))
 
@@ -235,7 +235,7 @@ test_that("tidyselect works", {
                              "sd"       ,"four"   ,""         ,
                              "median"   ,"four"   ,"0.05"     ,
                              "(q1, q3)" ,"four"   ,""         )
-  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
 
@@ -265,7 +265,7 @@ test_that("Overlapping element_aligns favors last one",{
     label = one,
     column = vars(column),
     values = value,
-    col_align =  col_align_plan(
+    col_align_plan =  col_align_plan(
       element_align(align = "right", col = vars(starts_with("trt"))),
       element_align(align = c(".",","," "), col = trt1)))
 
@@ -285,7 +285,7 @@ test_that("Overlapping element_aligns favors last one",{
                              "sd"       ,"four"   ,""         ,
                              "median"   ,"four"   ,"0.05"     ,
                              "(q1, q3)" ,"four"   ,""         )
-  dat_aligned <- apply_col_align_plan(dat, plan$col_align, plan$column, plan$values)
+  dat_aligned <- apply_col_align_plan(dat, plan$col_align_plan, plan$column, plan$values)
 
   expect_equal(dat_aligned, dat_aligned_man)
 })

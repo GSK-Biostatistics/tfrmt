@@ -118,7 +118,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = "left", col = `p-value`))
   ) %>% 
   print_to_gt(dat)
@@ -154,7 +154,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = c("."), col = `p-value`))
   ) %>% 
   print_to_gt(dat)
@@ -189,7 +189,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = c("."), col = `p-value`),
     element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))))
   ) %>% 
@@ -225,7 +225,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = c("."), col = `p-value`),
     element_align(align = "left", col = trt1),
     element_align(align = "right", col = trt2))
