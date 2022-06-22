@@ -115,12 +115,14 @@ tfrmt_find_args <- function(..., env = parent.frame(), parent_env = parent.env(e
   vals
 }
 
-#' @importFrom rlang abort frame_call
+#' @importFrom rlang abort frame_call is_quosure
 #' @importFrom dplyr vars
 #' @importFrom purrr safely
 quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame(), parent_env = parent.env(envir)){
 
   arg_set <- lapply(args, function(arg){
+
+    # browser()
 
     ## try to get arg call
     arg_call <- do.call('substitute',list(as.symbol(arg)), envir = envir)
@@ -132,19 +134,24 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
 
     }else{
 
-      if(identical(arg_call, quo())){
+      if(identical(arg_call, quo()) | identical(arg_call, vars())){
         return(arg_call)
       }
 
-      ## try to safely evaluate arg call
-      arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
-      arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
-
-
-      if(is.null(arg_call_results_parent_env$error)){
-        arg_call_results <- arg_call_results_parent_env
+      # don't try to eval quosures if it is intended to be a quosure
+      if(is_quosure(arg_call) & arg %in% c(as_quo_args)){
+        arg_call_results <- list(result = arg_call, error = NULL)
       }else{
-        arg_call_results <- arg_call_results_envir
+      # try to safely evaluate arg call
+        arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
+        arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
+
+
+        if(is.null(arg_call_results_parent_env$error)){
+          arg_call_results <- arg_call_results_parent_env
+        }else{
+          arg_call_results <- arg_call_results_envir
+        }
       }
 
 
