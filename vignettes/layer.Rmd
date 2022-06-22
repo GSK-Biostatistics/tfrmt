@@ -31,7 +31,7 @@ When a tfrmt gets layered, the values in the first tfrmt are coalesced with valu
 
 ## Example
 
-Here is an example of laying through piping. We create a template from `tfrmt_sigdig()` and pipe it into the `tfrmt`. 
+Here is an example of layering through piping. We create a template from `tfrmt_sigdig()` and pipe it into a separate `tfrmt`. 
 
 We provide `tfrmt_sigdig()` with a data.frame detailing the groups and the significant digits the values are to be rounded to and it creates a `tfrmt` with a body_plan that supports this. 
 
