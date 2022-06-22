@@ -23,7 +23,7 @@ Authors@R:
                     role = c("aut"),
                     email = c("karima.j.ahmad@gsk.com"))
              )
-Description: Creates a framework to store and apply display metadata to Analysis Results Datasets (ARDs)  
+Description: Creates a framework to store and apply display metadata to Analysis Results Datasets (ARDs).  
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true

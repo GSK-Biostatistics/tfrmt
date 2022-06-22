@@ -36,7 +36,7 @@ plan  <- tfrmt(
   column = "col",
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
-  col_align = col_align_plan(
+  col_align_plan = col_align_plan(
     # element_align(align = "right", col = vars(label)),
     element_align(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
   body_plan = body_plan(
