@@ -47,14 +47,33 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
            across(!!tfrmt$label, ~ process_for_mock(.x, cur_column(), .default)),
            across(all_of(grp_vars), ~ process_for_mock(.x, cur_column(), .default)))
 
+  all_frmt_vals <- all_frmt_vals %>%
+    unnest(everything()) %>%
+    group_by(.data$frmt_num) %>%
+    expand(!!!tfrmt$group, !!tfrmt$label, !!tfrmt$param) %>%
+    ungroup
+
+  ## add sorting_cols. Not functional, will not impact actual output
+  if(!is.null(tfrmt$sorting_cols)){
+
+    sorting_cols_vars <- tfrmt$sorting_cols %>% map_chr(as_name)
+    n_sorting_cols <- length(sorting_cols_vars)
+
+    sorting_cols_def <- purrr::map_dfc(seq_len(n_sorting_cols), function(x){
+      tibble(!!sorting_cols_vars[x] := 1)
+    })
+
+    all_frmt_vals <- all_frmt_vals %>%
+      mutate(
+        `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
+      ) %>%
+      unnest(.data$`__tfrmt__mock__sorting_col`)
+  }
+
   col_names <- paste0("col", seq(1:n_cols))
 
   # Within a frmt, do all combinations of values
   all_frmt_vals %>%
-    unnest(everything()) %>%
-    group_by(.data$frmt_num) %>%
-    expand(!!!tfrmt$group, !!tfrmt$label, !!tfrmt$param) %>%
-    ungroup %>%
     crossing(!!(tfrmt$column[[length(tfrmt$column)]]) := col_names) %>%
     select(-.data$frmt_num)
 

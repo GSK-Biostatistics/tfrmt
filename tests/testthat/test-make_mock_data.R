@@ -34,7 +34,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~grp1,    ~grp2,     ~ my_label,  ~param2,  ~col ,
                  "grp1_1", "grp2_1", "my_label_1", "param2_1", "col1" ,
                  "grp1_1", "grp2_1", "my_label_2", "param2_1", "col1" ,
@@ -63,7 +63,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~grp1,    ~grp2  ,  ~grp3   , ~grp4   ,  ~my_label  , ~param2   ,~col,
                  "A"     , "a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"param2_1" ,"col1" ,
                  "A"     , "b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"param2_1" ,"col1" ,
@@ -92,7 +92,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~ grp1  , ~ grp2, ~ my_label, ~ param2, ~ col,
                  "grp1_1", "c"   , "e"       , "mean"  , "col1",
                  "grp1_1", "c"   , "f"       , "mean"  , "col1",
@@ -105,7 +105,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~ grp1  , ~ grp2, ~ my_label, ~ param2, ~ col,
                  "grp1_1", "c"   , "e"       , "mean"  , "col1",
                  "grp1_1", "c"   , "e"       , "mean"  , "col2",
@@ -140,7 +140,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~ grp1  , ~ grp2  , ~ my_label    , ~ param2, ~ col,
                  "grp1_1", "c"     , "e"           , "mean"  , "col1",
                  "grp1_1", "c"     , "f"           , "mean"  , "col1",
@@ -231,4 +231,63 @@ test_that("Test when no body_style is present", {
 
 })
 
+test_that("Mock data contains sorting_cols when available", {
+
+  # handle single sorting cols
+  plan  <- tfrmt(
+    group = vars(grp1, grp2),
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    sorting_cols = c(ord1),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp1,    ~grp2,     ~ my_label,  ~param2,    ~ord1,   ~col,
+                 "grp1_1", "grp2_1", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_1", "grp2_1", "my_label_2", "param2_1",     1, "col1",
+                 "grp1_1", "grp2_2", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_1", "grp2_2", "my_label_2", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_1", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_1", "my_label_2", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_2", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_2", "my_label_2", "param2_1",     1, "col1"
+               ))
+
+  # handle 2 sorting cols
+  plan  <- tfrmt(
+    group = vars(grp1, grp2),
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp1,    ~grp2,     ~ my_label,  ~param2,    ~ord1, ~ord2,  ~col,
+                 "grp1_1", "grp2_1", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_1", "grp2_1", "my_label_2", "param2_1",     1,     1,"col1",
+                 "grp1_1", "grp2_2", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_1", "grp2_2", "my_label_2", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_1", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_1", "my_label_2", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_2", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_2", "my_label_2", "param2_1",     1,     1,"col1"
+               ))
+
+})
 
