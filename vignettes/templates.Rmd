@@ -24,12 +24,11 @@ library(tidyr)
 A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity for organizations to build template table formats that can be shared, improved, and reused across multiple projects. Through layering the users can customize the templates to create a specific table. 
 
 A template is a function that given a set of inputs (or none) create a standard `tfrmt`. We will go through their applications below.  
-
+We will create an Adverse Events table template in this vignette to demonstrate the ideas behind developing a template tfrmt.
 ## Creating A Standard tfrmt
 
-A template is based on creating a standard `tfrmt`, and then writing a function around it to provide the ability to layer multiple templates. 
 
-We will create an Adverse Events table template in this example. This requires there to be some standards that can be expected that allows the construction of the basic `tfrmt`:
+The first step to creating an Adverse Events table template is to determine the constants in the format. This requires there to be some standards that can be expected that allows the construction of the basic `tfrmt`:
 
 First, we can provide instructions on cell formatting via the `body_plan`. We know that the cells should be consistently formatted as follows:
 
