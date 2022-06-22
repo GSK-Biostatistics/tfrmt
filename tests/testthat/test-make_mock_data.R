@@ -232,3 +232,113 @@ test_that("Test when no body_style is present", {
 })
 
 
+test_that("Mock data with multiple defined columns", {
+
+  # handle 2 column vars
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = c(col1, col2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                     ~grp,   ~ my_label,    ~param2,       ~col1,  ~col2,
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col1",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col2",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col1",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col2",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col1",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col2",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col1",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col2"
+               )
+  )
+
+  plan %>% print_mock_gt()
+
+})
+
+test_that("Mock data with col_plan defined columns", {
+
+  plan_basic_col_plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = col,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    ),
+    col_plan = col_plan(
+      my_column,
+      the_best_column,
+      -byebye_column
+    )
+  )
+
+  mock_dat <- make_mock_data(plan_basic_col_plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                    ~grp,   ~ my_label,    ~param2,               ~col,
+                 "grp_1", "my_label_1", "param2_1",        "my_column",
+                 "grp_1", "my_label_1", "param2_1",  "the_best_column",
+                 "grp_1", "my_label_1", "param2_1",    "byebye_column",
+                 "grp_1", "my_label_2", "param2_1",        "my_column",
+                 "grp_1", "my_label_2", "param2_1",  "the_best_column",
+                 "grp_1", "my_label_2", "param2_1",    "byebye_column",
+                 "grp_2", "my_label_1", "param2_1",        "my_column",
+                 "grp_2", "my_label_1", "param2_1",  "the_best_column",
+                 "grp_2", "my_label_1", "param2_1",    "byebye_column",
+                 "grp_2", "my_label_2", "param2_1",        "my_column",
+                 "grp_2", "my_label_2", "param2_1",  "the_best_column",
+                 "grp_2", "my_label_2", "param2_1",    "byebye_column"
+               ))
+
+  plan_tidyselect_col_plan  <- tfrmt(
+    group = grp1,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = col,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    ),
+    col_plan = col_plan(
+      my_column,
+      starts_with("My REGEX"),
+      all_of(c("My value","another value")),
+      -byebye_column,
+      -starts_with("ord")
+    )
+  )
+
+  mock_dat <- make_mock_data(plan_basic_col_plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp,   ~ my_label,  ~param2,      ~col2,
+                 "grp1_1", "my_label_1", "param2_1",  "my_column",
+                 "grp1_1", "my_label_1", "param2_1",  "the_best_column",
+                 "grp1_1", "my_label_1", "param2_1",  "byebye_column",
+                 "grp1_1", "my_label_2", "param2_1",  "my_column",
+                 "grp1_1", "my_label_2", "param2_1",  "the_best_column",
+                 "grp1_1", "my_label_2", "param2_1",  "byebye_column",
+                 "grp1_1", "my_label_1", "param2_1",  "my_column",
+                 "grp1_1", "my_label_1", "param2_1",  "the_best_column",
+                 "grp1_1", "my_label_1", "param2_1",  "byebye_column",
+                 "grp1_1", "my_label_2", "param2_1",  "my_column",
+                 "grp1_1", "my_label_2", "param2_1",  "the_best_column",
+                 "grp1_1", "my_label_2", "param2_1",  "byebye_column",
+               ))
+
+
+})

@@ -147,9 +147,9 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
         return(quo(!!x))
       }
     }else if(is.call(x)){
-      if(is_valid_tidyselect_call(x)){
+      if(is_valid_tidyselect_call(x) | is_valid_quo_call(x)){
         quo(!!x)
-      }else if(is_valid_span_structure_call(x) | is_valid_quo_call(x)){
+      }else if(is_valid_span_structure_call(x)){
         return(rlang::eval_tidy(x))
       }else{
         stop(
@@ -182,9 +182,6 @@ is_valid_tidyselect_call <- function(x){
   ## drop - from determining if
   if(as.character(as.list(x)[[1]]) == "-"){
     x <- x[[-1]]
-    if(is.name(x)){
-      return(TRUE)
-    }
   }
   as.character(as.list(x)[[1]]) %in% c("starts_with","ends_with","contains","matches","num_range","all_of","any_of","everything","last_col", "where")
 }
