@@ -1,0 +1,295 @@
+---
+title: "Building mocks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Building mocks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r message=FALSE}
+library(tfrmt)
+library(dplyr)
+library(tidyr)
+```
+
+Mock tables are useful for visualising how future generated data may be 
+presented in its final form. Using the `{tfrmt}` package you can create a mock 
+table using placeholders (e.g. `xx.x`, `XXX`) or using mock data with numerical 
+values.
+
+Tables are generally built by creating a tfrmt specification tailored to your 
+data, and then feeding that into one of the available print functions. In this 
+article we will only explore the use of the `print_mock_gt()` function. For 
+information on `print_to_gt()` please refer to its documentation.
+
+All tfrmt specifications are created using the `tfrmt()` function. The 
+foundation of this function are the `label`, `column`, `param` and `values` 
+parameters. From here you can specify a `body_plan` where custom 
+`frmt_structures` can be added and built upon.
+
+**Note:** layering has been used to avoid repeating code; for 
+more information please see the "Reuse and layer tfrmts" article.
+
+
+## Making a simple mock table
+
+In the following example only one format structure has been specified, where 
+the desired outcome is:
+<ul>
+<li> the count value followed by the percent value </li>
+<li> the count value is formatted to be maximum three digits </li>
+<li> the percent value is formatted to be two digits rounded to one decimal place </li>
+</ul>
+
+```{r}
+mock_tbl <- function(tfrmt_obj){
+  tfrmt(
+    # Specify columns in the data
+    label = label,
+    column = column, 
+    param = param,
+    values = value,
+    sorting_cols = c(ord1),
+    
+    # Specify body plan
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default",
+                     frmt_combine(
+                       "{count} {percent}",
+                       count = frmt("XXX"),
+                       percent = frmt_when("==100"~ frmt(""),
+                                           "==0"~ "",
+                                           "TRUE" ~ frmt("(XX.X%)"))))
+      ))
+}
+```
+
+The `print_mock_gt()` function has parameters `.default` and `n_cols` that 
+print three row labels and three columns by default - in this example there is 
+no need to supply data.
+
+You may enter different arguments into these parameters to alter the number of 
+rows and columns shown.
+
+```{r}
+# Print table
+mock_tbl() %>%
+  print_mock_gt()
+```
+
+If you would like to add a little more customisation by supplying your own mock 
+data you can utilise the `crossing()` function from the `tidyr` package. You 
+may also wish to add an integer column specifying order layer for complex tables.
+
+Here is an example:
+
+```{r}
+df <- crossing(label = c("label 1", "label 2", "label 3"),
+               column = c("trt1", "trt2", "trt1&trt2", "pl"),
+               param = c("count", "percent")) %>%
+  # Assign numerical order (optional)
+  mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+
+df
+```
+
+This time the `df` data has been added to the `print_mock_gt()` function, so 
+now you can see that the label and column names have changed.
+
+```{r}
+# Print table
+mock_tbl() %>%
+  print_mock_gt(df)
+```
+
+
+
+You can adjust column names and structure using the `col_plan` parameter. It 
+accepts selection helpers from the `tidyselect` package. For example, you can 
+select `everything()` and remove columns that `starts_with("ord")`.
+
+You can also use `span_structure()` to add spanning labels:
+
+```{r}
+# this example is works but has an error...
+
+mock_tbl_adjust_cols <- function(){
+  mock_tbl() %>%
+  tfrmt(
+    # Specify column structure
+    col_plan = col_plan(
+      -starts_with("ord"),
+      span_structure(
+        "Treatment",
+        T1 = trt1,
+        T2 = trt2,
+        `T1&T2`= `trt1&trt2`
+        ),
+      span_structure(
+        "Placebo",
+        PL = pl
+        ))
+  ) 
+}
+  
+mock_tbl_adjust_cols() %>%
+  print_mock_gt(df)
+```
+
+To add a title, subtitle or footer:
+
+```{r}
+mock_tbl_add_titles <- function(){
+  mock_tbl_adjust_cols() %>%
+    tfrmt(
+      # Specify title, subtitle, footer
+      title = "Table Name",
+      subtitle = "Study ID: GSK12345",
+      footer = "A footnote about stuff<br/>Here is a new line with more stuff")
+}
+  
+mock_tbl_add_titles() %>%
+  print_mock_gt(df)
+
+```
+
+## Making more complex mock tables
+
+Now let's make a slightly more complex table where we customise the value 
+formats by groups, labels and columns.
+
+### Adding columns with different value formatting
+
+Here we have columns that differ in parameters so we use `crossing()` multiple 
+times and then `bind_rows()`.
+
+```{r}
+df <- bind_rows(
+  crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "PL"),
+           param = c("count", "percent")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) )),
+  crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
+           param = c("num", "lower", "upper")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+  ) %>% arrange_all()
+
+df
+```
+This tfrmt specification is the same as the previous example but has one 
+additional `frmt_structure` which accounts for the new columns that are added.
+
+```{r}
+tfrmt(
+  # Specify columns in the data
+  label = "label",
+  param = "param",
+  column = "column",
+  values = value,
+  sorting_cols = vars(ord1),
+  
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XX.X%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("XX.X"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%"))))
+    ),
+  col_plan = col_plan(
+    -starts_with("ord"))
+  ) %>%
+  print_mock_gt(df)
+```
+
+### Adding labels to `label_val` in `frmt_structure`
+
+In this example, we're using the `crossing()` function multiple times changing 
+the label and corresponding parameters accordingly - these are then bound by 
+row using `bind_rows()`. 
+
+```{r}
+df <- bind_rows(
+  crossing(group = c("Baseline", "Change from Baseline"),
+           label = c("n"),
+           column = c("PL", "T1", "T2"),
+           param = c("count")),
+  crossing(group = c("Baseline", "Change from Baseline"),
+           label = c("Mean (SD)"),
+           column = c("PL", "T1", "T2"),
+           param = c("mean", "sd")),
+  crossing(group = c("Baseline", "Change from Baseline"),
+           label = c("Median (Range)"),
+           column = c("PL", "T1", "T2"),
+           param = c("min", "max", "median"))) %>%
+  arrange_all()
+
+df
+```
+
+Here you can see an argument has been passed to the `group` parameter. 
+Furthermore, more specificity can been provided by entering a particular label 
+to each the `label_val` parameter of `frmt_structure`.
+
+```{r}
+tfrmt(
+  # Specify columns in the data
+  group = c(group),
+  label = label,
+  column = column, 
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
+  
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")), 
+    frmt_structure(group_val = ".default", label_val = "Median (Range)",
+                   frmt_combine("{median} ({min},{max})",
+                                median = frmt("xx.x"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)",
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.xx"), missing = " "))
+    )) %>%
+  print_mock_gt(df)
+```
+
+### Adding groups to `group_val` in `frmt_structure`
+
+
+```{r}
+#df <- crossing()
+```
+
+```{r}
+# tfrmt() %>%
+#  print_mock_gt()
+```
+
+
+
+
