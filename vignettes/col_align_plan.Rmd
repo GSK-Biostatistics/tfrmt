@@ -23,7 +23,7 @@ tfrmt offers the ability to align value columns in the following ways:
 
 - Left-align
 - Right-align
-- Align on one or more characters (e.g., decimal alignment)
+- Align on one or more single characters (e.g., decimal alignment)
 
 Alignment is specified via the `col_align_plan`, which accepts a series of `element_align`s as inputs. Note that the `col_align_plan` does not have any `*_structure` objects as inputs, as `*_structure`s are for modifying the *contents* (i.e., text) of the table, while `element_*`s are for modifying *aesthetics*. 
 
@@ -118,7 +118,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = "left", col = `p-value`))
   ) %>% 
   print_to_gt(dat)
@@ -154,7 +154,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = c("."), col = `p-value`))
   ) %>% 
   print_to_gt(dat)
@@ -189,7 +189,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = c("."), col = `p-value`),
     element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))))
   ) %>% 
@@ -225,7 +225,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align =  col_align_plan(
+  col_align_plan =  col_align_plan(
     element_align(align = c("."), col = `p-value`),
     element_align(align = "left", col = trt1),
     element_align(align = "right", col = trt2))
