@@ -27,7 +27,7 @@ A template is a function that given a set of inputs (or none) create a standard 
 
 ## Creating A Standard tfrmt
 
-A template is based around creating a standard `tfrmt`, and then writing a function around it to provide the ability to layer multiple templates. 
+A template is based on creating a standard `tfrmt`, and then writing a function around it to provide the ability to layer multiple templates. 
 
 We will create an Adverse Events table template in this example. This requires there to be some standards that can be expected that allows the construction of the basic `tfrmt`:
 
