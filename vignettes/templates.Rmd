@@ -23,7 +23,7 @@ library(tidyr)
 
 A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity for organizations to build template table formats that can be shared, improved, and reused across multiple projects. Through layering the users can customize the templates to create a specific table. 
 
-The creation of a template is based on the standard development of a `tfrmt`, but wrapping its creation into a function. using the `layer_tfrmt` function. We will go through their applications below.  
+A template is a function that given a set of inputs (or none) create a standard `tfrmt`. We will go through their applications below.  
 
 ## Creating A Standard tfrmt
 
