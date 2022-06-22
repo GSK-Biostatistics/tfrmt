@@ -27,7 +27,7 @@ A core design element of `tfrmt` is to offer the ability to layer tfrmts togethe
 
 To layer tfrmts, you can pipe or use the `layer_tfrmt()` function. Piping is the preferred method for readability.
 
-When a tfrmt gets layered, the values in the first tfrmt are replaced with the values in the second tfrmt. The exception to this rule is the "body_plan", which will stack the plans together. To change this behavior see the `layer_tfrmt()` documentation.
+When a tfrmt gets layered, the values in the first tfrmt are coalesced with values in the second tfrmt.  If the second tfrmt has any of the same parameters specified as the first tfrmt, the values from the second tfrmt are prioritized. The exception to this rule is the "body_plan", which will stack the plans together. To change this behavior see the `layer_tfrmt()` documentation.
 
 ## Example
 
