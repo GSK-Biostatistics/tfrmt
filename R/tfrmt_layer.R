@@ -31,9 +31,6 @@
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
 
-
-
-
   if(missing(x)){
     stopifnot(is_tfrmt(y))
     return(y)

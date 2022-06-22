@@ -19,6 +19,8 @@ knitr::opts_chunk$set(
 ```{r setup, message=FALSE}
 library(tfrmt)
 library(dplyr)
+library(tibble)
+library(gt)
 ```
 
 A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity to build template table formats that can be shared, improved, and reused across multiple projects. `tfrmt` provides a few tfrmt templates to facilitate the creation of basic tfrmts, but they require customization. This can be done through layering. 
@@ -39,13 +41,13 @@ The output tfrmt generates a table with the subset `labs_data`.
 
 ```{r}
 
-labs_data_subset <- tfrmt::labs_data %>% 
+labs_data_subset <- labs_data %>% 
   filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE" ,"ALBUMIN" ,"ALKALINE PHOSPHATASE","ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
   )
 
-data_input <- tibble::tribble(
+data_input <- tribble(
   ~group1,   ~group2, ~sigdig,
   "CHEMISTRY",   ".default", 3,
   "CHEMISTRY",   "ALBUMIN",  1,
@@ -67,16 +69,19 @@ tfrmt_sigdig(
     sorting_cols = vars(ord1, ord2, ord3),
     row_grp_plan = row_grp_plan(
       label_loc = element_row_grp_loc(location = "indent")
-    ),
-    col_plan = col_plan(
-      group1, group2,
-      rowlbl,
-      "Residuals" = res,
-      "Change From Baseline" = cbl,
-      n,
-      -starts_with("ord")
-      )
+    )
+    # col_plan = col_plan(
+    #   group1, group2,
+    #   rowlbl,
+    #   "Residuals" = res,
+    #   "Change From Baseline" = cbl,
+    #   n,
+    #   -starts_with("ord")
+    #   )
   ) %>%
-  print_to_gt(labs_data_subset)
+  print_to_gt(labs_data_subset) %>% 
+  tab_options(
+    container.width = 1000
+  )
 
 ```
