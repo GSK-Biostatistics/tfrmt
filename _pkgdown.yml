@@ -17,6 +17,7 @@ articles:
   - layer
   - mocks
   - unusual_tables
+  - templates
 - title:
   navbar: More
   contents:
