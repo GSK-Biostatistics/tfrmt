@@ -1,7 +1,7 @@
 #' Apply row group structure formatting to data
 #'
 #' @param .data data
-#' @param row_grp_plan row group plan object
+#' @param row_grp_struct_list list of row group structure objects
 #' @param group symbolic list of grouping
 #' @param label symbolic label column
 #'
@@ -11,16 +11,16 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
-apply_row_grp_struct <- function(.data, row_grp_plan, group, label = NULL, ...){
+apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
 
   # Locate which groups need which formatting
   # determine which rows each block applies to
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
-  TEMP_appl_row <- row_grp_plan$struct_ls %>%
+  TEMP_appl_row <- row_grp_struct_list %>%
     map(grp_row_test_data, .data, group)
-  TEMP_block_to_apply <- row_grp_plan$struct_ls %>% map(~.$block_to_apply[[1]])
+  TEMP_block_to_apply <- row_grp_struct_list %>% map(~.$block_to_apply[[1]])
 
   # similar to frmts, only allow 1 element_block for a given row
   #   - within block-specific data, split data further by grouping vars
@@ -68,16 +68,14 @@ apply_row_grp_struct <- function(.data, row_grp_plan, group, label = NULL, ...){
 #' Apply row group block labeling to data
 #'
 #' @param .data data
-#' @param row_grp_plan row group plan object
+#' @param element_row_grp_loc element object specifying row group label location
 #' @param group symbolic list of grouping
 #' @param label symbolic label column
 #'
 #' @noRd
 #' @importFrom dplyr select group_by
 #' @importFrom rlang !!!
-apply_row_grp_lbl <- function(.data, row_grp_plan, group, label = NULL, ...){
-
-  element_row_grp_loc <- row_grp_plan$label_loc
+apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, ...){
 
   # check which group/label columns are available
   grps_avail <- group %>%
@@ -96,7 +94,6 @@ apply_row_grp_lbl <- function(.data, row_grp_plan, group, label = NULL, ...){
     add_ln_df <- .data %>% combine_group_cols(group[grps_avail],
                                           label,
                                           element_row_grp_loc)
-
 
     if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
       add_ln_df <- add_ln_df %>%
@@ -213,8 +210,13 @@ fill_post_space <- function(post_space, width){
 #' @importFrom tidyselect vars_select_helpers
 #' @importFrom forcats fct_inorder
 combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
+
   orig_group_names <- map_chr(group, as_name)
   top_grouping <- group #used for spliting in case of spanning label
+
+  # to retain the order of the data when splitting by group
+  .data <- .data %>%
+    mutate(across(c(!!!group), fct_inorder))
 
   if(is.null(element_row_grp_loc)){
     indent = "  "
@@ -224,10 +226,6 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   } else {
     indent = element_row_grp_loc$indent
   }
-
- # to retain the order of the data when splitting by group
-  .data <- .data %>%
-    mutate(across(c(!!!group), fct_inorder))
 
   while(length(group) > 0 & !is.null(label)){
 
@@ -264,7 +262,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   .data%>%
     mutate(across(any_of(orig_group_names), as.character),
-           across(-c(vars_select_helpers$where(is.numeric)), ~replace_na(., "")))
+      across(-c(vars_select_helpers$where(is.numeric)), ~replace_na(., "")))
 
 
 }

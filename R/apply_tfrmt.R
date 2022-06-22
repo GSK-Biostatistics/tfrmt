@@ -8,6 +8,7 @@
 #'
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
+
   validate_cols_match(.data, tfrmt, mock)
 
   if(!is_tfrmt(tfrmt)){
@@ -41,10 +42,10 @@ tbl_dat <- apply_table_frmt_plan(
  tbl_dat_wide <- tbl_dat_span_cols %>%
    pivot_wider_tfrmt(tfrmt, mock) %>%
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
-    tentative_process(apply_row_grp_struct, tfrmt$row_grp_plan, tfrmt$group, tfrmt$label) %>%
+    tentative_process(apply_row_grp_struct, tfrmt$row_grp_plan$struct_ls, tfrmt$group, tfrmt$label) %>%
     #Select before grouping to not have to deal with if it indents or not
     tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
-    tentative_process(apply_row_grp_lbl, tfrmt$row_grp_plan, tfrmt$group, tfrmt$label)
+    tentative_process(apply_row_grp_lbl, tfrmt$row_grp_plan$label_loc, tfrmt$group, tfrmt$label)
 
 
   tbl_dat_wide
@@ -61,11 +62,12 @@ tbl_dat <- apply_table_frmt_plan(
 #'
 #' @return processed data
 #' @importFrom purrr map_lgl
+#' @importFrom rlang is_empty
 #' @noRd
 tentative_process <- function(.data, fx, ..., fail_desc = NULL){
   args <- list(...)
 
-  if(any(map_lgl(args, is.null))){
+  if(any(map_lgl(args, is_empty))){
     out <- .data
   } else{
     out <- .data %>%
