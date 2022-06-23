@@ -17,11 +17,8 @@ tfrmt(
   row_grp_plan,
   body_plan,
   col_align_plan,
-  sorting_cols,
-  page_vars,
-  row_group,
   col_plan,
-  col_widths,
+  sorting_cols,
   ...
 )
 }
@@ -50,16 +47,10 @@ tfrmt(
 
 \item{col_align_plan}{how to align columns? left, right, decimal}
 
-\item{sorting_cols}{which columns determine sorting of output}
-
-\item{page_vars}{which column determine paging of table (splitting)}
-
-\item{row_group}{which columns determine row groups}
-
 \item{col_plan}{a col_plan object which is used to select, rename, and nest
 columns}
 
-\item{col_widths}{special column widths. otherwise fits contents}
+\item{sorting_cols}{which columns determine sorting of output}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

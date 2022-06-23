@@ -18,12 +18,9 @@
 #' @param row_grp_plan plan of the row groups blocking. Takes a `row_grp_plan`
 #' @param body_plan combination and formatting of the input data
 #' @param col_align_plan how to align columns? left, right, decimal
-#' @param sorting_cols which columns determine sorting of output
-#' @param page_vars which column determine paging of table (splitting)
-#' @param row_group which columns determine row groups
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns
-#' @param col_widths special column widths. otherwise fits contents
+#' @param sorting_cols which columns determine sorting of output
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'
@@ -46,11 +43,8 @@ tfrmt <- function(
   row_grp_plan, #the style between blocking
   body_plan,
   col_align_plan,
-  sorting_cols,
-  page_vars,
-  row_group, # col which is used to make the row grps
   col_plan,
-  col_widths,
+  sorting_cols,
   ...
   ){
 
