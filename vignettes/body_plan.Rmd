@@ -39,7 +39,7 @@ The `frmt` object is used to specify how a value should appear in a table: its n
 ```
 frmt_when(
     ">0.99" ~ ">0.99",
-    "<0.001" ~ "0.001",
+    "<0.001" ~ "<0.001",
     TRUE ~ frmt("x.xxx")
 )
 ```
@@ -70,7 +70,7 @@ A user can specify formatting for the entire table as such:
 
 ## Param-specific
 
-For formatting specific values of the param variable, `frmt` objects must be named according to the param. The following code will format all values will where the param value equals "pval", regardless of group, label, or column value.
+For formatting specific values of the param variable, `frmt` objects must be named according to the param. The following code will format all values where the param value equals "pval", regardless of group, label, or column value.
 
 `frmt(group = ".default", label = ".default", pval = frmt("x.xxx"))`
 
