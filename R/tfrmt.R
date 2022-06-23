@@ -122,7 +122,6 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
 
   arg_set <- lapply(args, function(arg){
 
-    # browser()
 
     ## try to get arg call
     arg_call <- do.call('substitute',list(as.symbol(arg)), envir = envir)
