@@ -1,8 +1,8 @@
 ---
-title: "Building mocks"
+title: "Building Mocks"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Building mocks}
+  %\VignetteIndexEntry{Building Mocks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,14 +16,14 @@ knitr::opts_chunk$set(
 
 ```{r message=FALSE}
 library(tfrmt)
-library(dplyr)
-library(tidyr)
+library(dplyr) # for arrange_all()
+library(tidyr) # for crossing()
 ```
 
 Mock tables are useful for visualising how future generated data may be 
 presented in its final form. Using the `{tfrmt}` package you can create a mock 
 table using placeholders (e.g. `xx.x`, `XXX`) or using mock data with numerical 
-values.
+values. Note that using the lower or upper case is up to your preference.
 
 Tables are generally built by creating a tfrmt specification tailored to your 
 data, and then feeding that into one of the available print functions. In this 
@@ -64,10 +64,10 @@ mock_tbl <- function(tfrmt_obj){
       frmt_structure(group_val = ".default", label_val = ".default",
                      frmt_combine(
                        "{count} {percent}",
-                       count = frmt("XXX"),
+                       count = frmt("xxx"),
                        percent = frmt_when("==100"~ frmt(""),
                                            "==0"~ "",
-                                           "TRUE" ~ frmt("(XX.X%)"))))
+                                           "TRUE" ~ frmt("(xx.x%)"))))
       ))
 }
 ```
@@ -86,7 +86,7 @@ mock_tbl() %>%
 ```
 
 If you would like to add a little more customisation by supplying your own mock 
-data you can utilise the `crossing()` function from the `tidyr` package. You 
+data you can utilise the `crossing()` function from the `{tidyr}` package. You 
 may also wish to add an integer column specifying order layer for complex tables.
 
 Here is an example:
@@ -110,16 +110,16 @@ mock_tbl() %>%
   print_mock_gt(df)
 ```
 
-
-
 You can adjust column names and structure using the `col_plan` parameter. It 
-accepts selection helpers from the `tidyselect` package. For example, you can 
+accepts selection helpers from the `{tidyselect}` package. For example, you can 
 select `everything()` and remove columns that `starts_with("ord")`.
 
-You can also use `span_structure()` to add spanning labels:
+You can also use `span_structure()` to add spanning labels as below.
 
-```{r}
-# this example is works but has an error...
+Note: You might see a warning along the lines of 
+`restarting interrupted promise evaluation`.
+
+```{r warning=FALSE}
 
 mock_tbl_adjust_cols <- function(){
   mock_tbl() %>%
@@ -144,9 +144,43 @@ mock_tbl_adjust_cols() %>%
   print_mock_gt(df)
 ```
 
-To add a title, subtitle or footer:
+Alternatively you can add a span column to your dataset and allocate names for 
+each column. Subsequently, ensure you concatenate your `span` and `column` 
+within `c()` as arguments for the `column` parameter in `tfrmt()`.
+
+For more information on this please refer to the "Column Plan" article.
 
 ```{r}
+span_df <- crossing(label = c("label 1", "label 2", "label 3"),
+                    column = c("PL", "T1", "T2"),
+                    param = c("count", "percent")) %>%
+  mutate(span = case_when(column == "PL" ~ "Placebo",
+                          column == "T1" ~ "Treatment",
+                          column == "T2" ~ "Treatment"))
+
+tfrmt(
+  # Specify columns in the data
+  label = label,
+  column = c(span, column),
+  param = param,
+  values = value,
+
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("xxx"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(xx.x%)"))))
+  )) %>%
+  print_mock_gt(span_df)
+```
+
+To add a title, subtitle or footer:
+
+```{r warning=FALSE}
 mock_tbl_add_titles <- function(){
   mock_tbl_adjust_cols() %>%
     tfrmt(
@@ -158,35 +192,77 @@ mock_tbl_add_titles <- function(){
   
 mock_tbl_add_titles() %>%
   print_mock_gt(df)
-
 ```
 
 ## Making more complex mock tables
 
 Now let's make a slightly more complex table where we customise the value 
-formats by groups, labels and columns.
+formats by groups, labels and columns. Extra features such as titles, and 
+arranging column structure will be avoided to keep the code as simple as 
+possible.
 
-### Adding columns with different value formatting
+### Different value formatting between columns
 
-Here we have columns that differ in parameters so we use `crossing()` multiple 
-times and then `bind_rows()`.
+Here we have used the `crossing()` function twice with differing columns and 
+bound them using `bind_rows()`.
 
 ```{r}
 df <- bind_rows(
   crossing(label = c("label 1", "label 2", "label 3"),
            column = c("T1", "T2", "PL"),
-           param = c("count", "percent")) %>%
-    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) )),
+           param = c("count", "percent")),
   crossing(label = c("label 1", "label 2", "label 3"),
            column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
-           param = c("num", "lower", "upper")) %>%
-    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
-  ) %>% arrange_all()
+           param = c("num", "lower", "upper"))) %>%
+  arrange_all()
 
 df
 ```
+
 This tfrmt specification is the same as the previous example but has one 
-additional `frmt_structure` which accounts for the new columns that are added.
+additional `frmt_structure` which accounts for the value formatting we'd like 
+to apply to the the new columns.
+
+```{r}
+tfrmt(
+  # Specify columns in the data
+  label = "label",
+  param = "param",
+  column = "column",
+  values = value,
+  
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("xxx"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(xx.x%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("xx.x"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("xx.x%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("xx.x%"))))
+    ),
+  col_plan = col_plan(
+    -starts_with("ord"))
+  ) %>%
+  print_mock_gt(df)
+```
+
+Note that if you'd like to print a select few columns from your dataset you 
+can simply filter `df` as normal within the `print_mock_gt()` function.
+
+Here we have removed any row values that start with "Risk Diff" using 
+regex in `str_detect`. You may choose to filter differently; for example, 
+`df %>% filter(column != "PL")` would removed rows that match "PL".
 
 ```{r}
 tfrmt(
@@ -202,69 +278,106 @@ tfrmt(
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
                      "{count} {percent}",
-                     count = frmt("XXX"),
+                     count = frmt("xxx"),
                      percent = frmt_when("==100"~ frmt(""),
                                          "==0"~ "",
-                                         "TRUE" ~ frmt("(XX.X%)")))),
+                                         "TRUE" ~ frmt("(xx.x%)")))),
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
                      "{num} ({lower}, {upper})",
-                     num = frmt("XX.X"),
+                     num = frmt("xx.x"),
                      lower = frmt_when("==100"~ frmt(""),
                                        "==0"~ "",
-                                       "TRUE" ~ frmt("XX.X%")),
+                                       "TRUE" ~ frmt("xx.x%")),
                      upper = frmt_when("==100"~ frmt(""),
                                        "==0"~ "",
-                                       "TRUE" ~ frmt("XX.X%"))))
+                                       "TRUE" ~ frmt("xx.x%"))))
     ),
   col_plan = col_plan(
     -starts_with("ord"))
   ) %>%
+  print_mock_gt(df %>% filter(!stringr::str_detect(column, "^Risk Diff")))
+```
+
+### Same value formatting but 1 grouping level
+
+In this example you can see that the dataset contains one group variable (inside 
+`crossing()`). Hence, we account for this by adding the name of the group column 
+into the `group` parameter for `tfrmt()`.
+
+```{r}
+df <- crossing(
+  group = c("group 1", "group 2"),
+  label = c("label 1", "label 2"),
+  column = c("PL", "T1", "T2"),
+  param = c("count", "percent")) %>%
+  arrange_all()
+
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{count} ({percent})",
+                                count = frmt("xx"),
+                                percent = frmt("xx.x")))
+    )) %>%
   print_mock_gt(df)
 ```
 
-### Adding labels to `label_val` in `frmt_structure`
+### Different value formatting but 1 grouping level (using label_val)
 
-In this example, we're using the `crossing()` function multiple times changing 
-the label and corresponding parameters accordingly - these are then bound by 
-row using `bind_rows()`. 
+This time we want to be more specific and change the formatting of values by 
+row label. Given that each label possess different parameter values in this 
+example, we bind together multiple instances of `crossing()` with these 
+different label-parameter combinations, while keeping the rest the same.
+
+In the tfrmt specification we leverage the `label_val` parameter in 
+`frmt_structure` to specify the particular formatting by label. Usually, if the 
+default argument `.default` is kept then the function will attempt to logically 
+structure the table as best as it can.
+
+You may notice "n", "Mean (SD)" and "Median (Range)" has been used instead of 
+generic "label #" names - this is just an illustration of what these row labels 
+could be.
 
 ```{r}
 df <- bind_rows(
-  crossing(group = c("Baseline", "Change from Baseline"),
+  crossing(group = c("group 1", "group 2"),
            label = c("n"),
            column = c("PL", "T1", "T2"),
            param = c("count")),
-  crossing(group = c("Baseline", "Change from Baseline"),
+  crossing(group = c("group 1", "group 2"),
            label = c("Mean (SD)"),
            column = c("PL", "T1", "T2"),
            param = c("mean", "sd")),
-  crossing(group = c("Baseline", "Change from Baseline"),
+  crossing(group = c("group 1", "group 2"),
            label = c("Median (Range)"),
            column = c("PL", "T1", "T2"),
            param = c("min", "max", "median"))) %>%
   arrange_all()
 
-df
-```
-
-Here you can see an argument has been passed to the `group` parameter. 
-Furthermore, more specificity can been provided by entering a particular label 
-to each the `label_val` parameter of `frmt_structure`.
-
-```{r}
 tfrmt(
   # Specify columns in the data
-  group = c(group),
+  group = group,
   label = label,
-  column = column, 
+  column = column,
   param = param,
   values = value,
-  row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
-  
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")), 
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")),
     frmt_structure(group_val = ".default", label_val = "Median (Range)",
                    frmt_combine("{median} ({min},{max})",
                                 median = frmt("xx.x"),
@@ -274,22 +387,147 @@ tfrmt(
                    frmt_combine("{mean} ({sd})",
                                 mean = frmt("xx.x"),
                                 sd = frmt("xx.xx"), missing = " "))
+  )) %>%
+  print_mock_gt(df)
+```
+
+### Different value formatting but 1 grouping level (using group_val)
+
+Similarly, if we want to change the value formatting by group we can use the 
+`group_val` parameter in `frmt_structure`.
+
+Note that the `row_group_plan` parameter has been used to detail how we'd like 
+the groups to be indented. For more information on this please see the 
+"Row group plan" article.
+
+```{r}
+df <- bind_rows(
+  crossing(group = c("group 1"),
+           label = c("label 1", "label 2"),
+           column = c("PL", "T1", "T2"),
+           param = c("mean", "sd")),
+  crossing(group = c("group 2"),
+           label = c("label 1", "label 2"),
+           column = c("PL", "T1", "T2"),
+           param = c("median", "min", "max"))) %>%
+  arrange_all()
+
+tfrmt(
+  # Specify columns in the data
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
+                      element_block(post_space = "   ")) ),
+
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = "group 1", label_val = ".default",
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.x"))),
+    frmt_structure(group_val = "group 2", label_val = ".default",
+                   frmt_combine("{median} ({min},{max})",
+                                median = frmt("xx"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " "))
+  )) %>%
+  print_mock_gt(df)
+```
+
+### Different value formatting but 1 grouping level (using label_val and group_val)
+
+Using the same `df` as before, we can make use of `group_val` and `label_val` 
+simultaneously for more control over value formatting by group and label/row. 
+You can see that there is a different formatting for labels between groups as 
+well as within the same group.
+
+Within the `row_group_structure`, if you'd like to depict formatting for more 
+than one group you need to supply a named list to `group_val`. Furthermore, to 
+apply the formatting to more than one label you can supply the label names 
+within `c()`.
+
+```{r}
+
+tfrmt(
+  # Specify columns in the data
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
+                      element_block(post_space = "   ")) ),
+
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = "group 1", label_val = "label 1",
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx"),
+                                sd = frmt("xx"))),
+    frmt_structure(group_val = "group 1", label_val = "label 2",
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.x"))),
+    frmt_structure(group_val = "group 2", label_val = c("label 1", "label 2"),
+                   frmt_combine("{median} ({min},{max})",
+                                median = frmt("xx"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " "))
+  )) %>%
+  print_mock_gt(df)
+```
+
+### Different value formatting but 2 grouping levels (using group_val)
+
+This time we have two grouping levels where parameters differ at the group 
+level. Thus, we have two instances of `crossing()` with different 
+grp1-param combinations.
+
+When using more than one grouping level you add the group names to the `group` 
+parameter in `c()`.
+
+```{r}
+df <- bind_rows(
+  crossing(grp1 = c("group 1.1"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2"),
+           column = c("PL", "T1", "T2"),
+           param = c("count")),
+  crossing(grp1 = c("group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2"),
+           column = c("PL", "T1", "T2"),
+           param = c("mean", "sd"))) %>%
+  arrange_all()
+
+tfrmt(
+  group = c(grp1, grp2),
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+
+  body_plan = body_plan(
+    frmt_structure(group_val = list("grp1" = "group 1.1",
+                                    "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
+                   frmt("xx")),
+    frmt_structure(group_val = list("grp1" = "group 1.2",
+                                    "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.x")))
     )) %>%
   print_mock_gt(df)
 ```
 
-### Adding groups to `group_val` in `frmt_structure`
 
-
-```{r}
-#df <- crossing()
-```
-
-```{r}
-# tfrmt() %>%
-#  print_mock_gt()
-```
-
-
-
+---
 
