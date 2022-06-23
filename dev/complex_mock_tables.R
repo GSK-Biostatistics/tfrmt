@@ -307,6 +307,79 @@ tfrmt(
                                 percent = frmt("xx.x")))
   )) %>% print_mock_gt(df)
 
+################################################################################
+
+#------------------------ DIFFERENT FRMT BETWEEN COLS --------------------------
+
+### DF HAS 1 GROUP LEVEL
+
+df <- bind_rows(
+  crossing(group = c("group 1", "group 2"),
+           label = c("label 1", "label 2"),
+           column = c("PL", "T1", "T2"),
+           param = c("count", "percent")),
+  crossing(group = c("group 1", "group 2"),
+           label = c("label 1", "label 2"),
+           column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
+           param = c("num", "lower", "upper"))
+  ) %>%
+  dplyr::arrange_all()
+
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{count} ({percent})",
+                                count = frmt("xx"),
+                                percent = frmt("xx.x"))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("xx.x"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("xx.x%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("xx.x%"))))
+  )) %>% print_mock_gt(df)
+
+#------------------------ SELECTING SPECIFIC COLUMNS  --------------------------
+
+### DF HAS 1 GROUP LEVEL
+
+df <- crossing(group = c("group 1", "group 2"),
+               label = c("label 1", "label 2"),
+               column = c("PL", "T1", "T2", "T1&T2"),
+               param = c("count", "percent")) %>%
+  dplyr::arrange_all()
+
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{count} ({percent})",
+                                count = frmt("xx"),
+                                percent = frmt("xx.x")))
+  )) %>% print_mock_gt(df %>% filter(column != "T1&T2"))
+
+
 
 
 
