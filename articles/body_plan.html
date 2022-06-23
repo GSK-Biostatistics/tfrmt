@@ -115,7 +115,7 @@
 <p><code>frmt_when</code> is a way to format cells conditional on their values. <code>frmt_when</code> is similar to dplyr::case_when or if/else statements. For each condition, the left hand side is an expression as a string and the right hand side is the formatting to be applied. For example, the following code allows users to conditionally format the upper and lower bounds for p-values:</p>
 <pre><code><span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
     <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"0.001"</span>,
+    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
     <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span><span class="op">)</span>
 <span class="op">)</span></code></pre>
 <p>This will cause the values 0.0347, 1.00, and 0.000001 to appear as “0.035”, “&gt;0.99”, and “&lt;0.001”.</p>
@@ -145,7 +145,7 @@
 <div class="section level3">
 <h3 id="param-specific">Param-specific<a class="anchor" aria-label="anchor" href="#param-specific"></a>
 </h3>
-<p>For formatting specific values of the param variable, <code>frmt</code> objects must be named according to the param. The following code will format all values will where the param value equals “pval”, regardless of group, label, or column value.</p>
+<p>For formatting specific values of the param variable, <code>frmt</code> objects must be named according to the param. The following code will format all values where the param value equals “pval”, regardless of group, label, or column value.</p>
 <p><code>frmt(group = ".default", label = ".default", pval = frmt("x.xxx"))</code></p>
 <p>Again, param names are required for using <code>frmt_combine</code>.</p>
 </div>
