@@ -150,7 +150,7 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
       if(is_valid_tidyselect_call(x)){
         quo(!!x)
       }else if(is_valid_span_structure_call(x) | is_valid_quo_call(x)){
-        return(rlang::eval_tidy(x))
+        return(eval_tidy(x))
       }else{
         stop(
           "Invalid entry: `",format(x),"`\n",
@@ -221,7 +221,8 @@ eval_tidyselect_on_colvec.quosures <- function(x, column_vec){
            dimnames = list(
              NULL, column_vec
            )),
-    check.names = FALSE
+    check.names = FALSE,
+    stringsAsFactors = TRUE
   )[-1,]
 
   names(eval_select(expr(c(!!!x)), data = data))
@@ -237,7 +238,8 @@ eval_tidyselect_on_colvec.quosure <- function(x, column_vec){
            dimnames = list(
              NULL, column_vec
            )),
-    check.names = FALSE
+    check.names = FALSE,
+    stringsAsFactors = TRUE
   )[-1,]
 
   names(eval_select(expr(c(!!x)), data = data))
