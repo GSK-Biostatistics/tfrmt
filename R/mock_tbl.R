@@ -8,7 +8,7 @@
 #'
 #' @importFrom tidyr crossing unnest expand
 #' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble across cur_column
-#' @importFrom purrr map map_dfr map_chr
+#' @importFrom purrr map map_dfr map_chr map_dfc
 #' @importFrom rlang as_name
 #' @importFrom tidyselect everything all_of
 #'
@@ -59,7 +59,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     sorting_cols_vars <- tfrmt$sorting_cols %>% map_chr(as_name)
     n_sorting_cols <- length(sorting_cols_vars)
 
-    sorting_cols_def <- purrr::map_dfc(seq_len(n_sorting_cols), function(x){
+    sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x){
       tibble(!!sorting_cols_vars[x] := 1)
     })
 
@@ -76,7 +76,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
   n_spans <- length(column_vars)
   col_def <- tibble(!!column_vars[n_spans] := paste0("col", seq(1:n_cols)))
   if(n_spans > 1){
-    col_spans_df <- purrr::map_dfc(seq_len(n_spans-1), function(x){
+    col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
       tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
     })
     col_def <- bind_cols(col_spans_df, col_def)
