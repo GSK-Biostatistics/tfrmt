@@ -291,3 +291,87 @@ test_that("Mock data contains sorting_cols when available", {
 
 })
 
+test_that("Mock data includes all columns identified in tfrmt", {
+
+  # handle one column
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = col1,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp,   ~ my_label,    ~param2,     ~col1,
+                 "grp_1", "my_label_1", "param2_1", "col1",
+                 "grp_1", "my_label_1", "param2_1", "col2",
+                 "grp_1", "my_label_2", "param2_1", "col1",
+                 "grp_1", "my_label_2", "param2_1", "col2",
+                 "grp_2", "my_label_1", "param2_1", "col1",
+                 "grp_2", "my_label_1", "param2_1", "col2",
+                 "grp_2", "my_label_2", "param2_1", "col1",
+                 "grp_2", "my_label_2", "param2_1", "col2"
+               ))
+
+  # handle two columns
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = c(col1,col2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                    ~grp,   ~ my_label,    ~param2,       ~col1,  ~col2,
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col1",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col2",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col1",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col2",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col1",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col2",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col1",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col2"
+               ))
+
+  # handle three columns
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = c(col1,col2,col3),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                    ~grp,   ~ my_label,    ~param2,       ~col1,       ~col2,  ~col3,
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col2",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col2",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col2",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col2"
+               ))
+
+})
