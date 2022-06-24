@@ -141,9 +141,14 @@ tfrmt(
   # Specify body plan
   body_plan = body_plan(
     frmt_structure(group_val = "group 1", label_val = ".default",
-                   frmt_combine("{mean} ({sd})", mean = frmt("xx.x"), sd = frmt("xx.x"))),
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.x"))),
     frmt_structure(group_val = "group 2", label_val = ".default",
-                   frmt_combine("{median} ({min},{max})", median = frmt("xx"), min = frmt("xx"), max = frmt("xx"), missing = " "))
+                   frmt_combine("{median} ({min},{max})",
+                                median = frmt("xx"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " "))
   )) %>%
   print_mock_gt(df)
 
@@ -159,16 +164,25 @@ tfrmt(
   param = param,
   values = value,
   #sorting_cols = c(ord1),
-  row_grp_plan = row_grp_plan( row_grp_structure(group_val = list("group" = c("group 1", "group 2")), element_block(post_space = "   ")) ),
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
+                      element_block(post_space = "   ")) ),
 
   # Specify body plan
   body_plan = body_plan(
     frmt_structure(group_val = "group 1", label_val = c("label 1"),
-                   frmt_combine("{mean} ({sd})", mean = frmt("xx"), sd = frmt("xx"))),
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx"),
+                                sd = frmt("xx"))),
     frmt_structure(group_val = "group 1", label_val = c("label 2"),
-                   frmt_combine("{mean} ({sd})", mean = frmt("xx.x"), sd = frmt("xx.x"))),
+                   frmt_combine("{mean} ({sd})",
+                                mean = frmt("xx.x"),
+                                sd = frmt("xx.x"))),
     frmt_structure(group_val = "group 2", label_val = c("label 1", "label 2"),
-                   frmt_combine("{median} ({min},{max})", median = frmt("xx"), min = frmt("xx"), max = frmt("xx"), missing = " "))
+                   frmt_combine("{median} ({min},{max})",
+                                median = frmt("xx"),
+                                min = frmt("xx"),
+                                max = frmt("xx"), missing = " "))
   )) %>%
   print_mock_gt(df)
 
@@ -197,9 +211,11 @@ tfrmt(
                                                  element_block(post_space = "   ")) ),
 
   body_plan = body_plan(
-    frmt_structure(group_val = list("grp1" = "group 1.1", "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
+    frmt_structure(group_val = list("grp1" = "group 1.1",
+                                    "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
                    frmt("xx")),
-    frmt_structure(group_val = list("grp1" = "group 1.2", "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
+    frmt_structure(group_val = list("grp1" = "group 1.2",
+                                    "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
                    frmt_combine("{mean} ({sd})",
                                 mean = frmt("xx.x"),
                                 sd = frmt("xx.x")))
@@ -367,7 +383,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  #values = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
                       element_block(post_space = "   ")) ),
