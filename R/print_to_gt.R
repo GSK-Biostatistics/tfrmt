@@ -244,7 +244,7 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       pull(.data$cols)
 
     gt_table <- gt_table %>%
-      cols_label(.list = renm_vals)
+      cols_label(.list = lapply(renm_vals,html))
 
   }
   gt_table
