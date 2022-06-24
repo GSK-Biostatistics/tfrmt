@@ -167,7 +167,12 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       ),
       locations= list(
         cells_column_spanners()
-      ))
+      )) %>%
+    tab_style(
+      style = cell_text(font = c("Courier", default_fonts())),
+      locations = list(cells_body(), cells_row_groups(), cells_stub(),
+                       cells_column_labels(), cells_column_spanners())
+    )
 }
 
 
