@@ -15,7 +15,8 @@ articles:
   contents:
   - examples
   - layer
-  - mocks
+  - building_mocks
+  - mock_examples
   - unusual_tables
 - title:
   navbar: More
