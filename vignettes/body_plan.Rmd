@@ -97,7 +97,7 @@ A user can be as specific as they'd like, by providing any of these in combinati
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = "mylab", mean = frmt("x.xxx"))`
 
-**NOTE:** the `tfrmt_sigdig()` function provides the ability to have group and label value-specific formatting. 
+**NOTE:** the `tfrmt_sigdig()` function provides the ability to create a `tfrmt` with auto-precision based on the significance of the group/label value.  
 
 # Layering format structures
 
