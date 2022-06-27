@@ -125,50 +125,50 @@
 </h2>
 <p>Let’s consider the following dataset which includes a single <code>column</code> variable:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span>
-    <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,  <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>, <span class="op">~</span><span class="va">val</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span><span class="op">)</span>
-  </code></pre></div>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>    <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,  <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>, <span class="op">~</span><span class="va">val</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span><span class="op">)</span></span>
+<span>  </span></code></pre></div>
 <div class="section level3">
 <h3 id="simple-column-selection">Simple Column Selection<a class="anchor" aria-label="anchor" href="#simple-column-selection"></a>
 </h3>
 <p>In the case of a single column variable with no column spanners, <code>col_plan</code> behaves identically to <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code>.</p>
 <p>Let’s say we want to remove one of the columns:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="va">my_col</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="op">-</span><span class="va">mycol5</span>            
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="bseorqcswq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="op">-</span><span class="va">mycol5</span>            </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="qwnnnysxmn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#bseorqcswq .gt_table {
+#qwnnnysxmn .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -193,7 +193,7 @@
   border-left-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_heading {
+#qwnnnysxmn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -205,7 +205,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_title {
+#qwnnnysxmn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -217,7 +217,7 @@
   border-bottom-width: 0;
 }
 
-#bseorqcswq .gt_subtitle {
+#qwnnnysxmn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -229,13 +229,13 @@
   border-top-width: 0;
 }
 
-#bseorqcswq .gt_bottom_border {
+#qwnnnysxmn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_col_headings {
+#qwnnnysxmn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -250,7 +250,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_col_heading {
+#qwnnnysxmn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -270,7 +270,7 @@
   overflow-x: hidden;
 }
 
-#bseorqcswq .gt_column_spanner_outer {
+#qwnnnysxmn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -282,15 +282,15 @@
   padding-right: 4px;
 }
 
-#bseorqcswq .gt_column_spanner_outer:first-child {
+#qwnnnysxmn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bseorqcswq .gt_column_spanner_outer:last-child {
+#qwnnnysxmn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bseorqcswq .gt_column_spanner {
+#qwnnnysxmn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -302,7 +302,7 @@
   width: 100%;
 }
 
-#bseorqcswq .gt_group_heading {
+#qwnnnysxmn .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -327,7 +327,7 @@
   vertical-align: middle;
 }
 
-#bseorqcswq .gt_empty_group_heading {
+#qwnnnysxmn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -342,15 +342,15 @@
   vertical-align: middle;
 }
 
-#bseorqcswq .gt_from_md > :first-child {
+#qwnnnysxmn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bseorqcswq .gt_from_md > :last-child {
+#qwnnnysxmn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bseorqcswq .gt_row {
+#qwnnnysxmn .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -369,7 +369,7 @@
   overflow-x: hidden;
 }
 
-#bseorqcswq .gt_stub {
+#qwnnnysxmn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -382,7 +382,7 @@
   padding-right: 5px;
 }
 
-#bseorqcswq .gt_stub_row_group {
+#qwnnnysxmn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -396,11 +396,11 @@
   vertical-align: top;
 }
 
-#bseorqcswq .gt_row_group_first td {
+#qwnnnysxmn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bseorqcswq .gt_summary_row {
+#qwnnnysxmn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -410,16 +410,16 @@
   padding-right: 5px;
 }
 
-#bseorqcswq .gt_first_summary_row {
+#qwnnnysxmn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_first_summary_row.thick {
+#qwnnnysxmn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bseorqcswq .gt_last_summary_row {
+#qwnnnysxmn .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -429,7 +429,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_grand_summary_row {
+#qwnnnysxmn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -439,7 +439,7 @@
   padding-right: 5px;
 }
 
-#bseorqcswq .gt_first_grand_summary_row {
+#qwnnnysxmn .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -449,11 +449,11 @@
   border-top-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_striped {
+#qwnnnysxmn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bseorqcswq .gt_table_body {
+#qwnnnysxmn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -462,7 +462,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_footnotes {
+#qwnnnysxmn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -476,7 +476,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_footnote {
+#qwnnnysxmn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -485,7 +485,7 @@
   padding-right: 5px;
 }
 
-#bseorqcswq .gt_sourcenotes {
+#qwnnnysxmn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -499,7 +499,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bseorqcswq .gt_sourcenote {
+#qwnnnysxmn .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -507,36 +507,36 @@
   padding-right: 5px;
 }
 
-#bseorqcswq .gt_left {
+#qwnnnysxmn .gt_left {
   text-align: left;
 }
 
-#bseorqcswq .gt_center {
+#qwnnnysxmn .gt_center {
   text-align: center;
 }
 
-#bseorqcswq .gt_right {
+#qwnnnysxmn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bseorqcswq .gt_font_normal {
+#qwnnnysxmn .gt_font_normal {
   font-weight: normal;
 }
 
-#bseorqcswq .gt_font_bold {
+#qwnnnysxmn .gt_font_bold {
   font-weight: bold;
 }
 
-#bseorqcswq .gt_font_italic {
+#qwnnnysxmn .gt_font_italic {
   font-style: italic;
 }
 
-#bseorqcswq .gt_super {
+#qwnnnysxmn .gt_super {
   font-size: 65%;
 }
 
-#bseorqcswq .gt_two_val_uncert {
+#qwnnnysxmn .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -545,31 +545,31 @@
   margin-left: 0.1em;
 }
 
-#bseorqcswq .gt_footnote_marks {
+#qwnnnysxmn .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#bseorqcswq .gt_asterisk {
+#qwnnnysxmn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bseorqcswq .gt_slash_mark {
+#qwnnnysxmn .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#bseorqcswq .gt_fraction_numerator {
+#qwnnnysxmn .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#bseorqcswq .gt_fraction_denominator {
+#qwnnnysxmn .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -616,30 +616,30 @@
 </div>
 <p>Just like <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code>, we can also reorder, rename, and remove columns, using <code>tidyselect</code> syntax if we’d like:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="va">my_col</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="va">group</span>, 
-      <span class="va">label</span>, 
-      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,
-      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  
-      <span class="op">-</span><span class="va">mycol5</span>            
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="oblvdpagtf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="va">group</span>, </span>
+<span>      <span class="va">label</span>, </span>
+<span>      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  </span>
+<span>      <span class="op">-</span><span class="va">mycol5</span>            </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="mvzdrjcknm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#oblvdpagtf .gt_table {
+#mvzdrjcknm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -664,7 +664,7 @@
   border-left-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_heading {
+#mvzdrjcknm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -676,7 +676,7 @@
   border-right-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_title {
+#mvzdrjcknm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -688,7 +688,7 @@
   border-bottom-width: 0;
 }
 
-#oblvdpagtf .gt_subtitle {
+#mvzdrjcknm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -700,13 +700,13 @@
   border-top-width: 0;
 }
 
-#oblvdpagtf .gt_bottom_border {
+#mvzdrjcknm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_col_headings {
+#mvzdrjcknm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -721,7 +721,7 @@
   border-right-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_col_heading {
+#mvzdrjcknm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -741,7 +741,7 @@
   overflow-x: hidden;
 }
 
-#oblvdpagtf .gt_column_spanner_outer {
+#mvzdrjcknm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -753,15 +753,15 @@
   padding-right: 4px;
 }
 
-#oblvdpagtf .gt_column_spanner_outer:first-child {
+#mvzdrjcknm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#oblvdpagtf .gt_column_spanner_outer:last-child {
+#mvzdrjcknm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#oblvdpagtf .gt_column_spanner {
+#mvzdrjcknm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -773,7 +773,7 @@
   width: 100%;
 }
 
-#oblvdpagtf .gt_group_heading {
+#mvzdrjcknm .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -798,7 +798,7 @@
   vertical-align: middle;
 }
 
-#oblvdpagtf .gt_empty_group_heading {
+#mvzdrjcknm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -813,15 +813,15 @@
   vertical-align: middle;
 }
 
-#oblvdpagtf .gt_from_md > :first-child {
+#mvzdrjcknm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#oblvdpagtf .gt_from_md > :last-child {
+#mvzdrjcknm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#oblvdpagtf .gt_row {
+#mvzdrjcknm .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -840,7 +840,7 @@
   overflow-x: hidden;
 }
 
-#oblvdpagtf .gt_stub {
+#mvzdrjcknm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -853,7 +853,7 @@
   padding-right: 5px;
 }
 
-#oblvdpagtf .gt_stub_row_group {
+#mvzdrjcknm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -867,11 +867,11 @@
   vertical-align: top;
 }
 
-#oblvdpagtf .gt_row_group_first td {
+#mvzdrjcknm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#oblvdpagtf .gt_summary_row {
+#mvzdrjcknm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -881,16 +881,16 @@
   padding-right: 5px;
 }
 
-#oblvdpagtf .gt_first_summary_row {
+#mvzdrjcknm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_first_summary_row.thick {
+#mvzdrjcknm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#oblvdpagtf .gt_last_summary_row {
+#mvzdrjcknm .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -900,7 +900,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_grand_summary_row {
+#mvzdrjcknm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -910,7 +910,7 @@
   padding-right: 5px;
 }
 
-#oblvdpagtf .gt_first_grand_summary_row {
+#mvzdrjcknm .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -920,11 +920,11 @@
   border-top-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_striped {
+#mvzdrjcknm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#oblvdpagtf .gt_table_body {
+#mvzdrjcknm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -933,7 +933,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_footnotes {
+#mvzdrjcknm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -947,7 +947,7 @@
   border-right-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_footnote {
+#mvzdrjcknm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -956,7 +956,7 @@
   padding-right: 5px;
 }
 
-#oblvdpagtf .gt_sourcenotes {
+#mvzdrjcknm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -970,7 +970,7 @@
   border-right-color: #D3D3D3;
 }
 
-#oblvdpagtf .gt_sourcenote {
+#mvzdrjcknm .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -978,36 +978,36 @@
   padding-right: 5px;
 }
 
-#oblvdpagtf .gt_left {
+#mvzdrjcknm .gt_left {
   text-align: left;
 }
 
-#oblvdpagtf .gt_center {
+#mvzdrjcknm .gt_center {
   text-align: center;
 }
 
-#oblvdpagtf .gt_right {
+#mvzdrjcknm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#oblvdpagtf .gt_font_normal {
+#mvzdrjcknm .gt_font_normal {
   font-weight: normal;
 }
 
-#oblvdpagtf .gt_font_bold {
+#mvzdrjcknm .gt_font_bold {
   font-weight: bold;
 }
 
-#oblvdpagtf .gt_font_italic {
+#mvzdrjcknm .gt_font_italic {
   font-style: italic;
 }
 
-#oblvdpagtf .gt_super {
+#mvzdrjcknm .gt_super {
   font-size: 65%;
 }
 
-#oblvdpagtf .gt_two_val_uncert {
+#mvzdrjcknm .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1016,31 +1016,31 @@
   margin-left: 0.1em;
 }
 
-#oblvdpagtf .gt_footnote_marks {
+#mvzdrjcknm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#oblvdpagtf .gt_asterisk {
+#mvzdrjcknm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#oblvdpagtf .gt_slash_mark {
+#mvzdrjcknm .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#oblvdpagtf .gt_fraction_numerator {
+#mvzdrjcknm .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#oblvdpagtf .gt_fraction_denominator {
+#mvzdrjcknm .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1093,33 +1093,33 @@
 <p>A <code>span_structure</code> is constructed from a label which defines the spanner text, and a combination of tidyselect expressions and column names.</p>
 <p>Let’s try putting a spanner over the columns starting with “col”:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="va">my_col</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="va">group</span>, 
-      <span class="va">label</span>, 
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"column cols"</span>,
-        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>
-        <span class="op">)</span>,
-      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  
-     <span class="op">-</span> <span class="va">mycol5</span>            
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="bzxwjmpnkh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="va">group</span>, </span>
+<span>      <span class="va">label</span>, </span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"column cols"</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  </span>
+<span>     <span class="op">-</span> <span class="va">mycol5</span>            </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="yyetoyhrzg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#bzxwjmpnkh .gt_table {
+#yyetoyhrzg .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1144,7 +1144,7 @@
   border-left-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_heading {
+#yyetoyhrzg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1156,7 +1156,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_title {
+#yyetoyhrzg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1168,7 +1168,7 @@
   border-bottom-width: 0;
 }
 
-#bzxwjmpnkh .gt_subtitle {
+#yyetoyhrzg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1180,13 +1180,13 @@
   border-top-width: 0;
 }
 
-#bzxwjmpnkh .gt_bottom_border {
+#yyetoyhrzg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_col_headings {
+#yyetoyhrzg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1201,7 +1201,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_col_heading {
+#yyetoyhrzg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1221,7 +1221,7 @@
   overflow-x: hidden;
 }
 
-#bzxwjmpnkh .gt_column_spanner_outer {
+#yyetoyhrzg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1233,15 +1233,15 @@
   padding-right: 4px;
 }
 
-#bzxwjmpnkh .gt_column_spanner_outer:first-child {
+#yyetoyhrzg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bzxwjmpnkh .gt_column_spanner_outer:last-child {
+#yyetoyhrzg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bzxwjmpnkh .gt_column_spanner {
+#yyetoyhrzg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1253,7 +1253,7 @@
   width: 100%;
 }
 
-#bzxwjmpnkh .gt_group_heading {
+#yyetoyhrzg .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1278,7 +1278,7 @@
   vertical-align: middle;
 }
 
-#bzxwjmpnkh .gt_empty_group_heading {
+#yyetoyhrzg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1293,15 +1293,15 @@
   vertical-align: middle;
 }
 
-#bzxwjmpnkh .gt_from_md > :first-child {
+#yyetoyhrzg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bzxwjmpnkh .gt_from_md > :last-child {
+#yyetoyhrzg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bzxwjmpnkh .gt_row {
+#yyetoyhrzg .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1320,7 +1320,7 @@
   overflow-x: hidden;
 }
 
-#bzxwjmpnkh .gt_stub {
+#yyetoyhrzg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1333,7 +1333,7 @@
   padding-right: 5px;
 }
 
-#bzxwjmpnkh .gt_stub_row_group {
+#yyetoyhrzg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1347,11 +1347,11 @@
   vertical-align: top;
 }
 
-#bzxwjmpnkh .gt_row_group_first td {
+#yyetoyhrzg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bzxwjmpnkh .gt_summary_row {
+#yyetoyhrzg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1361,16 +1361,16 @@
   padding-right: 5px;
 }
 
-#bzxwjmpnkh .gt_first_summary_row {
+#yyetoyhrzg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_first_summary_row.thick {
+#yyetoyhrzg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bzxwjmpnkh .gt_last_summary_row {
+#yyetoyhrzg .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1380,7 +1380,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_grand_summary_row {
+#yyetoyhrzg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1390,7 +1390,7 @@
   padding-right: 5px;
 }
 
-#bzxwjmpnkh .gt_first_grand_summary_row {
+#yyetoyhrzg .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1400,11 +1400,11 @@
   border-top-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_striped {
+#yyetoyhrzg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bzxwjmpnkh .gt_table_body {
+#yyetoyhrzg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1413,7 +1413,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_footnotes {
+#yyetoyhrzg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1427,7 +1427,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_footnote {
+#yyetoyhrzg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1436,7 +1436,7 @@
   padding-right: 5px;
 }
 
-#bzxwjmpnkh .gt_sourcenotes {
+#yyetoyhrzg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1450,7 +1450,7 @@
   border-right-color: #D3D3D3;
 }
 
-#bzxwjmpnkh .gt_sourcenote {
+#yyetoyhrzg .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1458,36 +1458,36 @@
   padding-right: 5px;
 }
 
-#bzxwjmpnkh .gt_left {
+#yyetoyhrzg .gt_left {
   text-align: left;
 }
 
-#bzxwjmpnkh .gt_center {
+#yyetoyhrzg .gt_center {
   text-align: center;
 }
 
-#bzxwjmpnkh .gt_right {
+#yyetoyhrzg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bzxwjmpnkh .gt_font_normal {
+#yyetoyhrzg .gt_font_normal {
   font-weight: normal;
 }
 
-#bzxwjmpnkh .gt_font_bold {
+#yyetoyhrzg .gt_font_bold {
   font-weight: bold;
 }
 
-#bzxwjmpnkh .gt_font_italic {
+#yyetoyhrzg .gt_font_italic {
   font-style: italic;
 }
 
-#bzxwjmpnkh .gt_super {
+#yyetoyhrzg .gt_super {
   font-size: 65%;
 }
 
-#bzxwjmpnkh .gt_two_val_uncert {
+#yyetoyhrzg .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1496,31 +1496,31 @@
   margin-left: 0.1em;
 }
 
-#bzxwjmpnkh .gt_footnote_marks {
+#yyetoyhrzg .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#bzxwjmpnkh .gt_asterisk {
+#yyetoyhrzg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bzxwjmpnkh .gt_slash_mark {
+#yyetoyhrzg .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#bzxwjmpnkh .gt_fraction_numerator {
+#yyetoyhrzg .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#bzxwjmpnkh .gt_fraction_denominator {
+#yyetoyhrzg .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1574,37 +1574,37 @@
 </div>
 <p>A <code>span_structure</code> can also contain one or more child <code>span_structure</code> entries, defining a hierarchy of spanners:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="va">my_col</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="va">group</span>, 
-      <span class="va">label</span>, 
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"column cols"</span>,
-        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-          <span class="st">"cols 1,2"</span>,
-          <span class="va">col1</span>, <span class="va">col2</span>
-        <span class="op">)</span>,
-        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-          <span class="st">"col 4"</span>,
-          <span class="va">col4</span>
-        <span class="op">)</span>
-        <span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="aavnrktgyp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="va">group</span>, </span>
+<span>      <span class="va">label</span>, </span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"column cols"</span>,</span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>          <span class="st">"cols 1,2"</span>,</span>
+<span>          <span class="va">col1</span>, <span class="va">col2</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>          <span class="st">"col 4"</span>,</span>
+<span>          <span class="va">col4</span></span>
+<span>        <span class="op">)</span></span>
+<span>        <span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="jzbrdtdykm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#aavnrktgyp .gt_table {
+#jzbrdtdykm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1629,7 +1629,7 @@
   border-left-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_heading {
+#jzbrdtdykm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1641,7 +1641,7 @@
   border-right-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_title {
+#jzbrdtdykm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1653,7 +1653,7 @@
   border-bottom-width: 0;
 }
 
-#aavnrktgyp .gt_subtitle {
+#jzbrdtdykm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1665,13 +1665,13 @@
   border-top-width: 0;
 }
 
-#aavnrktgyp .gt_bottom_border {
+#jzbrdtdykm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_col_headings {
+#jzbrdtdykm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1686,7 +1686,7 @@
   border-right-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_col_heading {
+#jzbrdtdykm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1706,7 +1706,7 @@
   overflow-x: hidden;
 }
 
-#aavnrktgyp .gt_column_spanner_outer {
+#jzbrdtdykm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1718,15 +1718,15 @@
   padding-right: 4px;
 }
 
-#aavnrktgyp .gt_column_spanner_outer:first-child {
+#jzbrdtdykm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aavnrktgyp .gt_column_spanner_outer:last-child {
+#jzbrdtdykm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aavnrktgyp .gt_column_spanner {
+#jzbrdtdykm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1738,7 +1738,7 @@
   width: 100%;
 }
 
-#aavnrktgyp .gt_group_heading {
+#jzbrdtdykm .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1763,7 +1763,7 @@
   vertical-align: middle;
 }
 
-#aavnrktgyp .gt_empty_group_heading {
+#jzbrdtdykm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1778,15 +1778,15 @@
   vertical-align: middle;
 }
 
-#aavnrktgyp .gt_from_md > :first-child {
+#jzbrdtdykm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aavnrktgyp .gt_from_md > :last-child {
+#jzbrdtdykm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aavnrktgyp .gt_row {
+#jzbrdtdykm .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1805,7 +1805,7 @@
   overflow-x: hidden;
 }
 
-#aavnrktgyp .gt_stub {
+#jzbrdtdykm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1818,7 +1818,7 @@
   padding-right: 5px;
 }
 
-#aavnrktgyp .gt_stub_row_group {
+#jzbrdtdykm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1832,11 +1832,11 @@
   vertical-align: top;
 }
 
-#aavnrktgyp .gt_row_group_first td {
+#jzbrdtdykm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aavnrktgyp .gt_summary_row {
+#jzbrdtdykm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1846,16 +1846,16 @@
   padding-right: 5px;
 }
 
-#aavnrktgyp .gt_first_summary_row {
+#jzbrdtdykm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_first_summary_row.thick {
+#jzbrdtdykm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aavnrktgyp .gt_last_summary_row {
+#jzbrdtdykm .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1865,7 +1865,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_grand_summary_row {
+#jzbrdtdykm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1875,7 +1875,7 @@
   padding-right: 5px;
 }
 
-#aavnrktgyp .gt_first_grand_summary_row {
+#jzbrdtdykm .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1885,11 +1885,11 @@
   border-top-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_striped {
+#jzbrdtdykm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aavnrktgyp .gt_table_body {
+#jzbrdtdykm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1898,7 +1898,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_footnotes {
+#jzbrdtdykm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1912,7 +1912,7 @@
   border-right-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_footnote {
+#jzbrdtdykm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1921,7 +1921,7 @@
   padding-right: 5px;
 }
 
-#aavnrktgyp .gt_sourcenotes {
+#jzbrdtdykm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1935,7 +1935,7 @@
   border-right-color: #D3D3D3;
 }
 
-#aavnrktgyp .gt_sourcenote {
+#jzbrdtdykm .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1943,36 +1943,36 @@
   padding-right: 5px;
 }
 
-#aavnrktgyp .gt_left {
+#jzbrdtdykm .gt_left {
   text-align: left;
 }
 
-#aavnrktgyp .gt_center {
+#jzbrdtdykm .gt_center {
   text-align: center;
 }
 
-#aavnrktgyp .gt_right {
+#jzbrdtdykm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aavnrktgyp .gt_font_normal {
+#jzbrdtdykm .gt_font_normal {
   font-weight: normal;
 }
 
-#aavnrktgyp .gt_font_bold {
+#jzbrdtdykm .gt_font_bold {
   font-weight: bold;
 }
 
-#aavnrktgyp .gt_font_italic {
+#jzbrdtdykm .gt_font_italic {
   font-style: italic;
 }
 
-#aavnrktgyp .gt_super {
+#jzbrdtdykm .gt_super {
   font-size: 65%;
 }
 
-#aavnrktgyp .gt_two_val_uncert {
+#jzbrdtdykm .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1981,31 +1981,31 @@
   margin-left: 0.1em;
 }
 
-#aavnrktgyp .gt_footnote_marks {
+#jzbrdtdykm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#aavnrktgyp .gt_asterisk {
+#jzbrdtdykm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aavnrktgyp .gt_slash_mark {
+#jzbrdtdykm .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#aavnrktgyp .gt_fraction_numerator {
+#jzbrdtdykm .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#aavnrktgyp .gt_fraction_denominator {
+#jzbrdtdykm .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2064,37 +2064,37 @@
 </div>
 <p>Finally, we can do renaming as well:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="va">my_col</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="va">group</span>, 
-      <span class="va">label</span>, 
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"column cols"</span>,
-        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-          <span class="st">"cols 1,2"</span>,
-          <span class="va">col1</span>, <span class="va">col2</span>
-        <span class="op">)</span>,
-        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-          <span class="st">"col 4"</span>,
-          `new-col4` <span class="op">=</span> <span class="va">col4</span>
-        <span class="op">)</span>
-        <span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="toqqqzjpvl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="va">group</span>, </span>
+<span>      <span class="va">label</span>, </span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"column cols"</span>,</span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>          <span class="st">"cols 1,2"</span>,</span>
+<span>          <span class="va">col1</span>, <span class="va">col2</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>          <span class="st">"col 4"</span>,</span>
+<span>          `new-col4` <span class="op">=</span> <span class="va">col4</span></span>
+<span>        <span class="op">)</span></span>
+<span>        <span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="ixblqiobdw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#toqqqzjpvl .gt_table {
+#ixblqiobdw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2119,7 +2119,7 @@
   border-left-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_heading {
+#ixblqiobdw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2131,7 +2131,7 @@
   border-right-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_title {
+#ixblqiobdw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2143,7 +2143,7 @@
   border-bottom-width: 0;
 }
 
-#toqqqzjpvl .gt_subtitle {
+#ixblqiobdw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2155,13 +2155,13 @@
   border-top-width: 0;
 }
 
-#toqqqzjpvl .gt_bottom_border {
+#ixblqiobdw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_col_headings {
+#ixblqiobdw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2176,7 +2176,7 @@
   border-right-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_col_heading {
+#ixblqiobdw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2196,7 +2196,7 @@
   overflow-x: hidden;
 }
 
-#toqqqzjpvl .gt_column_spanner_outer {
+#ixblqiobdw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2208,15 +2208,15 @@
   padding-right: 4px;
 }
 
-#toqqqzjpvl .gt_column_spanner_outer:first-child {
+#ixblqiobdw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#toqqqzjpvl .gt_column_spanner_outer:last-child {
+#ixblqiobdw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#toqqqzjpvl .gt_column_spanner {
+#ixblqiobdw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2228,7 +2228,7 @@
   width: 100%;
 }
 
-#toqqqzjpvl .gt_group_heading {
+#ixblqiobdw .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2253,7 +2253,7 @@
   vertical-align: middle;
 }
 
-#toqqqzjpvl .gt_empty_group_heading {
+#ixblqiobdw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2268,15 +2268,15 @@
   vertical-align: middle;
 }
 
-#toqqqzjpvl .gt_from_md > :first-child {
+#ixblqiobdw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#toqqqzjpvl .gt_from_md > :last-child {
+#ixblqiobdw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#toqqqzjpvl .gt_row {
+#ixblqiobdw .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2295,7 +2295,7 @@
   overflow-x: hidden;
 }
 
-#toqqqzjpvl .gt_stub {
+#ixblqiobdw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2308,7 +2308,7 @@
   padding-right: 5px;
 }
 
-#toqqqzjpvl .gt_stub_row_group {
+#ixblqiobdw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2322,11 +2322,11 @@
   vertical-align: top;
 }
 
-#toqqqzjpvl .gt_row_group_first td {
+#ixblqiobdw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#toqqqzjpvl .gt_summary_row {
+#ixblqiobdw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2336,16 +2336,16 @@
   padding-right: 5px;
 }
 
-#toqqqzjpvl .gt_first_summary_row {
+#ixblqiobdw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_first_summary_row.thick {
+#ixblqiobdw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#toqqqzjpvl .gt_last_summary_row {
+#ixblqiobdw .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2355,7 +2355,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_grand_summary_row {
+#ixblqiobdw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2365,7 +2365,7 @@
   padding-right: 5px;
 }
 
-#toqqqzjpvl .gt_first_grand_summary_row {
+#ixblqiobdw .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2375,11 +2375,11 @@
   border-top-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_striped {
+#ixblqiobdw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#toqqqzjpvl .gt_table_body {
+#ixblqiobdw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2388,7 +2388,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_footnotes {
+#ixblqiobdw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2402,7 +2402,7 @@
   border-right-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_footnote {
+#ixblqiobdw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2411,7 +2411,7 @@
   padding-right: 5px;
 }
 
-#toqqqzjpvl .gt_sourcenotes {
+#ixblqiobdw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2425,7 +2425,7 @@
   border-right-color: #D3D3D3;
 }
 
-#toqqqzjpvl .gt_sourcenote {
+#ixblqiobdw .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2433,36 +2433,36 @@
   padding-right: 5px;
 }
 
-#toqqqzjpvl .gt_left {
+#ixblqiobdw .gt_left {
   text-align: left;
 }
 
-#toqqqzjpvl .gt_center {
+#ixblqiobdw .gt_center {
   text-align: center;
 }
 
-#toqqqzjpvl .gt_right {
+#ixblqiobdw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#toqqqzjpvl .gt_font_normal {
+#ixblqiobdw .gt_font_normal {
   font-weight: normal;
 }
 
-#toqqqzjpvl .gt_font_bold {
+#ixblqiobdw .gt_font_bold {
   font-weight: bold;
 }
 
-#toqqqzjpvl .gt_font_italic {
+#ixblqiobdw .gt_font_italic {
   font-style: italic;
 }
 
-#toqqqzjpvl .gt_super {
+#ixblqiobdw .gt_super {
   font-size: 65%;
 }
 
-#toqqqzjpvl .gt_two_val_uncert {
+#ixblqiobdw .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2471,31 +2471,31 @@
   margin-left: 0.1em;
 }
 
-#toqqqzjpvl .gt_footnote_marks {
+#ixblqiobdw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#toqqqzjpvl .gt_asterisk {
+#ixblqiobdw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#toqqqzjpvl .gt_slash_mark {
+#ixblqiobdw .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#toqqqzjpvl .gt_fraction_numerator {
+#ixblqiobdw .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#toqqqzjpvl .gt_fraction_denominator {
+#ixblqiobdw .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2560,50 +2560,50 @@
 <p>Multiple <code>column</code> variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the <code>column</code> variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. Similar to the case of 1 <code>column</code> variable, the user may remove and rename values for the lowest level <code>column</code> variable. With multiple <code>column</code> variables, however, specifying column ordering in the <code>col_plan</code> is a bit trickier. By default, <code>tfrmt</code> will display the columns as they appear in the data but these can be customized in the <code>col_plan</code>. The main limitation with &gt;1 <code>column</code> variable is the inability to specify column spanners in the <code>col_plan</code>; the spanning labels will be created using the higher level <code>column</code> variable values, which will be displayed as-is. As such, there is a higher importance for preparing the analysis results data for display.</p>
 <p>Let’s consider an example dataset with multiple <code>column</code> variables:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span>
-    <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,        <span class="op">~</span><span class="va">span2</span>,  <span class="op">~</span><span class="va">span1</span>,     <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>,   <span class="op">~</span><span class="va">val</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,             <span class="cn">NA</span>,        <span class="cn">NA</span> , <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>    <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,        <span class="op">~</span><span class="va">span2</span>,  <span class="op">~</span><span class="va">span1</span>,     <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>,   <span class="op">~</span><span class="va">val</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">1</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,             <span class="cn">NA</span>,        <span class="cn">NA</span> , <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">2</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol3"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>    <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Notice that our <code>col_plan</code> is considerably simpler and our higher level columns are repurposed as column spanners:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="va">group</span>, 
-      <span class="va">label</span>, 
-      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,
-      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  
-      <span class="op">-</span><span class="va">mycol5</span>            
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="gcfhmvrrsu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="va">group</span>, </span>
+<span>      <span class="va">label</span>, </span>
+<span>      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  </span>
+<span>      <span class="op">-</span><span class="va">mycol5</span>            </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="ynvkyuxivv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#gcfhmvrrsu .gt_table {
+#ynvkyuxivv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2628,7 +2628,7 @@
   border-left-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_heading {
+#ynvkyuxivv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2640,7 +2640,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_title {
+#ynvkyuxivv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2652,7 +2652,7 @@
   border-bottom-width: 0;
 }
 
-#gcfhmvrrsu .gt_subtitle {
+#ynvkyuxivv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2664,13 +2664,13 @@
   border-top-width: 0;
 }
 
-#gcfhmvrrsu .gt_bottom_border {
+#ynvkyuxivv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_col_headings {
+#ynvkyuxivv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2685,7 +2685,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_col_heading {
+#ynvkyuxivv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2705,7 +2705,7 @@
   overflow-x: hidden;
 }
 
-#gcfhmvrrsu .gt_column_spanner_outer {
+#ynvkyuxivv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2717,15 +2717,15 @@
   padding-right: 4px;
 }
 
-#gcfhmvrrsu .gt_column_spanner_outer:first-child {
+#ynvkyuxivv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gcfhmvrrsu .gt_column_spanner_outer:last-child {
+#ynvkyuxivv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gcfhmvrrsu .gt_column_spanner {
+#ynvkyuxivv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2737,7 +2737,7 @@
   width: 100%;
 }
 
-#gcfhmvrrsu .gt_group_heading {
+#ynvkyuxivv .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2762,7 +2762,7 @@
   vertical-align: middle;
 }
 
-#gcfhmvrrsu .gt_empty_group_heading {
+#ynvkyuxivv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2777,15 +2777,15 @@
   vertical-align: middle;
 }
 
-#gcfhmvrrsu .gt_from_md > :first-child {
+#ynvkyuxivv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gcfhmvrrsu .gt_from_md > :last-child {
+#ynvkyuxivv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gcfhmvrrsu .gt_row {
+#ynvkyuxivv .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2804,7 +2804,7 @@
   overflow-x: hidden;
 }
 
-#gcfhmvrrsu .gt_stub {
+#ynvkyuxivv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2817,7 +2817,7 @@
   padding-right: 5px;
 }
 
-#gcfhmvrrsu .gt_stub_row_group {
+#ynvkyuxivv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2831,11 +2831,11 @@
   vertical-align: top;
 }
 
-#gcfhmvrrsu .gt_row_group_first td {
+#ynvkyuxivv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gcfhmvrrsu .gt_summary_row {
+#ynvkyuxivv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2845,16 +2845,16 @@
   padding-right: 5px;
 }
 
-#gcfhmvrrsu .gt_first_summary_row {
+#ynvkyuxivv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_first_summary_row.thick {
+#ynvkyuxivv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gcfhmvrrsu .gt_last_summary_row {
+#ynvkyuxivv .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2864,7 +2864,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_grand_summary_row {
+#ynvkyuxivv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2874,7 +2874,7 @@
   padding-right: 5px;
 }
 
-#gcfhmvrrsu .gt_first_grand_summary_row {
+#ynvkyuxivv .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2884,11 +2884,11 @@
   border-top-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_striped {
+#ynvkyuxivv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gcfhmvrrsu .gt_table_body {
+#ynvkyuxivv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2897,7 +2897,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_footnotes {
+#ynvkyuxivv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2911,7 +2911,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_footnote {
+#ynvkyuxivv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2920,7 +2920,7 @@
   padding-right: 5px;
 }
 
-#gcfhmvrrsu .gt_sourcenotes {
+#ynvkyuxivv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2934,7 +2934,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gcfhmvrrsu .gt_sourcenote {
+#ynvkyuxivv .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2942,36 +2942,36 @@
   padding-right: 5px;
 }
 
-#gcfhmvrrsu .gt_left {
+#ynvkyuxivv .gt_left {
   text-align: left;
 }
 
-#gcfhmvrrsu .gt_center {
+#ynvkyuxivv .gt_center {
   text-align: center;
 }
 
-#gcfhmvrrsu .gt_right {
+#ynvkyuxivv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gcfhmvrrsu .gt_font_normal {
+#ynvkyuxivv .gt_font_normal {
   font-weight: normal;
 }
 
-#gcfhmvrrsu .gt_font_bold {
+#ynvkyuxivv .gt_font_bold {
   font-weight: bold;
 }
 
-#gcfhmvrrsu .gt_font_italic {
+#ynvkyuxivv .gt_font_italic {
   font-style: italic;
 }
 
-#gcfhmvrrsu .gt_super {
+#ynvkyuxivv .gt_super {
   font-size: 65%;
 }
 
-#gcfhmvrrsu .gt_two_val_uncert {
+#ynvkyuxivv .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2980,31 +2980,31 @@
   margin-left: 0.1em;
 }
 
-#gcfhmvrrsu .gt_footnote_marks {
+#ynvkyuxivv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#gcfhmvrrsu .gt_asterisk {
+#ynvkyuxivv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gcfhmvrrsu .gt_slash_mark {
+#ynvkyuxivv .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#gcfhmvrrsu .gt_fraction_numerator {
+#ynvkyuxivv .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#gcfhmvrrsu .gt_fraction_denominator {
+#ynvkyuxivv .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -3069,32 +3069,32 @@
 <p>When there are multiple <code>column</code> variables provided, these are essentially combined together behind the scenes. This means that the column order can be defined by any of the <code>column</code> variables, including those representing the spanning. Specifically, we may order columns by leveraging <code><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains()</a></code> to reference any portion of those names.</p>
 <p>Reordering with multiple <code>column</code> variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. Let’s suppose we want to move the “col 4” column to the beginning and also reorder “col1” and “col2”. To achieve this, we can select “col 4” and then “col2” and finally all the other columns.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">group</span>,
-    label <span class="op">=</span> <span class="va">label</span>,
-    param <span class="op">=</span> <span class="va">parm</span>,
-    values <span class="op">=</span> <span class="va">val</span>,
-    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="va">group</span>, 
-      <span class="va">label</span>, 
-      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"col 4"</span><span class="op">)</span>,
-      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"col2"</span><span class="op">)</span>,
-      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,
-      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  
-      <span class="op">-</span><span class="va">mycol5</span>            
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="wutmtaksrj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    values <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="va">group</span>, </span>
+<span>      <span class="va">label</span>, </span>
+<span>      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"col 4"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"col2"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>      new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,  </span>
+<span>      <span class="op">-</span><span class="va">mycol5</span>            </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="ajaylisaub" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wutmtaksrj .gt_table {
+#ajaylisaub .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3119,7 +3119,7 @@
   border-left-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_heading {
+#ajaylisaub .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3131,7 +3131,7 @@
   border-right-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_title {
+#ajaylisaub .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3143,7 +3143,7 @@
   border-bottom-width: 0;
 }
 
-#wutmtaksrj .gt_subtitle {
+#ajaylisaub .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3155,13 +3155,13 @@
   border-top-width: 0;
 }
 
-#wutmtaksrj .gt_bottom_border {
+#ajaylisaub .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_col_headings {
+#ajaylisaub .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3176,7 +3176,7 @@
   border-right-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_col_heading {
+#ajaylisaub .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3196,7 +3196,7 @@
   overflow-x: hidden;
 }
 
-#wutmtaksrj .gt_column_spanner_outer {
+#ajaylisaub .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3208,15 +3208,15 @@
   padding-right: 4px;
 }
 
-#wutmtaksrj .gt_column_spanner_outer:first-child {
+#ajaylisaub .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wutmtaksrj .gt_column_spanner_outer:last-child {
+#ajaylisaub .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wutmtaksrj .gt_column_spanner {
+#ajaylisaub .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3228,7 +3228,7 @@
   width: 100%;
 }
 
-#wutmtaksrj .gt_group_heading {
+#ajaylisaub .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3253,7 +3253,7 @@
   vertical-align: middle;
 }
 
-#wutmtaksrj .gt_empty_group_heading {
+#ajaylisaub .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3268,15 +3268,15 @@
   vertical-align: middle;
 }
 
-#wutmtaksrj .gt_from_md > :first-child {
+#ajaylisaub .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wutmtaksrj .gt_from_md > :last-child {
+#ajaylisaub .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wutmtaksrj .gt_row {
+#ajaylisaub .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3295,7 +3295,7 @@
   overflow-x: hidden;
 }
 
-#wutmtaksrj .gt_stub {
+#ajaylisaub .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3308,7 +3308,7 @@
   padding-right: 5px;
 }
 
-#wutmtaksrj .gt_stub_row_group {
+#ajaylisaub .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3322,11 +3322,11 @@
   vertical-align: top;
 }
 
-#wutmtaksrj .gt_row_group_first td {
+#ajaylisaub .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wutmtaksrj .gt_summary_row {
+#ajaylisaub .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3336,16 +3336,16 @@
   padding-right: 5px;
 }
 
-#wutmtaksrj .gt_first_summary_row {
+#ajaylisaub .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_first_summary_row.thick {
+#ajaylisaub .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wutmtaksrj .gt_last_summary_row {
+#ajaylisaub .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3355,7 +3355,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_grand_summary_row {
+#ajaylisaub .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3365,7 +3365,7 @@
   padding-right: 5px;
 }
 
-#wutmtaksrj .gt_first_grand_summary_row {
+#ajaylisaub .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3375,11 +3375,11 @@
   border-top-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_striped {
+#ajaylisaub .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wutmtaksrj .gt_table_body {
+#ajaylisaub .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3388,7 +3388,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_footnotes {
+#ajaylisaub .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3402,7 +3402,7 @@
   border-right-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_footnote {
+#ajaylisaub .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -3411,7 +3411,7 @@
   padding-right: 5px;
 }
 
-#wutmtaksrj .gt_sourcenotes {
+#ajaylisaub .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3425,7 +3425,7 @@
   border-right-color: #D3D3D3;
 }
 
-#wutmtaksrj .gt_sourcenote {
+#ajaylisaub .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3433,36 +3433,36 @@
   padding-right: 5px;
 }
 
-#wutmtaksrj .gt_left {
+#ajaylisaub .gt_left {
   text-align: left;
 }
 
-#wutmtaksrj .gt_center {
+#ajaylisaub .gt_center {
   text-align: center;
 }
 
-#wutmtaksrj .gt_right {
+#ajaylisaub .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wutmtaksrj .gt_font_normal {
+#ajaylisaub .gt_font_normal {
   font-weight: normal;
 }
 
-#wutmtaksrj .gt_font_bold {
+#ajaylisaub .gt_font_bold {
   font-weight: bold;
 }
 
-#wutmtaksrj .gt_font_italic {
+#ajaylisaub .gt_font_italic {
   font-style: italic;
 }
 
-#wutmtaksrj .gt_super {
+#ajaylisaub .gt_super {
   font-size: 65%;
 }
 
-#wutmtaksrj .gt_two_val_uncert {
+#ajaylisaub .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -3471,31 +3471,31 @@
   margin-left: 0.1em;
 }
 
-#wutmtaksrj .gt_footnote_marks {
+#ajaylisaub .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#wutmtaksrj .gt_asterisk {
+#ajaylisaub .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wutmtaksrj .gt_slash_mark {
+#ajaylisaub .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#wutmtaksrj .gt_fraction_numerator {
+#ajaylisaub .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#wutmtaksrj .gt_fraction_denominator {
+#ajaylisaub .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -3559,13 +3559,13 @@
 </div>
 <p>In many cases, we may not have uniqueness in the lower level column name. Take the following example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span>
-    <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,     <span class="op">~</span><span class="va">span</span> ,  <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>,   <span class="op">~</span><span class="va">val</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"Treament"</span>, <span class="st">"mean"</span>   ,  <span class="st">"mean"</span>,    <span class="fl">1.234</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"Treament"</span>, <span class="st">"sd"</span>     ,  <span class="st">"sd"</span>  ,    <span class="fl">2.123</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"Placebo"</span> , <span class="st">"mean"</span>   ,  <span class="st">"mean"</span>,    <span class="fl">2.843</span>,
-    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"Placebo"</span> , <span class="st">"sd"</span>     ,  <span class="st">"sd"</span>  ,    <span class="fl">1.435</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>    <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,     <span class="op">~</span><span class="va">span</span> ,  <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>,   <span class="op">~</span><span class="va">val</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"Treament"</span>, <span class="st">"mean"</span>   ,  <span class="st">"mean"</span>,    <span class="fl">1.234</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>,  <span class="st">"Treament"</span>, <span class="st">"sd"</span>     ,  <span class="st">"sd"</span>  ,    <span class="fl">2.123</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"Placebo"</span> , <span class="st">"mean"</span>   ,  <span class="st">"mean"</span>,    <span class="fl">2.843</span>,</span>
+<span>    <span class="st">"g1"</span>, <span class="st">"rowlabel2"</span>,  <span class="st">"Placebo"</span> , <span class="st">"sd"</span>     ,  <span class="st">"sd"</span>  ,    <span class="fl">1.435</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Notice that the columns <code>mean</code> and <code>sd</code> are repeated for each of the treatment groups, which are differentiated by the spanners (<code>span</code>). We are still able to modify the ordering, but we have lost a bit of control so we have to be careful of the order we put things into <code>col_plan</code>. When there are repeating names in the lowest level, it is best to start with the lowest level <code>column</code> variable values and move up the hierarchy, that ways if there are any contradictions, the latest will be used. For an example of this, see the Unusual Tables Vignette.</p>
 </div>
 <div class="section level2">

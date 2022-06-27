@@ -105,31 +105,31 @@
 <p>To add a post space after all groups of values based on the variable “grp1” (our group in the <code>tfrmt</code> object) we do the following:</p>
 <p><code>row_grp_structure(group_val = ".default", element_block(post_space = "   "))</code></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  group <span class="op">=</span> <span class="va">grp1</span>,
-  label <span class="op">=</span> <span class="va">label</span>,
-  param <span class="op">=</span> <span class="va">param</span>, 
-  values <span class="op">=</span> <span class="va">value</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="op">)</span></code></pre></div>
-<div id="znyizqueuo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="va">grp1</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>, </span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span></span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,</span>
+<span>      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<div id="vqetlxknuy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#znyizqueuo .gt_table {
+#vqetlxknuy .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -154,7 +154,7 @@
   border-left-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_heading {
+#vqetlxknuy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -166,7 +166,7 @@
   border-right-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_title {
+#vqetlxknuy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -178,7 +178,7 @@
   border-bottom-width: 0;
 }
 
-#znyizqueuo .gt_subtitle {
+#vqetlxknuy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -190,13 +190,13 @@
   border-top-width: 0;
 }
 
-#znyizqueuo .gt_bottom_border {
+#vqetlxknuy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_col_headings {
+#vqetlxknuy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -211,7 +211,7 @@
   border-right-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_col_heading {
+#vqetlxknuy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -231,7 +231,7 @@
   overflow-x: hidden;
 }
 
-#znyizqueuo .gt_column_spanner_outer {
+#vqetlxknuy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -243,15 +243,15 @@
   padding-right: 4px;
 }
 
-#znyizqueuo .gt_column_spanner_outer:first-child {
+#vqetlxknuy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#znyizqueuo .gt_column_spanner_outer:last-child {
+#vqetlxknuy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#znyizqueuo .gt_column_spanner {
+#vqetlxknuy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -263,7 +263,7 @@
   width: 100%;
 }
 
-#znyizqueuo .gt_group_heading {
+#vqetlxknuy .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -288,7 +288,7 @@
   vertical-align: middle;
 }
 
-#znyizqueuo .gt_empty_group_heading {
+#vqetlxknuy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -303,15 +303,15 @@
   vertical-align: middle;
 }
 
-#znyizqueuo .gt_from_md > :first-child {
+#vqetlxknuy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#znyizqueuo .gt_from_md > :last-child {
+#vqetlxknuy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#znyizqueuo .gt_row {
+#vqetlxknuy .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -330,7 +330,7 @@
   overflow-x: hidden;
 }
 
-#znyizqueuo .gt_stub {
+#vqetlxknuy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -343,7 +343,7 @@
   padding-right: 5px;
 }
 
-#znyizqueuo .gt_stub_row_group {
+#vqetlxknuy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -357,11 +357,11 @@
   vertical-align: top;
 }
 
-#znyizqueuo .gt_row_group_first td {
+#vqetlxknuy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#znyizqueuo .gt_summary_row {
+#vqetlxknuy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -371,16 +371,16 @@
   padding-right: 5px;
 }
 
-#znyizqueuo .gt_first_summary_row {
+#vqetlxknuy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_first_summary_row.thick {
+#vqetlxknuy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#znyizqueuo .gt_last_summary_row {
+#vqetlxknuy .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -390,7 +390,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_grand_summary_row {
+#vqetlxknuy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -400,7 +400,7 @@
   padding-right: 5px;
 }
 
-#znyizqueuo .gt_first_grand_summary_row {
+#vqetlxknuy .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -410,11 +410,11 @@
   border-top-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_striped {
+#vqetlxknuy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#znyizqueuo .gt_table_body {
+#vqetlxknuy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -423,7 +423,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_footnotes {
+#vqetlxknuy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -437,7 +437,7 @@
   border-right-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_footnote {
+#vqetlxknuy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -446,7 +446,7 @@
   padding-right: 5px;
 }
 
-#znyizqueuo .gt_sourcenotes {
+#vqetlxknuy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -460,7 +460,7 @@
   border-right-color: #D3D3D3;
 }
 
-#znyizqueuo .gt_sourcenote {
+#vqetlxknuy .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -468,36 +468,36 @@
   padding-right: 5px;
 }
 
-#znyizqueuo .gt_left {
+#vqetlxknuy .gt_left {
   text-align: left;
 }
 
-#znyizqueuo .gt_center {
+#vqetlxknuy .gt_center {
   text-align: center;
 }
 
-#znyizqueuo .gt_right {
+#vqetlxknuy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#znyizqueuo .gt_font_normal {
+#vqetlxknuy .gt_font_normal {
   font-weight: normal;
 }
 
-#znyizqueuo .gt_font_bold {
+#vqetlxknuy .gt_font_bold {
   font-weight: bold;
 }
 
-#znyizqueuo .gt_font_italic {
+#vqetlxknuy .gt_font_italic {
   font-style: italic;
 }
 
-#znyizqueuo .gt_super {
+#vqetlxknuy .gt_super {
   font-size: 65%;
 }
 
-#znyizqueuo .gt_two_val_uncert {
+#vqetlxknuy .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -506,31 +506,31 @@
   margin-left: 0.1em;
 }
 
-#znyizqueuo .gt_footnote_marks {
+#vqetlxknuy .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#znyizqueuo .gt_asterisk {
+#vqetlxknuy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#znyizqueuo .gt_slash_mark {
+#vqetlxknuy .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#znyizqueuo .gt_fraction_numerator {
+#vqetlxknuy .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#znyizqueuo .gt_fraction_denominator {
+#vqetlxknuy .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -597,31 +597,31 @@
 </div>
 <p>To add a post space after values where grp1 = “grp1_1” only we do the following:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  group <span class="op">=</span> <span class="va">grp1</span>,
-  label <span class="op">=</span> <span class="va">label</span>,
-  param <span class="op">=</span> <span class="va">param</span>, 
-  values <span class="op">=</span> <span class="va">value</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">"grp1_1"</span>, <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="op">)</span></code></pre></div>
-<div id="ndzghptouq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="va">grp1</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>, </span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">"grp1_1"</span>, <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span></span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,</span>
+<span>      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<div id="fozrlcpqzk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ndzghptouq .gt_table {
+#fozrlcpqzk .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -646,7 +646,7 @@
   border-left-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_heading {
+#fozrlcpqzk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -658,7 +658,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_title {
+#fozrlcpqzk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -670,7 +670,7 @@
   border-bottom-width: 0;
 }
 
-#ndzghptouq .gt_subtitle {
+#fozrlcpqzk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -682,13 +682,13 @@
   border-top-width: 0;
 }
 
-#ndzghptouq .gt_bottom_border {
+#fozrlcpqzk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_col_headings {
+#fozrlcpqzk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -703,7 +703,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_col_heading {
+#fozrlcpqzk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -723,7 +723,7 @@
   overflow-x: hidden;
 }
 
-#ndzghptouq .gt_column_spanner_outer {
+#fozrlcpqzk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -735,15 +735,15 @@
   padding-right: 4px;
 }
 
-#ndzghptouq .gt_column_spanner_outer:first-child {
+#fozrlcpqzk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ndzghptouq .gt_column_spanner_outer:last-child {
+#fozrlcpqzk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ndzghptouq .gt_column_spanner {
+#fozrlcpqzk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -755,7 +755,7 @@
   width: 100%;
 }
 
-#ndzghptouq .gt_group_heading {
+#fozrlcpqzk .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -780,7 +780,7 @@
   vertical-align: middle;
 }
 
-#ndzghptouq .gt_empty_group_heading {
+#fozrlcpqzk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -795,15 +795,15 @@
   vertical-align: middle;
 }
 
-#ndzghptouq .gt_from_md > :first-child {
+#fozrlcpqzk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ndzghptouq .gt_from_md > :last-child {
+#fozrlcpqzk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ndzghptouq .gt_row {
+#fozrlcpqzk .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -822,7 +822,7 @@
   overflow-x: hidden;
 }
 
-#ndzghptouq .gt_stub {
+#fozrlcpqzk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -835,7 +835,7 @@
   padding-right: 5px;
 }
 
-#ndzghptouq .gt_stub_row_group {
+#fozrlcpqzk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -849,11 +849,11 @@
   vertical-align: top;
 }
 
-#ndzghptouq .gt_row_group_first td {
+#fozrlcpqzk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ndzghptouq .gt_summary_row {
+#fozrlcpqzk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -863,16 +863,16 @@
   padding-right: 5px;
 }
 
-#ndzghptouq .gt_first_summary_row {
+#fozrlcpqzk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_first_summary_row.thick {
+#fozrlcpqzk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ndzghptouq .gt_last_summary_row {
+#fozrlcpqzk .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -882,7 +882,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_grand_summary_row {
+#fozrlcpqzk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -892,7 +892,7 @@
   padding-right: 5px;
 }
 
-#ndzghptouq .gt_first_grand_summary_row {
+#fozrlcpqzk .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -902,11 +902,11 @@
   border-top-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_striped {
+#fozrlcpqzk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ndzghptouq .gt_table_body {
+#fozrlcpqzk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -915,7 +915,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_footnotes {
+#fozrlcpqzk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -929,7 +929,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_footnote {
+#fozrlcpqzk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -938,7 +938,7 @@
   padding-right: 5px;
 }
 
-#ndzghptouq .gt_sourcenotes {
+#fozrlcpqzk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -952,7 +952,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ndzghptouq .gt_sourcenote {
+#fozrlcpqzk .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -960,36 +960,36 @@
   padding-right: 5px;
 }
 
-#ndzghptouq .gt_left {
+#fozrlcpqzk .gt_left {
   text-align: left;
 }
 
-#ndzghptouq .gt_center {
+#fozrlcpqzk .gt_center {
   text-align: center;
 }
 
-#ndzghptouq .gt_right {
+#fozrlcpqzk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ndzghptouq .gt_font_normal {
+#fozrlcpqzk .gt_font_normal {
   font-weight: normal;
 }
 
-#ndzghptouq .gt_font_bold {
+#fozrlcpqzk .gt_font_bold {
   font-weight: bold;
 }
 
-#ndzghptouq .gt_font_italic {
+#fozrlcpqzk .gt_font_italic {
   font-style: italic;
 }
 
-#ndzghptouq .gt_super {
+#fozrlcpqzk .gt_super {
   font-size: 65%;
 }
 
-#ndzghptouq .gt_two_val_uncert {
+#fozrlcpqzk .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -998,31 +998,31 @@
   margin-left: 0.1em;
 }
 
-#ndzghptouq .gt_footnote_marks {
+#fozrlcpqzk .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#ndzghptouq .gt_asterisk {
+#fozrlcpqzk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ndzghptouq .gt_slash_mark {
+#fozrlcpqzk .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#ndzghptouq .gt_fraction_numerator {
+#fozrlcpqzk .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#ndzghptouq .gt_fraction_denominator {
+#fozrlcpqzk .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1102,29 +1102,29 @@
 </h3>
 <p>tfrmt will combine group and label variables into a single column, using indentation to distinguish the hierarchies:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,
-  label <span class="op">=</span> <span class="va">label</span>,
-  param <span class="op">=</span> <span class="va">param</span>, 
-  values <span class="op">=</span> <span class="va">value</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"indented"</span><span class="op">)</span><span class="op">)</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="op">)</span></code></pre></div>
-<div id="owlojcqdbw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>, </span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"indented"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span></span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,</span>
+<span>      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<div id="ajjgflxflv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#owlojcqdbw .gt_table {
+#ajjgflxflv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1149,7 +1149,7 @@
   border-left-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_heading {
+#ajjgflxflv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1161,7 +1161,7 @@
   border-right-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_title {
+#ajjgflxflv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1173,7 +1173,7 @@
   border-bottom-width: 0;
 }
 
-#owlojcqdbw .gt_subtitle {
+#ajjgflxflv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1185,13 +1185,13 @@
   border-top-width: 0;
 }
 
-#owlojcqdbw .gt_bottom_border {
+#ajjgflxflv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_col_headings {
+#ajjgflxflv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1206,7 +1206,7 @@
   border-right-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_col_heading {
+#ajjgflxflv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1226,7 +1226,7 @@
   overflow-x: hidden;
 }
 
-#owlojcqdbw .gt_column_spanner_outer {
+#ajjgflxflv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1238,15 +1238,15 @@
   padding-right: 4px;
 }
 
-#owlojcqdbw .gt_column_spanner_outer:first-child {
+#ajjgflxflv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#owlojcqdbw .gt_column_spanner_outer:last-child {
+#ajjgflxflv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#owlojcqdbw .gt_column_spanner {
+#ajjgflxflv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1258,7 +1258,7 @@
   width: 100%;
 }
 
-#owlojcqdbw .gt_group_heading {
+#ajjgflxflv .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1283,7 +1283,7 @@
   vertical-align: middle;
 }
 
-#owlojcqdbw .gt_empty_group_heading {
+#ajjgflxflv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1298,15 +1298,15 @@
   vertical-align: middle;
 }
 
-#owlojcqdbw .gt_from_md > :first-child {
+#ajjgflxflv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#owlojcqdbw .gt_from_md > :last-child {
+#ajjgflxflv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#owlojcqdbw .gt_row {
+#ajjgflxflv .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1325,7 +1325,7 @@
   overflow-x: hidden;
 }
 
-#owlojcqdbw .gt_stub {
+#ajjgflxflv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1338,7 +1338,7 @@
   padding-right: 5px;
 }
 
-#owlojcqdbw .gt_stub_row_group {
+#ajjgflxflv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1352,11 +1352,11 @@
   vertical-align: top;
 }
 
-#owlojcqdbw .gt_row_group_first td {
+#ajjgflxflv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#owlojcqdbw .gt_summary_row {
+#ajjgflxflv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1366,16 +1366,16 @@
   padding-right: 5px;
 }
 
-#owlojcqdbw .gt_first_summary_row {
+#ajjgflxflv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_first_summary_row.thick {
+#ajjgflxflv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#owlojcqdbw .gt_last_summary_row {
+#ajjgflxflv .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1385,7 +1385,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_grand_summary_row {
+#ajjgflxflv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1395,7 +1395,7 @@
   padding-right: 5px;
 }
 
-#owlojcqdbw .gt_first_grand_summary_row {
+#ajjgflxflv .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1405,11 +1405,11 @@
   border-top-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_striped {
+#ajjgflxflv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#owlojcqdbw .gt_table_body {
+#ajjgflxflv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1418,7 +1418,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_footnotes {
+#ajjgflxflv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1432,7 +1432,7 @@
   border-right-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_footnote {
+#ajjgflxflv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1441,7 +1441,7 @@
   padding-right: 5px;
 }
 
-#owlojcqdbw .gt_sourcenotes {
+#ajjgflxflv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1455,7 +1455,7 @@
   border-right-color: #D3D3D3;
 }
 
-#owlojcqdbw .gt_sourcenote {
+#ajjgflxflv .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1463,36 +1463,36 @@
   padding-right: 5px;
 }
 
-#owlojcqdbw .gt_left {
+#ajjgflxflv .gt_left {
   text-align: left;
 }
 
-#owlojcqdbw .gt_center {
+#ajjgflxflv .gt_center {
   text-align: center;
 }
 
-#owlojcqdbw .gt_right {
+#ajjgflxflv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#owlojcqdbw .gt_font_normal {
+#ajjgflxflv .gt_font_normal {
   font-weight: normal;
 }
 
-#owlojcqdbw .gt_font_bold {
+#ajjgflxflv .gt_font_bold {
   font-weight: bold;
 }
 
-#owlojcqdbw .gt_font_italic {
+#ajjgflxflv .gt_font_italic {
   font-style: italic;
 }
 
-#owlojcqdbw .gt_super {
+#ajjgflxflv .gt_super {
   font-size: 65%;
 }
 
-#owlojcqdbw .gt_two_val_uncert {
+#ajjgflxflv .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1501,31 +1501,31 @@
   margin-left: 0.1em;
 }
 
-#owlojcqdbw .gt_footnote_marks {
+#ajjgflxflv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#owlojcqdbw .gt_asterisk {
+#ajjgflxflv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#owlojcqdbw .gt_slash_mark {
+#ajjgflxflv .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#owlojcqdbw .gt_fraction_numerator {
+#ajjgflxflv .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#owlojcqdbw .gt_fraction_denominator {
+#ajjgflxflv .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1632,29 +1632,29 @@
 </h3>
 <p>This is the default option from gt: group labels become spanning headers over the rows. Note that in the case of multiple group variables, only the top level group variable will be in the spanning row header, and the rest will combine with the label variable using indentation:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,
-  label <span class="op">=</span> <span class="va">label</span>,
-  param <span class="op">=</span> <span class="va">param</span>, 
-  values <span class="op">=</span> <span class="va">value</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"spanning"</span><span class="op">)</span><span class="op">)</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="op">)</span></code></pre></div>
-<div id="khsoolvjmy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>, </span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"spanning"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span></span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,</span>
+<span>      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<div id="dwnjdrcoqh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#khsoolvjmy .gt_table {
+#dwnjdrcoqh .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1679,7 +1679,7 @@
   border-left-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_heading {
+#dwnjdrcoqh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1691,7 +1691,7 @@
   border-right-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_title {
+#dwnjdrcoqh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1703,7 +1703,7 @@
   border-bottom-width: 0;
 }
 
-#khsoolvjmy .gt_subtitle {
+#dwnjdrcoqh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1715,13 +1715,13 @@
   border-top-width: 0;
 }
 
-#khsoolvjmy .gt_bottom_border {
+#dwnjdrcoqh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_col_headings {
+#dwnjdrcoqh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1736,7 +1736,7 @@
   border-right-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_col_heading {
+#dwnjdrcoqh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1756,7 +1756,7 @@
   overflow-x: hidden;
 }
 
-#khsoolvjmy .gt_column_spanner_outer {
+#dwnjdrcoqh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1768,15 +1768,15 @@
   padding-right: 4px;
 }
 
-#khsoolvjmy .gt_column_spanner_outer:first-child {
+#dwnjdrcoqh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#khsoolvjmy .gt_column_spanner_outer:last-child {
+#dwnjdrcoqh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#khsoolvjmy .gt_column_spanner {
+#dwnjdrcoqh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1788,7 +1788,7 @@
   width: 100%;
 }
 
-#khsoolvjmy .gt_group_heading {
+#dwnjdrcoqh .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1813,7 +1813,7 @@
   vertical-align: middle;
 }
 
-#khsoolvjmy .gt_empty_group_heading {
+#dwnjdrcoqh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1828,15 +1828,15 @@
   vertical-align: middle;
 }
 
-#khsoolvjmy .gt_from_md > :first-child {
+#dwnjdrcoqh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#khsoolvjmy .gt_from_md > :last-child {
+#dwnjdrcoqh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#khsoolvjmy .gt_row {
+#dwnjdrcoqh .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1855,7 +1855,7 @@
   overflow-x: hidden;
 }
 
-#khsoolvjmy .gt_stub {
+#dwnjdrcoqh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1868,7 +1868,7 @@
   padding-right: 5px;
 }
 
-#khsoolvjmy .gt_stub_row_group {
+#dwnjdrcoqh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1882,11 +1882,11 @@
   vertical-align: top;
 }
 
-#khsoolvjmy .gt_row_group_first td {
+#dwnjdrcoqh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#khsoolvjmy .gt_summary_row {
+#dwnjdrcoqh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1896,16 +1896,16 @@
   padding-right: 5px;
 }
 
-#khsoolvjmy .gt_first_summary_row {
+#dwnjdrcoqh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_first_summary_row.thick {
+#dwnjdrcoqh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#khsoolvjmy .gt_last_summary_row {
+#dwnjdrcoqh .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1915,7 +1915,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_grand_summary_row {
+#dwnjdrcoqh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1925,7 +1925,7 @@
   padding-right: 5px;
 }
 
-#khsoolvjmy .gt_first_grand_summary_row {
+#dwnjdrcoqh .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1935,11 +1935,11 @@
   border-top-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_striped {
+#dwnjdrcoqh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#khsoolvjmy .gt_table_body {
+#dwnjdrcoqh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1948,7 +1948,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_footnotes {
+#dwnjdrcoqh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1962,7 +1962,7 @@
   border-right-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_footnote {
+#dwnjdrcoqh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1971,7 +1971,7 @@
   padding-right: 5px;
 }
 
-#khsoolvjmy .gt_sourcenotes {
+#dwnjdrcoqh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1985,7 +1985,7 @@
   border-right-color: #D3D3D3;
 }
 
-#khsoolvjmy .gt_sourcenote {
+#dwnjdrcoqh .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1993,36 +1993,36 @@
   padding-right: 5px;
 }
 
-#khsoolvjmy .gt_left {
+#dwnjdrcoqh .gt_left {
   text-align: left;
 }
 
-#khsoolvjmy .gt_center {
+#dwnjdrcoqh .gt_center {
   text-align: center;
 }
 
-#khsoolvjmy .gt_right {
+#dwnjdrcoqh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#khsoolvjmy .gt_font_normal {
+#dwnjdrcoqh .gt_font_normal {
   font-weight: normal;
 }
 
-#khsoolvjmy .gt_font_bold {
+#dwnjdrcoqh .gt_font_bold {
   font-weight: bold;
 }
 
-#khsoolvjmy .gt_font_italic {
+#dwnjdrcoqh .gt_font_italic {
   font-style: italic;
 }
 
-#khsoolvjmy .gt_super {
+#dwnjdrcoqh .gt_super {
   font-size: 65%;
 }
 
-#khsoolvjmy .gt_two_val_uncert {
+#dwnjdrcoqh .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2031,31 +2031,31 @@
   margin-left: 0.1em;
 }
 
-#khsoolvjmy .gt_footnote_marks {
+#dwnjdrcoqh .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#khsoolvjmy .gt_asterisk {
+#dwnjdrcoqh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#khsoolvjmy .gt_slash_mark {
+#dwnjdrcoqh .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#khsoolvjmy .gt_fraction_numerator {
+#dwnjdrcoqh .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#khsoolvjmy .gt_fraction_denominator {
+#dwnjdrcoqh .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2156,29 +2156,29 @@
 </h3>
 <p>In this case, group labels become a separate column to the left. Note that in the case of multiple group variables, only the top level group variable will be in the column, and the rest will combine with the label variable using indentation:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,
-  label <span class="op">=</span> <span class="va">label</span>,
-  param <span class="op">=</span> <span class="va">param</span>, 
-  values <span class="op">=</span> <span class="va">value</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"column"</span><span class="op">)</span><span class="op">)</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span>
-      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,
-      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="op">)</span></code></pre></div>
-<div id="yrlbyhnuyr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>, </span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"column"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://gt.rstudio.com/reference/tab_style.html" class="external-link">tab_style</a></span><span class="op">(</span></span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cell_text.html" class="external-link">cell_text</a></span><span class="op">(</span>whitespace <span class="op">=</span> <span class="st">"pre"</span>, align <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span>,</span>
+<span>      locations <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/cells_stub.html" class="external-link">cells_stub</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<div id="azgxnvmzet" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#yrlbyhnuyr .gt_table {
+#azgxnvmzet .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2203,7 +2203,7 @@
   border-left-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_heading {
+#azgxnvmzet .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2215,7 +2215,7 @@
   border-right-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_title {
+#azgxnvmzet .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2227,7 +2227,7 @@
   border-bottom-width: 0;
 }
 
-#yrlbyhnuyr .gt_subtitle {
+#azgxnvmzet .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2239,13 +2239,13 @@
   border-top-width: 0;
 }
 
-#yrlbyhnuyr .gt_bottom_border {
+#azgxnvmzet .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_col_headings {
+#azgxnvmzet .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2260,7 +2260,7 @@
   border-right-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_col_heading {
+#azgxnvmzet .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2280,7 +2280,7 @@
   overflow-x: hidden;
 }
 
-#yrlbyhnuyr .gt_column_spanner_outer {
+#azgxnvmzet .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2292,15 +2292,15 @@
   padding-right: 4px;
 }
 
-#yrlbyhnuyr .gt_column_spanner_outer:first-child {
+#azgxnvmzet .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yrlbyhnuyr .gt_column_spanner_outer:last-child {
+#azgxnvmzet .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yrlbyhnuyr .gt_column_spanner {
+#azgxnvmzet .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2312,7 +2312,7 @@
   width: 100%;
 }
 
-#yrlbyhnuyr .gt_group_heading {
+#azgxnvmzet .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2337,7 +2337,7 @@
   vertical-align: middle;
 }
 
-#yrlbyhnuyr .gt_empty_group_heading {
+#azgxnvmzet .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2352,15 +2352,15 @@
   vertical-align: middle;
 }
 
-#yrlbyhnuyr .gt_from_md > :first-child {
+#azgxnvmzet .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yrlbyhnuyr .gt_from_md > :last-child {
+#azgxnvmzet .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yrlbyhnuyr .gt_row {
+#azgxnvmzet .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2379,7 +2379,7 @@
   overflow-x: hidden;
 }
 
-#yrlbyhnuyr .gt_stub {
+#azgxnvmzet .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2392,7 +2392,7 @@
   padding-right: 5px;
 }
 
-#yrlbyhnuyr .gt_stub_row_group {
+#azgxnvmzet .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2406,11 +2406,11 @@
   vertical-align: top;
 }
 
-#yrlbyhnuyr .gt_row_group_first td {
+#azgxnvmzet .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yrlbyhnuyr .gt_summary_row {
+#azgxnvmzet .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2420,16 +2420,16 @@
   padding-right: 5px;
 }
 
-#yrlbyhnuyr .gt_first_summary_row {
+#azgxnvmzet .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_first_summary_row.thick {
+#azgxnvmzet .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yrlbyhnuyr .gt_last_summary_row {
+#azgxnvmzet .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2439,7 +2439,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_grand_summary_row {
+#azgxnvmzet .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2449,7 +2449,7 @@
   padding-right: 5px;
 }
 
-#yrlbyhnuyr .gt_first_grand_summary_row {
+#azgxnvmzet .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2459,11 +2459,11 @@
   border-top-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_striped {
+#azgxnvmzet .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yrlbyhnuyr .gt_table_body {
+#azgxnvmzet .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2472,7 +2472,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_footnotes {
+#azgxnvmzet .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2486,7 +2486,7 @@
   border-right-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_footnote {
+#azgxnvmzet .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2495,7 +2495,7 @@
   padding-right: 5px;
 }
 
-#yrlbyhnuyr .gt_sourcenotes {
+#azgxnvmzet .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2509,7 +2509,7 @@
   border-right-color: #D3D3D3;
 }
 
-#yrlbyhnuyr .gt_sourcenote {
+#azgxnvmzet .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2517,36 +2517,36 @@
   padding-right: 5px;
 }
 
-#yrlbyhnuyr .gt_left {
+#azgxnvmzet .gt_left {
   text-align: left;
 }
 
-#yrlbyhnuyr .gt_center {
+#azgxnvmzet .gt_center {
   text-align: center;
 }
 
-#yrlbyhnuyr .gt_right {
+#azgxnvmzet .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yrlbyhnuyr .gt_font_normal {
+#azgxnvmzet .gt_font_normal {
   font-weight: normal;
 }
 
-#yrlbyhnuyr .gt_font_bold {
+#azgxnvmzet .gt_font_bold {
   font-weight: bold;
 }
 
-#yrlbyhnuyr .gt_font_italic {
+#azgxnvmzet .gt_font_italic {
   font-style: italic;
 }
 
-#yrlbyhnuyr .gt_super {
+#azgxnvmzet .gt_super {
   font-size: 65%;
 }
 
-#yrlbyhnuyr .gt_two_val_uncert {
+#azgxnvmzet .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2555,31 +2555,31 @@
   margin-left: 0.1em;
 }
 
-#yrlbyhnuyr .gt_footnote_marks {
+#azgxnvmzet .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#yrlbyhnuyr .gt_asterisk {
+#azgxnvmzet .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yrlbyhnuyr .gt_slash_mark {
+#azgxnvmzet .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#yrlbyhnuyr .gt_fraction_numerator {
+#azgxnvmzet .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#yrlbyhnuyr .gt_fraction_denominator {
+#azgxnvmzet .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2676,25 +2676,25 @@
 </h3>
 <p>A user may also suppress the printing of any group variable by specifying the “noprint” option.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,
-  label <span class="op">=</span> <span class="va">label</span>,
-  param <span class="op">=</span> <span class="va">param</span>, 
-  values <span class="op">=</span> <span class="va">value</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"noprint"</span><span class="op">)</span><span class="op">)</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<div id="tzbvtyvfld" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="va">my_tfrmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>, </span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"noprint"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">my_tfrmt</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div id="qqjuxifvrr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#tzbvtyvfld .gt_table {
+#qqjuxifvrr .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2719,7 +2719,7 @@
   border-left-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_heading {
+#qqjuxifvrr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2731,7 +2731,7 @@
   border-right-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_title {
+#qqjuxifvrr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2743,7 +2743,7 @@
   border-bottom-width: 0;
 }
 
-#tzbvtyvfld .gt_subtitle {
+#qqjuxifvrr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2755,13 +2755,13 @@
   border-top-width: 0;
 }
 
-#tzbvtyvfld .gt_bottom_border {
+#qqjuxifvrr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_col_headings {
+#qqjuxifvrr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2776,7 +2776,7 @@
   border-right-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_col_heading {
+#qqjuxifvrr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2796,7 +2796,7 @@
   overflow-x: hidden;
 }
 
-#tzbvtyvfld .gt_column_spanner_outer {
+#qqjuxifvrr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2808,15 +2808,15 @@
   padding-right: 4px;
 }
 
-#tzbvtyvfld .gt_column_spanner_outer:first-child {
+#qqjuxifvrr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tzbvtyvfld .gt_column_spanner_outer:last-child {
+#qqjuxifvrr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tzbvtyvfld .gt_column_spanner {
+#qqjuxifvrr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2828,7 +2828,7 @@
   width: 100%;
 }
 
-#tzbvtyvfld .gt_group_heading {
+#qqjuxifvrr .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2853,7 +2853,7 @@
   vertical-align: middle;
 }
 
-#tzbvtyvfld .gt_empty_group_heading {
+#qqjuxifvrr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2868,15 +2868,15 @@
   vertical-align: middle;
 }
 
-#tzbvtyvfld .gt_from_md > :first-child {
+#qqjuxifvrr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tzbvtyvfld .gt_from_md > :last-child {
+#qqjuxifvrr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tzbvtyvfld .gt_row {
+#qqjuxifvrr .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2895,7 +2895,7 @@
   overflow-x: hidden;
 }
 
-#tzbvtyvfld .gt_stub {
+#qqjuxifvrr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2908,7 +2908,7 @@
   padding-right: 5px;
 }
 
-#tzbvtyvfld .gt_stub_row_group {
+#qqjuxifvrr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2922,11 +2922,11 @@
   vertical-align: top;
 }
 
-#tzbvtyvfld .gt_row_group_first td {
+#qqjuxifvrr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tzbvtyvfld .gt_summary_row {
+#qqjuxifvrr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2936,16 +2936,16 @@
   padding-right: 5px;
 }
 
-#tzbvtyvfld .gt_first_summary_row {
+#qqjuxifvrr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_first_summary_row.thick {
+#qqjuxifvrr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tzbvtyvfld .gt_last_summary_row {
+#qqjuxifvrr .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2955,7 +2955,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_grand_summary_row {
+#qqjuxifvrr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2965,7 +2965,7 @@
   padding-right: 5px;
 }
 
-#tzbvtyvfld .gt_first_grand_summary_row {
+#qqjuxifvrr .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2975,11 +2975,11 @@
   border-top-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_striped {
+#qqjuxifvrr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tzbvtyvfld .gt_table_body {
+#qqjuxifvrr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2988,7 +2988,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_footnotes {
+#qqjuxifvrr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3002,7 +3002,7 @@
   border-right-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_footnote {
+#qqjuxifvrr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -3011,7 +3011,7 @@
   padding-right: 5px;
 }
 
-#tzbvtyvfld .gt_sourcenotes {
+#qqjuxifvrr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3025,7 +3025,7 @@
   border-right-color: #D3D3D3;
 }
 
-#tzbvtyvfld .gt_sourcenote {
+#qqjuxifvrr .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3033,36 +3033,36 @@
   padding-right: 5px;
 }
 
-#tzbvtyvfld .gt_left {
+#qqjuxifvrr .gt_left {
   text-align: left;
 }
 
-#tzbvtyvfld .gt_center {
+#qqjuxifvrr .gt_center {
   text-align: center;
 }
 
-#tzbvtyvfld .gt_right {
+#qqjuxifvrr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tzbvtyvfld .gt_font_normal {
+#qqjuxifvrr .gt_font_normal {
   font-weight: normal;
 }
 
-#tzbvtyvfld .gt_font_bold {
+#qqjuxifvrr .gt_font_bold {
   font-weight: bold;
 }
 
-#tzbvtyvfld .gt_font_italic {
+#qqjuxifvrr .gt_font_italic {
   font-style: italic;
 }
 
-#tzbvtyvfld .gt_super {
+#qqjuxifvrr .gt_super {
   font-size: 65%;
 }
 
-#tzbvtyvfld .gt_two_val_uncert {
+#qqjuxifvrr .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -3071,31 +3071,31 @@
   margin-left: 0.1em;
 }
 
-#tzbvtyvfld .gt_footnote_marks {
+#qqjuxifvrr .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#tzbvtyvfld .gt_asterisk {
+#qqjuxifvrr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tzbvtyvfld .gt_slash_mark {
+#qqjuxifvrr .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#tzbvtyvfld .gt_fraction_numerator {
+#qqjuxifvrr .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#tzbvtyvfld .gt_fraction_denominator {
+#qqjuxifvrr .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;

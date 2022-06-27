@@ -75,9 +75,9 @@ span_structures can be nested to allow for layered spanning headers.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">col_plan</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">span_structure</span><span class="op">(</span><span class="va">label</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">col_plan</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">span_structure</span><span class="op">(</span><span class="va">label</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -123,7 +123,7 @@ function to remove un-wanted columns.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
@@ -132,39 +132,39 @@ function to remove un-wanted columns.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## select col_1 as the first column, remove col_last, then create spanning</span></span>
-<span class="r-in"><span class="co">## structures that have multiple levels</span></span>
-<span class="r-in"><span class="va">spanning_col_plan_ex</span> <span class="op">&lt;-</span> <span class="fu">col_plan</span><span class="op">(</span></span>
-<span class="r-in"> <span class="va">col_1</span>,</span>
-<span class="r-in"> <span class="op">-</span><span class="va">col_last</span>,</span>
-<span class="r-in"> <span class="fu">span_structure</span><span class="op">(</span></span>
-<span class="r-in">   label <span class="op">=</span> <span class="st">"Top Label Level 1"</span>,</span>
-<span class="r-in">   <span class="fu">span_structure</span><span class="op">(</span></span>
-<span class="r-in">     label <span class="op">=</span> <span class="st">"Second Label Level 1.1"</span>,</span>
-<span class="r-in">     <span class="va">col_3</span>, <span class="va">col_4</span></span>
-<span class="r-in">   <span class="op">)</span>,</span>
-<span class="r-in">   <span class="fu">span_structure</span><span class="op">(</span></span>
-<span class="r-in">     label <span class="op">=</span> <span class="st">"Second Label Level 1.2"</span>,</span>
-<span class="r-in">     <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span></span>
-<span class="r-in">   <span class="op">)</span>,</span>
-<span class="r-in">   <span class="va">col_5</span></span>
-<span class="r-in"> <span class="op">)</span>,</span>
-<span class="r-in"> <span class="fu">span_structure</span><span class="op">(</span></span>
-<span class="r-in">   label <span class="op">=</span> <span class="st">"Top Label Level 2"</span>,</span>
-<span class="r-in">   <span class="va">col_6</span>, <span class="va">col_7</span></span>
-<span class="r-in"> <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## select my_col_1 as the first column, then</span></span>
-<span class="r-in"><span class="co">## rename col_2 to new_col_1 and put as the</span></span>
-<span class="r-in"><span class="co">## second column, then select the rest of the columns</span></span>
-<span class="r-in"><span class="va">renaming_col_plan_ex</span> <span class="op">&lt;-</span> <span class="fu">col_plan</span><span class="op">(</span></span>
-<span class="r-in">   <span class="va">my_col_1</span>,</span>
-<span class="r-in">   new_col_1 <span class="op">=</span> <span class="va">col_2</span>,</span>
-<span class="r-in">   <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">   <span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## select col_1 as the first column, remove col_last, then create spanning</span></span></span>
+<span class="r-in"><span><span class="co">## structures that have multiple levels</span></span></span>
+<span class="r-in"><span><span class="va">spanning_col_plan_ex</span> <span class="op">&lt;-</span> <span class="fu">col_plan</span><span class="op">(</span></span></span>
+<span class="r-in"><span> <span class="va">col_1</span>,</span></span>
+<span class="r-in"><span> <span class="op">-</span><span class="va">col_last</span>,</span></span>
+<span class="r-in"><span> <span class="fu">span_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   label <span class="op">=</span> <span class="st">"Top Label Level 1"</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">span_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>     label <span class="op">=</span> <span class="st">"Second Label Level 1.1"</span>,</span></span>
+<span class="r-in"><span>     <span class="va">col_3</span>, <span class="va">col_4</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">span_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>     label <span class="op">=</span> <span class="st">"Second Label Level 1.2"</span>,</span></span>
+<span class="r-in"><span>     <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span>,</span></span>
+<span class="r-in"><span>   <span class="va">col_5</span></span></span>
+<span class="r-in"><span> <span class="op">)</span>,</span></span>
+<span class="r-in"><span> <span class="fu">span_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   label <span class="op">=</span> <span class="st">"Top Label Level 2"</span>,</span></span>
+<span class="r-in"><span>   <span class="va">col_6</span>, <span class="va">col_7</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## select my_col_1 as the first column, then</span></span></span>
+<span class="r-in"><span><span class="co">## rename col_2 to new_col_1 and put as the</span></span></span>
+<span class="r-in"><span><span class="co">## second column, then select the rest of the columns</span></span></span>
+<span class="r-in"><span><span class="va">renaming_col_plan_ex</span> <span class="op">&lt;-</span> <span class="fu">col_plan</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="va">my_col_1</span>,</span></span>
+<span class="r-in"><span>   new_col_1 <span class="op">=</span> <span class="va">col_2</span>,</span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

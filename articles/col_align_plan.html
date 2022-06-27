@@ -106,51 +106,51 @@
 <p>Element aligns have two arguments: the alignment desired and the columns in the final table to be aligned. The column values that are specified are to match the contents of the <code>column</code> variable that is specified in the <code>tfrmt</code> object.</p>
 <p>Let’s take a look at how alignment can be applied to the example below, which contains a variety of different parameters which are formatted differently.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span>
-<span class="co">#&gt;   label     param  column value   ord</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> n         n      trt1   12        1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mean (sd) mean   trt1   12.3      2</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> mean (sd) sd     trt1    4.35     2</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> median    median trt1   14        3</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> [q1, q3]  q1     trt1   10        4</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> [q1, q3]  q3     trt1   20        4</span>
-
-<span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  label <span class="op">=</span> <span class="va">label</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  param <span class="op">=</span> <span class="va">param</span>,
-  values <span class="op">=</span> <span class="va">value</span>,
-  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,
-  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, 
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, 
-                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, 
-                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,
-                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="frdxlagpfp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   label     param  column value   ord</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> n         n      trt1   12        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> mean (sd) mean   trt1   12.3      2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> mean (sd) sd     trt1    4.35     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> median    median trt1   14        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> [q1, q3]  q1     trt1   10        4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> [q1, q3]  q3     trt1   20        4</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,</span>
+<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, </span>
+<span>                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, </span>
+<span>                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,</span>
+<span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="xsxyreqcuo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#frdxlagpfp .gt_table {
+#xsxyreqcuo .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -175,7 +175,7 @@
   border-left-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_heading {
+#xsxyreqcuo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -187,7 +187,7 @@
   border-right-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_title {
+#xsxyreqcuo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -199,7 +199,7 @@
   border-bottom-width: 0;
 }
 
-#frdxlagpfp .gt_subtitle {
+#xsxyreqcuo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -211,13 +211,13 @@
   border-top-width: 0;
 }
 
-#frdxlagpfp .gt_bottom_border {
+#xsxyreqcuo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_col_headings {
+#xsxyreqcuo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -232,7 +232,7 @@
   border-right-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_col_heading {
+#xsxyreqcuo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -252,7 +252,7 @@
   overflow-x: hidden;
 }
 
-#frdxlagpfp .gt_column_spanner_outer {
+#xsxyreqcuo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -264,15 +264,15 @@
   padding-right: 4px;
 }
 
-#frdxlagpfp .gt_column_spanner_outer:first-child {
+#xsxyreqcuo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#frdxlagpfp .gt_column_spanner_outer:last-child {
+#xsxyreqcuo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#frdxlagpfp .gt_column_spanner {
+#xsxyreqcuo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -284,7 +284,7 @@
   width: 100%;
 }
 
-#frdxlagpfp .gt_group_heading {
+#xsxyreqcuo .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -309,7 +309,7 @@
   vertical-align: middle;
 }
 
-#frdxlagpfp .gt_empty_group_heading {
+#xsxyreqcuo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -324,15 +324,15 @@
   vertical-align: middle;
 }
 
-#frdxlagpfp .gt_from_md > :first-child {
+#xsxyreqcuo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#frdxlagpfp .gt_from_md > :last-child {
+#xsxyreqcuo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#frdxlagpfp .gt_row {
+#xsxyreqcuo .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -351,7 +351,7 @@
   overflow-x: hidden;
 }
 
-#frdxlagpfp .gt_stub {
+#xsxyreqcuo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -364,7 +364,7 @@
   padding-right: 5px;
 }
 
-#frdxlagpfp .gt_stub_row_group {
+#xsxyreqcuo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -378,11 +378,11 @@
   vertical-align: top;
 }
 
-#frdxlagpfp .gt_row_group_first td {
+#xsxyreqcuo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#frdxlagpfp .gt_summary_row {
+#xsxyreqcuo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -392,16 +392,16 @@
   padding-right: 5px;
 }
 
-#frdxlagpfp .gt_first_summary_row {
+#xsxyreqcuo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_first_summary_row.thick {
+#xsxyreqcuo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#frdxlagpfp .gt_last_summary_row {
+#xsxyreqcuo .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -411,7 +411,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_grand_summary_row {
+#xsxyreqcuo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -421,7 +421,7 @@
   padding-right: 5px;
 }
 
-#frdxlagpfp .gt_first_grand_summary_row {
+#xsxyreqcuo .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -431,11 +431,11 @@
   border-top-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_striped {
+#xsxyreqcuo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#frdxlagpfp .gt_table_body {
+#xsxyreqcuo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -444,7 +444,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_footnotes {
+#xsxyreqcuo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -458,7 +458,7 @@
   border-right-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_footnote {
+#xsxyreqcuo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -467,7 +467,7 @@
   padding-right: 5px;
 }
 
-#frdxlagpfp .gt_sourcenotes {
+#xsxyreqcuo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -481,7 +481,7 @@
   border-right-color: #D3D3D3;
 }
 
-#frdxlagpfp .gt_sourcenote {
+#xsxyreqcuo .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -489,36 +489,36 @@
   padding-right: 5px;
 }
 
-#frdxlagpfp .gt_left {
+#xsxyreqcuo .gt_left {
   text-align: left;
 }
 
-#frdxlagpfp .gt_center {
+#xsxyreqcuo .gt_center {
   text-align: center;
 }
 
-#frdxlagpfp .gt_right {
+#xsxyreqcuo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#frdxlagpfp .gt_font_normal {
+#xsxyreqcuo .gt_font_normal {
   font-weight: normal;
 }
 
-#frdxlagpfp .gt_font_bold {
+#xsxyreqcuo .gt_font_bold {
   font-weight: bold;
 }
 
-#frdxlagpfp .gt_font_italic {
+#xsxyreqcuo .gt_font_italic {
   font-style: italic;
 }
 
-#frdxlagpfp .gt_super {
+#xsxyreqcuo .gt_super {
   font-size: 65%;
 }
 
-#frdxlagpfp .gt_two_val_uncert {
+#xsxyreqcuo .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -527,31 +527,31 @@
   margin-left: 0.1em;
 }
 
-#frdxlagpfp .gt_footnote_marks {
+#xsxyreqcuo .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#frdxlagpfp .gt_asterisk {
+#xsxyreqcuo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#frdxlagpfp .gt_slash_mark {
+#xsxyreqcuo .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#frdxlagpfp .gt_fraction_numerator {
+#xsxyreqcuo .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#frdxlagpfp .gt_fraction_denominator {
+#xsxyreqcuo .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -594,42 +594,42 @@
 </div>
 <p>Column alignment can improve this table by making it easier to read. Let’s start by left-aligning our p-value column. Notice that by providing a <code>col_align_plan</code>, any variables that are not covered in the plan will be left-aligned by default.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  label <span class="op">=</span> <span class="va">label</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  param <span class="op">=</span> <span class="va">param</span>,
-  values <span class="op">=</span> <span class="va">value</span>,
-  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,
-  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, 
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, 
-                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, 
-                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,
-                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>, 
-  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="xckeyxarvo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,</span>
+<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, </span>
+<span>                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, </span>
+<span>                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,</span>
+<span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>, </span>
+<span>  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="rtsjdfcwcp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#xckeyxarvo .gt_table {
+#rtsjdfcwcp .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -654,7 +654,7 @@
   border-left-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_heading {
+#rtsjdfcwcp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -666,7 +666,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_title {
+#rtsjdfcwcp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -678,7 +678,7 @@
   border-bottom-width: 0;
 }
 
-#xckeyxarvo .gt_subtitle {
+#rtsjdfcwcp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -690,13 +690,13 @@
   border-top-width: 0;
 }
 
-#xckeyxarvo .gt_bottom_border {
+#rtsjdfcwcp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_col_headings {
+#rtsjdfcwcp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -711,7 +711,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_col_heading {
+#rtsjdfcwcp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -731,7 +731,7 @@
   overflow-x: hidden;
 }
 
-#xckeyxarvo .gt_column_spanner_outer {
+#rtsjdfcwcp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -743,15 +743,15 @@
   padding-right: 4px;
 }
 
-#xckeyxarvo .gt_column_spanner_outer:first-child {
+#rtsjdfcwcp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xckeyxarvo .gt_column_spanner_outer:last-child {
+#rtsjdfcwcp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xckeyxarvo .gt_column_spanner {
+#rtsjdfcwcp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -763,7 +763,7 @@
   width: 100%;
 }
 
-#xckeyxarvo .gt_group_heading {
+#rtsjdfcwcp .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -788,7 +788,7 @@
   vertical-align: middle;
 }
 
-#xckeyxarvo .gt_empty_group_heading {
+#rtsjdfcwcp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -803,15 +803,15 @@
   vertical-align: middle;
 }
 
-#xckeyxarvo .gt_from_md > :first-child {
+#rtsjdfcwcp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xckeyxarvo .gt_from_md > :last-child {
+#rtsjdfcwcp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xckeyxarvo .gt_row {
+#rtsjdfcwcp .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -830,7 +830,7 @@
   overflow-x: hidden;
 }
 
-#xckeyxarvo .gt_stub {
+#rtsjdfcwcp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -843,7 +843,7 @@
   padding-right: 5px;
 }
 
-#xckeyxarvo .gt_stub_row_group {
+#rtsjdfcwcp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -857,11 +857,11 @@
   vertical-align: top;
 }
 
-#xckeyxarvo .gt_row_group_first td {
+#rtsjdfcwcp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xckeyxarvo .gt_summary_row {
+#rtsjdfcwcp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -871,16 +871,16 @@
   padding-right: 5px;
 }
 
-#xckeyxarvo .gt_first_summary_row {
+#rtsjdfcwcp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_first_summary_row.thick {
+#rtsjdfcwcp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xckeyxarvo .gt_last_summary_row {
+#rtsjdfcwcp .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -890,7 +890,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_grand_summary_row {
+#rtsjdfcwcp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -900,7 +900,7 @@
   padding-right: 5px;
 }
 
-#xckeyxarvo .gt_first_grand_summary_row {
+#rtsjdfcwcp .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -910,11 +910,11 @@
   border-top-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_striped {
+#rtsjdfcwcp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xckeyxarvo .gt_table_body {
+#rtsjdfcwcp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -923,7 +923,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_footnotes {
+#rtsjdfcwcp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -937,7 +937,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_footnote {
+#rtsjdfcwcp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -946,7 +946,7 @@
   padding-right: 5px;
 }
 
-#xckeyxarvo .gt_sourcenotes {
+#rtsjdfcwcp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -960,7 +960,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xckeyxarvo .gt_sourcenote {
+#rtsjdfcwcp .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -968,36 +968,36 @@
   padding-right: 5px;
 }
 
-#xckeyxarvo .gt_left {
+#rtsjdfcwcp .gt_left {
   text-align: left;
 }
 
-#xckeyxarvo .gt_center {
+#rtsjdfcwcp .gt_center {
   text-align: center;
 }
 
-#xckeyxarvo .gt_right {
+#rtsjdfcwcp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xckeyxarvo .gt_font_normal {
+#rtsjdfcwcp .gt_font_normal {
   font-weight: normal;
 }
 
-#xckeyxarvo .gt_font_bold {
+#rtsjdfcwcp .gt_font_bold {
   font-weight: bold;
 }
 
-#xckeyxarvo .gt_font_italic {
+#rtsjdfcwcp .gt_font_italic {
   font-style: italic;
 }
 
-#xckeyxarvo .gt_super {
+#rtsjdfcwcp .gt_super {
   font-size: 65%;
 }
 
-#xckeyxarvo .gt_two_val_uncert {
+#rtsjdfcwcp .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1006,31 +1006,31 @@
   margin-left: 0.1em;
 }
 
-#xckeyxarvo .gt_footnote_marks {
+#rtsjdfcwcp .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#xckeyxarvo .gt_asterisk {
+#rtsjdfcwcp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xckeyxarvo .gt_slash_mark {
+#rtsjdfcwcp .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#xckeyxarvo .gt_fraction_numerator {
+#rtsjdfcwcp .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#xckeyxarvo .gt_fraction_denominator {
+#rtsjdfcwcp .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1073,42 +1073,42 @@
 </div>
 <p>This alignment isn’t quite right as we have the <code>&lt;</code> in one value but not the other. Applying a decimal alignment would be a better fit:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  label <span class="op">=</span> <span class="va">label</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  param <span class="op">=</span> <span class="va">param</span>,
-  values <span class="op">=</span> <span class="va">value</span>,
-  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,
-  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, 
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, 
-                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, 
-                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,
-                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>, 
-  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="ykdfbgucab" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,</span>
+<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, </span>
+<span>                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, </span>
+<span>                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,</span>
+<span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>, </span>
+<span>  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="oowcvpjofj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ykdfbgucab .gt_table {
+#oowcvpjofj .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1133,7 +1133,7 @@
   border-left-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_heading {
+#oowcvpjofj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1145,7 +1145,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_title {
+#oowcvpjofj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1157,7 +1157,7 @@
   border-bottom-width: 0;
 }
 
-#ykdfbgucab .gt_subtitle {
+#oowcvpjofj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1169,13 +1169,13 @@
   border-top-width: 0;
 }
 
-#ykdfbgucab .gt_bottom_border {
+#oowcvpjofj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_col_headings {
+#oowcvpjofj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1190,7 +1190,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_col_heading {
+#oowcvpjofj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1210,7 +1210,7 @@
   overflow-x: hidden;
 }
 
-#ykdfbgucab .gt_column_spanner_outer {
+#oowcvpjofj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1222,15 +1222,15 @@
   padding-right: 4px;
 }
 
-#ykdfbgucab .gt_column_spanner_outer:first-child {
+#oowcvpjofj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ykdfbgucab .gt_column_spanner_outer:last-child {
+#oowcvpjofj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ykdfbgucab .gt_column_spanner {
+#oowcvpjofj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1242,7 +1242,7 @@
   width: 100%;
 }
 
-#ykdfbgucab .gt_group_heading {
+#oowcvpjofj .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1267,7 +1267,7 @@
   vertical-align: middle;
 }
 
-#ykdfbgucab .gt_empty_group_heading {
+#oowcvpjofj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1282,15 +1282,15 @@
   vertical-align: middle;
 }
 
-#ykdfbgucab .gt_from_md > :first-child {
+#oowcvpjofj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ykdfbgucab .gt_from_md > :last-child {
+#oowcvpjofj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ykdfbgucab .gt_row {
+#oowcvpjofj .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1309,7 +1309,7 @@
   overflow-x: hidden;
 }
 
-#ykdfbgucab .gt_stub {
+#oowcvpjofj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1322,7 +1322,7 @@
   padding-right: 5px;
 }
 
-#ykdfbgucab .gt_stub_row_group {
+#oowcvpjofj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1336,11 +1336,11 @@
   vertical-align: top;
 }
 
-#ykdfbgucab .gt_row_group_first td {
+#oowcvpjofj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ykdfbgucab .gt_summary_row {
+#oowcvpjofj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1350,16 +1350,16 @@
   padding-right: 5px;
 }
 
-#ykdfbgucab .gt_first_summary_row {
+#oowcvpjofj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_first_summary_row.thick {
+#oowcvpjofj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ykdfbgucab .gt_last_summary_row {
+#oowcvpjofj .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1369,7 +1369,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_grand_summary_row {
+#oowcvpjofj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1379,7 +1379,7 @@
   padding-right: 5px;
 }
 
-#ykdfbgucab .gt_first_grand_summary_row {
+#oowcvpjofj .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1389,11 +1389,11 @@
   border-top-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_striped {
+#oowcvpjofj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ykdfbgucab .gt_table_body {
+#oowcvpjofj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1402,7 +1402,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_footnotes {
+#oowcvpjofj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1416,7 +1416,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_footnote {
+#oowcvpjofj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1425,7 +1425,7 @@
   padding-right: 5px;
 }
 
-#ykdfbgucab .gt_sourcenotes {
+#oowcvpjofj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1439,7 +1439,7 @@
   border-right-color: #D3D3D3;
 }
 
-#ykdfbgucab .gt_sourcenote {
+#oowcvpjofj .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1447,36 +1447,36 @@
   padding-right: 5px;
 }
 
-#ykdfbgucab .gt_left {
+#oowcvpjofj .gt_left {
   text-align: left;
 }
 
-#ykdfbgucab .gt_center {
+#oowcvpjofj .gt_center {
   text-align: center;
 }
 
-#ykdfbgucab .gt_right {
+#oowcvpjofj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ykdfbgucab .gt_font_normal {
+#oowcvpjofj .gt_font_normal {
   font-weight: normal;
 }
 
-#ykdfbgucab .gt_font_bold {
+#oowcvpjofj .gt_font_bold {
   font-weight: bold;
 }
 
-#ykdfbgucab .gt_font_italic {
+#oowcvpjofj .gt_font_italic {
   font-style: italic;
 }
 
-#ykdfbgucab .gt_super {
+#oowcvpjofj .gt_super {
   font-size: 65%;
 }
 
-#ykdfbgucab .gt_two_val_uncert {
+#oowcvpjofj .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1485,31 +1485,31 @@
   margin-left: 0.1em;
 }
 
-#ykdfbgucab .gt_footnote_marks {
+#oowcvpjofj .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#ykdfbgucab .gt_asterisk {
+#oowcvpjofj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ykdfbgucab .gt_slash_mark {
+#oowcvpjofj .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#ykdfbgucab .gt_fraction_numerator {
+#oowcvpjofj .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#ykdfbgucab .gt_fraction_denominator {
+#oowcvpjofj .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1552,43 +1552,43 @@
 </div>
 <p>For our other two columns, we have a mix of values represented. In this case, we want to align on the first set of digits. In other words, we will align on the first instance of a decimal, comma, or space:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  label <span class="op">=</span> <span class="va">label</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  param <span class="op">=</span> <span class="va">param</span>,
-  values <span class="op">=</span> <span class="va">value</span>,
-  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,
-  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, 
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, 
-                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, 
-                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,
-                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>, 
-  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">","</span>, <span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"trt"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="gyciduepol" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,</span>
+<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, </span>
+<span>                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, </span>
+<span>                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,</span>
+<span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>, </span>
+<span>  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">","</span>, <span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"trt"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="ubdutswlak" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#gyciduepol .gt_table {
+#ubdutswlak .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1613,7 +1613,7 @@
   border-left-color: #D3D3D3;
 }
 
-#gyciduepol .gt_heading {
+#ubdutswlak .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1625,7 +1625,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gyciduepol .gt_title {
+#ubdutswlak .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1637,7 +1637,7 @@
   border-bottom-width: 0;
 }
 
-#gyciduepol .gt_subtitle {
+#ubdutswlak .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1649,13 +1649,13 @@
   border-top-width: 0;
 }
 
-#gyciduepol .gt_bottom_border {
+#ubdutswlak .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gyciduepol .gt_col_headings {
+#ubdutswlak .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1670,7 +1670,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gyciduepol .gt_col_heading {
+#ubdutswlak .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1690,7 +1690,7 @@
   overflow-x: hidden;
 }
 
-#gyciduepol .gt_column_spanner_outer {
+#ubdutswlak .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1702,15 +1702,15 @@
   padding-right: 4px;
 }
 
-#gyciduepol .gt_column_spanner_outer:first-child {
+#ubdutswlak .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gyciduepol .gt_column_spanner_outer:last-child {
+#ubdutswlak .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gyciduepol .gt_column_spanner {
+#ubdutswlak .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1722,7 +1722,7 @@
   width: 100%;
 }
 
-#gyciduepol .gt_group_heading {
+#ubdutswlak .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1747,7 +1747,7 @@
   vertical-align: middle;
 }
 
-#gyciduepol .gt_empty_group_heading {
+#ubdutswlak .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1762,15 +1762,15 @@
   vertical-align: middle;
 }
 
-#gyciduepol .gt_from_md > :first-child {
+#ubdutswlak .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gyciduepol .gt_from_md > :last-child {
+#ubdutswlak .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gyciduepol .gt_row {
+#ubdutswlak .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1789,7 +1789,7 @@
   overflow-x: hidden;
 }
 
-#gyciduepol .gt_stub {
+#ubdutswlak .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1802,7 +1802,7 @@
   padding-right: 5px;
 }
 
-#gyciduepol .gt_stub_row_group {
+#ubdutswlak .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1816,11 +1816,11 @@
   vertical-align: top;
 }
 
-#gyciduepol .gt_row_group_first td {
+#ubdutswlak .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gyciduepol .gt_summary_row {
+#ubdutswlak .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1830,16 +1830,16 @@
   padding-right: 5px;
 }
 
-#gyciduepol .gt_first_summary_row {
+#ubdutswlak .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gyciduepol .gt_first_summary_row.thick {
+#ubdutswlak .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gyciduepol .gt_last_summary_row {
+#ubdutswlak .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1849,7 +1849,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#gyciduepol .gt_grand_summary_row {
+#ubdutswlak .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1859,7 +1859,7 @@
   padding-right: 5px;
 }
 
-#gyciduepol .gt_first_grand_summary_row {
+#ubdutswlak .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1869,11 +1869,11 @@
   border-top-color: #D3D3D3;
 }
 
-#gyciduepol .gt_striped {
+#ubdutswlak .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gyciduepol .gt_table_body {
+#ubdutswlak .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1882,7 +1882,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#gyciduepol .gt_footnotes {
+#ubdutswlak .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1896,7 +1896,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gyciduepol .gt_footnote {
+#ubdutswlak .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1905,7 +1905,7 @@
   padding-right: 5px;
 }
 
-#gyciduepol .gt_sourcenotes {
+#ubdutswlak .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1919,7 +1919,7 @@
   border-right-color: #D3D3D3;
 }
 
-#gyciduepol .gt_sourcenote {
+#ubdutswlak .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1927,36 +1927,36 @@
   padding-right: 5px;
 }
 
-#gyciduepol .gt_left {
+#ubdutswlak .gt_left {
   text-align: left;
 }
 
-#gyciduepol .gt_center {
+#ubdutswlak .gt_center {
   text-align: center;
 }
 
-#gyciduepol .gt_right {
+#ubdutswlak .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gyciduepol .gt_font_normal {
+#ubdutswlak .gt_font_normal {
   font-weight: normal;
 }
 
-#gyciduepol .gt_font_bold {
+#ubdutswlak .gt_font_bold {
   font-weight: bold;
 }
 
-#gyciduepol .gt_font_italic {
+#ubdutswlak .gt_font_italic {
   font-style: italic;
 }
 
-#gyciduepol .gt_super {
+#ubdutswlak .gt_super {
   font-size: 65%;
 }
 
-#gyciduepol .gt_two_val_uncert {
+#ubdutswlak .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1965,31 +1965,31 @@
   margin-left: 0.1em;
 }
 
-#gyciduepol .gt_footnote_marks {
+#ubdutswlak .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#gyciduepol .gt_asterisk {
+#ubdutswlak .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gyciduepol .gt_slash_mark {
+#ubdutswlak .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#gyciduepol .gt_fraction_numerator {
+#ubdutswlak .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#gyciduepol .gt_fraction_denominator {
+#ubdutswlak .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -2032,44 +2032,44 @@
 </div>
 <p>Finally, for the purpose of demonstrating our options, we can align each column differently (left, right, character for the three columns respectively):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-  label <span class="op">=</span> <span class="va">label</span>,
-  column <span class="op">=</span> <span class="va">column</span>,
-  param <span class="op">=</span> <span class="va">param</span>,
-  values <span class="op">=</span> <span class="va">value</span>,
-  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,
-  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, 
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, 
-                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, 
-                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, 
-                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,
-                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, 
-                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,
-                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>, 
-  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span>
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">trt1</span><span class="op">)</span>,
-    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<div id="uuqmeibofp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord</span><span class="op">)</span>,</span>
+<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>, </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{mean} ({sd})"</span>, </span>
+<span>                                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.xx"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"[{q1}, {q3}]"</span>, </span>
+<span>                                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>, </span>
+<span>                                q3 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
+<span>                                missing<span class="op">=</span><span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>                   pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>                                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>                                    <span class="st">"&lt;0.05"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx*"</span><span class="op">)</span>,</span>
+<span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>, </span>
+<span>  col_align_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">trt1</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<div id="agcnpbsjsx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uuqmeibofp .gt_table {
+#agcnpbsjsx .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2094,7 +2094,7 @@
   border-left-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_heading {
+#agcnpbsjsx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2106,7 +2106,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_title {
+#agcnpbsjsx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2118,7 +2118,7 @@
   border-bottom-width: 0;
 }
 
-#uuqmeibofp .gt_subtitle {
+#agcnpbsjsx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2130,13 +2130,13 @@
   border-top-width: 0;
 }
 
-#uuqmeibofp .gt_bottom_border {
+#agcnpbsjsx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_col_headings {
+#agcnpbsjsx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2151,7 +2151,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_col_heading {
+#agcnpbsjsx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2171,7 +2171,7 @@
   overflow-x: hidden;
 }
 
-#uuqmeibofp .gt_column_spanner_outer {
+#agcnpbsjsx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2183,15 +2183,15 @@
   padding-right: 4px;
 }
 
-#uuqmeibofp .gt_column_spanner_outer:first-child {
+#agcnpbsjsx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uuqmeibofp .gt_column_spanner_outer:last-child {
+#agcnpbsjsx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uuqmeibofp .gt_column_spanner {
+#agcnpbsjsx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2203,7 +2203,7 @@
   width: 100%;
 }
 
-#uuqmeibofp .gt_group_heading {
+#agcnpbsjsx .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2228,7 +2228,7 @@
   vertical-align: middle;
 }
 
-#uuqmeibofp .gt_empty_group_heading {
+#agcnpbsjsx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2243,15 +2243,15 @@
   vertical-align: middle;
 }
 
-#uuqmeibofp .gt_from_md > :first-child {
+#agcnpbsjsx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uuqmeibofp .gt_from_md > :last-child {
+#agcnpbsjsx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uuqmeibofp .gt_row {
+#agcnpbsjsx .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2270,7 +2270,7 @@
   overflow-x: hidden;
 }
 
-#uuqmeibofp .gt_stub {
+#agcnpbsjsx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2283,7 +2283,7 @@
   padding-right: 5px;
 }
 
-#uuqmeibofp .gt_stub_row_group {
+#agcnpbsjsx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2297,11 +2297,11 @@
   vertical-align: top;
 }
 
-#uuqmeibofp .gt_row_group_first td {
+#agcnpbsjsx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uuqmeibofp .gt_summary_row {
+#agcnpbsjsx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2311,16 +2311,16 @@
   padding-right: 5px;
 }
 
-#uuqmeibofp .gt_first_summary_row {
+#agcnpbsjsx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_first_summary_row.thick {
+#agcnpbsjsx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uuqmeibofp .gt_last_summary_row {
+#agcnpbsjsx .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2330,7 +2330,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_grand_summary_row {
+#agcnpbsjsx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2340,7 +2340,7 @@
   padding-right: 5px;
 }
 
-#uuqmeibofp .gt_first_grand_summary_row {
+#agcnpbsjsx .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2350,11 +2350,11 @@
   border-top-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_striped {
+#agcnpbsjsx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uuqmeibofp .gt_table_body {
+#agcnpbsjsx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2363,7 +2363,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_footnotes {
+#agcnpbsjsx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2377,7 +2377,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_footnote {
+#agcnpbsjsx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2386,7 +2386,7 @@
   padding-right: 5px;
 }
 
-#uuqmeibofp .gt_sourcenotes {
+#agcnpbsjsx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2400,7 +2400,7 @@
   border-right-color: #D3D3D3;
 }
 
-#uuqmeibofp .gt_sourcenote {
+#agcnpbsjsx .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2408,36 +2408,36 @@
   padding-right: 5px;
 }
 
-#uuqmeibofp .gt_left {
+#agcnpbsjsx .gt_left {
   text-align: left;
 }
 
-#uuqmeibofp .gt_center {
+#agcnpbsjsx .gt_center {
   text-align: center;
 }
 
-#uuqmeibofp .gt_right {
+#agcnpbsjsx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uuqmeibofp .gt_font_normal {
+#agcnpbsjsx .gt_font_normal {
   font-weight: normal;
 }
 
-#uuqmeibofp .gt_font_bold {
+#agcnpbsjsx .gt_font_bold {
   font-weight: bold;
 }
 
-#uuqmeibofp .gt_font_italic {
+#agcnpbsjsx .gt_font_italic {
   font-style: italic;
 }
 
-#uuqmeibofp .gt_super {
+#agcnpbsjsx .gt_super {
   font-size: 65%;
 }
 
-#uuqmeibofp .gt_two_val_uncert {
+#agcnpbsjsx .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -2446,31 +2446,31 @@
   margin-left: 0.1em;
 }
 
-#uuqmeibofp .gt_footnote_marks {
+#agcnpbsjsx .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#uuqmeibofp .gt_asterisk {
+#agcnpbsjsx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uuqmeibofp .gt_slash_mark {
+#agcnpbsjsx .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#uuqmeibofp .gt_fraction_numerator {
+#agcnpbsjsx .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#uuqmeibofp .gt_fraction_denominator {
+#agcnpbsjsx .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;

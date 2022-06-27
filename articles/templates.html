@@ -93,18 +93,18 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/" class="external-link">gt</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/" class="external-link">gt</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span></code></pre></div>
 <p>A core design element of <code>tfrmt</code> is to offer the ability to layer tfrmts together. This ability provides an opportunity for organizations to build template table formats that can be shared, improved, and reused across multiple projects. Through layering the users can customize the templates to create a specific table.</p>
 <p>A template is a function that given a set of inputs (or none) create a standard <code>tfrmt</code>. We will go through their applications below.<br>
 We will create an Adverse Events table template in this vignette to demonstrate the ideas behind developing a template tfrmt. ## Creating A Standard tfrmt</p>
@@ -130,50 +130,50 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 </ul>
 <p>With this information we can construct a template AE <code>tfrmt</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">ae_tfrmt_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">AEBODSYS</span>,
-    label <span class="op">=</span> <span class="va">AETERM</span>,
-    param <span class="op">=</span> <span class="va">param</span>,
-    column <span class="op">=</span> <span class="va">treatment</span>,
-    value <span class="op">=</span> <span class="va">value</span>,
-  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-    <span class="co">## All entries where the param column is `AEs` (representing total counts)</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-      group_val <span class="op">=</span> <span class="st">".default"</span>,
-      label_val <span class="op">=</span> <span class="st">".default"</span>,
-      AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span>
-      <span class="op">)</span>,
-    
-    <span class="co">## Combine entries where param column is `n` and `pct` to create a cell for</span>
-    <span class="co">## that population</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-      group_val <span class="op">=</span> <span class="st">".default"</span>,
-      label_val <span class="op">=</span> <span class="st">".default"</span>,
-      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span>
-        <span class="st">"{n} {pct}"</span>,
-        n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,
-        pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
-          <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,
-          <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,
-          <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span>
-          <span class="op">)</span>
-        <span class="op">)</span>
-      <span class="op">)</span>,
-    
-    <span class="co">## All entries where param column is `pval`, format conditionally.</span>
-    <span class="co">## When the value is missing, replace the NA with "--".</span>
-    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-       group_val <span class="op">=</span> <span class="st">".default"</span>, 
-       label_val <span class="op">=</span> <span class="st">".default"</span>,
-       pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
-         <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-         <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-         <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span>
-         <span class="op">)</span>
-    <span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">ae_tfrmt_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">AETERM</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">treatment</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="co">## All entries where the param column is `AEs` (representing total counts)</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="co">## Combine entries where param column is `n` and `pct` to create a cell for</span></span>
+<span>    <span class="co">## that population</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
+<span>        <span class="st">"{n} {pct}"</span>,</span>
+<span>        n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
+<span>        pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>          <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>          <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>          <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="co">## All entries where param column is `pval`, format conditionally.</span></span>
+<span>    <span class="co">## When the value is missing, replace the NA with "--".</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>       group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>       label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>       pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>         <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>         <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>         <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
+<span>         <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="functionalizing-the-template">Functionalizing The Template<a class="anchor" aria-label="anchor" href="#functionalizing-the-template"></a>
 </h2>
@@ -181,132 +181,132 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <p><code>tfrmt</code> offers the function <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code>, which provides the ability for layering <code>tfrmt</code> together. The first two arguments are the <code>tfrmt</code> objects to be layered. By default the body_plans of the tfrmt are joined together. We will leverage this function in the creation of our template.</p>
 <p>See below for an example of creating a template based on a function for layering <code>tfrmt</code> together. In this scenario the base AE template only has body_plan values for handling total counts, case counts, and percents, but not pvalues. We create another template for pvalues, and then finally layer it with the study specific tfrmt.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">ae_base_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span>
-  
-  <span class="va">ae_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">AEBODSYS</span>,
-    label <span class="op">=</span> <span class="va">AETERM</span>,
-    param <span class="op">=</span> <span class="va">param</span>,
-    column <span class="op">=</span> <span class="va">treatment</span>,
-    value <span class="op">=</span> <span class="va">value</span>,
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="co">## All entries where the param column is `AEs` (representing total counts)</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-        group_val <span class="op">=</span> <span class="st">".default"</span>,
-        label_val <span class="op">=</span> <span class="st">".default"</span>,
-        AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span>
-        <span class="op">)</span>,
-      
-      <span class="co">## Combine entries where param column is `n` and `pct` to create a cell for</span>
-      <span class="co">## that population</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-        group_val <span class="op">=</span> <span class="st">".default"</span>,
-        label_val <span class="op">=</span> <span class="st">".default"</span>,
-        <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span>
-          <span class="st">"{n} {pct}"</span>,
-          n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,
-          pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
-            <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,
-            <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,
-            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span>
-            <span class="op">)</span>
-          <span class="op">)</span>
-        <span class="op">)</span>
-    <span class="op">)</span>
-  <span class="op">)</span> 
-  
-  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tfrmt_obj</span>, y <span class="op">=</span> <span class="va">ae_base</span><span class="op">)</span>
-  
-<span class="op">}</span>
-
-<span class="va">ae_pval_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span>
-  
-  <span class="va">ae_pval_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="co">## All entries where param column is `pval`, format conditionally.</span>
-      <span class="co">## When the value is missing, replace the NA with "--".</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-         group_val <span class="op">=</span> <span class="st">".default"</span>, 
-         label_val <span class="op">=</span> <span class="st">".default"</span>,
-         pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
-           <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-           <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-           <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span>
-           <span class="op">)</span>
-      <span class="op">)</span>
-    <span class="op">)</span>
-  <span class="op">)</span>
-  
-  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span><span class="va">tfrmt_obj</span>, <span class="va">ae_pval_template</span><span class="op">)</span>
-  
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">ae_base_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">ae_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">AETERM</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">treatment</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">value</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="co">## All entries where the param column is `AEs` (representing total counts)</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>      </span>
+<span>      <span class="co">## Combine entries where param column is `n` and `pct` to create a cell for</span></span>
+<span>      <span class="co">## that population</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
+<span>          <span class="st">"{n} {pct}"</span>,</span>
+<span>          n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
+<span>          pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>            <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>            <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> </span>
+<span>  </span>
+<span>  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tfrmt_obj</span>, y <span class="op">=</span> <span class="va">ae_base</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">ae_pval_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">ae_pval_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="co">## All entries where param column is `pval`, format conditionally.</span></span>
+<span>      <span class="co">## When the value is missing, replace the NA with "--".</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>         group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>         label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>         pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>           <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>           <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>           <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span><span class="va">tfrmt_obj</span>, <span class="va">ae_pval_template</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Using these templates and what we learned from the layering vignette, we can apply multiple templates cleanly within a pipe:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">study_ae_tfrmt_multi_layer</span> <span class="op">&lt;-</span> <span class="fu">ae_base_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">ae_pval_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    title <span class="op">=</span> <span class="st">"Adverse Events for CDISC Pilot Study"</span>,
-    subtitle <span class="op">=</span> <span class="st">"Data subset to AEs with &gt;10% prevalence in the High Dose group"</span>,
-    
-    <span class="co">## Sorting columns of rows</span>
-    sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span><span class="op">)</span>,
-    
-    <span class="co">## Nest Preferred terms under SOC</span>
-    row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"indented"</span><span class="op">)</span><span class="op">)</span>,
-    
-    <span class="co">## alisgnment of columns</span>
-    col_align <span class="op">=</span> <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">","</span>,<span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"p_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">)</span>,
-    
-    <span class="co">## remove order columns from final table</span>
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="op">-</span><span class="va">ord1</span>,<span class="op">-</span><span class="va">ord2</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"Xanomeline High Dose (N=84)"</span>,
-        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline High Dose-n_pct`</span> ,
-        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline High Dose-AEs`</span>
-      <span class="op">)</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"Xanomeline Low Dose (N=84)"</span>,
-        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-n_pct`</span> ,
-        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-AEs`</span>
-      <span class="op">)</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span><span class="st">"Placebo (N=86)"</span>,
-                     `n (%)` <span class="op">=</span> <span class="va">`Placebo-n_pct`</span> ,
-                     `[AEs]` <span class="op">=</span> <span class="va">`Placebo-AEs`</span><span class="op">)</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"Fisher's Exact p-values"</span>,
-        `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_low`</span> ,
-        `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_high`</span>
-      <span class="op">)</span>
-    <span class="op">)</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op">&lt;-</span> <span class="fu">ae_base_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">ae_pval_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Adverse Events for CDISC Pilot Study"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Data subset to AEs with &gt;10% prevalence in the High Dose group"</span>,</span>
+<span>    </span>
+<span>    <span class="co">## Sorting columns of rows</span></span>
+<span>    sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span><span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="co">## Nest Preferred terms under SOC</span></span>
+<span>    row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"indented"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="co">## alisgnment of columns</span></span>
+<span>    col_align <span class="op">=</span> <span class="fu"><a href="../reference/col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">","</span>,<span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"p_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="co">## remove order columns from final table</span></span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="op">-</span><span class="va">ord1</span>,<span class="op">-</span><span class="va">ord2</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Xanomeline High Dose (N=84)"</span>,</span>
+<span>        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline High Dose-n_pct`</span> ,</span>
+<span>        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline High Dose-AEs`</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Xanomeline Low Dose (N=84)"</span>,</span>
+<span>        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-n_pct`</span> ,</span>
+<span>        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-AEs`</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span><span class="st">"Placebo (N=86)"</span>,</span>
+<span>                     `n (%)` <span class="op">=</span> <span class="va">`Placebo-n_pct`</span> ,</span>
+<span>                     `[AEs]` <span class="op">=</span> <span class="va">`Placebo-AEs`</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Fisher's Exact p-values"</span>,</span>
+<span>        `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_low`</span> ,</span>
+<span>        `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_high`</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>See how this results in the same table as above:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## filter to keep only AEs with &gt;10% prevalence in the High Dose group</span>
-<span class="va">ae_data2</span> <span class="op">&lt;-</span> <span class="va">ae_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">AEBODSYS</span>, <span class="va">AETERM</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_high <span class="op">=</span> <span class="va">value</span><span class="op">[</span><span class="va">col2</span><span class="op">==</span><span class="st">"Xanomeline High Dose"</span> <span class="op">&amp;</span> <span class="va">param</span><span class="op">==</span><span class="st">"pct"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="va">ungroup</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pct_high</span> <span class="op">&gt;</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pct_high</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="st">"treatment"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">col2</span>, <span class="va">col1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span>
-
-<span class="va">study_ae_tfrmt_multi_layer</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">ae_data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span>
-    container.width <span class="op">=</span> <span class="fl">1000</span>
-  <span class="op">)</span></code></pre></div>
-<div id="fiurdzxkzp" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<code class="sourceCode R"><span></span>
+<span><span class="co">## filter to keep only AEs with &gt;10% prevalence in the High Dose group</span></span>
+<span><span class="va">ae_data2</span> <span class="op">&lt;-</span> <span class="va">ae_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">AEBODSYS</span>, <span class="va">AETERM</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_high <span class="op">=</span> <span class="va">value</span><span class="op">[</span><span class="va">col2</span><span class="op">==</span><span class="st">"Xanomeline High Dose"</span> <span class="op">&amp;</span> <span class="va">param</span><span class="op">==</span><span class="st">"pct"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="va">ungroup</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pct_high</span> <span class="op">&gt;</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pct_high</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="st">"treatment"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">col2</span>, <span class="va">col1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">ae_data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
+<span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<div id="paorhyrwum" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#fiurdzxkzp .gt_table {
+#paorhyrwum .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -331,7 +331,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-left-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_heading {
+#paorhyrwum .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -343,7 +343,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_title {
+#paorhyrwum .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -355,7 +355,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-width: 0;
 }
 
-#fiurdzxkzp .gt_subtitle {
+#paorhyrwum .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -367,13 +367,13 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-width: 0;
 }
 
-#fiurdzxkzp .gt_bottom_border {
+#paorhyrwum .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_col_headings {
+#paorhyrwum .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -388,7 +388,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_col_heading {
+#paorhyrwum .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -408,7 +408,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#fiurdzxkzp .gt_column_spanner_outer {
+#paorhyrwum .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -420,15 +420,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 4px;
 }
 
-#fiurdzxkzp .gt_column_spanner_outer:first-child {
+#paorhyrwum .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fiurdzxkzp .gt_column_spanner_outer:last-child {
+#paorhyrwum .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fiurdzxkzp .gt_column_spanner {
+#paorhyrwum .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -440,7 +440,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   width: 100%;
 }
 
-#fiurdzxkzp .gt_group_heading {
+#paorhyrwum .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -465,7 +465,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#fiurdzxkzp .gt_empty_group_heading {
+#paorhyrwum .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -480,15 +480,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#fiurdzxkzp .gt_from_md > :first-child {
+#paorhyrwum .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fiurdzxkzp .gt_from_md > :last-child {
+#paorhyrwum .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fiurdzxkzp .gt_row {
+#paorhyrwum .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -507,7 +507,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#fiurdzxkzp .gt_stub {
+#paorhyrwum .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -520,7 +520,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#fiurdzxkzp .gt_stub_row_group {
+#paorhyrwum .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -534,11 +534,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: top;
 }
 
-#fiurdzxkzp .gt_row_group_first td {
+#paorhyrwum .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fiurdzxkzp .gt_summary_row {
+#paorhyrwum .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -548,16 +548,16 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#fiurdzxkzp .gt_first_summary_row {
+#paorhyrwum .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_first_summary_row.thick {
+#paorhyrwum .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fiurdzxkzp .gt_last_summary_row {
+#paorhyrwum .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -567,7 +567,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_grand_summary_row {
+#paorhyrwum .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -577,7 +577,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#fiurdzxkzp .gt_first_grand_summary_row {
+#paorhyrwum .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -587,11 +587,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_striped {
+#paorhyrwum .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fiurdzxkzp .gt_table_body {
+#paorhyrwum .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -600,7 +600,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_footnotes {
+#paorhyrwum .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -614,7 +614,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_footnote {
+#paorhyrwum .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -623,7 +623,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#fiurdzxkzp .gt_sourcenotes {
+#paorhyrwum .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -637,7 +637,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#fiurdzxkzp .gt_sourcenote {
+#paorhyrwum .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -645,36 +645,36 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#fiurdzxkzp .gt_left {
+#paorhyrwum .gt_left {
   text-align: left;
 }
 
-#fiurdzxkzp .gt_center {
+#paorhyrwum .gt_center {
   text-align: center;
 }
 
-#fiurdzxkzp .gt_right {
+#paorhyrwum .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fiurdzxkzp .gt_font_normal {
+#paorhyrwum .gt_font_normal {
   font-weight: normal;
 }
 
-#fiurdzxkzp .gt_font_bold {
+#paorhyrwum .gt_font_bold {
   font-weight: bold;
 }
 
-#fiurdzxkzp .gt_font_italic {
+#paorhyrwum .gt_font_italic {
   font-style: italic;
 }
 
-#fiurdzxkzp .gt_super {
+#paorhyrwum .gt_super {
   font-size: 65%;
 }
 
-#fiurdzxkzp .gt_two_val_uncert {
+#paorhyrwum .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -683,31 +683,31 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   margin-left: 0.1em;
 }
 
-#fiurdzxkzp .gt_footnote_marks {
+#paorhyrwum .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#fiurdzxkzp .gt_asterisk {
+#paorhyrwum .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fiurdzxkzp .gt_slash_mark {
+#paorhyrwum .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#fiurdzxkzp .gt_fraction_numerator {
+#paorhyrwum .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#fiurdzxkzp .gt_fraction_denominator {
+#paorhyrwum .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -925,97 +925,97 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <p>In addition to defining full tfrmt templates, users can also create reusable frmt templates. The benefit of this is that teams can use these frmt’s in their tfrmt directly and can be sure their table will comply with the value presentation expected of their organization.</p>
 <p>Some common pre-defined frmts may include p-value displays, integers, <code>n (%)</code>, among other things.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># defined frmts</span>
-
-<span class="va">int_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span>
-
-<span class="va">pval_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
-           <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,
-           <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,
-           <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span>
-           <span class="op">)</span>
-
-<span class="va">n_pct_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span>
-          <span class="st">"{n} {pct}"</span>,
-          n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,
-          pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span>
-            <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,
-            <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,
-            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span>
-            <span class="op">)</span>
-          <span class="op">)</span>
-
-<span class="co">## frmts as functions</span>
-
-<span class="va">int_frmt_func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">{</span>
-  <span class="va">str_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"["</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="va">ints</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, <span class="st">"]"</span><span class="op">)</span>
-  <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="va">str_exp</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># defined frmts</span></span>
+<span></span>
+<span><span class="va">int_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pval_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>           <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>           <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>           <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span></span>
+<span><span class="va">n_pct_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
+<span>          <span class="st">"{n} {pct}"</span>,</span>
+<span>          n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
+<span>          pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>            <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>            <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span></span>
+<span><span class="co">## frmts as functions</span></span>
+<span></span>
+<span><span class="va">int_frmt_func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">str_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"["</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="va">ints</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, <span class="st">"]"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="va">str_exp</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Now that there are defined frmts, we can use them in our tfrmt to generate our table too.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>
-    group <span class="op">=</span> <span class="va">AEBODSYS</span>,
-    label <span class="op">=</span> <span class="va">AETERM</span>,
-    param <span class="op">=</span> <span class="va">param</span>,
-    column <span class="op">=</span> <span class="va">treatment</span>,
-    value <span class="op">=</span> <span class="va">value</span>,
-    
-    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span>
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-        group_val <span class="op">=</span> <span class="st">".default"</span>,
-        label_val <span class="op">=</span> <span class="st">".default"</span>,
-        AEs <span class="op">=</span> <span class="fu">int_frmt_func</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
-        <span class="op">)</span>,
-      
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-        group_val <span class="op">=</span> <span class="st">".default"</span>,
-        label_val <span class="op">=</span> <span class="st">".default"</span>,
-        <span class="va">n_pct_frmt</span>
-        <span class="op">)</span>,
-      
-      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>
-         group_val <span class="op">=</span> <span class="st">".default"</span>, 
-         label_val <span class="op">=</span> <span class="st">".default"</span>,
-         pval <span class="op">=</span> <span class="va">pval_frmt</span>
-      <span class="op">)</span>
-    <span class="op">)</span>,
-    
-    <span class="co">## remove order columns from final table</span>
-    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span>
-      <span class="op">-</span><span class="va">ord1</span>,<span class="op">-</span><span class="va">ord2</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"Xanomeline High Dose (N=84)"</span>,
-        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline High Dose-n_pct`</span> ,
-        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline High Dose-AEs`</span>
-      <span class="op">)</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"Xanomeline Low Dose (N=84)"</span>,
-        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-n_pct`</span> ,
-        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-AEs`</span>
-      <span class="op">)</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span><span class="st">"Placebo (N=86)"</span>,
-                     `n (%)` <span class="op">=</span> <span class="va">`Placebo-n_pct`</span> ,
-                     `[AEs]` <span class="op">=</span> <span class="va">`Placebo-AEs`</span><span class="op">)</span>,
-      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>
-        <span class="st">"Fisher's Exact p-values"</span>,
-        `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_low`</span> ,
-        `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_high`</span>
-      <span class="op">)</span>
-    <span class="op">)</span>
-    
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">ae_data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span>
-    container.width <span class="op">=</span> <span class="fl">1000</span>
-  <span class="op">)</span></code></pre></div>
-<div id="izsvyqyuus" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>    group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">AETERM</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">treatment</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">value</span>,</span>
+<span>    </span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        AEs <span class="op">=</span> <span class="fu">int_frmt_func</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>      </span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        <span class="va">n_pct_frmt</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>      </span>
+<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>         group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>         label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>         pval <span class="op">=</span> <span class="va">pval_frmt</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    </span>
+<span>    <span class="co">## remove order columns from final table</span></span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>      <span class="op">-</span><span class="va">ord1</span>,<span class="op">-</span><span class="va">ord2</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Xanomeline High Dose (N=84)"</span>,</span>
+<span>        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline High Dose-n_pct`</span> ,</span>
+<span>        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline High Dose-AEs`</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Xanomeline Low Dose (N=84)"</span>,</span>
+<span>        `n (%)` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-n_pct`</span> ,</span>
+<span>        `[AEs]` <span class="op">=</span> <span class="va">`Xanomeline Low Dose-AEs`</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span><span class="st">"Placebo (N=86)"</span>,</span>
+<span>                     `n (%)` <span class="op">=</span> <span class="va">`Placebo-n_pct`</span> ,</span>
+<span>                     `[AEs]` <span class="op">=</span> <span class="va">`Placebo-AEs`</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Fisher's Exact p-values"</span>,</span>
+<span>        `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_low`</span> ,</span>
+<span>        `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`fisher_pval-p_high`</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">ae_data2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
+<span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<div id="fokvmdkgur" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#izsvyqyuus .gt_table {
+#fokvmdkgur .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1040,7 +1040,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-left-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_heading {
+#fokvmdkgur .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1052,7 +1052,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_title {
+#fokvmdkgur .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1064,7 +1064,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-width: 0;
 }
 
-#izsvyqyuus .gt_subtitle {
+#fokvmdkgur .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1076,13 +1076,13 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-width: 0;
 }
 
-#izsvyqyuus .gt_bottom_border {
+#fokvmdkgur .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_col_headings {
+#fokvmdkgur .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1097,7 +1097,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_col_heading {
+#fokvmdkgur .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1117,7 +1117,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#izsvyqyuus .gt_column_spanner_outer {
+#fokvmdkgur .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1129,15 +1129,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 4px;
 }
 
-#izsvyqyuus .gt_column_spanner_outer:first-child {
+#fokvmdkgur .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#izsvyqyuus .gt_column_spanner_outer:last-child {
+#fokvmdkgur .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#izsvyqyuus .gt_column_spanner {
+#fokvmdkgur .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1149,7 +1149,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   width: 100%;
 }
 
-#izsvyqyuus .gt_group_heading {
+#fokvmdkgur .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1174,7 +1174,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#izsvyqyuus .gt_empty_group_heading {
+#fokvmdkgur .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1189,15 +1189,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#izsvyqyuus .gt_from_md > :first-child {
+#fokvmdkgur .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#izsvyqyuus .gt_from_md > :last-child {
+#fokvmdkgur .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#izsvyqyuus .gt_row {
+#fokvmdkgur .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1216,7 +1216,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#izsvyqyuus .gt_stub {
+#fokvmdkgur .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1229,7 +1229,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#izsvyqyuus .gt_stub_row_group {
+#fokvmdkgur .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1243,11 +1243,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: top;
 }
 
-#izsvyqyuus .gt_row_group_first td {
+#fokvmdkgur .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#izsvyqyuus .gt_summary_row {
+#fokvmdkgur .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1257,16 +1257,16 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#izsvyqyuus .gt_first_summary_row {
+#fokvmdkgur .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_first_summary_row.thick {
+#fokvmdkgur .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#izsvyqyuus .gt_last_summary_row {
+#fokvmdkgur .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1276,7 +1276,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_grand_summary_row {
+#fokvmdkgur .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1286,7 +1286,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#izsvyqyuus .gt_first_grand_summary_row {
+#fokvmdkgur .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1296,11 +1296,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_striped {
+#fokvmdkgur .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#izsvyqyuus .gt_table_body {
+#fokvmdkgur .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1309,7 +1309,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_footnotes {
+#fokvmdkgur .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1323,7 +1323,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_footnote {
+#fokvmdkgur .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1332,7 +1332,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#izsvyqyuus .gt_sourcenotes {
+#fokvmdkgur .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1346,7 +1346,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#izsvyqyuus .gt_sourcenote {
+#fokvmdkgur .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1354,36 +1354,36 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#izsvyqyuus .gt_left {
+#fokvmdkgur .gt_left {
   text-align: left;
 }
 
-#izsvyqyuus .gt_center {
+#fokvmdkgur .gt_center {
   text-align: center;
 }
 
-#izsvyqyuus .gt_right {
+#fokvmdkgur .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#izsvyqyuus .gt_font_normal {
+#fokvmdkgur .gt_font_normal {
   font-weight: normal;
 }
 
-#izsvyqyuus .gt_font_bold {
+#fokvmdkgur .gt_font_bold {
   font-weight: bold;
 }
 
-#izsvyqyuus .gt_font_italic {
+#fokvmdkgur .gt_font_italic {
   font-style: italic;
 }
 
-#izsvyqyuus .gt_super {
+#fokvmdkgur .gt_super {
   font-size: 65%;
 }
 
-#izsvyqyuus .gt_two_val_uncert {
+#fokvmdkgur .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1392,31 +1392,31 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   margin-left: 0.1em;
 }
 
-#izsvyqyuus .gt_footnote_marks {
+#fokvmdkgur .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#izsvyqyuus .gt_asterisk {
+#fokvmdkgur .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#izsvyqyuus .gt_slash_mark {
+#fokvmdkgur .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#izsvyqyuus .gt_fraction_numerator {
+#fokvmdkgur .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#izsvyqyuus .gt_fraction_denominator {
+#fokvmdkgur .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
