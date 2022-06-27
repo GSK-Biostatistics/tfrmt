@@ -28,7 +28,7 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
   }
 
   if(quo_is_missing(tfrmt$values)){
-    message("`tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
+    message("Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable")
     tfrmt$values <- quo(!!sym("__tfrmt__val"))
   }
 

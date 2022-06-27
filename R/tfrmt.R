@@ -17,13 +17,10 @@
 #' @param footer footers of the table
 #' @param row_grp_plan plan of the row groups blocking. Takes a `row_grp_plan`
 #' @param body_plan combination and formatting of the input data
-#' @param col_align how to align columns? left, right, decimal
-#' @param sorting_cols which columns determine sorting of output
-#' @param page_vars which column determine paging of table (splitting)
-#' @param row_group which columns determine row groups
+#' @param col_align_plan how to align columns? left, right, decimal
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns
-#' @param col_widths special column widths. otherwise fits contents
+#' @param sorting_cols which columns determine sorting of output
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #'
@@ -45,12 +42,9 @@ tfrmt <- function(
   footer,
   row_grp_plan, #the style between blocking
   body_plan,
-  col_align,
-  sorting_cols,
-  page_vars,
-  row_group, # col which is used to make the row grps
+  col_align_plan,
   col_plan,
-  col_widths,
+  sorting_cols,
   ...
   ){
 
@@ -115,12 +109,13 @@ tfrmt_find_args <- function(..., env = parent.frame(), parent_env = parent.env(e
   vals
 }
 
-#' @importFrom rlang abort frame_call
+#' @importFrom rlang abort frame_call is_quosure
 #' @importFrom dplyr vars
 #' @importFrom purrr safely
 quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame(), parent_env = parent.env(envir)){
 
   arg_set <- lapply(args, function(arg){
+
 
     ## try to get arg call
     arg_call <- do.call('substitute',list(as.symbol(arg)), envir = envir)
@@ -132,19 +127,24 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
 
     }else{
 
-      if(identical(arg_call, quo())){
+      if(identical(arg_call, quo()) | identical(arg_call, vars())){
         return(arg_call)
       }
 
-      ## try to safely evaluate arg call
-      arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
-      arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
-
-
-      if(is.null(arg_call_results_parent_env$error)){
-        arg_call_results <- arg_call_results_parent_env
+      # don't try to eval quosures if it is intended to be a quosure
+      if(is_quosure(arg_call) & arg %in% c(as_quo_args)){
+        arg_call_results <- list(result = arg_call, error = NULL)
       }else{
-        arg_call_results <- arg_call_results_envir
+      # try to safely evaluate arg call
+        arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
+        arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
+
+
+        if(is.null(arg_call_results_parent_env$error)){
+          arg_call_results <- arg_call_results_parent_env
+        }else{
+          arg_call_results <- arg_call_results_envir
+        }
       }
 
 

@@ -18,6 +18,7 @@ articles:
   - building_mocks
   - mock_examples
   - unusual_tables
+  - templates
 - title:
   navbar: More
   contents:
