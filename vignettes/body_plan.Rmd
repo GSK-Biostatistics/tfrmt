@@ -88,11 +88,16 @@ For formatting specific values of the group variable, these values are passed to
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = ".default", frmt("x.xxx"))`
 
+## Column-specific
+In the case where formatting needs to differ between columns within a given group/label/param level, the user will need to incorporate column-level information into the `param` value. For example, if we have two columns, `col1` and `col2`, but we want the mean for `col1` to be rounded differently than `col2`, creating our `param` column as such will allow us to differentiate the mean values in the formatting: `param = c("col1_mean", "col2_mean")`. 
+
 ## Multiple specifications
 
 A user can be as specific as they'd like, by providing any of these in combination. For example, the following code will format values where group1="A", group2="A", the label variable equals "mylab" and the param variable equals "mean":
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = "mylab", mean = frmt("x.xxx"))`
+
+**NOTE:** the `tfrmt_sigdig()` function provides the ability to create a `tfrmt` with auto-precision based on the significance of the group/label value.  
 
 # Layering format structures
 
