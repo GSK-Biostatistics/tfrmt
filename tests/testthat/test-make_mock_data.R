@@ -375,3 +375,84 @@ test_that("Mock data includes all columns identified in tfrmt", {
                ))
 
 })
+
+test_that("Printing Mock data removes value when it exists in the input data",{
+
+  data <- crossing(
+    label = c("Intent-To-Treat (ITT)",
+              "Safety",
+              "Efficacy",
+              "Complete Week 24",
+              "Complete Study"
+    ),
+    column = c("Placebo\n(N=XX)",
+               "Xanomeline\nLow Dose\n(N=XX)",
+               "Xanomeline\nHigh Dose\n(N=XX)",
+               "Total\n(N=XXX)"
+    ),
+    param = c("n", "percent")
+  ) %>%
+    mutate(
+      value_to_remove = 1
+    )
+
+  plan <- tfrmt(
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  #Make mock
+  expect_message(
+    print_mock_gt(plan, data),
+    "Removing `value_to_remove` from input data for mocking.",
+    fixed = TRUE
+  )
+
+
+})
+
+test_that("Mock data can be made and printed without label",{
+
+
+  plan <- tfrmt(
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  dat <- make_mock_data(plan)
+
+  expect_equal(
+    dat,
+    tibble(
+      param = c("n","n","n","percent","percent","percent"),
+      column = paste0("col", rep(1:3, times = 2))
+    )
+  )
+
+  #Make mock
+  expect_silent(
+    print_mock_gt(plan, .data = dat)
+  )
+
+})
