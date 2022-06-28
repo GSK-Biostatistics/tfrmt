@@ -3,7 +3,7 @@ df <- crossing(
   label = c("label 1", "label 2"),
   column = c("PL", "T1", "T2"),
   param = c("count", "percent")
-  ) %>% dplyr::arrange_all()
+  ) %>% arrange(across(everything()))
 
 tfrmt(
   label = label,
