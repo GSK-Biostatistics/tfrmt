@@ -46,7 +46,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     mutate(across(!!tfrmt$param, ~ process_for_mock(.x, cur_column(), 1)),
            across(all_of(grp_vars), ~ process_for_mock(.x, cur_column(), .default)))
 
-  expand_cols <- c(tfrmt$group,  tfrmt$param)
+  expand_cols <- c(tfrmt$group)
 
   if(!quo_is_missing(tfrmt$label)){
     all_frmt_vals <- all_frmt_vals %>%
@@ -55,6 +55,8 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
       )
     expand_cols <- c(expand_cols, tfrmt$label )
   }
+
+  expand_cols <- c(expand_cols, tfrmt$param)
 
   output_dat <- all_frmt_vals %>%
     unnest(everything()) %>%
