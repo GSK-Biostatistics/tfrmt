@@ -216,6 +216,14 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     ) %>%
     select(-all_of(fmt_param_vals), -.data$.is_all_missing)
 
+  merge_group <- purrr::map(
+    c(column, label, group),
+    function(x){
+      if(!quo_is_missing(x)){x}
+      }) %>%
+    purrr::discard(is.null) %>%
+    do.call("vars", .)
+
   ## keep only the first case of param, and add the joined values
   if(!mock){
     out <- .data %>%
@@ -223,14 +231,14 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
       select(-!!values) %>%
       left_join(
         .tmp_data_fmted,
-        by = map_chr(c(column, label, group), as_label)
+        by = map_chr(merge_group, as_label)
       )
   } else {
     out <- .data %>%
       filter(!!param == fmt_param_vals[[1]]) %>%
       left_join(
         .tmp_data_fmted,
-        by = map_chr(c(column, label, group), as_label)
+        by = map_chr(merge_group, as_label)
       )
   }
   out
