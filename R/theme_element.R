@@ -65,7 +65,10 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 #'   one character is provided, alignment will be based on the first occurrence
 #'   of any of the characters. For alignment based on white space, leading white
 #'   spaces will be ignored.
-#' @param col Variable to align on
+#' @param col Column value to align on from `column` variable.
+#'
+#' @details Only supports alignment of data value columns. Row group and label
+#'   columns will be left-aligned by default.
 #'
 #' @importFrom purrr map
 #'
