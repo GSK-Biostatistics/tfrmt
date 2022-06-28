@@ -93,17 +93,16 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 #' @return vector of the rows which this format could be applied to
 #' @noRd
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
+
   #get filters for each column type
   grp_expr <- expr_to_filter(group, cur_fmt$group_val)
-
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
   parm_expr <- expr_to_filter(param, cur_fmt$param_val)
 
-  filter_expr <- paste(lbl_expr,
-                       "&",
-                       grp_expr,
-                       "&",
-                       parm_expr) %>%
+  filter_expr <- paste(
+      c(lbl_expr,grp_expr,parm_expr),
+      collapse = "&"
+    ) %>%
     parse_expr()
 
   .data %>%
@@ -119,6 +118,11 @@ expr_to_filter <- function(cols, val){
 }
 
 expr_to_filter.quosure <- function(cols, val){
+
+  ## If is missing a quosure, nothing to filter
+  if(quo_is_missing(cols)){
+    return("TRUE")
+  }
 
   # This is all so it works when there is a list
   if(all(val == ".default")){
