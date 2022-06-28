@@ -32,8 +32,16 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$values <- quo(!!sym("__tfrmt__val"))
   }
 
+
   if(is.null(.data)){
     .data <- make_mock_data(tfrmt, .default, n_cols)
+  }else{
+    ## check that if values column exists in data, remove it for mocking
+    select_try <- purrr::safely(tidyselect::eval_select)(tfrmt$values, data = .data)
+    if(!is.null(select_try$result)){
+      message(" Removing `",as_label(tfrmt$values),"` from input data for mocking.")
+      .data <- .data[,-select_try$result]
+    }
   }
 
   if(is.null(tfrmt$body_plan)){
