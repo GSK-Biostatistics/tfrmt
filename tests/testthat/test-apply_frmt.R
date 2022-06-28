@@ -340,6 +340,62 @@ test_that("applying frmt_combine - 3x", {
 
 })
 
+test_that("applying frmt_combine - no unique labels, so unable to frmt_combine", {
+
+  sample_df <- tibble(
+    group = "group",
+    lab = paste("lab",1:15),
+    col = "col",
+    y = rep(c("A","B","C"),each = 5),
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101,
+          10,111,1112,13,114)
+  )
+
+  sample_frmt <- frmt_combine(
+    "{A} {B} - {C}",
+    A = frmt("xxx.x"),
+    B = frmt("(X.X%)"),
+    C = frmt("*XXXX.X")
+  )
+
+  expect_warning(
+    apply_frmt.frmt_combine(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    values = quo(x),
+    param = quo(y),
+    column = vars(col),
+    label = quo(lab),
+    group = vars(group)
+  ))
+
+
+  sample_df_frmted <- suppressWarnings(apply_frmt.frmt_combine(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    values = quo(x),
+    param = quo(y),
+    column = vars(col),
+    label = quo(lab),
+    group = vars(group)
+  ))
+
+  expect_equal(
+    sample_df_frmted,
+    tibble(
+      group = "group",
+      lab = paste("lab",1:5),
+      col = "col",
+      y = "A",
+      x = c("1234.6 NA - NA", "2345.7 NA - NA", "3456.8 NA - NA", "4567.9 NA - NA", "5678.9 NA - NA")
+    )
+  )
+
+
+})
+
+
 test_that("applying frmt_when", {
   #Test frmt_when alone
   sample_df <- tibble(
