@@ -114,7 +114,7 @@ test_that("build frmt objects",{
 
 test_that("no redundant frmt_structures",{
 
-  dat_sigdig <- tribble(
+  dat_sigdig <- tibble::tribble(
     ~group1,  ~ group2, ~ sigdig,
     ".default", ".default", 1,
     "CHEM",  "ALANINE AMINOTRANSFERASE", 1,
@@ -141,7 +141,7 @@ test_that("no redundant frmt_structures",{
   expect_equal(bp,
                bp_man)
 
-  dat_sigdig <- tribble(
+  dat_sigdig <- tibble::tribble(
     ~group1,  ~ group2, ~ lbl, ~ sigdig,
     "CHEM", "BILIRUBIN", "v1", 1,
     "CHEM",  ".default", "v2",1,
@@ -178,7 +178,7 @@ test_that("no redundant frmt_structures",{
 
 test_that("tfrmt_sigdig returns a tfrmt", {
 
-  dat_sigdig <- tribble(
+  dat_sigdig <- tibble::tribble(
     ~group1,  ~ group2, ~ sigdig,
     "CHEM",  "ALANINE AMINOTRANSFERASE", 1,
     "CHEM", "BILIRUBIN", 1
