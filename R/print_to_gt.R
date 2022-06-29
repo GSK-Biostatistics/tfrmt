@@ -12,9 +12,10 @@
 #' @return a stylized gt object
 #' @export
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom tidyselect everything
+#' @importFrom tidyselect everything eval_select
 #' @importFrom rlang quo_is_missing sym quo is_empty
 #' @importFrom dplyr vars
+#' @importFrom purrr quietly safely
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 
   # fill param, column if not provided
@@ -42,10 +43,10 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }else{
     ## check that if values column exists in data, remove it for mocking
-    select_try <- purrr::safely(tidyselect::eval_select)(tfrmt$values, data = .data)
+    select_try <- safely(quietly(eval_select))(tfrmt$values, data = .data)
     if(!is.null(select_try$result)){
       message(" Removing `",as_label(tfrmt$values),"` from input data for mocking.")
-      .data <- .data[,-select_try$result]
+      .data <- .data[,-select_try$result$result]
     }
   }
 
