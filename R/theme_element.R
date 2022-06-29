@@ -67,8 +67,8 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 #'   spaces will be ignored.
 #' @param col Column value to align on from `column` variable.
 #'
-#' @details Only supports alignment of data value columns. Row group and label
-#'   columns will be left-aligned by default.
+#' @details Only supports alignment of data value columns (values found in the `column` column). Row group and label
+#'   columns are left-aligned by default.
 #'
 #' @importFrom purrr map
 #'
