@@ -32,6 +32,11 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$values <- quo(!!sym("__tfrmt__val"))
   }
 
+  if(is.null(tfrmt$body_plan)){
+    tfrmt$body_plan <- body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    )
+  }
 
   if(is.null(.data)){
     .data <- make_mock_data(tfrmt, .default, n_cols)
@@ -44,11 +49,6 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     }
   }
 
-  if(is.null(tfrmt$body_plan)){
-    tfrmt$body_plan <- body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
-    )
-  }
 
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     cleaned_data_to_gt(tfrmt)
