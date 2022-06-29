@@ -360,26 +360,17 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
   )
 
   expect_warning(
-    apply_frmt.frmt_combine(
-    frmt_def = sample_frmt,
-    .data = sample_df,
-    values = quo(x),
-    param = quo(y),
-    column = vars(col),
-    label = quo(lab),
-    group = vars(group)
-  ))
-
-
-  sample_df_frmted <- suppressWarnings(apply_frmt.frmt_combine(
-    frmt_def = sample_frmt,
-    .data = sample_df,
-    values = quo(x),
-    param = quo(y),
-    column = vars(col),
-    label = quo(lab),
-    group = vars(group)
-  ))
+    sample_df_frmted <- apply_frmt.frmt_combine(
+          frmt_def = sample_frmt,
+          .data = sample_df,
+          values = quo(x),
+          param = quo(y),
+          column = vars(col),
+          label = quo(lab),
+          group = vars(group)
+        ),
+  "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: "
+  )
 
   expect_equal(
     sample_df_frmted,
