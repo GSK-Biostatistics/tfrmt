@@ -199,7 +199,7 @@ test_that("Check mock when value it missing", {
 })
 
 
-test_that("Test when no body_style is present", {
+test_that("Test when no body_style or values is present", {
   tfrmt_obj_one_span <- tfrmt(
     label = label,
     group = group,
@@ -219,7 +219,12 @@ test_that("Test when no body_style is present", {
     columns = paste0("col",1:10)
   )
 
-  gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data)
+
+  gt_out <- expect_message(
+    print_mock_gt(tfrmt_obj_one_span, input_data),
+    "Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable",
+    fixed = TRUE
+  )
 
   expect_equal(gt_out$`_data`,
                input_data %>%
@@ -454,5 +459,27 @@ test_that("Mock data can be made and printed without label",{
   expect_silent(
     print_mock_gt(plan, .data = dat)
   )
+
+})
+
+
+test_that("Mock data can be printed from a tfrmt without a body plan",{
+
+
+  plan <- tfrmt(
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations"
+  )
+
+  mock_gt <- print_mock_gt(plan)
+
+  #Make mock
+  expect_equal(
+    mock_gt,
+    print_mock_gt(plan, .data = tibble::tibble(column = c("col1","col2","col3"), param = "n"))
+  )
+
 
 })
