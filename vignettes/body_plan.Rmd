@@ -60,7 +60,7 @@ This will cause the values 0.0347, 1.00, and 0.000001 to appear as "0.035", ">0.
 
 There are a variety of ways for the user to specify formatting locations: group variable values and/or label values, or by param value. Let's take a look at the various methods below, ranging from least specific to most specific. 
 
-An important details is that passing a value of ".default" to group or label means that the format will be applied to ALL values within the group(s) or label variables. 
+An important detail is that passing a value of ".default" to group or label means that the format will be applied to ALL values within the group(s) or label variables. 
 
 ## Table-wide
 
