@@ -89,46 +89,39 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
 
   frmt_vec <-do.call(c, frmt_vec)
 
-
   # group/label names from tfrmt
   grp_names <- if (length(group)==0) character(0) else group %>% map_chr(as_name)
   lbl_names <- if(quo_is_missing(label)) character(0) else as_name(label)
 
-  # significant digits data spec
-  grp_data <- data %>% select(-.data$sigdig)
-  grp_data_names <- names(grp_data)
+  # sigdig value
   sigdig <- data$sigdig[[1]]
 
-  # check if names of data are group or label vars in the trfrmt
-  if (!all(grp_data_names %in% c(grp_names, lbl_names))){
-    message("Group/label variable names in sig. digits spec do not match tfrmt. Formatting may not be as expected.")
+  which_grp <- grp_names[grp_names %in% names(data)]
+  which_lbl <- lbl_names[lbl_names %in% names(data)]
 
-    grp_data_names <- intersect(grp_data_names, c(grp_names, lbl_names))
-    grp_data <- grp_data[, grp_data_names]
-  }
+  if(length(which_grp)>0){
+    group_val <- data[,which_grp] %>%
+      as.list() %>%
+      map(unique)
 
-  if(length(grp_data_names)>0){
-
-    which_grp <- which(grp_data_names %in% grp_names)
-    which_lbl <- which(grp_data_names %in% lbl_names)
-
-    if(length(which_grp)>0){
-      group_val <- grp_data[,which_grp] %>%
+    if (length(grp_names)>length(group_val)){
+      group_val_to_add <- grp_names[!grp_names %in% names(group_val)]
+      group_list_to_add <- rep(".default", length(group_val_to_add)) %>%
         as.list() %>%
-        map(unique) %>%
-        map(~if (any(.x==".default")){ ".default"} else { .x})
-    } else {
-      group_val <- ".default"
+        setNames(group_val_to_add)
+      group_val <- c(group_val, group_list_to_add)[grp_names]
     }
-
-
-    if(length(which_lbl)>0){
-      label_val <- grp_data[,which_lbl, drop = TRUE] %>% unique()
-      label_val <- if(any(label_val==".default")){".default"} else {label_val}
-    } else {
-      label_val <- ".default"
-    }
-
-    frmt_structure_builder(group_val, label_val, frmt_vec)
+  } else {
+    group_val <- ".default"
   }
+
+  if(length(which_lbl)>0){
+    label_val <- data[,which_lbl, drop = TRUE] %>% unique()
+    label_val <- if(any(label_val==".default")){".default"} else {label_val}
+  } else {
+    label_val <- ".default"
+  }
+
+  frmt_structure_builder(group_val, label_val, frmt_vec)
+
 }
