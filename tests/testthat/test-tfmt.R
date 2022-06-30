@@ -466,7 +466,6 @@ test_that("basic tfrmt - func calls into quo and var args", {
   expect_equal( t_frmt$column, vars(adist), ignore_attr = TRUE)
 })
 
-
 test_that("advanced tfrmt - tfrmt maker", {
 
 
@@ -613,3 +612,145 @@ test_that("layering tfrmt - valid layering should be silent - even when a quo ar
   })
 
 })
+
+test_that("basic tfrmt - error when body_plan groups does not match group arg",{
+
+  expect_silent(
+    tfrmt(
+      group = vars(group1, group2),
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = c("group1"),
+          label_val = ".default",
+          frmt("XXX")
+       ),
+       frmt_structure(
+         group_val = list(group1 = "value"),
+         label_val = ".default",
+         frmt("XXX")
+       ),
+       frmt_structure(
+         group_val = list(group2 = "value"),
+         label_val = ".default",
+         frmt("XXX")
+       ),
+       frmt_structure(
+         group_val = list(group1 = "value", group2 = "value"),
+         label_val = ".default",
+         frmt("XXX")
+       )
+      )
+    )
+  )
+
+  expect_error(
+    tfrmt(
+      group = vars(group1, group2),
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = list(invalid = "value", invalid2 = "value"),
+          label_val = ".default",
+          frmt("XXX")
+        )
+      )
+     ),
+    paste0(
+     "Invalid Format Structure in body_plan at position `1`:\n",
+     "  Malformed Group: invalid, invalid2\n",
+     "  Format Structure\n",
+     "    Group Values: `invalid` - \"value\"; `invalid2` - \"value\"\n",
+     "    Label Values: \".default\"\n",
+     "    Format: <frmt | Expression: `XXX` >"
+    ),
+    fixed = TRUE
+  )
+
+
+
+
+})
+
+test_that("updating tfrmt - updating group vars",{
+
+  tfrmt1 <- tfrmt(
+      group = c(group1, group2),
+      body_plan  = body_plan(
+        frmt_structure(
+          group_val = "value",
+          label_val = ".default",
+          frmt("XXX")
+        ),
+        frmt_structure(
+           group_val = list(group2 = "value"),
+           label_val = ".default",
+           frmt("XXXX")
+           ),
+        frmt_structure(
+           group_val = list(group1 = "value", group2 = "value"),
+           label_val = ".default",
+           frmt("XXXXX")
+         )
+      )
+    )
+
+  tfrmt2 <- tfrmt1 %>%
+    update_group(New_Group = group1)
+
+  expect_equal(
+    tfrmt2,
+    tfrmt(
+      group = c(New_Group, group2),
+      body_plan  = body_plan(
+        frmt_structure(
+          group_val = "value",
+          label_val = ".default",
+          frmt("XXX")
+        ),
+        frmt_structure(
+          group_val = list(group2 = "value"),
+          label_val = ".default",
+          frmt("XXXX")
+        ),
+        frmt_structure(
+          group_val = list(New_Group = "value", group2 = "value"),
+          label_val = ".default",
+          frmt("XXXXX")
+        )
+      )
+    ),
+    ignore_attr = TRUE
+  )
+
+  tfrmt3 <- tfrmt1 %>%
+    update_group(
+      New_Group = group1,
+      `best group` = group2
+      )
+
+  expect_equal(
+    tfrmt3,
+    tfrmt(
+      group = c(New_Group, `best group`),
+      body_plan  = body_plan(
+        frmt_structure(
+          group_val = "value",
+          label_val = ".default",
+          frmt("XXX")
+        ),
+        frmt_structure(
+          group_val = list(`best group` = "value"),
+          label_val = ".default",
+          frmt("XXXX")
+        ),
+        frmt_structure(
+          group_val = list(New_Group = "value", `best group` = "value"),
+          label_val = ".default",
+          frmt("XXXXX")
+        )
+      )
+    ),
+    ignore_attr = TRUE
+  )
+
+})
+

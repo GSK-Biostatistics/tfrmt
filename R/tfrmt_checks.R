@@ -54,10 +54,10 @@ check_group_var_consistency <- function(x){
           is_invalid_body_plan_message <- c(
             is_invalid_body_plan_message,
             paste0(
-              "\n",
               paste0("Invalid Format Structure in body_plan at position `",idx,"`:\n"),
               paste0("  Malformed Group: ",paste0(invalid_groups, collapse = ", "),"\n"),
-              paste0("  ", format(frmt_struct), collapse = "\n")
+              paste0("  ", format(frmt_struct), collapse = "\n"),
+              "\n"
               )
           )
         }
