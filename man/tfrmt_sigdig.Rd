@@ -6,10 +6,11 @@
 \usage{
 tfrmt_sigdig(
   data,
-  group,
-  label,
+  group = vars(),
+  label = quo(),
   param_defaults = param_set(),
   missing = NULL,
+  tfrmt_obj = NULL,
   ...
 )
 }
@@ -29,6 +30,8 @@ carried through in implementation.}
 
 \item{missing}{missing option to be included in all \code{frmt}s}
 
+\item{tfrmt_obj}{an optional tfrmt object to layer}
+
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
@@ -36,7 +39,11 @@ carried through in implementation.}
 significant digits data spec and param-level significant digits defaults.
 }
 \description{
-Create tfrmt object from significant digits spec
+This function creates a tfrmt based on significant digits specifications for
+group/label values. The input data spec provided to \code{data} will contain
+group/label value specifications. The function's \code{group} and \code{label} inputs
+are optional; if none (or only some) are supplied, the function will assume
+the remaining columns in \code{data} (other than \code{sigdig}) are grouping columns.
 }
 \details{
 Currently covers specifications for \code{frmt} and \code{frmt_combine}.

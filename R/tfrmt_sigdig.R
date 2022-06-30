@@ -102,6 +102,13 @@ param_set <- function(...){
 
 #' Create tfrmt object from significant digits spec
 #'
+#' This function creates a tfrmt based on significant digits specifications for
+#' group/label values. The input data spec provided to `data` will contain
+#' group/label value specifications. The function's `group` and `label` inputs
+#' are optional; if none (or only some) are supplied, the function will assume
+#' the remaining columns in `data` (other than `sigdig`) are grouping columns.
+#'
+#'
 #' @param data data formatting spec with 1 record per group/label value, and
 #'   columns for relevant group and/or label variables, as well as a numeric
 #'   column `sigdig` containing the significant digits rounding to be applied in
@@ -112,6 +119,7 @@ param_set <- function(...){
 #' @param label what is the label column of the input dataset
 #' @param param_defaults Option to override or add to default parameters.
 #' @param missing missing option to be included in all `frmt`s
+#' @param tfrmt_obj an optional tfrmt object to layer
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #' @return `tfrmt` object with a `body_plan` constructed based on the
@@ -148,16 +156,62 @@ param_set <- function(...){
 #'
 #' @export
 #'
-#' @importFrom dplyr rowwise group_split desc
+#' @importFrom dplyr rowwise group_split desc vars
 #' @importFrom tidyr unite
 #' @importFrom purrr map
-tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missing = NULL, ...){
+#' @importFrom rlang quo_is_missing syms as_name as_label
+tfrmt_sigdig <- function(data,
+                         group=vars(),
+                         label=quo(),
+                         param_defaults = param_set(),
+                         missing = NULL,
+                         tfrmt_obj = NULL,
+                         ...){
 
   tfrmt_inputs <-  quo_get(c("group","label"), as_var_args = "group", as_quo_args = "label")
 
-  frmt_structure_list <- data %>%
-    unite("def_ord", !!!tfrmt_inputs$group, remove = FALSE) %>%
-    mutate("def_ord" = str_count(.data$def_ord, ".default")) %>%
+  # if a tfrmt_obj is supplied and no group or label parameters are passed, use the one from the tfrmt_obj
+  if(!is.null(tfrmt_obj)){
+    if(is_empty(tfrmt_inputs$group) && !is_empty(tfrmt_obj$group)){
+        tfrmt_inputs$group <- tfrmt_obj$group
+    }
+    if(quo_is_missing(tfrmt_inputs$label) && !quo_is_missing(tfrmt_obj$label)){
+      tfrmt_inputs$label <- tfrmt_obj$label
+    }
+  }
+
+  # error if no sigdig column
+  if (!"sigdig" %in% names(data)){
+    stop("Input data must contain `sigdig` column.")
+  }
+
+  # error if no group/label columns
+  data_names <- data %>% select(-.data$sigdig) %>% names()
+  if (length(data_names)==0){
+    stop("Input data must contain group and/or label value columns.")
+  }
+
+  # if any or all data columns are not represented in the label/group params, set (or append) to groups
+  group_names <- map_chr(tfrmt_inputs$group, as_name)
+  label_name <- as_label(tfrmt_inputs$label)
+  groups_to_add <- setdiff(data_names, c(group_names, label_name))
+  tfrmt_inputs$group <- c(tfrmt_inputs$group, vars(!!!syms(groups_to_add)))
+
+  # if input data contains grouping variables, establish ordering based on
+  # whether any of the grouping values are set to .default
+  groups_in_data <- intersect(data_names, group_names)
+
+  if (length(groups_in_data)>0){
+    data_ord <- data %>%
+      unite("def_ord", groups_in_data, remove = FALSE) %>%
+      mutate(def_ord = str_count(.data$def_ord, ".default"))
+  } else {
+    data_ord <- data %>%
+      mutate(def_ord = 0)
+  }
+
+  # Create body plan
+  frmt_structure_list <- data_ord %>%
     group_by(def_ord = desc(.data$def_ord), .data$sigdig) %>%
     group_split() %>%
     map(select, -.data$def_ord) %>%
@@ -168,9 +222,17 @@ tfrmt_sigdig <- function(data, group, label, param_defaults = param_set(), missi
     do.call("body_plan", .)
 
 
-  tfrmt(
+  # output tfrmt (layer with previous, if applicable)
+  tfrmt_out <- tfrmt(
     group = tfrmt_inputs$group,
     label = tfrmt_inputs$label,
     body_plan = bp)
+
+  if(!is.null(tfrmt_obj)){
+    layer_tfrmt(x = tfrmt_obj,
+                y = tfrmt_out)
+  } else {
+     tfrmt_out
+  }
 
 }
