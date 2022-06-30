@@ -40,17 +40,28 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
   all_frmt_vals <- bind_cols(all_frmt_spec,
                              map(cols_to_add, function(x) tibble(!!x := NA_character_))) %>%
     mutate(..grp = replace_na(.data$..grp, ".default"),
-           across(grp_vars, ~ coalesce(.x, .data$..grp))) %>%
+           across(all_of(grp_vars), ~ coalesce(.x, .data$..grp))) %>%
     select(-.data$..grp)  %>%
     rowwise()  %>%
     mutate(across(!!tfrmt$param, ~ process_for_mock(.x, cur_column(), 1)),
-           across(!!tfrmt$label, ~ process_for_mock(.x, cur_column(), .default)),
            across(all_of(grp_vars), ~ process_for_mock(.x, cur_column(), .default)))
+
+  expand_cols <- c(tfrmt$group)
+
+  if(!quo_is_missing(tfrmt$label)){
+    all_frmt_vals <- all_frmt_vals %>%
+      mutate(
+        across(!!tfrmt$label, ~ process_for_mock(.x, cur_column(), .default))
+      )
+    expand_cols <- c(expand_cols, tfrmt$label )
+  }
+
+  expand_cols <- c(expand_cols, tfrmt$param)
 
   output_dat <- all_frmt_vals %>%
     unnest(everything()) %>%
     group_by(.data$frmt_num) %>%
-    expand(!!!tfrmt$group, !!tfrmt$label, !!tfrmt$param) %>%
+    expand(!!!expand_cols) %>%
     ungroup
 
   ## add sorting_cols. Not functional, will not impact actual output

@@ -138,6 +138,7 @@ is_span_structures <- function(x){
   inherits(x, "span_structures")
 }
 
+#' @importFrom rlang eval_tidy
 check_span_structure_dots <- function(x, envir = parent.frame()){
   x_dots <- lapply(x,function(x){
     if(is.name(x)){
@@ -222,7 +223,7 @@ eval_tidyselect_on_colvec.quosures <- function(x, column_vec){
              NULL, column_vec
            )),
     check.names = FALSE,
-    stringsAsFactors = TRUE
+    stringsAsFactors = FALSE
   )[-1,]
 
   names(eval_select(expr(c(!!!x)), data = data))
@@ -239,7 +240,7 @@ eval_tidyselect_on_colvec.quosure <- function(x, column_vec){
              NULL, column_vec
            )),
     check.names = FALSE,
-    stringsAsFactors = TRUE
+    stringsAsFactors = FALSE
   )[-1,]
 
   names(eval_select(expr(c(!!x)), data = data))

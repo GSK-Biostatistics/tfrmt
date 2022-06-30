@@ -199,7 +199,7 @@ test_that("Check mock when value it missing", {
 })
 
 
-test_that("Test when no body_style is present", {
+test_that("Test when no body_style or values is present", {
   tfrmt_obj_one_span <- tfrmt(
     label = label,
     group = group,
@@ -219,7 +219,12 @@ test_that("Test when no body_style is present", {
     columns = paste0("col",1:10)
   )
 
-  gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data)
+
+  expect_message(
+    gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data),
+    "Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable",
+    fixed = TRUE
+  )
 
   expect_equal(gt_out$`_data`,
                input_data %>%
@@ -373,5 +378,108 @@ test_that("Mock data includes all columns identified in tfrmt", {
                  "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
                  "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col2"
                ))
+
+})
+
+test_that("Printing Mock data removes value when it exists in the input data",{
+
+  data <- crossing(
+    label = c("Intent-To-Treat (ITT)",
+              "Safety",
+              "Efficacy",
+              "Complete Week 24",
+              "Complete Study"
+    ),
+    column = c("Placebo\n(N=XX)",
+               "Xanomeline\nLow Dose\n(N=XX)",
+               "Xanomeline\nHigh Dose\n(N=XX)",
+               "Total\n(N=XXX)"
+    ),
+    param = c("n", "percent")
+  ) %>%
+    mutate(
+      value_to_remove = 1
+    )
+
+  plan <- tfrmt(
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  #Make mock
+  expect_message(
+    print_mock_gt(plan, data),
+    "Removing `value_to_remove` from input data for mocking.",
+    fixed = TRUE
+  )
+
+
+})
+
+test_that("Mock data can be made and printed without label",{
+
+
+  plan <- tfrmt(
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  dat <- make_mock_data(plan)
+
+  expect_equal(
+    dat,
+    tibble(
+      param = c("n","n","n","percent","percent","percent"),
+      column = paste0("col", rep(1:3, times = 2))
+    )
+  )
+
+  #Make mock
+  expect_silent(
+    print_mock_gt(plan, .data = dat)
+  )
+
+})
+
+
+test_that("Mock data can be printed from a tfrmt without a body plan",{
+
+
+  plan <- tfrmt(
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations"
+  )
+
+  mock_gt <- print_mock_gt(plan)
+
+  #Make mock
+  expect_equal(
+    mock_gt,
+    print_mock_gt(plan, .data = tibble::tibble(column = c("col1","col2","col3"), param = "n"))
+  )
+
 
 })
