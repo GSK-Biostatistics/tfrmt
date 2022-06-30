@@ -13,6 +13,9 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/building_blocks.html</loc>
   </url>
   <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/building_mocks.html</loc>
+  </url>
+  <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_align_plan.html</loc>
   </url>
   <url>
@@ -31,7 +34,7 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/layer.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/mocks.html</loc>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/mock_examples.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html</loc>
@@ -113,6 +116,9 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_n_pct.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_sigdig.html</loc>

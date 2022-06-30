@@ -51,12 +51,13 @@
     <h6 class="dropdown-header" data-toc-skip>Building Tables</h6>
     <a class="dropdown-item" href="../articles/examples.html">Examples</a>
     <a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a>
-    <a class="dropdown-item" href="../articles/mocks.html">Mock tables</a>
-    <a class="dropdown-item" href="../articles/unusual_tables.html">Unusual Tables</a>
+    <a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a>
     <a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>More</h6>
     <a class="dropdown-item" href="../articles/faq.html">FAQ</a>
+    <a class="dropdown-item" href="../articles/mock_examples.html">Mock Examples</a>
+    <a class="dropdown-item" href="../articles/unusual_tables.html">Unusual Tables</a>
   </div>
 </li>
       </ul>
@@ -305,12 +306,12 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div id="prizhyyflg" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<div id="fsvltujslf" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#prizhyyflg .gt_table {
+#fsvltujslf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -335,7 +336,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-left-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_heading {
+#fsvltujslf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -347,7 +348,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_title {
+#fsvltujslf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -359,7 +360,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-width: 0;
 }
 
-#prizhyyflg .gt_subtitle {
+#fsvltujslf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -371,13 +372,13 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-width: 0;
 }
 
-#prizhyyflg .gt_bottom_border {
+#fsvltujslf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_col_headings {
+#fsvltujslf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -392,7 +393,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_col_heading {
+#fsvltujslf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -412,7 +413,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#prizhyyflg .gt_column_spanner_outer {
+#fsvltujslf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -424,15 +425,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 4px;
 }
 
-#prizhyyflg .gt_column_spanner_outer:first-child {
+#fsvltujslf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#prizhyyflg .gt_column_spanner_outer:last-child {
+#fsvltujslf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#prizhyyflg .gt_column_spanner {
+#fsvltujslf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -444,7 +445,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   width: 100%;
 }
 
-#prizhyyflg .gt_group_heading {
+#fsvltujslf .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -469,7 +470,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#prizhyyflg .gt_empty_group_heading {
+#fsvltujslf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -484,15 +485,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#prizhyyflg .gt_from_md > :first-child {
+#fsvltujslf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#prizhyyflg .gt_from_md > :last-child {
+#fsvltujslf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#prizhyyflg .gt_row {
+#fsvltujslf .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -511,7 +512,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#prizhyyflg .gt_stub {
+#fsvltujslf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -524,7 +525,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#prizhyyflg .gt_stub_row_group {
+#fsvltujslf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -538,11 +539,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: top;
 }
 
-#prizhyyflg .gt_row_group_first td {
+#fsvltujslf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#prizhyyflg .gt_summary_row {
+#fsvltujslf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -552,16 +553,16 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#prizhyyflg .gt_first_summary_row {
+#fsvltujslf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_first_summary_row.thick {
+#fsvltujslf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#prizhyyflg .gt_last_summary_row {
+#fsvltujslf .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -571,7 +572,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_grand_summary_row {
+#fsvltujslf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -581,7 +582,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#prizhyyflg .gt_first_grand_summary_row {
+#fsvltujslf .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -591,11 +592,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_striped {
+#fsvltujslf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#prizhyyflg .gt_table_body {
+#fsvltujslf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -604,7 +605,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_footnotes {
+#fsvltujslf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -618,7 +619,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_footnote {
+#fsvltujslf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -627,7 +628,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#prizhyyflg .gt_sourcenotes {
+#fsvltujslf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -641,7 +642,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#prizhyyflg .gt_sourcenote {
+#fsvltujslf .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -649,36 +650,36 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#prizhyyflg .gt_left {
+#fsvltujslf .gt_left {
   text-align: left;
 }
 
-#prizhyyflg .gt_center {
+#fsvltujslf .gt_center {
   text-align: center;
 }
 
-#prizhyyflg .gt_right {
+#fsvltujslf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#prizhyyflg .gt_font_normal {
+#fsvltujslf .gt_font_normal {
   font-weight: normal;
 }
 
-#prizhyyflg .gt_font_bold {
+#fsvltujslf .gt_font_bold {
   font-weight: bold;
 }
 
-#prizhyyflg .gt_font_italic {
+#fsvltujslf .gt_font_italic {
   font-style: italic;
 }
 
-#prizhyyflg .gt_super {
+#fsvltujslf .gt_super {
   font-size: 65%;
 }
 
-#prizhyyflg .gt_two_val_uncert {
+#fsvltujslf .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -687,31 +688,31 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   margin-left: 0.1em;
 }
 
-#prizhyyflg .gt_footnote_marks {
+#fsvltujslf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#prizhyyflg .gt_asterisk {
+#fsvltujslf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#prizhyyflg .gt_slash_mark {
+#fsvltujslf .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#prizhyyflg .gt_fraction_numerator {
+#fsvltujslf .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#prizhyyflg .gt_fraction_denominator {
+#fsvltujslf .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1014,12 +1015,12 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div id="usrwaounoh" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<div id="rozkjqmxjt" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#usrwaounoh .gt_table {
+#rozkjqmxjt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1044,7 +1045,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-left-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_heading {
+#rozkjqmxjt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1056,7 +1057,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_title {
+#rozkjqmxjt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1068,7 +1069,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-width: 0;
 }
 
-#usrwaounoh .gt_subtitle {
+#rozkjqmxjt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1080,13 +1081,13 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-width: 0;
 }
 
-#usrwaounoh .gt_bottom_border {
+#rozkjqmxjt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_col_headings {
+#rozkjqmxjt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1101,7 +1102,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_col_heading {
+#rozkjqmxjt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1121,7 +1122,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#usrwaounoh .gt_column_spanner_outer {
+#rozkjqmxjt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1133,15 +1134,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 4px;
 }
 
-#usrwaounoh .gt_column_spanner_outer:first-child {
+#rozkjqmxjt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#usrwaounoh .gt_column_spanner_outer:last-child {
+#rozkjqmxjt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#usrwaounoh .gt_column_spanner {
+#rozkjqmxjt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1153,7 +1154,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   width: 100%;
 }
 
-#usrwaounoh .gt_group_heading {
+#rozkjqmxjt .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1178,7 +1179,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#usrwaounoh .gt_empty_group_heading {
+#rozkjqmxjt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1193,15 +1194,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#usrwaounoh .gt_from_md > :first-child {
+#rozkjqmxjt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#usrwaounoh .gt_from_md > :last-child {
+#rozkjqmxjt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#usrwaounoh .gt_row {
+#rozkjqmxjt .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1220,7 +1221,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#usrwaounoh .gt_stub {
+#rozkjqmxjt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1233,7 +1234,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#usrwaounoh .gt_stub_row_group {
+#rozkjqmxjt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1247,11 +1248,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: top;
 }
 
-#usrwaounoh .gt_row_group_first td {
+#rozkjqmxjt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#usrwaounoh .gt_summary_row {
+#rozkjqmxjt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1261,16 +1262,16 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#usrwaounoh .gt_first_summary_row {
+#rozkjqmxjt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_first_summary_row.thick {
+#rozkjqmxjt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#usrwaounoh .gt_last_summary_row {
+#rozkjqmxjt .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1280,7 +1281,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_grand_summary_row {
+#rozkjqmxjt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1290,7 +1291,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#usrwaounoh .gt_first_grand_summary_row {
+#rozkjqmxjt .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1300,11 +1301,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_striped {
+#rozkjqmxjt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#usrwaounoh .gt_table_body {
+#rozkjqmxjt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1313,7 +1314,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_footnotes {
+#rozkjqmxjt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1327,7 +1328,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_footnote {
+#rozkjqmxjt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1336,7 +1337,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#usrwaounoh .gt_sourcenotes {
+#rozkjqmxjt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1350,7 +1351,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#usrwaounoh .gt_sourcenote {
+#rozkjqmxjt .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1358,36 +1359,36 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#usrwaounoh .gt_left {
+#rozkjqmxjt .gt_left {
   text-align: left;
 }
 
-#usrwaounoh .gt_center {
+#rozkjqmxjt .gt_center {
   text-align: center;
 }
 
-#usrwaounoh .gt_right {
+#rozkjqmxjt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#usrwaounoh .gt_font_normal {
+#rozkjqmxjt .gt_font_normal {
   font-weight: normal;
 }
 
-#usrwaounoh .gt_font_bold {
+#rozkjqmxjt .gt_font_bold {
   font-weight: bold;
 }
 
-#usrwaounoh .gt_font_italic {
+#rozkjqmxjt .gt_font_italic {
   font-style: italic;
 }
 
-#usrwaounoh .gt_super {
+#rozkjqmxjt .gt_super {
   font-size: 65%;
 }
 
-#usrwaounoh .gt_two_val_uncert {
+#rozkjqmxjt .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1396,31 +1397,31 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   margin-left: 0.1em;
 }
 
-#usrwaounoh .gt_footnote_marks {
+#rozkjqmxjt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#usrwaounoh .gt_asterisk {
+#rozkjqmxjt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#usrwaounoh .gt_slash_mark {
+#rozkjqmxjt .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#usrwaounoh .gt_fraction_numerator {
+#rozkjqmxjt .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#usrwaounoh .gt_fraction_denominator {
+#rozkjqmxjt .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
