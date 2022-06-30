@@ -413,7 +413,7 @@ test_that("applying frmt_when", {
     group = vars(group)
   )
 
-  man_df <- tribble(
+  man_df <- tibble::tribble(
     ~group, ~lab,        ~col, ~y,    ~x,
     "group", "lab 1", "col",   "A",     "1234.6",
     "group", "lab 2", "col",   "A",     "2345.7",
@@ -449,7 +449,7 @@ test_that("applying frmt_when", {
     group = vars(group)
   )
 
-  man_df_combo <- tribble(
+  man_df_combo <- tibble::tribble(
     ~group, ~lab,   ~col,   ~y,     ~x,
     "group", "lab 1", "col",  "A",     "1234.6 Undetectable",
     "group", "lab 2", "col",  "A",     "2345.7 Undetectable",
