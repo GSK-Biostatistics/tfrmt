@@ -9,7 +9,7 @@
 #' @param n name of count (n) value in the parameter column
 #' @param pct  name of percent (pct) value in the parameter column
 #' @param frmt_when formatting to be used on the the percent values
-#' @param tfrmt_obj a tfrmt object to layer
+#' @param tfrmt_obj an optional tfrmt object to layer
 #'
 #' @export
 
