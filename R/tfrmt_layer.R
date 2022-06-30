@@ -121,3 +121,79 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 }
 
 
+
+#' Remap group values in a tfrmt
+#'
+#' @param tfrmt a `tfrmt`
+#' @param ... Use new_name = old_name to rename selected variables
+#'
+#' @return
+#' A `tfrmt` with the `group` variables updated in all places
+#'
+#' @examples
+#'
+#' tfrmt1 <- tfrmt(
+#'     group = c(group1, group2),
+#'     body_plan  = body_plan(
+#'       frmt_structure(
+#'          group_val = list(group2 = "value"),
+#'          label_val = ".default",
+#'          frmt("XXX")
+#'          ),
+#'      frmt_structure(
+#'          group_val = list(group1 = "value", group2 = "value"),
+#'          label_val = ".default",
+#'          frmt("XXX")
+#'        )
+#'     ))
+#'
+#' tfrmt1 %>%
+#'   update_group(New_Group = group1)
+#'
+update_group <- function(tfrmt, ...){
+
+  dots <- as.list(substitute(substitute(...)))[-1]
+
+  old_groups <- do.call(vars, unname(dots))
+  new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
+
+  if(!is_empty(tfrmt$group)){
+
+    var_list <- sapply(tfrmt$group, function(x){
+      x_lab <- as_label(x)
+      if(x_lab %in% names(new_group_map)){
+        new_group_map[[x_lab]]
+      }else{
+        x_lab
+      }
+    })
+
+    tfrmt$group <- as_vars(var_list)
+
+  }else{
+    stop("No group values defined in input tfrmt.")
+  }
+
+  if(!is.null(tfrmt$body_plan)){
+    bp_list <- lapply(tfrmt$body_plan, function(frmt_struct){
+      if(is.list(frmt_struct$group_val)){
+        struct_groups <- names(frmt_struct$group_val)
+        for(struct_group_idx in seq_along(struct_groups)){
+          if(struct_groups[struct_group_idx] %in% names(new_group_map)){
+            names(frmt_struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
+          }
+        }
+      }
+      frmt_struct
+    })
+
+    tfrmt$body_plan <- do.call("body_plan", bp_list)
+
+  }
+
+  check_group_var_consistency(tfrmt)
+
+  tfrmt
+
+}
+
