@@ -143,7 +143,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
 #' @importFrom dplyr case_when tibble filter pull left_join
 #' @importFrom tidyr pivot_wider
-#' @importFrom purrr map_dfr map_chr
+#' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
 #' @export
 #'
@@ -216,12 +216,12 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     ) %>%
     select(-all_of(fmt_param_vals), -.data$.is_all_missing)
 
-  merge_group <- purrr::map(
+  merge_group <- map(
     c(column, label, group),
     function(x){
       if(!quo_is_missing(x)){x}
       }) %>%
-    purrr::discard(is.null) %>%
+    discard(is.null) %>%
     do.call("vars", .)
 
   ## keep only the first case of param, and add the joined values
