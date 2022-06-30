@@ -14,11 +14,14 @@ check_column_and_col_plan <- function(x){
   }
 
   if(multi_column_defined & span_structures_defined){
+
     abort(
-      "Multiple columns defined in `column` argument of tfrmt ",
-      "as well as span_structures in `col_plan`.\n",
-      "The use of only one approach is permitted. ",
-      "Select a single column or remove span_structures from `col_plan()`",
+      paste0(
+        "Multiple columns defined in `column` argument of tfrmt ",
+        "as well as span_structures in `col_plan`.\n",
+        "The use of only one approach is permitted. ",
+        "Select a single column or remove span_structures from `col_plan()`"
+      ),
       call = caller_call()
     )
   }
