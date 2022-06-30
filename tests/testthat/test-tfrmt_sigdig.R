@@ -1,4 +1,3 @@
-library(tibble)
 
 test_that("setting param sigdig defaults", {
 

@@ -11,7 +11,7 @@
 #'
 #' @return a stylized gt object
 #' @export
-#' @importFrom gt gt tab_header tab_style cell_text cells_body
+#' @importFrom gt gt tab_header tab_style cell_text cells_body px
 #' @importFrom tidyselect everything
 #' @importFrom rlang quo_is_missing sym quo is_empty
 #' @importFrom dplyr vars
@@ -124,16 +124,17 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     ) %>%
     tab_options(
       table.font.size = 14,
-      data_row.padding = gt::px(1),
-      summary_row.padding = gt::px(1),
-      grand_summary_row.padding = gt::px(1),
-      footnotes.padding = gt::px(1),
-      source_notes.padding = gt::px(1),
-      row_group.padding = gt::px(1),
+      data_row.padding = px(1),
+      summary_row.padding = px(1),
+      grand_summary_row.padding = px(1),
+      footnotes.padding = px(1),
+      source_notes.padding = px(1),
+      row_group.padding = px(1),
       stub.border.color = "transparent",
       stub_row_group.border.color = "transparent",
       row_group.border.bottom.color = "transparent",
-      row_group.border.top.color = "transparent") %>%
+      row_group.border.top.color = "transparent",
+      table.font.names = c("Courier", default_fonts())) %>%
 
     tab_style(
       style = cell_borders(
