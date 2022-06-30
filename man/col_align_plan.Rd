@@ -7,10 +7,10 @@
 col_align_plan(...)
 }
 \arguments{
-\item{...}{list of frmt_structure}
+\item{...}{series of element_align objects}
 }
 \value{
-table_body_plan object
+col_align_plan  object
 }
 \description{
 Define how the columns of the table body should be aligned, whether left,

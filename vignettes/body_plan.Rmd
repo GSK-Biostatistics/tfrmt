@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE}
-library(tlang)
+library(tfrmt)
 ```
 
 The body plan covers the formatting of numeric cell values. Within the body plan, format structures (`frmt_structure`) may be layered to specify formatting for different parameters. Formatting can be applied to specific group and/or label values, which we will cover in a bit. First, we will apply formats to all relevant values in the table, regardless of group or label value.
@@ -39,7 +39,7 @@ The `frmt` object is used to specify how a value should appear in a table: its n
 ```
 frmt_when(
     ">0.99" ~ ">0.99",
-    "<0.001" ~ "0.001",
+    "<0.001" ~ "<0.001",
     TRUE ~ frmt("x.xxx")
 )
 ```
@@ -60,7 +60,7 @@ This will cause the values 0.0347, 1.00, and 0.000001 to appear as "0.035", ">0.
 
 There are a variety of ways for the user to specify formatting locations: group variable values and/or label values, or by param value. Let's take a look at the various methods below, ranging from least specific to most specific. 
 
-An important details is that passing a value of ".default" to group or label means that the format will be applied to ALL values within the group(s) or label variables. 
+An important detail is that passing a value of ".default" to group or label means that the format will be applied to ALL values within the group(s) or label variables. 
 
 ## Table-wide
 
@@ -70,7 +70,7 @@ A user can specify formatting for the entire table as such:
 
 ## Param-specific
 
-For formatting specific values of the param variable, `frmt` objects must be named according to the param. The following code will format all values will where the param value equals "pval", regardless of group, label, or column value.
+For formatting specific values of the param variable, `frmt` objects must be named according to the param. The following code will format all values where the param value equals "pval", regardless of group, label, or column value.
 
 `frmt(group = ".default", label = ".default", pval = frmt("x.xxx"))`
 
@@ -88,11 +88,16 @@ For formatting specific values of the group variable, these values are passed to
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = ".default", frmt("x.xxx"))`
 
+## Column-specific
+In the case where formatting needs to differ between columns within a given group/label/param level, the user will need to incorporate column-level information into the `param` value. For example, if we have two columns, `col1` and `col2`, but we want the mean for `col1` to be rounded differently than `col2`, creating our `param` column as such will allow us to differentiate the mean values in the formatting: `param = c("col1_mean", "col2_mean")`. 
+
 ## Multiple specifications
 
 A user can be as specific as they'd like, by providing any of these in combination. For example, the following code will format values where group1="A", group2="A", the label variable equals "mylab" and the param variable equals "mean":
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = "mylab", mean = frmt("x.xxx"))`
+
+**NOTE:** the `tfrmt_sigdig()` function provides the ability to create a `tfrmt` with auto-precision based on the significance of the group/label value.  
 
 # Layering format structures
 

@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
-library(tlang)
+library(tfrmt)
 library(dplyr)
 ```
 
@@ -108,7 +108,7 @@ tfrmt(
 
 ## Adding column spanners
 
- The `col_plan` accepts a combination of tidyselect expressions, column names, and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to add column spanners. These are placed strategically in the `col_plan` to inform `tlang` of the hierarchy of spanners and columns.
+ The `col_plan` accepts a combination of tidyselect expressions, column names, and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to add column spanners. These are placed strategically in the `col_plan` to inform `tfrmt` of the hierarchy of spanners and columns.
  
 A `span_structure` is constructed from a label which defines the spanner text, and a combination of tidyselect expressions and column names.
  
@@ -202,7 +202,7 @@ tfrmt(
 
 # Option 2: >1 `column` variable
 
-Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable. With multiple `column` variables, however, specifying column ordering in the `col_plan` is a bit trickier. By default, `tlang` will display the columns as they appear in the data but these can be customized in the `col_plan`. The main limitation with >1 `column` variable is the inability to specify column spanners in the `col_plan`; the spanning labels will be created using the higher level `column` variable values, which will be displayed as-is. As such, there is a higher importance for preparing the analysis results data for display. 
+Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable. With multiple `column` variables, however, specifying column ordering in the `col_plan` is a bit trickier. By default, `tfrmt` will display the columns as they appear in the data but these can be customized in the `col_plan`. The main limitation with >1 `column` variable is the inability to specify column spanners in the `col_plan`; the spanning labels will be created using the higher level `column` variable values, which will be displayed as-is. As such, there is a higher importance for preparing the analysis results data for display. 
 
 Let's consider an example dataset with multiple `column` variables:
 

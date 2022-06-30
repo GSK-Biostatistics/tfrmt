@@ -1,8 +1,12 @@
 #' Apply alignment to a column
 #'
 #' @param col Character vector containing data values
-#' @param align Vector of one or more characters to align on. If NULL, data values will be aligned on the first occurrence of a decimal place or space. If more than one
-#' character is provided, alignment will be based on the first occurrence of any of the characters. For alignment based on white space, leading white spaces will be ignored.
+#' @param align Vector of one or more strings to align on. Strings should be 1
+#'   character in length and not alphanumeric (i.e. spaces or punctuation). If
+#'   NULL, data values will be aligned on the first occurrence of a decimal
+#'   place or space. If more than one character is provided, alignment will be
+#'   based on the first occurrence of any of the characters. For alignment based
+#'   on white space, leading white spaces will be ignored.
 #'
 #' @return Character vector containing aligned data values
 #'
@@ -13,7 +17,18 @@
 apply_col_align <- function(col, align){
 
   if (!all(align %in% c("left","right"))){
-    align <- paste(paste0("\\", align), collapse = "|")
+
+    if (!all(nchar(align)==1)){
+      message("`align` specified in `element_align` contains strings with >1 characters. Only the first character will be used.")
+      align <- str_sub(align, start=1, end=1)
+    }
+
+    if (any(str_detect(align, "[[:alnum:]]"))){
+      warning("`align` specified in `element_align` contains one or more alphanumeric characters. Results may not be as expected.")
+    }
+
+    align <- ifelse(str_detect(align, "[[:alnum:]]"), paste0("\"", align, "\""), paste0("\\", align))
+    align <- paste(align, collapse = "|")
     align <- paste0("(?=[", align, "])")
 
     tbl_dat <-  tibble(col = trimws(col)) %>%

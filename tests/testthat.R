@@ -1,7 +1,7 @@
 library(testthat)
-library(tlang)
+library(tfrmt)
 library(tibble)
 library(dplyr)
 library(tidyr)
 
-test_check("tlang")
+test_check("tfrmt")

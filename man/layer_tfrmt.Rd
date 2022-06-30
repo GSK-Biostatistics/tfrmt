@@ -11,12 +11,24 @@ layer_tfrmt(x, y, ..., join_body_plans = TRUE)
 
 \item{...}{arguments passed to layer_tfrmt_arg functions for combining different tfrmt elements}
 
-\item{join_body_plans}{should the body styles be uniquely combined, or just keep styling in y}
+\item{join_body_plans}{should the \code{body_plans} be combined, or just keep styling in y. See details: join_body_plans for more details.}
 }
 \description{
-Provide utility for layering tfrmt objects together. If both tmft's have
+Provide utility for layering tfrmt objects together. If both tfrmt's have
 values, it will preferentially choose the second tfrmt by default. This is an
-alternative to piping together tfrmts
+alternative to piping together tfrmt's
+}
+\details{
+\subsection{join_body_plan}{
+
+When combining two body_plans, the body plans will stack together, first the
+body plan from x tfrmt then y tfrmt. This means that frmt_structures in y
+will take priority over those in x.
+
+Combining two tfrmt with large body_plans can lead to slow table evaluation.
+Consider setting \code{join_body_plan} to \code{FALSE}. Only the y \code{body_plan} will be
+preserved.
+}
 }
 \examples{
 

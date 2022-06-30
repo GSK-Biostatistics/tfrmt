@@ -14,8 +14,8 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1), sym("label")),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1), sym("label")),
+    tibble::tribble(
       ~grp1,~label, ~trtA,      ~trtB,      ~trtC,
       "A",  "1",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",  " ",  "        ", "        ", "        ",
@@ -33,8 +33,8 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1), sym("label")),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1), sym("label")),
+    tibble::tribble(
       ~grp1, ~label, ~trtA,      ~trtB,       ~trtC,
       "A", "1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A", " ", "        ", "        ", "        ",
@@ -65,8 +65,8 @@ test_that("insert post space - two grouping variables",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1, grp2), label = sym("label")),
+    tibble::tribble(
       ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "A",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
@@ -104,8 +104,8 @@ test_that("insert mix - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1)),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "A",  "--------", "--------",  "--------",
@@ -137,8 +137,8 @@ test_that("insert post space after specific value",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1, grp2), label = sym("label")),
+    tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -173,8 +173,8 @@ test_that("overlapping row_grp_structures - prefers latest",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1, grp2), label = sym("label")),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1, grp2), label = sym("label")),
+    tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",     "a", " ",   "        ", "        ", "        ",
@@ -208,8 +208,8 @@ test_that("no post space added if NULL",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1)),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "B",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -235,8 +235,8 @@ test_that("post space is truncated to data width",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan, vars(grp1)),
-    tribble(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "A",  "--------", "--------",  "--------",
@@ -261,7 +261,7 @@ test_that("Check combine_group_cols with a single group", {
 
   auto_test_no_span <- combine_group_cols(mock_single_grp,
                                           group = vars(grp1), label = sym("lab"))
-  man_test_no_span <- tribble(
+  man_test_no_span <- tibble::tribble(
     ~grp1,  ~lab,   ~trtA,     ~trtB,   ~trtC,
     "A",  "A"  , "",         "",       "",
     "A",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -285,7 +285,7 @@ test_that("Check combine_group_cols with a single group", {
 
 
 test_that("Check combine_group_cols with a multi groups", {
-  mock_multi_grp <- tribble(
+  mock_multi_grp <- tibble::tribble(
     ~grp1,    ~grp2,     ~ my_label,
     "grp1_1", "grp2_1", "my_label_1",
     "grp1_1", "grp2_1", "my_label_2",
@@ -306,7 +306,7 @@ test_that("Check combine_group_cols with a multi groups", {
                                           group = vars(grp1, grp2), label = sym("my_label"),
                                           element_row_grp_loc(location = "indented"))
 
-  man_test_no_span <- tribble(
+  man_test_no_span <- tibble::tribble(
     ~grp1,     ~my_label,      ~grp2,   ~trtA,     ~trtB,     ~trtC,
     "grp1_1", "grp1_1"        ,""     , ""      , ""      , ""      ,
     "grp1_1", "  grp2_1"      ,"grp2_1", ""      , ""      , ""      ,
@@ -345,7 +345,7 @@ test_that("Check combine_group_cols with a multi groups", {
 
 
 test_that("> 2 groups with and without spanner_label", {
-  mock_multi_grp <- tribble(
+  mock_multi_grp <- tibble::tribble(
     ~grp1,    ~grp2,     ~grp3, ~ my_label,
     "grp1_1", "grp2_1", "grp3_1", "my_label_1",
     "grp1_1", "grp2_1", "grp3_1", "my_label_2",
@@ -366,8 +366,8 @@ test_that("> 2 groups with and without spanner_label", {
   )
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_no_span, vars(grp1, grp2, grp3), sym("my_label")),
-    tribble(
+    apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")),
+    tibble::tribble(
       ~my_label        , ~trtA     , ~trtB     , ~trtC   ,
       "grp1_1"          ,""          ,""         ,""        ,
       "  grp2_1"         ,""         ,""         ,"",
@@ -390,8 +390,8 @@ test_that("> 2 groups with and without spanner_label", {
   plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_with_span, vars(grp1, grp2, grp3), sym("my_label")),
-    tribble(
+    apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")),
+    tibble::tribble(
      ~grp1,   ~my_label        , ~trtA     , ~trtB     , ~trtC   ,
      "grp1_1", "grp2_1"         ,""         ,""         ,"",
      "grp1_1", "  grp3_1"       ,""         ,""         ,"",
@@ -414,7 +414,7 @@ test_that("> 2 groups with and without spanner_label", {
 
 
 test_that("Summary rows are not indented", {
-  mock_multi_grp <- tribble(
+  mock_multi_grp <- tibble::tribble(
     ~grp1,    ~grp2, ~my_label,
     "cat_1", "cat_1", "cat_1",
     "cat_2", "cat_2", "cat_2",
@@ -434,8 +434,8 @@ test_that("Summary rows are not indented", {
   )
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_no_span, vars(grp1, grp2), sym("my_label")),
-    tribble(
+    apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2), sym("my_label")),
+    tibble::tribble(
       ~my_label ,        ~trtA       , ~trtB       , ~trtC,
       "cat_1"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
       "cat_2"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
@@ -452,8 +452,8 @@ test_that("Summary rows are not indented", {
   plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_with_span, vars(grp1, grp2), sym("my_label")),
-    tribble(
+    apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2), sym("my_label")),
+    tibble::tribble(
       ~grp1,   ~my_label ,        ~trtA       , ~trtB       , ~trtC,
        "cat_1", "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
        "cat_2", "cat_2"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
@@ -467,4 +467,113 @@ test_that("Summary rows are not indented", {
     ) %>% group_by(grp1)
   )
 
+})
+
+test_that("row order is retained for all selections",{
+
+  dat <- tibble::tribble(
+    ~grp1, ~grp2, ~lbl, ~prm, ~column, ~val, ~ord,
+    "d",   "c",   "n", "n",   1,   1,  1,
+    "a",   "b",   "m", "n",   1,   2,  2,
+    "q",   "v",   "s", "n",   1,   3,  3,
+    "b",   "p",   "e", "n",   1,   4,  4
+  )
+
+  tfrmt_temp <- tfrmt(
+    group = c(grp1, grp2),
+    label = lbl,
+    column = column,
+    values = val,
+    param = prm,
+    sorting_cols = ord,
+    col_plan = col_plan(-ord),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    )
+  )
+
+  gt_indented <-  tfrmt_temp %>%
+    tfrmt(
+      row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
+    ) %>%
+    print_to_gt(dat)
+
+
+  gt_indented_dat <- gt_indented$`_data`
+  gt_indented_man <- tibble::tribble(
+    ~lbl,       ~`1`,
+    "d"       ,"" ,
+    "  c"    ,"" ,
+    "    n"  ,"1",
+    "a"      ,"" ,
+    "  b"    ,"" ,
+    "    m"  ,"2",
+    "q"      ,"" ,
+    "  v"    ,"" ,
+    "    s"  ,"3",
+    "b"      ,"" ,
+    "  p"    ,"" ,
+    "    e"  ,"4" )
+  expect_equal(gt_indented_dat, gt_indented_man)
+
+
+  gt_spanning <-  tfrmt_temp %>%
+    tfrmt(
+      row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "spanning"))
+    ) %>%
+    print_to_gt(dat)
+
+  gt_spanning_dat <- gt_spanning$`_data`
+  gt_spanning_man <- tibble::tribble(
+    ~ grp1,  ~lbl,       ~`1`,
+      "d",     "c"   , "" ,
+      "d",     "  n" , "1",
+      "a",     "b"   , "" ,
+      "a",     "  m" , "2",
+      "q",     "v"   , "" ,
+      "q",     "  s" , "3",
+      "b",     "p"   , "" ,
+      "b",     "  e" , "4")
+  expect_equal(gt_spanning_dat, gt_spanning_man)
+
+  gt_column <-  tfrmt_temp %>%
+    tfrmt(
+      row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column"))
+    ) %>%
+    print_to_gt(dat)
+
+  gt_column_dat <- gt_column$`_data`
+  expect_equal(gt_column_dat, gt_spanning_man)
+
+  # original order also respected if no order variable supplied
+  tfrmt(
+    group = c(grp1, grp2),
+    label = lbl,
+    column = column,
+    values = val,
+    param = prm,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
+    ) %>%
+    print_to_gt(dat %>% select(-ord))
+
+
+  gt_indented_dat <- gt_indented$`_data`
+  gt_indented_man <- tibble::tribble(
+    ~lbl,       ~`1`,
+    "d"       ,"" ,
+    "  c"    ,"" ,
+    "    n"  ,"1",
+    "a"      ,"" ,
+    "  b"    ,"" ,
+    "    m"  ,"2",
+    "q"      ,"" ,
+    "  v"    ,"" ,
+    "    s"  ,"3",
+    "b"      ,"" ,
+    "  p"    ,"" ,
+    "    e"  ,"4" )
+  expect_equal(gt_indented_dat, gt_indented_man)
 })

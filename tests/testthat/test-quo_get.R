@@ -71,3 +71,48 @@ test_that("turn length two unquoted quo into args", {
 
 })
 
+
+test_that("throw error when input argument errors out", {
+
+  temp_function_1 <- function(x, ...){
+    val <- temp_function_2(...)
+    val
+  }
+
+  temp_function_2 <- function(..., env = parent.frame()){
+
+    arg_parent <- names(formals(sys.function(sys.parent(1))))
+
+    args <- setdiff(arg_parent,c("..."))
+
+    val <- quo_get(
+      args,
+      envir = env
+    )
+
+    val
+  }
+
+  fail_function <- function(...){
+
+    dot_list <- as.list(substitute(substitute(...)))[-1]
+
+    if(length(dot_list) == 0){
+      stop("I HAVE FAILED")
+    }else{
+      dot_list
+    }
+  }
+
+  expect_silent(
+    temp_function_1(x = fail_function("test value"))
+  )
+
+  expect_error(
+    temp_function_1(x = fail_function()),
+    "Error in evaluating argument `x`:\n Error in fail_function(): I HAVE FAILED",
+    fixed = TRUE
+  )
+
+})
+

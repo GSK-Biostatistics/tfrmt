@@ -11,16 +11,26 @@
 #'
 #' @return a stylized gt object
 #' @export
-#' @importFrom gt gt tab_header tab_style cell_text cells_body
-#' @importFrom tidyselect everything
-#' @importFrom rlang quo_is_missing sym quo
+#' @importFrom gt gt tab_header tab_style cell_text cells_body px
+#' @importFrom tidyselect everything eval_select
+#' @importFrom rlang quo_is_missing sym quo is_empty
+#' @importFrom dplyr vars
+#' @importFrom purrr quietly safely
 print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
-  if(is.null(.data)){
-    .data <- make_mock_data(tfrmt, .default, n_cols)
+
+  # fill param, column if not provided
+  if (quo_is_missing(tfrmt$param)){
+    message("`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable")
+    tfrmt$param <- quo(!!sym("__tfrmt__param"))
+  }
+  if (is_empty(tfrmt$column)){
+    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable")
+    tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
   if(quo_is_missing(tfrmt$values)){
-    tfrmt$values <- quo(!!sym("val"))
+    message("Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable")
+    tfrmt$values <- quo(!!sym("__tfrmt__val"))
   }
 
   if(is.null(tfrmt$body_plan)){
@@ -28,6 +38,18 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
       frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
     )
   }
+
+  if(is.null(.data)){
+    .data <- make_mock_data(tfrmt, .default, n_cols)
+  }else{
+    ## check that if values column exists in data, remove it for mocking
+    select_try <- safely(quietly(eval_select))(tfrmt$values, data = .data)
+    if(!is.null(select_try$result)){
+      message(" Removing `",as_label(tfrmt$values),"` from input data for mocking.")
+      .data <- .data[,-select_try$result$result]
+    }
+  }
+
 
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     cleaned_data_to_gt(tfrmt)
@@ -111,16 +133,17 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     ) %>%
     tab_options(
       table.font.size = 14,
-      data_row.padding = gt::px(1),
-      summary_row.padding = gt::px(1),
-      grand_summary_row.padding = gt::px(1),
-      footnotes.padding = gt::px(1),
-      source_notes.padding = gt::px(1),
-      row_group.padding = gt::px(1),
+      data_row.padding = px(1),
+      summary_row.padding = px(1),
+      grand_summary_row.padding = px(1),
+      footnotes.padding = px(1),
+      source_notes.padding = px(1),
+      row_group.padding = px(1),
       stub.border.color = "transparent",
       stub_row_group.border.color = "transparent",
       row_group.border.bottom.color = "transparent",
-      row_group.border.top.color = "transparent") %>%
+      row_group.border.top.color = "transparent",
+      table.font.names = c("Courier", default_fonts())) %>%
 
     tab_style(
       style = cell_borders(

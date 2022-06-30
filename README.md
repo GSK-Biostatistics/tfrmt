@@ -1,15 +1,15 @@
 
-# tlang
+# tfrmt
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/GSK-Biostatistics/tlang/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/tlang/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/GSK-Biostatistics/tlang/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tlang?branch=main)
+coverage](https://codecov.io/gh/GSK-Biostatistics/tfrmt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tfrmt?branch=main)
 
 <!-- badges: end -->
 
-The tlang package provides a language for defining display-related
+The tfrmt package provides a language for defining display-related
 metadata, which can then be used to automate and easily update output
 formats.
 
@@ -25,7 +25,7 @@ standard data structure for Analysis Results Data “ARD”, which means
 analysis results datasets will have consistent structures and column
 names. Specifically, the ARD is long, with 1 record per computed value.
 
-tlang supports a vision where:
+tfrmt supports a vision where:
 
 -   Mock displays are integrated with the programming workflow
 -   Results are QC’ed prior to formatting to reduce rework
@@ -37,7 +37,7 @@ tlang supports a vision where:
 By reducing the amount of repetitive tasks, study teams can focus on the
 quality and interpretation of the results themselves.
 
-# Why tlang?
+# Why tfrmt?
 
 While there are many existing table-making packages in the R ecosystem,
 they typically fall into one of two categories:
@@ -45,21 +45,21 @@ they typically fall into one of two categories:
 -   Table packages that perform analyses and format the results
 -   Table packages that format and output existing data
 
-By design, tlang is more of the latter, as it is intended to be used
-after the results have been computed. What makes tlang unique, however,
+By design, tfrmt is more of the latter, as it is intended to be used
+after the results have been computed. What makes tfrmt unique, however,
 is that it offers an intuitive interface for defining and layering
 standard or custom formats that are often specific to clinical trials.
 It also offers the novel ability to easily generate mock displays using
-metadata that will be used for the actual displays. tlang is built on
+metadata that will be used for the actual displays. tfrmt is built on
 top of the powerful gt package, which is intended to support a variety
 of output formats in the future.
 
 # Installation
 
-The development version of tlang can be installed with:
+The development version of tfrmt can be installed with:
 
 ``` r
-devtools::install_github("GSK-Biostatistics/tlang")
+devtools::install_github("GSK-Biostatistics/tfrmt")
 ```
 
 # Input data structure
@@ -78,7 +78,7 @@ value. Required columns include:
 
 # Functionality
 
-Here is an overview of what is possible with tlang:
+Here is an overview of what is possible with tfrmt:
 
 -   Create a “tfrmt” metadata object containing all formatting and
     labeling for the display
@@ -87,7 +87,7 @@ Here is an overview of what is possible with tlang:
 -   Create mock displays based on existing sample data or no prior data
 -   ARD-standard compliant facilitates reuse and automation
 
-Other benefits of tlang:
+Other benefits of tfrmt:
 
 -   Provides a tidyverse-friendly, pipeable interface
 -   Leverages gt as output engine, which allows for further
@@ -95,7 +95,7 @@ Other benefits of tlang:
 
 # More Info
 
-For more information about how to build your own tlang mocks/tables
+For more information about how to build your own tfrmt mocks/tables
 (like the one below!), please explore the vignettes.
 
 ![Example GT Demog table](man/figures/gt_readme.png)

@@ -34,7 +34,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~grp1,    ~grp2,     ~ my_label,  ~param2,  ~col ,
                  "grp1_1", "grp2_1", "my_label_1", "param2_1", "col1" ,
                  "grp1_1", "grp2_1", "my_label_2", "param2_1", "col1" ,
@@ -63,7 +63,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~grp1,    ~grp2  ,  ~grp3   , ~grp4   ,  ~my_label  , ~param2   ,~col,
                  "A"     , "a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"param2_1" ,"col1" ,
                  "A"     , "b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"param2_1" ,"col1" ,
@@ -92,7 +92,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~ grp1  , ~ grp2, ~ my_label, ~ param2, ~ col,
                  "grp1_1", "c"   , "e"       , "mean"  , "col1",
                  "grp1_1", "c"   , "f"       , "mean"  , "col1",
@@ -105,7 +105,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~ grp1  , ~ grp2, ~ my_label, ~ param2, ~ col,
                  "grp1_1", "c"   , "e"       , "mean"  , "col1",
                  "grp1_1", "c"   , "e"       , "mean"  , "col2",
@@ -140,7 +140,7 @@ test_that("Mock data contains all levels", {
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
 
   expect_equal(mock_dat,
-               tribble(
+               tibble::tribble(
                  ~ grp1  , ~ grp2  , ~ my_label    , ~ param2, ~ col,
                  "grp1_1", "c"     , "e"           , "mean"  , "col1",
                  "grp1_1", "c"     , "f"           , "mean"  , "col1",
@@ -199,7 +199,7 @@ test_that("Check mock when value it missing", {
 })
 
 
-test_that("Test when no body_style is present", {
+test_that("Test when no body_style or values is present", {
   tfrmt_obj_one_span <- tfrmt(
     label = label,
     group = group,
@@ -219,7 +219,12 @@ test_that("Test when no body_style is present", {
     columns = paste0("col",1:10)
   )
 
-  gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data)
+
+  expect_message(
+    gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data),
+    "Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable",
+    fixed = TRUE
+  )
 
   expect_equal(gt_out$`_data`,
                input_data %>%
@@ -231,4 +236,250 @@ test_that("Test when no body_style is present", {
 
 })
 
+test_that("Mock data contains sorting_cols when available", {
 
+  # handle single sorting cols
+  plan  <- tfrmt(
+    group = vars(grp1, grp2),
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    sorting_cols = c(ord1),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp1,    ~grp2,     ~ my_label,  ~param2,    ~ord1,   ~col,
+                 "grp1_1", "grp2_1", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_1", "grp2_1", "my_label_2", "param2_1",     1, "col1",
+                 "grp1_1", "grp2_2", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_1", "grp2_2", "my_label_2", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_1", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_1", "my_label_2", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_2", "my_label_1", "param2_1",     1, "col1",
+                 "grp1_2", "grp2_2", "my_label_2", "param2_1",     1, "col1"
+               ))
+
+  # handle 2 sorting cols
+  plan  <- tfrmt(
+    group = vars(grp1, grp2),
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = "col",
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp1,    ~grp2,     ~ my_label,  ~param2,    ~ord1, ~ord2,  ~col,
+                 "grp1_1", "grp2_1", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_1", "grp2_1", "my_label_2", "param2_1",     1,     1,"col1",
+                 "grp1_1", "grp2_2", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_1", "grp2_2", "my_label_2", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_1", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_1", "my_label_2", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_2", "my_label_1", "param2_1",     1,     1,"col1",
+                 "grp1_2", "grp2_2", "my_label_2", "param2_1",     1,     1,"col1"
+               ))
+
+})
+
+test_that("Mock data includes all columns identified in tfrmt", {
+
+  # handle one column
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = col1,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                 ~grp,   ~ my_label,    ~param2,     ~col1,
+                 "grp_1", "my_label_1", "param2_1", "col1",
+                 "grp_1", "my_label_1", "param2_1", "col2",
+                 "grp_1", "my_label_2", "param2_1", "col1",
+                 "grp_1", "my_label_2", "param2_1", "col2",
+                 "grp_2", "my_label_1", "param2_1", "col1",
+                 "grp_2", "my_label_1", "param2_1", "col2",
+                 "grp_2", "my_label_2", "param2_1", "col1",
+                 "grp_2", "my_label_2", "param2_1", "col2"
+               ))
+
+  # handle two columns
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = c(col1,col2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                    ~grp,   ~ my_label,    ~param2,       ~col1,  ~col2,
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col1",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col2",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col1",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col2",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col1",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col2",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col1",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col2"
+               ))
+
+  # handle three columns
+  plan  <- tfrmt(
+    group = grp,
+    label = "my_label",
+    param = "param2",
+    values = "val2",
+    column = c(col1,col2,col3),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    )
+  )
+
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+
+  expect_equal(mock_dat,
+               tibble::tribble(
+                    ~grp,   ~ my_label,    ~param2,       ~col1,       ~col2,  ~col3,
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col2",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col2",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col2",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col2"
+               ))
+
+})
+
+test_that("Printing Mock data removes value when it exists in the input data",{
+
+  data <- crossing(
+    label = c("Intent-To-Treat (ITT)",
+              "Safety",
+              "Efficacy",
+              "Complete Week 24",
+              "Complete Study"
+    ),
+    column = c("Placebo\n(N=XX)",
+               "Xanomeline\nLow Dose\n(N=XX)",
+               "Xanomeline\nHigh Dose\n(N=XX)",
+               "Total\n(N=XXX)"
+    ),
+    param = c("n", "percent")
+  ) %>%
+    mutate(
+      value_to_remove = 1
+    )
+
+  plan <- tfrmt(
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  #Make mock
+  expect_message(
+    print_mock_gt(plan, data),
+    "Removing `value_to_remove` from input data for mocking.",
+    fixed = TRUE
+  )
+
+
+})
+
+test_that("Mock data can be made and printed without label",{
+
+
+  plan <- tfrmt(
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine("{n} ({percent}%)",
+                     n = frmt("xx"),
+                     percent = frmt("xxx"))
+      )
+    )
+  )
+
+  dat <- make_mock_data(plan)
+
+  expect_equal(
+    dat,
+    tibble(
+      param = c("n","n","n","percent","percent","percent"),
+      column = paste0("col", rep(1:3, times = 2))
+    )
+  )
+
+  #Make mock
+  expect_silent(
+    print_mock_gt(plan, .data = dat)
+  )
+
+})
+
+
+test_that("Mock data can be printed from a tfrmt without a body plan",{
+
+
+  plan <- tfrmt(
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations"
+  )
+
+  mock_gt <- print_mock_gt(plan)
+
+  #Make mock
+  expect_equal(
+    mock_gt,
+    print_mock_gt(plan, .data = tibble::tibble(column = c("col1","col2","col3"), param = "n"))
+  )
+
+
+})

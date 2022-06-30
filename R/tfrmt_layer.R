@@ -1,12 +1,24 @@
 #' Layer tfrmt objects together
 #'
-#' Provide utility for layering tfrmt objects together. If both tmft's have
+#' Provide utility for layering tfrmt objects together. If both tfrmt's have
 #' values, it will preferentially choose the second tfrmt by default. This is an
-#' alternative to piping together tfrmts
+#' alternative to piping together tfrmt's
 #'
 #' @param x,y tfrmt objects that need to be combined
 #' @param ... arguments passed to layer_tfrmt_arg functions for combining different tfrmt elements
-#' @param join_body_plans should the body styles be uniquely combined, or just keep styling in y
+#' @param join_body_plans should the `body_plans` be combined, or just keep styling in y. See details: join_body_plans for more details.
+#'
+#' @details
+#'
+#' ## join_body_plan
+#'
+#' When combining two body_plans, the body plans will stack together, first the
+#' body plan from x tfrmt then y tfrmt. This means that frmt_structures in y
+#' will take priority over those in x.
+#'
+#' Combining two tfrmt with large body_plans can lead to slow table evaluation.
+#' Consider setting `join_body_plan` to `FALSE`. Only the y `body_plan` will be
+#' preserved.
 #'
 #' @export
 #' @examples
@@ -19,14 +31,16 @@
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
 
-  stopifnot(is_tfrmt(x))
-  stopifnot(is_tfrmt(y))
-
   if(missing(x)){
+    stopifnot(is_tfrmt(y))
     return(y)
   }else if(missing(y)){
+    stopifnot(is_tfrmt(x))
     return(x)
   }
+
+  stopifnot(is_tfrmt(y))
+  stopifnot(is_tfrmt(x))
 
   args <- union(names(x), names(y))
 
@@ -37,12 +51,15 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
 
   names(arg_list) <- args
 
+  ## remove null values that may have made it through
+  arg_list <- arg_list[!sapply(arg_list, is.null)]
+
   do.call(tfrmt, arg_list)
 }
 
 get_layer_tfrmt_arg_method <- function(argname){
   tryCatch(
-    get(paste0("layer_tfrmt_arg.",argname),envir = asNamespace("tlang"), inherits = FALSE),
+    get(paste0("layer_tfrmt_arg.",argname),envir = asNamespace("tfrmt"), inherits = FALSE),
     error = function(e){ layer_tfrmt_arg.default}
   )
 }
@@ -59,11 +76,11 @@ layer_tfrmt_arg.default<- function(x, y, arg_name, ...){
 }
 
 ## if group is an empty vars, keep the original value
-layer_tfrmt_arg.group<- function(x, y, arg_name, ...){
+layer_tfrmt_arg_vars<- function(x, y, arg_name, ...){
   x_arg_val <- x[[arg_name]]
   y_arg_val <- y[[arg_name]]
 
-  if(identical(y_arg_val, vars())){
+  if(is.null(y_arg_val) | identical(y_arg_val, vars())){
     x_arg_val
   }else{
     y_arg_val
@@ -71,21 +88,23 @@ layer_tfrmt_arg.group<- function(x, y, arg_name, ...){
 }
 
 ## if label/param/values/column is an empty quo, keep the original value
-layer_tfrmt_arg.label<- function(x, y, arg_name, ...){
+layer_tfrmt_arg_quo<- function(x, y, arg_name, ...){
   x_arg_val <- x[[arg_name]]
   y_arg_val <- y[[arg_name]]
 
-  if(identical(y_arg_val, quo())){
+  if(is.null(y_arg_val) | identical(y_arg_val, quo())){
     x_arg_val
   }else{
     y_arg_val
   }
 }
 
-layer_tfrmt_arg.param <- layer_tfrmt_arg.label
-layer_tfrmt_arg.values <- layer_tfrmt_arg.label
-layer_tfrmt_arg.column <- layer_tfrmt_arg.group
-layer_tfrmt_arg.sorting_cols <- layer_tfrmt_arg.group
+layer_tfrmt_arg.group <- layer_tfrmt_arg_vars
+layer_tfrmt_arg.label <- layer_tfrmt_arg_quo
+layer_tfrmt_arg.param <- layer_tfrmt_arg_quo
+layer_tfrmt_arg.values <- layer_tfrmt_arg_quo
+layer_tfrmt_arg.column <- layer_tfrmt_arg_vars
+layer_tfrmt_arg.sorting_cols <- layer_tfrmt_arg_vars
 
 
 layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
