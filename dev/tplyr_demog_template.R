@@ -10,185 +10,38 @@ pct_bool <- function(x, ...){
 # copied from https://github.com/atorus-research/Tplyr/blob/master/vignettes/adsl.Rdata
 load("dev/data/adsl.Rdata")
 
-demog_ARD <- adsl %>%
-  mutate(
-    SEX_numeric = as.numeric(factor(
-      SEX,
-      levels = c(
-        "M",
-        "F"
-      )
-    )),
-    RACE_numeric = as.numeric(factor(
-      RACE,
-      levels = c(
-        "AMERICAN INDIAN OR ALASKA NATIVE",
-        "ASIAN",
-        "BLACK OR AFRICAN AMERICAN",
-        "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
-        "WHITE",
-        "MULTIPLE"
-      )
-    )),
-    ETHNIC_numeric = as.numeric(factor(
-      ETHNIC,
-      levels = c(
-        "HISPANIC OR LATINO",
-        "NOT HISPANIC OR LATINO"
-      )
-    ))
-  ) %>%
-  tplyr_table(TRT01P) %>%
-  add_layer(
-    group_desc(SEX_numeric, by = "Sex n (%)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_custom_summaries(
-          n_female = sum(.var == 2, na.rm = TRUE),
-          pct_female = pct_bool(.var == 2),
-          n_male = sum(.var == 1, na.rm = TRUE),
-          pct_male = pct_bool(.var == 1)
-      ) %>%
-      set_format_strings(
-          "n_int"        = f_str("xx", n),
-          "Female_int"   = f_str("xx", n_female),
-          "Female_pct" = f_str("xx.xxxxxxx", pct_female),
-          "Male_int"     = f_str("xx", n_male),
-          "Male_pct"   = f_str("xx.xxxxxxx", pct_male),
-          "Missing_int"  = f_str("xx", missing)
-      )
-  ) %>%
+demog <- tplyr_table(adsl, TRT01P) %>%
   add_layer(
     group_desc(AGE, by = "Age (years)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_format_strings(
-        "n_int"           = f_str("xx", n),
-        "Mean_n"     = f_str("xx.xxxxxxx", mean),
-        "SD_n"         = f_str("xx.xxxxxxx", sd),
-        "Median_n" = f_str("xx.xxxxxxx", median),
-        "Q1, Q3_q1"         = f_str("xx.xxxxxxx", q1),
-        "Q1, Q3_q3"         = f_str("xx.xxxxxxx", q3),
-        "Min, Max_min"       = f_str("xx.xxxxxxx", min),
-        "Min, Max_max"       = f_str("xx.xxxxxxx", max),
-        "Missing_int"     = f_str("xx", missing)
+      set_summaries(
+        "Mean (SD)" = vars(mean, sd),
+        "Min, Max" = vars(min, max),
+        "IQR" = vars(iqr)
       )
   ) %>%
   add_layer(
-    group_desc(AGE, by = "Age Categories n (%)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_custom_summaries(
-        n_lt_65 = sum(.var<65, na.rm = TRUE),
-        n_gte_65_lt_75 = sum(.var>=65 & .var <75, na.rm = TRUE),
-        n_gte_75_lt_85 = sum(.var>=75 & .var <85, na.rm = TRUE),
-        n_gte_85 = sum(.var>=85, na.rm = TRUE),
-        pct_lt_65 = pct_bool(.var<65, na.rm = TRUE),
-        pct_gte_65_lt_75 = pct_bool(.var>=65 & .var <75, na.rm = TRUE),
-        pct_gte_75_lt_85 = pct_bool(.var>=75 & .var <85, na.rm = TRUE),
-        pct_gte_85 = pct_bool(.var>=85, na.rm = TRUE)
-      ) %>%
-      set_format_strings(
-        "n_int"          = f_str("xx", n),
-        "<65_int"        = f_str("xx", n_lt_65),
-        "<65_pct"      = f_str("xx.xxxxxxx", pct_lt_65),
-        ">=65 and <75_int" = f_str("xx", n_gte_65_lt_75),
-        ">=65 and <75_pct" = f_str("xx.xxxxxxx", pct_gte_65_lt_75),
-        ">=75 and <85_int" = f_str("xx", n_gte_75_lt_85),
-        ">=75 and <85_pct" = f_str("xx.xxxxxxx", pct_gte_75_lt_85),
-        ">=85_int" = f_str("xx", n_gte_85),
-        ">=85_pct" = f_str("xx.xxxxxxx", pct_gte_85),
-        "Missing_int"  = f_str("xx", missing)
+    group_count(AGEGR1, by = "Age Groups") %>%
+      add_total_row() %>%
+      set_summaries(
+        "n (%)" = vars(n, pct)
       )
   ) %>%
   add_layer(
-    group_desc(AGE, by = "Age Categories n (%)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_custom_summaries(
-        n_gte_65 = sum(.var>=65, na.rm = TRUE),
-        n_gte_75 = sum(.var>=75, na.rm = TRUE),
-        pct_gte_65 = pct_bool(.var>=65, na.rm = TRUE),
-        pct_gte_75 = pct_bool(.var>=75, na.rm = TRUE)
-      ) %>%
-      set_format_strings(
-        ">=65_int"   = f_str("xx", n_gte_65),
-        ">=65_pct" = f_str("xx.xxxxxxx", pct_gte_65),
-        ">=75_int"   = f_str("xx", n_gte_75),
-        ">=75_pct" = f_str("xx.xxxxxxx",  pct_gte_75)
+    group_count(RACE, by = "Race") %>%
+      add_total_row() %>%
+      set_summaries(
+        "n (%)" = vars(n, pct)
       )
   ) %>%
   add_layer(
-    group_desc(RACE_numeric, by = "Race n (%)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_custom_summaries(
-        n_american_indian_or_alaska_native = sum(.var == 1, na.rm = TRUE),
-        pct_american_indian_or_alaska_native = pct_bool(.var == 1, na.rm = TRUE),
-        n_asian = sum(.var == 2, na.rm = TRUE),
-        pct_asian = pct_bool(.var == 2, na.rm = TRUE),
-        n_black_or_african_american = sum(.var == 3, na.rm = TRUE),
-        pct_black_or_african_american = pct_bool(.var == 3, na.rm = TRUE),
-        n_native_hawaiian_or_other_pacific_islander = sum(.var == 4, na.rm = TRUE),
-        pct_native_hawaiian_or_other_pacific_islander = pct_bool(.var == 4, na.rm = TRUE),
-        n_white = sum(.var == 5, na.rm = TRUE),
-        pct_white = pct_bool(.var == 5, na.rm = TRUE),
-        n_multiple = sum(.var == 6, na.rm = TRUE),
-        pct_multiple = pct_bool(.var == 6, na.rm = TRUE),
-      ) %>%
-      set_format_strings(
-        "n_int"        = f_str("xx", n),
-        "American Indian or Alaska Native_int" = f_str("xx", n_american_indian_or_alaska_native),
-        "American Indian or Alaska Native_pct" = f_str("xx.xxxxxxx", pct_american_indian_or_alaska_native),
-        "Asian_int" = f_str("xx", n_asian),
-        "Asian_pct" = f_str("xx.xxxxxxx", pct_asian),
-        "Black or African American_int" = f_str("xx", n_black_or_african_american),
-        "Black or African American_pct" = f_str("xx.xxxxxxx", pct_black_or_african_american),
-        "Native Hawaiian or Other Pacific Islander_int" = f_str("xx", n_native_hawaiian_or_other_pacific_islander),
-        "Native Hawaiian or Other Pacific Islander_pct" = f_str("xx.xxxxxxx", pct_native_hawaiian_or_other_pacific_islander),
-        "White_int" = f_str("xx", n_white),
-        "White_pct" = f_str("xx.xxxxxxx", pct_white),
-        "Multiple_int" = f_str("xx", n_multiple),
-        "Multiple_pct" = f_str("xx.xxxxxxx", pct_multiple),
-        "Missing_int"  = f_str("xx", missing)
+    group_desc(WEIGHTBL, by = "Weight at Baseline") %>%
+      set_summaries(
+        "Mean (SD)" = vars(mean, sd),
+        "Min, Max" = vars(min, max),
+        "IQR" = vars(iqr)
       )
   ) %>%
-  add_layer(
-    group_desc(ETHNIC_numeric, by = "Ethnicity n (%)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_custom_summaries(
-        n_hispanic_or_latino = sum(.var == 1, na.rm = TRUE),
-        pct_hispanic_or_latino = pct_bool(.var == 1, na.rm = TRUE),
-        n_not_hispanic_or_latino = sum(.var == 2, na.rm = TRUE),
-        pct_not_hispanic_or_latino = pct_bool(.var == 2, na.rm = TRUE),
-      ) %>%
-      set_format_strings(
-        "n_int"        = f_str("xx", n),
-        "Hispanic or Latino_int" = f_str("xx", n_hispanic_or_latino),
-        "Hispanic or Latino_pct" = f_str("xx.xxxxxxx", pct_hispanic_or_latino),
-        "Not Hispanic or Latino_int" = f_str("xx", n_not_hispanic_or_latino),
-        "Not Hispanic or Latino_pct" = f_str("xx.xxxxxxx", pct_not_hispanic_or_latino)
-      )
-  ) %>%
-  add_layer(
-    group_desc(WEIGHTBL, by = "Weight (kg)") %>%
-      set_distinct_by(USUBJID) %>%
-      set_format_strings(
-        "n_int"        = f_str("xx", n),
-        "Mean_n"= f_str("xx.xxxxxxx", mean),
-        "SD_n"= f_str("xx.xxxxxxx", sd)
-      )
-  ) %>%
-  build() %>%
-  pivot_longer(
-    starts_with("var1"),
-    names_to = "treatment",
-    values_to = "value",
-    names_prefix = "var1_"
-  ) %>%
-  separate(
-    row_label2,
-    into = c("row_label2","param"),
-    sep = "_"
-  ) %>%
-  mutate(
-    value = as.numeric(value)
-  )
+  get_numeric_data()
 
 
 tplyr_demog_template <- function(tfrmt_obj, sigfigs = 1){
