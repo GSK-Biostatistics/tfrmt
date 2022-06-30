@@ -250,7 +250,7 @@ additional `frmt_structure` which accounts for the value formatting we'd like
 to apply to the the new columns.
 
 ```{r}
-frmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
   # Specify columns in the data
   label = "label",
@@ -287,7 +287,7 @@ columns you would and wouldn't like to display. Here we have decided to
 select only the placebo and treatment columns.
 
 ```{r}
-frmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
   # Specify columns in the data
   label = "label",
@@ -329,7 +329,7 @@ df <- crossing(
   param = c("count", "percent")) %>%
   arrange_all()
 
-frmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
   group = group,
   label = label,
