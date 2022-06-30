@@ -200,6 +200,17 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
       .is_all_missing =  all_missing(fmt_param_vals,.)
     )
 
+  # check that pivot_wider resulted in a reduction of rows, which indicates that at least
+  #  1 row will successfully have a frmt_combine in it
+  if (nrow(.tmp_data_wide)==nrow(.tmp_data)){
+    id_cols <- .tmp_data %>% select(!!!column, !!label, !!!group, !!param)
+    warning(paste0("Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
+                   paste(names(id_cols %>% select(-!!param)), collapse = ", "),
+                   ". Current values:\n",
+                   paste(capture.output(id_cols %>% as.data.frame), collapse = "\n")))
+  }
+
+
   if(is.null(frmt_def$missing)){
     frmt_def$missing <- ""
   }

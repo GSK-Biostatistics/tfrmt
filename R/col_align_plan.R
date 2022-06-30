@@ -3,9 +3,9 @@
 #' Define how the columns of the table body should be aligned, whether left,
 #' right or on a specific character(s).
 #'
-#' @param ... list of frmt_structure
+#' @param ... series of element_align objects
 #'
-#' @return table_body_plan object
+#' @return col_align_plan  object
 #'
 #' @examples
 #'
