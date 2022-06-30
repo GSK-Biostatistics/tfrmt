@@ -130,6 +130,8 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #' @return
 #' A `tfrmt` with the `group` variables updated in all places
 #'
+#' @export
+#'
 #' @examples
 #'
 #' tfrmt1 <- tfrmt(
