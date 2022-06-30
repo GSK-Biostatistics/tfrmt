@@ -20,8 +20,8 @@ spaces will be ignored.}
 Element Align
 }
 \details{
-Only supports alignment of data value columns. Row group and label
-columns will be left-aligned by default.
+Only supports alignment of data value columns (values found in the \code{column} column). Row group and label
+columns are left-aligned by default.
 }
 \seealso{
 \code{\link[=col_align_plan]{col_align_plan()}} for more information on how to combine

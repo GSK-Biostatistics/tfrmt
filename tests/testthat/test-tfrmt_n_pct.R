@@ -1,7 +1,7 @@
-test_that("frmt_n_pct", {
+test_that("tfrmt_n_pct", {
 
   # format to avoid issues with the environment
-  expect_equal(format(frmt_n_pct()$body_plan),
+  expect_equal(format(tfrmt_n_pct()$body_plan),
                body_plan(
                  frmt_structure(
                    group_val = ".default", label_val = ".default",
@@ -15,7 +15,7 @@ test_that("frmt_n_pct", {
                ) %>% format()
   )
   # See that it can change when n is changed
-  expect_equal(format(frmt_n_pct("n_distinct")$body_plan),
+  expect_equal(format(tfrmt_n_pct("n_distinct")$body_plan),
                body_plan(
                  frmt_structure(
                    group_val = ".default", label_val = ".default",
@@ -29,7 +29,7 @@ test_that("frmt_n_pct", {
                ) %>% format()
   )
   # Change the frmt_when
-  expect_equal(format(frmt_n_pct(pct_frmt_when =
+  expect_equal(format(tfrmt_n_pct(pct_frmt_when =
                                    frmt_when(
                                      "==100" ~ "",
                                      "==0" ~ "",
@@ -52,12 +52,12 @@ test_that("frmt_n_pct", {
   test <- tfrmt(
     column = column
   )
-  expect_equal(frmt_n_pct(tfrmt_obj = test)$column[[1]] %>%
+  expect_equal(tfrmt_n_pct(tfrmt_obj = test)$column[[1]] %>%
     as_label(),
     "column")
 
-  expect_error(frmt_n_pct(n = ""))
-  expect_error(frmt_n_pct(pct = NULL))
+  expect_error(tfrmt_n_pct(n = ""))
+  expect_error(tfrmt_n_pct(pct = NULL))
 
 })
 

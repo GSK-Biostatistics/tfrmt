@@ -124,17 +124,13 @@ can select `everything()` and remove columns that `-starts_with("ord")`.
 You can also use `span_structure()` to add spanning labels as below.
 
 ```{r}
-tfrmt_spec <- tfrmt(
+tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
+  tfrmt(
   # Specify columns in the data
   label = label,
   column = column, 
   param = param,
   values = value,
-  
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   n_pct_frmt(n = "count", pct = "percent") )),
   
   # Specify column structure
     col_plan = col_plan(
@@ -153,6 +149,7 @@ tfrmt_spec <- tfrmt(
   
 print_mock_gt(tfrmt_spec, df)
 ```
+*Note:* `tfrmt_n_pct()` function has been used in place of defining the `body_plan()`. This function returns a `tfrmt` with the same the formatting as the previous example, for more information about layering `tfrmt`s see the [vignette](layer.html).
 
 Alternatively you can add a span column to your dataset and allocate names for 
 each column. Subsequently, ensure you include both your `span` and `column` 
@@ -190,12 +187,11 @@ tfrmt(
 
 To add a title, subtitle or footer pass arguments to their respective parameters.
 
-Note that the `n_pct_frmt()` function has been used in place of `frmt_combine()`. 
-This function returns the same the formatting as the previous example, please 
-see the relevant documentation for more information.
 
 ```{r}
-tfrmt_spec <- tfrmt(
+
+tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
+  tfrmt(
   # Specify title, subtitle, footer
   title = "Table Name",
   subtitle = "Study ID: GSK12345",
@@ -206,12 +202,6 @@ tfrmt_spec <- tfrmt(
   column = column, 
   param = param,
   values = value,
-  
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   n_pct_frmt(n = "count", pct = "percent") )),
-  
   # Specify column structure
     col_plan = col_plan(
       -starts_with("ord"),
@@ -260,7 +250,8 @@ additional `frmt_structure` which accounts for the value formatting we'd like
 to apply to the the new columns.
 
 ```{r}
-tfrmt(
+frmt_n_pct(n = "count", pct = "percent") %>% 
+  tfrmt(
   # Specify columns in the data
   label = "label",
   param = "param",
@@ -269,8 +260,6 @@ tfrmt(
   
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   n_pct_frmt(n = "count", pct = "percent")),
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
                      "{num} ({lower}, {upper})",
@@ -298,7 +287,8 @@ columns you would and wouldn't like to display. Here we have decided to
 select only the placebo and treatment columns.
 
 ```{r}
-tfrmt(
+frmt_n_pct(n = "count", pct = "percent") %>% 
+  tfrmt(
   # Specify columns in the data
   label = "label",
   param = "param",
@@ -307,8 +297,6 @@ tfrmt(
   
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   n_pct_frmt(n = "count", pct = "percent")),
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
                      "{num} ({lower}, {upper})",
@@ -341,7 +329,8 @@ df <- crossing(
   param = c("count", "percent")) %>%
   arrange_all()
 
-tfrmt(
+frmt_n_pct(n = "count", pct = "percent") %>% 
+  tfrmt(
   group = group,
   label = label,
   column = column,
@@ -349,12 +338,7 @@ tfrmt(
   values = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
-
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   n_pct_frmt(n = "count", pct = "percent"))
-    )) %>%
+                      element_block(post_space = "   ")) )) %>%
   print_mock_gt(df)
 ```
 

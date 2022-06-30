@@ -13,8 +13,8 @@
 #'
 #' @export
 #' @examples
-#' print_mock_gt(frmt_n_pct())
-frmt_n_pct <- function(n = "n",
+#' print_mock_gt(tfrmt_n_pct())
+tfrmt_n_pct <- function(n = "n",
                        pct = "pct",
                        pct_frmt_when = frmt_when("==100"~ frmt(""),
                                              ">99"~ frmt("(>99%)"),
@@ -53,7 +53,6 @@ frmt_n_pct <- function(n = "n",
       param = param,
       label = row_label1,
       column = col1,
-      group = row_label2,
       values = value,
       body_plan = body_plan(
         frmt_structure(
