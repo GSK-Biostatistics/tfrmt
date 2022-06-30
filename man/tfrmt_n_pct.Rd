@@ -31,4 +31,5 @@ than (<) signs respectively.
 }
 \examples{
 print_mock_gt(tfrmt_n_pct())
+
 }
