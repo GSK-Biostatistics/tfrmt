@@ -39,7 +39,7 @@ The second tfrmt defines the table specific information, including title, specif
 
 The output tfrmt generates a table with the subset `labs_data`.
 
-```{r}
+```{r, results = "asis"}
 
 labs_data_subset <- labs_data %>% 
   filter(
@@ -56,12 +56,14 @@ data_input <- tribble(
   )
 
 
-tfrmt_sigdig(
+labs_tfrmt_template <- tfrmt_sigdig(
   data = data_input,
   group = vars(group1, group2),
   label = rowlbl,
   param_defaults = param_set("[{n}]" = NA)
-  ) %>%
+  ) 
+
+labs_tfrmt <- labs_tfrmt_template %>%
   tfrmt(
     column = vars(col1, col2),
     param = param,
@@ -69,19 +71,51 @@ tfrmt_sigdig(
     sorting_cols = vars(ord1, ord2, ord3),
     row_grp_plan = row_grp_plan(
       label_loc = element_row_grp_loc(location = "indent")
-    )
-    # col_plan = col_plan(
-    #   group1, group2,
-    #   rowlbl,
-    #   "Residuals" = res,
-    #   "Change From Baseline" = cbl,
-    #   n,
-    #   -starts_with("ord")
-    #   )
-  ) %>%
+    ),
+    col_plan = col_plan(
+      group1, group2,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+      )
+  )
+
+labs_tfrmt %>% 
   print_to_gt(labs_data_subset) %>% 
   tab_options(
     container.width = 1000
   )
+
+```
+
+## Conflicting Layers
+
+As two tfrmt are layered, it is possible for some of them to have conflicting information for which groups to use across their body_plans since this information is concatenated. Addressing this without having to re-write the entire body_plan is able to be done with the `update_group()` function. 
+
+Similar to the `rename()` function, here we provide the new group name and which old group name needs to be updated. The function maps across the entire tfrmt and updates all references of the old group name to the new one.
+
+For example, this is useful when a template tfrmt needs references updated. This could happen when the input data set has a slightly different naming convention than expected.
+
+```{r}
+
+## provided data had different colnames for groups
+alternate_labs_data <- labs_data_subset %>% 
+  rename(
+    `Lab Type` = group1,
+    `Lab Test` = group1,
+  )
+
+labs_tfrmt %>% 
+  update_group(
+    `Lab Type` = group1,
+    `Lab Test` = group1,
+  ) %>% 
+  print_to_gt(labs_data_subset) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
 
 ```
