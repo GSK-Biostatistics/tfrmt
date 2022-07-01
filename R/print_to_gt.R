@@ -146,6 +146,11 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       table.font.names = c("Courier", default_fonts())) %>%
 
     tab_style(
+      style = cell_text(whitespace = "pre", align = "center"),
+      locations = cells_column_labels()
+    ) %>%
+
+    tab_style(
       style = cell_borders(
         sides = c("top","bottom"),
         color = "transparent"
