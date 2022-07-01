@@ -235,16 +235,23 @@ test_that("varying group/label inputs",{
   expect_equal(t_out$group, vars(group1, lbl), ignore_attr = TRUE)
   expect_equal(t_out$label, quo(group2), ignore_attr = TRUE)
 
-  # including a group that is not present in the data
-  t_out <- tfrmt_sigdig(dat_sigdig, group = vars(lbl, grp3), label = group2)
+  # including a group or label that is not present in the data
+  expect_warning(
+    t_out <- tfrmt_sigdig(dat_sigdig, group = vars(lbl, grp3), label = mylab),
+    paste0("Input data does not contain the following group params: grp3")
+  )
 
-  expect_equal(t_out$group, vars(lbl, grp3, group1), ignore_attr = TRUE)
-  expect_equal(t_out$label, quo(group2), ignore_attr = TRUE)
+  expect_equal(t_out$group, vars(lbl, grp3), ignore_attr = TRUE)
+  expect_equal(t_out$label, quo(mylab), ignore_attr = TRUE)
 
-  t_out <- tfrmt_sigdig(dat_sigdig, group = group4, label = group3)
+  expect_error(
+    tfrmt_sigdig(dat_sigdig, group = group4, label = group3),
+    paste0("Input data does not contain any of the specified group/label params:\n",
+           "group: group4\n",
+           "label: group3")
+  )
 
-  expect_equal(t_out$group, vars(group4, group1, group2, lbl), ignore_attr = TRUE)
-  expect_equal(t_out$label, quo(group3), ignore_attr = TRUE)
+
 })
 
 
@@ -256,8 +263,12 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
     ~group1,  ~ group2, ~ sigdig,
     "test1", ".default", 1
   )
-  bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, newgrp), label = quo(group2), param_defaults = param_set())$body_plan
-  bp_man <- body_plan(frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), min = frmt('xxx.xx')),
+  expect_warning(
+    bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, newgrp), label = quo(group2), param_defaults = param_set())$body_plan,
+    paste0("Input data does not contain the following group params: newgrp")
+  )
+
+    bp_man <- body_plan(frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), min = frmt('xxx.xx')),
                       frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), max = frmt('xxx.xx')),
                       frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), median = frmt('xxx.xx')),
                       frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
@@ -266,7 +277,10 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
   expect_equal(bp, bp_man)
 
 
-  bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, newgrp, group2), label = quo(), param_defaults = param_set())$body_plan
+  expect_warning(
+    bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, newgrp, group2), label = quo(mylab), param_defaults = param_set())$body_plan,
+    paste0("Input data does not contain the following group params: newgrp")
+  )
   bp_man <- body_plan(frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), min = frmt('xxx.xx')),
                       frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), max = frmt('xxx.xx')),
                       frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), median = frmt('xxx.xx')),

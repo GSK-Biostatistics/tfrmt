@@ -41,14 +41,34 @@ significant digits data spec and param-level significant digits defaults.
 \description{
 This function creates a tfrmt based on significant digits specifications for
 group/label values. The input data spec provided to \code{data} will contain
-group/label value specifications. The function's \code{group} and \code{label} inputs
-are optional; if none (or only some) are supplied, the function will assume
-the remaining columns in \code{data} (other than \code{sigdig}) are grouping columns.
+group/label value specifications. \code{tfrmt_sigdig} assumes that these columns
+are group columns unless otherwise specified. The user may optionally choose
+to pass the names of the group and/or label columns as arguments to the
+function.
 }
 \details{
-Currently covers specifications for \code{frmt} and \code{frmt_combine}.
-\code{frmt_when} not supported and must be supplied in additional \code{tfrmt} that
-is layered on.
+\subsection{Formats covered}{
+
+Currently covers specifications for \code{frmt} and
+\code{frmt_combine}. \code{frmt_when} not supported and must be supplied in additional
+\code{tfrmt} that is layered on.
+}
+
+\subsection{Group/label variables}{
+
+If the group/label variables are not provided to the arguments, the body_plan
+will be constructed from the input data with the following behavior:
+\itemize{
+\item If no group or label are supplied, it will be assumed that all columns in the input
+data are group columns.
+\item If a label variable is provided, but nothing is
+specified for group, any leftover columns (i.e. not matching \code{sigdig} or the
+supplied label variable name) in the input data will be assumed to be group
+columns.
+\item If any group variable is provided, any leftover columns (i.e. not
+matching \code{sigdig} or the supplied group/label variable) will be disregarded.
+}
+}
 }
 \examples{
 \dontrun{
