@@ -15,8 +15,7 @@
 #' @examples
 #' print_mock_gt(tfrmt_n_pct())
 #'
-#' @importFrom rlang parse_expr quo
-#' @importFrom dplyr vars
+#' @importFrom rlang parse_expr
 tfrmt_n_pct <- function(n = "n",
                        pct = "pct",
                        pct_frmt_when = frmt_when("==100"~ frmt(""),
