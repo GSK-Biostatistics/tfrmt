@@ -620,7 +620,7 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg",{
       group = vars(group1, group2),
       body_plan = body_plan(
         frmt_structure(
-          group_val = c("group1"),
+          group_val = c("value"),
           label_val = ".default",
           frmt("XXX")
        ),
@@ -665,8 +665,52 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg",{
     fixed = TRUE
   )
 
+})
+
+test_that("layering tfrmt - error when body_plan groups no longer match group arg",{
+
+  basic_tfrmt <- tfrmt(
+    group = vars(group1, group2),
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = c("value"),
+        label_val = ".default",
+        frmt("XXX")
+      ),
+      frmt_structure(
+        group_val = list(group1 = "value"),
+        label_val = ".default",
+        frmt("XXX")
+      ),
+      frmt_structure(
+        group_val = list(group2 = "value"),
+        label_val = ".default",
+        frmt("XXX")
+      ),
+      frmt_structure(
+        group_val = list(group1 = "value", group2 = "value"),
+        label_val = ".default",
+        frmt("XXX")
+      )
+    )
+  )
 
 
+  expect_silent(
+    basic_tfrmt %>%
+      tfrmt(
+        group = vars(group2, group1)
+      )
+  )
+
+  expect_error(
+    basic_tfrmt %>%
+      tfrmt(
+        group = vars(new_group1, new_group2)
+      ),
+    "You might need to update group names using \"update_group(`new_group1` = `group1`,`new_group2` = `group2`)\"",
+    fixed = TRUE
+  )
 
 })
 
