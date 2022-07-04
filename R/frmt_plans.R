@@ -162,6 +162,7 @@ frmt <- function(expression, missing = NULL, scientific = NULL, ...){
 #' @export
 #' @rdname frmt
 frmt_combine <- function(expression, ..., missing = NULL){
+
   everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
 
   n_vars <- str_count(expression, everything_but_curly)
@@ -175,6 +176,7 @@ frmt_combine <- function(expression, ..., missing = NULL){
   }
 
   names(fmt_ls) <- vars_to_fmt
+
   # Adding ` to expression if not there and there is a space/symbol
   replace_val <-case_when(
     str_detect(vars_to_fmt, "^[a-zA-Z0-9_]*$") ~ vars_to_fmt,

@@ -12,13 +12,13 @@ test_that("applying frmt", {
     frmt_def = sample_frmt_no_dec,
     .data = sample_df,
     values = quo(x)
-    )
+  )
 
   sample_df_single_dec_frmted <- apply_frmt.frmt(
     frmt_def = sample_frmt_single_dec,
     .data = sample_df,
     values = quo(x)
-    )
+  )
 
   sample_df_double_dec_frmted <- apply_frmt.frmt(
     frmt_def = sample_frmt_double_dec,
@@ -361,15 +361,15 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
 
   expect_warning(
     sample_df_frmted <- apply_frmt.frmt_combine(
-          frmt_def = sample_frmt,
-          .data = sample_df,
-          values = quo(x),
-          param = quo(y),
-          column = vars(col),
-          label = quo(lab),
-          group = vars(group)
-        ),
-  "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: "
+      frmt_def = sample_frmt,
+      .data = sample_df,
+      values = quo(x),
+      param = quo(y),
+      column = vars(col),
+      label = quo(lab),
+      group = vars(group)
+    ),
+    "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: "
   )
 
   expect_equal(
@@ -477,16 +477,16 @@ test_that("mocks return correctly", {
 
   # frmt_when
   frmt_when_true <- apply_frmt.frmt_when(frmt_when("==100"~ frmt(""),
-                                 "==0"~ "",
-                                 "TRUE" ~ frmt("(XXX.X%)")),
-                       .data = iris, sym("value"),mock = TRUE) %>%
+                                                   "==0"~ "",
+                                                   "TRUE" ~ frmt("(XXX.X%)")),
+                                         .data = iris, sym("value"),mock = TRUE) %>%
     pull(value)
   expect_equal(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
 
 
   frmt_when_no_true <-apply_frmt.frmt_when(frmt_when("==100"~ frmt("Hello"),
-                                 "==0"~ ""),
-                       .data = iris, sym("value"),mock = TRUE) %>%
+                                                     "==0"~ ""),
+                                           .data = iris, sym("value"),mock = TRUE) %>%
     pull(value)
   expect_equal(frmt_when_no_true, rep("Hello", nrow(iris)))
 
@@ -522,18 +522,21 @@ test_that("mocks return correctly", {
 })
 
 
+
 test_that("Space in Param", {
   no_ten <- frmt_combine("{LM mean} ({LM stderr})",
-               `LM mean` = frmt("xx.x"),
-               `LM stderr` = frmt("xx.xx")
+                         `LM mean` = frmt("xx.x"),
+                         `LM stderr` = frmt("xx.xx")
   )
+
 
   expect_equal(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
 
   mixed <- frmt_combine("{mean} ({CV %})",
-                         mean = frmt("xx.x"),
-                         `CV %` = frmt("xx.xx")
+                        mean = frmt("xx.x"),
+                        `CV %` = frmt("xx.xx")
   )
+
   expect_equal(mixed$expression, "{mean} ({`CV %`})")
 
 
@@ -545,9 +548,11 @@ test_that("Space in Param", {
     "Primary analysis",	"trt comparison",	"Week 12 analysis",	"TRT - PBO",	"LM stderr",	0.4
   )
 
+
   space_combo <- frmt_combine("{`LM mean`} ({`LM stderr`})",
                               `LM mean` = frmt("xx.x"),
                               `LM stderr` = frmt("xx.xx")
+
   )
 
   expect_equal(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
@@ -563,6 +568,7 @@ test_that("Space in Param", {
     mock = FALSE
   ) %>%
     pull(value)
+
 
   expect_equal(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
 

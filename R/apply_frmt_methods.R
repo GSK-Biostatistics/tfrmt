@@ -149,9 +149,11 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param, column, label, group, ...){
+
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
     unlist()
+
   # Adding the unquoted version to match while long
   fmt_param_vals_uq <- str_remove_all(fmt_param_vals, "`")
 
@@ -215,6 +217,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   if(is.null(frmt_def$missing)){
     frmt_def$missing <- ""
   }
+
 
   ## if both params are missing, then drop in frmt definition missing value
   ## otherwise concat the params

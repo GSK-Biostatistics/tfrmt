@@ -91,14 +91,16 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 #' @param param param symbol should only be one
 #'
 #' @return vector of the rows which this format could be applied to
+#'
 #' @importFrom stringr str_remove_all
 #' @noRd
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
+
   #get filters for each column type
   grp_expr <- expr_to_filter(group, cur_fmt$group_val)
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
   parm_expr <- expr_to_filter(param, cur_fmt$param_val %>%
-                                str_remove_all("`"))
+                              str_remove_all("`"))
 
   filter_expr <- paste(
       c(lbl_expr,grp_expr,parm_expr),
