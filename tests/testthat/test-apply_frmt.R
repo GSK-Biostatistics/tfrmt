@@ -520,3 +520,45 @@ test_that("mocks return correctly", {
   expect_equal(sample_df_frmted, rep("xxx.x (X.X%)", 5))
 
 })
+
+
+test_that("Space in Param", {
+  no_ten <- frmt_combine("{LM mean} ({LM stderr})",
+               `LM mean` = frmt("xx.x"),
+               `LM stderr` = frmt("xx.xx")
+  )
+
+  expect_equal(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
+
+
+  data <- tibble::tribble(
+    ~group,	~type,	~label,	~column,	~param,	~value,
+    "baseline",	"description",	"Week 12 analysis",	"Placebo",	"LM mean",	79.0,
+    "baseline",	"description",	"Week 12 analysis",	"Placebo",	"LM stderr",	5.0,
+    "Primary analysis",	"trt comparison",	"Week 12 analysis",	"TRT - PBO",	"LM mean",	-0.3,
+    "Primary analysis",	"trt comparison",	"Week 12 analysis",	"TRT - PBO",	"LM stderr",	0.4
+  )
+
+  space_combo <- frmt_combine("{`LM mean`} ({`LM stderr`})",
+                              `LM mean` = frmt("xx.x"),
+                              `LM stderr` = frmt("xx.xx")
+  )
+
+  expect_equal(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = space_combo,
+    .data = data,
+    values = quo(value),
+    param = quo(param),
+    column = vars(column),
+    label = quo(label),
+    group = vars(group, type),
+    mock = FALSE
+  ) %>%
+    pull(value)
+
+  expect_equal(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
+
+
+})

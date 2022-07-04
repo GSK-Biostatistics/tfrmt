@@ -149,10 +149,10 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param, column, label, group, ...){
-
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
     unlist()
+  fmt_param_vals_uq <- str_remove_all(fmt_param_vals, "`")
 
   # Check if unspecified param values are in the dataset
 
@@ -165,7 +165,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     fmt_to_apply <- frmt_def$fmt_ls[[var]]
 
     .data %>%
-      filter(!!param == var) %>%
+      filter(!!param == str_remove_all(var, "`")) %>%
       apply_frmt(
         frmt_def = fmt_to_apply,
         .data = .,
@@ -183,7 +183,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   miss_param_from_data <- .tmp_data %>%
     pull(!!param) %>%
     unique() %>%
-    setdiff(fmt_param_vals, .)
+    setdiff(fmt_param_vals_uq, .)
 
   if(length(miss_param_from_data) > 0 ){
     stop(paste0("Unable to create formatting combination because the following parameters are missing from the data:\n ",
@@ -215,17 +215,16 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     frmt_def$missing <- ""
   }
 
-
   ## if both params are missing, then drop in frmt definition missing value
   ## otherwise concat the params
   .tmp_data_fmted <- .tmp_data_wide %>%
     mutate(
       !!values := case_when(
         .data$.is_all_missing ~ frmt_def$missing,
-        TRUE ~ str_glue(frmt_def$expression) %>% as.character()
+        TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
       )
     ) %>%
-    select(-all_of(fmt_param_vals), -.data$.is_all_missing)
+    select(-all_of(fmt_param_vals_uq), -.data$.is_all_missing)
 
   merge_group <- map(
     c(column, label, group),
@@ -238,7 +237,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   ## keep only the first case of param, and add the joined values
   if(!mock){
     out <- .data %>%
-      filter(!!param == fmt_param_vals[[1]]) %>%
+      filter(!!param == fmt_param_vals_uq[[1]]) %>%
       select(-!!values) %>%
       left_join(
         .tmp_data_fmted,
@@ -246,7 +245,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
       )
   } else {
     out <- .data %>%
-      filter(!!param == fmt_param_vals[[1]]) %>%
+      filter(!!param == fmt_param_vals_uq[[1]]) %>%
       left_join(
         .tmp_data_fmted,
         by = map_chr(merge_group, as_label)
