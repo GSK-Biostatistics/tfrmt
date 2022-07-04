@@ -152,6 +152,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
     unlist()
+  # Adding the unquoted version to match while long
   fmt_param_vals_uq <- str_remove_all(fmt_param_vals, "`")
 
   # Check if unspecified param values are in the dataset
