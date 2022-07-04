@@ -175,9 +175,10 @@ frmt_combine <- function(expression, ..., missing = NULL){
   }
 
   names(fmt_ls) <- vars_to_fmt
-  # Adding ` to expression if not there
+  # Adding ` to expression if not there and there is a space/symbol
   replace_val <- case_when(
-    str_detect(vars_to_fmt, "^[:alnum:]") & !str_detect(vars_to_fmt, "`") ~ paste0("`", vars_to_fmt, "`"),
+    str_detect(vars_to_fmt, "^[:alnum:]*$") ~ vars_to_fmt,
+    !str_detect(vars_to_fmt, "^[:alnum:]*$") & !str_detect(vars_to_fmt, "`") ~ paste0("`", vars_to_fmt, "`"),
     TRUE ~ vars_to_fmt)
 
   exp_new <- expression

@@ -530,6 +530,12 @@ test_that("Space in Param", {
 
   expect_equal(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
 
+  mixed <- frmt_combine("{mean} ({CV %})",
+                         mean = frmt("xx.x"),
+                         `CV %` = frmt("xx.xx")
+  )
+  expect_equal(mixed$expression, "{mean} ({`CV %`})")
+
 
   data <- tibble::tribble(
     ~group,	~type,	~label,	~column,	~param,	~value,
