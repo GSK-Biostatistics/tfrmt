@@ -124,7 +124,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       tab_options(row_group.as_column = TRUE)
   }
 
-  gt_out %>%
+  gt_out_final  <- gt_out %>%
     tab_style(
       style = list(
         cell_text(whitespace = "pre", align = "left")
@@ -187,6 +187,19 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
+
+  if(nrow(gt_out_final$`_spanners`)==0){
+    rename=gt_out_final$`_boxhead`$column_label
+    names(rename)=gt_out_final$`_boxhead`$column_label
+
+    gt_out_final %>%
+      cols_label(.list=
+                   lapply(rename,html)
+      )
+  }else{
+
+    gt_out_final
+  }
 }
 
 
