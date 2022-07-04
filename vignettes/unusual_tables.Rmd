@@ -54,13 +54,13 @@ data <- tribble(
                    "Xanomeline Low Dose (N=84)",
                    "Xanomeline High Dose (N=84)",
                    "Total (N=254)"),
-           col2 = c("ITT", "Eff", "Com")) %>%
+           col2 = factor(c("ITT", "Eff", "Com"), levels = c("ITT", "Eff", "Com"))) %>%
   mutate(val = rpois(216, 15), # Here I am just faking the data for display purposes 
          param = "val")
 
 ```
 
-Once we have the data in the standard ARD format we can make the tfrmt. What makes this tfrmt different is we won't include group or label, and our two ID columns will be displayed as regular columns. This also means that all columns of the table, including the ID columns, can be ordered via the `col_plan()`. Because the `col_plan()` follows the conventions of `select()` we are going to start with the lowest level columns, and then select the order of the spanning columns. 
+Once we have the data in the standard ARD format we can make the `tfrmt`. What makes this `tfrmt` different is we won't include group or label, and our two ID columns will be displayed as regular columns. This also means that all columns of the table, including the ID columns, can be ordered via the `col_plan()`. Because the `col_plan()` follows the conventions of `select()` we can't specify the order of the highest level spanning columns and the lower level columns. But, `tfrmt` respects the order things are put in, which is why we used a factor for the populations.  
 ```{r}
 tfrmt(
   param = "param",
@@ -72,8 +72,6 @@ tfrmt(
   row_grp_plan = row_grp_plan(label_loc =element_row_grp_loc("column")),
   col_plan = col_plan(
     `Pooled Id`,  `Site Id`,
-    contains("ITT"),
-    contains("Eff"),
     contains("Placebo"),
     contains("High Dose"),
     contains("Low Dose"),

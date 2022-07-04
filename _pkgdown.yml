@@ -15,10 +15,11 @@ articles:
   contents:
   - examples
   - layer
-  - mocks
-  - unusual_tables
+  - building_mocks
   - templates
 - title:
   navbar: More
   contents:
   - faq
+  - mock_examples
+  - unusual_tables

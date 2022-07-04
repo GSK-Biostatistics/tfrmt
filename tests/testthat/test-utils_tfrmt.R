@@ -61,7 +61,7 @@ plan  <- tfrmt(
 test_that("Check apply_tfrmt", {
 
 
-  man_df <-  tribble(
+  man_df <-  tibble::tribble(
     ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
     "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
     "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
@@ -110,7 +110,7 @@ test_that("Check apply_tfrmt for mock data",{
 
   mock_dat <- raw_dat %>% select(-val2)
 
-  mock_man_df <-  tribble(
+  mock_man_df <-  tibble::tribble(
     ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
     "A",     "z",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "A",     "y",     "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
@@ -154,7 +154,7 @@ test_that("Check apply_tfrmt for mock data",{
 
 
   mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 4)
-  mock_man_df <-  tribble(
+  mock_man_df <-  tibble::tribble(
     ~group,  ~label,   ~ col1,         ~col2,        ~ col3,        ~ col4,
     "group_1", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "group_1", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
@@ -190,7 +190,7 @@ test_that("Check apply_tfrmt for mock data",{
 
   expect_equal(
     mock_dat,
-    tribble(
+    tibble::tribble(
       ~grp1,   ~grp2,   ~grp3,      ~grp4,   ~my_label,   ~col1,
       "A"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
       "A"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
@@ -225,7 +225,7 @@ test_that("Check apply_tfrmt for mock data",{
     .[["result"]]
 
   expect_equal(test_dat,
-               tribble(
+               tibble::tribble(
                  ~grp1,   ~my_label,   ~col1,  ~col2,
                   "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
                   "grp1_1", "my_label_1", "xx.x",  "xx.x" ,

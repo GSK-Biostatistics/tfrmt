@@ -87,9 +87,14 @@ print.frmt_when <- function(x,...){
 }
 
 #' @export
+#' @importFrom purrr map
 format.frmt_structure <- function(x,...){
 
-  groups <- unique(x$group_val)[[1]]
+  if (is.list(x$group_val)){
+    groups <- x$group_val %>% map(unique)
+  } else {
+    groups <- unique(x$group_val)
+  }
   labels <- unique(x$label_val)
   param <- unique(x$param_val)
   fmts <- x$frmt_to_apply[[1]]

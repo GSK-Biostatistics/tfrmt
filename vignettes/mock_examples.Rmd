@@ -1,0 +1,306 @@
+---
+title: "Mock Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Mock Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r message=FALSE}
+library(tfrmt)
+library(dplyr)
+library(tidyr)
+```
+
+## AE Mocks
+
+*Reusable tfrmt base layer:*
+
+```{r}
+ae_mock_table <- function(tfrmt_obj){
+  tfrmt(
+    title = "Table Name",
+    subtitle = "Study ID: GSK12345",
+    footer = "A footnote about stuff<br/>Here is a new line with more stuff",  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{count} {percent}",
+                     count = frmt("XXX"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(XX.X%)")))),
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "{num} ({lower}, {upper})",
+                     num = frmt("XX.X"),
+                     lower = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%")),
+                     upper = frmt_when("==100"~ frmt(""),
+                                       "==0"~ "",
+                                       "TRUE" ~ frmt("XX.X%"))))
+    ),
+  col_plan = col_plan(
+    T1, T2, `T1&T2`, PL,
+    everything(),
+    -starts_with("ord")
+    )
+  )
+}
+```
+
+Example 1: mock table with no groups
+
+```{r}
+df <- bind_rows(
+  crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) )),
+  crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper")) %>%
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+  ) %>% arrange_all()
+
+ae_mock_table() %>%
+  tfrmt(
+    label = "label",
+    param = "param",
+    column = "column",
+    values = value,
+    sorting_cols = vars(ord1)
+    ) %>%
+  print_mock_gt(df)
+```
+
+Example 2: mock table with one level of grouping, indented labels
+
+```{r}
+df <- bind_rows(
+  crossing(group = c("grp1", "grp2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")),
+  crossing(group = c("grp1", "grp2"),
+           label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper"))
+  ) %>% arrange_all()
+
+ae_mock_table() %>%
+  tfrmt(
+    group = group,
+    label = "label",
+    param = "param",
+    column = "column",
+    values = value,
+    row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
+    
+    col_plan = col_plan(
+      T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
+      everything(),
+      -starts_with("ord"))
+    ) %>%
+  print_mock_gt(df)
+
+```
+
+Example 3: mock table with two levels of grouping, indented labels
+
+```{r}
+df <- bind_rows(
+  crossing(grp1 = c("group 1.1", "group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")),
+  crossing(grp1 = c("group 1.1", "group 1.2"),
+           grp2 = c("group 2.1", "group 2.2"),
+           label = c("label 1", "label 2"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper"))
+  ) %>% arrange_all()
+
+ae_mock_table() %>%
+  tfrmt(
+    group = c(grp1, grp2),
+    label = "label",
+    param = "param",
+    column = "column",
+    values = value,
+    row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
+    
+    col_plan = col_plan(
+      T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
+      everything(),
+      -starts_with("ord"))
+    ) %>%
+  print_mock_gt(df)
+
+```
+
+Example 4: mock table with two levels of grouping, column separated labels
+
+```{r}
+ae_mock_table() %>%
+  tfrmt(
+    group = c(grp1, grp2),
+    label = "label",
+    param = "param",
+    column = "column",
+    values = value,
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),    
+    
+    col_plan = col_plan(
+      T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
+      everything(),
+      -starts_with("ord"))
+    ) %>%
+  print_mock_gt(df)
+
+```
+
+Example 5: mock table with combined columns, using ae_data
+
+```{r}
+fmt_spec <- tfrmt(
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = c(col2, col1),
+  value = value,
+  row_grp_plan = row_grp_plan(),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+            frmt_combine("{n} {pct}",
+                        n = frmt("XXX"),
+                        pct = frmt_when(
+                          "==100" ~ "",
+                          "==0" ~ "",
+                          TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   AEs = frmt("[XXX]")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "--")))
+  ), col_plan = col_plan(-starts_with("ord")))
+
+#
+ae_data2 <- ae_data %>% 
+  group_by(AEBODSYS, AETERM) %>% 
+  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
+  ungroup %>% 
+  filter(pct_high >10) %>% 
+  select(-pct_high)
+
+ae_data2 %>%  
+  select(-value) %>% 
+  arrange(ord1, ord2 ) %>% 
+  print_mock_gt(fmt_spec, . )
+```
+
+
+## Demography Mocks
+
+```{r}
+tfrmt(
+  # specify columns in the data
+  group = c(rowlbl1,grp),
+  label = rowlbl2,
+  column = column, 
+  param = param,
+  values = value,
+  sorting_cols = c(ord1, ord2),
+  
+  # Specify body plan
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
+                                                                                n = frmt("xxx"),
+                                                                                pct = frmt_when("==100" ~ "",
+                                                                                                "==0" ~ "",
+                                                                                                TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
+    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
+    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
+    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
+                                                                                 "<0.001" ~ "<0.001",
+                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
+  ),
+  
+  # Specify row group plan
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "column")
+  ),
+  
+  # Specify column alignment plan
+  col_align = col_align_plan(
+    element_align(align = c(".",","," "), col = vars(everything()))
+  ),
+  
+  # remove extra cols
+  col_plan = col_plan(-grp, 
+                      -starts_with("ord") )
+) %>% 
+  print_mock_gt(demog_data %>% select(-value))
+```
+
+
+## Efficacy Mocks
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = c(ord1, ord2),
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = list(group="Change from Baseline"), element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group="p-value (Dose Response)"), element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group="p-value (Xan - Placebo)"), element_block(post_space = " "))
+  ),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")), 
+    frmt_structure(group_val = ".default", label_val = "Median (Range)", frmt_combine("{median} ({min};{max})",
+                                                                                      median = frmt("xx.x"),
+                                                                                      min = frmt("xx"),
+                                                                                      max = frmt("xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Mean (SD)", frmt_combine("{mean} ({sd})",
+                                                                                      mean = frmt("xx.x"),
+                                                                                      sd = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", frmt_combine("{diff} ({diff_se})",
+                                                                                 diff = frmt("xx.x"),
+                                                                                 diff_se = frmt("xx.xx"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = "95% CI", frmt_combine("({diff_lcl};{diff_ucl})",
+                                                                              diff_lcl = frmt("xx.x"),
+                                                                              diff_ucl = frmt("xx.x"), missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", p.value = frmt_when("<0.001" ~ "<0.001",
+                                                                                       ">0.99" ~ ">0.99",
+                                                                                       TRUE ~ frmt("x.xxx", missing = " ")))
+  ),
+  col_plan = col_plan(
+    group, label,
+    contains("Placebo"),
+    contains("Low"),
+    contains("High")
+  )
+) %>%
+  print_mock_gt(efficacy_data %>% select(-value))
+```
+
+
+

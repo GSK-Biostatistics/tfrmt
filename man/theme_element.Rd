@@ -14,10 +14,14 @@ one character is provided, alignment will be based on the first occurrence
 of any of the characters. For alignment based on white space, leading white
 spaces will be ignored.}
 
-\item{col}{Variable to align on}
+\item{col}{Column value to align on from \code{column} variable.}
 }
 \description{
 Element Align
+}
+\details{
+Only supports alignment of data value columns (values found in the \code{column} column). Row group and label
+columns are left-aligned by default.
 }
 \seealso{
 \code{\link[=col_align_plan]{col_align_plan()}} for more information on how to combine

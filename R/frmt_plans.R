@@ -21,7 +21,12 @@
 #'           label_val = ".default",
 #'           frmt("XXX")
 #'         )
-#'
+#' ## multiple group columns
+#' sample_structure <- frmt_structure(
+#'           group_val = list(grp_col1 = "group1", grp_col2 = "subgroup3"),
+#'           label_val = ".default",
+#'           frmt("XXX")
+#'         )
 #' @importFrom tidyr expand_grid
 #' @export
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
@@ -29,7 +34,7 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   param_val <- names(param_frmt)
 
   if(length(param_frmt) > 1){
-    stop("Can only handel one format per frmt_structure function. Use frmt_combine if a combination is needed")
+    stop("Can only handle one format per frmt_structure function. Use frmt_combine if a combination is needed")
   }
 
   if(is_frmt_combine(param_frmt[[1]])){

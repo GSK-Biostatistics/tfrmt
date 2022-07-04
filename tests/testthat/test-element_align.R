@@ -66,7 +66,7 @@ test_that("error if column doesn't exist", {
 
 test_that("alignment of multiple columns works", {
 
-  dat <- tribble(
+  dat <- tibble::tribble(
     ~ one, ~ column, ~ value,
     "n (%)",    "two"    ," 12 (34%)",
     "n (%)",    "three"  ," 24 (58%)",
@@ -95,7 +95,7 @@ test_that("alignment of multiple columns works", {
     )
   )
 
-  dat_aligned_man <- tribble(
+  dat_aligned_man <- tibble::tribble(
     ~ one, ~ column, ~ value,
     "n (%)"    ,"two"    ," 12 (34%)",
     "mean"     ,"two"    ," 12.3    ",
@@ -130,7 +130,7 @@ test_that("alignment of multiple columns works", {
     )
   )
 
-  dat_aligned_man <- tribble(
+  dat_aligned_man <- tibble::tribble(
     ~ one, ~ column, ~ value,
     "n (%)"    ,"two"    ," 12 (34%)",
     "mean"     ,"two"    ,"     12.3",
@@ -160,7 +160,7 @@ test_that("alignment of multiple columns works", {
 
 test_that("tidyselect works", {
 
-  dat <- tribble(
+  dat <- tibble::tribble(
     ~one      , ~column , ~ value,
     "n (%)"    ,"trt1" ," 12 (34%)",
     "n (%)"    ,"trt2" ," 24 (58%)",
@@ -189,7 +189,7 @@ test_that("tidyselect works", {
 
   )
 
-  dat_aligned_man <- tribble(
+  dat_aligned_man <- tibble::tribble(
     ~one      , ~column , ~ value,
     "n (%)"    ,"trt1"  ," 12 (34%)",
     "mean"     ,"trt1"  ," 12.3    ",
@@ -219,7 +219,7 @@ test_that("tidyselect works", {
       element_align(align = "right", col = vars(starts_with("trt")))
     ))
 
-  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+  dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ," 12 (34%)",
                              "mean"     ,"trt1"   ,"     12.3",
                              "sd"       ,"trt1"   ,"     4.34",
@@ -243,7 +243,7 @@ test_that("tidyselect works", {
 
 test_that("Overlapping element_aligns favors last one",{
 
-  dat <- tribble(
+  dat <- tibble::tribble(
     ~one      , ~column , ~ value,
     "n (%)"    ,"trt1"  ," 12 (34%)",
     "mean"     ,"trt1"  ," 12.3    ",
@@ -269,7 +269,7 @@ test_that("Overlapping element_aligns favors last one",{
       element_align(align = "right", col = vars(starts_with("trt"))),
       element_align(align = c(".",","," "), col = trt1)))
 
-  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+  dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ," 12 (34%)",
                              "mean"     ,"trt1"   ," 12.3    ",
                              "sd"       ,"trt1"   ,"  4.34   ",
@@ -295,7 +295,7 @@ test_that("Overlapping element_aligns favors last one",{
 
 test_that("Align strings >1 in length",{
 
-  dat <- tribble(
+  dat <- tibble::tribble(
     ~one      , ~column , ~ value,
     "n (%)"    ,"trt1"  ," 12 (34%)",
     "mean"     ,"trt1"  ," 12.3    ",
@@ -321,7 +321,7 @@ test_that("Align strings >1 in length",{
       element_align(align = "right", col = vars(starts_with("trt"))),
       element_align(align = c("...",",,,,"," "), col = trt1)))
 
-  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+  dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ," 12 (34%)",
                              "mean"     ,"trt1"   ," 12.3    ",
                              "sd"       ,"trt1"   ,"  4.34   ",
@@ -349,7 +349,7 @@ test_that("Align strings >1 in length",{
 
 test_that("Alphanumeric align string supplied",{
 
-  dat <- tribble(
+  dat <- tibble::tribble(
     ~one      , ~column , ~ value,
     "n (%)"    ,"trt1"  ," 12 (34%)",
     "mean"     ,"trt1"  ," 12.3    ",
@@ -375,7 +375,7 @@ test_that("Alphanumeric align string supplied",{
       element_align(align = "right", col = vars(starts_with("trt"))),
       element_align(align = c("2","4"), col = trt1)))
 
-  dat_aligned_man <- tribble(~one      , ~column , ~value ,
+  dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ,"    12 (34%)",
                              "mean"     ,"trt1"   ,"    12.3    ",
                              "sd"       ,"trt1"   ,"     4.34   ",

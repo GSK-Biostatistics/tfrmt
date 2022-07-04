@@ -95,11 +95,11 @@ tfrmt(
   )
 ```
 
-While this make a table it isn't a very nice table and definitely doesn't match the mock. So lets start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`.  This will be a fairly quick explanation of `body_plan`s but if you like more information see `vignettes("Body Plan")` 
+While this makes a table, it isn't a very nice table and definitely doesn't match the mock. So let's start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`.  This will be a fairly quick explanation of `body_plan`s but if you would like more information see `vignettes("Body Plan")` 
 
 Body plans are made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. The order of the `frmt_structure`s matter; they are always applied latest to oldest. This means the first `frmt_stucture` in the `body_plan` should be the most generic. You can use the groups, labels and parameters to specify which formatting applies to which values.  
 
-To start, we are going to use all the rows that are "n (%)" as the default. This way we don't need to list out every row that is an "n (%)" row. These rows are made up of two different values, so we will need to use `frmt_combine`. Next, we can format the continuous variables, which is just a straightforward one value per row so we can just use the label to filter and `frmt` to define the look. Finally, we want to format the p-values. This is a bit more complicated, since the p-value sits in the same row as other parameters; therefore the group and label value are not specific enough and we need something more granular. As such, we will need to specify the parameter in the `frmt_structure` like so `frmt_structure(group_val = ".default", label_val = ".default", p = frmt("x.xx")`. Further, we also need to make sure it never displays a rounded p-value of 0 or 1. So we can use `frmt_when` to specify the formatting based on the value. 
+To start, we are going to use all the rows that are "n (%)" as the default. This way we don't need to list out every row that is an "n (%)" row. These rows are made up of two different values, so we will need to use `frmt_combine`. Next, we can format the continuous variables, which is just a straightforward one value per row so we can just use the label to filter and `frmt` to define the look. Finally, we want to format the p-values. This is a bit more complicated, since the p-value sits in the same row as other parameters; therefore the group and label value are not specific enough and we need something more granular. As such, we will need to specify the parameter in the `frmt_structure` like so: `frmt_structure(group_val = ".default", label_val = ".default", p = frmt("x.xx")`. Further, we also need to make sure it never displays a rounded p-value of 0 or 1. So we can use `frmt_when` to specify the formatting based on the value. 
 ```{r}
 tfrmt(
   # specify columns in the data
@@ -126,7 +126,7 @@ tfrmt(
     container.width = 900
   )
 ```
-Now the numbers looks all correct, we can drop the order columns and the `grp` column (note that while we do not want to display the `grp` column, it plays a role behind the scenes, which will be addressed in the next step). To do this we use a `col_plan` which uses `tidy-select` nomenclature to drop/move columns. 
+Now that all the numbers look correct, we can drop the order columns and the `grp` column (note that while we do not want to display the `grp` column, it plays a role behind the scenes, which will be addressed in the next step). To do this we use a `col_plan` which uses `tidy-select` nomenclature to drop/move columns. 
 
 ```{r}
 tfrmt(
@@ -717,7 +717,7 @@ tfrmt(
 
 ```
 
-Notice that our row labels are not quite right. First, we have a bit of a hierarchy with the `label` values nested under the `group` values, and it would be nice to add some indentation to make the nesting more obvious. Also, some cases, the `group` values also contain summary data, which means the ARD contains a matching `group` and `label` value. For summary rows, we want to suppress the printing of the extra group-level header, and display the summary data in-line. The `row_grp_plan` can help us with both via the `row_grp_loc` argument:
+Notice that our row labels are not quite right. First, we have a bit of a hierarchy with the `label` values nested under the `group` values, and it would be nice to add some indentation to make the nesting more obvious. Also, in some cases, the `group` values also contain summary data, which means the ARD contains a matching `group` and `label` value. For summary rows, we want to suppress the printing of the extra group-level header, and display the summary data in-line. The `row_grp_plan` can help us with both via the `row_grp_loc` argument:
 
 ```{r}
 tfrmt(
