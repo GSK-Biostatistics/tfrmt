@@ -52,9 +52,13 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
         select(-starts_with("TEMP_"))
 
       if(is.null(cur_fmt)){
-        out <- data_only %>%
-          mutate(!!values := as.character(!!values)) %>%
-          select(-!!param)
+        if(!mock){
+          out <- data_only %>%
+            mutate(!!values := as.character(!!values)) %>%
+            select(-!!param)
+        } else {
+          out <- data_only
+        }
 
         # Add message
         x %>%
