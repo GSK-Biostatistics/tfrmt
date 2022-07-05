@@ -37,11 +37,11 @@ We provide `tfrmt_sigdig()` with a data.frame detailing the groups and the signi
 
 The second tfrmt defines the table specific information, including title, specific columns to use for row labels and output columns, as well as the col_plan.
 
-The output tfrmt generates a table with the subset `labs_data`.
+The output tfrmt generates a table with the subset `data_labs`.
 
 ```{r}
 
-labs_data_subset <- labs_data %>% 
+data_labs_subset <- data_labs %>% 
   filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE" ,"ALBUMIN" ,"ALKALINE PHOSPHATASE","ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
@@ -79,7 +79,7 @@ tfrmt_sigdig(
     #   -starts_with("ord")
     #   )
   ) %>%
-  print_to_gt(labs_data_subset) %>% 
+  print_to_gt(data_labs_subset) %>% 
   tab_options(
     container.width = 1000
   )
