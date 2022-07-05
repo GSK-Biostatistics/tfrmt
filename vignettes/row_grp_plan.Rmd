@@ -14,9 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(rlang)
 library(dplyr)
 library(gt)
 ```
