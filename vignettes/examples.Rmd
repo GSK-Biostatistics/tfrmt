@@ -229,7 +229,7 @@ For the adverse events (AE) table, we will use the `ae_data` analysis results da
   ungroup %>% 
   filter(pct_high >10) %>% 
   select(-pct_high)
-```
+  ```
 </details>
 
 
