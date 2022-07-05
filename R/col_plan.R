@@ -278,28 +278,7 @@ get_span_structure_dots.span_structures <- function(x){
 }
 
 
-## -----------------------------------------------
-## check in tfrmt that the column and col_plan
-## are compatable
-##-----------------------------------------------
-check_column_and_col_plan <- function(x){
-  multi_column_defined <- length(x$column) > 1
-  span_structures_defined <- if(!is.null(x$col_plan)){
-    !is.null(x$col_plan$span_structures)
-  }else{
-    FALSE
-  }
 
-  if(multi_column_defined & span_structures_defined){
-    stop(
-      "Multiple columns defined in `column` argument of tfrmt ",
-      "as well as span_structures in `col_plan`.\n",
-      "The use of only one approach is permitted. ",
-      "Select a single column or remove span_structures from `col_plan()`"
-    )
-  }
-
-}
 
 #' @importFrom tidyr unite
 #' @importFrom dplyr as_tibble relocate last_col right_join

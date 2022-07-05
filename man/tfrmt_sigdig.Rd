@@ -6,10 +6,11 @@
 \usage{
 tfrmt_sigdig(
   data,
-  group,
-  label,
+  group = vars(),
+  label = quo(),
   param_defaults = param_set(),
   missing = NULL,
+  tfrmt_obj = NULL,
   ...
 )
 }
@@ -29,6 +30,8 @@ carried through in implementation.}
 
 \item{missing}{missing option to be included in all \code{frmt}s}
 
+\item{tfrmt_obj}{an optional tfrmt object to layer}
+
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
@@ -36,12 +39,36 @@ carried through in implementation.}
 significant digits data spec and param-level significant digits defaults.
 }
 \description{
-Create tfrmt object from significant digits spec
+This function creates a tfrmt based on significant digits specifications for
+group/label values. The input data spec provided to \code{data} will contain
+group/label value specifications. \code{tfrmt_sigdig} assumes that these columns
+are group columns unless otherwise specified. The user may optionally choose
+to pass the names of the group and/or label columns as arguments to the
+function.
 }
 \details{
-Currently covers specifications for \code{frmt} and \code{frmt_combine}.
-\code{frmt_when} not supported and must be supplied in additional \code{tfrmt} that
-is layered on.
+\subsection{Formats covered}{
+
+Currently covers specifications for \code{frmt} and
+\code{frmt_combine}. \code{frmt_when} not supported and must be supplied in additional
+\code{tfrmt} that is layered on.
+}
+
+\subsection{Group/label variables}{
+
+If the group/label variables are not provided to the arguments, the body_plan
+will be constructed from the input data with the following behavior:
+\itemize{
+\item If no group or label are supplied, it will be assumed that all columns in the input
+data are group columns.
+\item If a label variable is provided, but nothing is
+specified for group, any leftover columns (i.e. not matching \code{sigdig} or the
+supplied label variable name) in the input data will be assumed to be group
+columns.
+\item If any group variable is provided, any leftover columns (i.e. not
+matching \code{sigdig} or the supplied group/label variable) will be disregarded.
+}
+}
 }
 \examples{
 \dontrun{

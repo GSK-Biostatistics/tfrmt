@@ -211,3 +211,125 @@ test_that("tfrmt_sigdig returns a tfrmt", {
 
 })
 
+
+test_that("varying group/label inputs",{
+
+  dat_sigdig <- tibble::tribble(
+    ~group1,  ~ group2, ~ lbl, ~ sigdig,
+    "CHEM", "BILIRUBIN", "v1", 1,
+    "CHEM",  ".default", "v2",1,
+    "HEM", "CHOLESTEROL", "v1",2,
+    ".default", "EOSINOPHILS", "v1",2
+  )
+
+  # if no group or label, assume all non-sigdig columns are groups
+  t_out <- tfrmt_sigdig(dat_sigdig)
+
+  expect_equal(t_out$group, vars(group1, group2, lbl), ignore_attr = TRUE)
+
+  expect_equal(t_out$label, quo())
+
+  # if only some are specified, assume the rest are groups
+  t_out <- tfrmt_sigdig(dat_sigdig, label = group2)
+
+  expect_equal(t_out$group, vars(group1, lbl), ignore_attr = TRUE)
+  expect_equal(t_out$label, quo(group2), ignore_attr = TRUE)
+
+  # including a group or label that is not present in the data
+  expect_warning(
+    t_out <- tfrmt_sigdig(dat_sigdig, group = vars(lbl, grp3), label = mylab),
+    paste0("Input data does not contain the following group params: grp3")
+  )
+
+  expect_equal(t_out$group, vars(lbl, grp3), ignore_attr = TRUE)
+  expect_equal(t_out$label, quo(mylab), ignore_attr = TRUE)
+
+  expect_error(
+    tfrmt_sigdig(dat_sigdig, group = group4, label = group3),
+    paste0("Input data does not contain any of the specified group/label params:\n",
+           "group: group4\n",
+           "label: group3")
+  )
+
+
+})
+
+
+
+
+test_that("group vars specified in tfrmt but not sigdig data are represented in body_plan",{
+
+  dat_sigdig <- tibble::tribble(
+    ~group1,  ~ group2, ~ sigdig,
+    "test1", ".default", 1
+  )
+  expect_warning(
+    bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, newgrp), label = quo(group2), param_defaults = param_set())$body_plan,
+    paste0("Input data does not contain the following group params: newgrp")
+  )
+
+    bp_man <- body_plan(frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), min = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), max = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), median = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default"), label_val = c(".default"), n = frmt('xxx')))
+
+  expect_equal(bp, bp_man)
+
+
+  expect_warning(
+    bp <- tfrmt_sigdig(dat_sigdig, group = vars(group1, newgrp, group2), label = quo(mylab), param_defaults = param_set())$body_plan,
+    paste0("Input data does not contain the following group params: newgrp")
+  )
+  bp_man <- body_plan(frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), min = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), max = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), median = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
+                      frmt_structure(group_val = list(group1 = "test1", newgrp = ".default", group2 = ".default"), label_val = c(".default"), n = frmt('xxx')))
+
+  expect_equal(bp, bp_man)
+})
+
+test_that("tfrmt_sigdig can be layered onto another tfrmt",{
+
+  prev_tfrmt <- tfrmt(group = vars(group1, group2),
+                      label = lblvar,
+                      body_plan = body_plan(
+                        frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.xx"))
+                      ))
+  dat_sigdig <- tibble::tribble(
+    ~group1,  ~ group2, ~ sigdig,
+    "test1", "test2", 1
+  )
+  new_tfrmt <- tfrmt_sigdig(dat_sigdig,
+                            tfrmt_obj =
+                              prev_tfrmt)
+
+  expect_equal(new_tfrmt$group, prev_tfrmt$group)
+  expect_equal(new_tfrmt$lblvar, prev_tfrmt$lblvar)
+
+  bp_man <- body_plan(frmt_structure(group_val = ".default", label_val = ".default", frmt('xx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", group2 = "test2"), label_val = c(".default"), min = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", group2 = "test2"), label_val = c(".default"), max = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", group2 = "test2"), label_val = c(".default"), median = frmt('xxx.xx')),
+                      frmt_structure(group_val = list(group1 = "test1", group2 = "test2"), label_val = c(".default"), frmt_combine('{mean} ({sd})', mean = frmt('xxx.xx'), sd = frmt('xxx.xxx'))),
+                      frmt_structure(group_val = list(group1 = "test1", group2 = "test2"), label_val = c(".default"), n = frmt('xxx')))
+
+  expect_equal(new_tfrmt$body_plan, bp_man)
+
+
+
+  prev_tfrmt <- tfrmt(group = somegrp,
+                      label = group2)
+  dat_sigdig <- tibble::tribble(
+    ~group1,  ~ group2, ~ sigdig,
+    "test1", "test2", 1
+  )
+  new_tfrmt <- tfrmt_sigdig(dat_sigdig,
+                            group = group1,
+                            tfrmt_obj = prev_tfrmt)
+
+  expect_equal(new_tfrmt$group, vars(group1), ignore_attr = TRUE)
+  expect_equal(new_tfrmt$label, quo(group2), ignore_attr = TRUE)
+
+})

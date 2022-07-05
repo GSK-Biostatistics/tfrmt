@@ -27,7 +27,12 @@ sample_structure <- frmt_structure(
           label_val = ".default",
           frmt("XXX")
         )
-
+## multiple group columns
+sample_structure <- frmt_structure(
+          group_val = list(grp_col1 = "group1", grp_col2 = "subgroup3"),
+          label_val = ".default",
+          frmt("XXX")
+        )
 }
 \seealso{
 \code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the

@@ -14,6 +14,8 @@
 #' @export
 #' @examples
 #' print_mock_gt(tfrmt_n_pct())
+#'
+#' @importFrom rlang parse_expr
 tfrmt_n_pct <- function(n = "n",
                        pct = "pct",
                        pct_frmt_when = frmt_when("==100"~ frmt(""),
@@ -50,10 +52,10 @@ tfrmt_n_pct <- function(n = "n",
     ae_tbl <- layer_tfrmt(x = tfrmt_obj, y = ae_tbl)
   } else {
     ae_tbl <- tfrmt(
-      param = param,
-      label = row_label1,
-      column = col1,
-      values = value,
+      param = "param",
+      label = "row_label1",
+      column = "col1",
+      values = "value",
       body_plan = body_plan(
         frmt_structure(
           group_val = ".default", label_val = ".default",
