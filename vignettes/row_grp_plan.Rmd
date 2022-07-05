@@ -86,6 +86,9 @@ print_mock_gt(my_tfrmt, .default = 1:2)%>%
 
 ```
 
+
+As `group_val = "grp1_1"` in this table rather than `group_val = "default"` previously, the post space after grp1_2 is removed. 
+
 # Row labels 
 
 The gt package offers default displays for group and row labels which do not cover all use cases, particularly if the user provides more than one group variable. As such, tfrmt offers multiple objects for display. Let's see how they differ for the following options:
