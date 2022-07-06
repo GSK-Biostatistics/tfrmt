@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo = FALSE}
-library(tfrmt)
-```
-
 The body plan covers the formatting of numeric cell values. Within the body plan, format structures (`frmt_structure`) may be layered to specify formatting for different parameters. Formatting can be applied to specific group and/or label values, which we will cover in a bit. First, we will apply formats to all relevant values in the table, regardless of group or label value.
 
 # Formatting functions
