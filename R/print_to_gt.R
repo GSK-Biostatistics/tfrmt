@@ -188,18 +188,20 @@ cleaned_data_to_gt <- function(.data, tfrmt){
                        cells_column_labels(), cells_column_spanners())
     )
 
-  if(nrow(gt_out_final$`_spanners`)==0){
+
+# if(nrow(gt_out_final$`_spanners`)==0){
     rename=gt_out_final$`_boxhead`$column_label
-    names(rename)=gt_out_final$`_boxhead`$column_label
+    names(rename)=names(gt_out_final$`_data`)
+      #gt_out_final$`_boxhead`$column_label
 
     gt_out_final %>%
       cols_label(.list=
                    lapply(rename,html)
       )
-  }else{
-
-    gt_out_final
-  }
+  # }else{
+  #
+  #   gt_out_final
+  # }
 }
 
 
@@ -262,8 +264,9 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       filter(.data$value != "NA")
 
     for(i in 1:nrow(spans_to_apply)){
+
       gt_table <- gt_table %>%
-        tab_spanner(spans_to_apply$value[i], columns = spans_to_apply$set[[i]])
+        tab_spanner(html(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
     }
 
     renm_vals <- lowest_lvl %>%
@@ -272,7 +275,9 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       pull(.data$cols)
 
     gt_table <- gt_table %>%
-      cols_label(.list = lapply(renm_vals,html))
+      cols_label(.list =
+                    renm_vals)
+                   #lapply(renm_vals,html))
 
   }
   gt_table
