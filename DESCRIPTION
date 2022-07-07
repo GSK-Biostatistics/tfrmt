@@ -21,7 +21,11 @@ Authors@R:
              person(given = "Karima",
                     family = "Ahmad",
                     role = c("aut"),
-                    email = c("karima.j.ahmad@gsk.com"))
+                    email = c("karima.j.ahmad@gsk.com")),
+            person(given = "Shannon",
+                    family = "Haughton",
+                    role = c("aut"),
+                    email = "shannon.l.haughton@gsk.com")
              )
 Description: Creates a framework to store and apply display metadata to Analysis
     Results Datasets (ARDs). The use of tfrmt allows users to define table 

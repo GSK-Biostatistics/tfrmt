@@ -189,7 +189,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     )
 
 
-  # create list of column markdown
+  # create list of column headers
     rename=gt_out_final$`_boxhead`$column_label
     names(rename)=names(gt_out_final$`_data`)
   # convert column labels to markdown for newlines
