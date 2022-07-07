@@ -88,7 +88,7 @@ print_to_gt <- function(tfrmt, .data){
 #' @noRd
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels html
+#'   cells_body cells_column_labels md
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
@@ -189,19 +189,15 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     )
 
 
-# if(nrow(gt_out_final$`_spanners`)==0){
+  # create list of column markdown
     rename=gt_out_final$`_boxhead`$column_label
     names(rename)=names(gt_out_final$`_data`)
-      #gt_out_final$`_boxhead`$column_label
-
+  # convert column labels to markdown for newlines
     gt_out_final %>%
       cols_label(.list=
-                   lapply(rename,html)
+                   lapply(rename,md)
       )
-  # }else{
-  #
-  #   gt_out_final
-  # }
+
 }
 
 
@@ -237,7 +233,7 @@ apply_gt_footnote<- function(gt, footer){
 #' @noRd
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
-#' @importFrom gt cols_label tab_spanner html
+#' @importFrom gt cols_label tab_spanner md
 #' @importFrom dplyr as_tibble desc
 #'
 apply_gt_spanning_labels <- function(gt_table, .data){
@@ -265,8 +261,9 @@ apply_gt_spanning_labels <- function(gt_table, .data){
 
     for(i in 1:nrow(spans_to_apply)){
 
+      # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
-        tab_spanner(html(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
+        tab_spanner(md(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
     }
 
     renm_vals <- lowest_lvl %>%
@@ -277,7 +274,7 @@ apply_gt_spanning_labels <- function(gt_table, .data){
     gt_table <- gt_table %>%
       cols_label(.list =
                     renm_vals)
-                   #lapply(renm_vals,html))
+
 
   }
   gt_table
