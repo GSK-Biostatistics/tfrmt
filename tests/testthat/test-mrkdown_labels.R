@@ -1,6 +1,6 @@
 test_that("markdown column labels - no spanning",{
 
-  mock_data <- tibble::tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
+  mock_data <- tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
                       rowlbl2 =c(rep("Completed",4),rep("Prematurely Withdrawn",4),rep("Unknown",4),rep("Adverse Event",4),rep("Lost to follow-up",4),rep("Protocol violation",4),rep("Subject decided to withdraw",4),rep("Protocol Violation",4),rep("Pre-Operative Dose[1]",4),rep("Other",4)),
                       param=c(rep(c("n","n","pct","pct"),10)),
                       column=c(rep(c("Placebo<br/>(N=20)","Treatment"),20)),
