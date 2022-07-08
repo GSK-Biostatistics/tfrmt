@@ -34,7 +34,12 @@
 #'
 #' # Print mock table using default
 #' print_mock_gt(tfrmt = tfrmt_spec)
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png\" style=\"width:50\\%;\">"`
+#' }}
 #'
+#' ```r
 #' # Create mock data
 #' df <- crossing(label = c("label 1", "label 2", "label 3"),
 #'                column = c("placebo", "trt1", "trt2"),
@@ -45,7 +50,7 @@
 #' ```
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt.png\" style=\"width:50\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png\" style=\"width:50\\%;\">"`
 #' }}
 #'
 #'

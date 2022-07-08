@@ -46,8 +46,13 @@ tfrmt_spec <- tfrmt(
 
 # Print mock table using default
 print_mock_gt(tfrmt = tfrmt_spec)
+}\if{html}{\out{</div>}}
 
-# Create mock data
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png" style="width:50\%;">
+}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create mock data
 df <- crossing(label = c("label 1", "label 2", "label 3"),
                column = c("placebo", "trt1", "trt2"),
                param = c("count", "percent"))
@@ -57,7 +62,7 @@ print_mock_gt(tfrmt_spec, df)
 }\if{html}{\out{</div>}}
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt.png" style="width:50\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png" style="width:50\%;">
 }}
 }
 
