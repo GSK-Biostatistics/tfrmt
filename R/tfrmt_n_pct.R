@@ -12,8 +12,15 @@
 #' @param tfrmt_obj an optional tfrmt object to layer
 #'
 #' @export
-#' @examples
+#' @section Examples:
+#'
+#' ```r
 #' print_mock_gt(tfrmt_n_pct())
+#' ```
+#'
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/create_examples/images/example_n_percent.png\" style=\"width:100\\%;\">"`
+#' }}
 #'
 #' @importFrom rlang parse_expr
 tfrmt_n_pct <- function(n = "n",
