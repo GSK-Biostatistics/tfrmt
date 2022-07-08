@@ -23,7 +23,7 @@ library(gt)
 
 ### How do you add a newline within a column header?
 
-To add a newline to your column header you need to include the markdown syntax `<br/>` in your character string. An example of this can be seen below:
+To add a newline to your column header you need to include the markdown syntax `<br>` in your character string. An example of this can be seen below:
 
 ```{r}
 es_data <-tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
