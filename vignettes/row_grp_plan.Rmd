@@ -192,3 +192,7 @@ my_tfrmt <- tfrmt(
 
 print_mock_gt(my_tfrmt, .default = 1:2)
 ```
+
+<p align="center"><img src="images/tfrmt-groups.png" width="100%"></p>
+
+<p align="center"><img src="images/tfrmt-row_group_plan.png" width="100%"></p>

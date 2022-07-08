@@ -117,3 +117,5 @@ body_plan(
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
 )
 ```
+
+<p align="center"><img src="images/tfrmt-frmt.png" width="100%"></p>
