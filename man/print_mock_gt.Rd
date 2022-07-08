@@ -24,10 +24,10 @@ a stylized gt object
 \description{
 Print mock table to GT
 }
-\examples{
-\dontrun{
+\section{Examples}{
 
-library(dplyr)
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(dplyr)
 
 # Create tfrmt specification
 tfrmt_spec <- tfrmt(
@@ -37,7 +37,7 @@ tfrmt_spec <- tfrmt(
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
-                     "{count} {percent}",
+                     "\{count\} \{percent\}",
                      count = frmt("xxx"),
                      percent = frmt_when("==100"~ frmt(""),
                                          "==0"~ "",
@@ -54,7 +54,10 @@ df <- crossing(label = c("label 1", "label 2", "label 3"),
 
 # Print mock table using mock data
 print_mock_gt(tfrmt_spec, df)
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt.png" style="width:50\%;">
+}}
 }
 
-}

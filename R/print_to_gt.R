@@ -11,9 +11,10 @@
 #'
 #' @return a stylized gt object
 #' @export
-#' @examples
-#' \dontrun{
 #'
+#' @section Examples:
+#'
+#' ```r
 #' library(dplyr)
 #'
 #' # Create tfrmt specification
@@ -41,8 +42,12 @@
 #'
 #' # Print mock table using mock data
 #' print_mock_gt(tfrmt_spec, df)
+#' ```
 #'
-#' }
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt.png\" style=\"width:50\\%;\">"`
+#' }}
+#'
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
 #' @importFrom tidyselect everything eval_select
