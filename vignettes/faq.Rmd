@@ -21,15 +21,16 @@ library(gt)
 ```
 
 
-### How do you add a newline within a column header?
+### Can you format a column header?
 
-To add a newline to your column header you need to include the markdown syntax `<br>` in your character string. An example of this can be seen below:
+To format your column header, just use markdown syntax within your character strings. Examples of this could be a newline, or bolding certain words. 
+To add a newline to your column header you need to include the markdown syntax `<br>` or `\n` in your character string. For bolding, surround your text with `**` on either side. Some example code is provided below:
 
 ```{r}
 es_data <-tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
                  rowlbl2 =c(rep("Completed",4),rep("Prematurely Withdrawn",4),rep("Unknown",4),rep("Adverse Event",4),rep("Lost to follow-up",4),rep("Protocol violation",4),rep("Subject decided to withdraw",4),rep("Protocol Violation",4),rep("Pre-Operative Dose[1]",4),rep("Other",4)),
                  param=c(rep(c("n","n","pct","pct"),10)),
-                 column=c(rep(c("Placebo<br/>(N=48)","Treatment<br/>(N=38)"),20)),
+                 column=c(rep(c("Placebo<br>(N=48)","Treatment\n**(N=38)**"),20)), #newline and bold syntax
                  value=c(24,19,2400/48,1900/38,5,1,500/48,100/38,19,18,1900/48,1800/38,1,1,100/48,100/38,0,0,0,0,0,0,0,0,1,1,100/48,100/38,1,4,100/48,400/38,1,0,100/48,0,2,3,200/48,300/38)
 
 )
