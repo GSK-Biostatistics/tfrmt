@@ -56,6 +56,9 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 
 }
 
+is_element_block <- function(x){
+  inherits(x, "element_block")
+}
 
 #' Element Align
 #'
