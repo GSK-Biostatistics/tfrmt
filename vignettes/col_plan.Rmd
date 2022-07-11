@@ -297,5 +297,7 @@ In summary, the use of 1 or >1 `column` variables is a personal choice. Dependin
 
 ## Help image/s
 
-<p align="center"><img src="./images/tfrmt-span_structure.png" width="100%"></p>
+![tfrmt-span_structure.png](images/tfrmt-span_structure.png){width=100%}
+
+
 

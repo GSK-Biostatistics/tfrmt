@@ -120,4 +120,5 @@ body_plan(
 
 ## Help image/s
 
-<p align="center"><img src="./images/tfrmt-frmt.png" width="100%"></p>
+![tfrmt-frmt.png](images/tfrmt-frmt.png){width=100%}
+
