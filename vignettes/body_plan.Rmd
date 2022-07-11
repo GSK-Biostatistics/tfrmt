@@ -118,4 +118,4 @@ body_plan(
 )
 ```
 
-<p align="center"><img src="images/tfrmt-frmt.png" width="100%"></p>
+<p align="center"><img src="../man/figures/tfrmt-frmt.png" width="100%"></p>
