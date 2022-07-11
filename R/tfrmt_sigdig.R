@@ -147,9 +147,9 @@ param_set <- function(...){
 #' - If any group variable is provided, any leftover columns (i.e. not
 #' matching `sigdig` or the supplied group/label variable) will be disregarded.
 #'
-#' @examples
-#' \dontrun{
+#' @section Examples:
 #'
+#' ```r
 #' data_input <- tibble::tribble(
 #'   ~group1,   ~group2, ~sigdig,
 #'   "CHEMISTRY",   ".default", 3,
@@ -169,8 +169,11 @@ param_set <- function(...){
 #'           sorting_cols = vars(ord1, ord2, ord3),
 #'           col_plan = col_plan(-starts_with("ord"))) %>%
 #'     print_to_gt(labs_data)
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png\" style=\"width:100\\%;\">"`
+#' }}
 #'
-#' }
 #'
 #' @export
 #'
