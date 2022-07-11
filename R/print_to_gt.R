@@ -121,7 +121,7 @@ print_to_gt <- function(tfrmt, .data){
 #' @noRd
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels
+#'   cells_body cells_column_labels md
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
@@ -157,7 +157,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       tab_options(row_group.as_column = TRUE)
   }
 
-  gt_out %>%
+  gt_out_final  <- gt_out %>%
     tab_style(
       style = list(
         cell_text(whitespace = "pre", align = "left")
@@ -220,6 +220,17 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
+
+
+  # create list of column headers
+    rename_vals=gt_out_final$`_boxhead`$column_label
+    names(rename_vals)=names(gt_out_final$`_data`)
+  # convert column labels to markdown for newlines
+    gt_out_final %>%
+      cols_label(.list=
+                   lapply(rename_vals,md)
+      )
+
 }
 
 
@@ -255,7 +266,7 @@ apply_gt_footnote<- function(gt, footer){
 #' @noRd
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
-#' @importFrom gt cols_label tab_spanner
+#' @importFrom gt cols_label tab_spanner md
 #' @importFrom dplyr as_tibble desc
 #'
 apply_gt_spanning_labels <- function(gt_table, .data){
@@ -282,8 +293,10 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       filter(.data$value != "NA")
 
     for(i in 1:nrow(spans_to_apply)){
+
+      # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
-        tab_spanner(spans_to_apply$value[i], columns = spans_to_apply$set[[i]])
+        tab_spanner(md(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
     }
 
     renm_vals <- lowest_lvl %>%
@@ -292,7 +305,9 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       pull(.data$cols)
 
     gt_table <- gt_table %>%
-      cols_label(.list = renm_vals)
+      cols_label(.list =
+                    renm_vals)
+
 
   }
   gt_table
