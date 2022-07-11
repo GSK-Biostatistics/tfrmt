@@ -120,5 +120,5 @@ body_plan(
 
 ## Help image/s
 
-![tfrmt-frmt.jpg](images/tfrmt-frmt.jpg){width=100%}
+![tfrmt-frmts.jpg](images/tfrmt-frmts.jpg){width=100%}
 
