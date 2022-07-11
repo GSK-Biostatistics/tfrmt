@@ -107,7 +107,7 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 #' @return a stylized gt object
 #' @export
 #'
-#' #' @section Examples:
+#' @section Examples:
 #'
 #' ```r
 #' library(dplyr)
