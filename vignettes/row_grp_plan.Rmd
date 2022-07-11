@@ -187,6 +187,8 @@ my_tfrmt <- tfrmt(
 print_mock_gt(my_tfrmt, .default = 1:2)
 ```
 
+## Help image/s
+
 <p align="center">
 
 <img src="../man/figures/tfrmt-groups.png" width="100%"/>
