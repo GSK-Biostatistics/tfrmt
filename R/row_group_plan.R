@@ -61,15 +61,22 @@ row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indent
 #'
 #' @param group_val A string or a named list of strings which represent the
 #'   value of group should be when the given frmt is implemented
-#' @param ... element_block() object
+#' @param element_block element_block() object to define the block styling
 #'
 #' @importFrom tidyr expand_grid
 #' @export
-row_grp_structure <- function(group_val = ".default", ...){
-  row_grp_block <- list(...)
+#' @examples
+#'
+#' ## single grouping variable example
+#' row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+#'
+#' ## example with multiple grouping variables
+#' row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+#'
+row_grp_structure <- function(group_val = ".default", element_block){
 
-  if(length(row_grp_block) > 1){
-    stop("Can only handle one format per row_grp_structure function")
+  if(!is_element_block(element_block)){
+    stop("element_block, must be an element_block type")
   }
 
   if(is.list(group_val)){
@@ -84,7 +91,7 @@ row_grp_structure <- function(group_val = ".default", ...){
   structure(
     list(
       group_val = group_val,
-      block_to_apply = row_grp_block),
+      block_to_apply = element_block),
     class = c("row_grp_structure","frmt_table")
   )
 }

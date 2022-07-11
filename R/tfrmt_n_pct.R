@@ -42,7 +42,7 @@ tfrmt_n_pct <- function(n = "n",
     "frmt_combine('{",
     n,
     "} {", pct, "}',",
-    n, "=frmt('xxx'),",
+    n, "=frmt('x'),",
     pct, "=pct_frmt_when)"
   ) %>%
     parse_expr() %>% eval()
