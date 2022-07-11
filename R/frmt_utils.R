@@ -2,6 +2,9 @@
 #'
 #' @param x Object to check
 #' @export
+#' @examples
+#' x1 <- frmt("XXX.XX")
+#' is_frmt(x1)
 #'
 #' @rdname frmt_utils
 is_frmt <- function(x){
@@ -12,6 +15,9 @@ is_frmt <- function(x){
 #'
 #' @param x Object to check
 #' @export
+#' @examples
+#' x2 <- frmt_combine("XXX %","XX,XXX")
+#' is_frmt_combine(x2)
 #'
 #' @rdname frmt_utils
 is_frmt_combine <- function(x){
@@ -22,6 +28,13 @@ is_frmt_combine <- function(x){
 #'
 #' @param x Object to check
 #' @export
+#' @examples
+#' x3 <- frmt_structure(
+#'  group_val = c("group1"),
+#'  label_val = ".default",
+#' frmt("XXX")
+#' )
+#'is_frmt_structure(x3)
 #'
 #' @rdname frmt_utils
 is_frmt_structure <- function(x){
@@ -32,6 +45,9 @@ is_frmt_structure <- function(x){
 #'
 #' @param x Object to check
 #' @export
+#' @examples
+#' x4 <- row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+#' is_row_grp_structure(x4)
 #'
 #' @rdname frmt_utils
 is_row_grp_structure <- function(x){
