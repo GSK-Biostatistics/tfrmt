@@ -160,7 +160,7 @@
 <div class="section level3">
 <h3 id="group-specific">Group-specific<a class="anchor" aria-label="anchor" href="#group-specific"></a>
 </h3>
-<p>For formatting specific values of the group variable, these values are passed to the <code>group</code> argument. Note that the user may have multiple group variables. In the case of multiple group variables, the specifications are to be passed as a named list (named according to the group variables). The following code will format all values where group1=“A” and group2=“a” or “b”, regardless of label, param, or column value:</p>
+<p>For formatting specific values of the group variable, these values are passed to the <code>group</code> argument. Note that the user may have multiple group variables. In the case of multiple group variables, the specifications are to be passed as a named list (named according to the group variables). The following code will format all values where group1=“A” and group2=“B”, regardless of label, param, or column value:</p>
 <p><code>frmt(group = list(group1 = "A", group2 = "B"), label = ".default", frmt("x.xxx"))</code></p>
 </div>
 <div class="section level3">
@@ -171,7 +171,7 @@
 <div class="section level3">
 <h3 id="multiple-specifications">Multiple specifications<a class="anchor" aria-label="anchor" href="#multiple-specifications"></a>
 </h3>
-<p>A user can be as specific as they’d like, by providing any of these in combination. For example, the following code will format values where group1=“A”, group2=“A”, the label variable equals “mylab” and the param variable equals “mean”:</p>
+<p>A user can be as specific as they’d like, by providing any of these in combination. For example, the following code will format values where group1=“A”, group2=“B”, the label variable equals “mylab” and the param variable equals “mean”:</p>
 <p><code>frmt(group = list(group1 = "A", group2 = "B"), label = "mylab", mean = frmt("x.xxx"))</code></p>
 <p><strong>NOTE:</strong> the <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> function provides the ability to create a <code>tfrmt</code> with auto-precision based on the significance of the group/label value.</p>
 </div>
