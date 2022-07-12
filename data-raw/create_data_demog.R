@@ -214,7 +214,8 @@ create_tbl_demog_data <- function(){
              column==81 ~ "Xanomeline High Dose",
              column==99 ~ "Total",
              TRUE ~ column
-           ))
+           )) %>%
+    mutate(column=if_else(column=="p","p-value",column))
 
 
   final_p <- final_0 %>% filter(param=="p"& grp=="cat") %>%
@@ -229,7 +230,7 @@ create_tbl_demog_data <- function(){
 
 }
 
-data_demog <- create_tbl_data_ae()
+data_demog <- create_tbl_demog_data()
 usethis::use_data(data_demog, overwrite = TRUE)
 
 # Temporary Note: data_demog currently differs from demog_data
