@@ -38,6 +38,8 @@
 #' @export
 #' @examples
 #'
+#' library(dplyr)
+#'
 #' ## select col_1 as the first column, remove col_last, then create spanning
 #' ## structures that have multiple levels
 #' spanning_col_plan_ex <- col_plan(
