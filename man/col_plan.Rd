@@ -47,7 +47,6 @@ function to remove un-wanted columns.
 }
 }
 \examples{
-library(dplyr)
 
 ## select col_1 as the first column, remove col_last, then create spanning
 ## structures that have multiple levels

@@ -37,7 +37,6 @@
 #'   defined "column" in the tfrmt.
 #' @export
 #' @examples
-#' library(dplyr)
 #'
 #' ## select col_1 as the first column, remove col_last, then create spanning
 #' ## structures that have multiple levels

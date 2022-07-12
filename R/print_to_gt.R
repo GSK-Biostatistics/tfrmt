@@ -15,7 +15,6 @@
 #' @section Examples:
 #'
 #' ```r
-#' library(dplyr)
 #'
 #' # Create tfrmt specification
 #' tfrmt_spec <- tfrmt(
@@ -110,7 +109,6 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 #' @section Examples:
 #'
 #' ```r
-#' library(dplyr)
 #'
 #' # Create tfrmt specification
 #' tfrmt_spec <- tfrmt(

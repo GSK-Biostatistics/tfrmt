@@ -18,7 +18,9 @@
 #' @export
 #' @examples
 #'
+#' # Set up data
 #' df <- tibble(x = c(20.12,34.54,12.34))
+#'
 #' apply_frmt(
 #'  frmt_def = frmt("XX.X"),
 #'  .data=df,

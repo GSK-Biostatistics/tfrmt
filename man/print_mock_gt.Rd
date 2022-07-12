@@ -27,8 +27,7 @@ Print mock table to GT
 \section{Examples}{
 
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(dplyr)
-
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Create tfrmt specification
 tfrmt_spec <- tfrmt(
   label = label,
