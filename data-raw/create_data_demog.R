@@ -233,5 +233,3 @@ create_tbl_demog_data <- function(){
 data_demog <- create_tbl_demog_data()
 usethis::use_data(data_demog, overwrite = TRUE)
 
-# Temporary Note: data_demog currently differs from demog_data
-

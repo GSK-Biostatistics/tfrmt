@@ -22,10 +22,10 @@ library(tidyr)
 ```
 
 # Demography Table
-For this demography table we are going to use `demog_data`, an example analysis results dataset found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are building a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our table's columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and an additional grouping column, `grp`, which we can use for more complex formatting.
+For this demography table we are going to use `data_demog`, an example analysis results dataset found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are building a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our table's columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and an additional grouping column, `grp`, which we can use for more complex formatting.
 
 ```{r, echo = FALSE}
-head(demog_data)
+head(data_demog)
 ```
 
 The mock we are going to match looks like this:
@@ -71,7 +71,7 @@ tfrmt(
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
 ) %>% 
-  print_mock_gt(demog_data %>% select(-value)) %>% 
+  print_mock_gt(data_demog %>% select(-value)) %>% 
   tab_options(
     container.width = 900
   )
@@ -89,7 +89,7 @@ tfrmt(
   param = param,
   values = value,
   sorting_cols = c(ord1, ord2)) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -121,7 +121,7 @@ tfrmt(
                                                                                  "<0.001" ~ "<0.001",
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
   )) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -155,7 +155,7 @@ tfrmt(
   # remove extra cols
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -164,7 +164,7 @@ tfrmt(
 Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_align_plan` which accepts a series of `element_align`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_align` looks like `element_align(align = c(".",","," "), col = vars(everything()))`. 
 After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change. 
 ```{r}
-demog_data %>% 
+data_demog %>% 
   distinct(rowlbl1,grp)
 ```
 
@@ -209,7 +209,7 @@ tfrmt(
   )
   
   ) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )

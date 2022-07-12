@@ -254,7 +254,7 @@ tfrmt(
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
 ) %>% 
-  print_mock_gt(demog_data %>% select(-value))
+  print_mock_gt(data_demog %>% select(-value))
 ```
 
 
