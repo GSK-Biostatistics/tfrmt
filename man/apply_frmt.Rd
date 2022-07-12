@@ -52,6 +52,7 @@ Apply formatting
 }
 \examples{
 
+library(tibble)
 # Set up data
 df <- tibble(x = c(20.12,34.54,12.34))
 
