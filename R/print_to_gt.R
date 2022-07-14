@@ -242,14 +242,13 @@ cleaned_data_to_gt <- function(.data, tfrmt){
 #' @return gt object
 #' @noRd
 #'
-#' @importFrom gt tab_source_note md
+#' @importFrom gt tab_footnote md
 apply_gt_footnote<- function(gt, footer){
   if(is.null(footer)){
     gt
   } else {
     gt %>%
-      tab_source_note(
-        source_note = md(footer)
+      tab_footnote( footnote = md(footer)
       )
 
   }

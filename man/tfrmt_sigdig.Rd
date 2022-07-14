@@ -91,7 +91,7 @@ tfrmt_sigdig(data = data_input,
           values = value,
           sorting_cols = vars(ord1, ord2, ord3),
           col_plan = col_plan(-starts_with("ord"))) \%>\%
-    print_to_gt(labs_data)
+    print_to_gt(data_labs)
 
 }
 
