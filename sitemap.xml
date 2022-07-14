@@ -52,9 +52,6 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/index.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/ae_data.html</loc>
-  </url>
-  <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/apply_frmt.html</loc>
   </url>
   <url>
@@ -67,10 +64,16 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/demog_data.html</loc>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_ae.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/efficacy_data.html</loc>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_demog.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_efficacy.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_labs.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_block.html</loc>
@@ -89,9 +92,6 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/labs_data.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/layer_tfrmt.html</loc>
