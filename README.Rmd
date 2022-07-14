@@ -84,7 +84,7 @@ For more information about how to build your own tfrmt mocks/tables (like the on
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
-demog_data <- demog_data %>% 
+data_demog <- data_demog %>% 
   select(-value)
 tfrmt <- tfrmt(
   # specify columns in the data
@@ -127,7 +127,7 @@ tfrmt <- tfrmt(
                       -starts_with("ord") )
 ) 
 
-gt_out <- print_mock_gt(tfrmt, demog_data)
+gt_out <- print_mock_gt(tfrmt, data_demog)
 invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
 ```
 
