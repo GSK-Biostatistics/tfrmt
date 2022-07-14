@@ -6,12 +6,17 @@ print_to_ggplot <- function(tfrmt, .data){
   if(!is.data.frame(.data)){
     stop("Requires data`")
   }
+
+  # Find the original data type of column
+  column_name <- quo_name(tfrmt$column[[1]])
+  column_data<-(.data %>%
+    select(!!column_name))[[1]]
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
-    cleaned_data_to_ggplot(tfrmt)
+    cleaned_data_to_ggplot(tfrmt,column_data)
 
 }
 
-cleaned_data_to_ggplot <- function(.data,tfrmt){
+cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
 
   # fill param, column if not provided
   if (quo_is_missing(tfrmt$param)){
@@ -29,14 +34,28 @@ cleaned_data_to_ggplot <- function(.data,tfrmt){
   }
 
   data <- .data %>%
-    pivot_longer(-as_label(tfrmt$label),names_to = "time")
+    pivot_longer(-as_label(tfrmt$label),names_to = "column")
+  column_type <- class(column_data)
+  if(column_type=="factor"){
+    column_levels<-levels(column_data)
+    data$column<-factor(data$column,levels=column_levels)
 
-
-  ggplot(data, aes(x=time, y=label, label = value)) +
+  }
+  if(column_type=="numeric"){
+  ggplot(data, aes(x=as.numeric(column), y=label, label = value)) +
     geom_text(size = 3) +
     xlab("") +
-   # theme_void() +
+    theme_void() +
     theme(axis.text.y = element_text(size = 10, margin = margin(r = 0)),
           panel.spacing = unit(0, "mm"),
           strip.text = element_blank())
+  }else{
+    ggplot(data, aes(x=column, y=label, label = value)) +
+      geom_text(size = 3) +
+      xlab("") +
+      #theme_void() +
+      theme(axis.text.y = element_text(size = 10, margin = margin(r = 0)),
+            panel.spacing = unit(0, "mm"),
+            strip.text = element_blank())
+  }
 }
