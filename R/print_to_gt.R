@@ -248,8 +248,7 @@ apply_gt_footnote<- function(gt, footer){
     gt
   } else {
     gt %>%
-      tab_footnote(
-        source_note = md(footer)
+      tab_footnote( footnote = md(footer)
       )
 
   }
