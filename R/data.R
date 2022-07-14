@@ -14,7 +14,7 @@
 #'   \item{column}{column names}
 #'   \item{value}{values to put in a table}
 #'   }
-"demog_data"
+"data_demog"
 
 
 #' Adverse Events Analysis Results Data
@@ -33,7 +33,7 @@
 #'   \item{ord1}{controls ordering}
 #'   \item{ord2}{more ordering controls}
 #'   }
-"ae_data"
+"data_ae"
 
 #' Efficacy Analysis Results Data
 #'
@@ -50,7 +50,7 @@
 #'   \item{ord1}{controls ordering}
 #'   \item{ord2}{more ordering controls}
 #'   }
-"efficacy_data"
+"data_efficacy"
 
 
 #' Labs Analysis Results Data
@@ -71,4 +71,4 @@
 #'   \item{ord2}{more ordering controls}
 #'   \item{ord3}{more ordering controls}
 #'   }
-"labs_data"
+"data_labs"

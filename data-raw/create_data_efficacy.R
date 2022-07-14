@@ -80,7 +80,7 @@ efficacy_dat <- emm_diff_df %>%
   select(group, label, column, param, value)
 
 # all combined
-efficacy_data <- summ_dat %>%
+data_efficacy <- summ_dat %>%
   bind_rows(dose_resp_p) %>%
   bind_rows(efficacy_dat) %>%
   select(group, label, column, param, value)%>%
@@ -96,5 +96,5 @@ efficacy_data <- summ_dat %>%
   arrange(ord1, ord2)
 
 
-usethis::use_data(efficacy_data, overwrite = TRUE)
+usethis::use_data(data_efficacy, overwrite = TRUE)
 
