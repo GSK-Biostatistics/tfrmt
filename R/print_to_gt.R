@@ -139,13 +139,13 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     align <- NULL
   }
 
-  gt_out <- .data %>%
+gt_out <- .data %>%
     gt(
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
-    apply_gt_spanning_labels(.data) %>%
+    format_gt_column_labels(.data) %>%
     tab_style(
       style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
@@ -221,15 +221,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
                        cells_column_labels(), cells_column_spanners())
     )
 
-
-  # create list of column headers
-    rename_vals=gt_out_final$`_boxhead`$column_label
-    names(rename_vals)=names(gt_out_final$`_data`)
-  # convert column labels to markdown for newlines
-    gt_out_final %>%
-      cols_label(.list=
-                   lapply(rename_vals,md)
-      )
+  gt_out_final
 
 }
 
@@ -255,9 +247,10 @@ apply_gt_footnote<- function(gt, footer){
   }
 }
 
-#' Applies gt spanning labels
+#' Format gt column labels
 #'
-#' Makes a gt objectt and applies the spanning labels if relevent
+#' Makes a gt object and applies the spanning labels if relevant, as well as
+#' markdown formatting of all column labels
 #'
 #' @param .data dataset to convert to a gt
 #' @param tfrmt tfrmt object
@@ -267,9 +260,10 @@ apply_gt_footnote<- function(gt, footer){
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
 #' @importFrom gt cols_label tab_spanner md
-#' @importFrom dplyr as_tibble desc
+#' @importFrom dplyr as_tibble desc coalesce left_join mutate
+#' @importFrom purrr keep
 #'
-apply_gt_spanning_labels <- function(gt_table, .data){
+format_gt_column_labels <- function(gt_table, .data){
 
   spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
   if(length(spanning) > 0){
@@ -280,7 +274,6 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       as_tibble( .name_repair = ~paste0("V", 1:length(.))) %>%
       mutate(cols = spanning) %>%
       pivot_longer(-.data$cols)
-
 
     lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
 
@@ -299,18 +292,30 @@ apply_gt_spanning_labels <- function(gt_table, .data){
         tab_spanner(md(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
     }
 
+    # ensure all columns are represented
+    lowest_lvl <- names(.data) %>%
+      tibble(cols = .) %>%
+      left_join(lowest_lvl) %>%
+      mutate(value = coalesce(value, cols))
+
     renm_vals <- lowest_lvl %>%
       pull(.data$value)
     names(renm_vals) <-lowest_lvl %>%
       pull(.data$cols)
 
-    gt_table <- gt_table %>%
-      cols_label(.list =
-                    renm_vals)
 
+  } else {
+
+    renm_vals <- names(.data)
+    names(renm_vals) <- renm_vals
 
   }
-  gt_table
+
+  # convert lowest level column labels to markdown format
+  gt_table %>%
+    cols_label(.list=
+                 lapply(renm_vals,md))
+
 
 }
 
