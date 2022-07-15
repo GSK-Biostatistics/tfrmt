@@ -190,7 +190,7 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
           arg_val <- as_vars(do.call('vars',arg_call, envir = envir))
 
         }else{
-          arg_val <-as_length_one_quo(do.call('vars', arg_call_list, envir = envir), arg = as.character(arg))
+          arg_val <-as_length_one_quo(do.call('vars', arg_call, envir = envir), arg = as.character(arg))
         }
 
         return(arg_val)
