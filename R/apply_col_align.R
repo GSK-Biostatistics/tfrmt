@@ -174,16 +174,23 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
 #' @noRd
 apply_gt_col_style_plan_widths <- function(gt_table, style_plan){
 
+  style_plan <- style_plan %>%
+    discard(function(x)is.null(x$width))
+
   for(el_style in style_plan){
     if(!is_empty(el_style$width)){
-      cols <- map_chr(el_style[["col"]], as_label)
-      col_width_formula_list <- list()
 
-      for(col in cols){
-        col_width_formula_list[[length(col_width_formula_list) + 1]] <-
-          as.formula(paste0("`",col,"` ~ '",el_style$width,"'"))
-      }
+      col_width_formula_list <- map(el_style[["col"]], function(col){
+        if(is_valid_tidyselect_call(rlang::quo_get_expr(col))){
+          col <- as_label(col)
+        }else{
+          col <- paste0("`",as_label(col),"`")
+        }
+        as.formula(paste0(col," ~ '",el_style$width,"'"))
+      })
+
       gt_table <- cols_width(.data = gt_table,.list = col_width_formula_list)
+
     }
   }
 

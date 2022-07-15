@@ -410,3 +410,99 @@ test_that("Alphanumeric align string supplied",{
   dat_aligned <- suppressWarnings(apply_col_style_plan_alignment_values(dat, plan))
   expect_equal(dat_aligned, dat_aligned_man)
 })
+
+test_that("Col width assignment in gt",{
+
+  raw_dat <- tibble::tribble(
+           ~one,   ~param, ~column, ~ value,
+    "n (%)"    ,      "n",  "trt1",      12,
+    "n (%)"    ,    "pct",  "trt1",      34,
+    "mean"     ,   "mean",  "trt1",    12.3,
+    "sd"       ,     "sd",  "trt1",    4.34,
+    "median"   , "median",  "trt1",      14,
+    "(q1, q3)" ,     "q1",  "trt1",      10,
+    "(q1, q3)" ,     "q3",  "trt1",      20,
+    "n (%)"    ,      "n",  "trt2",      24,
+    "n (%)"    ,    "pct",  "trt2",      58,
+    "mean"     ,   "mean",  "trt2",    15.4,
+    "sd"       ,     "sd",  "trt2",    8.25,
+    "median"   , "median",  "trt2",      16,
+    "(q1, q3)" ,     "q1",  "trt2",      22,
+    "(q1, q3)" ,     "q3",  "trt2",      22,
+    "mean"     ,   "pval","four"  ,   0.0001
+  )
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        frmt_combine("{n} ({pct})",
+                     n = frmt("x"),
+                     pct = frmt("xx%"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        frmt_combine("({q1}, {q3})",
+                     q1 = frmt("xx"),
+                     q3 = frmt("xx"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        pval = frmt_when(
+          "<.001" ~ "<.001",
+          TRUE ~ frmt("x.xxx")
+        )
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        frmt("xx.xx")
+      )
+
+    ),
+    col_style_plan =  col_style_plan(
+      element_style(align = "right", width = 200, col = vars(starts_with("trt"))),
+      element_style(align = c("2","4"), col = trt1),
+      element_style(width = 100, col = four)
+    )
+  )
+
+  ## suppressing warning from alignment using multiple values. Not pertinent to this test
+  suppressWarnings({
+  tfrmt_gt <- print_to_gt(plan, raw_dat)
+  })
+
+  expect_equal(
+    tfrmt_gt$`_boxhead`[,c("var","column_width")],
+    tibble(
+      var = c("one","trt1","trt2","four"),
+      column_width = list(list(""),list("200px"),list("200px"),list("100px"))
+    )
+  )
+
+  tfrmt_gt2 <- plan %>%
+    tfrmt(
+      col_style_plan =  col_style_plan(
+        element_style(align = "right", width = 200, col = starts_with("trt")),
+        element_style(align = c("2","4"), col = trt1),
+        element_style(width = 500, col = c(trt2, one)), # updating trt2 from 200 to 500
+        element_style(width = "50%", col = four)
+      )) %>%
+    print_to_gt(raw_dat) %>%
+    ## suppressing warning from alignment using multiple values. Not pertinent to this test
+    suppressWarnings()
+
+  expect_equal(
+    tfrmt_gt2$`_boxhead`[,c("var","column_width")],
+    tibble(
+      var = c("one","trt1","trt2","four"),
+      column_width = list(list("500px"),list("200px"),list("500px"),list("50%"))
+    )
+  )
+
+})
+
+
