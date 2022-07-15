@@ -66,6 +66,10 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 #'   one character is provided, alignment will be based on the first occurrence
 #'   of any of the characters. For alignment based on white space, leading white
 #'   spaces will be ignored.
+#' @param width Width to apply to the column. Acceptable values include a
+#'   numeric value, or a character string of numbers ending with either "px" or
+#'   "%", indicating the column width is either n pixels across or % of the
+#'   total table width
 #'
 #'
 #' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label
