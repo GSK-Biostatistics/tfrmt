@@ -25,9 +25,13 @@ tbl_dat <- apply_table_frmt_plan(
     column = tfrmt$column,
     mock = mock
   ) %>%
-    tentative_process(apply_col_align_plan, tfrmt$col_align,
-                      tfrmt$column, tfrmt$values,
-                      fail_desc= "Unable to align dataset")
+  tentative_process(
+    apply_col_style_plan_alignment,
+    tfrmt$col_style_plan,
+    tfrmt$column,
+    tfrmt$values,
+    fail_desc = "Failure while aligning dataset"
+  )
 
   ## append span structures to dataset for handling post-this function
   if(!is.null(tfrmt$col_plan$span_structures)){
