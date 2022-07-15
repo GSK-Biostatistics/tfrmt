@@ -1,8 +1,8 @@
 ---
-title: "Column Alignment Plan"
+title: "Column Style Plan"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Column Alignment Plan}
+  %\VignetteIndexEntry{Column Style Plan}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,19 +19,30 @@ library(tfrmt)
 library(dplyr)
 ```
 
-tfrmt offers the ability to align value columns in the following ways:
+tfrmt offers the ability to align value and set column widths. Columns can be aligned in the following ways:
 
 - Left-align
 - Right-align
 - Align on one or more single characters (e.g., decimal alignment)
 
-Alignment is specified via the `col_align_plan`, which accepts a series of `element_align`s as inputs. Note that the `col_align_plan` does not have any `*_structure` objects as inputs, as `*_structure`s are for modifying the *contents* (i.e., text) of the table, while `element_*`s are for modifying *aesthetics*. 
+Column widths are set as either the number of pixels wide they are, or the percentage of the total table with.
 
-Alignment is achieved by padding the values with character spaces; this padding ensures that alignment is robust and agnostic to the output format. 
+Alignment and width is specified via the `col_style_plan`, which accepts a series of `element_style`s as inputs. Note that the `col_style_plan` does not have any `*_structure` objects as inputs, as `*_structure`s are for modifying the *contents* (i.e., text) of the table, while `element_*`s are for modifying *aesthetics*. 
 
-## Alignment examples
+Alignment is achieved by padding the values with character spaces; this padding ensures that alignment is robust and agnostic to the output format. Width is done during post-processing and creation of the table output.
 
-Element aligns have two arguments: the alignment desired and the columns in the final table to be aligned. The column values that are specified are to match the contents of the `column` variable that is specified in the `tfrmt` object. 
+## Element Style
+
+`element_style` has three arguments: the columns in the final table to be aligned,
+the alignment desired, the widths to apply to those columns. In each element, only one of the who (alignment, width), must be applied. Optionally both can be assigned too.
+
+The column values that are specified are to match the contents of the `column` variable that is specified in the `tfrmt` object. When multiple values are provided to `column`, the last value is used as the reference column.
+
+When the `col_style_plan()` is applied to the data, the most recent alignment and width is applied to the data, so be careful when adding new `element_style`'s, as the output may change more than anticipated if the new element is not specific enough. 
+
+## Alignment
+
+### Alignment Examples
 
 Let's take a look at how alignment can be applied to the example below, which contains a variety of different parameters which are formatted differently. 
 ```{r echo = FALSE}
@@ -89,7 +100,7 @@ tfrmt(
   print_to_gt(dat)
 ```
 
-Column alignment can improve this table by making it easier to read. Let's start by left-aligning our p-value column. Notice that by providing a `col_align_plan`, any variables that are not covered in the plan will be left-aligned by default.
+Column alignment can improve this table by making it easier to read. Let's start by left-aligning our p-value column. Notice that by providing a `col_style_plan`, any variables that are not covered in the plan will be left-aligned by default.
 
 ```{r}
 tfrmt(
@@ -118,8 +129,8 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align_plan =  col_align_plan(
-    element_align(align = "left", col = `p-value`))
+  col_style_plan =  col_style_plan(
+    element_style(align = "left", col = `p-value`))
   ) %>% 
   print_to_gt(dat)
 ```
@@ -154,8 +165,8 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align_plan =  col_align_plan(
-    element_align(align = c("."), col = `p-value`))
+  col_style_plan =  col_style_plan(
+    element_style(align = c("."), col = `p-value`))
   ) %>% 
   print_to_gt(dat)
 ```
@@ -189,9 +200,9 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align_plan =  col_align_plan(
-    element_align(align = c("."), col = `p-value`),
-    element_align(align = c(".", ",", " "), col = vars(starts_with("trt"))))
+  col_style_plan =  col_style_plan(
+    element_style(align = c("."), col = `p-value`),
+    element_style(align = c(".", ",", " "), col = vars(starts_with("trt"))))
   ) %>% 
   print_to_gt(dat)
 ```
@@ -225,18 +236,66 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
-  col_align_plan =  col_align_plan(
-    element_align(align = c("."), col = `p-value`),
-    element_align(align = "left", col = trt1),
-    element_align(align = "right", col = trt2))
+  col_style_plan =  col_style_plan(
+    element_style(align = c("."), col = `p-value`),
+    element_style(align = "left", col = trt1),
+    element_style(align = "right", col = trt2))
   ) %>% 
   print_to_gt(dat)
 ```
 
-## Alignment of group and label columns
+### Alignment of group and label columns
 
 At this time, group and label columns will be left aligned by default. The user can adjust the alignment of these columns through gt directly.
 
-## Alignment via `body_plan`
+### Alignment via `body_plan`
 
-It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications  allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become "  9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_align_plan` is the preferred method. 
+It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications  allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become "  9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_style_plan` is the preferred method. 
+
+## Width
+
+Width is either set to a specific value in number of pixels or a percentage of the total table width. These values are specified by passing a character value to the "width" argument of `element_style`, taking the format of "##px" or "##%", where "##" is the number of pixels or percent. "px" indicates the width in pixels, and "%" indicates the width is a percent of the total table width. 
+
+Width can be applied to any of the columns in the table.
+
+### Example
+
+Continuing the example from alignment, we set the widths of the columns in the table.
+Because "label" is output in the table, we can apply the widths to that column as well.
+
+```{r}
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  values = value,
+  sorting_cols = c(ord),
+  col_plan = col_plan(-ord), 
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt("xx", missing = " ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("{mean} ({sd})", 
+                                mean = frmt("xx.x"), 
+                                sd = frmt("xx.xx"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   frmt_combine("[{q1}, {q3}]", 
+                                q1 = frmt("xx.x"), 
+                                q3 = frmt("xx.x"),
+                                missing=" ")),
+    frmt_structure(group_val = ".default", label_val = ".default", 
+                   pval = frmt_when(">0.99" ~ ">0.99",
+                                    "<0.001" ~ "<0.001",
+                                    "<0.05" ~ frmt("x.xxx*"),
+                                    TRUE ~ frmt("x.xxx", missing = "")))
+  ), 
+  col_style_plan =  col_style_plan(
+    element_style(width = "300px", col = label),
+    element_style(align = c("."), width = "100px", col = `p-value`),
+    element_style(align = "left", width = "250px", col = trt1),
+    element_style(align = "right", width = "250px", col = trt2))
+  ) %>% 
+  print_to_gt(dat)
+
+```
