@@ -17,7 +17,7 @@
 #' @param footer footers of the table
 #' @param row_grp_plan plan of the row groups blocking. Takes a `row_grp_plan`
 #' @param body_plan combination and formatting of the input data
-#' @param col_align_plan how to align columns? left, right, decimal
+#' @param col_style_plan how to style columns? including alignment (left, right, character) and width
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns
 #' @param sorting_cols which columns determine sorting of output
@@ -42,7 +42,7 @@ tfrmt <- function(
   footer,
   row_grp_plan, #the style between blocking
   body_plan,
-  col_align_plan,
+  col_style_plan,
   col_plan,
   sorting_cols,
   ...
@@ -113,7 +113,7 @@ tfrmt_find_args <- function(..., env = parent.frame(), parent_env = parent.env(e
 #' @importFrom rlang abort frame_call is_quosure
 #' @importFrom dplyr vars
 #' @importFrom purrr safely
-quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame(), parent_env = parent.env(envir)){
+quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.frame(), parent_env = parent.env(envir), allow_tidy_select = FALSE){
 
   arg_set <- lapply(args, function(arg){
 
@@ -173,17 +173,21 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
       ## if not a var or quo and failed, return informative error message
       if(arg %in% c(as_var_args, as_quo_args)){
 
-        arg_call_list <- as.list(arg_call)
+        arg_call <- trim_vars_quo_c(arg_call)
 
-        ## minor clean up to remove leading function call in arg_call_list
-        ## if the arg_call_list is length > 1
-        if(length(arg_call_list) > 1){
-          arg_call_list <- arg_call_list[-1]
+        ## check if argcall is tidyselect call, give feedback that is invalid if so
+        if(any(map_lgl(arg_call,is_valid_tidyselect_call))){
+          if(!allow_tidy_select){
+            abort(
+              message = "Tidyselect selection helpers are not acceptable to use in this context. Please provide a specific column to use.",
+              class = "invalid_tidyselect_use"
+              )
+          }
         }
 
         if(arg %in% as_var_args){
-          check_var_arg_call_valid(arg_call_list, arg)
-          arg_val <- as_vars(do.call('vars',arg_call_list, envir = envir))
+          check_var_arg_call_valid(arg_call, arg, allow_tidy_select = allow_tidy_select)
+          arg_val <- as_vars(do.call('vars',arg_call, envir = envir))
 
         }else{
           arg_val <-as_length_one_quo(do.call('vars', arg_call_list, envir = envir), arg = as.character(arg))
@@ -211,13 +215,17 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
 }
 
 
-check_var_arg_call_valid <- function(var_list, arg){
+check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE){
 
   var_list_is_name <- sapply(var_list, is.name)
-  if(!all(var_list_is_name)){
+  var_list_is_tidyselect <- sapply(var_list, is_valid_tidyselect_call)
+
+  if(!all(var_list_is_name | (var_list_is_tidyselect & allow_tidy_select))){
+
     new_arg_call <- paste0(
       "vars(",paste(sapply(var_list, as.character),collapse = ","),")"
     )
+
     abort(
       paste0(
         "Entries for `",
@@ -232,6 +240,18 @@ check_var_arg_call_valid <- function(var_list, arg){
     )
   }
 }
+
+
+trim_vars_quo_c <- function(x){
+  x_list <- as.list(x)
+  if(as.character(x_list[[1]]) %in% c("c","quo","vars")){
+    x_list[-1]
+  }else{
+    list(x)
+  }
+}
+
+
 
 #' @importFrom rlang is_quosures
 is_basic_list <- function(x){
