@@ -57,37 +57,43 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 }
 
 
-#' Element Align
+#' Element Style
 #'
+#' @param col Column value to align on from `column` variable.
 #' @param align Alignment to be applied to column. Acceptable values: "left" for
 #'   left alignment, "right" for right alignment", or supply a vector of
 #'   character(s) to align on. For the case of character alignment, if more than
 #'   one character is provided, alignment will be based on the first occurrence
 #'   of any of the characters. For alignment based on white space, leading white
 #'   spaces will be ignored.
-#' @param col Column value to align on from `column` variable.
 #'
-#' @details Only supports alignment of data value columns (values found in the `column` column). Row group and label
+#'
+#' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label
 #'   columns are left-aligned by default.
 #'
 #' @importFrom purrr map
 #'
-#' @seealso [col_align_plan()] for more information on how to combine
-#'   element_align()'s together to form a plan.
+#' @seealso [col_style_plan()] for more information on how to combine
+#'   element_style()'s together to form a plan.
 #'
 #' @export
 #' @rdname theme_element
-element_align <- function(align = "left",
-                          col = vars()){
+element_style <- function( col = vars(),
+                           align = "left",
+                           width = NULL
+                         ){
 
-  cols <- quo_get("col", as_var_args = "col") %>% map(~as_vars(.x))
+  cols <- quo_get("col", as_var_args = "col", allow_tidy_select = TRUE)$col
+
+  width <- validate_width_units(width)
 
   structure(
-    c(
-      list(align = align),
-      cols
-      ),
-    class = c("element_align", "element")
+    list(
+      col = cols,
+      align = align,
+      width = width
+    ),
+    class = c("element_style", "element")
   )
 }
 
@@ -97,8 +103,8 @@ element_align <- function(align = "left",
 #' @param x Object to check
 #'
 #' @noRd
-is_element_align <- function(x){
-  inherits(x, "element_align")
+is_element_style <- function(x){
+  inherits(x, "element_style")
 }
 
 
