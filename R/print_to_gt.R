@@ -146,6 +146,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
     apply_gt_spanning_labels(.data) %>%
+    apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
       style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
