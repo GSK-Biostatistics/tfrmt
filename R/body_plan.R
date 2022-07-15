@@ -14,7 +14,7 @@
 #'
 #' @examples
 #'
-#'   example_tfrmt<- tfrmt(
+#'   tfrmt_spec<- tfrmt(
 #'       title = "Table Title",
 #'       body_plan = body_plan(
 #'         frmt_structure(
