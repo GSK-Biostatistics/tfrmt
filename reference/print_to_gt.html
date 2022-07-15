@@ -89,6 +89,38 @@
 
 <p>a stylized gt object</p>
     </div>
+    <div class="section level2">
+    <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+    
+
+
+<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co"># Create tfrmt specification</span></span>
+<span><span class="va">tfrmt_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>  column <span class="op">=</span> <span class="va">column</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  value<span class="op">=</span><span class="va">value</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
+<span>                     <span class="st">"{count} {percent}"</span>,</span>
+<span>                     count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span>,</span>
+<span>                     percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"==100"</span><span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
+<span>                                         <span class="st">"==0"</span><span class="op">~</span> <span class="st">""</span>,</span>
+<span>                                         <span class="st">"TRUE"</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x%)"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create data</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">crossing</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"label 1"</span>, <span class="st">"label 2"</span><span class="op">)</span>,</span>
+<span>               column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"placebo"</span>, <span class="st">"trt1"</span><span class="op">)</span>,</span>
+<span>               param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"percent"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>value<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>,<span class="fl">19</span>,<span class="fl">2400</span><span class="op">/</span><span class="fl">48</span>,<span class="fl">1900</span><span class="op">/</span><span class="fl">38</span>,<span class="fl">5</span>,<span class="fl">1</span>,<span class="fl">500</span><span class="op">/</span><span class="fl">48</span>,<span class="fl">100</span><span class="op">/</span><span class="fl">38</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">tfrmt_spec</span>,<span class="va">df</span><span class="op">)</span></span>
+<span></span></code></pre><p></p></div>
+<p><img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png" style="width:50%;"></p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

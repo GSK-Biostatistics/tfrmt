@@ -165,6 +165,72 @@ columns</p></dd>
 
 </dl></div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tfrmt_spec</span> <span class="op">&lt;-</span> <span class="fu">tfrmt</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="va">label</span>,</span></span>
+<span class="r-in"><span>  column <span class="op">=</span> <span class="va">column</span>,</span></span>
+<span class="r-in"><span>  param <span class="op">=</span> <span class="va">param</span>,</span></span>
+<span class="r-in"><span>  values<span class="op">=</span><span class="va">value</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tfrmt_spec</span> <span class="op">&lt;-</span> <span class="fu">tfrmt</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="va">label</span>,</span></span>
+<span class="r-in"><span>  column <span class="op">=</span> <span class="va">column</span>,</span></span>
+<span class="r-in"><span>  param <span class="op">=</span> <span class="va">param</span>,</span></span>
+<span class="r-in"><span>  values<span class="op">=</span><span class="va">value</span>,</span></span>
+<span class="r-in"><span><span class="co"># Set the formatting for values</span></span></span>
+<span class="r-in"><span>  body_plan <span class="op">=</span> <span class="fu"><a href="body_plan.html">body_plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{n} {pct}"</span>,</span></span>
+<span class="r-in"><span>                                                                              n <span class="op">=</span> <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                                                              pct <span class="op">=</span> <span class="fu"><a href="frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"==100"</span> <span class="op">~</span> <span class="st">"(100%)"</span>,</span></span>
+<span class="r-in"><span>                                                                                              <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>                                                                                              <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="co"># Specify column alignment plan</span></span></span>
+<span class="r-in"><span>  col_align <span class="op">=</span> <span class="fu"><a href="col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">","</span>,<span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tfrmt_spec</span> <span class="op">&lt;-</span> <span class="fu">tfrmt</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  group <span class="op">=</span> <span class="va">group</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="va">label</span>,</span></span>
+<span class="r-in"><span>  column <span class="op">=</span> <span class="va">column</span>,</span></span>
+<span class="r-in"><span>  param <span class="op">=</span> <span class="va">param</span>,</span></span>
+<span class="r-in"><span>  values<span class="op">=</span><span class="va">value</span>,</span></span>
+<span class="r-in"><span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># specify value formatting</span></span></span>
+<span class="r-in"><span>  body_plan <span class="op">=</span> <span class="fu"><a href="body_plan.html">body_plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{n} {pct}"</span>,</span></span>
+<span class="r-in"><span>                                                                                n <span class="op">=</span> <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                                                                pct <span class="op">=</span> <span class="fu"><a href="frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>                                                                                                <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>                                                                                                <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">"n"</span>, <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean"</span>, <span class="st">"Median"</span>, <span class="st">"Min"</span>,<span class="st">"Max"</span><span class="op">)</span>, <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx.x"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">"SD"</span>, <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx.xx"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, p <span class="op">=</span> <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>,<span class="st">"&lt;65 yrs"</span>,<span class="st">"&lt;12 months"</span>,<span class="st">"&lt;25"</span><span class="op">)</span>, p <span class="op">=</span> <span class="fu"><a href="frmt.html">frmt_when</a></span><span class="op">(</span><span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span></span>
+<span class="r-in"><span>                                                                                                          <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span></span>
+<span class="r-in"><span>                                                                                                          <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># remove extra cols</span></span></span>
+<span class="r-in"><span>  col_plan <span class="op">=</span> <span class="fu"><a href="col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">grp</span>,</span></span>
+<span class="r-in"><span>                      <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span> <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Specify column alignment plan</span></span></span>
+<span class="r-in"><span>  col_align_plan <span class="op">=</span> <span class="fu"><a href="col_align_plan.html">col_align_plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="theme_element.html">element_align</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">","</span>,<span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Specify row group plan</span></span></span>
+<span class="r-in"><span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    label_loc <span class="op">=</span> <span class="fu"><a href="element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"column"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
