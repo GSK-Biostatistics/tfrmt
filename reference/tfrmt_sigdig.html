@@ -171,27 +171,26 @@ matching <code>sigdig</code> or the supplied group/label variable) will be disre
     
 
 
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">data_input</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">sig_input</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group1</span>,   <span class="op">~</span><span class="va">group2</span>, <span class="op">~</span><span class="va">sigdig</span>,</span>
 <span>  <span class="st">"CHEMISTRY"</span>,   <span class="st">".default"</span>, <span class="fl">3</span>,</span>
 <span>  <span class="st">"CHEMISTRY"</span>,   <span class="st">"ALBUMIN"</span>,  <span class="fl">1</span>,</span>
 <span>  <span class="st">"CHEMISTRY"</span>,   <span class="st">"CALCIUM"</span>,   <span class="fl">1</span>,</span>
 <span>  <span class="st">".default"</span>,    <span class="st">".default"</span>,  <span class="fl">2</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_input</span>,</span>
-<span>      group <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">group1</span>, <span class="va">group2</span><span class="op">)</span>,</span>
-<span>      label <span class="op">=</span> <span class="va">rowlbl</span>,</span>
-<span>      param_defaults <span class="op">=</span> <span class="fu"><a href="../reference/param_set.html">param_set</a></span><span class="op">(</span><span class="st">"[{n}]"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>column <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">col1</span>, <span class="va">col2</span><span class="op">)</span>,</span>
-<span>          param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>          values <span class="op">=</span> <span class="va">value</span>,</span>
-<span>          sorting_cols <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span>, <span class="va">ord3</span><span class="op">)</span>,</span>
-<span>          col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_labs</span><span class="op">)</span></span>
-<span></span></code></pre><p></p></div>
-
+<span><span class="co"># Subset data for the example</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">data_labs</span>, <span class="va">group2</span> <span class="op">==</span> <span class="st">"BASOPHILS"</span>, <span class="va">col1</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Xanomeline Low Dose"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sig_input</span>,</span>
+<span>             group <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">group1</span>, <span class="va">group2</span><span class="op">)</span>,</span>
+<span>             label <span class="op">=</span> <span class="va">rowlbl</span>,</span>
+<span>             param_defaults <span class="op">=</span> <span class="fu"><a href="../reference/param_set.html">param_set</a></span><span class="op">(</span><span class="st">"[{n}]"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>column <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">col1</span>, <span class="va">col2</span><span class="op">)</span>,</span>
+<span>        param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>        values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>        sorting_cols <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span>, <span class="va">ord3</span><span class="op">)</span>,</span>
+<span>        col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span></code></pre><p></p></div>
 <p><img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png" style="width:100%;"></p>
     </div>
 
