@@ -23,6 +23,15 @@ Element Align
 Only supports alignment of data value columns (values found in the \code{column} column). Row group and label
 columns are left-aligned by default.
 }
+\examples{
+
+ plan <- col_align_plan(
+    element_align(align = "left", col = "my_var"),
+    element_align(align = "right", col = vars(four)),
+    element_align(align = c(".", ",", " "), col = vars(two, three))
+   )
+
+}
 \seealso{
 \code{\link[=col_align_plan]{col_align_plan()}} for more information on how to combine
 element_align()'s together to form a plan.

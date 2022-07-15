@@ -16,6 +16,17 @@
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove
 #' @importFrom dplyr if_else case_when tibble
 #' @export
+#' @examples
+#'
+#' library(tibble)
+#' library(dplyr)
+#' # Set up data
+#' df <- tibble(x = c(20.12,34.54,12.34))
+#'
+#' apply_frmt(
+#'  frmt_def = frmt("XX.X"),
+#'  .data=df,
+#'  values=quo(x))
 #'
 #' @rdname apply_frmt
 apply_frmt <- function(frmt_def, .data, values, mock = FALSE, ...){

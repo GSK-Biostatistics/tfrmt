@@ -11,10 +11,10 @@
 #'
 #' @return a stylized gt object
 #' @export
-#' @examples
-#' \dontrun{
 #'
-#' library(dplyr)
+#' @section Examples:
+#'
+#' ```r
 #'
 #' # Create tfrmt specification
 #' tfrmt_spec <- tfrmt(
@@ -33,7 +33,12 @@
 #'
 #' # Print mock table using default
 #' print_mock_gt(tfrmt = tfrmt_spec)
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png\" style=\"width:50\\%;\">"`
+#' }}
 #'
+#' ```r
 #' # Create mock data
 #' df <- crossing(label = c("label 1", "label 2", "label 3"),
 #'                column = c("placebo", "trt1", "trt2"),
@@ -41,8 +46,12 @@
 #'
 #' # Print mock table using mock data
 #' print_mock_gt(tfrmt_spec, df)
+#' ```
 #'
-#' }
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png\" style=\"width:50\\%;\">"`
+#' }}
+#'
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
 #' @importFrom tidyselect everything eval_select
@@ -96,6 +105,40 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 #'
 #' @return a stylized gt object
 #' @export
+#'
+#' @section Examples:
+#'
+#' ```r
+#'
+#' # Create tfrmt specification
+#' tfrmt_spec <- tfrmt(
+#'   label = label,
+#'   column = column,
+#'   param = param,
+#'   value=value,
+#'   body_plan = body_plan(
+#'     frmt_structure(group_val = ".default", label_val = ".default",
+#'                    frmt_combine(
+#'                      "{count} {percent}",
+#'                      count = frmt("xxx"),
+#'                      percent = frmt_when("==100"~ frmt(""),
+#'                                          "==0"~ "",
+#'                                          "TRUE" ~ frmt("(xx.x%)"))))
+#'   ))
+#'
+#' # Create data
+#' df <- crossing(label = c("label 1", "label 2"),
+#'                column = c("placebo", "trt1"),
+#'                param = c("count", "percent")) %>%
+#'       mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'
+#' print_to_gt(tfrmt_spec,df)
+#'
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" style=\"width:50\\%;\">"`
+#' }}
+#'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
 #' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data){

@@ -24,6 +24,21 @@ suppress group values from being printed.}
 \description{
 Element Row Group Location
 }
+\examples{
+
+tfrmt_spec <- tfrmt(
+  group = c(grp1, grp2),
+  label = label,
+  param = param,
+  values = value,
+  column = column,
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+  )
+)
+
+}
 \seealso{
 \code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group
 structures, \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group

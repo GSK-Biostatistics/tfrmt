@@ -19,7 +19,7 @@ Remap group values in a tfrmt
 }
 \examples{
 
-tfrmt1 <- tfrmt(
+tfrmt_spec <- tfrmt(
     group = c(group1, group2),
     body_plan  = body_plan(
       frmt_structure(
@@ -34,7 +34,7 @@ tfrmt1 <- tfrmt(
        )
     ))
 
-tfrmt1 \%>\%
+tfrmt_spec \%>\%
   update_group(New_Group = group1)
 
 }
