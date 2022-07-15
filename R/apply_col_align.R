@@ -14,7 +14,7 @@
 #' @importFrom dplyr mutate across pull tibble
 #' @importFrom stringr str_dup str_c str_trim
 #' @noRd
-apply_col_align <- function(col, align){
+apply_col_alignment <- function(col, align){
 
   if (!all(align %in% c("left","right"))){
 
@@ -64,10 +64,10 @@ apply_col_align <- function(col, align){
 }
 
 
-#' Apply column alignment plan
+#' Apply column style plan - alignment
 #'
 #' @param .data data
-#' @param align_plan col_align_plan object
+#' @param style_plan col_style_plan object
 #' @param column symbolic list of columns
 #' @param value symbolic value column
 #' @importFrom dplyr mutate across select tibble group_by slice n filter cur_column pull ungroup
@@ -79,7 +79,9 @@ apply_col_align <- function(col, align){
 #' @importFrom forcats fct_inorder
 #'
 #' @noRd
-apply_col_align_plan <- function(.data, align_plan, column, value){
+apply_col_style_plan_alignment <- function(.data, style_plan, column, value){
+
+  browser()
 
   last_col <- column[[length(column)]]
 
@@ -92,13 +94,13 @@ apply_col_align_plan <- function(.data, align_plan, column, value){
     as_tibble_row()
 
 
-  selections <- align_plan %>%
+  selections <- style_plan %>%
     map(function(x) list_modify(x, col_checked = safely(select)(dummy_dat, !!!x$col)))
 
 
   map(selections, function(x){
     if(!is.null(x$col_checked$error)){
-      stop(paste0("Variable Specified in element_align doesn't exist in the supplied dataset. Please check the tfrmt and try again."),
+      stop(paste0("Variable Specified in element_style doesn't exist in the supplied dataset. Please check the tfrmt and try again."),
            call. = FALSE)
     }
   })
@@ -120,11 +122,40 @@ apply_col_align_plan <- function(.data, align_plan, column, value){
     map_dfr(function(x){
       if(!is.null(x$align[[1]])){
       x <-  x %>%
-          mutate(!!value := apply_col_align(!!value, x$align[[1]]))
+          mutate(!!value := apply_col_alignment(!!value, x$align[[1]]))
       }
       x
     }) %>%
     select(-.data$align) %>%
     mutate(across(c(!!!column), as.character))
+}
+
+
+#' Apply column style plan - alignment
+#'
+#' @param gt_table gt object
+#' @param style_plan col_style_plan object
+#'
+#' @importFrom gt cols_width
+#' @importFrom rlang is_empty
+#' @importFrom stats as.formula
+apply_gt_col_style_plan_widths <- function(gt_table, style_plan){
+
+
+  for(el_style in style_plan){
+    if(!is_empty(el_style$width)){
+      cols <- map_chr(el_style[["col"]], as_label)
+      col_width_formula_list <- list()
+
+      for(col in cols){
+        col_width_formula_list[[length(col_width_formula_list) + 1]] <-
+          as.formula(paste0("`",col,"` ~ '",el_style$width,"'"))
+      }
+      gt_table <- cols_width(.data = gt_table,.list = col_width_formula_list)
+    }
+  }
+
+  gt_table
+
 }
 
