@@ -79,13 +79,18 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 #' @export
 #' @rdname theme_element
 element_style <- function( col = vars(),
-                           align = "left",
+                           align = NULL,
                            width = NULL
                          ){
 
   cols <- quo_get("col", as_var_args = "col", allow_tidy_select = TRUE)$col
 
   width <- validate_width_units(width)
+
+  if(is.null(width) & is.null(align)){
+    abort("Alignment or column width definition must be applied to create this element_style",
+          class = "missing_element_style_value")
+  }
 
   structure(
     list(
