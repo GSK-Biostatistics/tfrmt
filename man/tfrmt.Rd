@@ -16,7 +16,7 @@ tfrmt(
   footer,
   row_grp_plan,
   body_plan,
-  col_align_plan,
+  col_style_plan,
   col_plan,
   sorting_cols,
   ...
@@ -45,7 +45,7 @@ tfrmt(
 
 \item{body_plan}{combination and formatting of the input data}
 
-\item{col_align_plan}{how to align columns? left, right, decimal}
+\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width}
 
 \item{col_plan}{a col_plan object which is used to select, rename, and nest
 columns}

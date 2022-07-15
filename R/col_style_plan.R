@@ -36,8 +36,8 @@ col_style_plan <- function(...){
 }
 
 
-#' @importFrom stringt str_remove
-#' @improtFrom rlang abort
+#' @importFrom stringr str_remove
+#' @importFrom rlang abort
 validate_width_units <- function(width){
 
   if(is.null(width)){

@@ -170,6 +170,8 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
 #' @importFrom gt cols_width
 #' @importFrom rlang is_empty
 #' @importFrom stats as.formula
+#'
+#' @noRd
 apply_gt_col_style_plan_widths <- function(gt_table, style_plan){
 
   for(el_style in style_plan){
