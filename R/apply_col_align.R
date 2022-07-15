@@ -67,13 +67,11 @@ apply_col_alignment <- function(col, align){
 #' Apply column style plan - alignment
 #'
 #' @param .data data
-#' @param style_plan col_style_plan object
-#' @param column symbolic list of columns
-#' @param value symbolic value column
+#' @param tfrmt_obj tfrmt object
 #' @importFrom dplyr mutate across select tibble group_by slice n filter cur_column pull ungroup
 #' @importFrom tidyr unnest
 #' @importFrom tidyselect everything
-#' @importFrom purrr safely list_modify map_dfr
+#' @importFrom purrr map map_dfr discard
 #' @importFrom rlang as_name
 #' @importFrom tibble as_tibble_row
 #' @importFrom forcats fct_inorder
@@ -81,7 +79,20 @@ apply_col_alignment <- function(col, align){
 #' @noRd
 apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
 
+
   style_plan <- tfrmt_obj$col_style_plan
+
+  if(is.null(style_plan)){
+    return(.data)
+  }
+
+  alignment_style_plan <- style_plan %>%
+    discard(function(x)is.null(x$align))
+
+  if(length(alignment_style_plan) == 0){
+    return(.data)
+  }
+
   column <- tfrmt_obj$column
   values <- tfrmt_obj$values
 
@@ -95,8 +106,7 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
 
   ## allow identify alignment to which columns (where assigned)
 
-  selections <- style_plan %>%
-    discard(function(x)is.null(x$align)) %>%
+  selections <-  alignment_style_plan %>%
     map(function(x) {
 
       ## check if selection applies to col vars or alternate columns
@@ -161,7 +171,6 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
 #' @importFrom rlang is_empty
 #' @importFrom stats as.formula
 apply_gt_col_style_plan_widths <- function(gt_table, style_plan){
-
 
   for(el_style in style_plan){
     if(!is_empty(el_style$width)){
