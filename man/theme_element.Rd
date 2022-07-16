@@ -30,10 +30,11 @@ columns are left-aligned by default.
 }
 \examples{
 
- plan <- col_align_plan(
-    element_align(align = "left", col = "my_var"),
-    element_align(align = "right", col = vars(four)),
-    element_align(align = c(".", ",", " "), col = vars(two, three))
+ plan <- col_style_plan(
+    element_style(align = "left", width = 100, col = "my_var"),
+    element_style(align = "right", width = "200px", col = vars(four)),
+    element_style(align = c(".", ",", " "), col = vars(two, three)),
+    element_style(width = "25\%", col = c(two, three))
    )
 
 }

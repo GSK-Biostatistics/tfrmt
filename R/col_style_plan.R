@@ -15,7 +15,7 @@
 #'     element_style(align = c(".", ",", " "), col = vars(two, three))
 #'    )
 #'
-#' @seealso [element_align()] for more information on how to specify how to and which columns to align.
+#' @seealso [element_style()] for more information on how to specify how to and which columns to align.
 #'
 #' @export
 #'

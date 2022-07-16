@@ -26,5 +26,5 @@ right or on a specific character(s).
 
 }
 \seealso{
-\code{\link[=element_align]{element_align()}} for more information on how to specify how to and which columns to align.
+\code{\link[=element_style]{element_style()}} for more information on how to specify how to and which columns to align.
 }
