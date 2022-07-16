@@ -19,7 +19,7 @@ library(tfrmt)
 library(dplyr)
 ```
 
-The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labeling and ordering. Similar to the column alignment plan (`col_align_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like a glorified version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion.
+The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labeling and ordering. Similar to the column styling plan (`col_style_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like a glorified version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion.
 
 The specification and behavior of the `col_plan` is dependent on the number of column variables that are provided to the tfrmt:
 

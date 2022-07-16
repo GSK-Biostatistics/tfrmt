@@ -133,7 +133,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   }
 
 
-  if (!is.null(tfrmt$col_align)){
+  if (!is.null(tfrmt$col_style_plan)){
     align <- "left"
   } else {
     align <- NULL

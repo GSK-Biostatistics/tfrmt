@@ -184,8 +184,8 @@ study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>%
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
     
     ## alisgnment of columns
-    col_align = col_align_plan(
-      element_align(align = c(".",","," "), col = vars(starts_with("p_")))
+    col_style_plan = col_style_plan(
+      element_style(align = c(".",","," "), col = vars(starts_with("p_")))
     ),
     
     ## remove order columns from final table
