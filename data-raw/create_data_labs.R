@@ -92,7 +92,7 @@ hema <- map_dfr(sort(unique(adlbh$PARAM)), test_summary, adlbh) %>%
   mutate(group = "HEMATOLOGY")
 
 # combine
-labs_data <- bind_rows(chem, hema) %>%
+data_labs <- bind_rows(chem, hema) %>%
   pivot_longer(c(n, contains("mean"), contains("sd")), names_to = "name", values_to = "value") %>%
   separate(name, c("param_val", "column"), sep= "_", remove = FALSE, fill = "right") %>%
   mutate(column = coalesce(column, name)) %>%
@@ -104,9 +104,9 @@ labs_data <- bind_rows(chem, hema) %>%
          ord3 = as.numeric(rowlbl)) %>%
   mutate(across(where(is.factor), as.character))
 
-levels(labs_data$rowlbl) <- c("Bsln", "Wk 2", "Wk 4", "Wk 6", "Wk 8", "Wk 12",
+levels(data_labs$rowlbl) <- c("Bsln", "Wk 2", "Wk 4", "Wk 6", "Wk 8", "Wk 12",
                               "Wk 16", "Wk 20", "Wk 24", "Wk 26", "End[1]")
 
 
 # save
-usethis::use_data(labs_data, overwrite = TRUE)
+usethis::use_data(data_labs, overwrite = TRUE)

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup , message=FALSE, warning=FALSE}
 library(tfrmt)
 library(dplyr)
 library(gt)
@@ -220,7 +220,7 @@ See how this results in the same table as above:
 ```{r tfrmt-template-table}
 
 ## filter to keep only AEs with >10% prevalence in the High Dose group
-ae_data2 <- ae_data %>% 
+data_ae2 <- data_ae %>% 
   group_by(AEBODSYS, AETERM) %>% 
   mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
   ungroup %>% 
@@ -229,7 +229,7 @@ ae_data2 <- ae_data %>%
   unite("treatment", c(col2, col1), sep = "-")
 
 study_ae_tfrmt_multi_layer %>% 
-  print_to_gt(ae_data2) %>% 
+  print_to_gt(data_ae2) %>% 
   tab_options(
     container.width = 1000
   )
@@ -330,7 +330,7 @@ tfrmt(
     )
     
   ) %>% 
-  print_to_gt(ae_data2) %>% 
+  print_to_gt(data_ae2) %>% 
   tab_options(
     container.width = 1000
   )

@@ -11,13 +11,13 @@
 sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 
   if (is.na(sigdig)){
-    frmted_string <- "xxx"
+    frmted_string <- "x"
   } else {
     frmted_dec <- str_dup("x", sigdig)
     if (!frmted_dec==""){
       frmted_dec <- paste0(".", frmted_dec)
     }
-    frmted_string <- paste0("xxx", frmted_dec)
+    frmted_string <- paste0("x", frmted_dec)
   }
 
   if (is.na(single_glue_to_frmt)){
@@ -147,30 +147,34 @@ param_set <- function(...){
 #' - If any group variable is provided, any leftover columns (i.e. not
 #' matching `sigdig` or the supplied group/label variable) will be disregarded.
 #'
-#' @examples
-#' \dontrun{
+#' @section Examples:
 #'
-#' data_input <- tibble::tribble(
+#' ```r
+#' sig_input <- tibble::tribble(
 #'   ~group1,   ~group2, ~sigdig,
 #'   "CHEMISTRY",   ".default", 3,
 #'   "CHEMISTRY",   "ALBUMIN",  1,
 #'   "CHEMISTRY",   "CALCIUM",   1,
 #'   ".default",    ".default",  2
-#'   )
+#' )
 #'
+#' # Subset data for the example
+#' data <- dplyr::filter(data_labs, group2 == "BASOPHILS", col1 %in% c("Placebo", "Xanomeline Low Dose"))
+#' tfrmt_sigdig(data = sig_input,
+#'              group = vars(group1, group2),
+#'              label = rowlbl,
+#'              param_defaults = param_set("[{n}]" = NA)) %>%
+#'   tfrmt(column = vars(col1, col2),
+#'         param = param,
+#'         values = value,
+#'         sorting_cols = vars(ord1, ord2, ord3),
+#'         col_plan = col_plan(-starts_with("ord"))) %>%
+#'   print_to_gt(.data = data)
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png\" style=\"width:100\\%;\">"`
+#' }}
 #'
-#' tfrmt_sigdig(data = data_input,
-#'       group = vars(group1, group2),
-#'       label = rowlbl,
-#'       param_defaults = param_set("[{n}]" = NA)) %>%
-#'     tfrmt(column = vars(col1, col2),
-#'           param = param,
-#'           values = value,
-#'           sorting_cols = vars(ord1, ord2, ord3),
-#'           col_plan = col_plan(-starts_with("ord"))) %>%
-#'     print_to_gt(labs_data)
-#'
-#' }
 #'
 #' @export
 #'

@@ -22,10 +22,10 @@ library(tidyr)
 ```
 
 # Demography Table
-For this demography table we are going to use `demog_data`, an example analysis results dataset found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are building a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our table's columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and an additional grouping column, `grp`, which we can use for more complex formatting.
+For this demography table we are going to use `data_demog`, an example analysis results dataset found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are building a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our table's columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and an additional grouping column, `grp`, which we can use for more complex formatting.
 
 ```{r, echo = FALSE}
-head(demog_data)
+head(data_demog)
 ```
 
 The mock we are going to match looks like this:
@@ -71,7 +71,7 @@ tfrmt(
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
 ) %>% 
-  print_mock_gt(demog_data %>% select(-value)) %>% 
+  print_mock_gt(data_demog %>% select(-value)) %>% 
   tab_options(
     container.width = 900
   )
@@ -89,7 +89,7 @@ tfrmt(
   param = param,
   values = value,
   sorting_cols = c(ord1, ord2)) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -121,7 +121,7 @@ tfrmt(
                                                                                  "<0.001" ~ "<0.001",
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
   )) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -155,7 +155,7 @@ tfrmt(
   # remove extra cols
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -164,7 +164,7 @@ tfrmt(
 Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `element_style`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_style` looks like `element_style(align = c(".",","," "), col = vars(everything()))`. 
 After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change. 
 ```{r}
-demog_data %>% 
+data_demog %>% 
   distinct(rowlbl1,grp)
 ```
 
@@ -209,7 +209,7 @@ tfrmt(
   )
   
   ) %>% 
-  print_to_gt(demog_data) %>% 
+  print_to_gt(data_demog) %>% 
   tab_options(
     container.width = 900
   )
@@ -218,12 +218,12 @@ tfrmt(
 
 # AE table
 
-For the adverse events (AE) table, we will use the `ae_data` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns; these can be used in lieu of a `col_plan` with `span_structures()`, if desired. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
+For the adverse events (AE) table, we will use the `data_ae` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns; these can be used in lieu of a `col_plan` with `span_structures()`, if desired. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
 
 <details>
   <summary>Expand for the code used to produce this subset</summary>
   ```{r}
-  ae_data2 <- ae_data %>% 
+  data_ae2 <- data_ae %>% 
   group_by(AEBODSYS, AETERM) %>% 
   mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
   ungroup %>% 
@@ -235,7 +235,7 @@ For the adverse events (AE) table, we will use the `ae_data` analysis results da
 
 
 ```{r, echo=FALSE}
-head(ae_data2)
+head(data_ae2)
 ```
 
 The mock we are going to match looks like this:
@@ -266,7 +266,7 @@ fmt_spec <- tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "--")))
   ), col_plan = col_plan(-starts_with("ord")))
 
-ae_data2 %>%  
+data_ae2 %>%  
   select(-value) %>% 
   arrange(ord1, ord2 ) %>% 
   print_mock_gt(fmt_spec, . )  %>% 
@@ -288,7 +288,7 @@ tfrmt(
   param = param,
   values = value,
   sorting_cols = c(ord1, ord2)) %>% 
-  print_to_gt(ae_data2) %>% 
+  print_to_gt(data_ae2) %>% 
   tab_options(
     container.width = 1000
   )
@@ -322,7 +322,7 @@ tfrmt(
                                     "<0.05" ~ frmt("x.xxx*"),
                                     TRUE ~ frmt("x.xxx", missing ="--")))
   )) %>% 
-  print_to_gt(., ae_data2) %>% 
+  print_to_gt(., data_ae2) %>% 
   tab_options(
     container.width = 1000
   )
@@ -360,7 +360,7 @@ tfrmt(
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
   ) %>% 
-  print_to_gt(ae_data2) %>% 
+  print_to_gt(data_ae2) %>% 
   tab_options(
     container.width = 1000
   )
@@ -404,7 +404,7 @@ tfrmt(
     element_style(align = c(".",","," "), col = vars(starts_with("p_")))
   )
   ) %>% 
-  print_to_gt(ae_data2) %>% 
+  print_to_gt(data_ae2) %>% 
   tab_options(
     container.width = 1000
   )
@@ -453,7 +453,7 @@ tfrmt(
     -starts_with("ord")
   )
   ) %>% 
-  print_to_gt(ae_data2)  %>% 
+  print_to_gt(data_ae2)  %>% 
   tab_options(
     container.width = 1000
   )
@@ -464,7 +464,7 @@ tfrmt(
 For better control over our column labels, we can provide a single column in lieu of the two columns. This allows us to make use of `col_plan`'s `span_structure`s to define the column labels and spanners:
 
 ```{r }
-ae_data3 <- ae_data2 %>% 
+data_ae3 <- data_ae2 %>% 
   unite("combined_col", c(col2, col1), sep = "-")
 
 tfrmt(
@@ -525,7 +525,7 @@ tfrmt(
     )
   )
   ) %>% 
-  print_to_gt(ae_data3)  %>% 
+  print_to_gt(data_ae3)  %>% 
   tab_options(
     container.width = 1000
   )
@@ -536,12 +536,12 @@ Our AE table is now complete!
 
 # Efficacy
 
-For this example, we will use the `efficacy_data` dataset, an example analysis results dataset found in the package, which is based on the CDISC pilot data for the ADAS-Cog(11) score. The goal is to recreate table 14-3.01 from the CDISC pilot. 
+For this example, we will use the `data_efficacy` dataset, an example analysis results dataset found in the package, which is based on the CDISC pilot data for the ADAS-Cog(11) score. The goal is to recreate table 14-3.01 from the CDISC pilot. 
 
 This data is relatively simple in that it contains only 1 `group` column and `column` column, but it adds complexity in that multiple analyses are stacked together - summary statistics of different values at different time points, and the results of several different ANCOVA models. Multiple treatment groups as well as the contrasts between groups are included.
 
 ```{r, echo = FALSE}
-head(efficacy_data)
+head(data_efficacy)
 ```
 
 The mock we are going to match looks like this:
@@ -585,7 +585,7 @@ tfrmt(
     contains("High")
   )
 ) %>%
-  print_mock_gt(efficacy_data %>% select(-value))%>% 
+  print_mock_gt(data_efficacy %>% select(-value))%>% 
   tab_options(
     container.width = 800
   )
@@ -601,7 +601,7 @@ tfrmt(
   param = param,
   values = value 
 ) %>%
-  print_to_gt(efficacy_data) %>% 
+  print_to_gt(data_efficacy) %>% 
   tab_options(
     container.width = 800
   ) 
@@ -628,7 +628,7 @@ tfrmt(
                                        TRUE ~ frmt("x.xxx", missing = " ")))
   )
 ) %>%
-  print_to_gt(efficacy_data) %>% 
+  print_to_gt(data_efficacy) %>% 
   tab_options(
     container.width = 800
   )
@@ -671,7 +671,7 @@ tfrmt(
                                 diff_ucl = frmt("xx.x"), missing = " "))
   )
 ) %>%
-  print_to_gt(efficacy_data) %>% 
+  print_to_gt(data_efficacy) %>% 
   tab_options(
     container.width = 800
   )
@@ -717,7 +717,7 @@ tfrmt(
     group, label, Placebo, contains("Low"), contains("High")
   )
 ) %>%
-  print_to_gt(efficacy_data) %>% 
+  print_to_gt(data_efficacy) %>% 
   tab_options(
     container.width = 800
   )
@@ -766,7 +766,7 @@ tfrmt(
     label_loc = element_row_grp_loc(location = "indented")
   )
 ) %>%
-  print_to_gt(efficacy_data) %>% 
+  print_to_gt(data_efficacy) %>% 
   tab_options(
     container.width = 800
   )
@@ -820,7 +820,7 @@ tfrmt(
     label_loc = element_row_grp_loc(location = "indented")
   )
 ) %>%
-  print_to_gt(efficacy_data) %>% 
+  print_to_gt(data_efficacy) %>% 
   tab_options(
     container.width = 800
   )

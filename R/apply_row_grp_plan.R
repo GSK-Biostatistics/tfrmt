@@ -20,7 +20,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
 
   TEMP_appl_row <- row_grp_struct_list %>%
     map(grp_row_test_data, .data, group)
-  TEMP_block_to_apply <- row_grp_struct_list %>% map(~.$block_to_apply[[1]])
+  TEMP_block_to_apply <- row_grp_struct_list %>% map(~.$block_to_apply)
 
   # similar to frmts, only allow 1 element_block for a given row
   #   - within block-specific data, split data further by grouping vars

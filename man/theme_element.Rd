@@ -28,6 +28,15 @@ Element Style
 Supports alignment and width setting of data value columns (values found in the \code{column} column). Row group and label
 columns are left-aligned by default.
 }
+\examples{
+
+ plan <- col_align_plan(
+    element_align(align = "left", col = "my_var"),
+    element_align(align = "right", col = vars(four)),
+    element_align(align = c(".", ",", " "), col = vars(two, three))
+   )
+
+}
 \seealso{
 \code{\link[=col_style_plan]{col_style_plan()}} for more information on how to combine
 element_style()'s together to form a plan.
