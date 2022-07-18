@@ -62,9 +62,9 @@ tfrmt(
     label_loc = element_row_grp_loc(location = "column")
   ),
   
-  # Specify column alignment plan
-  col_align_plan = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
   # remove extra cols
@@ -161,7 +161,7 @@ tfrmt(
   )
 ```
 
-Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_align_plan` which accepts a series of `element_align`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_align` looks like `element_align(align = c(".",","," "), col = vars(everything()))`. 
+Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `element_col`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_col` looks like `element_col(align = c(".",","," "), col = vars(everything()))`. 
 After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change. 
 ```{r}
 data_demog %>% 
@@ -197,9 +197,9 @@ tfrmt(
   # remove extra cols
   col_plan = col_plan(-grp, 
                       -starts_with("ord") ),
-  # Specify column alignment plan
-  col_align_plan = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
     # Specify row group plan
@@ -367,7 +367,7 @@ tfrmt(
 
 ```
 
-Our column alignment looks good as-is, except for the p-values. We can use the `col_align_plan` to tweak those.
+Our column alignment looks good as-is, except for the p-values. We can use the `col_style_plan` to tweak those.
 
 ```{r}
 tfrmt(
@@ -399,9 +399,9 @@ tfrmt(
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
   # alignment
   
-  # Specify column alignment plan
-  col_align_plan = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(starts_with("p_")))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(starts_with("p_")))
   )
   ) %>% 
   print_to_gt(data_ae2) %>% 
@@ -443,9 +443,9 @@ tfrmt(
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
   
-  # Specify column alignment plan
-  col_align_plan = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(contains("pval")))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(contains("pval")))
   ),
   
   # columns
@@ -495,9 +495,9 @@ tfrmt(
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
   
-  # Specify column alignment plan
-  col_align_plan = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(contains("pval")))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(contains("pval")))
   ),
   
   # columns

@@ -14,7 +14,7 @@ library(tfrmt)
 library(gt)
 ```
 
-# tfrmt
+# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="man/figures/tfrmt.png" align="right" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
@@ -117,9 +117,9 @@ tfrmt <- tfrmt(
     label_loc = element_row_grp_loc(location = "column")
   ),
   
-  # Specify column alignment plan
-  col_align = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+  # Specify column style plan
+  col_style = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
   # remove extra cols

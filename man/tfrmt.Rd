@@ -16,7 +16,7 @@ tfrmt(
   footer,
   row_grp_plan,
   body_plan,
-  col_align_plan,
+  col_style_plan,
   col_plan,
   sorting_cols,
   ...
@@ -45,7 +45,7 @@ tfrmt(
 
 \item{body_plan}{combination and formatting of the input data}
 
-\item{col_align_plan}{how to align columns? left, right, decimal}
+\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width}
 
 \item{col_plan}{a col_plan object which is used to select, rename, and nest
 columns}
@@ -60,6 +60,25 @@ your tables, and how the data will be handled once added: i.e. title,
 footers, headers, span headers, and cell formats. In addition, tfrmt's can be
 layered, building from one table format to the next. For cases where only one
 value can be used, the newly defined tfrmt accepts the latest tfrmt
+}
+\details{
+\subsection{NSE and Argument Evaluation}{
+
+tfrmt allows users to pass \code{vars}, \code{quo}, and unquoted expressions to a
+variety of arguments, such as \code{group}, \code{label}, \code{param}, \code{values},
+\code{column}, and \code{sorting_cols}. Users accustomed to tidyverse semantics
+should be familiar with this behavior. However, there is an important
+behavior difference between tfrmt and normal tidyverse functions. Because
+the data are not a part of tfrmt, it does not know when a value being
+passed to it is intended to be an unquoted expression representing a column
+name or an object from the environment. As such, it preferentially uses the
+value from the environment over preserving the entry as an expression. For
+example, if in your environment you have an object "my_object" in your
+environment with the value "Hello world", and try to create a tfrmt as
+\code{tfrmt(column = my_object)}, it will take the value of "my_object" over
+assuming the column argument is an unquoted expression and view the entry
+to \code{column} as "Hello World".
+}
 }
 \examples{
 
@@ -76,15 +95,22 @@ tfrmt_spec <- tfrmt(
   values=value,
 # Set the formatting for values
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-                                                                              n = frmt("xxx"),
-                                                                              pct = frmt_when("==100" ~ "(100\%)",
-                                                                                              "==0" ~ "",
-                                                                                              TRUE ~ frmt("(xx.x \%)"))))
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine("{n} {pct}",
+           n = frmt("xxx"),
+           pct = frmt_when(
+                "==100" ~ "(100\%)",
+                "==0" ~ "",
+                TRUE ~ frmt("(xx.x \%)")
+                )
+           )
+    )
   ),
-# Specify column alignment plan
-  col_align = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+# Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ))
 
 tfrmt_spec <- tfrmt(
@@ -96,30 +122,62 @@ tfrmt_spec <- tfrmt(
   sorting_cols = c(ord1, ord2),
   # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x \%)")))),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                                          "<0.001" ~ "<0.001",
-                                                                                                          TRUE ~ frmt("x.xxx", missing = "")))
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine("{n} {pct}",
+           n = frmt("xxx"),
+           pct = frmt_when(
+                "==100" ~ "(100\%)",
+                "==0" ~ "",
+                TRUE ~ frmt("(xx.x \%)")
+                )
+           )
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xxx")
+   ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = c("Mean", "Median", "Min","Max"),
+        frmt("xxx.x")
+     ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = "SD",
+        frmt("xxx.xx")
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        p = frmt("")
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = c("n","<65 yrs","<12 months","<25"),
+        p = frmt_when(
+            ">0.99" ~ ">0.99",
+            "<0.001" ~ "<0.001",
+            TRUE ~ frmt("x.xxx", missing = "")
+        )
+    )
   ),
   # remove extra cols
   col_plan = col_plan(-grp,
                       -starts_with("ord") ),
-  # Specify column alignment plan
-  col_align_plan = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
 
   # Specify row group plan
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+    row_grp_structure(
+         group_val = ".default",
+         element_block(post_space = " ")
+    ),
     label_loc = element_row_grp_loc(location = "column")
   )
 
