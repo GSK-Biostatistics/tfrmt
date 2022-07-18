@@ -176,7 +176,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   }
 
 
-  if (!is.null(tfrmt$col_align)){
+  if (!is.null(tfrmt$col_style_plan)){
     align <- "left"
   } else {
     align <- NULL
@@ -189,6 +189,7 @@ gt_out <- .data %>%
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
     format_gt_column_labels(.data) %>%
+    apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
       style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
@@ -324,7 +325,7 @@ format_gt_column_labels <- function(gt_table, .data){
       arrange(desc(.data$name)) %>%
       group_by(.data$value) %>%
       nest(set = "cols") %>%
-      mutate(set = map(.data$set, ~pull(.,cols))) %>%
+      mutate(set = map(.data$set, ~pull(.,.data$cols))) %>%
       filter(.data$value != "NA")
 
     for(i in 1:nrow(spans_to_apply)){
@@ -338,7 +339,7 @@ format_gt_column_labels <- function(gt_table, .data){
     lowest_lvl <- names(.data) %>%
       tibble(cols = .) %>%
       left_join(lowest_lvl) %>%
-      mutate(value = coalesce(value, cols))
+      mutate(value = coalesce(.data$value, .data$cols))
 
     renm_vals <- lowest_lvl %>%
       pull(.data$value)

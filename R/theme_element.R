@@ -89,45 +89,61 @@ is_element_block <- function(x){
   inherits(x, "element_block")
 }
 
-#' Element Align
+#' Element Style
 #'
+#' @param col Column value to align on from `column` variable.
 #' @param align Alignment to be applied to column. Acceptable values: "left" for
 #'   left alignment, "right" for right alignment", or supply a vector of
 #'   character(s) to align on. For the case of character alignment, if more than
 #'   one character is provided, alignment will be based on the first occurrence
 #'   of any of the characters. For alignment based on white space, leading white
 #'   spaces will be ignored.
-#' @param col Column value to align on from `column` variable.
+#' @param width Width to apply to the column. Acceptable values include a
+#'   numeric value, or a character string of numbers ending with either "px" or
+#'   "%", indicating the column width is either n pixels across or % of the
+#'   total table width
 #'
-#' @details Only supports alignment of data value columns (values found in the `column` column). Row group and label
+#'
+#' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label
 #'   columns are left-aligned by default.
 #'
 #' @importFrom purrr map
 #'
-#' @seealso [col_align_plan()] for more information on how to combine
-#'   element_align()'s together to form a plan.
+#' @seealso [col_style_plan()] for more information on how to combine
+#'   element_col()'s together to form a plan.
 #'
 #' @export
 #' @examples
 #'
-#'  plan <- col_align_plan(
-#'     element_align(align = "left", col = "my_var"),
-#'     element_align(align = "right", col = vars(four)),
-#'     element_align(align = c(".", ",", " "), col = vars(two, three))
+#'  plan <- col_style_plan(
+#'     element_col(align = "left", width = 100, col = "my_var"),
+#'     element_col(align = "right", width = "200px", col = vars(four)),
+#'     element_col(align = c(".", ",", " "), col = vars(two, three)),
+#'     element_col(width = "25%", col = c(two, three))
 #'    )
 #'
 #' @rdname theme_element
-element_align <- function(align = "left",
-                          col = vars()){
+element_col <- function( col = vars(),
+                           align = NULL,
+                           width = NULL
+                         ){
 
-  cols <- quo_get("col", as_var_args = "col") %>% map(~as_vars(.x))
+  cols <- quo_get("col", as_var_args = "col", allow_tidy_select = TRUE)$col
+
+  width <- validate_width_units(width)
+
+  if(is.null(width) & is.null(align)){
+    abort("Alignment or column width definition must be applied to create this element_col",
+          class = "missing_element_col_value")
+  }
 
   structure(
-    c(
-      list(align = align),
-      cols
-      ),
-    class = c("element_align", "element")
+    list(
+      col = cols,
+      align = align,
+      width = width
+    ),
+    class = c("element_col", "element")
   )
 }
 
@@ -137,8 +153,8 @@ element_align <- function(align = "left",
 #' @param x Object to check
 #'
 #' @noRd
-is_element_align <- function(x){
-  inherits(x, "element_align")
+is_element_col <- function(x){
+  inherits(x, "element_col")
 }
 
 

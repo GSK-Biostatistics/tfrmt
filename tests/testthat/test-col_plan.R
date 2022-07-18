@@ -120,8 +120,8 @@ test_that("Order is kept for multi-col columns",{
     body_plan = body_plan(
       frmt_structure(pam = frmt("x.xx"))
     ),
-    col_align = col_align_plan(element_align(align = ".", col = vars(delm)),
-                               element_align(align = "right"))
+    col_style_plan = col_style_plan(element_col(align = ".", col = vars(delm)),
+                               element_col(align = "right"))
   )
 
 

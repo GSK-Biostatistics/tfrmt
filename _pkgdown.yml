@@ -13,7 +13,7 @@ articles:
   - body_plan
   - row_grp_plan
   - col_plan
-  - col_align_plan
+  - col_style_plan
 - title: Building Tables
   navbar: Building Tables
   contents:
