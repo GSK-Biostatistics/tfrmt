@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo=FALSE}
-library(tfrmt)
-```
-
 **1. Table format:** `tfrmt()`
 
 The table format ("tfrmt") object is the most fundamental building block in tfrmt. tfrmt is a way to predefine the non-data components of your tables and how the data will be handled once added. tfrmt allows you to specify cell formats and labeling such as column headers, footnotes, etc. In addition, tfrmts can be layered. 

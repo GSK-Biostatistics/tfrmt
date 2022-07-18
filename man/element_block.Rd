@@ -23,6 +23,22 @@ element block object
 \description{
 Element block
 }
+\examples{
+
+tfrmt_spec <- tfrmt(
+  group = grp1,
+  label = label,
+  param = param,
+  values = value,
+  column = column,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = "   "))
+  ),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+  )
+)
+}
 \seealso{
 \code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group
 structures, \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group

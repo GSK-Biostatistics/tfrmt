@@ -37,11 +37,11 @@ We provide `tfrmt_sigdig()` with a data.frame detailing the groups and the signi
 
 The second tfrmt defines the table specific information, including title, specific columns to use for row labels and output columns, as well as the col_plan.
 
-The output tfrmt generates a table with the subset `labs_data`.
+The output tfrmt generates a table with the subset `data_labs`.
 
 ```{r, results = "asis"}
 
-labs_data_subset <- labs_data %>% 
+data_labs_subset <- data_labs %>% 
   filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE" ,"ALBUMIN" ,"ALKALINE PHOSPHATASE","ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
@@ -83,7 +83,7 @@ labs_tfrmt <- labs_tfrmt_template %>%
   )
 
 labs_tfrmt %>% 
-  print_to_gt(labs_data_subset) %>% 
+  print_to_gt(data_labs_subset) %>% 
   tab_options(
     container.width = 1000
   )
@@ -102,7 +102,7 @@ For example, this is useful when a template tfrmt needs references updated. This
 ```{r}
 
 ## provided data had different column names for groups
-alternate_labs_data <- labs_data_subset %>% 
+alternate_data_labs_subset <- data_labs_subset %>% 
   rename(
     `Lab Type` = group1,
     `Lab Test` = group2,
@@ -113,7 +113,17 @@ labs_tfrmt %>%
     `Lab Type` = group1,
     `Lab Test` = group2,
   ) %>% 
-  print_to_gt(alternate_labs_data) %>% 
+  tfrmt(
+    col_plan = col_plan(
+      `Lab Type`, `Lab Test`,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+      )
+  ) %>% 
+  print_to_gt(alternate_data_labs_subset) %>% 
   tab_options(
     container.width = 1000
   )

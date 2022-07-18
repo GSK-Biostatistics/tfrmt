@@ -27,3 +27,21 @@ Check if input is a frmt_structure
 
 Check if input is a row_grp_structure
 }
+\examples{
+x1 <- frmt("XXX.XX")
+is_frmt(x1)
+
+x2 <- frmt_combine("XXX \%","XX,XXX")
+is_frmt_combine(x2)
+
+x3 <- frmt_structure(
+ group_val = c("group1"),
+ label_val = ".default",
+frmt("XXX")
+)
+is_frmt_structure(x3)
+
+x4 <- row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+is_row_grp_structure(x4)
+
+}
