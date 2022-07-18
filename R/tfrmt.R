@@ -23,7 +23,25 @@
 #' @param sorting_cols which columns determine sorting of output
 #' @param ... These dots are for future extensions and must be empty.
 #'
+#' @details
 #'
+#'  ## NSE and Argument Evaluation
+#'
+#'   tfrmt allows users to pass `vars`, `quo`, and unquoted expressions to a
+#'   variety of arguments, such as `group`, `label`, `param`, `values`,
+#'   `column`, and `sorting_cols`. Users accustomed to tidyverse semantics
+#'   should be familiar with this behavior. However, there is an important
+#'   behavior difference between tfrmt and normal tidyverse functions. Because
+#'   the data are not a part of tfrmt, it does not know when a value being
+#'   passed to it is intended to be an unquoted expression representing a column
+#'   name or an object from the environment. As such, it preferentially uses the
+#'   value from the environment over preserving the entry as an expression. For
+#'   example, if you have an object "my_object" in your
+#'   environment with the value "Hello world", and try to create a tfrmt as
+#'   `tfrmt(column = my_object)`, it will take the value of "my_object" over
+#'   assuming the column argument is an unquoted expression and view the entry
+#'   to `column` as "Hello World". To pass "my_object" to tfrmt as a column name, use
+#'   quotes around the value: `tfrmt(columnn = "my_object")`.
 #'
 #' @rdname tfrmt
 #'
