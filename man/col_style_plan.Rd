@@ -19,12 +19,12 @@ right or on a specific character(s).
 \examples{
 
  plan <- col_style_plan(
-    element_style(align = "left", width = 100, col = "my_var"),
-    element_style(align = "right", col = vars(four)),
-    element_style(align = c(".", ",", " "), col = vars(two, three))
+    element_col(align = "left", width = 100, col = "my_var"),
+    element_col(align = "right", col = vars(four)),
+    element_col(align = c(".", ",", " "), col = vars(two, three))
    )
 
 }
 \seealso{
-\code{\link[=element_style]{element_style()}} for more information on how to specify how to and which columns to align.
+\code{\link[=element_col]{element_col()}} for more information on how to specify how to and which columns to align.
 }

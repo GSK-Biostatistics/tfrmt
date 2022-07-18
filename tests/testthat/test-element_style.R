@@ -1,9 +1,9 @@
-test_that("element_style - quo/vars/bare", {
+test_that("element_col - quo/vars/bare", {
 
-  element_l <- element_style(align = "left", col = n_tot)
-  element_r <- element_style(align = "right", col = vars(p))
-  element_c <- element_style(align = ".", col = c(trt1, trt2))
-  element_ts <- element_style(align = ".", col = starts_with("hello"))
+  element_l <- element_col(align = "left", col = n_tot)
+  element_r <- element_col(align = "right", col = vars(p))
+  element_c <- element_col(align = ".", col = c(trt1, trt2))
+  element_ts <- element_col(align = ".", col = starts_with("hello"))
 
   expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
   expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
@@ -12,11 +12,11 @@ test_that("element_style - quo/vars/bare", {
 
 })
 
-test_that("element_style - char", {
+test_that("element_col - char", {
 
-  element_l <- element_style(align = "left", col = "n_tot")
-  element_r <- element_style(align = "right", col = "p")
-  element_c <- element_style(align = ".", col = c("trt1", "trt2"))
+  element_l <- element_col(align = "left", col = "n_tot")
+  element_r <- element_col(align = "right", col = "p")
+  element_c <- element_col(align = ".", col = c("trt1", "trt2"))
 
   expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
   expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
@@ -73,9 +73,9 @@ test_that("alignment of multiple columns works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      # element_style(align = "left", col = vars(one)),
-      element_style(align = "right", col = vars(four)),
-      element_style(align = c(".", ",", " "), col = vars(two, three))
+      # element_col(align = "left", col = vars(one)),
+      element_col(align = "right", col = vars(four)),
+      element_col(align = c(".", ",", " "), col = vars(two, three))
     )
   )
 
@@ -109,8 +109,8 @@ test_that("alignment of multiple columns works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      # element_style(align = "left", col = vars(one)),
-      element_style(align = "right", col = vars(two, three, four))
+      # element_col(align = "left", col = vars(one)),
+      element_col(align = "right", col = vars(two, three, four))
     )
   )
 
@@ -168,8 +168,8 @@ test_that("tidyselect works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      element_style(align = c(".", ",", " "), col = vars(starts_with("trt"))),
-      element_style(align = "right", col = vars(four)))
+      element_col(align = c(".", ",", " "), col = vars(starts_with("trt"))),
+      element_col(align = "right", col = vars(four)))
 
   )
 
@@ -200,7 +200,7 @@ test_that("tidyselect works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      element_style(align = "right", col = vars(starts_with("trt")))
+      element_col(align = "right", col = vars(starts_with("trt")))
     ))
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
@@ -228,7 +228,7 @@ test_that("tidyselect works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      element_style(align = "right", col = starts_with("trt"))
+      element_col(align = "right", col = starts_with("trt"))
     ))
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
@@ -253,7 +253,7 @@ test_that("tidyselect works", {
 
 })
 
-test_that("Overlapping element_styles favors last one",{
+test_that("Overlapping element_cols favors last one",{
 
   dat <- tibble::tribble(
     ~one      , ~column , ~ value,
@@ -278,8 +278,8 @@ test_that("Overlapping element_styles favors last one",{
     column = vars(column),
     values = value,
     col_style_plan =  col_style_plan(
-      element_style(align = "right", col = vars(starts_with("trt"))),
-      element_style(align = c(".",","," "), col = trt1)))
+      element_col(align = "right", col = vars(starts_with("trt"))),
+      element_col(align = c(".",","," "), col = trt1)))
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ," 12 (34%)",
@@ -330,8 +330,8 @@ test_that("Align strings >1 in length",{
     column = vars(column),
     values = value,
     col_style_plan =  col_style_plan(
-      element_style(align = "right", col = vars(starts_with("trt"))),
-      element_style(align = c("...",",,,,"," "), col = trt1)))
+      element_col(align = "right", col = vars(starts_with("trt"))),
+      element_col(align = c("...",",,,,"," "), col = trt1)))
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ," 12 (34%)",
@@ -384,8 +384,8 @@ test_that("Alphanumeric align string supplied",{
     column = vars(column),
     values = value,
     col_style_plan =  col_style_plan(
-      element_style(align = "right", col = vars(starts_with("trt"))),
-      element_style(align = c("2","4"), col = trt1)))
+      element_col(align = "right", col = vars(starts_with("trt"))),
+      element_col(align = c("2","4"), col = trt1)))
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)"    ,"trt1"   ,"    12 (34%)",
@@ -464,9 +464,9 @@ test_that("Col width assignment in gt",{
 
     ),
     col_style_plan =  col_style_plan(
-      element_style(align = "right", width = 200, col = vars(starts_with("trt"))),
-      element_style(align = c("2","4"), col = trt1),
-      element_style(width = 100, col = four)
+      element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
+      element_col(align = c("2","4"), col = trt1),
+      element_col(width = 100, col = four)
     )
   )
 
@@ -486,10 +486,10 @@ test_that("Col width assignment in gt",{
   tfrmt_gt2 <- plan %>%
     tfrmt(
       col_style_plan =  col_style_plan(
-        element_style(align = "right", width = 200, col = starts_with("trt")),
-        element_style(align = c("2","4"), col = trt1),
-        element_style(width = 500, col = c(trt2, one)), # updating trt2 from 200 to 500
-        element_style(width = "50%", col = four)
+        element_col(align = "right", width = 200, col = starts_with("trt")),
+        element_col(align = c("2","4"), col = trt1),
+        element_col(width = 500, col = c(trt2, one)), # updating trt2 from 200 to 500
+        element_col(width = "50%", col = four)
       )) %>%
     print_to_gt(raw_dat) %>%
     ## suppressing warning from alignment using multiple values. Not pertinent to this test

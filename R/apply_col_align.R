@@ -19,12 +19,12 @@ apply_col_alignment <- function(col, align){
   if (!all(align %in% c("left","right"))){
 
     if (!all(nchar(align)==1)){
-      message("`align` specified in `element_style` contains strings with >1 characters. Only the first character will be used.")
+      message("`align` specified in `element_col` contains strings with >1 characters. Only the first character will be used.")
       align <- str_sub(align, start=1, end=1)
     }
 
     if (any(str_detect(align, "[[:alnum:]]"))){
-      warning("`align` specified in `element_style` contains one or more alphanumeric characters. Results may not be as expected.")
+      warning("`align` specified in `element_col` contains one or more alphanumeric characters. Results may not be as expected.")
     }
 
     align <- ifelse(str_detect(align, "[[:alnum:]]"), paste0("\"", align, "\""), paste0("\\", align))
@@ -118,7 +118,7 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
             paste0(
               "Variable `",
               as_label(ex),
-              "` specified in element_style doesn't exist in the supplied dataset. Please check the tfrmt and try again."
+              "` specified in element_col doesn't exist in the supplied dataset. Please check the tfrmt and try again."
             ),
             .call = FALSE
           )

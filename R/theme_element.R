@@ -110,20 +110,20 @@ is_element_block <- function(x){
 #' @importFrom purrr map
 #'
 #' @seealso [col_style_plan()] for more information on how to combine
-#'   element_style()'s together to form a plan.
+#'   element_col()'s together to form a plan.
 #'
 #' @export
 #' @examples
 #'
 #'  plan <- col_style_plan(
-#'     element_style(align = "left", width = 100, col = "my_var"),
-#'     element_style(align = "right", width = "200px", col = vars(four)),
-#'     element_style(align = c(".", ",", " "), col = vars(two, three)),
-#'     element_style(width = "25%", col = c(two, three))
+#'     element_col(align = "left", width = 100, col = "my_var"),
+#'     element_col(align = "right", width = "200px", col = vars(four)),
+#'     element_col(align = c(".", ",", " "), col = vars(two, three)),
+#'     element_col(width = "25%", col = c(two, three))
 #'    )
 #'
 #' @rdname theme_element
-element_style <- function( col = vars(),
+element_col <- function( col = vars(),
                            align = NULL,
                            width = NULL
                          ){
@@ -133,8 +133,8 @@ element_style <- function( col = vars(),
   width <- validate_width_units(width)
 
   if(is.null(width) & is.null(align)){
-    abort("Alignment or column width definition must be applied to create this element_style",
-          class = "missing_element_style_value")
+    abort("Alignment or column width definition must be applied to create this element_col",
+          class = "missing_element_col_value")
   }
 
   structure(
@@ -143,7 +143,7 @@ element_style <- function( col = vars(),
       align = align,
       width = width
     ),
-    class = c("element_style", "element")
+    class = c("element_col", "element")
   )
 }
 
@@ -153,8 +153,8 @@ element_style <- function( col = vars(),
 #' @param x Object to check
 #'
 #' @noRd
-is_element_style <- function(x){
-  inherits(x, "element_style")
+is_element_col <- function(x){
+  inherits(x, "element_col")
 }
 
 

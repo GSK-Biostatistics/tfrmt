@@ -10,27 +10,27 @@
 #' @examples
 #'
 #'  plan <- col_style_plan(
-#'     element_style(align = "left", width = 100, col = "my_var"),
-#'     element_style(align = "right", col = vars(four)),
-#'     element_style(align = c(".", ",", " "), col = vars(two, three))
+#'     element_col(align = "left", width = 100, col = "my_var"),
+#'     element_col(align = "right", col = vars(four)),
+#'     element_col(align = c(".", ",", " "), col = vars(two, three))
 #'    )
 #'
-#' @seealso [element_style()] for more information on how to specify how to and which columns to align.
+#' @seealso [element_col()] for more information on how to specify how to and which columns to align.
 #'
 #' @export
 #'
 col_style_plan <- function(...){
 
-  element_style_list <- list(...)
+  element_col_list <- list(...)
 
-  for(el_idx in seq_along(element_style_list)){
-    if(!is_element_style(element_style_list[[el_idx]])){
-      stop(paste0("Entry number ",el_idx," is not an object of class `element_style`."))
+  for(el_idx in seq_along(element_col_list)){
+    if(!is_element_col(element_col_list[[el_idx]])){
+      stop(paste0("Entry number ",el_idx," is not an object of class `element_col`."))
     }
   }
 
   structure(
-    element_style_list,
+    element_col_list,
     class = c("col_style_plan", "frmt_table")
   )
 }

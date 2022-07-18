@@ -64,7 +64,7 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_style(align = c(".",","," "), col = vars(everything()))
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
   # remove extra cols
@@ -161,7 +161,7 @@ tfrmt(
   )
 ```
 
-Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `element_style`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_style` looks like `element_style(align = c(".",","," "), col = vars(everything()))`. 
+Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `element_col`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `element_col` looks like `element_col(align = c(".",","," "), col = vars(everything()))`. 
 After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change. 
 ```{r}
 data_demog %>% 
@@ -199,7 +199,7 @@ tfrmt(
                       -starts_with("ord") ),
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_style(align = c(".",","," "), col = vars(everything()))
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
     # Specify row group plan
@@ -401,7 +401,7 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_style(align = c(".",","," "), col = vars(starts_with("p_")))
+    element_col(align = c(".",","," "), col = vars(starts_with("p_")))
   )
   ) %>% 
   print_to_gt(data_ae2) %>% 
@@ -445,7 +445,7 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_style(align = c(".",","," "), col = vars(contains("pval")))
+    element_col(align = c(".",","," "), col = vars(contains("pval")))
   ),
   
   # columns
@@ -497,7 +497,7 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_style(align = c(".",","," "), col = vars(contains("pval")))
+    element_col(align = c(".",","," "), col = vars(contains("pval")))
   ),
   
   # columns
