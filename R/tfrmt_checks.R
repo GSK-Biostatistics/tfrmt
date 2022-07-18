@@ -14,7 +14,6 @@ check_column_and_col_plan <- function(x){
   }
 
   if(multi_column_defined & span_structures_defined){
-
     abort(
       paste0(
         "Multiple columns defined in `column` argument of tfrmt ",
@@ -22,7 +21,7 @@ check_column_and_col_plan <- function(x){
         "The use of only one approach is permitted. ",
         "Select a single column or remove span_structures from `col_plan()`"
       ),
-      call = caller_call()
+      class = "_tfrmt_invalid_col_plan"
     )
   }
 
@@ -40,7 +39,7 @@ check_group_var_consistency <- function(x){
   if(!is.null(x$body_plan) & !is_empty(x$group)){
 
     is_invalid_body_plan <- FALSE
-    is_invalid_body_plan_message <- ""
+    is_invalid_body_plan_message <- "Iconsistencies between group and body_plan"
     group_as_char <- map_chr(x$group, as_label)
 
     for(idx in seq_along(x$body_plan)){
@@ -59,16 +58,19 @@ check_group_var_consistency <- function(x){
             paste0(
               paste0("Invalid Format Structure in body_plan at position `",idx,"`:\n"),
               paste0("  Malformed Group: ",paste0(invalid_groups, collapse = ", "),"\n"),
-              paste0("  ", format(frmt_struct), collapse = "\n"),
-              "\n"
+              paste0("  ", format(frmt_struct), collapse = "\n")
               )
           )
         }
       }
     }
 
+
     if(is_invalid_body_plan){
-      abort(is_invalid_body_plan_message, call = caller_call())
+      abort(
+        is_invalid_body_plan_message ,
+        class = "_tfrmt_invalid_body_plan"
+        )
     }
   }
 

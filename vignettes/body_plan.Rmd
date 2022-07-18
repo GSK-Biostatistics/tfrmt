@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo = FALSE}
-library(tfrmt)
-```
-
 The body plan covers the formatting of numeric cell values. Within the body plan, format structures (`frmt_structure`) may be layered to specify formatting for different parameters. Formatting can be applied to specific group and/or label values, which we will cover in a bit. First, we will apply formats to all relevant values in the table, regardless of group or label value.
 
 # Formatting functions
@@ -84,7 +80,7 @@ For formatting specific values of the label variable, these values are passed to
 
 ## Group-specific
 
-For formatting specific values of the group variable, these values are passed to the `group` argument. Note that the user may have multiple group variables. In the case of multiple group variables, the specifications are to be passed as a named list (named according to the group variables). The following code will format all values where group1="A" and group2="a" or "b", regardless of label, param, or column value:
+For formatting specific values of the group variable, these values are passed to the `group` argument. Note that the user may have multiple group variables. In the case of multiple group variables, the specifications are to be passed as a named list (named according to the group variables). The following code will format all values where group1="A" and group2="B", regardless of label, param, or column value:
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = ".default", frmt("x.xxx"))`
 
@@ -93,7 +89,7 @@ In the case where formatting needs to differ between columns within a given grou
 
 ## Multiple specifications
 
-A user can be as specific as they'd like, by providing any of these in combination. For example, the following code will format values where group1="A", group2="A", the label variable equals "mylab" and the param variable equals "mean":
+A user can be as specific as they'd like, by providing any of these in combination. For example, the following code will format values where group1="A", group2="B", the label variable equals "mylab" and the param variable equals "mean":
 
 `frmt(group = list(group1 = "A", group2 = "B"), label = "mylab", mean = frmt("x.xxx"))`
 

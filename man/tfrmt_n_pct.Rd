@@ -29,6 +29,14 @@ be specified. By default 100\% and 0\% will not appear and everything between
 99\% and 100\% and 0\% and 1\% will be rounded using greater than (>) and less
 than (<) signs respectively.
 }
-\examples{
-print_mock_gt(tfrmt_n_pct())
+\section{Examples}{
+
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{print_mock_gt(tfrmt_n_pct())
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_n_percent.png" style="width:50\%;">
+}}
 }
+

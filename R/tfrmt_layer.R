@@ -54,7 +54,22 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
   ## remove null values that may have made it through
   arg_list <- arg_list[!sapply(arg_list, is.null)]
 
-  do.call(tfrmt, arg_list)
+  tfrmt_call <- as.call(c(as.name("tfrmt"), arg_list))
+
+  tryCatch(
+    eval(tfrmt_call),
+    error = function(e){
+      if(inherits(e, "_tfrmt_invalid_body_plan")){
+        e <- append_update_group_message(e, x, y)
+      }
+      abort(
+        e$message,
+        call = e$call,
+        trace = e$trace
+      )
+    }
+  )
+
 }
 
 get_layer_tfrmt_arg_method <- function(argname){
@@ -136,7 +151,7 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #'
 #' @examples
 #'
-#' tfrmt1 <- tfrmt(
+#' tfrmt_spec <- tfrmt(
 #'     group = c(group1, group2),
 #'     body_plan  = body_plan(
 #'       frmt_structure(
@@ -151,7 +166,7 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #'        )
 #'     ))
 #'
-#' tfrmt1 %>%
+#' tfrmt_spec %>%
 #'   update_group(New_Group = group1)
 #'
 update_group <- function(tfrmt, ...){
@@ -201,3 +216,18 @@ update_group <- function(tfrmt, ...){
 
 }
 
+
+append_update_group_message <- function(e, x, y){
+
+  x_grp <- map_chr(x$group, as_label)
+  y_grp <- map_chr(y$group, as_label)
+
+  update_grp_message <- c(i = paste0(
+    "You might need to update group names using ",
+    "\"update_group(",
+    paste0("`",y_grp,"` = `", x_grp,"`", collapse = ","),
+    ")\""))
+
+  e$message <- c(e$message, "", update_grp_message)
+  e
+}

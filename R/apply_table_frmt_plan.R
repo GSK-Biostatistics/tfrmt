@@ -52,9 +52,13 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
         select(-starts_with("TEMP_"))
 
       if(is.null(cur_fmt)){
-        out <- data_only %>%
-          mutate(!!values := as.character(!!values)) %>%
-          select(-!!param)
+        if(!mock){
+          out <- data_only %>%
+            mutate(!!values := as.character(!!values)) %>%
+            select(-!!param)
+        } else {
+          out <- data_only
+        }
 
         # Add message
         x %>%
@@ -91,6 +95,8 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 #' @param param param symbol should only be one
 #'
 #' @return vector of the rows which this format could be applied to
+#'
+#' @importFrom stringr str_remove_all
 #' @noRd
 fmt_test_data <- function(cur_fmt, .data, label, group, param){
 
@@ -98,6 +104,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
   grp_expr <- expr_to_filter(group, cur_fmt$group_val)
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
   parm_expr <- expr_to_filter(param, cur_fmt$param_val)
+
 
   filter_expr <- paste(
       c(lbl_expr,grp_expr,parm_expr),
@@ -129,6 +136,7 @@ expr_to_filter.quosure <- function(cols, val){
     out <- "TRUE"
   } else {
     out <- as_label(cols) %>%
+      paste0("`", ., "`") %>%
       paste0(" %in% c('",
              paste0(val, collapse = "', '"),
              "')")

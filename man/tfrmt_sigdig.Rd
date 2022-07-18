@@ -6,10 +6,11 @@
 \usage{
 tfrmt_sigdig(
   data,
-  group,
-  label,
+  group = vars(),
+  label = quo(),
   param_defaults = param_set(),
   missing = NULL,
+  tfrmt_obj = NULL,
   ...
 )
 }
@@ -29,6 +30,8 @@ carried through in implementation.}
 
 \item{missing}{missing option to be included in all \code{frmt}s}
 
+\item{tfrmt_obj}{an optional tfrmt object to layer}
+
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
@@ -36,36 +39,64 @@ carried through in implementation.}
 significant digits data spec and param-level significant digits defaults.
 }
 \description{
-Create tfrmt object from significant digits spec
+This function creates a tfrmt based on significant digits specifications for
+group/label values. The input data spec provided to \code{data} will contain
+group/label value specifications. \code{tfrmt_sigdig} assumes that these columns
+are group columns unless otherwise specified. The user may optionally choose
+to pass the names of the group and/or label columns as arguments to the
+function.
 }
 \details{
-Currently covers specifications for \code{frmt} and \code{frmt_combine}.
-\code{frmt_when} not supported and must be supplied in additional \code{tfrmt} that
-is layered on.
-}
-\examples{
-\dontrun{
+\subsection{Formats covered}{
 
-data_input <- tibble::tribble(
+Currently covers specifications for \code{frmt} and
+\code{frmt_combine}. \code{frmt_when} not supported and must be supplied in additional
+\code{tfrmt} that is layered on.
+}
+
+\subsection{Group/label variables}{
+
+If the group/label variables are not provided to the arguments, the body_plan
+will be constructed from the input data with the following behavior:
+\itemize{
+\item If no group or label are supplied, it will be assumed that all columns in the input
+data are group columns.
+\item If a label variable is provided, but nothing is
+specified for group, any leftover columns (i.e. not matching \code{sigdig} or the
+supplied label variable name) in the input data will be assumed to be group
+columns.
+\item If any group variable is provided, any leftover columns (i.e. not
+matching \code{sigdig} or the supplied group/label variable) will be disregarded.
+}
+}
+}
+\section{Examples}{
+
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{sig_input <- tibble::tribble(
   ~group1,   ~group2, ~sigdig,
   "CHEMISTRY",   ".default", 3,
   "CHEMISTRY",   "ALBUMIN",  1,
   "CHEMISTRY",   "CALCIUM",   1,
   ".default",    ".default",  2
-  )
+)
 
+# Subset data for the example
+data <- dplyr::filter(data_labs, group2 == "BASOPHILS", col1 \%in\% c("Placebo", "Xanomeline Low Dose"))
+tfrmt_sigdig(data = sig_input,
+             group = vars(group1, group2),
+             label = rowlbl,
+             param_defaults = param_set("[\{n\}]" = NA)) \%>\%
+  tfrmt(column = vars(col1, col2),
+        param = param,
+        values = value,
+        sorting_cols = vars(ord1, ord2, ord3),
+        col_plan = col_plan(-starts_with("ord"))) \%>\%
+  print_to_gt(.data = data)
+}\if{html}{\out{</div>}}
 
-tfrmt_sigdig(data = data_input,
-      group = vars(group1, group2),
-      label = rowlbl,
-      param_defaults = param_set("[{n}]" = NA)) \%>\%
-    tfrmt(column = vars(col1, col2),
-          param = param,
-          values = value,
-          sorting_cols = vars(ord1, ord2, ord3),
-          col_plan = col_plan(-starts_with("ord"))) \%>\%
-    print_to_gt(labs_data)
-
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png" style="width:100\%;">
+}}
 }
 
-}

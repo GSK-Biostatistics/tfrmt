@@ -18,6 +18,20 @@
 #'   between each group.
 #'
 #'@export
+#'@examples
+#'
+#' tfrmt_spec <- tfrmt(
+#'   group = c(grp1, grp2),
+#'   label = label,
+#'   param = param,
+#'   values = value,
+#'   column = column,
+#'   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
+#'   body_plan = body_plan(
+#'     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+#'   )
+#' )
+#'
 element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint"),
                                 indent = "  "){
   location = match.arg(location)
@@ -46,6 +60,21 @@ is_element_row_grp_loc <- function(x){
 #'   specify whether row group titles span the entire table or collapse.
 #'
 #' @export
+#' @examples
+#'
+#' tfrmt_spec <- tfrmt(
+#'   group = grp1,
+#'   label = label,
+#'   param = param,
+#'   values = value,
+#'   column = column,
+#'   row_grp_plan = row_grp_plan(
+#'     row_grp_structure(group_val = ".default", element_block(post_space = "   "))
+#'   ),
+#'   body_plan = body_plan(
+#'     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+#'   )
+#' )
 element_block <- function(post_space = c(NULL, " ", "-"),
                           background_fill = NULL,
                           border = c(NULL, "outline", "bottom")){
@@ -56,6 +85,9 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 
 }
 
+is_element_block <- function(x){
+  inherits(x, "element_block")
+}
 
 #' Element Align
 #'
@@ -76,6 +108,14 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 #'   element_align()'s together to form a plan.
 #'
 #' @export
+#' @examples
+#'
+#'  plan <- col_align_plan(
+#'     element_align(align = "left", col = "my_var"),
+#'     element_align(align = "right", col = vars(four)),
+#'     element_align(align = c(".", ",", " "), col = vars(two, three))
+#'    )
+#'
 #' @rdname theme_element
 element_align <- function(align = "left",
                           col = vars()){

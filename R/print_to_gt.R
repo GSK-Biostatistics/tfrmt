@@ -11,6 +11,48 @@
 #'
 #' @return a stylized gt object
 #' @export
+#'
+#' @section Examples:
+#'
+#' ```r
+#'
+#' # Create tfrmt specification
+#' tfrmt_spec <- tfrmt(
+#'   label = label,
+#'   column = column,
+#'   param = param,
+#'   body_plan = body_plan(
+#'     frmt_structure(group_val = ".default", label_val = ".default",
+#'                    frmt_combine(
+#'                      "{count} {percent}",
+#'                      count = frmt("xxx"),
+#'                      percent = frmt_when("==100"~ frmt(""),
+#'                                          "==0"~ "",
+#'                                          "TRUE" ~ frmt("(xx.x%)"))))
+#'   ))
+#'
+#' # Print mock table using default
+#' print_mock_gt(tfrmt = tfrmt_spec)
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png\" style=\"width:50\\%;\">"`
+#' }}
+#'
+#' ```r
+#' # Create mock data
+#' df <- crossing(label = c("label 1", "label 2", "label 3"),
+#'                column = c("placebo", "trt1", "trt2"),
+#'                param = c("count", "percent"))
+#'
+#' # Print mock table using mock data
+#' print_mock_gt(tfrmt_spec, df)
+#' ```
+#'
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png\" style=\"width:50\\%;\">"`
+#' }}
+#'
+#'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
 #' @importFrom tidyselect everything eval_select
 #' @importFrom rlang quo_is_missing sym quo is_empty
@@ -63,6 +105,40 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
 #'
 #' @return a stylized gt object
 #' @export
+#'
+#' @section Examples:
+#'
+#' ```r
+#'
+#' # Create tfrmt specification
+#' tfrmt_spec <- tfrmt(
+#'   label = label,
+#'   column = column,
+#'   param = param,
+#'   value=value,
+#'   body_plan = body_plan(
+#'     frmt_structure(group_val = ".default", label_val = ".default",
+#'                    frmt_combine(
+#'                      "{count} {percent}",
+#'                      count = frmt("xxx"),
+#'                      percent = frmt_when("==100"~ frmt(""),
+#'                                          "==0"~ "",
+#'                                          "TRUE" ~ frmt("(xx.x%)"))))
+#'   ))
+#'
+#' # Create data
+#' df <- crossing(label = c("label 1", "label 2"),
+#'                column = c("placebo", "trt1"),
+#'                param = c("count", "percent")) %>%
+#'       mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'
+#' print_to_gt(tfrmt_spec,df)
+#'
+#' ```
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" style=\"width:50\\%;\">"`
+#' }}
+#'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
 #' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data){
@@ -88,7 +164,7 @@ print_to_gt <- function(tfrmt, .data){
 #' @noRd
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels
+#'   cells_body cells_column_labels md
 cleaned_data_to_gt <- function(.data, tfrmt){
   if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
@@ -106,13 +182,13 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     align <- NULL
   }
 
-  gt_out <- .data %>%
+gt_out <- .data %>%
     gt(
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
-    apply_gt_spanning_labels(.data) %>%
+    format_gt_column_labels(.data) %>%
     tab_style(
       style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
@@ -124,7 +200,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       tab_options(row_group.as_column = TRUE)
   }
 
-  gt_out %>%
+  gt_out_final  <- gt_out %>%
     tab_style(
       style = list(
         cell_text(whitespace = "pre", align = "left")
@@ -144,6 +220,11 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       row_group.border.bottom.color = "transparent",
       row_group.border.top.color = "transparent",
       table.font.names = c("Courier", default_fonts())) %>%
+
+    tab_style(
+      style = cell_text(whitespace = "pre", align = "center"),
+      locations = cells_column_labels()
+    ) %>%
 
     tab_style(
       style = cell_borders(
@@ -182,6 +263,9 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
+
+  gt_out_final
+
 }
 
 
@@ -193,22 +277,22 @@ cleaned_data_to_gt <- function(.data, tfrmt){
 #' @return gt object
 #' @noRd
 #'
-#' @importFrom gt tab_source_note md
+#' @importFrom gt tab_footnote md
 apply_gt_footnote<- function(gt, footer){
   if(is.null(footer)){
     gt
   } else {
     gt %>%
-      tab_source_note(
-        source_note = md(footer)
+      tab_footnote( footnote = md(footer)
       )
 
   }
 }
 
-#' Applies gt spanning labels
+#' Format gt column labels
 #'
-#' Makes a gt objectt and applies the spanning labels if relevent
+#' Makes a gt object and applies the spanning labels if relevant, as well as
+#' markdown formatting of all column labels
 #'
 #' @param .data dataset to convert to a gt
 #' @param tfrmt tfrmt object
@@ -217,10 +301,11 @@ apply_gt_footnote<- function(gt, footer){
 #' @noRd
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
-#' @importFrom gt cols_label tab_spanner
-#' @importFrom dplyr as_tibble desc
+#' @importFrom gt cols_label tab_spanner md
+#' @importFrom dplyr as_tibble desc coalesce left_join mutate
+#' @importFrom purrr keep
 #'
-apply_gt_spanning_labels <- function(gt_table, .data){
+format_gt_column_labels <- function(gt_table, .data){
 
   spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
   if(length(spanning) > 0){
@@ -231,7 +316,6 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       as_tibble( .name_repair = ~paste0("V", 1:length(.))) %>%
       mutate(cols = spanning) %>%
       pivot_longer(-.data$cols)
-
 
     lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
 
@@ -244,20 +328,36 @@ apply_gt_spanning_labels <- function(gt_table, .data){
       filter(.data$value != "NA")
 
     for(i in 1:nrow(spans_to_apply)){
+
+      # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
-        tab_spanner(spans_to_apply$value[i], columns = spans_to_apply$set[[i]])
+        tab_spanner(md(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
     }
+
+    # ensure all columns are represented
+    lowest_lvl <- names(.data) %>%
+      tibble(cols = .) %>%
+      left_join(lowest_lvl) %>%
+      mutate(value = coalesce(value, cols))
 
     renm_vals <- lowest_lvl %>%
       pull(.data$value)
     names(renm_vals) <-lowest_lvl %>%
       pull(.data$cols)
 
-    gt_table <- gt_table %>%
-      cols_label(.list = renm_vals)
+
+  } else {
+
+    renm_vals <- names(.data)
+    names(renm_vals) <- renm_vals
 
   }
-  gt_table
+
+  # convert lowest level column labels to markdown format
+  gt_table %>%
+    cols_label(.list=
+                 lapply(renm_vals,md))
+
 
 }
 

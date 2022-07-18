@@ -177,8 +177,19 @@ frmt_combine <- function(expression, ..., missing = NULL){
 
   names(fmt_ls) <- vars_to_fmt
 
+  # Adding ` to expression if not there and there is a space/symbol
+  replace_val <-case_when(
+    str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
+    !str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") & !str_detect(vars_to_fmt, "`") ~ paste0("`", vars_to_fmt, "`"),
+    TRUE ~ vars_to_fmt)
+
+  exp_new <- expression
+  for(i in 1:length(replace_val)){
+    exp_new <- stringr::str_replace(exp_new, vars_to_fmt[i], replace_val[i])
+  }
+
   structure(
-    list(expression = expression, fmt_ls = fmt_ls, missing = missing),
+    list(expression = exp_new, fmt_ls = fmt_ls, missing = missing),
     class = c("frmt_combine","frmt")
   )
 }

@@ -106,7 +106,7 @@ fisher_test_ae <- function(.data) {
 
 
 # Create AE table data
-create_tbl_ae_data <- function(){
+create_tbl_data_ae <- function(){
 
   # Read in ADSL
   adae <- safetyData::adam_adae %>%
@@ -143,7 +143,7 @@ create_tbl_ae_data <- function(){
 
   # Make long & prep for tlang ----------------------------------------------------------
 
-  tab_ae_data <- combined %>%
+  tab_data_ae <- combined %>%
     select(-contains("no_event_")) %>%
     pivot_longer(-c(AEBODSYS, AETERM, ord1, ord2, p_low, p_high)) %>%
     separate(name, c("stat", "col2"), sep = "_") %>%
@@ -166,8 +166,8 @@ create_tbl_ae_data <- function(){
     select(AEBODSYS, AETERM, col2, col1, param, value, ord1, ord2) %>%
     unique
 
-  return(tab_ae_data)
+  return(tab_data_ae)
 }
 
-ae_data <- create_tbl_ae_data()
-usethis::use_data(ae_data, overwrite = TRUE)
+data_ae <- create_tbl_data_ae()
+usethis::use_data(data_ae, overwrite = TRUE)
