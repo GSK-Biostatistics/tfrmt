@@ -92,7 +92,8 @@ labs_tfrmt %>%
 
 ## Conflicting Layers
 
-As two tfrmt are layered, it is possible for some of them to have conflicting information for which groups to use across their body_plans since this information is concatenated. Addressing this without having to re-write the entire body_plan is able to be done with the `update_group()` function. 
+As two tfrmt are layered, there may come a  case where the 
+groups value is not the same across the body plan. Additionally, data may be provided in a slightly different group names than was expected. Addressing this without having to re-write the entire body_plan is able to be done with the `update_group()` function. 
 
 Similar to the `rename()` function, here we provide the new group name and which old group name needs to be updated. The function maps across the entire tfrmt and updates all references of the old group name to the new one.
 
@@ -100,7 +101,7 @@ For example, this is useful when a template tfrmt needs references updated. This
 
 ```{r}
 
-## provided data had different colnames for groups
+## provided data had different column names for groups
 alternate_labs_data <- labs_data_subset %>% 
   rename(
     `Lab Type` = group1,
