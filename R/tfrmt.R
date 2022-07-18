@@ -43,8 +43,9 @@
 #'   to `column` as "Hello World". To pass "my_object" to tfrmt as a column name, use
 #'   quotes around the value: `tfrmt(columnn = "my_object")`.
 #'
-#'   - In a similar vein, when supplying variable names that match `tfrmt`
-#'   argument names, it is recommended to put quotes around the value as such:
+#'   - Additionally, unquoted expressions that match `tfrmt`'s other 
+#'   argument names can cause unexpected results. It is recommended 
+#'   to put quotes around the value as such:
 #'   `tfrmt(label = "group")`. In this case, the quoting will prevent `tfrmt`
 #'   from assigning its `group` input value to the `label` value.
 #'
