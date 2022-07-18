@@ -40,7 +40,8 @@
 #'   environment with the value "Hello world", and try to create a tfrmt as
 #'   `tfrmt(column = my_object)`, it will take the value of "my_object" over
 #'   assuming the column argument is an unquoted expression and view the entry
-#'   to `column` as "Hello World".
+#'   to `column` as "Hello World". To pass "my_object" to tfrmt as a column name, use
+#'   quotes around the value: `tfrmt(columnn = "my_object")`.
 #'
 #' @rdname tfrmt
 #'
