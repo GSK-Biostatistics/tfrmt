@@ -79,8 +79,9 @@ environment with the value "Hello world", and try to create a tfrmt as
 assuming the column argument is an unquoted expression and view the entry
 to \code{column} as "Hello World". To pass "my_object" to tfrmt as a column name, use
 quotes around the value: \code{tfrmt(columnn = "my_object")}.
-\item In a similar vein, when supplying variable names that match \code{tfrmt}
-argument names, it is recommended to put quotes around the value as such:
+\item Additionally, unquoted expressions that match \code{tfrmt}'s other
+argument names can cause unexpected results. It is recommended
+to put quotes around the value as such:
 \code{tfrmt(label = "group")}. In this case, the quoting will prevent \code{tfrmt}
 from assigning its \code{group} input value to the \code{label} value.
 }
