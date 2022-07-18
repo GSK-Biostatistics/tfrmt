@@ -1,5 +1,5 @@
 
-# tfrmt
+# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="man/figures/tfrmt.png" align="right" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
