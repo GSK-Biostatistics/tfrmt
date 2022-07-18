@@ -52,6 +52,7 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
   }
 
   # apply grouping if any
+  # create y variable to preserve ordering and levels
   .data<-apply_grp_ggplot(.data,tfrmt) %>%
     mutate(y=n():1)
 
@@ -84,7 +85,7 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
       ),
       panel.spacing = unit(0, "mm"),
       strip.text = element_blank()
-    ) +
+    ) + # replace y values with labels
     scale_y_discrete(labels = data$label, breaks = data$y)
 
 

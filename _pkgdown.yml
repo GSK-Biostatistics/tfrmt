@@ -10,6 +10,7 @@ articles:
   - row_grp_plan
   - col_plan
   - col_align_plan
+  - print_to_ggplot
 - title: Building Tables
   navbar: Building Tables
   contents:

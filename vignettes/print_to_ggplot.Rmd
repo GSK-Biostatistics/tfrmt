@@ -1,0 +1,99 @@
+---
+title: "Print to ggplot"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Body Plan}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE, warning = FALSE}
+library(tfrmt)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+library(survival)
+library(ggfortify)
+```
+
+Print to ggplot outputs a ggplot table. This table can then be added to an existing plot to provide additional information. For this we recommend the use of the patchwork package.
+
+## Surival analysis example
+
+A common use case of this function could be in the production of survival plots. The following code sets up a Kaplan Meier plot using the colon data from the survival package. 
+
+```{r, message=FALSE,warning=FALSE}
+# Set up survival data
+fit <- survfit(Surv(time,status)~rx, data=colon)
+
+# Plot kaplan meier between times 0-3000
+km_plot<-autoplot(fit)+
+  xlim(c(0,3000))
+```
+
+As with `print_to_gt`, `print_to_ggplot` requires an input table with `label`, `value`,`param` and `column` variables.  The following code sets up our mock input table. 
+
+```{r,message=FALSE,warning=FALSE}
+risk<-tibble(time=c(rep(c(0,1000,2000,3000),3)),
+             label=c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),
+             value=c(630,372,256,11,620,360,266,8,608,425,328,14),
+             param=rep("n",12))
+```
+
+A tfrmt object is required to specify the formatting of the ggplot table. This can then be piped out to `print_to_ggplot` as seen below. 
+
+```{r,message=FALSE,warning=FALSE}
+table <-tfrmt(
+  # specify columns in the data
+  label = label ,
+  column = time,
+  param = param,
+  values = value) %>%
+  print_to_ggplot(risk)
+```
+
+Now using the patchwork package we can combine the original plot, and our ggplot table. Since we want the table below the plot, we use `/`. For more information on using patchwork, refer to the documentation [here](https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html)
+
+```{r, fig.width=7 ,message=FALSE,warning=FALSE}
+km_plot/table
+```
+
+### Using grouping
+
+You can also apply groups to your ggplot table. The code below adds groupings to the risk table above for a mock example. 
+
+```{r,message=FALSE,warning=FALSE}
+riska<- risk %>%
+  mutate(group="A")
+
+riskb<- risk %>%
+  mutate(group="B",
+         value=value+10)
+
+risk_group<-riska %>%
+  rbind(riskb)
+```
+
+Now we need to add group to our tfrmt specification and patch together:
+
+```{r, fig.width=7,message=FALSE,warning=FALSE}
+
+group_table<-tfrmt(
+  # specify columns in the data
+  group = group,
+  label = label ,
+  column = time,
+  param = param,
+  values = value) %>% 
+  print_to_ggplot(risk_group)
+
+km_plot/group_table
+
+```
