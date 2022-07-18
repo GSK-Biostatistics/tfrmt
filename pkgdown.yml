@@ -5,8 +5,8 @@ articles:
   body_plan: body_plan.html
   building_blocks: building_blocks.html
   building_mocks: building_mocks.html
-  col_align_plan: col_align_plan.html
   col_plan: col_plan.html
+  col_style_plan: col_style_plan.html
   examples: examples.html
   faq: faq.html
   layer: layer.html
@@ -14,7 +14,7 @@ articles:
   row_grp_plan: row_grp_plan.html
   templates: templates.html
   unusual_tables: unusual_tables.html
-last_built: 2022-07-18T15:21Z
+last_built: 2022-07-18T16:54Z
 urls:
   reference: https://gsk-biostatistics.github.io/tfrmt/reference
   article: https://gsk-biostatistics.github.io/tfrmt/articles
