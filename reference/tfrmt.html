@@ -164,6 +164,30 @@ columns</p></dd>
 <dd><p>These dots are for future extensions and must be empty.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    
+<div class="section">
+<h3 id="nse-and-argument-evaluation">NSE and Argument Evaluation<a class="anchor" aria-label="anchor" href="#nse-and-argument-evaluation"></a></h3>
+
+
+<p>tfrmt allows users to pass <code>vars</code>, <code>quo</code>, and unquoted expressions to a
+variety of arguments, such as <code>group</code>, <code>label</code>, <code>param</code>, <code>values</code>,
+<code>column</code>, and <code>sorting_cols</code>. Users accustomed to tidyverse semantics
+should be familiar with this behavior. However, there is an important
+behavior difference between tfrmt and normal tidyverse functions. Because
+the data are not a part of tfrmt, it does not know when a value being
+passed to it is intended to be an unquoted expression representing a column
+name or an object from the environment. As such, it preferentially uses the
+value from the environment over preserving the entry as an expression. For
+example, if in your environment you have an object "my_object" in your
+environment with the value "Hello world", and try to create a tfrmt as
+<code>tfrmt(column = my_object)</code>, it will take the value of "my_object" over
+assuming the column argument is an unquoted expression and view the entry
+to <code>column</code> as "Hello World".</p>
+</div>
+
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
