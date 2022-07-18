@@ -337,7 +337,7 @@ format_gt_column_labels <- function(gt_table, .data){
     # ensure all columns are represented
     lowest_lvl <- names(.data) %>%
       tibble(cols = .) %>%
-      left_join(lowest_lvl) %>%
+      left_join(lowest_lvl, by = "cols") %>%
       mutate(value = coalesce(value, cols))
 
     renm_vals <- lowest_lvl %>%

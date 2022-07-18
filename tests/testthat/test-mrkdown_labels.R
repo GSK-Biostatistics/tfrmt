@@ -153,7 +153,7 @@ test_that("markdown column labels - renamed", {
 })
 
 test_that("column spanners and labels are appropriately aligned", {
-  dat <- tribble(
+  dat <- tibble::tribble(
     ~ group, ~label, ~span1,   ~span2,  ~lower, ~param,     ~val,
     "mygrp", "mylbl", "span01",  "span1", "lower1_a", "prm", 1,
     "mygrp", "mylbl", "span01",  "span1", "lower1_b", "prm",1,
@@ -192,7 +192,7 @@ test_that("column spanners and labels are appropriately aligned", {
   chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev
 
   # combine spanner & lower labels and rename as per tfrmt spec
-  gt_cols <- full_join(lower, spans) %>%
+  gt_cols <- full_join(lower, spans, by = "var") %>%
     unique %>%
     filter(!is.na(spanner_label)) %>%
     pivot_wider(names_from = spanner_level,
