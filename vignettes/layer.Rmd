@@ -105,15 +105,15 @@ For example, this is useful when a template tfrmt needs references updated. This
 alternate_labs_data <- labs_data_subset %>% 
   rename(
     `Lab Type` = group1,
-    `Lab Test` = group1,
+    `Lab Test` = group2,
   )
 
 labs_tfrmt %>% 
   update_group(
     `Lab Type` = group1,
-    `Lab Test` = group1,
+    `Lab Test` = group2,
   ) %>% 
-  print_to_gt(labs_data_subset) %>% 
+  print_to_gt(alternate_labs_data) %>% 
   tab_options(
     container.width = 1000
   )
