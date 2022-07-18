@@ -44,6 +44,8 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
   if(column_type=="numeric"){
   ggplot(data, aes(x=as.numeric(column), y=label, label = value)) +
     geom_text(size = 3) +
+   # geom_tile(fill = "white", alpha = .4, color = "black") +
+  #  scale_x_continuous(expand = expansion(mult = c(0, 0)))+
     xlab("") +
     theme_void() +
     theme(axis.text.y = element_text(size = 10, margin = margin(r = 0)),
@@ -51,9 +53,10 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
           strip.text = element_blank())
   }else{
     ggplot(data, aes(x=column, y=label, label = value)) +
+    #  geom_tile(fill = "white", alpha = .4, color = "black") +
       geom_text(size = 3) +
       xlab("") +
-      #theme_void() +
+      theme_void() +
       theme(axis.text.y = element_text(size = 10, margin = margin(r = 0)),
             panel.spacing = unit(0, "mm"),
             strip.text = element_blank())
