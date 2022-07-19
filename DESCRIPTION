@@ -39,7 +39,9 @@ Suggests:
     covr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    patchwork,
+    survival
 Imports: 
     magrittr,
     dplyr,
