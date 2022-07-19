@@ -265,7 +265,7 @@ test_that("Test body_plan missing", {
 })
 
 
-test_that("incomplete body_plan",{
+test_that("incomplete body_plan where params share label",{
 
   dd <- tibble::tribble(
     ~rowlbl1, ~grp, ~rowlbl2, ~column, ~param, ~value,
