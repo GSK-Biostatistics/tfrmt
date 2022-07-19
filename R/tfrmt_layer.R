@@ -151,7 +151,7 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #'
 #' @examples
 #'
-#' tfrmt1 <- tfrmt(
+#' tfrmt_spec <- tfrmt(
 #'     group = c(group1, group2),
 #'     body_plan  = body_plan(
 #'       frmt_structure(
@@ -166,7 +166,7 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #'        )
 #'     ))
 #'
-#' tfrmt1 %>%
+#' tfrmt_spec %>%
 #'   update_group(New_Group = group1)
 #'
 update_group <- function(tfrmt, ...){

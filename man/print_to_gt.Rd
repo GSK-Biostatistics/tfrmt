@@ -17,3 +17,38 @@ a stylized gt object
 \description{
 Print to gt
 }
+\section{Examples}{
+
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+# Create tfrmt specification
+tfrmt_spec <- tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  value=value,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine(
+                     "\{count\} \{percent\}",
+                     count = frmt("xxx"),
+                     percent = frmt_when("==100"~ frmt(""),
+                                         "==0"~ "",
+                                         "TRUE" ~ frmt("(xx.x\%)"))))
+  ))
+
+# Create data
+df <- crossing(label = c("label 1", "label 2"),
+               column = c("placebo", "trt1"),
+               param = c("count", "percent")) \%>\%
+      mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+
+print_to_gt(tfrmt_spec,df)
+
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png" style="width:50\%;">
+}}
+}
+

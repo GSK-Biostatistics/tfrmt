@@ -1,6 +1,10 @@
 url: https://gsk-biostatistics.github.io/tfrmt/
 template:
   bootstrap: 5
+  opengraph:
+    image:
+      src: man/figures/tfrmt.png
+      alt: "tfrmt Hex Sticker"
 articles:
 - title: Table Components
   navbar: Table Components
@@ -9,8 +13,7 @@ articles:
   - body_plan
   - row_grp_plan
   - col_plan
-  - col_align_plan
-  - print_to_ggplot
+  - col_style_plan
 - title: Building Tables
   navbar: Building Tables
   contents:
@@ -21,6 +24,7 @@ articles:
 - title:
   navbar: More
   contents:
+  - print_to_ggplot
   - faq
   - mock_examples
   - unusual_tables

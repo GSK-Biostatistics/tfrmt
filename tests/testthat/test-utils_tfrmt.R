@@ -36,9 +36,9 @@ plan  <- tfrmt(
   column = "col",
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
-  col_align_plan = col_align_plan(
-    # element_align(align = "right", col = vars(label)),
-    element_align(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
+  col_style_plan = col_style_plan(
+    # element_col(align = "right", col = vars(label)),
+    element_col(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
     frmt_structure(group_val = ".default", label_val = ".default",
