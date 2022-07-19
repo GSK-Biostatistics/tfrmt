@@ -4,17 +4,26 @@
 \alias{row_grp_structure}
 \title{Row Group Structure Object}
 \usage{
-row_grp_structure(group_val = ".default", ...)
+row_grp_structure(group_val = ".default", element_block)
 }
 \arguments{
 \item{group_val}{A string or a named list of strings which represent the
 value of group should be when the given frmt is implemented}
 
-\item{...}{element_block() object}
+\item{element_block}{element_block() object to define the block styling}
 }
 \description{
 Function needed to create a row_grp_structure object, which is a building block
 of \code{\link[=row_grp_plan]{row_grp_plan()}}
+}
+\examples{
+
+## single grouping variable example
+row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+
+## example with multiple grouping variables
+row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+
 }
 \seealso{
 \code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group

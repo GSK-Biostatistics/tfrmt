@@ -14,17 +14,17 @@
 #' @importFrom dplyr mutate across pull tibble
 #' @importFrom stringr str_dup str_c str_trim
 #' @noRd
-apply_col_align <- function(col, align){
+apply_col_alignment <- function(col, align){
 
   if (!all(align %in% c("left","right"))){
 
     if (!all(nchar(align)==1)){
-      message("`align` specified in `element_align` contains strings with >1 characters. Only the first character will be used.")
+      message("`align` specified in `element_col` contains strings with >1 characters. Only the first character will be used.")
       align <- str_sub(align, start=1, end=1)
     }
 
     if (any(str_detect(align, "[[:alnum:]]"))){
-      warning("`align` specified in `element_align` contains one or more alphanumeric characters. Results may not be as expected.")
+      warning("`align` specified in `element_col` contains one or more alphanumeric characters. Results may not be as expected.")
     }
 
     align <- ifelse(str_detect(align, "[[:alnum:]]"), paste0("\"", align, "\""), paste0("\\", align))
@@ -64,48 +64,81 @@ apply_col_align <- function(col, align){
 }
 
 
-#' Apply column alignment plan
+#' Apply column style plan - alignment
 #'
 #' @param .data data
-#' @param align_plan col_align_plan object
-#' @param column symbolic list of columns
-#' @param value symbolic value column
+#' @param tfrmt_obj tfrmt object
 #' @importFrom dplyr mutate across select tibble group_by slice n filter cur_column pull ungroup
 #' @importFrom tidyr unnest
 #' @importFrom tidyselect everything
-#' @importFrom purrr safely list_modify map_dfr
+#' @importFrom purrr map map_dfr discard
 #' @importFrom rlang as_name
 #' @importFrom tibble as_tibble_row
 #' @importFrom forcats fct_inorder
 #'
 #' @noRd
-apply_col_align_plan <- function(.data, align_plan, column, value){
+apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
+
+
+  style_plan <- tfrmt_obj$col_style_plan
+
+  if(is.null(style_plan)){
+    return(.data)
+  }
+
+  alignment_style_plan <- style_plan %>%
+    discard(function(x)is.null(x$align))
+
+  if(length(alignment_style_plan) == 0){
+    return(.data)
+  }
+
+  column <- tfrmt_obj$column
+  values <- tfrmt_obj$values
 
   last_col <- column[[length(column)]]
 
-  cols <- .data %>%
+  col_vals <- .data %>%
     pull(!!last_col) %>%
     unique()
-  dummy_dat <- rep(" ",length(cols))
-  names(dummy_dat) <- cols
-  dummy_dat <- dummy_dat %>%
-    as_tibble_row()
 
+  valid_data_col_vals <- setdiff(names(.data),c(column, values))
 
-  selections <- align_plan %>%
-    map(function(x) list_modify(x, col_checked = safely(select)(dummy_dat, !!!x$col)))
+  ## allow identify alignment to which columns (where assigned)
 
+  selections <-  alignment_style_plan %>%
+    map(function(x) {
 
-  map(selections, function(x){
-    if(!is.null(x$col_checked$error)){
-      stop(paste0("Variable Specified in element_align doesn't exist in the supplied dataset. Please check the tfrmt and try again."),
-           call. = FALSE)
-    }
-  })
+      ## check if selection applies to col vars or alternate columns
+      col_vals <- map(x$col, function(ex) {
+
+        val <- try(eval_tidyselect_on_colvec(ex, col_vals), silent = TRUE)
+        if (inherits(val, "try-error")) {
+          abort(
+            paste0(
+              "Variable `",
+              as_label(ex),
+              "` specified in element_col doesn't exist in the supplied dataset. Please check the tfrmt and try again."
+            ),
+            .call = FALSE
+          )
+        }
+        return(val)
+      }) %>%
+        discard(is.null) %>%
+        unlist() %>%
+        unique()
+
+      if(length(col_vals) > 0){
+        x$col_eval <- col_vals
+        return(x)
+      }
+    }) %>%
+    discard(is.null)
 
   # keep the last col align for each col
   align_spec <- selections %>%
-    map_dfr(~tibble(align = list(.x$align), column = list(.x$col_checked$result %>% names))) %>%
+    map_dfr(~tibble(align = list(.x$align), column = list(.x$col_eval))) %>%
     unnest(.data$column) %>%
     ungroup() %>%
     group_by(.data$column) %>%
@@ -120,11 +153,48 @@ apply_col_align_plan <- function(.data, align_plan, column, value){
     map_dfr(function(x){
       if(!is.null(x$align[[1]])){
       x <-  x %>%
-          mutate(!!value := apply_col_align(!!value, x$align[[1]]))
+          mutate(!!values := apply_col_alignment(!!values, x$align[[1]]))
       }
       x
     }) %>%
     select(-.data$align) %>%
     mutate(across(c(!!!column), as.character))
+}
+
+
+#' Apply column style plan - alignment
+#'
+#' @param gt_table gt object
+#' @param style_plan col_style_plan object
+#'
+#' @importFrom gt cols_width
+#' @importFrom rlang is_empty
+#' @importFrom stats as.formula
+#'
+#' @noRd
+apply_gt_col_style_plan_widths <- function(gt_table, style_plan){
+
+  style_plan <- style_plan %>%
+    discard(function(x)is.null(x$width))
+
+  for(el_style in style_plan){
+    if(!is_empty(el_style$width)){
+
+      col_width_formula_list <- map(el_style[["col"]], function(col){
+        if(is_valid_tidyselect_call(rlang::quo_get_expr(col))){
+          col <- as_label(col)
+        }else{
+          col <- paste0("`",as_label(col),"`")
+        }
+        as.formula(paste0(col," ~ '",el_style$width,"'"))
+      })
+
+      gt_table <- cols_width(.data = gt_table,.list = col_width_formula_list)
+
+    }
+  }
+
+  gt_table
+
 }
 

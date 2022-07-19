@@ -103,8 +103,8 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
   #get filters for each column type
   grp_expr <- expr_to_filter(group, cur_fmt$group_val)
   lbl_expr <- expr_to_filter(label, cur_fmt$label_val)
-  parm_expr <- expr_to_filter(param, cur_fmt$param_val %>%
-                              str_remove_all("`"))
+  parm_expr <- expr_to_filter(param, cur_fmt$param_val)
+
 
   filter_expr <- paste(
       c(lbl_expr,grp_expr,parm_expr),
@@ -136,6 +136,7 @@ expr_to_filter.quosure <- function(cols, val){
     out <- "TRUE"
   } else {
     out <- as_label(cols) %>%
+      paste0("`", ., "`") %>%
       paste0(" %in% c('",
              paste0(val, collapse = "', '"),
              "')")

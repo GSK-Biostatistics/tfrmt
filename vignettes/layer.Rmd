@@ -37,11 +37,11 @@ We provide `tfrmt_sigdig()` with a data.frame detailing the groups and the signi
 
 The second tfrmt defines the table specific information, including title, specific columns to use for row labels and output columns, as well as the col_plan.
 
-The output tfrmt generates a table with the subset `labs_data`.
+The output tfrmt generates a table with the subset `data_labs`.
 
-```{r}
+```{r, results = "asis"}
 
-labs_data_subset <- labs_data %>% 
+data_labs_subset <- data_labs %>% 
   filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE" ,"ALBUMIN" ,"ALKALINE PHOSPHATASE","ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
@@ -56,12 +56,14 @@ data_input <- tribble(
   )
 
 
-tfrmt_sigdig(
+labs_tfrmt_template <- tfrmt_sigdig(
   data = data_input,
   group = vars(group1, group2),
   label = rowlbl,
   param_defaults = param_set("[{n}]" = NA)
-  ) %>%
+  ) 
+
+labs_tfrmt <- labs_tfrmt_template %>%
   tfrmt(
     column = vars(col1, col2),
     param = param,
@@ -69,19 +71,62 @@ tfrmt_sigdig(
     sorting_cols = vars(ord1, ord2, ord3),
     row_grp_plan = row_grp_plan(
       label_loc = element_row_grp_loc(location = "indent")
-    )
-    # col_plan = col_plan(
-    #   group1, group2,
-    #   rowlbl,
-    #   "Residuals" = res,
-    #   "Change From Baseline" = cbl,
-    #   n,
-    #   -starts_with("ord")
-    #   )
-  ) %>%
-  print_to_gt(labs_data_subset) %>% 
+    ),
+    col_plan = col_plan(
+      group1, group2,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+      )
+  )
+
+labs_tfrmt %>% 
+  print_to_gt(data_labs_subset) %>% 
   tab_options(
     container.width = 1000
   )
+
+```
+
+## Conflicting Layers
+
+As two tfrmt are layered, there may come a  case where the 
+groups value is not the same across the body plan. Additionally, data may be provided in a slightly different group names than was expected. Addressing this without having to re-write the entire body_plan is able to be done with the `update_group()` function. 
+
+Similar to the `rename()` function, here we provide the new group name and which old group name needs to be updated. The function maps across the entire tfrmt and updates all references of the old group name to the new one.
+
+For example, this is useful when a template tfrmt needs references updated. This could happen when the input data set has a slightly different naming convention than expected.
+
+```{r}
+
+## provided data had different column names for groups
+alternate_data_labs_subset <- data_labs_subset %>% 
+  rename(
+    `Lab Type` = group1,
+    `Lab Test` = group2,
+  )
+
+labs_tfrmt %>% 
+  update_group(
+    `Lab Type` = group1,
+    `Lab Test` = group2,
+  ) %>% 
+  tfrmt(
+    col_plan = col_plan(
+      `Lab Type`, `Lab Test`,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+      )
+  ) %>% 
+  print_to_gt(alternate_data_labs_subset) %>% 
+  tab_options(
+    container.width = 1000
+  )
+
 
 ```

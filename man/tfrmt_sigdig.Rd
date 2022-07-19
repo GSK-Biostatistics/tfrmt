@@ -70,29 +70,31 @@ matching \code{sigdig} or the supplied group/label variable) will be disregarded
 }
 }
 }
-\examples{
-\dontrun{
-
-data_input <- tibble::tribble(
+\section{Examples}{
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{sig_input <- tibble::tribble(
   ~group1,   ~group2, ~sigdig,
   "CHEMISTRY",   ".default", 3,
   "CHEMISTRY",   "ALBUMIN",  1,
   "CHEMISTRY",   "CALCIUM",   1,
   ".default",    ".default",  2
-  )
+)
 
+# Subset data for the example
+data <- dplyr::filter(data_labs, group2 == "BASOPHILS", col1 \%in\% c("Placebo", "Xanomeline Low Dose"))
+tfrmt_sigdig(data = sig_input,
+             group = vars(group1, group2),
+             label = rowlbl,
+             param_defaults = param_set("[\{n\}]" = NA)) \%>\%
+  tfrmt(column = vars(col1, col2),
+        param = param,
+        values = value,
+        sorting_cols = vars(ord1, ord2, ord3),
+        col_plan = col_plan(-starts_with("ord"))) \%>\%
+  print_to_gt(.data = data)
+}\if{html}{\out{</div>}}
 
-tfrmt_sigdig(data = data_input,
-      group = vars(group1, group2),
-      label = rowlbl,
-      param_defaults = param_set("[{n}]" = NA)) \%>\%
-    tfrmt(column = vars(col1, col2),
-          param = param,
-          values = value,
-          sorting_cols = vars(ord1, ord2, ord3),
-          col_plan = col_plan(-starts_with("ord"))) \%>\%
-    print_to_gt(labs_data)
-
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png" style="width:100\%;">
+}}
 }
 
-}
