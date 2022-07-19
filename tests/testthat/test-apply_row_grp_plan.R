@@ -343,6 +343,79 @@ test_that("Check combine_group_cols with a multi groups", {
 })
 
 
+test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_plan)", {
+  mock_multi_grp <- tibble::tribble(
+    ~grp1,    ~grp2,     ~ my_label,
+    "grp1_1", "grp2_1", "my_label_1",
+    "grp1_1", "grp2_1", "my_label_2",
+    "grp1_1", "grp2_2", "my_label_1",
+    "grp1_1", "grp2_2", "my_label_2",
+    "grp1_2", "grp2_1", "my_label_1",
+    "grp1_2", "grp2_1", "my_label_2",
+    "grp1_2", "grp2_2", "my_label_1",
+    "grp1_2", "grp2_2", "my_label_2",
+  ) %>%
+    mutate(
+      trtA = rep("xx (xx%)", 8) %>% as.list(),
+      trtB = rep("xx (xx%)", 8) %>% as.list(),
+      trtC = rep("xx (xx%)", 8) %>% as.list(),
+    )
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space =" ")),
+    label_loc = element_row_grp_loc(location = "indented")
+  )
+
+  auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label"))
+
+  man_test_listcols <- tibble::tribble(
+    ~my_label,      ~trtA,     ~trtB,     ~trtC,
+   "grp1_1"        ,""      , ""      , ""      ,
+   "  grp2_1"      , ""      , ""      , ""      ,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "  grp2_2"      , ""      , ""      , ""      ,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "grp1_2"        , ""      , ""      , ""      ,
+   "  grp2_1"      , ""      , ""      , ""      ,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "  grp2_2"      , ""      , ""      , ""      ,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)"
+  ) %>%
+    mutate(across(trtA:trtC, as.list))
+
+  expect_equal(auto_test_listcols, man_test_listcols)
+
+
+  auto_test_listcols <- apply_row_grp_struct(mock_multi_grp, sample_grp_plan$struct_ls,group = vars(grp1, grp2), label = sym("my_label"))
+
+  man_test_listcols <- tibble::tribble(
+    ~grp1,    ~grp2,   ~my_label,      ~trtA,     ~trtB,     ~trtC,
+    "grp1_1", "grp2_1", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_1", "          ", "        ", "        ", "        ",
+    "grp1_1", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_2", "          ", "        ", "        ", "        ",
+    "grp1_2", "grp2_1", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_1", "          ", "        ", "        ", "        ",
+    "grp1_2", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_2", "          ", "        ", "        ", "        "
+  ) %>%
+    mutate(across(trtA:trtC, as.list))
+
+  expect_equal(auto_test_listcols, man_test_listcols)
+
+
+
+})
+
+
 
 test_that("> 2 groups with and without spanner_label", {
   mock_multi_grp <- tibble::tribble(
@@ -577,3 +650,4 @@ test_that("row order is retained for all selections",{
     "    e"  ,"4" )
   expect_equal(gt_indented_dat, gt_indented_man)
 })
+

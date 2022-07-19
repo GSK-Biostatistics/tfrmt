@@ -203,12 +203,13 @@ fill_post_space <- function(post_space, width){
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last any_of
+#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last any_of slice
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom tidyselect vars_select_helpers
 #' @importFrom forcats fct_inorder
+#' @importFrom tibble add_row
 combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   orig_group_names <- map_chr(group, as_name)
@@ -244,16 +245,25 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
             select(!!!top_grouping, !!label) %>%
             mutate(!!label := !!last(group)) %>%
             distinct()
+
+          new_row_other_cols <- lone_dat %>%
+            select(-c(any_of(names(new_row)), vars_select_helpers$where(is.numeric))) %>%
+            slice(0) %>%
+            add_row() %>%
+            mutate(across(everything(), function(x) if (is.list(x)) list("") else ""))
+
+          new_row <- bind_cols(new_row, new_row_other_cols)
+
         } else {
           new_row <- tibble()
         }
 
-        lone_dat_summ %>%
+        lone_dat_summ  %>%
           # only indent if not a summary row
           mutate(!!label := ifelse(.data$..tlang_summary_row==TRUE,
                                    !!label,
                                    str_c(indent, !!label))) %>%
-          select(-.data$..tlang_summary_row) %>%
+           select(-.data$..tlang_summary_row) %>%
           bind_rows(new_row, .)
       })
     group = group[-length(group)]
@@ -261,8 +271,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   }
 
   .data%>%
-    mutate(across(any_of(orig_group_names), as.character),
-      across(-c(vars_select_helpers$where(is.numeric)), ~replace_na(., "")))
+    mutate(across(any_of(orig_group_names), as.character))
 
 
 }
