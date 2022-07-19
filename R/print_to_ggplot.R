@@ -43,8 +43,8 @@ print_to_ggplot <- function(tfrmt, .data){
     stop("Requires data")
   }
 
-  if(is.null(tfrmt$body_plan)==FALSE | is.null(tfrmt$col_plan)==FALSE | is.null(tfrmt$row_grp_plan)==FALSE | is.null(tfrmt$col_align_plan)==FALSE){
-    stop("print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Alignment Plan. Please remove before continuing.")
+  if(is.null(tfrmt$body_plan)==FALSE | is.null(tfrmt$col_plan)==FALSE | is.null(tfrmt$row_grp_plan)==FALSE | is.null(tfrmt$col_style_plan)==FALSE){
+    stop("print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Style Plan. Please remove before continuing.")
   }
 
   # stop if param, column values not provided
