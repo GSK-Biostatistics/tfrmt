@@ -42,6 +42,7 @@ Suggests:
     rmarkdown,
     patchwork,
     survival
+    ggfortify
 Imports: 
     magrittr,
     dplyr,
