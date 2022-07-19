@@ -91,7 +91,7 @@ from assigning its \code{group} input value to the \code{label} value.
 
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-groups-three-cols-cropped.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-groups-three-cols-cropped.jpg" style="width:100\%;">
 }}
 }
 

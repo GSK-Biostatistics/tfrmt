@@ -28,7 +28,7 @@ Element Row Group Location
 
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-row_group_plan-cropped.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-row_group_plan-cropped.jpg" style="width:100\%;">
 }}
 }
 

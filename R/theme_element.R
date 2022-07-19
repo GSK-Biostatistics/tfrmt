@@ -35,7 +35,7 @@
 #' @section Imgaes:
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-row_group_plan-cropped.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-row_group_plan-cropped.jpg\" style=\"width:100\\%;\">"`
 #' }}
 #'
 element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint"),
