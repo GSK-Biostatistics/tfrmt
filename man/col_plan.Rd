@@ -48,9 +48,10 @@ function to remove un-wanted columns.
 }
 \section{Images}{
 
+Here are some example outputs:
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-span_structure.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-span_structure.jpg" style="width:100\%;">
 }}
 }
 

@@ -73,9 +73,10 @@
 #'    )
 #'
 #' @section Images:
+#' Here are some example outputs:
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-span_structure.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-span_structure.jpg\" style=\"width:100\\%;\">"`
 #' }}
 #'
 col_plan <- function(...){
@@ -168,7 +169,7 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
           " can be entered as contents.",
           " Changing the names of individual variables using new_name = old_name syntax is allowable",
           call. = FALSE
-          )
+        )
       }
     }else if(is_span_structure(x)){
       return(x)
@@ -264,7 +265,7 @@ get_span_structure_dots.quosure <- function(x){
 get_span_structure_dots.quosures <- get_span_structure_dots.quosure
 
 get_span_structure_dots.span_structure <- function(x){
-   x$span_cols %>% unlist()
+  x$span_cols %>% unlist()
 }
 
 get_span_structure_dots.span_structures <- function(x){
@@ -343,7 +344,7 @@ select_col_plan <- function(data, tfrmt){
           .original_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_remove("^-"),
           .rename_col = names(tfrmt$col_plan$dots),
           .removal_identifier_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
-          )  %>%
+        )  %>%
           left_join(
             df_col_names,
             by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
@@ -370,11 +371,11 @@ select_col_plan <- function(data, tfrmt){
         )
 
       new_dots_tmp <- tibble(
-          dots = tfrmt$col_plan$dots,
-          dot_chr = map_chr(tfrmt$col_plan$dots, as_label) %>% str_remove("^-"),
-          dot_names = names(tfrmt$col_plan$dots),
-          dot_removal = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
-        ) %>%
+        dots = tfrmt$col_plan$dots,
+        dot_chr = map_chr(tfrmt$col_plan$dots, as_label) %>% str_remove("^-"),
+        dot_names = names(tfrmt$col_plan$dots),
+        dot_removal = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
+      ) %>%
         left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
         mutate(
           new_name_quo = map2(.data$new_name_in_df, .data$dot_removal, dot_char_as_quo),
@@ -387,12 +388,12 @@ select_col_plan <- function(data, tfrmt){
           dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
           dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
             if(!identical(x, y) & !z){
-                x
+              x
             }else{
               ""
             }
-            })
-          )
+          })
+        )
 
       new_dots <- as.list(new_dots_tmp$dot2)
       names(new_dots) <- new_dots_tmp$dot2_names
@@ -430,9 +431,9 @@ dot_char_as_quo <- function(x, negative = FALSE) {
   x_text <- tryCatch({
     x_lang <- parse(text = x)[[1]]
     if (is_valid_tidyselect_call(x_lang)) {
-        x
+      x
     } else{
-        paste0("`", x, "`")
+      paste0("`", x, "`")
     }},
     error = function(e) {
       paste0("`", x, "`")

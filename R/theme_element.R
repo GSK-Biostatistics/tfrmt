@@ -32,10 +32,11 @@
 #'   )
 #' )
 #'
-#' @section Imgaes:
+#' @section Images:
+#' Here are some example outputs:
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-row_group_plan-cropped.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-row_group_plan-cropped.jpg\" style=\"width:100\\%;\">"`
 #' }}
 #'
 element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint"),
@@ -130,9 +131,9 @@ is_element_block <- function(x){
 #'
 #' @rdname theme_element
 element_col <- function( col = vars(),
-                           align = NULL,
-                           width = NULL
-                         ){
+                         align = NULL,
+                         width = NULL
+){
 
   cols <- quo_get("col", as_var_args = "col", allow_tidy_select = TRUE)$col
 
