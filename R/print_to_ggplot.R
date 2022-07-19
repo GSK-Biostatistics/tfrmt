@@ -5,6 +5,10 @@
 #'
 #' @return a stylized ggplot object
 #' @export
+#'
+#' @importFrom rlang quo_is_missing quo_name
+#' @importFrom dplyr select
+#' @importFrom magrittr %>%
 
 print_to_ggplot <- function(tfrmt, .data){
   if(!is_tfrmt(tfrmt)){
@@ -12,8 +16,28 @@ print_to_ggplot <- function(tfrmt, .data){
   }
 
   if(!is.data.frame(.data)){
-    stop("Requires data`")
+    stop("Requires data")
   }
+
+  if(is.null(tfrmt$body_plan)==FALSE | is.null(tfrmt$col_plan)==FALSE | is.null(tfrmt$row_grp_plan)==FALSE | is.null(tfrmt$col_align_plan)==FALSE){
+    stop("print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Alignment Plan. Please remove before continuing.")
+  }
+
+  # stop if param, column values not provided
+  if (quo_is_missing(tfrmt$param)){
+    stop("param variable required for print_to_ggplot")
+  }
+  if (is_empty(tfrmt$column)){
+    stop("column variable required for print_to_ggplot")
+  }
+  if (quo_is_missing(tfrmt$label)){
+    stop("label variable required for print_to_ggplot")
+  }
+
+  if(quo_is_missing(tfrmt$values)){
+    stop("values variable required for print_to_ggplot")
+  }
+
 
   # Keeping the original data of column to preserve data type later on
   column_name <- quo_name(tfrmt$column[[1]])
@@ -34,22 +58,10 @@ print_to_ggplot <- function(tfrmt, .data){
 #' @return ggplot object
 #' @noRd
 #'
+#' @importFrom ggplot2 ggplot xlab theme_void theme scale_y_discrete element_text
+#' @importFrom tidyr pivot_longer
+#' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
-
-  # fill param, column if not provided
-  if (quo_is_missing(tfrmt$param)){
-    message("`tfrmt` will need a `param` value to `print_to_ggplot` when data is avaliable")
-    tfrmt$param <- quo(!!sym("__tfrmt__param"))
-  }
-  if (is_empty(tfrmt$column)){
-    message("`tfrmt` will need `column` value(s) to `print_to_ggplot` when data is avaliable")
-    tfrmt$column <- vars(!!sym("__tfrmt__column"))
-  }
-
-  if(quo_is_missing(tfrmt$values)){
-    message("Message: `tfrmt` will need `values` value to `print_to_ggplot` when data is avaliable")
-    tfrmt$values <- quo(!!sym("__tfrmt__val"))
-  }
 
   # apply grouping if any
   # create y variable to preserve ordering and levels
@@ -99,6 +111,8 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
 #' @return dataset wth grouping columns combined
 #' @noRd
 #'
+#' @importFrom rlang quo_name
+#' @importFrom magrittr %>%
 apply_grp_ggplot<-function(.data,tfrmt){
 
 
