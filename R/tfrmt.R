@@ -43,8 +43,8 @@
 #'   to `column` as "Hello World". To pass "my_object" to tfrmt as a column name, use
 #'   quotes around the value: `tfrmt(columnn = "my_object")`.
 #'
-#'   - Additionally, unquoted expressions that match `tfrmt`'s other 
-#'   argument names can cause unexpected results. It is recommended 
+#'   - Additionally, unquoted expressions that match `tfrmt`'s other
+#'   argument names can cause unexpected results. It is recommended
 #'   to put quotes around the value as such:
 #'   `tfrmt(label = "group")`. In this case, the quoting will prevent `tfrmt`
 #'   from assigning its `group` input value to the `label` value.
@@ -156,6 +156,13 @@
 #'   )
 #'
 #' )
+#'
+#' @section Images:
+#'
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-groups-three-cols-cropped.jpg\" style=\"width:100\\%;\">"`
+#' }}
+#'
 tfrmt <- function(
   tfrmt_obj,
   group = vars(),

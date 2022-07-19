@@ -30,6 +30,8 @@ be specified. By default 100\% and 0\% will not appear and everything between
 than (<) signs respectively.
 }
 \section{Examples}{
+
+
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{print_mock_gt(tfrmt_n_pct())
 }\if{html}{\out{</div>}}
 

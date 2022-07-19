@@ -24,6 +24,14 @@ suppress group values from being printed.}
 \description{
 Element Row Group Location
 }
+\section{Imgaes}{
+
+
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-row_group_plan-cropped.jpg" style="width:100\%;">
+}}
+}
+
 \examples{
 
 tfrmt_spec <- tfrmt(

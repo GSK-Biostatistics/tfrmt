@@ -87,6 +87,14 @@ from assigning its \code{group} input value to the \code{label} value.
 }
 }
 }
+\section{Images}{
+
+
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-groups-three-cols-cropped.jpg" style="width:100\%;">
+}}
+}
+
 \examples{
 
 tfrmt_spec <- tfrmt(
@@ -189,4 +197,5 @@ tfrmt_spec <- tfrmt(
   )
 
 )
+
 }
