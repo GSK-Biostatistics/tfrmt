@@ -73,11 +73,12 @@ the data are not a part of tfrmt, it does not know when a value being
 passed to it is intended to be an unquoted expression representing a column
 name or an object from the environment. As such, it preferentially uses the
 value from the environment over preserving the entry as an expression. For
-example, if in your environment you have an object "my_object" in your
+example, if you have an object "my_object" in your
 environment with the value "Hello world", and try to create a tfrmt as
 \code{tfrmt(column = my_object)}, it will take the value of "my_object" over
 assuming the column argument is an unquoted expression and view the entry
-to \code{column} as "Hello World".
+to \code{column} as "Hello World". To pass "my_object" to tfrmt as a column name, use
+quotes around the value: \code{tfrmt(columnn = "my_object")}.
 }
 }
 \examples{
