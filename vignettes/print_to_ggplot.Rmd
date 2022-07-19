@@ -2,7 +2,7 @@
 title: "Print to ggplot"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Body Plan}
+  %\VignetteIndexEntry{Print to ggplot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
