@@ -57,7 +57,7 @@ test_that("inputs are as expected",{
 
   expect_error(print_to_ggplot(tfrmt_1,"test"),"Requires data")
   expect_error(print_to_ggplot(tfrmt="test",.data=test_data),"Requires a tfrmt object")
-  expect_error(print_to_ggplot(tfrmt_2,test_data),"print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Alignment Plan. Please remove before continuing.")
+  expect_error(print_to_ggplot(tfrmt_2,test_data),"print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Style Plan. Please remove before continuing.")
 
 
 
