@@ -25,7 +25,7 @@ of \code{\link[=body_plan]{body_plan()}}. This specifies the rows the format wil
 Here are some example outputs:
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-frmts.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-frmts.jpg" style="width:100\%;">
 }}
 }
 

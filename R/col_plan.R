@@ -76,7 +76,7 @@
 #' Here are some example outputs:
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/cheat_sheet_images/images/tfrmt-span_structure.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-span_structure.jpg\" style=\"width:100\\%;\">"`
 #' }}
 #'
 col_plan <- function(...){
