@@ -82,7 +82,7 @@ print_to_ggplot <- function(tfrmt, .data){
 #' @return ggplot object
 #' @noRd
 #'
-#' @importFrom ggplot2 ggplot xlab theme_void theme scale_y_discrete element_text
+#' @importFrom ggplot2 ggplot xlab theme_void theme scale_y_discrete element_text aes geom_text margin unit element_blank
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
@@ -104,6 +104,7 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
     data$column<-factor(data$column,levels=column_levels)
   }
   if(column_type=="numeric"){
+  data$column <- as.numeric(data$column)
   plot<- ggplot(data, aes(x=as.numeric(column), y=as.factor(y), label = value))
   }else{
   plot <- ggplot(data, aes(x=column, y=as.factor(y), label = value))
