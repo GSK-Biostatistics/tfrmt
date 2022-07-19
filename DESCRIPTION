@@ -41,7 +41,7 @@ Suggests:
     knitr,
     rmarkdown,
     patchwork,
-    survival
+    survival,
     ggfortify
 Imports: 
     magrittr,
