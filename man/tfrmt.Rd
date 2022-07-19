@@ -63,8 +63,8 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt
 }
 \details{
 \subsection{NSE and Argument Evaluation}{
-
-tfrmt allows users to pass \code{vars}, \code{quo}, and unquoted expressions to a
+\itemize{
+\item tfrmt allows users to pass \code{vars}, \code{quo}, and unquoted expressions to a
 variety of arguments, such as \code{group}, \code{label}, \code{param}, \code{values},
 \code{column}, and \code{sorting_cols}. Users accustomed to tidyverse semantics
 should be familiar with this behavior. However, there is an important
@@ -79,6 +79,13 @@ environment with the value "Hello world", and try to create a tfrmt as
 assuming the column argument is an unquoted expression and view the entry
 to \code{column} as "Hello World". To pass "my_object" to tfrmt as a column name, use
 quotes around the value: \code{tfrmt(columnn = "my_object")}.
+
+\item Additionally, unquoted expressions that match \code{tfrmt}'s other
+argument names can cause unexpected results. It is recommended
+to put quotes around the value as such:
+\code{tfrmt(label = "group")}. In this case, the quoting will prevent \code{tfrmt}
+from assigning its \code{group} input value to the \code{label} value.
+}
 }
 }
 \examples{

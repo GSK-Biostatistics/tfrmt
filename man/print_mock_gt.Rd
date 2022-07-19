@@ -25,8 +25,6 @@ a stylized gt object
 Print mock table to GT
 }
 \section{Examples}{
-
-
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Create tfrmt specification
 tfrmt_spec <- tfrmt(
@@ -49,9 +47,7 @@ print_mock_gt(tfrmt = tfrmt_spec)
 
 \if{html}{\out{
 <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png" style="width:50\%;">
-}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create mock data
+}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create mock data
 df <- crossing(label = c("label 1", "label 2", "label 3"),
                column = c("placebo", "trt1", "trt2"),
                param = c("count", "percent"))
