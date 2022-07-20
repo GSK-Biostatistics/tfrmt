@@ -24,40 +24,63 @@ test_that("inputs are as expected",{
     param = param,
     values = value)
 
+  # label loc not indented
   tfrmt_2<-tfrmt(
     # specify columns in the data
-    group = c(rowlbl1,grp),
-    label = rowlbl2,
-    column = column,
+    group = group,
+    label = label ,
+    column = time,
     param = param,
     values = value,
-    sorting_cols = c(ord1, ord2),
-    # specify value formatting
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-                                                                                  n = frmt("xxx"),
-                                                                                  pct = frmt_when("==100" ~ "",
-                                                                                                  "==0" ~ "",
-                                                                                                  TRUE ~ frmt("(xx.x %)")))),
-      frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-      frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-      frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-      frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-      frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                                            "<0.001" ~ "<0.001",
-                                                                                                            TRUE ~ frmt("x.xxx", missing = "")))
-    ),row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = "   "))
-    ),
-    # remove extra cols
-    col_plan = col_plan(-grp,
-                        -starts_with("ord") ))
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")))
+
+  # span structures
+  tfrmt_3<-tfrmt(
+    # specify columns in the data
+    group = group,
+    label = label ,
+    column = time,
+    param = param,
+    values = value,
+    col_plan = col_plan(
+      group,
+      label,
+      span_structure(
+        "column cols",
+        `0`,
+        `1000`,
+        `2000`,
+        `3000`),
+    ))
 
 
+  # two column variables
+  tfrmt_4<-tfrmt(
+    # specify columns in the data
+    group = group,
+    label = label ,
+    column = c(time,time2),
+    param = param,
+    values = value
+  )
+
+  # col style plan
+  tfrmt_5<-tfrmt(
+    # specify columns in the data
+    label = label ,
+    column = time,
+    param = param,
+    values = value,
+    col_style_plan =  col_style_plan(
+      element_col(align = "right", col = `1000`))
+  )
 
   expect_error(print_to_ggplot(tfrmt_1,"test"),"Requires data")
   expect_error(print_to_ggplot(tfrmt="test",.data=test_data),"Requires a tfrmt object")
-  expect_error(print_to_ggplot(tfrmt_2,test_data),"print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Style Plan. Please remove before continuing.")
+  expect_error(print_to_ggplot(tfrmt_2,risk),"print_to_ggplot must have label location 'indented' if row_group_plan is present")
+  expect_error(print_to_ggplot(tfrmt_3,risk),"print_to_ggplot does not support spanning headers")
+  expect_error(print_to_ggplot(tfrmt_4,risk),"print_to_ggplot does not support multiple column variables")
+  expect_error(print_to_ggplot(tfrmt_5,risk),"print_to_ggplot does not support col_style_plan elements")
 
 
 

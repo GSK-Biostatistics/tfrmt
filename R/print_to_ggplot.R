@@ -43,8 +43,24 @@ print_to_ggplot <- function(tfrmt, .data){
     stop("Requires data")
   }
 
-  if(is.null(tfrmt$body_plan)==FALSE | is.null(tfrmt$col_plan)==FALSE | is.null(tfrmt$row_grp_plan)==FALSE | is.null(tfrmt$col_style_plan)==FALSE){
-    stop("print_to_ggplot is not currently compatible with Body Plan, Row Group Plan, Column Plan or Column Style Plan. Please remove before continuing.")
+  # stop if label location is not indented
+  if(is.null(tfrmt$row_grp_plan)==FALSE && tfrmt$row_grp_plan$label_loc != "indented"){
+    stop("print_to_ggplot must have label location 'indented' if row_group_plan is present")
+  }
+
+  # stop if span structures are present
+  if(is.null(tfrmt$col_plan$span_structures)==FALSE){
+    stop("print_to_ggplot does not support spanning headers")
+  }
+
+  # stop if more than one column variable
+  if(length(tfrmt$column)>1){
+    stop("print_to_ggplot does not support multiple column variables")
+  }
+
+  # stop if column style plan added
+  if(is.null(tfrmt$col_style_plan)==FALSE){
+    stop("print_to_ggplot does not support col_style_plan elements")
   }
 
   # stop if param, column values not provided
@@ -141,9 +157,7 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
 apply_grp_ggplot<-function(.data,tfrmt){
 
 
-  if(is_empty(tfrmt$group)){
-    data<-.data
-  }else{
+  if(is.null(tfrmt$row_grp_plan) && is_empty(tfrmt$group)==FALSE ){
     group_name <- quo_name(tfrmt$group[[1]])
 
     element<-element_row_grp_loc(location="indented")
@@ -152,7 +166,8 @@ apply_grp_ggplot<-function(.data,tfrmt){
       select(-group_name)
 
 
+  }else{
+    .data
   }
-
 }
 
