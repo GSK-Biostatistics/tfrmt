@@ -245,22 +245,19 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
           # if the set of rows contains NO group-level summary data, create an
           # extra row to be added
 
-          # first containing grouping/label valurs
+          # first containing grouping/label values
           new_row <- lone_dat %>%
             select(!!!top_grouping, !!label) %>%
             mutate(!!label := !!last(group)) %>%
             distinct()
 
-          # placeholders for the other columns & convert NAs to "" where
-          # possible (even in case of list-cols due to incomplete body_plan)
-          #  NOTE: numeric values will remain NA
-          new_row_other_cols <- lone_dat %>%
-            select(-c(any_of(names(new_row)), vars_select_helpers$where(is.numeric))) %>%
+          # next all of the other variables (as missing)
+          new_row <- lone_dat %>%
+            select(-c(any_of(names(new_row)))) %>%
             slice(0) %>%
             add_row() %>%
-            mutate(across(everything(), function(x) if (is.list(x)) list("") else ""))
-
-          new_row <- bind_cols(new_row, new_row_other_cols)
+            bind_cols(new_row, .)%>%
+            mutate(..tfrmt_row_grp_lbl = TRUE)
 
         } else {
           new_row <- tibble()
@@ -270,7 +267,8 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
           # only indent if not a summary row
           mutate(!!label := ifelse(.data$..tlang_summary_row==TRUE,
                                    !!label,
-                                   str_c(indent, !!label))) %>%
+                                   str_c(indent, !!label)),
+                 ..tfrmt_row_grp_lbl = FALSE) %>%
            select(-.data$..tlang_summary_row) %>%
           bind_rows(new_row, .)
       })
