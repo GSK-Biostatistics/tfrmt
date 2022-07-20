@@ -118,7 +118,7 @@ body_plan(
 )
 ```
 
-## Help image/s
+## Help images
 
 ![tfrmt-frmts.jpg](images/tfrmt-frmts.jpg){width=100%}
 
