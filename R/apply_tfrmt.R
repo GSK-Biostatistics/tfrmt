@@ -229,7 +229,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
 
    inform(
-     "Multiple param listed for the same group/label. Following frmt_structures may be missing",
+     "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
      body = suggested_frmt_structs,
      class = "_tlang_missing_frmt_structs"
    )
@@ -270,8 +270,10 @@ frmt_struct_string <- function(grp, lbl, param_vals){
 
   if(length(group_names) > 1){
     group_val_char <- capture.output(dput(setNames(grp, group_names)))
-  }else{
+  }else if(length(group_names) == 1){
     group_val_char <-  capture.output(dput(grp[[1]]))
+  }else{
+    group_val_char <-  "\".default\""
   }
 
   label_val_char <- capture.output(dput(lbl))

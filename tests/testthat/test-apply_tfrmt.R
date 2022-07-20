@@ -1,6 +1,20 @@
+
+
+
 test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
 
-  dat <- tibble::tribble(
+  dat1 <- tibble::tribble(
+    ~grp2, ~lbl, ~prm, ~column, ~val, ~ord,
+    "c",   "n", "n",   1,   1,  1,
+    "c",   "n", "n_2", 1,   1.1,  1,
+    "b",   "m", "n",   1,   2,  2,
+    "b",   "m", "n_2", 1,   2.1,  2,
+    "v",   "s", "n",   1,   3,  3,
+    "v",   "s", "n_3",   1,   3.3,  3,
+    "p",   "e", "n",   1,   4,  4
+  )
+
+  dat2 <- tibble::tribble(
     ~grp1, ~grp2, ~lbl, ~prm, ~column, ~val, ~ord,
     "d",   "c",   "n", "n",   1,   1,  1,
     "d",   "c",   "n", "n_2", 1,   1.1,  1,
@@ -11,7 +25,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
   )
 
 
-  dat2 <- tibble::tribble(
+  dat3 <- tibble::tribble(
     ~grp1, ~grp2, ~lbl, ~prm, ~column, ~val, ~ord,
     "d",   "c",   "n", "n",   1,   1,  1,
     "d",   "c",   "n", "n_2", 1,   1.1,  1,
@@ -22,8 +36,10 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     "b",   "p",   "e", "n",   1,   4,  4
   )
 
+
+
   tfrmt_temp <- tfrmt(
-    group = c(grp1, grp2),
+    group = grp2,
     label = lbl,
     column = column,
     values = val,
@@ -48,10 +64,23 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     )
 
   expect_message(
-    processed_dat <- apply_tfrmt(dat, tfrmt_temp, mock = FALSE),
+    processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE),
     paste0(
       c(
-        "Multiple param listed for the same group/label. Following frmt_structures may be missing",
+        "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
+        "- `frmt_structure(group_val = \"c\", label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
+        "- `frmt_structure(group_val = \"v\", label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
+      ),
+      collapse = "\n"
+    ),
+    fixed = TRUE
+  )
+
+  expect_message(
+    processed_dat <- apply_tfrmt(dat2, tfrmt_temp %>% tfrmt(group = c(grp1,grp2)), mock = FALSE),
+    paste0(
+      c(
+        "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
         "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`"
       ),
       collapse = "\n"
@@ -60,10 +89,10 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
   )
 
   expect_message(
-    processed_dat <- apply_tfrmt(dat2, tfrmt_temp, mock = FALSE),
+    processed_dat <- apply_tfrmt(dat3, tfrmt_temp %>% tfrmt(group = c(grp1,grp2)), mock = FALSE),
     paste0(
       c(
-        "Multiple param listed for the same group/label. Following frmt_structures may be missing",
+        "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
         "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
         "- `frmt_structure(group_val = list(grp1 = \"q\", grp2 = \"v\"), label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
       ),
@@ -71,5 +100,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     ),
     fixed = TRUE
   )
+
+
 
 })

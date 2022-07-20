@@ -440,6 +440,10 @@ test_that("Col width assignment in gt",{
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",label_val = ".default",
+        frmt("xx.xx")
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
         frmt_combine("{n} ({pct})",
                      n = frmt("x"),
                      pct = frmt("xx%"))
@@ -456,12 +460,7 @@ test_that("Col width assignment in gt",{
           "<.001" ~ "<.001",
           TRUE ~ frmt("x.xxx")
         )
-      ),
-      frmt_structure(
-        group_val = ".default",label_val = ".default",
-        frmt("xx.xx")
       )
-
     ),
     col_style_plan =  col_style_plan(
       element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
@@ -472,7 +471,7 @@ test_that("Col width assignment in gt",{
 
   ## suppressing warning from alignment using multiple values. Not pertinent to this test
   suppressWarnings({
-  tfrmt_gt <- print_to_gt(plan, raw_dat)
+   tfrmt_gt <- print_to_gt(plan, raw_dat)
   })
 
   expect_equal(
