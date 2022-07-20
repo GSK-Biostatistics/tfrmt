@@ -241,11 +241,19 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
           mutate(..tlang_summary_row = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
 
         if (any(lone_dat_summ$..tlang_summary_row)==FALSE){
+
+          # if the set of rows contains NO group-level summary data, create an
+          # extra row to be added
+
+          # first containing grouping/label valurs
           new_row <- lone_dat %>%
             select(!!!top_grouping, !!label) %>%
             mutate(!!label := !!last(group)) %>%
             distinct()
 
+          # placeholders for the other columns & convert NAs to "" where
+          # possible (even in case of list-cols due to incomplete body_plan)
+          #  NOTE: numeric values will remain NA
           new_row_other_cols <- lone_dat %>%
             select(-c(any_of(names(new_row)), vars_select_helpers$where(is.numeric))) %>%
             slice(0) %>%
