@@ -25,7 +25,7 @@ Much of the tfrmt is divided into "plans" which provide the blueprint for how th
 - Body plan (`body_plan`): define how cells will be formatted
 - Column plan (`col_plan`): define column and spanning headers, order columns, and drop unnecessary columns
 - Row group plan (`row_grp_plan`): define labeling for groups of rows and add styling to groups of rows
-- Column alignment plan (`col_align_plan`): define how column values will be aligned 
+- Column styling plan (`col_style_plan`): define how column values will be aligned and set their widths
  
 <p align="center"><img src="../man/figures/table_plans.png" width="900px"></p>
 

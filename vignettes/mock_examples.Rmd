@@ -169,7 +169,7 @@ ae_mock_table() %>%
 
 ```
 
-Example 5: mock table with combined columns, using ae_data
+Example 5: mock table with combined columns, using data_ae
 
 ```{r}
 fmt_spec <- tfrmt(
@@ -197,14 +197,14 @@ fmt_spec <- tfrmt(
   ), col_plan = col_plan(-starts_with("ord")))
 
 #
-ae_data2 <- ae_data %>% 
+data_ae2 <- data_ae %>% 
   group_by(AEBODSYS, AETERM) %>% 
   mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
   ungroup %>% 
   filter(pct_high >10) %>% 
   select(-pct_high)
 
-ae_data2 %>%  
+data_ae2 %>%  
   select(-value) %>% 
   arrange(ord1, ord2 ) %>% 
   print_mock_gt(fmt_spec, . )
@@ -245,16 +245,16 @@ tfrmt(
     label_loc = element_row_grp_loc(location = "column")
   ),
   
-  # Specify column alignment plan
-  col_align = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+  # Specify column styling plan
+  col_style_plan = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
   # remove extra cols
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
 ) %>% 
-  print_mock_gt(demog_data %>% select(-value))
+  print_mock_gt(data_demog %>% select(-value))
 ```
 
 
@@ -299,7 +299,7 @@ tfrmt(
     contains("High")
   )
 ) %>%
-  print_mock_gt(efficacy_data %>% select(-value))
+  print_mock_gt(data_efficacy %>% select(-value))
 ```
 
 

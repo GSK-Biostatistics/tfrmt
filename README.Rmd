@@ -14,18 +14,19 @@ library(tfrmt)
 library(gt)
 ```
 
-# tfrmt
+# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="man/figures/tfrmt.png" align="right" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml) 
 [![Codecov test coverage](https://codecov.io/gh/GSK-Biostatistics/tfrmt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tfrmt?branch=main)
+[![status: experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 
 <!-- badges: end -->
 
 The tfrmt package provides a language for defining display-related metadata, which can then be used to automate and easily update output formats.
 
-In clinical trials, displays are generally quite standard, but frequent, highly specific formatting tweaks (e.g., rounding, footnotes, headers) are very common. Prior to data analysis, study teams often generate mock displays to represent the desired end product for sponsors to approve or programmers to replicate. This process is typically highly manual and separate from the programming itself. There is also a high importance placed on verifying the accuracy of the results via a QC process such as double programming. Finally, there is a movement toward an industry standard data structure for Analysis Results Data "ARD", which means analysis results datasets will have consistent structures and column names. Specifically, the ARD is long, with 1 record per computed value.
+In clinical trials, displays are generally quite standard, but frequent, highly specific formatting tweaks (e.g., rounding, footnotes, headers) are very common. Prior to data analysis, study teams often generate mock displays to represent the desired end product for sponsors to approve or programmers to replicate. This process is typically highly manual and separate from the programming itself. There is also a high importance placed on verifying the accuracy of the results via a QC (Quality Control) process such as double programming. Finally, there is a movement toward an industry standard data structure for Analysis Results Data "ARD", which means analysis results datasets will have consistent structures and column names. Specifically, the ARD is long, with 1 record per computed value. For more information about ARDs click [here](https://www.pharmasug.org/download/sde/rtp2021/PharmaSUG-NCSDE_2021-08.pdf).
 
 tfrmt supports a vision where:
 
@@ -80,11 +81,11 @@ Other benefits of tfrmt:
 
 # More Info
 
-For more information about how to build your own tfrmt mocks/tables (like the one below!), please explore the vignettes.
+For more information about how to build your own tfrmt mocks/tables (like the one below!), please explore the [vignettes](https://gsk-biostatistics.github.io/tfrmt/articles/examples.html).
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
-demog_data <- demog_data %>% 
+data_demog <- data_demog %>% 
   select(-value)
 tfrmt <- tfrmt(
   # specify columns in the data
@@ -117,9 +118,9 @@ tfrmt <- tfrmt(
     label_loc = element_row_grp_loc(location = "column")
   ),
   
-  # Specify column alignment plan
-  col_align = col_align_plan(
-    element_align(align = c(".",","," "), col = vars(everything()))
+  # Specify column style plan
+  col_style = col_style_plan(
+    element_col(align = c(".",","," "), col = vars(everything()))
   ),
   
   # remove extra cols
@@ -127,7 +128,7 @@ tfrmt <- tfrmt(
                       -starts_with("ord") )
 ) 
 
-gt_out <- print_mock_gt(tfrmt, demog_data)
+gt_out <- print_mock_gt(tfrmt, data_demog)
 invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
 ```
 

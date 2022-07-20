@@ -15,19 +15,21 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     stop("Requires a tfrmt object")
   }
 
-tbl_dat <- apply_table_frmt_plan(
-    .data = .data,
-    table_frmt_plan = tfrmt$body_plan,
-    group = tfrmt$group,
-    label = tfrmt$label,
-    param = tfrmt$param,
-    values = tfrmt$values,
-    column = tfrmt$column,
-    mock = mock
-  ) %>%
-    tentative_process(apply_col_align_plan, tfrmt$col_align,
-                      tfrmt$column, tfrmt$values,
-                      fail_desc= "Unable to align dataset")
+  tbl_dat <- apply_table_frmt_plan(
+      .data = .data,
+      table_frmt_plan = tfrmt$body_plan,
+      group = tfrmt$group,
+      label = tfrmt$label,
+      param = tfrmt$param,
+      values = tfrmt$values,
+      column = tfrmt$column,
+      mock = mock
+    ) %>%
+    tentative_process(
+      apply_col_style_plan_alignment_values,
+      tfrmt,
+      fail_desc = "Failure while aligning data values"
+    )
 
   ## append span structures to dataset for handling post-this function
   if(!is.null(tfrmt$col_plan$span_structures)){
