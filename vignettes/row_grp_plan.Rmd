@@ -187,7 +187,7 @@ my_tfrmt <- tfrmt(
 print_mock_gt(my_tfrmt, .default = 1:2)
 ```
 
-## Help image/s
+## Help images
 
 <p align="center">
 
