@@ -44,7 +44,7 @@ print_to_ggplot <- function(tfrmt, .data){
   }
 
   # stop if label location is not indented
-  if(is.null(tfrmt$row_grp_plan)==FALSE & tfrmt$row_grp_plan$label_loc != "indented"){
+  if(is.null(tfrmt$row_grp_plan)==FALSE && tfrmt$row_grp_plan$label_loc != "indented"){
     stop("print_to_ggplot must have label location 'indented' if row_group_plan is present")
   }
 
