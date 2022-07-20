@@ -765,7 +765,8 @@ test_that("Tidyselect subtraction with span_structure",{
   expect_equal(
     names(mock_gt$`_data`),
     c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
-      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2",
+      "..tfrmt_row_grp_lbl"
     )
   )
 
@@ -775,7 +776,8 @@ test_that("Tidyselect subtraction with span_structure",{
   expect_equal(
     names(real_gt$`_data`),
     c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
-      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2",
+      "..tfrmt_row_grp_lbl"
     )
   )
 
@@ -805,7 +807,8 @@ test_that("Tidyselect subtraction with span_structure",{
     c("Treatment___tlang_delim___T1",
       "Treatment___tlang_delim___T2",
       "Treatment___tlang_delim___T1&T2",
-      "Placebo___tlang_delim___PL"
+      "Placebo___tlang_delim___PL",
+      "..tfrmt_row_grp_lbl"
     )
   )
 
@@ -815,7 +818,8 @@ test_that("Tidyselect subtraction with span_structure",{
   expect_equal(
     names(real_gt$`_data`),
     c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
-      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2"
+      "Treatment___tlang_delim___T1&T2", "Treatment___tlang_delim___T2",
+      "..tfrmt_row_grp_lbl"
     )
   )
 

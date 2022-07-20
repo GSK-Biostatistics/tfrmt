@@ -298,12 +298,12 @@ test_that("incomplete body_plan where params share label",{
 
   man_tfrmt <- tibble::tribble(
     ~rowlbl1,  ~rowlbl2,    ~ A   ,       ~..tfrmt_row_grp_lbl,
-      "topgrp", "lowergrp1", NA,          TRUE,
-      "topgrp", "  mean"   , " 2.0",      FALSE,
-      "topgrp", "  n pct"   ,c("1","50"), FALSE,
-      "topgrp", "lowergrp2", NA,          TRUE,
-      "topgrp", "  mean"   , " 5.0",      FALSE,
-      "topgrp", "  n pct"  , c("2","40"), FALSE
+      "topgrp", "lowergrp1", NA_character_, TRUE,
+      "topgrp", "  mean"   , " 2.0",        FALSE,
+      "topgrp", "  n pct"   ,c("1","50"),   FALSE,
+      "topgrp", "lowergrp2", NA_character_, TRUE,
+      "topgrp", "  mean"   , " 5.0",        FALSE,
+      "topgrp", "  n pct"  , c("2","40"),   FALSE
   ) %>% group_by(rowlbl1)
 
  expect_equal(auto_tfrmt, man_tfrmt)
