@@ -38,7 +38,9 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param){
 #' @param .data Data to apply the tfrmt to
 #' @param convert_to_txt Logical value converting formatting to text, by default `TRUE`
 #'
-#' @importFrom dplyr mutate rename select
+#' @importFrom dplyr mutate rename select case_when
+#' @importFrom purrr map_chr
+#' @importFrom stringr str_remove str_remove_all str_sub str_trim
 #' @return formatted tibble
 #' @export
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
