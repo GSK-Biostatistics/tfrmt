@@ -194,7 +194,7 @@ remove_empty_layers <- function(x, nlayers = 1){
 #'
 #' @importFrom purrr quietly
 #' @importFrom tidyselect starts_with everything
-#' @importFrom dplyr group_by across summarize n tally pull
+#' @importFrom dplyr group_by across summarise n tally pull
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock){
@@ -221,7 +221,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
         suggested_frmt_struct = frmt_struct_string(
           grp = list(!!!tfrmt$group),
           lbl = !!tfrmt$label,
-          param_vals = param_list
+          param_vals = .data$param_list
           )
       ) %>%
       pull(.data$suggested_frmt_struct) %>%
