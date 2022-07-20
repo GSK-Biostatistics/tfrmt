@@ -164,7 +164,7 @@ print_to_gt <- function(tfrmt, .data){
 #' @noRd
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md
+#'   cells_body cells_column_labels md cols_hide sub_missing
 cleaned_data_to_gt <- function(.data, tfrmt){
 
   if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
@@ -190,6 +190,11 @@ gt_out <- .data %>%
     apply_gt_footnote(tfrmt$footer) %>%
     format_gt_column_labels(.data) %>%
     apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
+    sub_missing(
+      rows =..tfrmt_row_grp_lbl==TRUE,
+      missing_text = ""
+      ) %>%
+    cols_hide(columns = ..tfrmt_row_grp_lbl) %>%
     tab_style(
       style = cell_text(whitespace = "pre", align = align),
       locations = cells_body(columns = everything())
