@@ -42,29 +42,41 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param){
 #' @return formatted tibble
 #' @export
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
-  if (convert_to_txt == TRUE){
-    output <- match_frmt_to_rows(.data ,
-                                 tfrmt$body_plan,
-                                 tfrmt$group,
-                                 tfrmt$label,
-                                 tfrmt$param) %>%
-      mutate(frmt_applied = map_chr(TEMP_fmt_to_apply, format)) %>%
-      select(-starts_with("TEMP"))
-
-    output <- output %>%
-      mutate(frmt_applied = str_remove_all(frmt_applied, "[<>*]")) %>%
-      separate(col = frmt_applied, into = c("frmt_type", "frmt_expression"), sep = "\\|") %>%
-      mutate(frmt_type = str_trim(frmt_type),
-             frmt_expression = frmt_expression %>% str_remove("Expression: ") %>% str_trim())
-
-  } else if (convert_to_txt == FALSE) {
+  if (convert_to_txt == FALSE){
     output <- match_frmt_to_rows(.data ,
                                  tfrmt$body_plan,
                                  tfrmt$group,
                                  tfrmt$label,
                                  tfrmt$param) %>%
       rename(frmt_applied = TEMP_fmt_to_apply) %>%
-      select(-starts_with("TEMP"))
+      select(-starts_with("TEMP")) %>%
+      mutate(frmt_type = map_chr(frmt_applied, function(x) unlist(class(x)[1])))
+
+  } else if (convert_to_txt == TRUE) {
+    output <- match_frmt_to_rows(.data ,
+                                 tfrmt$body_plan,
+                                 tfrmt$group,
+                                 tfrmt$label,
+                                 tfrmt$param) %>%
+      rename(frmt_applied = TEMP_fmt_to_apply) %>%
+      select(-starts_with("TEMP")) %>%
+      mutate(frmt_type = map_chr(frmt_applied, function(x) unlist(class(x)[1])),
+             frmt_details = map_chr(frmt_applied, format)) %>%
+      select(-frmt_applied)
+
+    # extract < frmt > type from frmt_details
+    output <- output %>%
+      mutate(frmt_details = case_when(frmt_type == "frmt" ~ frmt_details %>%
+                                        str_remove("< frmt \\| Expression: ") %>% str_remove(" >"),
+                                      frmt_type == "frmt_combine" ~ frmt_details %>%
+                                        str_remove("< frmt_combine \\| Expression: ") %>% str_remove(" >"),
+                                      frmt_type == "frmt_when" ~ frmt_details %>%
+                                        str_remove("< frmt_when \\| ") %>%
+                                        str_sub(end = -2L) %>%
+                                        str_remove_all("[\n]") %>%
+                                        str_trim() %>%
+                                        gsub(pattern = "\\s\\s", replacement = ", "))
+             )
 
   } else {
     stop("Please pass a boolean value into the `convert_to_txt` parameter")
@@ -72,4 +84,3 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
 
   output
 }
-
