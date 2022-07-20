@@ -194,33 +194,61 @@ remove_empty_layers <- function(x, nlayers = 1){
 #'
 #' @importFrom purrr quietly
 #' @importFrom tidyselect starts_with everything
-#' @importFrom dplyr group_by across tally pull
+#' @importFrom dplyr group_by across summarize n tally pull
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
   # check if data can be transformed wide w/o list columns
-  num_rec_by_grp <- data %>%
-    group_by(across(-!!tfrmt$values)) %>%
-    tally() %>%
-    pull(n)
-  if (any(num_rec_by_grp>1)){
+  num_rec_by_row <- data %>%
+    group_by(across(c(-!!tfrmt$values, -!!tfrmt$param))) %>%
+    summarise(
+      param_list = list(!!tfrmt$param),
+      n = n()
+    )
+
+  if (any(num_rec_by_row$n>1)){
+
     val_fill <- list("")
+
+    suggested_frmt_structs <- num_rec_by_row %>%
+      ungroup %>%
+      filter(n > 1) %>%
+      select(-c(!!!tfrmt$column)) %>%
+      unique() %>%
+      rowwise() %>%
+      mutate(
+        suggested_frmt_struct = frmt_struct_string(
+          grp = list(!!!tfrmt$group),
+          lbl = !!tfrmt$label,
+          param_vals = param_list
+          )
+      ) %>%
+      pull(.data$suggested_frmt_struct) %>%
+      paste0("- `",.,"`",collapse = "\n")
+
+
+   inform(
+     "Multiple param listed for the same group/label. Following frmt_structures may be missing",
+     body = suggested_frmt_structs,
+     class = "_tlang_missing_frmt_structs"
+   )
+
   } else {
     val_fill <- ""
   }
 
-  tbl_dat_wide <- quietly(pivot_wider)(
-    data,
-    names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
-    names_sep = .tlang_delim,
-    values_from = !!tfrmt$values,
-    values_fill = val_fill
-  )
 
+  tbl_dat_wide <- data %>%
+    select(-!!tfrmt$param) %>%
+    quietly(pivot_wider)(
+      names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
+      names_sep = .tlang_delim,
+      values_from = !!tfrmt$values,
+      values_fill = val_fill
+      )
 
-  if (mock == TRUE &&
-      length(tbl_dat_wide$warnings)>0 &&
+  if (mock == TRUE && length(tbl_dat_wide$warnings)>0 &&
       str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
     message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
     tbl_dat_wide <- tbl_dat_wide$result %>%
@@ -233,4 +261,31 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
   tbl_dat_wide
 
+}
+
+
+frmt_struct_string <- function(grp, lbl, param_vals){
+
+  group_names <- substitute(grp) %>% map_chr(as_label) %>% .[-1]
+
+  if(length(group_names) > 1){
+    group_val_char <- capture.output(dput(setNames(grp, group_names)))
+  }else{
+    group_val_char <-  capture.output(dput(grp[[1]]))
+  }
+
+  label_val_char <- capture.output(dput(lbl))
+
+  param_expr_char <- paste0("\"",paste0("{",param_vals,"}", collapse = ", "),"\"")
+  param_frmt_char <- paste0(param_vals," = frmt(\"xx\")", collapse = ", ")
+
+  paste0(
+    "frmt_structure(",
+    "group_val = ",group_val_char,
+    ", label_val = ",label_val_char,
+    ", frmt_combine(",
+    param_expr_char,",",
+    param_frmt_char,
+    "))"
+  )
 }
