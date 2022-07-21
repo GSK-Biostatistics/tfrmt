@@ -42,7 +42,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     unnest(.data$data)
 
   # get max character width for each column in the full data
-  dat_max_widths <- .data %>% summarise(across(everything(), ~max(nchar(.x), na.rm = TRUE)))
+  dat_max_widths <- .data %>% summarise(across(everything(), ~max(sapply(strsplit(.x, "\\n"), function(x)max(nchar(x), na.rm = TRUE)), na.rm = TRUE)))
 
   # apply group block function to data subsets
   add_ln_df <- map2_dfr(dat_plus_block$data,
