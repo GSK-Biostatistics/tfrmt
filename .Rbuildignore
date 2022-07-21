@@ -10,4 +10,4 @@
 ^pkgdown$
 ^data-raw$
 ^images$
-^man/figures$
+^man/figures/$
