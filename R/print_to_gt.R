@@ -166,7 +166,8 @@ print_to_gt <- function(tfrmt, .data){
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md
 cleaned_data_to_gt <- function(.data, tfrmt){
-  if(is.null(tfrmt$row_grp_plan) && length(tfrmt$group) > 0){
+
+  if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
       keep(function(x){
         as_label(x) %in% names(.data)
@@ -174,7 +175,6 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     .data <- .data %>%
       group_by(!!!existing_grp)
   }
-
 
   if (!is.null(tfrmt$col_style_plan)){
     align <- "left"

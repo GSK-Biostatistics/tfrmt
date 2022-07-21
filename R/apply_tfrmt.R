@@ -31,6 +31,9 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Failure while aligning data values"
     )
 
+  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$values) %>% map_chr(as_label))
+  data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
+
   ## append span structures to dataset for handling post-this function
   if(!is.null(tfrmt$col_plan$span_structures)){
     tbl_dat_span_cols <- apply_span_structures_to_data(
@@ -41,13 +44,37 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     tbl_dat_span_cols <- tbl_dat
   }
 
- tbl_dat_wide <- tbl_dat_span_cols %>%
-   pivot_wider_tfrmt(tfrmt, mock) %>%
-    tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc= "Unable to arrange dataset") %>%
-    tentative_process(apply_row_grp_struct, tfrmt$row_grp_plan$struct_ls, tfrmt$group, tfrmt$label) %>%
+  tbl_dat_wide <- tbl_dat_span_cols %>%
+    pivot_wider_tfrmt(tfrmt, mock) %>%
+
+    # arrange if sorting cols are applied
+    tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset") %>%
+
+    # Apply alignment to non-data columns
+    tentative_process(
+      apply_col_style_plan_alignment_non_values,
+      tfrmt,
+      non_data_cols,
+      data_col_values,
+      fail_desc = "Failure while aligning non-data values"
+    ) %>%
+
+    #Apply row group structures defined in row_grp_plan
+    tentative_process(
+      apply_row_grp_struct,
+      tfrmt$row_grp_plan$struct_ls,
+      tfrmt$group,
+      tfrmt$label,
+      fail_desc = "Unable to apply row group structure"
+    ) %>%
+
     #Select before grouping to not have to deal with if it indents or not
     tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
-    tentative_process(apply_row_grp_lbl, tfrmt$row_grp_plan$label_loc, tfrmt$group, tfrmt$label)
+
+    tentative_process(apply_row_grp_lbl,
+                      tfrmt$row_grp_plan$label_loc,
+                      tfrmt$group,
+                      tfrmt$label)
 
 
   tbl_dat_wide
@@ -67,6 +94,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 #' @importFrom rlang is_empty
 #' @noRd
 tentative_process <- function(.data, fx, ..., fail_desc = NULL){
+
   args <- list(...)
 
   if(any(map_lgl(args, is_empty))){

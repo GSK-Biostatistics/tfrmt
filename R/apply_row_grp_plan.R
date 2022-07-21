@@ -131,6 +131,7 @@ grp_row_test_data <- function(cur_block, .data, group){
     parse_expr()
 
   .data %>%
+    mutate(across(c(!!!group), str_trim)) %>%
     filter(!!filter_expr) %>%
     pull(.data$TEMP_row)
 }
@@ -203,12 +204,13 @@ fill_post_space <- function(post_space, width){
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last any_of
+#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last any_of slice
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom tidyselect vars_select_helpers
 #' @importFrom forcats fct_inorder
+#' @importFrom tibble add_row
 combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   orig_group_names <- map_chr(group, as_name)
@@ -240,20 +242,37 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
           mutate(..tlang_summary_row = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
 
         if (any(lone_dat_summ$..tlang_summary_row)==FALSE){
+
+          # if the set of rows contains NO group-level summary data, create an
+          # extra row to be added
+
+          # first containing grouping/label valurs
           new_row <- lone_dat %>%
             select(!!!top_grouping, !!label) %>%
             mutate(!!label := !!last(group)) %>%
             distinct()
+
+          # placeholders for the other columns & convert NAs to "" where
+          # possible (even in case of list-cols due to incomplete body_plan)
+          #  NOTE: numeric values will remain NA
+          new_row_other_cols <- lone_dat %>%
+            select(-c(any_of(names(new_row)), vars_select_helpers$where(is.numeric))) %>%
+            slice(0) %>%
+            add_row() %>%
+            mutate(across(everything(), function(x) if (is.list(x)) list("") else ""))
+
+          new_row <- bind_cols(new_row, new_row_other_cols)
+
         } else {
           new_row <- tibble()
         }
 
-        lone_dat_summ %>%
+        lone_dat_summ  %>%
           # only indent if not a summary row
           mutate(!!label := ifelse(.data$..tlang_summary_row==TRUE,
                                    !!label,
                                    str_c(indent, !!label))) %>%
-          select(-.data$..tlang_summary_row) %>%
+           select(-.data$..tlang_summary_row) %>%
           bind_rows(new_row, .)
       })
     group = group[-length(group)]
@@ -261,8 +280,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   }
 
   .data%>%
-    mutate(across(any_of(orig_group_names), as.character),
-      across(-c(vars_select_helpers$where(is.numeric)), ~replace_na(., "")))
+    mutate(across(any_of(orig_group_names), as.character))
 
 
 }
