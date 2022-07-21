@@ -121,9 +121,14 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
       distinct() %>%
       group_by(!!!group, !!label) %>%
       mutate(test = sum(!!parse_expr(parm_expr))) %>%
-      filter(test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls))
+      filter(test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls)) %>%
+      ungroup()
+    join_by <- c(group, label, param) %>%
+      map_chr(as_label) %>%
+      keep(~. != "<empty>")
+
     out <- complet_combo_grps %>%
-      left_join(out, by = c(group, label, param) %>% map_chr(as_label))
+      left_join(out, by = join_by)
   }
   out %>%
     pull(.data$TEMP_row)

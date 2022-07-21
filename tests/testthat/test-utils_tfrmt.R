@@ -264,3 +264,47 @@ test_that("Test body_plan missing", {
                  pivot_wider(names_from = column, values_from = val))
 })
 
+
+test_that("incomplete body_plan where params share label",{
+
+  dd <- tibble::tribble(
+    ~rowlbl1, ~grp, ~rowlbl2, ~column, ~param, ~value,
+    "topgrp", "lowergrp1", "n pct", "A",  "n",   1,
+    "topgrp", "lowergrp1", "n pct", "A",  "pct",   50,
+    "topgrp", "lowergrp1", "mean", "A",  "mean",   2,
+    "topgrp", "lowergrp2", "n pct", "A",  "n",   2,
+    "topgrp", "lowergrp2", "n pct", "A",  "pct",   40,
+    "topgrp", "lowergrp2", "mean", "A",  "mean",   5
+  )
+
+  tfrmt_spec <- tfrmt(
+    group = c(rowlbl1,grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    values = value,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = "mean", frmt("xx.x"))
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "column")
+    )
+  )
+
+  expect_message(
+    auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec),
+    "The following rows of the given dataset have no format applied to them 1, 2, 4, 5"
+  )
+
+  man_tfrmt <- tibble::tribble(
+    ~rowlbl1,  ~rowlbl2,    ~ A   ,
+      "topgrp", "lowergrp1", "",
+      "topgrp", "  mean"   , " 2.0",
+      "topgrp", "  n pct"   ,c("1","50"),
+      "topgrp", "lowergrp2", "",
+      "topgrp", "  mean"   , " 5.0",
+      "topgrp", "  n pct"  , c("2","40")
+  ) %>% group_by(rowlbl1)
+
+ expect_equal(auto_tfrmt, man_tfrmt)
+  })
