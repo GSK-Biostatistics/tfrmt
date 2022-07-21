@@ -153,7 +153,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
 #' @importFrom dplyr case_when tibble filter pull left_join
-#' @importFrom tidyr pivot_wider
+#' @importFrom tidyr pivot_wider replace_na
 #' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
 #' @export
@@ -204,6 +204,17 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
                 paste0(miss_param_from_data, collapse = " \n")))
   }
 
+
+  missing_param_replacements <- map(fmt_param_vals, function(var) {
+    missing_val <- frmt_def$fmt_ls[[var]]$missing
+    if (is.null(missing_val)) {
+      missing_val <- ""
+    }
+    missing_val
+  }) %>%
+    setNames(fmt_param_vals)
+
+
   .tmp_data_wide <- .tmp_data %>%
     select(!!values, !!param, !!!column, !!label, !!!group) %>%
     pivot_wider(
@@ -212,7 +223,10 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     ) %>%
     mutate(
       .is_all_missing =  all_missing(fmt_param_vals,.)
-    )
+    ) %>%
+    ## after .is_all_missing so that can be tabulated first
+    replace_na(missing_param_replacements)
+
 
   # check that pivot_wider resulted in a reduction of rows, which indicates that at least
   #  1 row will successfully have a frmt_combine in it
@@ -228,7 +242,6 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   if(is.null(frmt_def$missing)){
     frmt_def$missing <- ""
   }
-
 
   ## if both params are missing, then drop in frmt definition missing value
   ## otherwise concat the params
