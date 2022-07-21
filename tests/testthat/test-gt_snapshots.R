@@ -1,5 +1,7 @@
 test_that("element_col width are respected even with row_gtp_struct",{
 
+  skip("snapshotting gt's needs work")
+
   dat <- tibble::tribble(
     ~row_label2,                ~row_label3, ~column, ~param, ~value,
     "G1", "Long label entry #1 no new line",  "col1",    "n",     10,
