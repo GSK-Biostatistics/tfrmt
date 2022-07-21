@@ -200,12 +200,10 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       tab_options(row_group.as_column = TRUE)
   }
 
-  browser()
-
   gt_out_final  <- gt_out %>%
     tab_style(
       style = list(
-        cell_text(whitespace = "pre", align = "left")
+        cell_text(whitespace = "pre-line", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
     ) %>%
