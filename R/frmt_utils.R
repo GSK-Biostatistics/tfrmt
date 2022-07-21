@@ -57,7 +57,7 @@ is_row_grp_structure <- function(x){
 #' @export
 format.frmt <- function(x, ...){
   paste0(
-    "<frmt | Expression: `",
+    "< frmt | Expression: `",
     x$expression,
     "` >"
   )
