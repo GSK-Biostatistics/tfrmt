@@ -73,7 +73,7 @@ test_that("alignment of multiple columns works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      # element_col(align = "left", col = vars(one)),
+      element_col(align = "left", col = vars(one)),
       element_col(align = "right", col = vars(four)),
       element_col(align = c(".", ",", " "), col = vars(two, three))
     )
@@ -109,7 +109,7 @@ test_that("alignment of multiple columns works", {
     column = vars(column),
     values = value,
     col_style_plan = col_style_plan(
-      # element_col(align = "left", col = vars(one)),
+      element_col(align = "left", col = vars(one)),
       element_col(align = "right", col = vars(two, three, four))
     )
   )
@@ -138,6 +138,35 @@ test_that("alignment of multiple columns works", {
 
   expect_equal(dat_aligned,
                dat_aligned_man)
+
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(column),
+    values = value,
+    col_style_plan = col_style_plan(
+      element_col(align = "right", col = vars(one)),
+      element_col(align = "right", col = vars(two, three, four))
+    )
+  )
+
+  dat_aligned_long <- tibble::tribble(
+         ~ one,        ~two,      ~three,    ~four,
+    "   n (%)", " 12 (34%)", " 24 (58%)", "      ",
+    "    mean", "     12.3", "     15.4", "<0.001",
+    "      sd", "     4.34", "     8.25", "      ",
+    "  median", "       14", "       16", "  0.05",
+    "(q1, q3)", " (10, 20)", " (11, 22)", "      "
+  )
+
+  dat_aligned <- apply_col_style_plan_alignment_values(dat, plan) %>%
+    pivot_wider(
+      names_from = column, values_from = value
+    ) %>%
+    apply_col_style_plan_alignment_non_values(plan, non_data_cols = "one", data_cols = c("two","three","four"))
+
+  expect_equal(dat_aligned,
+               dat_aligned_long)
 
 })
 
@@ -429,7 +458,7 @@ test_that("Col width assignment in gt",{
     "median"   , "median",  "trt2",      16,
     "(q1, q3)" ,     "q1",  "trt2",      22,
     "(q1, q3)" ,     "q3",  "trt2",      22,
-    "mean"     ,   "pval","four"  ,   0.0001
+    "mean"     ,   "pval",  "four",   0.0001
   )
 
   plan <- tfrmt(
@@ -440,12 +469,16 @@ test_that("Col width assignment in gt",{
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",label_val = ".default",
-        frmt_combine("{n} ({pct})",
-                     n = frmt("x"),
-                     pct = frmt("xx%"))
+        frmt("xx.xx")
       ),
       frmt_structure(
-        group_val = ".default",label_val = ".default",
+        group_val = ".default",label_val = "n (%)",
+        frmt_combine("{n} ({pct}%)",
+                     n = frmt("x"),
+                     pct = frmt("xx.x"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "(q1, q3)",
         frmt_combine("({q1}, {q3})",
                      q1 = frmt("xx"),
                      q3 = frmt("xx"))
@@ -456,12 +489,7 @@ test_that("Col width assignment in gt",{
           "<.001" ~ "<.001",
           TRUE ~ frmt("x.xxx")
         )
-      ),
-      frmt_structure(
-        group_val = ".default",label_val = ".default",
-        frmt("xx.xx")
       )
-
     ),
     col_style_plan =  col_style_plan(
       element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
@@ -472,7 +500,7 @@ test_that("Col width assignment in gt",{
 
   ## suppressing warning from alignment using multiple values. Not pertinent to this test
   suppressWarnings({
-  tfrmt_gt <- print_to_gt(plan, raw_dat)
+   tfrmt_gt <- print_to_gt(plan, raw_dat)
   })
 
   expect_equal(

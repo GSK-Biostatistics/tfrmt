@@ -131,6 +131,7 @@ grp_row_test_data <- function(cur_block, .data, group){
     parse_expr()
 
   .data %>%
+    mutate(across(c(!!!group), str_trim)) %>%
     filter(!!filter_expr) %>%
     pull(.data$TEMP_row)
 }
