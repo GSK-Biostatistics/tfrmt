@@ -191,12 +191,12 @@ print_mock_gt(my_tfrmt, .default = 1:2)
 
 <p align="center">
 
-![](images/tfrmt-groups-three-cols-cropped.jpg){width=100%}
+![](../man/figures/tfrmt-groups-three-cols-cropped.jpg){width=100%}
 
 </p>
 
 <p align="center">
 
-![](images/tfrmt-row_group_plan-cropped.jpg){width=100%}
+![](../man/figures/tfrmt-row_group_plan-cropped.jpg){width=100%}
 
 </p>
