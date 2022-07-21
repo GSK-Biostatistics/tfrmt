@@ -257,7 +257,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
             select(-c(any_of(names(new_row)))) %>%
             slice(0) %>%
             add_row()  %>%
-            mutate(across(where(is.list), ~ map(.x, ~if (is.null(.)) NA_character_ else .)))  %>%  #convert NULL to NA in list-cols
+            mutate(across(vars_select_helpers$where(is.list), ~ map(.x, ~if (is.null(.)) NA_character_ else .)))  %>%  #convert NULL to NA in list-cols
             bind_cols(new_row, .)%>%
             mutate(..tfrmt_row_grp_lbl = TRUE)
 

@@ -186,16 +186,16 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
   }
 
-gt_out <- .data %>%
+  gt_out <- .data %>%
     gt(
       rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle)  %>%
-  sub_missing(
-    rows =..tfrmt_row_grp_lbl==TRUE,
-    missing_text = ""
-  ) %>%
-  cols_hide(columns = ..tfrmt_row_grp_lbl) %>%
+    sub_missing(
+      rows = .data$..tfrmt_row_grp_lbl==TRUE,
+      missing_text = ""
+    ) %>%
+    cols_hide(columns = .data$..tfrmt_row_grp_lbl) %>%
     apply_gt_footnote(tfrmt$footer) %>%
     format_gt_column_labels(.data) %>%
     apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
@@ -257,7 +257,7 @@ gt_out <- .data %>%
       ),
       locations= list(
         cells_column_labels()
-    )) %>%
+      )) %>%
 
     tab_style(
       style = cell_borders(
