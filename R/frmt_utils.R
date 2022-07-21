@@ -88,11 +88,11 @@ format.frmt_when <- function(x, ...){
   lhs <- map_chr(x, f_lhs)
   rhs <- map(x, f_rhs) %>% map_chr(format)
 
-  frmt_str <- cat(
+  frmt_str <- paste(
     "< frmt_when | ", "\n ",
     paste0(map2_chr(lhs, rhs, paste, sep = " ~ "),
     collapse = "\n  "),
-    "\n` >"
+    "\n >"
     )
   frmt_str
 }
