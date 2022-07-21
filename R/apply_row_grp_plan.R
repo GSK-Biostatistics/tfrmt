@@ -185,9 +185,14 @@ apply_grp_block <- function(.data, group, element_block, widths){
 #' @importFrom stringr str_sub
 fill_post_space <- function(post_space, width){
 
+  ## if only white space, no need to make wider for visuals
+  if(grepl("^\\s+$", post_space)){
+    return(post_space)
+  }
+
   length_post_space <- nchar(post_space)
   reps <- ceiling(width/length_post_space)
-  fill_val <- rep(post_space, reps) %>% paste(collapse = "") %>% str_sub(1, width)
+  fill_val <- rep(post_space, reps) %>% paste(collapse = "")  %>% str_sub(1, width)
 
   return(fill_val)
 
