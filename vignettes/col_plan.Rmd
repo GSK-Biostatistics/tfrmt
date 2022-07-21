@@ -293,6 +293,11 @@ Notice that the columns `mean` and `sd` are repeated for each of the treatment g
 
 # Summary
 
-In summary, the use of 1 or >1 `column` variables is a personal choice. Depending on the chosen workflow, a user can achieve the desired column ordering and labeling through a combination of data preparation and `tfrmt` options.
+In summary, the use of 1 or >1 `column` variables is a personal choice. Depending on the chosen workflow, a user can achieve the desired column ordering and labelling through a combination of data preparation and `tfrmt` options.
+
+## Help images
+
+![](../man/figures/tfrmt-span_structure.jpg){width=100%}
+
 
 

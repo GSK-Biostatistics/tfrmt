@@ -117,3 +117,8 @@ body_plan(
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
 )
 ```
+
+## Help images
+
+![](../man/figures/tfrmt-frmts.jpg){width=100%}
+

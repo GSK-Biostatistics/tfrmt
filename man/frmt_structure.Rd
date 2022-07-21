@@ -20,6 +20,15 @@ This can be named to also specify the parameter value}
 Function needed to create a frmt_structure object, which is a building block
 of \code{\link[=body_plan]{body_plan()}}. This specifies the rows the format will be applied to.
 }
+\section{Images}{
+
+Here are some example outputs:
+
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-frmts.jpg" style="width:100\%;">
+}}
+}
+
 \examples{
 
 sample_structure <- frmt_structure(
@@ -33,6 +42,7 @@ sample_structure <- frmt_structure(
           label_val = ".default",
           frmt("XXX")
         )
+
 }
 \seealso{
 \code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the
