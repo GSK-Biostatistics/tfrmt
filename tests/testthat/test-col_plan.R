@@ -301,8 +301,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
   })
 
   expect_equal(
-    processed_gt,
-    processed_gt_2
+    processed_gt[c("_boxhead","_spanners")],
+    processed_gt_2[c("_boxhead","_spanners")]
   )
 
 })
@@ -357,8 +357,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
 
   expect_equal(
-    processed_gt,
-    processed_gt_2
+    processed_gt[c("_boxhead","_spanners")],
+    processed_gt_2[c("_boxhead","_spanners")]
   )
 
 })
@@ -445,8 +445,8 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
 
 
   expect_equal(
-    processed_gt,
-    processed_gt_2
+    processed_gt[c("_boxhead","_spanners")],
+    processed_gt_2[c("_boxhead","_spanners")]
   )
 
 })
@@ -520,10 +520,9 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
   })
 
   expect_equal(
-    processed_gt,
-    processed_gt_2
+    processed_gt[c("_boxhead","_spanners")],
+    processed_gt_2[c("_boxhead","_spanners")]
   )
-
 })
 
 test_that("Build simple tfrmt with spans with child spans that are and are not spanned - removal",{
@@ -596,8 +595,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
   })
 
   expect_equal(
-    processed_gt,
-    processed_gt_2
+    processed_gt[c("_boxhead","_spanners")],
+    processed_gt_2[c("_boxhead","_spanners")]
   )
 
 })
