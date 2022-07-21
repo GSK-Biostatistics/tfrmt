@@ -45,7 +45,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
   dat_max_widths <- .data %>%
     summarise(across(everything(), function(x) {
       if (is.character(x)) {
-        max(sapply(strsplit(format(x), "\\n"), function(y) {
+        max(sapply(strsplit(x, "\\n"), function(y) {
           max(nchar(y), na.rm = TRUE)
         }), na.rm = TRUE)
       } else{
@@ -164,6 +164,7 @@ grp_row_test_data <- function(cur_block, .data, group){
 apply_grp_block <- function(.data, group, element_block, widths){
 
   if (!is.null(element_block$post_space)){
+
     # create add-on row
     # utilize TEMP_row to retain the ordering
     grp_row_add <- .data %>%
@@ -195,13 +196,13 @@ apply_grp_block <- function(.data, group, element_block, widths){
 fill_post_space <- function(post_space, width){
 
   ## if only white space, no need to make wider for visuals
-  if(grepl("^\\s+$", post_space)){
-    return("")
+  if(grepl("^\\s*$", post_space)){
+    return(" ")
   }
 
   length_post_space <- nchar(post_space)
   reps <- ceiling(width/length_post_space)
-  fill_val <- rep(post_space, reps) %>% paste(collapse = "")  %>% str_sub(1, width)
+  fill_val <- strrep(post_space, reps) %>% str_sub(1, width)
 
   return(fill_val)
 
