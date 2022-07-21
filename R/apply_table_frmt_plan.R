@@ -104,15 +104,30 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
   parm_expr <- expr_to_filter(param, cur_fmt$param_val)
 
 
+
   filter_expr <- paste(
       c(lbl_expr,grp_expr,parm_expr),
       collapse = "&"
     ) %>%
     parse_expr()
 
-  .data %>%
-    filter(!!filter_expr) %>%
+  out <- .data %>%
+    filter(!!filter_expr)
+
+  # Protect against incomplete frmt_combines
+  if(is_frmt_combine(cur_fmt$frmt_to_apply[[1]])){
+    complet_combo_grps <- out %>%
+      select(!!!group, !!label, !!param) %>%
+      distinct() %>%
+      group_by(!!!group, !!label) %>%
+      mutate(test = sum(!!parse_expr(parm_expr))) %>%
+      filter(test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls))
+    out <- complet_combo_grps %>%
+      left_join(out, by = c(group, label, param) %>% map_chr(as_label))
+  }
+  out %>%
     pull(.data$TEMP_row)
+
 }
 
 
@@ -123,7 +138,6 @@ expr_to_filter <- function(cols, val){
 }
 
 expr_to_filter.quosure <- function(cols, val){
-
   ## If is missing a quosure, nothing to filter
   if(quo_is_missing(cols)){
     return("TRUE")

@@ -574,3 +574,35 @@ test_that("Space in Param", {
 
 
 })
+
+
+test_that("frmt_combine only applies when all parameters are in the data", {
+  data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+                 Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
+                 Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+                 Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
+                 Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
+                 )
+  ) %>%
+    # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
+    mutate(Value = case_when(Param == "pct" ~ Value * 100,
+                             TRUE ~ Value),
+           ord1 = if_else(Group == "Age (y)", 1, 2),
+           ord2 = if_else(Label == "n", 1, 2),
+           TEMP_row = row_number())
+
+
+  test_combo <- frmt_structure(group_val = ".default", label_val = ".default",
+                               frmt_combine("{n} ({pct}%)",
+                                            n = frmt("XX"),
+                                            pct = frmt("x.x"))
+  )
+
+  rows_to_use <- fmt_test_data(test_combo, data, group= vars(Group),
+                label = quo(Label), param = quo(Param) )
+  expected <- data %>%
+    filter(Label %in% c("Male","Female")) %>%
+    pull(TEMP_row)
+
+  expect_equal(rows_to_use, expected)
+})
