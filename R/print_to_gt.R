@@ -182,9 +182,8 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     align <- NULL
   }
 
-gt_out <- .data %>%
-    gt(
-      rowname_col = as_label(tfrmt$label)) %>%
+  gt_out <- .data %>%
+    gt(rowname_col = as_label(tfrmt$label)) %>%
     tab_header(title = tfrmt$title,
                subtitle = tfrmt$subtitle) %>%
     apply_gt_footnote(tfrmt$footer) %>%
@@ -200,6 +199,8 @@ gt_out <- .data %>%
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }
+
+  browser()
 
   gt_out_final  <- gt_out %>%
     tab_style(
