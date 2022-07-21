@@ -229,7 +229,11 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
 
    inform(
-     "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
+     paste0(
+     "Multiple param listed for the same group/label values.\n",
+     "The following frmt_structures may be missing from the body_plan\n",
+     "or the order may need to be changed:"
+     ),
      body = suggested_frmt_structs,
      class = "_tlang_missing_frmt_structs"
    )
