@@ -18,13 +18,13 @@ test_that("insert post space - single grouping variable",{
     tibble::tribble(
       ~grp1,~label, ~trtA,      ~trtB,      ~trtC,
       "A",  "1",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",  " ",  "        ", "        ", "        ",
+      "A",  "",  "", "", "",
       "B",  "2",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",  " ",  "        ", "        ", "        ",
+      "B",  "",  "", "", "",
       "C",  "3",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",  " ",  "        ", "        ", "        ",
+      "C",  "",  "", "", "",
       "D",  "4",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "D",  " ",  "        ", "        ", "        "
+      "D",  "",  "", "", ""
     ))
 
 
@@ -37,13 +37,13 @@ test_that("insert post space - single grouping variable",{
     tibble::tribble(
       ~grp1, ~label, ~trtA,      ~trtB,       ~trtC,
       "A", "1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A", " ", "        ", "        ", "        ",
+      "A", "", "", "", "",
       "B", "2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B", " ", "        ", "        ", "        ",
+      "B", "", "", "", "",
       "C", "3", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C", " ", "        ", "        ", "        ",
+      "C", "", "", "", "",
       "D", "4", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "D", " ", "        ", "        ", "        ",
+      "D", "", "", "", "",
     ))
 
 })
@@ -72,17 +72,17 @@ test_that("insert post space - two grouping variables",{
       "A",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "A",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "A",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "A",  "b",   " ", "        " ,"        ", "        ",
+      "A",  "b",   "", "" ,"", "",
       "B",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "B",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "B",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "B",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "B",  "b",   " ", "        " ,"        ", "        ",
+      "B",  "b",   "", "" ,"", "",
       "C",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "C",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "C",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "C",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",  "b",   " ", "        " ,"        ", "        ",
+      "C",  "b",   "", "" ,"", "",
     ))
 
 })
@@ -110,7 +110,7 @@ test_that("insert mix - single grouping variable",{
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "A",  "--------", "--------",  "--------",
       "B",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
-      "B",  "        ", "        ",  "        ",
+      "B",  "", "",  "",
       "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "C",  "--------", "--------",  "--------",
       "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)"
@@ -142,7 +142,7 @@ test_that("insert post space after specific value",{
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "b", " ",   "        ", "        ", "        ",
+      "A",     "b", "",   "", "", "",
       "B",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "B",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -177,17 +177,17 @@ test_that("overlapping row_grp_structures - prefers latest",{
     tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "A",     "a", " ",   "        ", "        ", "        ",
+      "A",     "a", "",   "", "", "",
       "A",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "A",     "b", "*",   "********", "********", "********",
       "B",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "a", " ",   "        ", "        ", "        ",
+      "B",     "a", "",   "", "", "",
       "B",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "B",     "b", " ",   "        ", "        ", "        ",
+      "B",     "b", "",   "", "", "",
       "C",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "a", " ",   "        ", "        ", "        ",
+      "C",     "a", "",   "", "", "",
       "C",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "b", " ",   "        ", "        ", "        ",
+      "C",     "b", "",   "", "", "",
     ) )
 
 })
