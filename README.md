@@ -6,7 +6,7 @@
 [![R-CMD-check](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/GSK-Biostatistics/tfrmt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tfrmt?branch=main)
-
+[![status: experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 <!-- badges: end -->
 
 The tfrmt package provides a language for defining display-related
@@ -19,11 +19,11 @@ are very common. Prior to data analysis, study teams often generate mock
 displays to represent the desired end product for sponsors to approve or
 programmers to replicate. This process is typically highly manual and
 separate from the programming itself. There is also a high importance
-placed on verifying the accuracy of the results via a QC process such as
+placed on verifying the accuracy of the results via a QC (Quality Control) process such as
 double programming. Finally, there is a movement toward an industry
 standard data structure for Analysis Results Data “ARD”, which means
 analysis results datasets will have consistent structures and column
-names. Specifically, the ARD is long, with 1 record per computed value.
+names. Specifically, the ARD is long, with 1 record per computed value. For more information about ARDs click [here](https://www.pharmasug.org/download/sde/rtp2021/PharmaSUG-NCSDE_2021-08.pdf).
 
 tfrmt supports a vision where:
 
@@ -96,6 +96,6 @@ Other benefits of tfrmt:
 # More Info
 
 For more information about how to build your own tfrmt mocks/tables
-(like the one below!), please explore the vignettes.
+(like the one below!), please explore the [vignettes](https://gsk-biostatistics.github.io/tfrmt/articles/examples.html).
 
 ![Example GT Demog table](man/figures/gt_readme.png)

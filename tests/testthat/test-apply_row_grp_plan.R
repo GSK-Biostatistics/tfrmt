@@ -651,3 +651,121 @@ test_that("row order is retained for all selections",{
   expect_equal(gt_indented_dat, gt_indented_man)
 })
 
+
+test_that("Row group plans with col style plan",{
+
+
+  raw_dat <- tibble::tribble(
+      ~g1,  ~g2,       ~one,   ~param, ~column, ~ value,
+     "G1", "g3",    "n (%)",      "n",  "trt1",      12,
+     "G1", "g3",    "n (%)",    "pct",  "trt1",      34,
+     "G2_", "g3",     "mean",   "mean",  "trt1",    12.3,
+     "G2_", "g3",       "sd",     "sd",  "trt1",    4.34,
+     "G2_", "g3",   "median", "median",  "trt1",      14,
+     "G3", "g3", "(q1, q3)",     "q1",  "trt1",      10,
+     "G3", "g3", "(q1, q3)",     "q3",  "trt1",      20,
+     "G1", "g3",    "n (%)",      "n",  "trt2",      24,
+     "G1", "g3",    "n (%)",    "pct",  "trt2",      58,
+     "G2_", "g3",     "mean",   "mean",  "trt2",    15.4,
+     "G2_", "g3",       "sd",     "sd",  "trt2",    8.25,
+     "G2_", "g3",   "median", "median",  "trt2",      16,
+     "G3", "g3", "(q1, q3)",     "q1",  "trt2",      22,
+     "G3", "g3", "(q1, q3)",     "q3",  "trt2",      22,
+     "G1", "g3",     "mean",   "pval",  "four",   0.0001
+  )
+
+  plan <- tfrmt(
+    label = one,
+    group = c(g1,g2),
+    column = vars(column),
+    values = value,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        frmt("xx.xx")
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "n (%)",
+        frmt_combine("{n} ({pct}%)",
+                     n = frmt("x"),
+                     pct = frmt("xx.x"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "(q1, q3)",
+        frmt_combine("({q1}, {q3})",
+                     q1 = frmt("xx"),
+                     q3 = frmt("xx"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        pval = frmt_when(
+          "<.001" ~ "<.001",
+          TRUE ~ frmt("x.xxx")
+        )
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
+        element_block = element_block(post_space = "----")
+      ),
+      label_loc = element_row_grp_loc(location = "column")
+    ),
+    col_style_plan =  col_style_plan(
+      element_col(align = "right", col = g1), # col must be the top lebel group
+      element_col(align = "right", col = one), # always bueno
+      element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
+      element_col(align = c(" "), col = trt1),
+      element_col(width = 100, col = four)
+    )
+  )
+
+  ## suppressing warning from alignment using multiple values. Not pertinent to this test
+  suppressWarnings({
+    tfrmt_gt <- print_to_gt(plan, raw_dat)
+  })
+
+  expect_equal(
+    tfrmt_gt$`_boxhead`[,c("var","column_width")],
+    tibble(
+      var = c("g1","one","trt1","trt2","four"),
+      column_width = list(list(""),list(""),list("200px"),list("200px"),list("100px"))
+    )
+  )
+
+
+})
+
+test_that("Row group plans with col style plan - error checks against group",{
+
+  expect_error({
+      tfrmt(
+        group = c(g1,g2),
+        row_grp_plan = row_grp_plan(
+          row_grp_structure(
+            group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
+            element_block = element_block(post_space = "----")
+          ),
+          label_loc = element_row_grp_loc(location = "column")
+        ),
+        col_style_plan =  col_style_plan(
+          element_col(align = "right", col = g2), # col must be the top lebel group
+          element_col(align = "right", col = one), # always bueno
+          element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
+          element_col(align = c(" "), col = trt1),
+          element_col(width = 100, col = four)
+        )
+      )
+    },
+    paste(
+      "Invalid element_col in row_grp_plan at position `1`:",
+      "  `col` value: g2",
+      "  When row_grp_plan label location is `column`, only the only valid group col to style is `g1`",
+      sep = "\n"
+    ),
+    fixed = TRUE
+  )
+
+})
+

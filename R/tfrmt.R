@@ -192,6 +192,7 @@ tfrmt <- function(
   ## any span_structures in col_plan
   check_column_and_col_plan(new_tfrmt)
   check_group_var_consistency(new_tfrmt)
+  check_col_style_row_grp_consistency(new_tfrmt)
 
   new_tfrmt
 
