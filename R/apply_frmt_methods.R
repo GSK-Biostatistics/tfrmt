@@ -208,12 +208,11 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   missing_param_replacements <- map(fmt_param_vals, function(var) {
       missing_val <- frmt_def$fmt_ls[[var]]$missing
       if (is.null(missing_val)) {
-        missing_val <- ""
+        missing_val <- NA
       }
       missing_val
     }) %>%
     setNames(fmt_param_vals)
-
 
   .tmp_data_wide <- .tmp_data %>%
     select(!!values, !!param, !!!column, !!label, !!!group) %>%
