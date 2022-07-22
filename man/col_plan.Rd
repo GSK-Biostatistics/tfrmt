@@ -28,7 +28,7 @@ span_structures can be nested to allow for layered spanning headers.
 
 When col_plan gets applied and is used to create the output table, the
 underlying logic becomes the input to \code{\link[dplyr]{select}}. Therefore,
-behavior falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
+behaviour falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
 and reordering the columns.
 
 Avoid beginning the \code{col_plan()} column selection with a deselection (ie
@@ -40,7 +40,7 @@ preserving in the order they are wished to appear, or if
 <\code{\link[=dplyr_tidy_select]{tidy-select}}> arguments - such as
 \code{\link[dplyr]{everything}}- are used, identify the de-selection after
 the positive-selection. Experiment with the \code{\link[dplyr]{select}}
-function to understand this sort of behavior better.
+function to understand this sort of behaviour better.
 
 Alternatively, once the gt table is produced, use the \code{\link[gt]{cols_hide}}
 function to remove un-wanted columns.
@@ -51,7 +51,7 @@ function to remove un-wanted columns.
 Here are some example outputs:
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-span_structure.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg" style="width:100\%;">
 }}
 }
 

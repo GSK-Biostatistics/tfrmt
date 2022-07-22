@@ -610,7 +610,7 @@ tfrmt(
 
 Through judicious use of `body_plan`'s `frmt`, `frmt_combine`, and `frmt_when`, we can conditionally format each of the different pieces of results. For the summary statistics, we have the number of observations (n), the mean and standard deviation (mean, sd), and the median and range (median, min, max). For the models, we have the p-value (p.value) and the least squares mean difference (diff) as well as its associated standard error (diff_se) and 95% confidence interval (diff_lcl, diff_ucl). 
 
-The `label` column indicates which row the various measures belong on. First, let's format the standalone values: n and p-value. Notice that n always sits on a row labeled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`. 
+The `label` column indicates which row the various measures belong on. First, let's format the standalone values: n and p-value. Notice that n always sits on a row labelled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`. 
 
 ```{r} 
 tfrmt(

@@ -57,7 +57,7 @@ Currently covers specifications for \code{frmt} and
 \subsection{Group/label variables}{
 
 If the group/label variables are not provided to the arguments, the body_plan
-will be constructed from the input data with the following behavior:
+will be constructed from the input data with the following behaviour:
 \itemize{
 \item If no group or label are supplied, it will be assumed that all columns in the input
 data are group columns.

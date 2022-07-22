@@ -30,6 +30,7 @@ Authors@R:
 Description: Creates a framework to store and apply display metadata to Analysis
     Results Datasets (ARDs). The use of tfrmt allows users to define table 
     format and styling without the data, and later apply the format to the data.
+Language: en-GB
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -39,7 +40,8 @@ Suggests:
     covr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    spelling
 Imports: 
     magrittr,
     dplyr,
