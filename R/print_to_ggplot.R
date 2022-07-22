@@ -102,16 +102,21 @@ print_to_ggplot <- function(tfrmt, .data){
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
-
   # apply grouping if any
   # create y variable to preserve ordering and levels
   .data<-apply_grp_ggplot(.data,tfrmt) %>%
     mutate(y=n():1)
 
+  # handle cases for "..tfrmt_row_grp_lbl pivoting
+  if("..tfrmt_row_grp_lbl" %in% names(.data)){
   # reshape data for ggplot
   data <- .data %>%
-    pivot_longer(-c(as_label(tfrmt$label),"y"),names_to = "column")
+    pivot_longer(-c(as_label(tfrmt$label),"y","..tfrmt_row_grp_lbl"),names_to = "column")
+  }else(
+    data <- .data %>%
+      pivot_longer(-c(as_label(tfrmt$label),"y"),names_to = "column")
 
+  )
 
   # preserve data types from original data - changed by pivoting
   column_type <- class(column_data)
