@@ -235,37 +235,38 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
       n = n()
     )
 
-  if (any(num_rec_by_row$n>1)){
+  if (any(num_rec_by_row$n>1) ){
 
     val_fill <- list("")
 
-    suggested_frmt_structs <- num_rec_by_row %>%
-      ungroup %>%
-      filter(n > 1) %>%
-      select(-c(!!!tfrmt$column)) %>%
-      unique() %>%
-      rowwise() %>%
-      mutate(
-        suggested_frmt_struct = frmt_struct_string(
-          grp = list(!!!tfrmt$group),
-          lbl = !!tfrmt$label,
-          param_vals = .data$param_list
-          )
-      ) %>%
-      pull(.data$suggested_frmt_struct) %>%
-      paste0("- `",.,"`",collapse = "\n")
+    if(!mock){
+      suggested_frmt_structs <- num_rec_by_row %>%
+        ungroup %>%
+        filter(n > 1) %>%
+        select(-c(!!!tfrmt$column)) %>%
+        unique() %>%
+        rowwise() %>%
+        mutate(
+          suggested_frmt_struct = frmt_struct_string(
+            grp = list(!!!tfrmt$group),
+            lbl = !!tfrmt$label,
+            param_vals = .data$param_list
+            )
+        ) %>%
+        pull(.data$suggested_frmt_struct) %>%
+        paste0("- `",.,"`",collapse = "\n")
 
 
-   inform(
-     paste0(
-     "Multiple param listed for the same group/label values.\n",
-     "The following frmt_structures may be missing from the body_plan\n",
-     "or the order may need to be changed:"
-     ),
-     body = suggested_frmt_structs,
-     class = "_tlang_missing_frmt_structs"
-   )
-
+     inform(
+       paste0(
+       "Multiple param listed for the same group/label values.\n",
+       "The following frmt_structures may be missing from the body_plan\n",
+       "or the order may need to be changed:"
+       ),
+       body = suggested_frmt_structs,
+       class = "_tlang_missing_frmt_structs"
+     )
+    }
   } else {
     val_fill <- ""
   }
