@@ -44,16 +44,8 @@ validate_width_units <- function(width){
     return(NULL)
   }
 
-  if (is.numeric(width)) {
-    width <- paste0(as.character(width), "px")
-  }
-
-  width_units <- str_remove(width,"\\d+")
-  if(!width_units %in% c("px","%")){
-    abort(paste0(
-      "Invalid Units provided for column width: `",width_units,"`.\n",
-      "Only `px` (`px()`) or `%` (`pct()`) are accepted."
-    ))
+  if (!is.numeric(width) | !(width > 0)) {
+    abort("`width` must be a positive numeric value.")
   }
 
   return(width)

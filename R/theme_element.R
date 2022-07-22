@@ -105,10 +105,9 @@ is_element_block <- function(x){
 #'   one character is provided, alignment will be based on the first occurrence
 #'   of any of the characters. For alignment based on white space, leading white
 #'   spaces will be ignored.
-#' @param width Width to apply to the column. Acceptable values include a
-#'   numeric value, or a character string of numbers ending with either "px" or
-#'   "%", indicating the column width is either n pixels across or % of the
-#'   total table width
+#' @param width Width to apply to the column, representing the number of
+#'   allowable character. Acceptable values are any positive numeric value
+#'   greater than zero
 #'
 #'
 #' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label
@@ -124,9 +123,9 @@ is_element_block <- function(x){
 #'
 #'  plan <- col_style_plan(
 #'     element_col(align = "left", width = 100, col = "my_var"),
-#'     element_col(align = "right", width = "200px", col = vars(four)),
+#'     element_col(align = "right", width = 200, col = vars(four)),
 #'     element_col(align = c(".", ",", " "), col = vars(two, three)),
-#'     element_col(width = "25%", col = c(two, three))
+#'     element_col(width = 25, col = c(two, three))
 #'    )
 #'
 #' @rdname theme_element
@@ -137,12 +136,13 @@ element_col <- function( col = vars(),
 
   cols <- quo_get("col", as_var_args = "col", allow_tidy_select = TRUE)$col
 
-  width <- validate_width_units(width)
 
   if(is.null(width) & is.null(align)){
     abort("Alignment or column width definition must be applied to create this element_col",
           class = "missing_element_col_value")
   }
+
+  width <- validate_width_units(width)
 
   structure(
     list(
