@@ -189,8 +189,7 @@ test_that("Check apply_tfrmt for mock data",{
     )
   )
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>%
-    quietly(apply_tfrmt)(plan, mock =TRUE) %>%
-    .[["result"]]
+    apply_tfrmt(plan, mock =TRUE)
 
   expect_equal(
     mock_dat,
@@ -227,7 +226,7 @@ test_that("Check apply_tfrmt for mock data",{
 
   ## capturing second message
   expect_equal(
-    make_mock_dat_message[2],
+    make_mock_dat_message,
     "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
     )
 
