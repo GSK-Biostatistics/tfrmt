@@ -262,23 +262,24 @@ test_that("Check combine_group_cols with a single group", {
   auto_test_no_span <- combine_group_cols(mock_single_grp,
                                           group = vars(grp1), label = sym("lab"))
   man_test_no_span <- tibble::tribble(
-    ~grp1,  ~lab,   ~trtA,     ~trtB,   ~trtC,
-    "A",  "A"  , "",         "",       "",
-    "A",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "A",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "B",  "B"  , "",         "",       "",
-    "B",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "B",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "C",  "C"  , "",         "",       "",
-    "C",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "C",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)")
+    ~grp1,  ~lab,   ~trtA,     ~trtB,   ~trtC,       ~..tfrmt_row_grp_lbl,
+    "A",  "A"  , NA,         NA,       NA,           TRUE,
+    "A",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "A",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "B",  "B"  , NA,         NA,       NA,           TRUE,
+    "B",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "B",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "C",  "C"  , NA,         NA,       NA,           TRUE,
+    "C",  "  a", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "C",  "  b", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE)
 
 
   expect_equal(auto_test_no_span, man_test_no_span)
   #With spanning (so no change to the data)
   expect_equal(combine_group_cols(mock_single_grp,
                                   group = vars(grp1), label = sym("lab"),
-                                  element_row_grp_loc(location = "spanning")),
+                                  element_row_grp_loc(location = "spanning")) %>%
+                 select(-..tfrmt_row_grp_lbl),
                mock_single_grp
   )
 })
@@ -307,21 +308,21 @@ test_that("Check combine_group_cols with a multi groups", {
                                           element_row_grp_loc(location = "indented"))
 
   man_test_no_span <- tibble::tribble(
-    ~grp1,     ~my_label,      ~grp2,   ~trtA,     ~trtB,     ~trtC,
-    "grp1_1", "grp1_1"        ,""     , ""      , ""      , ""      ,
-    "grp1_1", "  grp2_1"      ,"grp2_1", ""      , ""      , ""      ,
-    "grp1_1", "    my_label_1","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_1", "    my_label_2","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_1", "  grp2_2"      ,"grp2_2", ""      , ""      , ""      ,
-    "grp1_1", "    my_label_1","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_1", "    my_label_2","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "grp1_2"        , ""     , ""      , ""      , ""      ,
-    "grp1_2", "  grp2_1"      ,"grp2_1", ""      , ""      , ""      ,
-    "grp1_2", "    my_label_1","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "    my_label_2","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "  grp2_2"      ,"grp2_2", ""      , ""      , ""      ,
-    "grp1_2", "    my_label_1","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "    my_label_2","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)"
+    ~grp1,     ~my_label,      ~grp2,   ~trtA,     ~trtB,     ~trtC,         ~..tfrmt_row_grp_lbl,
+    "grp1_1", "grp1_1"        ,NA     , NA      , NA      , NA      ,        TRUE,
+    "grp1_1", "  grp2_1"      ,"grp2_1", NA     , NA      , NA      ,        TRUE,
+    "grp1_1", "    my_label_1","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_1", "    my_label_2","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_1", "  grp2_2"      ,"grp2_2", NA      , NA      , NA      ,        TRUE,
+    "grp1_1", "    my_label_1","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_1", "    my_label_2","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_2", "grp1_2"        , NA     , NA      , NA      , NA      ,        TRUE,
+    "grp1_2", "  grp2_1"      ,"grp2_1", NA      , NA      , NA      ,        TRUE,
+    "grp1_2", "    my_label_1","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_2", "    my_label_2","grp2_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_2", "  grp2_2"      ,"grp2_2", NA      , NA      , NA      ,        TRUE,
+    "grp1_2", "    my_label_1","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+    "grp1_2", "    my_label_2","grp2_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE
   )
 
   expect_equal(auto_test_no_span, man_test_no_span)
@@ -339,6 +340,79 @@ test_that("Check combine_group_cols with a multi groups", {
     mutate(grp1 = ifelse(grp1=="", NA, grp1)) %>%
     fill(grp1, .direction = "up")
   expect_equal(auto_test_with_span, man_test_with_span)
+
+})
+
+
+test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_plan)", {
+  mock_multi_grp <- tibble::tribble(
+    ~grp1,    ~grp2,     ~ my_label,
+    "grp1_1", "grp2_1", "my_label_1",
+    "grp1_1", "grp2_1", "my_label_2",
+    "grp1_1", "grp2_2", "my_label_1",
+    "grp1_1", "grp2_2", "my_label_2",
+    "grp1_2", "grp2_1", "my_label_1",
+    "grp1_2", "grp2_1", "my_label_2",
+    "grp1_2", "grp2_2", "my_label_1",
+    "grp1_2", "grp2_2", "my_label_2",
+  ) %>%
+    mutate(
+      trtA = rep("xx (xx%)", 8) %>% as.list(),
+      trtB = rep("xx (xx%)", 8) %>% as.list(),
+      trtC = rep("xx (xx%)", 8) %>% as.list(),
+    )
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space =" ")),
+    label_loc = element_row_grp_loc(location = "indented")
+  )
+
+  auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label"))
+
+  man_test_listcols <- tibble::tribble(
+    ~my_label,      ~trtA,     ~trtB,     ~trtC,         ~..tfrmt_row_grp_lbl,
+   "grp1_1"        , NA     , NA       , NA      ,       TRUE,
+   "  grp2_1"      , NA       , NA       , NA       ,      TRUE,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "  grp2_2"      , NA       , NA       , NA       ,      TRUE,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "grp1_2"        , NA       , NA       , NA       ,      TRUE,
+   "  grp2_1"      , NA       , NA       , NA       ,      TRUE,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "  grp2_2"      , NA      , NA       , NA       ,      TRUE,
+   "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
+   "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE
+  ) %>%
+    mutate(across(trtA:trtC, as.list))
+
+  expect_equal(auto_test_listcols, man_test_listcols)
+
+
+  auto_test_listcols <- apply_row_grp_struct(mock_multi_grp, sample_grp_plan$struct_ls,group = vars(grp1, grp2), label = sym("my_label"))
+
+  man_test_listcols <- tibble::tribble(
+    ~grp1,    ~grp2,   ~my_label,      ~trtA,     ~trtB,     ~trtC,
+    "grp1_1", "grp2_1", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_1", "          ", "        ", "        ", "        ",
+    "grp1_1", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_1", "grp2_2", "          ", "        ", "        ", "        ",
+    "grp1_2", "grp2_1", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_1", "          ", "        ", "        ", "        ",
+    "grp1_2", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "grp1_2", "grp2_2", "          ", "        ", "        ", "        "
+  ) %>%
+    mutate(across(trtA:trtC, as.list))
+
+  expect_equal(auto_test_listcols, man_test_listcols)
+
+
 
 })
 
@@ -368,22 +442,22 @@ test_that("> 2 groups with and without spanner_label", {
   expect_equal(
     apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")),
     tibble::tribble(
-      ~my_label        , ~trtA     , ~trtB     , ~trtC   ,
-      "grp1_1"          ,""          ,""         ,""        ,
-      "  grp2_1"         ,""         ,""         ,"",
-      "    grp3_1"       ,""         ,""         ,"",
-      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "    grp3_2"       ,""         ,""         ,"",
-      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "  grp2_2"         ,""         ,""         ,"",
-      "    grp3_1"       ,""         ,""         ,"",
-      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "    grp3_2"       ,""         ,""         ,"",
-      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
+      ~my_label        , ~trtA     , ~trtB     , ~trtC   ,     ~..tfrmt_row_grp_lbl,
+      "grp1_1"           ,NA          ,NA         ,NA        , TRUE,
+      "  grp2_1"         ,NA         ,NA         ,NA        , TRUE,
+      "    grp3_1"       ,NA         ,NA         ,NA        , TRUE,
+      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "    grp3_2"       ,NA         ,NA         ,NA,         TRUE,
+      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "  grp2_2"         ,NA         ,NA         ,NA        , TRUE,
+      "    grp3_1"       ,NA         ,NA         ,NA        , TRUE,
+      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "    grp3_2"       ,NA         ,NA        ,NA        ,  TRUE,
+      "      my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "      my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)" ,FALSE
     )
   )
 
@@ -392,21 +466,21 @@ test_that("> 2 groups with and without spanner_label", {
   expect_equal(
     apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")),
     tibble::tribble(
-     ~grp1,   ~my_label        , ~trtA     , ~trtB     , ~trtC   ,
-     "grp1_1", "grp2_1"         ,""         ,""         ,"",
-     "grp1_1", "  grp3_1"       ,""         ,""         ,"",
-     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "  grp3_2"       ,""         ,""         ,"",
-     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "grp2_2"         ,""         ,""         ,"",
-     "grp1_1", "  grp3_1"       ,""         ,""         ,"",
-     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "  grp3_2"       ,""         ,""         ,"",
-     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
+     ~grp1,   ~my_label        , ~trtA     , ~trtB     , ~trtC   ,    ~..tfrmt_row_grp_lbl,
+     "grp1_1", "grp2_1"         ,NA         ,NA         ,NA,          TRUE,
+     "grp1_1", "  grp3_1"       ,NA         ,NA         ,NA,         TRUE,
+     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "  grp3_2"       ,NA         ,NA         ,NA,         TRUE,
+     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "grp2_2"         ,NA         ,NA         ,NA,         TRUE,
+     "grp1_1", "  grp3_1"       ,NA         ,NA         ,NA,         TRUE,
+     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "  grp3_2"       ,NA         ,NA         ,NA,         TRUE,
+     "grp1_1", "    my_label_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+     "grp1_1", "    my_label_2" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE
     ) %>% group_by(grp1)
   )
 
@@ -436,16 +510,16 @@ test_that("Summary rows are not indented", {
   expect_equal(
     apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2), sym("my_label")),
     tibble::tribble(
-      ~my_label ,        ~trtA       , ~trtB       , ~trtC,
-      "cat_1"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "cat_2"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "  sub_cat_2"      ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "    sub_cat_3"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "cat_3"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "  sub_cat_3a"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "  sub_cat_3b"     ,""         ,""         ,""        ,
-      "    sub_cat_3b_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-      "    sub_cat_3b_3" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
+      ~my_label ,        ~trtA       , ~trtB       , ~trtC,   ~..tfrmt_row_grp_lbl,
+      "cat_1"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "cat_2"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "  sub_cat_2"      ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "    sub_cat_3"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "cat_3"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "  sub_cat_3a"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "  sub_cat_3b"     ,NA         ,NA         ,NA        ,TRUE,
+      "    sub_cat_3b_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
+      "    sub_cat_3b_3" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE
     )
   )
 
@@ -454,16 +528,16 @@ test_that("Summary rows are not indented", {
   expect_equal(
     apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2), sym("my_label")),
     tibble::tribble(
-      ~grp1,   ~my_label ,        ~trtA       , ~trtB       , ~trtC,
-       "cat_1", "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_2", "cat_2"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_2", "sub_cat_2"      ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_2", "  sub_cat_3"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_3", "cat_3"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_3", "sub_cat_3a"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_3", "sub_cat_3b"     ,""         ,""         ,""        ,
-       "cat_3", "  sub_cat_3b_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
-       "cat_3", "  sub_cat_3b_3" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)"
+      ~grp1,   ~my_label ,        ~trtA       , ~trtB       , ~trtC,  ~..tfrmt_row_grp_lbl,
+       "cat_1", "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_2", "cat_2"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_2", "sub_cat_2"      ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_2", "  sub_cat_3"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_3", "cat_3"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_3", "sub_cat_3a"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_3", "sub_cat_3b"     ,NA         ,NA         ,NA        ,TRUE,
+       "cat_3", "  sub_cat_3b_1" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
+       "cat_3", "  sub_cat_3b_3" ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE
     ) %>% group_by(grp1)
   )
 
@@ -501,19 +575,19 @@ test_that("row order is retained for all selections",{
 
   gt_indented_dat <- gt_indented$`_data`
   gt_indented_man <- tibble::tribble(
-    ~lbl,       ~`1`,
-    "d"       ,"" ,
-    "  c"    ,"" ,
-    "    n"  ,"1",
-    "a"      ,"" ,
-    "  b"    ,"" ,
-    "    m"  ,"2",
-    "q"      ,"" ,
-    "  v"    ,"" ,
-    "    s"  ,"3",
-    "b"      ,"" ,
-    "  p"    ,"" ,
-    "    e"  ,"4" )
+    ~lbl,       ~`1`, ~..tfrmt_row_grp_lbl,
+    "d"       ,NA ,  TRUE,
+    "  c"    ,NA,  TRUE,
+    "    n"  ,"1", FALSE,
+    "a"      ,NA , TRUE,
+    "  b"    ,NA , TRUE,
+    "    m"  ,"2", FALSE,
+    "q"      ,NA , TRUE,
+    "  v"    ,NA , TRUE,
+    "    s"  ,"3", FALSE,
+    "b"      ,NA , TRUE,
+    "  p"    ,NA , TRUE,
+    "    e"  ,"4", FALSE )
   expect_equal(gt_indented_dat, gt_indented_man)
 
 
@@ -525,15 +599,15 @@ test_that("row order is retained for all selections",{
 
   gt_spanning_dat <- gt_spanning$`_data`
   gt_spanning_man <- tibble::tribble(
-    ~ grp1,  ~lbl,       ~`1`,
-      "d",     "c"   , "" ,
-      "d",     "  n" , "1",
-      "a",     "b"   , "" ,
-      "a",     "  m" , "2",
-      "q",     "v"   , "" ,
-      "q",     "  s" , "3",
-      "b",     "p"   , "" ,
-      "b",     "  e" , "4")
+    ~ grp1,  ~lbl,       ~`1`, ~..tfrmt_row_grp_lbl,
+      "d",     "c"   , NA , TRUE,
+      "d",     "  n" , "1", FALSE,
+      "a",     "b"   , NA , TRUE,
+      "a",     "  m" , "2", FALSE,
+      "q",     "v"   , NA , TRUE,
+      "q",     "  s" , "3", FALSE,
+      "b",     "p"   , NA , TRUE,
+      "b",     "  e" , "4", FALSE)
   expect_equal(gt_spanning_dat, gt_spanning_man)
 
   gt_column <-  tfrmt_temp %>%
@@ -562,18 +636,137 @@ test_that("row order is retained for all selections",{
 
   gt_indented_dat <- gt_indented$`_data`
   gt_indented_man <- tibble::tribble(
-    ~lbl,       ~`1`,
-    "d"       ,"" ,
-    "  c"    ,"" ,
-    "    n"  ,"1",
-    "a"      ,"" ,
-    "  b"    ,"" ,
-    "    m"  ,"2",
-    "q"      ,"" ,
-    "  v"    ,"" ,
-    "    s"  ,"3",
-    "b"      ,"" ,
-    "  p"    ,"" ,
-    "    e"  ,"4" )
+    ~lbl,       ~`1`, ~..tfrmt_row_grp_lbl,
+    "d"       ,NA ,  TRUE,
+    "  c"    , NA, TRUE,
+    "    n"  ,"1", FALSE,
+    "a"      ,NA , TRUE,
+    "  b"    ,NA , TRUE,
+    "    m"  ,"2", FALSE,
+    "q"      ,NA , TRUE,
+    "  v"    ,NA , TRUE,
+    "    s"  ,"3", FALSE,
+    "b"      ,NA , TRUE,
+    "  p"    ,NA , TRUE,
+    "    e"  ,"4",  FALSE)
   expect_equal(gt_indented_dat, gt_indented_man)
 })
+
+
+test_that("Row group plans with col style plan",{
+
+
+  raw_dat <- tibble::tribble(
+      ~g1,  ~g2,       ~one,   ~param, ~column, ~ value,
+     "G1", "g3",    "n (%)",      "n",  "trt1",      12,
+     "G1", "g3",    "n (%)",    "pct",  "trt1",      34,
+     "G2_", "g3",     "mean",   "mean",  "trt1",    12.3,
+     "G2_", "g3",       "sd",     "sd",  "trt1",    4.34,
+     "G2_", "g3",   "median", "median",  "trt1",      14,
+     "G3", "g3", "(q1, q3)",     "q1",  "trt1",      10,
+     "G3", "g3", "(q1, q3)",     "q3",  "trt1",      20,
+     "G1", "g3",    "n (%)",      "n",  "trt2",      24,
+     "G1", "g3",    "n (%)",    "pct",  "trt2",      58,
+     "G2_", "g3",     "mean",   "mean",  "trt2",    15.4,
+     "G2_", "g3",       "sd",     "sd",  "trt2",    8.25,
+     "G2_", "g3",   "median", "median",  "trt2",      16,
+     "G3", "g3", "(q1, q3)",     "q1",  "trt2",      22,
+     "G3", "g3", "(q1, q3)",     "q3",  "trt2",      22,
+     "G1", "g3",     "mean",   "pval",  "four",   0.0001
+  )
+
+  plan <- tfrmt(
+    label = one,
+    group = c(g1,g2),
+    column = vars(column),
+    values = value,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        frmt("xx.xx")
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "n (%)",
+        frmt_combine("{n} ({pct}%)",
+                     n = frmt("x"),
+                     pct = frmt("xx.x"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "(q1, q3)",
+        frmt_combine("({q1}, {q3})",
+                     q1 = frmt("xx"),
+                     q3 = frmt("xx"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        pval = frmt_when(
+          "<.001" ~ "<.001",
+          TRUE ~ frmt("x.xxx")
+        )
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
+        element_block = element_block(post_space = "----")
+      ),
+      label_loc = element_row_grp_loc(location = "column")
+    ),
+    col_style_plan =  col_style_plan(
+      element_col(align = "right", col = g1), # col must be the top lebel group
+      element_col(align = "right", col = one), # always bueno
+      element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
+      element_col(align = c(" "), col = trt1),
+      element_col(width = 100, col = four)
+    )
+  )
+
+  ## suppressing warning from alignment using multiple values. Not pertinent to this test
+  suppressWarnings({
+    tfrmt_gt <- print_to_gt(plan, raw_dat)
+  })
+
+  expect_equal(
+    tfrmt_gt$`_boxhead`[,c("var","column_width")] %>% filter(!var=="..tfrmt_row_grp_lbl"),
+    tibble(
+      var = c("g1","one","trt1","trt2","four"),
+      column_width = list(list(""),list(""),list("200px"),list("200px"),list("100px"))
+    )
+  )
+
+
+})
+
+test_that("Row group plans with col style plan - error checks against group",{
+
+  expect_error({
+      tfrmt(
+        group = c(g1,g2),
+        row_grp_plan = row_grp_plan(
+          row_grp_structure(
+            group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
+            element_block = element_block(post_space = "----")
+          ),
+          label_loc = element_row_grp_loc(location = "column")
+        ),
+        col_style_plan =  col_style_plan(
+          element_col(align = "right", col = g2), # col must be the top lebel group
+          element_col(align = "right", col = one), # always bueno
+          element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
+          element_col(align = c(" "), col = trt1),
+          element_col(width = 100, col = four)
+        )
+      )
+    },
+    paste(
+      "Invalid element_col in row_grp_plan at position `1`:",
+      "  `col` value: g2",
+      "  When row_grp_plan label location is `column`, only the only valid group col to style is `g1`",
+      sep = "\n"
+    ),
+    fixed = TRUE
+  )
+
+})
+

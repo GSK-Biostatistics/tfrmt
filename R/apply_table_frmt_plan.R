@@ -54,8 +54,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
       if(is.null(cur_fmt)){
         if(!mock){
           out <- data_only %>%
-            mutate(!!values := as.character(!!values)) %>%
-            select(-!!param)
+            mutate(!!values := as.character(!!values))
         } else {
           out <- data_only
         }
@@ -78,8 +77,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
           label = label,
           group = group,
           mock = mock
-        ) %>%
-          select(-!!param)
+        )
       }
 
       out
