@@ -397,16 +397,16 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
     ~grp1,    ~grp2,   ~my_label,      ~trtA,     ~trtB,     ~trtC,
     "grp1_1", "grp2_1", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "grp1_1", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_1", "grp2_1", "          ", "        ", "        ", "        ",
+    "grp1_1", "grp2_1", " ", " ", " ", " ",
     "grp1_1", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "grp1_1", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_1", "grp2_2", "          ", "        ", "        ", "        ",
+    "grp1_1", "grp2_2", " ", " ", " ", " ",
     "grp1_2", "grp2_1", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "grp1_2", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "grp2_1", "          ", "        ", "        ", "        ",
+    "grp1_2", "grp2_1", " ", " ", " ", " ",
     "grp1_2", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "grp1_2", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "grp2_2", "          ", "        ", "        ", "        "
+    "grp1_2", "grp2_2", " ", " ", " ", " "
   ) %>%
     mutate(across(trtA:trtC, as.list))
 
