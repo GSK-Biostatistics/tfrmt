@@ -231,7 +231,8 @@ test_that("Test when no body_style or values is present", {
                  mutate(val = "X.X") %>%
                  pivot_wider(names_from = columns, values_from = val) %>%
                  select(-param) %>%
-                 rename(`test label___tlang_delim___col3` = col3))
+                 rename(`test label___tlang_delim___col3` = col3) %>%
+                 mutate(..tfrmt_row_grp_lbl=FALSE))
 
 
 })
@@ -478,7 +479,8 @@ test_that("Mock data can be printed from a tfrmt without a body plan",{
   #Make mock
   expect_equal(
     mock_gt,
-    print_mock_gt(plan, .data = tibble::tibble(column = c("col1","col2","col3"), param = "n"))
+    print_mock_gt(plan, .data = tibble::tibble(column = c("col1","col2","col3"), param = "n")),
+    ignore_function_env = TRUE
   )
 
 

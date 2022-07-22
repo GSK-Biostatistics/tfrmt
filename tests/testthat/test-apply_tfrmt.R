@@ -67,7 +67,9 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE),
     paste0(
       c(
-        "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
+        "Multiple param listed for the same group/label values.",
+        "The following frmt_structures may be missing from the body_plan",
+        "or the order may need to be changed:",
         "- `frmt_structure(group_val = \"c\", label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
         "- `frmt_structure(group_val = \"v\", label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
       ),
@@ -80,7 +82,9 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     processed_dat <- apply_tfrmt(dat2, tfrmt_temp %>% tfrmt(group = c(grp1,grp2)), mock = FALSE),
     paste0(
       c(
-        "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
+        "Multiple param listed for the same group/label values.",
+        "The following frmt_structures may be missing from the body_plan",
+        "or the order may need to be changed:",
         "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`"
       ),
       collapse = "\n"
@@ -92,7 +96,9 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     processed_dat <- apply_tfrmt(dat3, tfrmt_temp %>% tfrmt(group = c(grp1,grp2)), mock = FALSE),
     paste0(
       c(
-        "Multiple param listed for the same group/label. Following frmt_structures may be missing from the body_plan or the order may need to be changed:",
+        "Multiple param listed for the same group/label values.",
+        "The following frmt_structures may be missing from the body_plan",
+        "or the order may need to be changed:",
         "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
         "- `frmt_structure(group_val = list(grp1 = \"q\", grp2 = \"v\"), label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
       ),

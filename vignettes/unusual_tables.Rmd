@@ -25,7 +25,7 @@ library(tidyr)
 # Multiple columns of Row Labels
 
 It is not all that unusual for listings (and some tables) to have multiple row label columns. When this happens, it is often easier to avoid using gt's out-of-the box stub functions/formatting. An example of a table like this is the "Summary of Number of Subjects by Site" from the CDISC pilot.
-![Image of the Summary of Number of Subjects By Site table from the CDISC pilot](images/summary_subj_by_site.png)
+![Image of the Summary of Number of Subjects By Site table from the CDISC pilot](../man/figures/summary_subj_by_site.png)
 
 To make this table the values will be long with "Pooled Id" and "Site Id" in their own columns, as if they were group or label variables. We also will need a column for the parameters even though they are all the same. 
 

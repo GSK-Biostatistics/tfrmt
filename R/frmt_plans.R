@@ -27,6 +27,14 @@
 #'           label_val = ".default",
 #'           frmt("XXX")
 #'         )
+#'
+#' @section Images:
+#' Here are some example outputs:
+#'
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" style=\"width:100\\%;\">"`
+#' }}
+#'
 #' @importFrom tidyr expand_grid
 #' @export
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){

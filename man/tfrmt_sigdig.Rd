@@ -71,6 +71,8 @@ matching \code{sigdig} or the supplied group/label variable) will be disregarded
 }
 }
 \section{Examples}{
+
+
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{sig_input <- tibble::tribble(
   ~group1,   ~group2, ~sigdig,
   "CHEMISTRY",   ".default", 3,
