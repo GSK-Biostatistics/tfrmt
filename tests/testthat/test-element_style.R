@@ -504,7 +504,7 @@ test_that("Col width assignment in gt",{
   })
 
   expect_equal(
-    tfrmt_gt$`_boxhead`[,c("var","column_width")],
+    tfrmt_gt$`_boxhead`[,c("var","column_width")] %>% filter(!var=="..tfrmt_row_grp_lbl"),
     tibble(
       var = c("one","trt1","trt2","four"),
       column_width = list(list(""),list("200px"),list("200px"),list("100px"))
@@ -524,7 +524,7 @@ test_that("Col width assignment in gt",{
     suppressWarnings()
 
   expect_equal(
-    tfrmt_gt2$`_boxhead`[,c("var","column_width")],
+    tfrmt_gt2$`_boxhead`[,c("var","column_width")] %>% filter(!var=="..tfrmt_row_grp_lbl"),
     tibble(
       var = c("one","trt1","trt2","four"),
       column_width = list(list("500px"),list("200px"),list("500px"),list("50%"))
