@@ -50,6 +50,12 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     # arrange if sorting cols are applied
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset") %>%
 
+    tentative_process(
+      apply_col_style_plan_widths,
+      tfrmt,
+      fail_desc = "Failure while setting column widths"
+    ) %>%
+
     # Apply alignment to non-data columns
     tentative_process(
       apply_col_style_plan_alignment_non_values,

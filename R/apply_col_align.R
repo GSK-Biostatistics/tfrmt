@@ -293,29 +293,66 @@ apply_col_style_plan_alignment_non_values <- function(.data, tfrmt_obj, non_data
 #' @importFrom stats as.formula
 #'
 #' @noRd
-apply_gt_col_style_plan_widths <- function(gt_table, style_plan){
+apply_col_style_plan_widths <- function(.data, style_plan){
 
   style_plan <- style_plan %>%
     discard(function(x)is.null(x$width))
 
-  for(el_style in style_plan){
-    if(!is_empty(el_style$width)){
-
-      col_width_formula_list <- map(el_style[["col"]], function(col){
-        if(is_valid_tidyselect_call(rlang::quo_get_expr(col))){
-          col <- as_label(col)
-        }else{
-          col <- paste0("`",as_label(col),"`")
-        }
-        as.formula(paste0(col," ~ '",el_style$width,"'"))
-      })
-
-      gt_table <- cols_width(.data = gt_table,.list = col_width_formula_list)
-
-    }
+  if(length(style_plan) == 0){
+    # if no col width changes, return value directly
+    return(.data)
   }
 
-  gt_table
+  style_plan <- seq_along(style_plan) %>%
+    map(function(i){
+      style_plan[[i]]$style_num <- i
+      style_plan[[i]]
+    })
 
+  .data_names <- names(.data)
+
+  width_to_apply_to_col <- style_plan %>%
+    map_dfr(function(el_style) {
+      if (!is_empty(el_style$width)) {
+        cols_to_apply <- el_style[["col"]] %>%
+          map_chr( ~ eval_tidyselect_on_colvec(.x, .data_names))
+        tibble(cols = cols_to_apply,
+               width = el_style$width,
+               style_idx = el_style$style_num)
+      } else{
+        NULL
+      }
+    }) %>%
+    group_by(cols) %>%
+    arrange(cols, desc(.data$style_idx)) %>%
+    slice(1) %>%
+    group_split()
+
+  for(col_width in width_to_apply_to_col){
+    col_sym <- quo(!!sym(col_width$cols))
+    .data <- .data %>%
+      mutate(!!col_sym := construct_wrapped_string(!!col_sym, col_width$width))
+  }
+
+  .data
+
+}
+
+
+#' Split strings into n_char wide
+#'
+#' @param x string vector to wrap
+#' @param n_char width to split x to
+#'
+#' @importFrom purrr map_chr
+#'
+#' @noRd
+construct_wrapped_string <- function(x, n_char = Inf){
+  x %>%
+    strsplit("\\n") %>%
+    map_chr(function(z){
+      word_list <- stringi::stri_wrap(z, width = n_char, normalize = FALSE)
+      do.call("paste0", list(word_list, collapse ="\n"))
+    })
 }
 
