@@ -111,10 +111,12 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
   if("..tfrmt_row_grp_lbl" %in% names(.data)){
   # reshape data for ggplot
   data <- .data %>%
-    pivot_longer(-c(as_label(tfrmt$label),"y","..tfrmt_row_grp_lbl"),names_to = "column")
+    pivot_longer(-c(as_label(tfrmt$label),"y","..tfrmt_row_grp_lbl"),names_to = "column",values_to="value") %>%
+    mutate(value=if_else(`..tfrmt_row_grp_lbl`==TRUE,"",value))
   }else(
     data <- .data %>%
-      pivot_longer(-c(as_label(tfrmt$label),"y"),names_to = "column")
+      pivot_longer(-c(as_label(tfrmt$label),"y"),names_to = "column",values_to="value")
+
 
   )
 
