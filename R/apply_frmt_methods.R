@@ -251,14 +251,6 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     ) %>%
     select(-all_of(fmt_param_vals_uq), -.data$.is_all_missing)
 
-  merge_group <- map(
-    c(group, label, column),
-    function(x){
-      if(!quo_is_missing(x)){x}
-      }) %>%
-    discard(is.null) %>%
-    do.call("vars", .)
-
   ## if not mock remove
   if(!mock){
     .data <- .data %>%
