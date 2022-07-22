@@ -292,7 +292,7 @@ test_that("applying frmt_combine missing",{
       lab = paste("lab",1:5),
       col = "col",
       y = "A",
-      x = c("1234.6 (1.2%)", "2345.7 (2.3%)", "3456.8 (3.5%)", "4567.9 (4.6%)", "NA (5.7%)")
+      x = c("1234.6 (1.2%)", "2345.7 (2.3%)", "3456.8 (3.5%)", "4567.9 (4.6%)", " (5.7%)")
     )
   )
 
@@ -376,10 +376,16 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
     sample_df_frmted,
     tibble(
       group = "group",
-      lab = paste("lab",1:5),
+      lab = c("lab 1", "lab 10",
+              "lab 11", "lab 12", "lab 13", "lab 14", "lab 15", "lab 2", "lab 3",
+              "lab 4", "lab 5", "lab 6", "lab 7", "lab 8", "lab 9"),
       col = "col",
-      y = "A",
-      x = c("1234.6 NA - NA", "2345.7 NA - NA", "3456.8 NA - NA", "4567.9 NA - NA", "5678.9 NA - NA")
+      y = c("A", "B", "C", "C",
+           "C", "C", "C", "A", "A", "A", "A", "B", "B", "B", "B"),
+      x = c("1234.6  - ",
+            " (5.7%) - ", "  - *  10.0", "  - * 111.0", "  - *1112.0", "  - *  13.0",
+            "  - * 114.0", "2345.7  - ", "3456.8  - ", "4567.9  - ", "5678.9  - ",
+            " (1.2%) - ", " (2.3%) - ", " (3.5%) - ", " (4.6%) - ")
     )
   )
 
@@ -606,3 +612,44 @@ test_that("frmt_combine only applies when all parameters are in the data", {
 
   expect_equal(rows_to_use, expected)
 })
+
+test_that("frmt_combine fills with partially missing values where a column is missing the value", {
+
+
+  data <- tibble(
+      Group = rep(c("Age (y)"), c(6)),
+      Label = rep(c("Mean (SD)"), c(6)),
+      Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
+      Param = rep(c("mean", "sd"),  times = c(3)),
+      Value = c(1, 2, 3, 4, 5, 6)
+    ) %>%
+    .[-1,] # remove first row - where a "mean" is, but is otherwise complete
+
+
+  test_combo <- frmt_combine(
+      "{mean} {sd}",
+      mean = frmt("XX", missing = " -"),
+      sd = frmt("(xx)")
+    )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = test_combo,
+    .data = data,
+    values = quo(Value),
+    param = quo(Param),
+    column = vars(Column),
+    label = quo(Label),
+    group = vars(Group),
+    mock = FALSE
+  )
+
+  expect_equal(sample_df_frmted,
+               tibble(
+                 Group = rep(c("Age (y)"), c(3)),
+                 Label = rep(c("Mean (SD)"), c(3)),
+                 Column = c("Placebo", "Total", "Treatment"),
+                 Param = c("sd","mean","mean"),
+                 Value = c(" - ( 2)", " 5 ( 6)", " 3 ( 4)")
+               ))
+})
+

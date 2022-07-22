@@ -206,12 +206,12 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
 
 
   missing_param_replacements <- map(fmt_param_vals, function(var) {
-    missing_val <- frmt_def$fmt_ls[[var]]$missing
-    if (is.null(missing_val)) {
-      missing_val <- ""
-    }
-    missing_val
-  }) %>%
+      missing_val <- frmt_def$fmt_ls[[var]]$missing
+      if (is.null(missing_val)) {
+        missing_val <- ""
+      }
+      missing_val
+    }) %>%
     setNames(fmt_param_vals)
 
 
@@ -255,31 +255,37 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     select(-all_of(fmt_param_vals_uq), -.data$.is_all_missing)
 
   merge_group <- map(
-    c(column, label, group),
+    c(group, label, column),
     function(x){
       if(!quo_is_missing(x)){x}
       }) %>%
     discard(is.null) %>%
     do.call("vars", .)
 
-  ## keep only the first case of param, and add the joined values
+  ## if not mock remove
   if(!mock){
-    out <- .data %>%
-      filter(!!param == fmt_param_vals_uq[[1]]) %>%
-      select(-!!values) %>%
-      left_join(
-        .tmp_data_fmted,
-        by = map_chr(merge_group, as_label)
-      )
-  } else {
-    out <- .data %>%
-      filter(!!param == fmt_param_vals_uq[[1]]) %>%
-      left_join(
-        .tmp_data_fmted,
-        by = map_chr(merge_group, as_label)
-      )
+    .data <- .data %>%
+      select(-!!values)
   }
-  out
+
+  merge_group <- map(
+    c(column, label, group),
+    function(x){
+      if(!quo_is_missing(x)){x}
+    }) %>%
+    discard(is.null) %>%
+    do.call("vars", .)
+
+  # merge on new values, and remove cases other than first occurance of group/label/column pairing
+  .data %>%
+    left_join(
+      .tmp_data_fmted,
+      by = map_chr(merge_group, as_label)
+    ) %>%
+    group_by(!!!merge_group) %>%
+    slice(1) %>%
+    ungroup()
+
 }
 
 #' @export
