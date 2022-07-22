@@ -43,8 +43,8 @@
 #'   to `column` as "Hello World". To pass "my_object" to tfrmt as a column name, use
 #'   quotes around the value: `tfrmt(columnn = "my_object")`.
 #'
-#'   - Additionally, unquoted expressions that match `tfrmt`'s other 
-#'   argument names can cause unexpected results. It is recommended 
+#'   - Additionally, unquoted expressions that match `tfrmt`'s other
+#'   argument names can cause unexpected results. It is recommended
 #'   to put quotes around the value as such:
 #'   `tfrmt(label = "group")`. In this case, the quoting will prevent `tfrmt`
 #'   from assigning its `group` input value to the `label` value.
@@ -156,6 +156,14 @@
 #'   )
 #'
 #' )
+#'
+#' @section Images:
+#' Here are some example outputs:
+#'
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-groups-three-cols-cropped.jpg\" style=\"width:100\\%;\">"`
+#' }}
+#'
 tfrmt <- function(
   tfrmt_obj,
   group = vars(),
@@ -172,7 +180,7 @@ tfrmt <- function(
   col_plan,
   sorting_cols,
   ...
-  ){
+){
 
   tfrmt_el <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
 
@@ -192,6 +200,7 @@ tfrmt <- function(
   ## any span_structures in col_plan
   check_column_and_col_plan(new_tfrmt)
   check_group_var_consistency(new_tfrmt)
+  check_col_style_row_grp_consistency(new_tfrmt)
 
   new_tfrmt
 
@@ -217,7 +226,7 @@ tfrmt_find_args <- function(..., env = parent.frame(), parent_env = parent.env(e
     as_quo_args = c("label","param","values"),
     envir = env,
     parent_env = parent_env
-    )
+  )
 
   ## remove the "missing" values from vals
   vals <- vals[!sapply(vals, is_missing)]
@@ -262,7 +271,7 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
       if(is_quosure(arg_call) & arg %in% c(as_quo_args)){
         arg_call_results <- list(result = arg_call, error = NULL)
       }else{
-      # try to safely evaluate arg call
+        # try to safely evaluate arg call
         arg_call_results_envir <-  safely(eval_tidy)(arg_call, env = envir)
         arg_call_results_parent_env <-  safely(eval_tidy)(arg_call, env = parent_env)
 
@@ -307,7 +316,7 @@ quo_get <- function(args, as_var_args = c(), as_quo_args = c(), envir = parent.f
             abort(
               message = "Tidyselect selection helpers are not acceptable to use in this context. Please provide a specific column to use.",
               class = "invalid_tidyselect_use"
-              )
+            )
           }
         }
 
