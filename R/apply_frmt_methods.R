@@ -153,7 +153,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
 #' @importFrom dplyr case_when tibble filter pull left_join
-#' @importFrom tidyr pivot_wider
+#' @importFrom tidyr pivot_wider replace_na
 #' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
 #' @export
@@ -214,6 +214,17 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
       .is_all_missing =  all_missing(fmt_param_vals,.)
     )
 
+  missing_param_replacements <-
+    map(fmt_param_vals, ~ frmt_def$fmt_ls[[.x]]$missing) %>%
+    setNames(fmt_param_vals) %>%
+    discard(is.null)
+
+  if(length(missing_param_replacements)>0){
+    ## after .is_all_missing so that can be tabulated first
+    .tmp_data_wide <- .tmp_data_wide %>%
+      replace_na(missing_param_replacements)
+  }
+
   # check that pivot_wider resulted in a reduction of rows, which indicates that at least
   #  1 row will successfully have a frmt_combine in it
   if (nrow(.tmp_data_wide)==nrow(.tmp_data)){
@@ -229,7 +240,6 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     frmt_def$missing <- ""
   }
 
-
   ## if both params are missing, then drop in frmt definition missing value
   ## otherwise concat the params
   .tmp_data_fmted <- .tmp_data_wide %>%
@@ -241,32 +251,30 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     ) %>%
     select(-all_of(fmt_param_vals_uq), -.data$.is_all_missing)
 
+  ## if not mock remove
+  if(!mock){
+    .data <- .data %>%
+      select(-!!values)
+  }
+
   merge_group <- map(
     c(column, label, group),
     function(x){
       if(!quo_is_missing(x)){x}
-      }) %>%
+    }) %>%
     discard(is.null) %>%
     do.call("vars", .)
 
-  ## keep only the first case of param, and add the joined values
-  if(!mock){
-    out <- .data %>%
-      filter(!!param == fmt_param_vals_uq[[1]]) %>%
-      select(-!!values) %>%
-      left_join(
-        .tmp_data_fmted,
-        by = map_chr(merge_group, as_label)
-      )
-  } else {
-    out <- .data %>%
-      filter(!!param == fmt_param_vals_uq[[1]]) %>%
-      left_join(
-        .tmp_data_fmted,
-        by = map_chr(merge_group, as_label)
-      )
-  }
-  out
+  # merge on new values, and remove cases other than first occurance of group/label/column pairing
+  .data %>%
+    left_join(
+      .tmp_data_fmted,
+      by = map_chr(merge_group, as_label)
+    ) %>%
+    group_by(!!!merge_group) %>%
+    slice(1) %>%
+    ungroup()
+
 }
 
 #' @export

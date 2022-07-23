@@ -63,19 +63,21 @@ test_that("Check apply_tfrmt", {
 
   man_df <-  tibble::tribble(
     ~group, ~label, ~`Var 1`,        ~`Var 2`,        ~`Var 3`,        ~`Var 4`,
-    "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
-    "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
-    "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
     "A",     "w",     "135         ", "141         ", "143         ", "137         ",
+    "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
+    "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
+    "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
+    "B",     "w",     "147         ", "149         ", "143         ", "159         ",
     "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
-    "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      ",
     "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
-    "B",     "w",     "147         ", "149         ", "143         ", "159         "
+    "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      "
   )
 
 
-  expect_equal(apply_tfrmt(raw_dat, plan),
-               man_df)
+  expect_equal(
+    apply_tfrmt(raw_dat, plan) %>% arrange(group, label),
+    man_df %>% arrange(group, label)
+    )
 
   plan$sorting_cols <- NULL
 
@@ -157,8 +159,8 @@ test_that("Check apply_tfrmt for mock data",{
   mock_man_df <-  tibble::tribble(
     ~group,  ~label,   ~ col1,         ~col2,        ~ col3,        ~ col4,
     "group_1", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
-    "group_1", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "group_2", "label_1", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
+    "group_1", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "group_2", "label_2", "XXX (XXX.X%)", "XXX (XXX.X%)" ,"XXX (XXX.X%)" ,"XXX (XXX.X%)",
     "B"      , "w",     "XXX"          , "XXX"          ,"XXX"          ,"XXX",
     "B"      , "i",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
@@ -168,7 +170,8 @@ test_that("Check apply_tfrmt for mock data",{
 
   expect_equal(
     apply_tfrmt(mock_dat, plan, mock = TRUE),
-    mock_man_df)
+    mock_man_df
+    )
 
 
   # plan with multiple group variables
@@ -217,8 +220,15 @@ test_that("Check apply_tfrmt for mock data",{
   )
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
 
-  expect_message(mock_dat %>% apply_tfrmt(plan, mock =TRUE),
-                "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
+  make_mock_dat_message <- mock_dat %>%
+    apply_tfrmt(plan, mock =TRUE) %>%
+    capture_messages()
+
+  ## capturing second message
+  expect_equal(
+    make_mock_dat_message,
+    "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
+    )
 
   test_dat <- mock_dat %>%
     quietly(apply_tfrmt)(plan, mock =TRUE) %>%
