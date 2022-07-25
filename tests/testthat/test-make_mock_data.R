@@ -305,7 +305,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     label = "my_label",
     param = "param2",
     values = "val2",
-    column = col1,
+    column = col,
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
     )
@@ -315,7 +315,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
   expect_equal(mock_dat,
                tibble::tribble(
-                 ~grp,   ~ my_label,    ~param2,     ~col1,
+                 ~grp,   ~ my_label,    ~param2,     ~col,
                  "grp_1", "my_label_1", "param2_1", "col1",
                  "grp_1", "my_label_1", "param2_1", "col2",
                  "grp_1", "my_label_2", "param2_1", "col1",
@@ -343,14 +343,14 @@ test_that("Mock data includes all columns identified in tfrmt", {
   expect_equal(mock_dat,
                tibble::tribble(
                     ~grp,   ~ my_label,    ~param2,       ~col1,  ~col2,
-                 "grp_1", "my_label_1", "param2_1", "span_col1", "col1",
-                 "grp_1", "my_label_1", "param2_1", "span_col1", "col2",
-                 "grp_1", "my_label_2", "param2_1", "span_col1", "col1",
-                 "grp_1", "my_label_2", "param2_1", "span_col1", "col2",
-                 "grp_2", "my_label_1", "param2_1", "span_col1", "col1",
-                 "grp_2", "my_label_1", "param2_1", "span_col1", "col2",
-                 "grp_2", "my_label_2", "param2_1", "span_col1", "col1",
-                 "grp_2", "my_label_2", "param2_1", "span_col1", "col2"
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col21",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "col22",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col21",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "col22",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col21",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "col22",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col21",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "col22"
                ))
 
   # handle three columns
@@ -370,14 +370,14 @@ test_that("Mock data includes all columns identified in tfrmt", {
   expect_equal(mock_dat,
                tibble::tribble(
                     ~grp,   ~ my_label,    ~param2,       ~col1,       ~col2,  ~col3,
-                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col1",
-                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col2",
-                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
-                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col2",
-                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col1",
-                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col2",
-                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col1",
-                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col2"
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col31",
+                 "grp_1", "my_label_1", "param2_1", "span_col1", "span_col2", "col32",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col31",
+                 "grp_1", "my_label_2", "param2_1", "span_col1", "span_col2", "col32",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col31",
+                 "grp_2", "my_label_1", "param2_1", "span_col1", "span_col2", "col32",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col31",
+                 "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col32"
                ))
 
 })
@@ -452,7 +452,7 @@ test_that("Mock data can be made and printed without label",{
     dat,
     tibble(
       param = c("n","n","n","percent","percent","percent"),
-      column = paste0("col", rep(1:3, times = 2))
+      column = paste0("column", rep(1:3, times = 2))
     )
   )
 
@@ -479,7 +479,7 @@ test_that("Mock data can be printed from a tfrmt without a body plan",{
   #Make mock
   expect_equal(
     mock_gt,
-    print_mock_gt(plan, .data = tibble::tibble(column = c("col1","col2","col3"), param = "n")),
+    print_mock_gt(plan, .data = tibble::tibble(column = c("column1","column2","column3"), param = "n")),
     ignore_function_env = TRUE
   )
 
