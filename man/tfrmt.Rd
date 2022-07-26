@@ -92,7 +92,7 @@ from assigning its \code{group} input value to the \code{label} value.
 Here are some example outputs:
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/tfrmt-groups-three-cols-cropped.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-groups-three-cols-cropped.jpg" style="width:100\%;">
 }}
 }
 

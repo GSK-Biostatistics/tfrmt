@@ -39,7 +39,10 @@ Suggests:
     covr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    patchwork,
+    survival,
+    ggfortify
 Imports: 
     magrittr,
     dplyr,
@@ -50,7 +53,8 @@ Imports:
     gt (>= 0.6.0),
     tidyselect,
     forcats,
-    tibble
+    tibble,
+    ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://GSK-Biostatistics.github.io/tfrmt/,
