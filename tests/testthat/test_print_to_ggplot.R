@@ -100,7 +100,7 @@ test_that("group columns are created correctly",{
                     value=c(630,372,256,11,620,360,266,8,608,425,328,14),
                     param=rep("n",12),
                     group="A")
-  expected_data<-tibble(label=c("A",rep("  Obs",4),rep("  Lev",4),rep("  Lev+5FU",4)),
+  expected_data<-tibble(label=c("A",rep("    Obs",4),rep("    Lev",4),rep("    Lev+5FU",4)),
                         time=c(NA,rep(c(0,1000,2000,3000),3)),
                         value=c(NA,630,372,256,11,620,360,266,8,608,425,328,14),
                         param=c("NA",rep("n",12)),
