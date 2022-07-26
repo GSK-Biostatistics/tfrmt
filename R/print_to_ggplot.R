@@ -2,6 +2,7 @@
 #'
 #' @param tfrmt tfrmt object that will dictate the structure of the ggplot object
 #' @param .data Data to style in order to make the ggplot object
+#' @param ... Inputs to geom_text to modify the style of the table body
 #'
 #' @return a stylized ggplot object
 #' @export
@@ -34,7 +35,7 @@
 #' @importFrom dplyr select
 #' @importFrom magrittr %>%
 
-print_to_ggplot <- function(tfrmt, .data){
+print_to_ggplot <- function(tfrmt, .data, ...){
   if(!is_tfrmt(tfrmt)){
     stop("Requires a tfrmt object")
   }
@@ -81,11 +82,11 @@ print_to_ggplot <- function(tfrmt, .data){
 
   # Keeping the original data of column to preserve data type later on
   column_name <- quo_name(tfrmt$column[[1]])
-  column_data<-(.data %>%
-    select(!!column_name))[[1]]
+  column_data <-.data %>%
+    pull(!!column_name)
 
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
-    cleaned_data_to_ggplot(tfrmt,column_data)
+    cleaned_data_to_ggplot(tfrmt,column_data, ...)
 
 }
 
@@ -94,6 +95,7 @@ print_to_ggplot <- function(tfrmt, .data){
 #' @param .data data to clean
 #' @param tfrmt tfrmt object for formatting
 #' @param column_data original column data to preserve type
+#' @param ... Inputs to geom_text to modify the style of the table body
 #'
 #' @return ggplot object
 #' @noRd
@@ -101,7 +103,7 @@ print_to_ggplot <- function(tfrmt, .data){
 #' @importFrom ggplot2 ggplot .data xlab theme_void theme scale_y_discrete element_text aes geom_text margin unit element_blank
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
-cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
+cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
   # apply grouping if any
   # create y variable to preserve ordering and levels
   .data<-apply_grp_ggplot(.data,tfrmt) %>%
@@ -109,33 +111,39 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
 
   # handle cases for "..tfrmt_row_grp_lbl pivoting
   if("..tfrmt_row_grp_lbl" %in% names(.data)){
-  # reshape data for ggplot
-  data <- .data %>%
-    pivot_longer(-c(as_label(tfrmt$label),"y","..tfrmt_row_grp_lbl"),names_to = "column",values_to="value") %>%
-    mutate(value=if_else(`..tfrmt_row_grp_lbl`==TRUE,"",value))
-  }else(
-    data <- .data %>%
-      pivot_longer(-c(as_label(tfrmt$label),"y"),names_to = "column",values_to="value")
+    # reshape data for ggplot
+    long_data <- .data %>%
+      pivot_longer(-c(as_label(tfrmt$label),"y","..tfrmt_row_grp_lbl"),
+                   names_to = "column",values_to="value") %>%
+      mutate(value=if_else(`..tfrmt_row_grp_lbl`==TRUE,"",value))
+  }else{
+    long_data <- .data %>%
+      pivot_longer(-c(as_label(tfrmt$label),"y"),
+                   names_to = "column",values_to="value")
 
-
-  )
+  }
 
   # preserve data types from original data - changed by pivoting
   column_type <- class(column_data)
   if(column_type=="factor"){
     column_levels<-levels(column_data)
-    data$column<-factor(data$column,levels=column_levels)
+    long_data$column<-factor(long_data$column,levels=column_levels)
   }
   if(column_type=="numeric"){
-  data$column <- as.numeric(data$column)
-  plot<- ggplot(data, aes(x=as.numeric(.data$column), y=as.factor(.data$y), label = .data$value))
+    long_data$column <- as.numeric(long_data$column)
+    plot<- ggplot(long_data, aes(x=as.numeric(.data$column),
+                                 y=as.factor(.data$y), label = .data$value)) +
+      scale_x_continuous(position = "top")
   }else{
-  plot <- ggplot(data, aes(x=.data$column, y=as.factor(.data$y), label = .data$value))
+    plot <- ggplot(long_data, aes(x=.data$column, y=as.factor(.data$y),
+                                  label = .data$value)) +
+      scale_x_discrete(position = "top")
   }
 
   plot +
-    geom_text(size = 3) +
+    geom_text(...) +
     xlab("") +
+    ylab("") +
     theme_void() +
     theme(
       axis.text.y = element_text(
@@ -144,10 +152,11 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data){
         hjust = 0
       ),
       panel.spacing = unit(0, "mm"),
-      strip.text = element_blank()
+      strip.text = element_blank(),
+      axis.text.x = element_text(size = 10)
     ) + # replace y values with labels
-    scale_y_discrete(labels = data$label, breaks = data$y)
-
+    scale_y_discrete(labels = pull(long_data, !!tfrmt$label),
+                     breaks = long_data$y)
 
 }
 
@@ -167,7 +176,7 @@ apply_grp_ggplot<-function(.data,tfrmt){
   if(is.null(tfrmt$row_grp_plan) && is_empty(tfrmt$group)==FALSE ){
     group_name <- quo_name(tfrmt$group[[1]])
 
-    element<-element_row_grp_loc(location="indented")
+    element<-element_row_grp_loc(location="indented", indent = "    ")
 
     combine_group_cols(.data,tfrmt$group,tfrmt$label,element) %>%
       select(-group_name)

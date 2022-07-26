@@ -55,14 +55,27 @@ table <-tfrmt(
   label = label ,
   column = time,
   param = param,
-  values = value) %>%
+  values = value,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt("X"))
+  )) %>%
   print_to_ggplot(risk)
+table
 ```
 
 Now using the patchwork package we can combine the original plot, and our ggplot table. Since we want the table below the plot, we use `/`. For more information on using patchwork, refer to the documentation [here](https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html)
 
 ```{r, fig.width=7 ,message=FALSE,warning=FALSE}
 km_plot/table
+```
+Because we don't have to duplicate the time points, we can just remove the x-axis labels using the theme
+```{r}
+table2 <- table +
+  theme(axis.text.x = NULL)
+
+
+km_plot/table2
 ```
 
 ### Using grouping
@@ -91,9 +104,87 @@ group_table<-tfrmt(
   label = label ,
   column = time,
   param = param,
-  values = value) %>% 
-  print_to_ggplot(risk_group)
+  values = value,
+   body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt("X"))
+  )) %>% 
+  print_to_ggplot(risk_group) +
+  theme(axis.text.x = NULL)
 
 km_plot/group_table
 
 ```
+## Forest Plots
+
+The same logic used in the survival plots can also be used to create forest plots, but instead of stacking the plots we will just put them side by side. First we can make the table using `print_to_ggplot`. 
+
+
+```{r}
+aes <- factor(c("Fever", "Malaise", "Local Allergic Reaction"),
+              levels = c("Fever", "Malaise", "Local Allergic Reaction"))
+
+tbl_dat <- tibble(
+  grp = "1 to 7 days after treatment",
+  ae = rep(aes, each = 4),
+  trt = rep(rep(c("TRT A", "Placebo"), each = 2), 3),
+  param = rep(c("n", "pct"), 6),
+  value = c(60, 7.7, 26, 3.3, 183, 23.5, 89, 11.4, 94, 12, 55, 7)
+)
+
+tbl_p <- tfrmt_n_pct() %>% 
+  tfrmt(label = ae,
+        group = grp,
+        column = trt,
+        param = param, 
+        values = "value") %>% 
+  print_to_ggplot(tbl_dat)
+tbl_p
+
+```
+
+
+Next we need to plot the rate ratios. This plot requires a bit more finessing because we need to remove the y-axis label so it can be combined with the table plot. Also we need to add a row in the data for the group value to make the plots match up correctly.   
+```{r}
+
+plot_dat <- tibble(
+  ae = aes,
+  mean = c(3, 2.3, 2),
+  lower = c(1.95, 1.9, 1.2),
+  upper = c(4, 3.5, 3.4)
+) %>% 
+  bind_rows(c(ae = "1 to 7 days after treatment"))
+
+plot_p <- ggplot(data=plot_dat, aes(x=ae, y=mean, ymin=lower, ymax=upper)) +
+  geom_pointrange() + 
+  geom_hline(yintercept=1, lty=2) +  # add a dotted line at x=1 after flip
+  coord_flip() +
+  xlab("") +
+  ylab("Adjusted Rate Ratio (95% CI)")+
+  scale_x_discrete(limits=rev)+
+  scale_y_discrete(position = "right") + 
+  theme_minimal() +
+  theme(axis.text.y=element_blank(), #remove x axis labels
+        axis.ticks.y=element_blank())
+plot_p
+```
+
+Now thanks to patchwork combining the two plots is relatively easy. 
+
+```{r}
+tbl_p + plot_p
+```
+
+## Table Styling
+
+A final note about the ggplot tables. Most styling can be adjusted with `theme` once the table is create. But, the table body needs to be adjusted in the `print_to_ggplot` call, by supplying the requirements to the `...`. So if you need to change the size table boy you just add that to the `print_to_ggplot`. 
+```{r}
+tfrmt_n_pct() %>% 
+  tfrmt(label = ae,
+        group = grp,
+        column = trt,
+        param = param, 
+        values = "value") %>% 
+  print_to_ggplot(tbl_dat, size = 8)
+```
+
