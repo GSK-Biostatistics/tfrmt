@@ -41,8 +41,7 @@ Suggests:
     covr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown,
-    spelling
+    rmarkdown
 Imports: 
     magrittr,
     dplyr,
