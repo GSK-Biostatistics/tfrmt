@@ -4,12 +4,14 @@
 \alias{print_to_ggplot}
 \title{Print to ggplot}
 \usage{
-print_to_ggplot(tfrmt, .data)
+print_to_ggplot(tfrmt, .data, ...)
 }
 \arguments{
 \item{tfrmt}{tfrmt object that will dictate the structure of the ggplot object}
 
 \item{.data}{Data to style in order to make the ggplot object}
+
+\item{...}{Inputs to geom_text to modify the style of the table body}
 }
 \value{
 a stylized ggplot object

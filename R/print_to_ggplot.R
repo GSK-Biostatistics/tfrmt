@@ -31,8 +31,8 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png\" style=\"width:50\\%;\">"`
 #' }}
 #'
-#' @importFrom rlang quo_is_missing quo_name
-#' @importFrom dplyr select
+#' @importFrom rlang quo_is_missing as_label
+#' @importFrom dplyr select pull
 #' @importFrom magrittr %>%
 
 print_to_ggplot <- function(tfrmt, .data, ...){
@@ -81,7 +81,7 @@ print_to_ggplot <- function(tfrmt, .data, ...){
 
 
   # Keeping the original data of column to preserve data type later on
-  column_name <- quo_name(tfrmt$column[[1]])
+  column_name <- as_label(tfrmt$column[[1]])
   column_data <-.data %>%
     pull(!!column_name)
 
@@ -100,7 +100,7 @@ print_to_ggplot <- function(tfrmt, .data, ...){
 #' @return ggplot object
 #' @noRd
 #'
-#' @importFrom ggplot2 ggplot .data xlab theme_void theme scale_y_discrete element_text aes geom_text margin unit element_blank
+#' @importFrom ggplot2 ggplot .data ylab xlab theme_void theme scale_y_discrete scale_x_continuous scale_x_discrete element_text aes geom_text margin unit element_blank
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
@@ -115,7 +115,7 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
     long_data <- .data %>%
       pivot_longer(-c(as_label(tfrmt$label),"y","..tfrmt_row_grp_lbl"),
                    names_to = "column",values_to="value") %>%
-      mutate(value=if_else(`..tfrmt_row_grp_lbl`==TRUE,"",value))
+      mutate(value=if_else(.data$`..tfrmt_row_grp_lbl`==TRUE,"",.data$value))
   }else{
     long_data <- .data %>%
       pivot_longer(-c(as_label(tfrmt$label),"y"),
@@ -128,12 +128,20 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
   if(column_type=="factor"){
     column_levels<-levels(column_data)
     long_data$column<-factor(long_data$column,levels=column_levels)
+  }else if(column_type == "character"){
+    # preserves character column order
+    column_levels <- unique(long_data$column)
+    long_data$column <- factor(long_data$column, levels = column_levels)
   }
+
   if(column_type=="numeric"){
     long_data$column <- as.numeric(long_data$column)
     plot<- ggplot(long_data, aes(x=as.numeric(.data$column),
                                  y=as.factor(.data$y), label = .data$value)) +
-      scale_x_continuous(position = "top")
+      scale_x_continuous(position = "top",
+                         breaks = unique(long_data$column),
+                         labels = as.character(unique(long_data$column))
+                         )
   }else{
     plot <- ggplot(long_data, aes(x=.data$column, y=as.factor(.data$y),
                                   label = .data$value)) +
