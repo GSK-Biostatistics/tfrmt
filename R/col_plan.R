@@ -158,6 +158,9 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
     }else if(is.call(x)){
       if(is_valid_tidyselect_call(x)){
         quo(!!x)
+      } else if(is_valid_tfrmt_col_plan_call(x)){
+        browser()
+
       }else if(is_valid_span_structure_call(x) | is_valid_quo_call(x)){
         return(eval_tidy(x))
       }else{
@@ -209,7 +212,51 @@ is_valid_quo_call <- function(x){
   as.character(as.list(x)[[1]]) %in% c("vars","quo")
 }
 
+is_valid_tfrmt_col_plan_call <- function(x){
+
+  ## drop - from determining if
+  if(as.character(as.list(x)[[1]]) == "-"){
+    x <- x[[-1]]
+    if(is.name(x)){
+      return(TRUE)
+    }
+  }
+  as.character(as.list(x)[[1]]) %in% c("row_labs","span_select")
+}
+
 check_col_plan_dots <- check_span_structure_dots
+
+## ---------------------------------------
+## tfrmt tidyselect semantics
+## ---------------------------------------
+
+row_labs <- function(){
+  c(tfrmt$group, tfrmt$labels)
+}
+
+span_select <- function(span, ...){
+
+  span_vars <- quo_get("span",as_var_args = "span")
+  span_text <- map_chr(span_vars$span, as_label) %>% paste0(.tlang_struct_col_prefix)
+
+  dots <- as.list(substitute(substitute(...)))[-1]
+
+  for(dot in dots){
+    if(is_valid_tidyselect_call(dot)){
+      abort("tidyselect semantics not valid in span_select:", as_label(dot))
+    }
+  }
+
+  tidyselect_calls <- crossing(span_text, dots %>% map_chr(as_label)) %>%
+    unite(new_vars, everything()) %>%
+    pull(new_vars) %>%
+    paste0("contains(\"",.,"\")") %>%
+    paste(collapse = ",")
+
+
+  eval(parse(text = paste("vars(", tidyselect_calls, ")")))
+
+}
 
 
 ## ---------------------------------------
