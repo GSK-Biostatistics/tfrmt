@@ -37,6 +37,9 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/mock_examples.html</loc>
   </url>
   <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/print_to_ggplot.html</loc>
+  </url>
+  <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html</loc>
   </url>
   <url>
@@ -104,6 +107,9 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_mock_gt.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_ggplot.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.html</loc>
