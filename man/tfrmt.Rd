@@ -41,14 +41,14 @@ tfrmt(
 
 \item{footer}{footers of the table}
 
-\item{row_grp_plan}{plan of the row groups blocking. Takes a \code{row_grp_plan}}
+\item{row_grp_plan}{plan of the row groups blocking. Takes a \code{\link[=row_grp_plan]{row_grp_plan()}}}
 
-\item{body_plan}{combination and formatting of the input data}
+\item{body_plan}{combination and formatting of the input data. Takes a \code{\link[=body_plan]{body_plan()}}}
 
-\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width}
+\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width. Takes a \code{\link[=col_style_plan]{col_style_plan()}}}
 
 \item{col_plan}{a col_plan object which is used to select, rename, and nest
-columns}
+columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 
 \item{sorting_cols}{which columns determine sorting of output}
 
