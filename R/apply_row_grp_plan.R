@@ -74,7 +74,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
 
 
 
-#' Apply row group block labeling to data
+#' Apply row group block labelled to data
 #'
 #' @param .data data
 #' @param element_row_grp_loc element object specifying row group label location

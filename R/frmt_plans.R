@@ -85,13 +85,13 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #' layered to be more specific and general cell styling can be done first.
 #'
 #' `frmt()` is the base definition of a format. This defines spacing, rounding,
-#' and missing behavior.
+#' and missing behaviour.
 #'
 #' `frmt_combine()` is used when two or more rows need to be combined into a
 #' single cell in the table. Each of the rows needs to have a defined `frmt()`
 #' and need to share a label.
 #'
-#' `frmt_when()` is used when a rows format behavior is dependent on the value itself and is written similarly to [dplyr::case_when()].
+#' `frmt_when()` is used when a rows format behaviour is dependent on the value itself and is written similarly to [dplyr::case_when()].
 #'  The left hand side of the equation is a `"TRUE"`for the default case or the right hand side of a boolean expression `">50"`.
 #'
 #' @seealso [body_plan()] combines the frmt_structures to be applied to the

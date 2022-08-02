@@ -10,7 +10,7 @@
 #'
 #' When col_plan gets applied and is used to create the output table, the
 #' underlying logic becomes the input to \code{\link[dplyr]{select}}. Therefore,
-#' behavior falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
+#' behaviour falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
 #' and reordering the columns.
 #'
 #' Avoid beginning the \code{col_plan()} column selection with a deselection (ie
@@ -22,7 +22,7 @@
 #' <[`tidy-select`][dplyr_tidy_select]> arguments - such as
 #' \code{\link[dplyr]{everything}}- are used, identify the de-selection after
 #' the positive-selection. Experiment with the \code{\link[dplyr]{select}}
-#' function to understand this sort of behavior better.
+#' function to understand this sort of behaviour better.
 #'
 #' Alternatively, once the gt table is produced, use the \code{\link[gt]{cols_hide}}
 #' function to remove un-wanted columns.
@@ -452,8 +452,8 @@ dot_char_as_quo <- function(x, negative = FALSE) {
 ## -----------------------------------------------
 ## When we have span structures in the col_plan,
 ## edit data to add in columns with the spanners to allow
-## us to have consistent behavior across multi-column
-## dfs and span_structs
+## us to have consistent behaviour across multi-column
+## dfs and span_structures
 ##-----------------------------------------------
 #' @importFrom purrr quietly
 apply_span_structures_to_data <- function(tfrmt_obj, x){

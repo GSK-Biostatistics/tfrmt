@@ -95,7 +95,7 @@ ae_tfrmt_template <- tfrmt(
 
 ```
 
-## Functionalizing the Template
+## Functionalising the Template
 
 Now that we have our tfrmt, we can wrap it into a function to form a template. This allows us to have as many layers as we'd like. For example, we can have an organization-level template to be used across all tables, a domain-level template to be used across all tables in a given domain, and a project-level template to be used for study-specific tables. 
 
@@ -238,7 +238,7 @@ study_ae_tfrmt_multi_layer %>%
 
 ## Alternatives to Full Templates 
 
-In addition to defining full tfrmt templates, users can also create reusable frmt templates. The benefit of this is that teams can use these frmt's in their tfrmt directly and can be sure their table will comply with the value presentation expected of their organization.
+In addition to defining full tfrmt templates, users can also create reusable frmt templates. The benefit of this is that teams can use these frmts in their tfrmt directly and can be sure their table will comply with the value presentation expected of their organization.
 
 Some common pre-defined frmts may include p-value displays, integers, `n (%)`, among other things. 
 
@@ -342,7 +342,7 @@ tfrmt(
 
 Here we list some of the ideas about best practices when it comes to defining tfrmt templates for use across organization. This comes from experience writing and using `tfrmt` and has the potential to change. 
 
-A template tfrmt is intended to provide an interface for creating complex tfrmt's more easily. When creating the function, it is helpful to differentiate the aspects of the display that will remain constant from those which are likely to change across tables or studies. These changes can be captured as arguments in the function. These functions should serve to provide a way to interact with and create tfrmt's for standard tables in such a way that customization for a specific table's `tfrmt` is simplified.
+A template tfrmt is intended to provide an interface for creating complex tfrmts more easily. When creating the function, it is helpful to differentiate the aspects of the display that will remain constant from those which are likely to change across tables or studies. These changes can be captured as arguments in the function. These functions should serve to provide a way to interact with and create tfrmts for standard tables in such a way that customization for a specific table's `tfrmt` is simplified.
 
 However, as with normal function development, this should be balanced with limiting the number of arguments necessary to pass and get a functional tfrmt. For example, `tfrmt_sigdig` accepts a minimal set of arguments, including a data.frame or tibble, to define a complex body_plan. Simplifying the way users may enter this complex set of instructions without having to manually type it is part of its strength.
 

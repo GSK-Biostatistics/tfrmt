@@ -67,8 +67,8 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt
 \item tfrmt allows users to pass \code{vars}, \code{quo}, and unquoted expressions to a
 variety of arguments, such as \code{group}, \code{label}, \code{param}, \code{values},
 \code{column}, and \code{sorting_cols}. Users accustomed to tidyverse semantics
-should be familiar with this behavior. However, there is an important
-behavior difference between tfrmt and normal tidyverse functions. Because
+should be familiar with this behaviour. However, there is an important
+behaviour difference between tfrmt and normal tidyverse functions. Because
 the data are not a part of tfrmt, it does not know when a value being
 passed to it is intended to be an unquoted expression representing a column
 name or an object from the environment. As such, it preferentially uses the
