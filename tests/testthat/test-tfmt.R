@@ -660,7 +660,7 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg",{
      "  Format Structure\n",
      "    Group Values: `invalid` - \"value\"; `invalid2` - \"value\"\n",
      "    Label Values: \".default\"\n",
-     "    Format: <frmt | Expression: `XXX` >"
+     "    Format: < frmt | Expression: `XXX` >"
     ),
     fixed = TRUE
   )
