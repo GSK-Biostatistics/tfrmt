@@ -169,6 +169,7 @@ frmt <- function(expression, missing = NULL, scientific = NULL, ...){
 
 #' @export
 #' @rdname frmt
+#' @importFrom stringr str_extract_all str_count str_replace str_detect
 frmt_combine <- function(expression, ..., missing = NULL){
 
   everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
@@ -193,7 +194,7 @@ frmt_combine <- function(expression, ..., missing = NULL){
 
   exp_new <- expression
   for(i in 1:length(replace_val)){
-    exp_new <- stringr::str_replace(exp_new, vars_to_fmt[i], replace_val[i])
+    exp_new <- str_replace(exp_new, vars_to_fmt[i], replace_val[i])
   }
 
   structure(

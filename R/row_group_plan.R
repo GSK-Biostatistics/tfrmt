@@ -10,7 +10,7 @@
 #'   specify whether row group titles span the entire table or collapse.
 #'
 #' @param ...  Row group structure objects separated by commas
-#' @param label_loc Boolean specifying whether or not the top-level group should be a spanning label
+#' @param label_loc [element_row_grp_loc()] object specifying location
 #'
 #'
 #' @return row_grp_plan object
