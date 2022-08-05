@@ -139,7 +139,8 @@
 <p>Now using the patchwork package we can combine the original plot, and our ggplot table. Since we want the table below the plot, we use <code>/</code>. For more information on using patchwork, refer to the documentation <a href="https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html" class="external-link">here</a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">km_plot</span><span class="op">/</span><span class="va">table</span></span></code></pre></div>
-<p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-5-1.png" width="672"> Because we don’t have to duplicate the time points, we can just remove the x-axis labels using the theme</p>
+<p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<p>Because we don’t have to duplicate the time points, we can just remove the x-axis labels using the theme</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table2</span> <span class="op">&lt;-</span> <span class="va">table</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
