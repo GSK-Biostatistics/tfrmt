@@ -5,7 +5,7 @@
 \title{Create tfrmt object from significant digits spec}
 \usage{
 tfrmt_sigdig(
-  data,
+  data_sigdig,
   group = vars(),
   label = quo(),
   param_defaults = param_set(),
@@ -15,7 +15,7 @@ tfrmt_sigdig(
 )
 }
 \arguments{
-\item{data}{data formatting spec with 1 record per group/label value, and
+\item{data_sigdig}{data formatting spec with 1 record per group/label value, and
 columns for relevant group and/or label variables, as well as a numeric
 column \code{sigdig} containing the significant digits rounding to be applied in
 addition to the default. If unique group/label values are represented in
@@ -40,7 +40,7 @@ significant digits data spec and param-level significant digits defaults.
 }
 \description{
 This function creates a tfrmt based on significant digits specifications for
-group/label values. The input data spec provided to \code{data} will contain
+group/label values. The input data spec provided to \code{data_sigdig} will contain
 group/label value specifications. \code{tfrmt_sigdig} assumes that these columns
 are group columns unless otherwise specified. The user may optionally choose
 to pass the names of the group and/or label columns as arguments to the
@@ -83,7 +83,7 @@ matching \code{sigdig} or the supplied group/label variable) will be disregarded
 
 # Subset data for the example
 data <- dplyr::filter(data_labs, group2 == "BASOPHILS", col1 \%in\% c("Placebo", "Xanomeline Low Dose"))
-tfrmt_sigdig(data = sig_input,
+tfrmt_sigdig(data_sigdig = sig_input,
              group = vars(group1, group2),
              label = rowlbl,
              param_defaults = param_set("[\{n\}]" = NA)) \%>\%

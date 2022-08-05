@@ -104,14 +104,14 @@ param_set <- function(...){
 #' Create tfrmt object from significant digits spec
 #'
 #' This function creates a tfrmt based on significant digits specifications for
-#' group/label values. The input data spec provided to `data` will contain
+#' group/label values. The input data spec provided to `data_sigdig` will contain
 #' group/label value specifications. `tfrmt_sigdig` assumes that these columns
 #' are group columns unless otherwise specified. The user may optionally choose
 #' to pass the names of the group and/or label columns as arguments to the
 #' function.
 #'
 #'
-#' @param data data formatting spec with 1 record per group/label value, and
+#' @param data_sigdig data formatting spec with 1 record per group/label value, and
 #'   columns for relevant group and/or label variables, as well as a numeric
 #'   column `sigdig` containing the significant digits rounding to be applied in
 #'   addition to the default. If unique group/label values are represented in
@@ -161,7 +161,7 @@ param_set <- function(...){
 #'
 #' # Subset data for the example
 #' data <- dplyr::filter(data_labs, group2 == "BASOPHILS", col1 %in% c("Placebo", "Xanomeline Low Dose"))
-#' tfrmt_sigdig(data = sig_input,
+#' tfrmt_sigdig(data_sigdig = sig_input,
 #'              group = vars(group1, group2),
 #'              label = rowlbl,
 #'              param_defaults = param_set("[{n}]" = NA)) %>%
@@ -183,7 +183,7 @@ param_set <- function(...){
 #' @importFrom tidyr unite
 #' @importFrom purrr map
 #' @importFrom rlang quo_is_missing syms as_name as_label
-tfrmt_sigdig <- function(data,
+tfrmt_sigdig <- function(data_sigdig,
                          group=vars(),
                          label=quo(),
                          param_defaults = param_set(),
@@ -204,14 +204,14 @@ tfrmt_sigdig <- function(data,
   }
 
   # error if no sigdig column
-  if (!"sigdig" %in% names(data)){
-    stop("Input data must contain `sigdig` column.")
+  if (!"sigdig" %in% names(data_sigdig)){
+    stop("`data_sigdig` input must contain `sigdig` column.")
   }
 
   # error if no group/label columns available
-  data_names <- data %>% select(-.data$sigdig) %>% names()
+  data_names <- data_sigdig %>% select(-.data$sigdig) %>% names()
   if (length(data_names)==0){
-    stop("Input data must contain group and/or label value columns.")
+    stop("`data_sigdig` input must contain group and/or label value columns.")
   }
 
   group_names <- map_chr(tfrmt_inputs$group, as_label)
@@ -219,14 +219,14 @@ tfrmt_sigdig <- function(data,
 
   # if group param is provided, figure out which group/label variables are present in data and only keep those
   if (length(group_names)>0){
-    data <- data %>% select(any_of(c(group_names, label_name, "sigdig")))
+    data_sigdig <- data_sigdig %>% select(any_of(c(group_names, label_name, "sigdig")))
 
     # error if mismatch between provided group (and label, if it exists) & data columns
-    data_names <- data %>% select(-.data$sigdig) %>% names()
+    data_names <- data_sigdig %>% select(-.data$sigdig) %>% names()
     if (length(data_names)==0){
       group_msg <- if(length(group_names)>0) paste0("group: ", paste(group_names, collapse = ", "), "\n") else ""
       label_msg <- if(length(label_name)>0) paste0("label: ", paste(label_name, collapse = ", ")) else ""
-      stop("Input data does not contain any of the specified group/label params:\n",
+      stop("`data_sigdig` input does not contain any of the specified group/label params:\n",
            group_msg,
            label_msg)
     }
@@ -242,9 +242,9 @@ tfrmt_sigdig <- function(data,
   # warning if provided group params are not present in the data
   new_group_names <- map_chr(tfrmt_inputs$group, as_label)
 
-  if (!all(new_group_names %in% names(data))){
-    grp <- setdiff(new_group_names, names(data))
-    warning("Input data does not contain the following group params: ", paste0(grp, collapse = ", "))
+  if (!all(new_group_names %in% names(data_sigdig))){
+    grp <- setdiff(new_group_names, names(data_sigdig))
+    warning("`data_sigdig` input does not contain the following group params: ", paste0(grp, collapse = ", "))
   }
 
 
@@ -253,11 +253,11 @@ tfrmt_sigdig <- function(data,
   groups_in_data <- intersect(data_names, new_group_names)
 
   if (length(groups_in_data)>0){
-    data_ord <- data %>%
+    data_ord <- data_sigdig %>%
       unite("def_ord", groups_in_data, remove = FALSE) %>%
       mutate(def_ord = str_count(.data$def_ord, ".default"))
   } else {
-    data_ord <- data %>%
+    data_ord <- data_sigdig %>%
       mutate(def_ord = 0)
   }
 
