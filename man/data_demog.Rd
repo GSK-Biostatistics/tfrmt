@@ -10,7 +10,7 @@ A data frame with 386 rows and 7 variables:
 \item{rowlbl1}{highest level row labels}
 \item{rowlbl2}{more specific row labels}
 \item{param}{parameter to explain each value}
-\item{grp}{grouping column used to distinquish continous and categorical}
+\item{grp}{grouping column used to distinguish continuous and categorical}
 \item{ord1}{controls ordering}
 \item{ord2}{more ordering controls}
 \item{column}{column names}

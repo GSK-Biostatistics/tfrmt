@@ -63,14 +63,13 @@ We expect an input dataset that is long, with 1 record per computed value. Requi
 -   1 or more **column** columns, containing column values
 -   A single **param** column, which provides a label for distinct types of values
 -   A single **values** column, containing the computed, raw data values
--   [Optional] 1 or more **sorting_cols** columns, containing numeric vlaues to be used in the row ordering
+-   [Optional] 1 or more **sorting_cols** columns, containing numeric values to be used in the row ordering
 
 # Functionality
 
 Here is an overview of what is possible with tfrmt:
 
--   Create a "tfrmt" metadata object containing all formatting and labeling for the display
--   Layer tfrmt objects to combine standard formatting with user-specific formatting
+-   Create a "tfrmt" metadata object containing all formatting and labelling for the display
 -   Create mock displays based on existing sample data or no prior data
 -   ARD-standard compliant facilitates reuse and automation
 
@@ -132,4 +131,4 @@ gt_out <- print_mock_gt(tfrmt, data_demog)
 invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
 ```
 
-![Example GT Demog table](man/figures/gt_readme.png)
+![Example GT Demography Table](man/figures/gt_readme.png)

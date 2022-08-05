@@ -21,7 +21,7 @@ Set custom parameter-level significant digits rounding
 \details{
 Type \code{param_set()} in console to view package defaults. Use of the
 function will add to the defaults and/or override included defaults of the
-same name. For values that are integers, use \code{NA} so no demical places will
+same name. For values that are integers, use \code{NA} so no decimal places will
 be added.
 }
 \examples{

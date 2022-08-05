@@ -32,12 +32,13 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #'
 #' @param ... Series of name-value pairs, optionally formatted using
 #'   `glue::glue()` syntax (note `glue` syntax is required for combined
-#'   parameters). For combined parameters (e.g., "{min}, {max}"), value should
+#'   parameters).The name represents the parameter and the value represents the number of places to round the parameter to.
+#'   For combined parameters (e.g., "{min}, {max}"), value should
 #'   be a vector of the same length (e.g., c(1,1)).
 #'
 #' @details Type `param_set()` in console to view package defaults. Use of the
 #'   function will add to the defaults and/or override included defaults of the
-#'   same name. For values that are integers, use `NA` so no demical places will
+#'   same name. For values that are integers, use `NA` so no decimal places will
 #'   be added.
 #'
 #' @examples
@@ -137,7 +138,7 @@ param_set <- function(...){
 #' ## Group/label variables
 #'
 #' If the group/label variables are not provided to the arguments, the body_plan
-#' will be constructed from the input data with the following behavior:
+#' will be constructed from the input data with the following behaviour:
 #' - If no group or label are supplied, it will be assumed that all columns in the input
 #' data are group columns.
 #' - If a label variable is provided, but nothing is
