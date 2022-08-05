@@ -213,7 +213,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   gt_out_final  <- gt_out %>%
     tab_style(
       style = list(
-        cell_text(whitespace = "pre-line", align = "left")
+        cell_text(whitespace = "pre-wrap", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
     ) %>%
