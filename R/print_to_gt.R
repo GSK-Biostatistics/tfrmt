@@ -196,7 +196,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       missing_text = ""
     ) %>%
     cols_hide(columns = .data$..tfrmt_row_grp_lbl) %>%
-    apply_gt_footnote(tfrmt$footer) %>%
+    apply_gt_footnote(tfrmt = tfrmt) %>%
     format_gt_column_labels(.data) %>%
     apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
@@ -282,19 +282,45 @@ cleaned_data_to_gt <- function(.data, tfrmt){
 #' Apply gt Footnote
 #'
 #' @param gt gt object  to potentially add a footnote to
-#' @param footer footnote text (should become a footnote element at somepoint )
+#' @param tfrmt tfrmt object
 #'
 #' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md
-apply_gt_footnote<- function(gt, footer){
-  if(is.null(footer)){
+apply_gt_footnote <- function(gt, tfrmt){
+
+  if(is.null(tfrmt$footnote_plan)){
     gt
   } else {
+    for (i in 1:length(tfrmt$footnote_plan)) {
+
+      # column headers
+      if (names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$column[[1]])) {
+        gt<- gt %>%
+          tab_footnote(
+            footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
+            locations = cells_column_labels(columns = all_of(
+              as.character(tfrmt$footnote_plan$struct_list[[i]]$location[[1]])
+            ))
+          )
+
+
+        # row group labels
+      }else if (names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$group[[1]])){
+        gt<- gt %>%
+          tab_footnote(
+            footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
+            locations = cells_row_groups(groups = all_of(
+              as.character(tfrmt$footnote_plan$struct_list[[i]]$location[[1]])
+            ))
+          )
+      }
+    }
     gt %>%
-      tab_footnote( footnote = md(footer)
-      )
+      opt_footnote_marks(marks = tfrmt$footnote_plan$marks )
+
+
 
   }
 }

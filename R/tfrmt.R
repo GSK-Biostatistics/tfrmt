@@ -21,6 +21,7 @@
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns. Takes a [col_plan()]
 #' @param sorting_cols which columns determine sorting of output
+#' @param footnote_plan footnote data. Takes a [(footnote_plan())]
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #' @details
@@ -179,6 +180,7 @@ tfrmt <- function(
   col_style_plan,
   col_plan,
   sorting_cols,
+  footnote_plan,
   ...
 ){
 
