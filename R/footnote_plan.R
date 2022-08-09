@@ -71,7 +71,27 @@ apply_gt_footnote <- function(gt, tfrmt){
               as.character(tfrmt$footnote_plan$struct_list[[i]]$location[[1]])
             ))
           )
-        # spanned columns
+
+        # spanned columns - if they specify only spanned
+      }else if (length(tfrmt$column)>1 && length(tfrmt$footnote_plan$struct_list[[i]]$location)==1){
+        if (names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$column[[2]])){
+
+          # grab all delim strings containing value specified
+          delim_list<- gt$`_boxhead`$var[str_detect(gt$`_boxhead`$var,paste0("delim___",as.character(tfrmt$footnote_plan$struct_list[[i]]$location)))]
+
+          for (j in 1: length(delim_list)){
+          gt<- gt %>%
+            tab_footnote(
+              footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
+              locations = cells_column_labels(columns = all_of(
+                as.character(delim_list[j])
+              ))
+            )
+
+          }
+          # labels
+        }
+         # spanned columns - if they specify spanner and spanned
       }else if (length(tfrmt$column)>1 && is.na(names(tfrmt$footnote_plan$struct_list[[i]]$location[2])) == FALSE){
         if (names(tfrmt$footnote_plan$struct_list[[i]]$location[2]) == as_label(tfrmt$column[[2]])){
 
