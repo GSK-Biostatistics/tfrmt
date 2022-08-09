@@ -148,6 +148,8 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
     )
 
 
+  col_selections <- list()
+
   ## evaluate selections to identify columns
   for(col_id_idx in seq_along(column_names)){
 
@@ -188,16 +190,32 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
 
         split_data_selections[[sel_id_idx]] <- split_data_names %>%
           filter(!!col_quo %in% sel_id_col_selections)
-
       }
 
       split_data_names <- bind_rows(split_data_selections) %>%
         unique()
+
+      col_selections[[col_id]] <- split_data_names %>%
+        pull(!!col_quo) %>%
+        unique
+    }else{
+      col_selections[[col_id]] <- split_data_names %>%
+        pull(!!col_quo) %>%
+        unique
     }
 
   }
 
+  ## create order df
+  ords <- do.call("crossing",col_selections) %>%
+    mutate(across(everything(), ~factor(.x, levels = col_selections[[cur_column()]]))) %>%
+    arrange(across(everything())) %>%
+    mutate(ord_col = seq_len(n()))
+
   new_preselected_cols_full <- split_data_names %>%
+    left_join(ords, by = names(col_selections)) %>%
+    arrange(ord_col) %>%
+    select(-ord_col) %>%
     unite(
       "original",
       -starts_with("__tfrmt_new_name__"),

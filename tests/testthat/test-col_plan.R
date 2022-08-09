@@ -2,45 +2,51 @@
 test_that("Defining the spanning structure", {
 
   s1 <- span_structure(
-    label = "Test Label",
-    vars(A,B)
+    c1 = "Test Label",
+    c2 = vars(A,B)
   )
 
   s2 <- span_structure(
-    label = "Test Label",
-    span_structure(
-      label = "Test Sub Label",
-      vars(A,B)
-    ),
-    vars(C,D)
+    c1 = "Test Label",
+    c2 = "Test Sub Label",
+    c3 = vars(A,B)
   )
 
   expect_s3_class(s1,"span_structure")
   expect_s3_class(s2,"span_structure")
-  expect_s3_class(s2,"span_structures")
 
-  expect_equal(s1$label, "Test Label")
-  expect_equal(s2$label, "Test Label")
-
-  expect_equal(s1$span_cols, list(vars(A,B)), ignore_attr = TRUE)
-  expect_equal(s2$span_cols, list(span_structure(label = "Test Sub Label",vars(A,B)),vars(C,D)), ignore_attr = TRUE)
+  expect_equal(s1[["c1"]], list(quo(`Test Label`)), ignore_attr = TRUE)
+  expect_equal(s1[["c2"]], list(quo(`A`),quo(`B`)), ignore_attr = TRUE)
+  expect_equal(s1[["c1"]], list(quo(`Test Label`)), ignore_attr = TRUE)
+  expect_equal(s2[["c2"]], list(quo(`Test Sub Label`)), ignore_attr = TRUE)
+  expect_equal(s2[["c3"]], list(quo(`A`),quo(`B`)), ignore_attr = TRUE)
 
 })
 
-test_that("Defining the col plan", {
+test_that("Defining the col plan",{
 
   s1 <- col_plan(
     span_structure(
-      label = "Test Label",
-      vars(A,B)
+      c1 = "Test Label",
+      c2 = vars(A,B)
     ))
 
   expect_s3_class(s1,"col_plan")
   expect_s3_class(s1,"plan")
 
+})
+
+test_that("Defining the col plan in tfrmt", {
+
   #Go into object
-  tfrmt_test <- tfrmt(column = vars(columns),
-                      col_plan = col_plan(span_structure("test label", vars(col3))))
+  tfrmt_test <- tfrmt(
+    column = vars(col1, col2),
+    col_plan = col_plan(
+      span_structure(col1 = "test label",
+                     col2 = vars(col3)
+                     )
+      )
+    )
 
   expect_true(!is.null(tfrmt_test$col_plan))
 
@@ -48,62 +54,302 @@ test_that("Defining the col plan", {
     expect_error(
       tfrmt(
         col_plan = col_plan(
-      group,label,
-      col1, col2,
-      span_structure("test label", col3),
-      col4:col10
-    )))
+          group,label,
+          span_structure(col1 = "test label", col2 = col3)
+        )
+      ),
+      "No columns defined in the `column` argument of tfrmt but provided a span_structure() in `col_plan`.",
+      fixed = TRUE
+    )
+
+    expect_error(
+      tfrmt(
+        column = col2,
+        col_plan = col_plan(
+          group,label,
+          span_structure(col1 = "test label", col2 = col3)
+        )
+      ),
+      "A single column defined in `column` argument of tfrmt but provided a span_structure() in `col_plan`.",
+      fixed = TRUE
+    )
+
+    expect_error(
+      tfrmt(
+        column = c(col1, col2),
+        col_plan = col_plan(
+          group,label,
+          span_structure(col11 = "test label", col2 = col3)
+        )
+      ),
+      "Columns defined in `span_structure` are not defined columns in the tfrmt\nColumn Values: `col1`, `col2`\nInvalid Column Names in Span Structure: `col11`",
+      fixed = TRUE
+    )
 
 })
 
-test_that("From the spanning structure get cols to span across", {
+test_that("Test applying a col_plan - simple",{
 
-  s1 <- span_structure(
-    label = "Test Label",
-    vars(A,B)
+  col_vars <- vars(col1, col2)
+
+  cp_keep <- col_plan(
+    first_col,
+    span_structure(col1 = "test val"),
+    span_structure(col2 = c("val2","val1"))
   )
 
+  cp_drop <- col_plan(
+    first_col,
+    span_structure(col1 = "test val"),
+    span_structure(col2 = c("val2","val1")),
+    .drop = TRUE
+  )
 
-  s2 <- span_structure(
-    label = "Test Label",
-    span_structure(
-      label = "Test Sub Label",
-      vars(A,B)
+  name_col <- c(
+    "first_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2",
+    "extra_col"
+  )
+
+  cp_vars_keep <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_keep,
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`,
+      extra_col
     ),
-    vars(C,D)
+    ignore_attr = TRUE
   )
 
-  s3 <- span_structure(
-    label = "Test Label",
-    vars(D),
-    span_structure(
-      label = "Test Sub Label",
-      vars(C,A)
+  cp_vars_drop <- create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_drop,
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`
     ),
-    vars(B)
+    ignore_attr = TRUE
   )
 
-  s4 <- span_structure(
-    label = "Test Label",
-    vars(-A)
+  name_col_mixed_order <- c(
+    "first_col",
+    "extra_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2"
+  )
+
+  cp_vars_keep_mixed_order <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order)
+
+  expect_equal(
+    cp_vars_drop,
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`
+    ),
+    ignore_attr = TRUE
+  )
+
+})
+
+test_that("Test applying a col_plan - renaming",{
+
+  col_vars <- vars(col1, col2)
+
+  cp_keep <- col_plan(
+    new_first_col = first_col,
+    span_structure(col1 = c(`new header col` = "test val")),
+    span_structure(col2 = c(best_value = "val2","val1")),
+    preserved_col
+  )
+
+  cp_drop <- col_plan(
+    new_first_col = first_col,
+    span_structure(col1 = c(`new header col` = "test val")),
+    span_structure(col2 = c(best_value = "val2","val1")),
+    preserved_col,
+    .drop = TRUE
+  )
+
+  name_col <- c(
+    "first_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2",
+    "preserved_col",
+    "extra_col"
+  )
+
+  cp_vars_keep <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_keep,
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val1`,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = TRUE
+  )
+
+  cp_vars_drop <- create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_drop,
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val1`,
+      preserved_col
+    ),
+    ignore_attr = TRUE
+  )
+
+  name_col_mixed_order <- c(
+    "first_col",
+    "preserved_col",
+    "extra_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2"
+  )
+
+  cp_vars_keep_mixed_order <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order)
+
+  expect_equal(
+    cp_vars_keep_mixed_order,
+    vars(
+      first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val1`,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = TRUE
+  )
+
+})
+
+test_that("Test applying a col_plan - ordering on multiple columns",{
+
+  col_vars <- vars(c1, c2)
+
+  cp <- col_plan(
+    span_structure(c1 = c("test val2", "test val1", "another val")),
+    span_structure(c2 = c(val1, val2, val3)),
+    span_structure(c1 = "another val", c2 = val1)
+  )
+
+  name_col <- c(
+    "first_col",
+    "test val1___tlang_delim___val1",
+    "test val1___tlang_delim___val2",
+    "test val2___tlang_delim___val1",
+    "test val2___tlang_delim___val2",
+    "another val___tlang_delim___val1",
+    "another val___tlang_delim___val2",
+    "another val___tlang_delim___val3",
+    "preserved_col",
+    "extra_col"
+  )
+
+  cp_vars <- create_col_order(cp = cp, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars,
+    vars(
+      `test val2___tlang_delim___val1`,
+      `test val2___tlang_delim___val2`,
+      `test val1___tlang_delim___val1`,
+      `test val1___tlang_delim___val2`,
+      `another val___tlang_delim___val2`,
+      `another val___tlang_delim___val3`,
+      `another val___tlang_delim___val1`,
+      first_col,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = TRUE
+  )
+
+})
+
+test_that("Unorthodox col_plans",{
+
+  col_vars <- vars(c1, c2)
+
+  cp <- col_plan(
+    val4,
+    span_structure(c1 = "test value", c2 = c(val1, val3)),
+    val2, val6, val3,
+    everything(),
+    val5
+  )
+
+  name_col <- c(
+    "test value___tlang_delim___val1",
+    "test value___tlang_delim___val2",
+    "test value___tlang_delim___val3",
+    "val4",
+    "val5",
+    "val6",
+    "val7"
+  )
+
+  cp_vars <- create_col_order(cp = cp, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars,
+    vars(
+      val4,
+      `test value___tlang_delim___val1`,
+      `test value___tlang_delim___val2`,
+      val6,
+      `test value___tlang_delim___val3`,
+      val7,
+      val5
+    ),
+    ignore_attr = TRUE
+  )
+
+  cp2 <- col_plan(
+    val4,
+    span_structure(c2 = c(val1, val3, everything())),
+    val5,
+    span_structure(c2 = c(val1)),
+    -val6,
+    -val7,
+    .drop = TRUE
+  )
+
+  cp_vars_2 <- create_col_order(cp = cp2, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_2,
+    vars(
+      val4,
+      `test value___tlang_delim___val3`,
+      `test value___tlang_delim___val2`,
+      val5,
+      `test value___tlang_delim___val1`,
+      -val6,
+      -val7
+    ),
+    ignore_attr = TRUE
   )
 
 
-  sample_df <- data.frame(A = character(), B = character(), C = character(), D = character())
-
-  s1_cols <- eval_tidyselect_on_colvec(s1, column_vec = c("A","B","C","D"))
-  s2_cols <- eval_tidyselect_on_colvec(s2, column_vec = c("A","B","C","D"))
-  s3_cols <- eval_tidyselect_on_colvec(s3, column_vec = c("A","B","C","D"))
-  s4_cols <- eval_tidyselect_on_colvec(s4, column_vec = c("A","B","C","D"))
-
-  expect_equal(s1_cols,c("A","B"))
-  expect_equal(s2_cols,c("A","B","C","D"))
-  expect_equal(s3_cols,c("D","C","A","B"))
-  expect_equal(s4_cols,c("B","C","D"))
 
 })
 
 test_that("Order is kept for multi-col columns",{
+
   test <- tibble(col_1 = "test",
                  col_2 = c("this", "other"),
                  col_3 = c("delm", "delm"),
@@ -137,121 +383,6 @@ test_that("Order is kept for multi-col columns",{
   expect_equal(new_name_ord, new_name_ord_in_dat)
 })
 
-test_that("From col plan spanning structures, get df to add to data",{
-
-  tfrmt_obj_one_span <- tfrmt(
-    label = label,
-    group = group,
-    param = param,
-    column = vars(columns),
-    col_plan = col_plan(span_structure("test label",
-                                       col3)))
-
-  tfrmt_obj_one_span_rename <- tfrmt(
-    label = label,
-    group = group,
-    param = param,
-    column = vars(columns),
-    col_plan = col_plan(span_structure("test label",
-                                       new_col3 = col3)))
-
-  tfrmt_obj_nested_spans <- tfrmt(label = label,
-                                  group = group,
-                                  param = param,
-                                  column = vars(columns),
-                                  col_plan = col_plan(
-                                    span_structure(
-                                      "test label1",
-                                      span_structure("test label1.1",
-                                                     vars(col1),
-                                                     span_structure("test label1.1.1",
-                                                                    vars(col2))),
-                                      vars(col3),
-                                      span_structure("test label1.2", vars(col5))
-                                    ),
-                                    span_structure("test label2", vars(col7)),
-                                    starts_with("col")
-                                  )
-  )
-
-  tfrmt_obj_nested_spans_rename <- tfrmt(label = label,
-                                         group = group,
-                                         param = param,
-                                         column = vars(columns),
-                                         col_plan = col_plan(
-                                           span_structure(
-                                             "test label1",
-                                             span_structure("test label1.1",
-                                                            vars(col1),
-                                                            span_structure("test label1.1.1",
-                                                                           vars(col2))),
-                                             new_col3 = col3,
-                                             span_structure("test label1.2", vars(col5))
-                                           ),
-                                           span_structure("test label2", vars(col7)),
-                                           starts_with("col")
-                                         )
-  )
-
-  input_data <- tibble(
-    group = "groupvar",
-    label = "labels",
-    param = "params",
-    columns = paste0("col",1:10)
-  )
-
-  one_span_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_one_span, x = input_data)
-
-  expect_equal(
-    one_span_wide_data,
-    tibble(
-      `__tlang_span_structure_column__1` = c(NA, NA, "test label", rep(NA, 7)),
-      columns = paste0("col",1:10),
-      group = "groupvar",
-      label = "labels",
-      param = "params",
-    )
-  )
-
-  one_span_wide_data_rename <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_one_span_rename, x = input_data)
-
-  expect_equal(
-    one_span_wide_data_rename,
-    tibble(
-      `__tlang_span_structure_column__1` = c(NA, NA, "test label", rep(NA, 7)),
-      columns = paste0("col",1:10),
-      group = "groupvar",
-      label = "labels",
-      param = "params",
-    )
-  )
-
-  nested_spans_wide_data <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans, x = input_data)
-
-  output_data <- tibble(
-    `__tlang_span_structure_column__1` = c("test label1", "test label1", "test label1", NA, "test label1", NA, "test label2", NA, NA, NA),
-    `__tlang_span_structure_column__2` = c("test label1.1", "test label1.1", NA, NA, "test label1.2", NA, NA, NA, NA, NA),
-    `__tlang_span_structure_column__3` = c(NA, "test label1.1.1", rep(NA, 8)),
-    columns = paste0("col",1:10),
-    group = "groupvar",
-    label = "labels",
-    param = "params",
-  )
-
-  expect_equal(
-    nested_spans_wide_data,
-    output_data
-  )
-
-  nested_spans_wide_data_rename <- apply_span_structures_to_data(tfrmt_obj = tfrmt_obj_nested_spans_rename, x = input_data)
-
-  expect_equal(
-    nested_spans_wide_data_rename,
-    output_data
-  )
-
-})
-
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure",{
 
   basic_multi_column_template <- tfrmt(
@@ -261,18 +392,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     values = val,
     column = c(test1,test2),
     col_plan = col_plan(
-      group, label, col4, col1, col2, col3, -col5
-    )
-  )
-
-  spanned_column_template <- tfrmt(
-    group = group,
-    label = quo(label),
-    param = parm,
-    values = val,
-    column = c(test2),
-    col_plan = col_plan(
-      group, label, col4, span_structure("span 1",col1, col2), col3, -col5
+      group,
+      label,
+      col4,
+      span_structure(test1 = `span 1`, test2 = c(col1, col2)),
+      col3,
+      -col5
     )
   )
 
@@ -297,12 +422,24 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
   suppressMessages({
     processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
-    processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
   })
 
   expect_equal(
-    processed_gt[c("_boxhead","_spanners")],
-    processed_gt_2[c("_boxhead","_spanners")]
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c("group", "label", "col4", "col1", "col2", "col3", "..tfrmt_row_grp_lbl"
+    )
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+    c("span 1")
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$vars,
+    list(
+      c("span 1___tlang_delim___col1", "span 1___tlang_delim___col2")
+    )
   )
 
 })
@@ -316,20 +453,10 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     values = val,
     column = c(test1,test2),
     col_plan = col_plan(
-      group, label, new_col_4 = col4, new_col_1 = col1, col2, col3, -col5
+      new_col_4 = col4, new_col_1 = col1, col2, col3, -col5
     )
   )
 
-  spanned_column_template <- tfrmt(
-    group = group,
-    label = quo(label),
-    param = parm,
-    values = val,
-    column = c(test2),
-    col_plan = col_plan(
-      group, label, new_col_4 = col4, span_structure("span 1", new_col_1 = col1, col2), col3, -col5
-    )
-  )
 
   basic_example_dataset <- tibble::tribble(
     ~group,     ~label,    ~test1, ~test2,    ~parm, ~val,
@@ -352,13 +479,86 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
   suppressMessages({
       processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
-      processed_gt_2 <- print_to_gt(tfrmt = spanned_column_template, .data = basic_example_dataset %>% select(-test1))
   })
 
 
   expect_equal(
-    processed_gt[c("_boxhead","_spanners")],
-    processed_gt_2[c("_boxhead","_spanners")]
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c( "new_col_4", "new_col_1", "col2", "col3", "group", "label", "..tfrmt_row_grp_lbl" )
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+    c("span 1")
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$vars,
+    list(
+      c("span 1___tlang_delim___new_col_1", "span 1___tlang_delim___col2")
+    )
+  )
+
+})
+
+
+test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure - with renaming multiple levels",{
+
+  basic_multi_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    values = val,
+    column = c(test1,test2),
+    col_plan = col_plan(
+      new_col_4 = col4,
+      span_structure(
+        test1 = c(`new span name` = "span 1"),
+        test2 = c(new_col_1 = col1, col2)
+      ),
+      col2, col3, -col5
+    )
+  )
+
+
+  basic_example_dataset <- tibble::tribble(
+    ~group,     ~label,    ~test1, ~test2,    ~parm, ~val,
+    "g1", "rowlabel1",  "span 1", "col1",  "value",    1,
+    "g1", "rowlabel1",  "span 1", "col2",  "value",    1,
+    "g1", "rowlabel1",        NA, "col3",  "value",    1,
+    "g1", "rowlabel1",        NA, "col4",  "value",    1,
+    "g1", "rowlabel1",        NA, "col5",  "value",    1,
+    "g1", "rowlabel2",  "span 1", "col1",  "value",    2,
+    "g1", "rowlabel2",  "span 1", "col2",  "value",    2,
+    "g1", "rowlabel2",        NA, "col3",  "value",    2,
+    "g1", "rowlabel2",        NA, "col4",  "value",    2,
+    "g1", "rowlabel2",        NA, "col5",  "value",    2,
+    "g2", "rowlabel3",  "span 1", "col1",  "value",    3,
+    "g2", "rowlabel3",  "span 1", "col2",  "value",    3,
+    "g2", "rowlabel3",        NA, "col3",  "value",    3,
+    "g2", "rowlabel3",        NA, "col4",  "value",    3,
+    "g2", "rowlabel3",        NA, "col5",  "value",    3,
+  )
+
+  suppressMessages({
+    processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+  })
+
+  expect_equal(
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c( "new_col_4", "new_col_1", "col2", "col3", "group","label","..tfrmt_row_grp_lbl")
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+    c("new span name")
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$vars,
+    list(
+      c("new span name___tlang_delim___new_col_1", "new span name___tlang_delim___col2")
+    )
   )
 
 })
@@ -396,51 +596,17 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
     ),
     col_plan = col_plan(
       label,
-      starts_with("A_"),
-      renamed_A = AA,
-      AB,
+      span_structure(
+        col0 = c(starts_with("A_"), starts_with("B_")),
+        col2 = c(renamed_A = AA, AB, renamed_BB = BB)
+      ),
       renamed_BB = BB,
       renamed_CC = CC
       )
     )
 
-  multi_column_template_spanners <- tfrmt(
-    label = label,
-    column = col_unite,
-    param = param,
-    value = value,
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("XXXX"))
-    ),
-    col_plan = col_plan(
-      label,
-      span_structure(
-        "A_",
-        span_structure("A",
-                       renamed_A = A___A__AA,
-                       AB = A___A__AB),
-        span_structure("B",
-                       renamed_A = A___B__AA,
-                       AB = A___B__AB)
-      ),
-      span_structure(
-        "B_",
-        span_structure("C",
-                       renamed_A = B___C__AA,
-                       AB = B___C__AB
-        ),
-        span_structure("D",
-                       renamed_BB = B___D__BB
-        )
-      ),
-      renamed_BB = BB,
-      renamed_CC = CC
-      )
-  )
-
   suppressMessages({
       processed_gt <- print_to_gt(tfrmt = multi_column_template, .data = multi_col_df)
-      processed_gt_2 <- print_to_gt(tfrmt = multi_column_template_spanners, .data = multi_col_df %>% unite(col0:col2,col = col_unite, sep = "__",remove = TRUE,na.rm = TRUE))
   })
 
 
