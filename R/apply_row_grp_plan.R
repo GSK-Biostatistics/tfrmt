@@ -11,6 +11,7 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
+#' @importFrom stringr str_split
 apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
 
   # Locate which groups need which formatting
@@ -45,7 +46,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
   dat_max_widths <- .data %>%
     summarise(across(everything(), function(x) {
       if (is.character(x)) {
-        max(sapply(strsplit(x, "\\n"), function(y) {
+        max(sapply(str_split(x, "\\n"), function(y) {
           max(nchar(y), na.rm = TRUE)
         }), na.rm = TRUE)
       } else{
