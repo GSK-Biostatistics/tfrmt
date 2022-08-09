@@ -6,23 +6,52 @@
 
 #'
 check_column_and_col_plan <- function(x){
+
   multi_column_defined <- length(x$column) > 1
-  span_structures_defined <- if(!is.null(x$col_plan)){
-    !is.null(x$col_plan$span_structures)
+  if(!is.null(x$col_plan)){
+    span_strucs_idx <- sapply(x$col_plan$dots, is_span_structure)
+    span_structures_defined <- any(span_strucs_idx)
+    span_structs <- x$col_plan$dots[span_strucs_idx]
   }else{
-    FALSE
+    span_structures_defined <-  FALSE
+    span_structs <- NULL
   }
 
-  if(multi_column_defined & span_structures_defined){
+  if(!multi_column_defined & span_structures_defined){
+
+    if(length(x$column) == 1){
+      n_col_desc <- "A single column defined in `column` argument of tfrmt "
+    }else{
+      n_col_desc <- "No columns defined in the `column` argument of tfrmt "
+    }
+
     abort(
       paste0(
-        "Multiple columns defined in `column` argument of tfrmt ",
-        "as well as span_structures in `col_plan`.\n",
-        "The use of only one approach is permitted. ",
-        "Select a single column or remove span_structures from `col_plan()`"
+        n_col_desc,
+        "but provided a span_structure() in `col_plan`.\n",
+        "span_structure()'s are only valid when multiple `column` values are provided.\n",
+        "Add values to `column` or remove span_structures from `col_plan()`"
       ),
       class = "_tfrmt_invalid_col_plan"
     )
+  }
+
+  if(span_structures_defined){
+    column_strings <- map_chr(x$column, as_label)
+
+    for(struct in span_structs){
+      if(!all(vals <- names(struct) %in% column_strings)){
+        abort(
+          "Columns defined in `span_structure` are not defined columns in the tfrmt",
+          body = paste0(
+            "Column Values: ", paste0("`",column_strings,"`", collapse = ", " ),
+            "\n",
+            "Invalid Column Names in Span Structure: ",  paste0("`",names(struct)[!vals],"`", collapse = ", " )
+          ),
+          class = "_tfrmt_invalid_span_structure_col"
+        )
+      }
+    }
   }
 
 }

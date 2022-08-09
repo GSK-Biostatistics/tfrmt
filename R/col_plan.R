@@ -35,6 +35,8 @@
 #'   separated by commas, and span_structures. Span_structures can nest
 #'   additional span_structures. To use a span_structure, there can only be one
 #'   defined "column" in the tfrmt.
+#' @param .drop Boolean. Should un-listed columns be dropped from the data. Defaults to FALSE.
+#'
 #' @export
 #' @examples
 #'
@@ -46,20 +48,22 @@
 #'  col_1,
 #'  -col_last,
 #'  span_structure(
-#'    label = "Top Label Level 1",
-#'    span_structure(
-#'      label = "Second Label Level 1.1",
-#'      col_3, col_4
-#'    ),
-#'    span_structure(
-#'      label = "Second Label Level 1.2",
-#'      starts_with("B")
-#'    ),
-#'    col_5
+#'    c1 = "Top Label Level 1",
+#'    c2 = "Second Label Level 1.1",
+#'    c3 = c(col_3, col_4)
 #'  ),
 #'  span_structure(
-#'    label = "Top Label Level 2",
-#'    col_6, col_7
+#'    c1 = "Top Label Level 1",
+#'    c2 = "Second Label Level 1.2",
+#'    c3 = starts_with("B")
+#'    ),
+#'  span_structure(
+#'    c1 = "Top Label Level 1",
+#'    c3 = col_5
+#'  ),
+#'  span_structure(
+#'    c2 = "Top Label Level 2",
+#'    c3 = c(col_6, col_7)
 #'  )
 #' )
 #'
@@ -79,35 +83,17 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg\" style=\"width:100\\%;\">"`
 #' }}
 #'
-col_plan <- function(...){
+col_plan <- function(..., .drop = FALSE){
+
   ## selectively evaluate dots (only if is a span_structure)
   ## confirm contents otherwise
   dots <- as.list(substitute(substitute(...)))[-1]
   dots <- check_col_plan_dots(dots)
-  #Add the new spanning columns to the dots.
-
-  ## get columns of the span structures
-  span_struct_entries_locs <- sapply(dots, is_span_structure)
-  if(any(span_struct_entries_locs)){
-    span_struct_entries <- dots[span_struct_entries_locs]
-    span_struct_dots <- lapply(span_struct_entries, get_span_structure_dots)
-
-    ## flatten dots
-    dots[span_struct_entries_locs] <- span_struct_dots
-    dots <- unlist(dots)
-  }else{
-    span_struct_entries <- NULL
-  }
-
-  ## convert dots into a vars list (list of quosures)
-  dots_as_vars <- do.call(vars, dots)
-
-  ##TODO: check for duplicate variable calls?
 
   structure(
     list(
-      dots = dots_as_vars,
-      span_structures = span_struct_entries
+      dots = dots,
+      .drop = .drop
     ),
     class = c("col_plan","plan")
   )
@@ -115,26 +101,15 @@ col_plan <- function(...){
 
 #' @rdname col_plan
 #'
-#' @param label text label to span across the defined columns
-#'
 #' @export
-span_structure <- function(label, ...){
-
-  if(!(is.character(label))){
-    stop("`label` must be a character vector")
-  }
+span_structure <- function(...){
 
   span_cols <- as.list(substitute(substitute(...)))[-1]
   span_cols <- check_span_structure_dots(span_cols)
 
-  any_dots_span_structure <- any(sapply(span_cols, is_span_structure))
-
   structure(
-    list(
-      label = label,
-      span_cols = span_cols
-    ),
-    class = c("span_structures"[any_dots_span_structure],"span_structure")
+    span_cols,
+    class = c("span_structure")
   )
 }
 
@@ -142,13 +117,21 @@ is_span_structure <- function(x){
   inherits(x, "span_structure")
 }
 
-is_span_structures <- function(x){
-  inherits(x, "span_structures")
-}
-
 #' @importFrom rlang eval_tidy
-check_span_structure_dots <- function(x, envir = parent.frame()){
-  x_dots <- lapply(x,function(x){
+check_span_structure_dots <- function(x){
+
+  x_names <- names(x)
+
+  if(is.null(x_names) | any(x_names == "")){
+    abort(
+      paste0("Entries of a span_stucture must be named:\n ",format(caller_call())),
+      call = caller_call()
+    )
+  }
+
+  x_dots <- x %>%
+    map(~lapply(trim_vars_quo_c(.x),function(x){
+
     if(is.name(x)){
       if(identical(as_label(x), "<empty>")){
         return(NULL)
@@ -160,8 +143,8 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
         quo(!!x)
       } else if(is_valid_tfrmt_col_plan_call(x)){
         browser()
-
-      }else if(is_valid_span_structure_call(x) | is_valid_quo_call(x)){
+        quo(q)
+      }else if(is_valid_quo_call(x)){
         return(eval_tidy(x))
       }else{
         stop(
@@ -174,14 +157,12 @@ check_span_structure_dots <- function(x, envir = parent.frame()){
           call. = FALSE
         )
       }
-    }else if(is_span_structure(x)){
-      return(x)
     }else if(is.character(x)){
       return(as_length_one_quo.character(x))
     }else{
-      stop("Unexpected entry type")
+      stop("Unexpected entry type in span_structure()")
     }
-  })
+  }))
 
   x_dots[!sapply(x_dots, is.null)]
 }
@@ -190,6 +171,7 @@ is_valid_span_structure_call <- function(x){
   as.character(as.list(x)[[1]]) %in% c("span_structure")
 }
 
+#' @importFrom tidyselect vars_select_helpers
 is_valid_tidyselect_call <- function(x){
   ## drop - from determining if
   if(as.character(as.list(x)[[1]]) == "-"){
@@ -198,7 +180,7 @@ is_valid_tidyselect_call <- function(x){
       return(TRUE)
     }
   }
-  as.character(as.list(x)[[1]]) %in% c("starts_with","ends_with","contains","matches","num_range","all_of","any_of","everything","last_col", "where")
+  as.character(as.list(x)[[1]]) %in% c(names(vars_select_helpers))
 }
 
 is_valid_quo_call <- function(x){
@@ -212,88 +194,37 @@ is_valid_quo_call <- function(x){
   as.character(as.list(x)[[1]]) %in% c("vars","quo")
 }
 
-is_valid_tfrmt_col_plan_call <- function(x){
+check_col_plan_dots <- function(x){
 
-  ## drop - from determining if
-  if(as.character(as.list(x)[[1]]) == "-"){
-    x <- x[[-1]]
+  lapply(x,function(x){
     if(is.name(x)){
-      return(TRUE)
+      if(identical(as_label(x), "<empty>")){
+        return(NULL)
+      }else{
+        return(quo(!!x))
+      }
+    }else if(is.call(x)){
+      if(is_valid_tidyselect_call(x)){
+        quo(!!x)
+      }else if(is_valid_quo_call(x) | is_valid_span_structure_call(x)){
+        return(eval_tidy(x))
+      }else{
+        stop(
+          "Invalid entry: `",format(x),"`\n",
+          "Only span_structures (`span_structure()`), ",
+          "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
+          " or unquoted expressions representing variable names ",
+          " can be entered as contents.",
+          " Changing the names of individual variables using new_name = old_name syntax is allowable",
+          call. = FALSE
+        )
+      }
+    }else if(is.character(x)){
+      return(as_length_one_quo.character(x))
+    }else{
+      stop("Unexpected entry type in span_structure()")
     }
-  }
-  as.character(as.list(x)[[1]]) %in% c("row_labs","span_select")
-}
-
-check_col_plan_dots <- check_span_structure_dots
-
-## ---------------------------------------
-## tfrmt tidyselect semantics
-## ---------------------------------------
-
-row_labs <- function(){
-  c(tfrmt$group, tfrmt$labels)
-}
-
-span_select <- function(span, ...){
-
-  span_vars <- quo_get("span",as_var_args = "span")
-  span_text <- map_chr(span_vars$span, as_label) %>% paste0(.tlang_struct_col_prefix)
-
-  dots <- as.list(substitute(substitute(...)))[-1]
-
-  for(dot in dots){
-    if(is_valid_tidyselect_call(dot)){
-      abort("tidyselect semantics not valid in span_select:", as_label(dot))
-    }
-  }
-
-  tidyselect_calls <- crossing(span_text, dots %>% map_chr(as_label)) %>%
-    unite(new_vars, everything()) %>%
-    pull(new_vars) %>%
-    paste0("contains(\"",.,"\")") %>%
-    paste(collapse = ",")
-
-
-  eval(parse(text = paste("vars(", tidyselect_calls, ")")))
-
-}
-
-
-## ---------------------------------------
-## determine which columns to span across
-## ---------------------------------------
-eval_tidyselect_on_colvec <- function(x, column_vec){
-  span_col_select_function <- get(paste0("eval_tidyselect_on_colvec.",class(x)[1]),envir = asNamespace("tfrmt"))
-  span_col_select_function(x, column_vec = column_vec)
-}
-
-#' @importFrom tidyselect eval_select
-#' @importFrom rlang !!!
-#' @importFrom dplyr expr
-eval_tidyselect_on_colvec.quosures <- function(x, column_vec){
-
-  names(column_vec) <- column_vec
-
-  names(eval_select(expr(c(!!!x)), data = column_vec))
-}
-
-#' @importFrom tidyselect eval_select
-#' @importFrom rlang !!
-#' @importFrom dplyr expr
-eval_tidyselect_on_colvec.quosure <- function(x, column_vec){
-
-  names(column_vec) <- column_vec
-
-
-  names(eval_select(expr(c(!!x)), data = column_vec))
-}
-
-eval_tidyselect_on_colvec.span_structure <- function(x, column_vec){
-  do.call('c',lapply(x$span_cols, eval_tidyselect_on_colvec, column_vec = column_vec))
-}
-
-eval_tidyselect_on_colvec.span_structures <- function(x, column_vec){
-  do.call('c',lapply(x$span_cols, eval_tidyselect_on_colvec, column_vec = column_vec))
+  })
 }
 
 ## -----------------------------------------------
@@ -322,179 +253,6 @@ get_span_structure_dots.span_structures <- function(x){
 
 
 
-#' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate last_col right_join
-#' @importFrom stringr str_remove str_detect
-#' @importFrom purrr pmap_chr map2
-#' @importFrom utils capture.output
-#' @importFrom rlang quo
-select_col_plan <- function(data, tfrmt){
-
-  if (is.null(tfrmt$col_plan)){
-    if(!is.null(tfrmt$row_grp_plan$label_loc$location)&&
-       tfrmt$row_grp_plan$label_loc$location=="noprint"){
-
-      out <- data %>% select(-c(!!!tfrmt$group))
-
-    } else {
-      out <- data
-    }
-  } else {
-
-    ## triple dots passed to select
-    new_dots <- tfrmt$col_plan$dots
-
-    ### if there are span_structures or multiple columns, modify new_dots
-    if(length(tfrmt$col_plan$span_structures) > 0 | length(tfrmt$column) > 1){
-
-      #make a dummy dataset based on the last section of the column
-      if(length(tfrmt$col_plan$span_structures) > 0){
-
-        total_split_cols <- names(data) %>% str_split(.tlang_delim) %>% lengths() %>% max() %>% `-`(1)
-
-        new_cols <- c(paste0(.tlang_struct_col_prefix, seq_len(total_split_cols)), ".original_col")
-
-        tpm_data <- tibble(.original_col = names(data)) %>%
-          separate(.data$.original_col, into = new_cols, sep = .tlang_delim, fill = "left", remove = TRUE)
-
-        span_struct_cols <- tfrmt$col_plan$span_structures %>%
-          map_dfr(span_struct_to_df, tpm_data$.original_col) %>%
-          mutate(
-            .removal_identifier_col = .data$.original_col %>% str_detect("^-")
-          )
-
-        rename_tpm <- tpm_data %>%
-          filter(!(.data$.original_col %in% span_struct_cols$.original_col)) %>%
-          left_join(
-            tibble(
-              .original_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_remove("^-"),
-              .rename_col = names(tfrmt$col_plan$dots),
-              .removal_identifier_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
-            ),
-            by = ".original_col"
-          )
-
-
-        # Get the new names
-        col_name_df <-  span_struct_cols %>%
-          bind_rows(
-            rename_tpm
-          )
-
-
-      } else if(length(tfrmt$column) > 1){
-
-        df_col_names <- tibble(df_names = names(data)) %>%
-          separate(df_names, map_chr(tfrmt$column, as_label), sep = .tlang_delim, fill = "left")
-
-        col_name_df <- tibble(
-          .original_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_remove("^-"),
-          .rename_col = names(tfrmt$col_plan$dots),
-          .removal_identifier_col = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
-        )  %>%
-          left_join(
-            df_col_names,
-            by = c(".original_col" = names(df_col_names)[ncol(df_col_names)])
-          )
-
-      }
-
-      n_layers <- length(setdiff(names(col_name_df),c(".original_col",".rename_col",".removal_identifier_col")))
-
-      new_name_df <- col_name_df %>%
-        mutate(
-          .rename_col = case_when(
-            .rename_col != "" ~ .rename_col,
-            TRUE ~ .original_col
-          )
-        ) %>%
-        relocate(.data$.original_col, .after = last_col()) %>%
-        relocate(.data$.rename_col, .after = last_col()) %>%
-        unite("new_name_in_df", c(-.data$.rename_col, -.data$.removal_identifier_col) , sep = .tlang_delim, remove = FALSE) %>%
-        unite("new_name_in_df_output", c(-.data$.original_col, -.data$new_name_in_df, -.data$.removal_identifier_col), sep = .tlang_delim, remove = FALSE) %>%
-        mutate(
-          new_name_in_df = remove_empty_layers(.data$new_name_in_df, n_layers),
-          new_name_in_df_output = remove_empty_layers(.data$new_name_in_df_output, n_layers)
-        )
-
-      new_dots_tmp <- tibble(
-        dots = tfrmt$col_plan$dots,
-        dot_chr = map_chr(tfrmt$col_plan$dots, as_label) %>% str_remove("^-"),
-        dot_names = names(tfrmt$col_plan$dots),
-        dot_removal = tfrmt$col_plan$dots %>% map_chr(as_label) %>% str_detect("^-")
-      ) %>%
-        left_join(new_name_df, by =c("dot_chr"=".original_col")) %>%
-        mutate(
-          new_name_quo = map2(.data$new_name_in_df, .data$dot_removal, dot_char_as_quo),
-          new_name_in_df_output = case_when(
-            is.na(.data$new_name_in_df_output) ~ "",
-            TRUE ~ .data$new_name_in_df_output
-          )
-        ) %>%
-        mutate(
-          dot2 = ifelse(!is.na(.data$new_name_in_df), .data$new_name_quo, .data$dots),
-          dot2_names = pmap_chr(list(x = .data$new_name_in_df_output, y = .data$dot_chr, z = .data$dot_removal), function(x, y, z){
-            if(!identical(x, y) & !z){
-              x
-            }else{
-              ""
-            }
-          })
-        )
-
-      new_dots <- as.list(new_dots_tmp$dot2)
-      names(new_dots) <- new_dots_tmp$dot2_names
-
-    }
-
-    # Adding in labels and grouping if people forgot it
-    # because the order of these are set by the GT I don't it will matter
-    #  new_dots <- c(tfrmt$label, tfrmt$group, new_dots)
-
-    if((!is.null(tfrmt$row_grp_plan) &&
-        !is.null(tfrmt$row_grp_plan$label_loc)&&
-        tfrmt$row_grp_plan$label_loc$location=="noprint")){
-      new_dots <- setdiff(new_dots, tfrmt$group)
-    }
-
-    dot_var <- do.call(vars,new_dots)
-
-    out <- select(data, !!!dot_var)
-  }
-
-  out
-}
-
-
-## given a string - x - see how to convert to a quosure.
-##  if negative is TRUE, it will mark it as a `-`.
-dot_char_as_quo <- function(x, negative = FALSE) {
-
-
-  ## if x is a valid tidyselect call, leave it as is,
-  ## otherwise wrap it in "`". This is so we can pass
-  ## colnames with spaces (which are common in spanned columns)
-  ## to quo. IE `spanned col header__tfrmt_delim__col1`
-  x_text <- tryCatch({
-    x_lang <- parse(text = x)[[1]]
-    if (is_valid_tidyselect_call(x_lang)) {
-      x
-    } else{
-      paste0("`", x, "`")
-    }},
-    error = function(e) {
-      paste0("`", x, "`")
-    }
-  )
-
-  if (negative) {
-    expr_to_eval <- paste0("quo(-", x_text, ")")
-  } else{
-    expr_to_eval <- paste0("quo(", x_text, ")")
-  }
-
-  eval(parse(text = expr_to_eval)[[1]])
-}
 
 ## -----------------------------------------------
 ## When we have span structures in the col_plan,
