@@ -172,13 +172,13 @@ to.</p></div>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">frmt</span><span class="op">(</span><span class="st">"XXX %"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frmt | Expression: `XXX %` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt; frmt | Expression: `XXX %` &gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">frmt</span><span class="op">(</span><span class="st">"XX.XXX"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frmt | Expression: `XX.XXX` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt; frmt | Expression: `XX.XXX` &gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">frmt</span><span class="op">(</span><span class="st">"xx.xx"</span>, scientific <span class="op">=</span> <span class="st">"x10^xx"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frmt | Expression: `xx.xx` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt; frmt | Expression: `xx.xx` &gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">frmt_combine</span><span class="op">(</span></span></span>
 <span class="r-in"><span> <span class="st">"{param1} {param2}"</span>,</span></span>
@@ -192,9 +192,9 @@ to.</p></div>
 <span class="r-in"><span>  <span class="st">"&lt;=3"</span> <span class="op">~</span> <span class="fu">frmt</span><span class="op">(</span><span class="st">"Undetectable"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt; frmt_when |  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &gt;3 ~ &lt;frmt | Expression: `(X.X%)` &gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;=3 ~ &lt;frmt | Expression: `Undetectable` &gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &gt;3 ~ &lt; frmt | Expression: `(X.X%)` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;=3 ~ &lt; frmt | Expression: `Undetectable` &gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  &gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">frmt_when</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"==100"</span><span class="op">~</span> <span class="fu">frmt</span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span></span>
@@ -202,10 +202,10 @@ to.</p></div>
 <span class="r-in"><span>  <span class="st">"TRUE"</span> <span class="op">~</span> <span class="fu">frmt</span><span class="op">(</span><span class="st">"(XXX.X%)"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt; frmt_when |  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ==100 ~ &lt;frmt | Expression: `` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ==100 ~ &lt; frmt | Expression: `` &gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ==0 ~ </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   TRUE ~ &lt;frmt | Expression: `(XXX.X%)` &gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ` &gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   TRUE ~ &lt; frmt | Expression: `(XXX.X%)` &gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  &gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
