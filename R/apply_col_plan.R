@@ -18,6 +18,7 @@ apply_col_plan <- function(data, tfrmt){
   } else {
 
     col_plan_names <- create_col_order(tfrmt$col_plan, tfrmt$column, names(data))
+
     out <- select(data, !!!col_plan_names)
 
   }
@@ -25,9 +26,15 @@ apply_col_plan <- function(data, tfrmt){
   out
 }
 
+#' @importFrom rlang is_empty
 create_col_order <- function(cp, columns, data_names){
 
-  column_names <- map_chr(columns, as_label)
+  if(is_empty(columns)){
+    # create placeholder
+    column_names <- "col"
+  }else{
+    column_names <- map_chr(columns, as_label)
+  }
 
   col_selections <- c()
 
@@ -71,82 +78,60 @@ create_col_order <- function(cp, columns, data_names){
 col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
 
   ## ensure data_names order matches preselected_cols
-  data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
+  split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
+
+  col_id <- column_names[length(column_names)]
+  col_quo <- quo(!!sym(col_id))
+  col_name_quo <- quo(!!sym(paste0("__tfrmt_new_name__", col_id)))
 
   ## only apply tidyselect to _bottom_ column
-  data_names_tmp <- gsub(paste0(".*", .tlang_delim), "", data_names)
+  data_names_tmp <- split_data_names[[col_id]]
 
-  selections <- eval_col_plan_quo(x[[1]], data_names_tmp, preselected_cols)
-  selected <- data_names[which(data_names_tmp %in% selections)]
+  selected <- eval_col_plan_quo(x[[1]], data_names_tmp, preselected_cols)
 
   ## if is subtraction, inverse selection to get subtracted columns and prepend with -
   if(grepl("^-",as_label(x[[1]]))){
-    selected <- paste0("-",setdiff(data_names, selected))
+    split_data_names <- split_data_names %>%
+      filter(!(!!col_quo %in% selected)) %>%
+      mutate(
+        subtraction_status = TRUE
+      )
   }else{
+    split_data_names <- split_data_names %>%
+      filter(!!col_quo %in% selected)
+
     if(!is.null(names(x))){
 
-      if(length(selected) == 1){
-        if(is.null(names(selected))){
+      rename_val <- names(x)
 
-          if(names(x) != ""){
-            names(selected) <-
-            gsub(paste0("(.*", .tlang_delim, ")*(", selections, ")"),
-                 paste0("\\1", names(x)),
-                 selected)
-          }
-        }else{
-          if(names(x) != ""){
-            if(names(selected) == ""){
-              ref_name <- selected
-            }else{
-              ref_name <- names(selected)
-            }
-
-            names(selected) <-
-              gsub(paste0("(.*", .tlang_delim, ")(", selections, ")"),
-                   paste0("\\1", names(x)),
-                   ref_name)
-          }
-        }
-      }else{
-        names(selected) <- paste0(names(x), seq_along(selected))
+      if(rename_val == ""){
+        rename_val <- selected
       }
+
+      if(is_valid_tidyselect_call(quo_get_expr(x[[1]]))){
+        rename_val <- paste0(rename_val, seq_len(length(selected)))
+      }
+
+      split_data_names <- split_data_names %>%
+        mutate(
+          !!col_name_quo := case_when(
+            !!col_quo %in% selected ~ rename_val,
+            TRUE ~ !!col_name_quo
+          )
+        )
     }
+
   }
 
-  c(preselected_cols,selected)
+  unite_df_to_data_names(split_data_names, preselected_cols, column_names)
 }
 
+#' @importFrom rlang quo_get_expr quo
+#' @importFrom tidyr separate unite
+#' @importFrom dplyr filter pull mutate arrange left_join select
 col_plan_span_structure_to_vars <- function(x, column_names, data_names, preselected_cols){
 
-  ## ensure data_names order matches preselected_cols
-  data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
-
-  if(is.null(names(data_names))){
-    names(data_names) <- data_names
-  }else{
-    if(any(is_preserved_name <- names(data_names) == "")){
-      names(data_names)[is_preserved_name] <- data_names[is_preserved_name]
-    }
-  }
-
-  split_data_names <- tibble(
-      original = data_names,
-      new_name = names(data_names)
-    ) %>%
-    separate(
-      original,
-      into = column_names,
-      sep = .tlang_delim,
-      fill = "left"
-    ) %>%
-    separate(
-      new_name,
-      into = paste0("__tfrmt_new_name__", column_names),
-      sep = .tlang_delim,
-      fill = "left"
-    )
-
+  split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
 
   col_selections <- list()
 
@@ -167,29 +152,43 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
         sel_id <- selections[[sel_id_idx]]
         sel_id_col_selections <- unique(eval_tidyselect_on_colvec(sel_id, split_data_names[[col_id]]))
 
-        if(!is.null(names(selections))){
+        is_subtraction_selection <- grepl("^-",as_label(sel_id))
 
-          rename_val <- names(selections)[[sel_id_idx]]
+        if(!is_subtraction_selection){
+          if(!is.null(names(selections))){
 
-          if(rename_val == ""){
-            rename_val <- sel_id_col_selections
+            rename_val <- names(selections)[[sel_id_idx]]
+
+            if(rename_val == ""){
+              rename_val <- sel_id_col_selections
+            }
+
+            if(is_valid_tidyselect_call(quo_get_expr(sel_id))){
+              rename_val <- paste0(rename_val, seq_len(length(sel_id_col_selections)))
+            }
+
+            split_data_names <- split_data_names %>%
+              mutate(
+                !!col_name_quo := case_when(
+                  !!col_quo %in% sel_id_col_selections ~ rename_val,
+                  TRUE ~ !!col_name_quo
+                )
+              )
           }
 
-          if(is_valid_tidyselect_call(rlang::quo_get_expr(sel_id))){
-            rename_val <- paste0(rename_val, seq_len(length(sel_id_col_selections)))
-          }
+          split_data_selections[[sel_id_idx]] <- split_data_names %>%
+            filter(!!col_quo %in% sel_id_col_selections)
 
-          split_data_names <- split_data_names %>%
+        }else{
+
+          split_data_selections[[sel_id_idx]] <- split_data_names %>%
             mutate(
-              !!col_name_quo := case_when(
-                !!col_quo %in% sel_id_col_selections ~ rename_val,
-                TRUE ~ !!col_name_quo
+              subtraction_status = case_when(
+                !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
+                TRUE ~ FALSE
               )
             )
         }
-
-        split_data_selections[[sel_id_idx]] <- split_data_names %>%
-          filter(!!col_quo %in% sel_id_col_selections)
       }
 
       split_data_names <- bind_rows(split_data_selections) %>%
@@ -198,7 +197,12 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
       col_selections[[col_id]] <- split_data_names %>%
         pull(!!col_quo) %>%
         unique
+
     }else{
+
+      split_data_names <- split_data_names %>%
+        filter(!is.na(!!col_quo))
+
       col_selections[[col_id]] <- split_data_names %>%
         pull(!!col_quo) %>%
         unique
@@ -212,32 +216,11 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
     arrange(across(everything())) %>%
     mutate(ord_col = seq_len(n()))
 
-  new_preselected_cols_full <- split_data_names %>%
+  split_data_names %>%
     left_join(ords, by = names(col_selections)) %>%
     arrange(ord_col) %>%
     select(-ord_col) %>%
-    unite(
-      "original",
-      -starts_with("__tfrmt_new_name__"),
-      sep = .tlang_delim
-    ) %>%
-    unite(
-      "new_name",
-      starts_with("__tfrmt_new_name__"),
-      sep = .tlang_delim
-    ) %>%
-    mutate(across(everything(), remove_empty_layers, length(column_names) -1 ))
-
-  selected <- new_preselected_cols_full$original
-
-  new_names <- new_preselected_cols_full %>%
-    filter(original != new_name)
-
-  if(nrow(new_names) > 0){
-    names(selected)[selected %in% new_names$original] <- new_names$new_name
-  }
-
-  c(preselected_cols,selected)
+    unite_df_to_data_names(preselected_cols, column_names)
 
 }
 
@@ -273,8 +256,9 @@ char_as_quo <- function(x) {
   eval(parse(text = expr_to_eval)[[1]])
 }
 
+#' @importFrom rlang quo_get_expr as_label
 eval_col_plan_quo <- function(x, data_names, preselected_vals){
-  if(identical(as_label(rlang::quo_get_expr(x)), "everything()")){
+  if(identical(as_label(x), "everything()")){
 
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
@@ -283,3 +267,67 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals){
   eval_tidyselect_on_colvec(x, data_names)
 }
 
+
+#' @importFrom tidyr separate unite
+#' @importFrom tibble tibble
+split_data_names_to_df <- function(data_names, preselected_cols, column_names){
+
+  data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
+
+  if(is.null(names(data_names))){
+    names(data_names) <- data_names
+  }else{
+    if(any(is_preserved_name <- names(data_names) == "")){
+      names(data_names)[is_preserved_name] <- data_names[is_preserved_name]
+    }
+  }
+
+  tibble(
+    original = data_names,
+    new_name = names(data_names)
+   ) %>%
+    mutate(
+      subtraction_status = str_detect(.data$original,"^-"),
+      original := str_remove(.data$original,"^-")
+    ) %>%
+    separate(
+      .data$original,
+      into = column_names,
+      sep = .tlang_delim,
+      fill = "left"
+    ) %>%
+    separate(
+      .data$new_name,
+      into = paste0("__tfrmt_new_name__", column_names),
+      sep = .tlang_delim,
+      fill = "left"
+    )
+
+}
+
+unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names){
+
+  new_preselected_cols_full <- split_data_names %>%
+    unite("original",-c(starts_with("__tfrmt_new_name__"),.data$subtraction_status),
+          sep = .tlang_delim) %>%
+    unite("new_name",
+          starts_with("__tfrmt_new_name__"),
+          sep = .tlang_delim) %>%
+    mutate(across(c(.data$original, .data$new_name), remove_empty_layers, length(column_names) -1))
+
+  selected <- new_preselected_cols_full %>%
+    mutate(
+      original = case_when(
+        .data$subtraction_status == TRUE ~ paste0("-",.data$original),
+        TRUE ~ .data$original
+      )
+    ) %>%
+    pull(.data$original)
+
+  new_names <- ifelse(new_preselected_cols_full$original != new_preselected_cols_full$new_name,
+                      new_preselected_cols_full$new_name, "")
+
+  names(selected) <- new_names
+
+  c(preselected_cols,selected)
+}

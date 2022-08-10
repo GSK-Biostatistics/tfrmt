@@ -1,17 +1,20 @@
 #' Define the Column Plan & Span Structures
 #'
 #' Using <[`tidy-select`][dplyr_tidy_select]> expressions and a series
-#' span_structures, define the spanned column names, and the label to apply.
-#' span_structures can be nested to allow for layered spanning headers.
+#' span_structures, define the order of the columns. The selection follows "last
+#' selected" principals, meaning columns are moved to the _last_ selection as
+#' opposed to preserving the first location.
+#'
 #'
 #' @details
 #'
+#'#'
 #' ## Column Selection
 #'
 #' When col_plan gets applied and is used to create the output table, the
-#' underlying logic becomes the input to \code{\link[dplyr]{select}}. Therefore,
-#' behavior falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
-#' and reordering the columns.
+#' underlying logic sorts out which column specifically is being selected. If a column
+#' is selected twice, the _last_ instance in which the column is selected will be
+#' the location it gets rendered.
 #'
 #' Avoid beginning the \code{col_plan()} column selection with a deselection (ie
 #' \code{col_plan(-col1)}, \code{col_plan(-starts_with("value")))}. This will
@@ -21,21 +24,20 @@
 #' preserving in the order they are wished to appear, or if
 #' <[`tidy-select`][dplyr_tidy_select]> arguments - such as
 #' \code{\link[dplyr]{everything}}- are used, identify the de-selection after
-#' the positive-selection. Experiment with the \code{\link[dplyr]{select}}
-#' function to understand this sort of behavior better.
+#' the positive-selection.
 #'
-#' Alternatively, once the gt table is produced, use the \code{\link[gt]{cols_hide}}
-#' function to remove un-wanted columns.
+#' Alternatively, once the gt table is produced, use the
+#' \code{\link[gt]{cols_hide}} function to remove un-wanted columns.
 #'
 #'
 #' @rdname col_plan
 #'
 #' @param ... For a col_plan and span_structure,
 #'   <[`tidy-select`][dplyr_tidy_select]> arguments, unquoted expressions
-#'   separated by commas, and span_structures. Span_structures can nest
-#'   additional span_structures. To use a span_structure, there can only be one
-#'   defined "column" in the tfrmt.
-#' @param .drop Boolean. Should un-listed columns be dropped from the data. Defaults to FALSE.
+#'   separated by commas, and span_structures. span_structures must have the
+#'   arguments named to match the name the column in the input data has to identify the correct columns. See the examples
+#' @param .drop Boolean. Should un-listed columns be dropped from the data.
+#'   Defaults to FALSE.
 #'
 #' @export
 #' @examples
@@ -44,6 +46,9 @@
 #'
 #' ## select col_1 as the first column, remove col_last, then create spanning
 #' ## structures that have multiple levels
+#' ##
+#' ## examples also assume the tfrmt has the column argument set to c(c1, c2, c3)
+#' ##
 #' spanning_col_plan_ex <- col_plan(
 #'  col_1,
 #'  -col_last,
@@ -74,14 +79,21 @@
 #'    my_col_1,
 #'    new_col_1 = col_2,
 #'    everything()
+#'  )
+#'
+#' renaming_col_plan_ex2 <- col_plan(
+#'    my_col_1,
+#'    new_col_1 = col_2,
+#'    span_structure(
+#'     c1 = c(`My Favorite span name` = "Top Label Level 1"),
+#'     c3 = c(`the results column` = col_5)
 #'    )
+#'  )
+#' @section Images: Here are some example outputs:
 #'
-#' @section Images:
-#' Here are some example outputs:
-#'
-#' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg\" style=\"width:100\\%;\">"`
-#' }}
+#'   \if{html}{\out{ `r "<img
+#'   src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg\"
+#'   style=\"width:100\\%;\">"` }}
 #'
 col_plan <- function(..., .drop = FALSE){
 
@@ -147,20 +159,23 @@ check_span_structure_dots <- function(x){
       }else if(is_valid_quo_call(x)){
         return(eval_tidy(x))
       }else{
-        stop(
-          "Invalid entry: `",format(x),"`\n",
+        abort(
+          message = paste0(
+            "Invalid entry: `",format(x),"`\n",
           "Only span_structures (`span_structure()`), ",
           "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
           " or unquoted expressions representing variable names ",
           " can be entered as contents.",
-          " Changing the names of individual variables using new_name = old_name syntax is allowable",
-          call. = FALSE
+          " Changing the names of individual variables using new_name = old_name syntax is allowable"
+          ),
+          call = caller_call()
         )
       }
     }else if(is.character(x)){
       return(as_length_one_quo.character(x))
     }else{
-      stop("Unexpected entry type in span_structure()")
+      abort("Unexpected entry type in span_structure()",
+            call = caller_call())
     }
   }))
 
