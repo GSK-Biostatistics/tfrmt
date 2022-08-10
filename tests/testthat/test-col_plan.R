@@ -15,11 +15,11 @@ test_that("Defining the spanning structure", {
   expect_s3_class(s1,"span_structure")
   expect_s3_class(s2,"span_structure")
 
-  expect_equal(s1[["c1"]], list(quo(`Test Label`)), ignore_attr = TRUE)
-  expect_equal(s1[["c2"]], list(quo(`A`),quo(`B`)), ignore_attr = TRUE)
-  expect_equal(s1[["c1"]], list(quo(`Test Label`)), ignore_attr = TRUE)
-  expect_equal(s2[["c2"]], list(quo(`Test Sub Label`)), ignore_attr = TRUE)
-  expect_equal(s2[["c3"]], list(quo(`A`),quo(`B`)), ignore_attr = TRUE)
+  expect_equal(s1[["c1"]], list(quo(`Test Label`)), ignore_attr = c(".Environment"))
+  expect_equal(s1[["c2"]], list(quo(`A`),quo(`B`)), ignore_attr = c(".Environment"))
+  expect_equal(s1[["c1"]], list(quo(`Test Label`)), ignore_attr = c(".Environment"))
+  expect_equal(s2[["c2"]], list(quo(`Test Sub Label`)), ignore_attr = c(".Environment"))
+  expect_equal(s2[["c3"]], list(quo(`A`),quo(`B`)), ignore_attr = c(".Environment"))
 
 })
 
@@ -94,14 +94,141 @@ test_that("Test applying a col_plan - simple",{
 
   cp_keep <- col_plan(
     first_col,
-    span_structure(col1 = "test val"),
-    span_structure(col2 = c("val2","val1"))
+    span_structure(col1 = c("test val"), col2 = c("val2","val1"))
   )
 
   cp_drop <- col_plan(
     first_col,
-    span_structure(col1 = "test val"),
-    span_structure(col2 = c("val2","val1")),
+    span_structure(col1 = "test val", col2 = c("val2","val1")),
+    .drop = TRUE
+  )
+
+  cp_subtraction <- col_plan(
+    -first_col,
+    span_structure(col1 = c("test val"), col2 = c("val2","val1"))
+  )
+
+  cp_subtraction_span <- col_plan(
+    -first_col,
+    span_structure(col1 = c("test val"), col2 = c(-val1))
+  )
+
+  name_col <- c(
+    "first_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2",
+    "extra_col"
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col),
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col),
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`,
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_subtraction, columns = col_vars, data_names = name_col),
+    vars(
+      -first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_subtraction_span, columns = col_vars, data_names = name_col),
+    vars(
+      -first_col,
+      -`test val___tlang_delim___val1`,
+      `test val___tlang_delim___val2`,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  name_col_mixed_order <- c(
+    "first_col",
+    "extra_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2"
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_subtraction, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      -first_col,
+      `test val___tlang_delim___val2`,
+      `test val___tlang_delim___val1`,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_subtraction_span, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      -first_col,
+      -`test val___tlang_delim___val1`,
+      `test val___tlang_delim___val2`,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+})
+
+test_that("Test applying a col_plan - tidyselect",{
+
+  col_vars <- vars(col1, col2)
+
+  cp_keep <- col_plan(
+    span_structure(col1 = starts_with("test"), col2 = c(val2, everything())),
+    everything(),
+    first_col
+  )
+
+  cp_drop <- col_plan(
+    span_structure(col1 = starts_with("test"), col2 = c(val2,everything())),
+    everything(),
+    first_col,
     .drop = TRUE
   )
 
@@ -117,12 +244,12 @@ test_that("Test applying a col_plan - simple",{
   expect_equal(
     cp_vars_keep,
     vars(
-      first_col,
       `test val___tlang_delim___val2`,
       `test val___tlang_delim___val1`,
-      extra_col
+      extra_col,
+      first_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
 
   cp_vars_drop <- create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col)
@@ -130,11 +257,12 @@ test_that("Test applying a col_plan - simple",{
   expect_equal(
     cp_vars_drop,
     vars(
-      first_col,
       `test val___tlang_delim___val2`,
-      `test val___tlang_delim___val1`
+      `test val___tlang_delim___val1`,
+      extra_col,
+      first_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
 
   name_col_mixed_order <- c(
@@ -147,13 +275,14 @@ test_that("Test applying a col_plan - simple",{
   cp_vars_keep_mixed_order <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order)
 
   expect_equal(
-    cp_vars_drop,
+    cp_vars_keep_mixed_order,
     vars(
-      first_col,
       `test val___tlang_delim___val2`,
-      `test val___tlang_delim___val1`
+      `test val___tlang_delim___val1`,
+      extra_col,
+      first_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
 
 })
@@ -164,15 +293,40 @@ test_that("Test applying a col_plan - renaming",{
 
   cp_keep <- col_plan(
     new_first_col = first_col,
-    span_structure(col1 = c(`new header col` = "test val")),
-    span_structure(col2 = c(best_value = "val2","val1")),
+    span_structure(
+      col1 = c(`new header col` = "test val"),
+      col2 = c(best_value = "val2", "val1")
+    ),
     preserved_col
   )
 
   cp_drop <- col_plan(
     new_first_col = first_col,
-    span_structure(col1 = c(`new header col` = "test val")),
-    span_structure(col2 = c(best_value = "val2","val1")),
+    span_structure(
+      col1 = c(`new header col` = "test val"),
+      col2 = c(best_value = "val2", "val1")
+    ),
+    preserved_col,
+    .drop = TRUE
+  )
+
+  cp_keep_rename_spanned_col <- col_plan(
+    new_first_col = first_col,
+    span_structure(
+      col1 = c(`new header col` = "test val")
+    ),
+    best_value = "val2",
+    val1,
+    preserved_col
+  )
+
+  cp_drop_rename_spanned_col <- col_plan(
+    new_first_col = first_col,
+    span_structure(
+      col1 = c(`new header col` = "test val")
+    ),
+    best_value = "val2",
+    val1,
     preserved_col,
     .drop = TRUE
   )
@@ -185,31 +339,164 @@ test_that("Test applying a col_plan - renaming",{
     "extra_col"
   )
 
-  cp_vars_keep <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col)
+  name_col_mixed_order <- c(
+    "first_col",
+    "preserved_col",
+    "extra_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2"
+  )
 
   expect_equal(
-    cp_vars_keep,
+    create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col),
     vars(
       new_first_col = first_col,
       `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
-      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val1`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
       preserved_col,
       extra_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
 
-  cp_vars_drop <- create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col)
-
   expect_equal(
-    cp_vars_drop,
+    create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col),
     vars(
       new_first_col = first_col,
       `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
-      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val1`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
       preserved_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_keep_rename_spanned_col, columns = col_vars, data_names = name_col),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop_rename_spanned_col, columns = col_vars, data_names = name_col),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_keep_rename_spanned_col, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop_rename_spanned_col, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+})
+
+test_that("Test applying a col_plan - renaming twice",{
+
+  col_vars <- vars(col1, col2)
+
+  cp_keep <- col_plan(
+    new_first_col = first_col,
+    span_structure(
+      col1 = c(`new header col` = "test val"),
+      col2 = c(best_value = "val2", "val1")
+    ),
+    new_best_value = val2,
+    val1,
+    preserved_col
+  )
+
+  cp_drop <- col_plan(
+    new_first_col = first_col,
+    span_structure(
+      col1 = c(`new header col` = "test val"),
+      col2 = c(best_value = "val2", "val1")
+    ),
+    new_best_value = val2,
+    val1,
+    preserved_col,
+    .drop = TRUE
+  )
+
+  name_col <- c(
+    "first_col",
+    "test val___tlang_delim___val1",
+    "test val___tlang_delim___val2",
+    "preserved_col",
+    "extra_col"
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___new_best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col,
+      extra_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___new_best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col
+    ),
+    ignore_attr = c(".Environment")
   )
 
   name_col_mixed_order <- c(
@@ -220,18 +507,27 @@ test_that("Test applying a col_plan - renaming",{
     "test val___tlang_delim___val2"
   )
 
-  cp_vars_keep_mixed_order <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order)
-
   expect_equal(
-    cp_vars_keep_mixed_order,
+    create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order),
     vars(
-      first_col,
-      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val2`,
-      `new header col___tlang_delim___best_value` = `test val___tlang_delim___val1`,
+      new_first_col = first_col,
+      `new header col___tlang_delim___new_best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
       preserved_col,
       extra_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
+  )
+
+  expect_equal(
+    create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col_mixed_order),
+    vars(
+      new_first_col = first_col,
+      `new header col___tlang_delim___new_best_value` = `test val___tlang_delim___val2`,
+      `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
+      preserved_col
+    ),
+    ignore_attr = c(".Environment")
   )
 
 })
@@ -241,9 +537,9 @@ test_that("Test applying a col_plan - ordering on multiple columns",{
   col_vars <- vars(c1, c2)
 
   cp <- col_plan(
-    span_structure(c1 = c("test val2", "test val1", "another val")),
-    span_structure(c2 = c(val1, val2, val3)),
-    span_structure(c1 = "another val", c2 = val1)
+    span_structure(c1 = c(`test val2`, `test val1`, `another val`), c2 = c(val2, val1, everything())),
+    first_col,
+    extra_col
   )
 
   name_col <- c(
@@ -259,23 +555,48 @@ test_that("Test applying a col_plan - ordering on multiple columns",{
     "extra_col"
   )
 
+  expect_equal(
+    create_col_order(cp = cp, columns = col_vars, data_names = name_col),
+    vars(
+      `test val2___tlang_delim___val2`,
+      `test val2___tlang_delim___val1`,
+      `test val1___tlang_delim___val2`,
+      `test val1___tlang_delim___val1`,
+      `another val___tlang_delim___val2`,
+      `another val___tlang_delim___val1`,
+      `another val___tlang_delim___val3`,
+      first_col,
+      extra_col,
+      preserved_col
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  cp <- col_plan(
+    span_structure(c1 = c(`test val2`, `test val1`, `another val`), c2 = c(val2, val1)),
+    preserved_col,
+    span_structure(c1 = c(`another val`), c2 = c(val3)),
+    first_col,
+    extra_col
+  )
+
   cp_vars <- create_col_order(cp = cp, columns = col_vars, data_names = name_col)
 
   expect_equal(
     cp_vars,
     vars(
-      `test val2___tlang_delim___val1`,
       `test val2___tlang_delim___val2`,
-      `test val1___tlang_delim___val1`,
+      `test val2___tlang_delim___val1`,
       `test val1___tlang_delim___val2`,
+      `test val1___tlang_delim___val1`,
       `another val___tlang_delim___val2`,
-      `another val___tlang_delim___val3`,
       `another val___tlang_delim___val1`,
-      first_col,
       preserved_col,
+      `another val___tlang_delim___val3`,
+      first_col,
       extra_col
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
 
 })
@@ -302,10 +623,8 @@ test_that("Unorthodox col_plans",{
     "val7"
   )
 
-  cp_vars <- create_col_order(cp = cp, columns = col_vars, data_names = name_col)
-
   expect_equal(
-    cp_vars,
+    create_col_order(cp = cp, columns = col_vars, data_names = name_col),
     vars(
       val4,
       `test value___tlang_delim___val1`,
@@ -315,7 +634,7 @@ test_that("Unorthodox col_plans",{
       val7,
       val5
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
 
   cp2 <- col_plan(
@@ -328,10 +647,8 @@ test_that("Unorthodox col_plans",{
     .drop = TRUE
   )
 
-  cp_vars_2 <- create_col_order(cp = cp2, columns = col_vars, data_names = name_col)
-
   expect_equal(
-    cp_vars_2,
+    create_col_order(cp = cp2, columns = col_vars, data_names = name_col),
     vars(
       val4,
       `test value___tlang_delim___val3`,
@@ -341,10 +658,8 @@ test_that("Unorthodox col_plans",{
       -val6,
       -val7
     ),
-    ignore_attr = TRUE
+    ignore_attr = c(".Environment")
   )
-
-
 
 })
 
@@ -358,7 +673,7 @@ test_that("Order is kept for multi-col columns",{
                  value = c(1.08089, 9.23948))
 
 
-  tfrmt<-tfrmt(
+  tfrmt <- tfrmt(
     label = label,
     param = param,
     values = value,
@@ -381,6 +696,7 @@ test_that("Order is kept for multi-col columns",{
     pull(new)
 
   expect_equal(new_name_ord, new_name_ord_in_dat)
+
 })
 
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure",{
@@ -501,7 +817,6 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 
 })
 
-
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure - with renaming multiple levels",{
 
   basic_multi_column_template <- tfrmt(
@@ -611,8 +926,50 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
 
 
   expect_equal(
-    processed_gt[c("_boxhead","_spanners")],
-    processed_gt_2[c("_boxhead","_spanners")]
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c("label", "renamed_A", "AB", "renamed_A", "AB", "renamed_A",
+      "AB", "renamed_BB", "renamed_BB", "renamed_CC", "..tfrmt_row_grp_lbl"
+    )
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+    c("A",  "B",  "C" , "D" , "A_" ,"B_")
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_level,
+    c(1,1,1,1,2,2)
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$vars,
+    list(
+      c(
+        "A____tlang_delim___A___tlang_delim___renamed_A",
+        "A____tlang_delim___A___tlang_delim___AB"
+      ),
+      c(
+        "A____tlang_delim___B___tlang_delim___renamed_A",
+        "A____tlang_delim___B___tlang_delim___AB"
+      ),
+      c(
+        "B____tlang_delim___C___tlang_delim___renamed_A",
+        "B____tlang_delim___C___tlang_delim___AB"
+      ),
+      "B____tlang_delim___D___tlang_delim___renamed_BB",
+      c(
+        "A____tlang_delim___A___tlang_delim___renamed_A",
+        "A____tlang_delim___A___tlang_delim___AB",
+        "A____tlang_delim___B___tlang_delim___renamed_A",
+        "A____tlang_delim___B___tlang_delim___AB"
+      ),
+      c(
+        "B____tlang_delim___C___tlang_delim___renamed_A",
+        "B____tlang_delim___C___tlang_delim___AB",
+        "B____tlang_delim___D___tlang_delim___renamed_BB"
+      )
+    )
   )
 
 })
@@ -643,52 +1000,66 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     label = label,
     param = parm,
     values = val,
-    column = my_col,
-    col_plan = col_plan(
-      group,
-      label,
-      span_structure(
-        "column cols",
-        span_structure(
-          "cols 1,2",
-          col1, col2
-        ),
-        col4
-      ),
-      span_structure(
-        "my cols",
-        new_col_3 = mycol3,
-        mycol5
-      ))
-  )
-
-  tfrmt_multiple_cols <- tfrmt(
-    group = group,
-    label = label,
-    param = parm,
-    values = val,
     column = c(top_span, child_span, my_col),
     col_plan = col_plan(
       group,
       label,
-      col1,
-      col2,
-      col4,
-      new_col_3 = mycol3,
-      mycol5
+      span_structure(
+        top_span = "column cols",
+        child_span = "cols 1,2",
+        my_col = c("col1", "col2")
+      ),
+      span_structure(
+        top_span = "column cols",
+        my_col = "col4"
+      ),
+      span_structure(
+        top_span = "my cols",
+        my_col = c(new_col_3 = mycol3, mycol5)
+      )
     )
   )
 
 
   suppressMessages({
-      processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
-      processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
+      processed_gt <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat)
   })
 
   expect_equal(
-    processed_gt[c("_boxhead","_spanners")],
-    processed_gt_2[c("_boxhead","_spanners")]
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c("group", "label", "col1", "col2", "col4", "new_col_3", "mycol5",
+      "..tfrmt_row_grp_lbl")
   )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+    c("cols 1,2","column cols", "my cols" )
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_level,
+    c(1,2,1)
+  )
+
+  expect_equal(
+    processed_gt[["_spanners"]]$vars,
+    list(
+      c(
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col1",
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col2"
+      ),
+      c(
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col1",
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col2",
+        "column cols___tlang_delim___NA___tlang_delim___col4"
+      ),
+      c(
+        "my cols___tlang_delim___NA___tlang_delim___new_col_3",
+        "my cols___tlang_delim___NA___tlang_delim___mycol5"
+      )
+    )
+  )
+
 })
 
 test_that("Build simple tfrmt with spans with child spans that are and are not spanned - removal",{
@@ -712,32 +1083,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     "g2", "rowlabel3",     "my cols",          NA, "mycol5",  "value",    3
   )
 
-  tfrmt_with_parial_child_span <- tfrmt(
-    group = group,
-    label = label,
-    param = parm,
-    values = val,
-    column = my_col,
-    col_plan = col_plan(
-      group,
-      label,
-      span_structure(
-        "column cols",
-        span_structure(
-          "cols 1,2",
-          col1, col2
-        ),
-        col4
-      ),
-      span_structure(
-        "my cols",
-        new_col_3 = mycol3
-      ),
-      -mycol5
-      )
-  )
 
-  tfrmt_multiple_cols <- tfrmt(
+  tfrmt_with_parial_child_span <- tfrmt(
     group = group,
     label = label,
     param = parm,
@@ -746,36 +1093,59 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     col_plan = col_plan(
       group,
       label,
-      col1,
-      col2,
-      col4,
-      new_col_3 = mycol3,
-      -mycol5
+      span_structure(
+        top_span = "column cols",
+        child_span = "cols 1,2",
+        my_col = c("col1", "col2")
+      ),
+      span_structure(
+        top_span = "column cols",
+        my_col = "col4"
+      ),
+      span_structure(
+        top_span = "my cols",
+        my_col = c(new_col_3 = mycol3, -mycol5)
+      )
     )
   )
 
 
   suppressMessages({
-      processed_gt <- print_to_gt(tfrmt = tfrmt_multiple_cols, .data = dat)
-      processed_gt_2 <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat %>% select(-top_span, -child_span))
+    processed_gt <- print_to_gt(tfrmt = tfrmt_with_parial_child_span, .data = dat)
   })
 
   expect_equal(
-    processed_gt[c("_boxhead","_spanners")],
-    processed_gt_2[c("_boxhead","_spanners")]
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c("group", "label", "col1", "col2", "col4", "new_col_3",
+      "..tfrmt_row_grp_lbl")
   )
 
-})
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+    c("cols 1,2","column cols", "my cols" )
+  )
 
+  expect_equal(
+    processed_gt[["_spanners"]]$spanner_level,
+    c(1,2,1)
+  )
 
-test_that("span_structure returns correct errors",{
-
-  expect_error(
-    span_structure(
-      label = 1234
-    ),
-    "`label` must be a character vector",
-    fixed = TRUE
+  expect_equal(
+    processed_gt[["_spanners"]]$vars,
+    list(
+      c(
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col1",
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col2"
+      ),
+      c(
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col1",
+        "column cols___tlang_delim___cols 1,2___tlang_delim___col2",
+        "column cols___tlang_delim___NA___tlang_delim___col4"
+      ),
+      c(
+        "my cols___tlang_delim___NA___tlang_delim___new_col_3"
+      )
+    )
   )
 
 })
@@ -798,30 +1168,6 @@ test_that("col_plan returns correct errors",{
   )
 
 })
-
-test_that("tfrmt returns error when defining multiple columns and span_structures in col_plan",{
-
-
-  expect_error(
-    tfrmt(
-      column = c(test1,test2),
-      col_plan = col_plan(
-        span_structure("my labels", test_column),
-        column2
-      )
-    ),
-    paste0(
-      "Multiple columns defined in `column` argument of tfrmt ",
-      "as well as span_structures in `col_plan`.\n",
-      "The use of only one approach is permitted. ",
-      "Select a single column or remove span_structures from `col_plan()`"
-    ),
-    fixed = TRUE
-  )
-
-})
-
-
 
 
 # this happens in the select_col_plan, rather than the row_grp_plan
@@ -854,7 +1200,7 @@ test_that("Suppress printing of groups", {
   spec_noprint_col_plan1 <- tfrmt(
     group = c(grp1, grp2),
     label = my_label,
-    col_plan = col_plan(my_label, starts_with("trt"))
+    col_plan = col_plan(my_label, starts_with("trt"), .drop = TRUE)
   )
   #option 3
   spec_noprint_col_plan2 <- tfrmt(
@@ -875,9 +1221,9 @@ test_that("Suppress printing of groups", {
     "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
   )
 
-  expect_equal(select_col_plan(mock_multi_grp, spec_noprint_row_grp), df_no_grp)
-  expect_equal(select_col_plan(mock_multi_grp, spec_noprint_col_plan1), df_no_grp)
-  expect_equal(select_col_plan(mock_multi_grp, spec_noprint_col_plan2), df_no_grp)
+  expect_equal(apply_col_plan(mock_multi_grp, spec_noprint_row_grp), df_no_grp)
+  expect_equal(apply_col_plan(mock_multi_grp, spec_noprint_col_plan1), df_no_grp)
+  expect_equal(apply_col_plan(mock_multi_grp, spec_noprint_col_plan2), df_no_grp)
 
 })
 
@@ -887,14 +1233,18 @@ test_that("Tidyselect subtraction with span_structure",{
   df <- crossing(label = c("label 1", "label 2", "label 3"),
                  column = c("trt1", "trt2", "pl", "trt1&trt2"),
                  param = c("count", "percent")) %>%
-    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) )) %>%
+    mutate(t_or_p = case_when(
+      column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
+      column %in% c("pl") ~ "Placebo",
+    ))
 
   df_fake_values <- df %>% mutate(values = runif(nrow(df)))
 
   tfrmt_minus_selection <-  tfrmt(
       # Specify columns in the data
       label = label,
-      column = column,
+      column = c(t_or_p, column),
       param = param,
       values = values,
       sorting_cols = c(ord1),
@@ -913,13 +1263,11 @@ test_that("Tidyselect subtraction with span_structure",{
       col_plan = col_plan(
         -starts_with("ord"),
         span_structure(
-          "Treatment",
-          T1 = trt1,
-          T2 = trt2,
-          `T1&T2`= `trt1&trt2`),
+          t_or_p = "Treatment",
+          column = c(T1 = trt1,T2 = trt2,`T1&T2` = `trt1&trt2`)),
         span_structure(
-          "Placebo",
-          PL = pl)
+          t_or_p = "Placebo",
+          column = c(PL = pl))
       )
     )
 
@@ -951,14 +1299,13 @@ test_that("Tidyselect subtraction with span_structure",{
     tfrmt(
       col_plan = col_plan(
         span_structure(
-          "Treatment",
-          T1 = trt1,
-          T2 = trt2,
-          `T1&T2`= `trt1&trt2`),
+          t_or_p = "Treatment",
+          column = c(T1 = trt1,T2 = trt2,`T1&T2` = `trt1&trt2`)),
         span_structure(
-          "Placebo",
-          PL = pl),
-        -starts_with("ord")
+          t_or_p = "Placebo",
+          column = c(PL = pl)),
+        -starts_with("ord"),
+        .drop = TRUE
       )
     )
 
