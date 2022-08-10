@@ -44,8 +44,7 @@ footnote_structure <- function(footnote_text, footnote_loc){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_gt_footnote <- function(gt, tfrmt){
-
-  if(is.null(tfrmt$footnote_plan)){
+      if(is.null(tfrmt$footnote_plan)){
     gt
   } else {
     for (i in 1:length(tfrmt$footnote_plan$struct_list)) {
@@ -117,7 +116,7 @@ apply_gt_footnote <- function(gt, tfrmt){
           )
 
         # groups
-      }else if(names(tfrmt$footnote_plan$struct_list[[i]]$location[1]) == as_label(tfrmt$group[[1]])){
+      }else if(length(tfrmt$footnote_plan$struct_list[[i]]$location)==1 && names(tfrmt$footnote_plan$struct_list[[i]]$location[1]) == as_label(tfrmt$group[[1]])){
         # different scenarios depending on location of grouping
 
         # spanning
@@ -139,8 +138,25 @@ apply_gt_footnote <- function(gt, tfrmt){
                 as.character(tfrmt$footnote_plan$struct_list[[i]]$location[[1]])
               ))
             )
+        # label for specific group
+        }}else if(all(names(tfrmt$footnote_plan$struct_list[[i]]$location) %in% c(as_label(tfrmt$group[[1]]),as_label(tfrmt$label[[2]])))){
+          group<-as_label(tfrmt$group[[1]])
+          label<-as_label(tfrmt$label[[2]])
+          gt_data <- gt$`_data`
 
-      }}
+          # get matching row numbers
+          rows <- which((gt_data[eval(group)] == as.character(tfrmt$footnote_plan$struct_list[[i]]$location[eval(group)])))
+          rows2 <-which(gt_data[eval(label)] == as.character(tfrmt$footnote_plan$struct_list[[i]]$location[eval(label)]))
+
+          match(rows,rows2)
+          gt<- gt %>%
+            tab_footnote(
+              footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
+              locations = cells_stub(rows = rows[rows==rows2]
+            ))
+
+
+        }
 
     }
     gt %>%
