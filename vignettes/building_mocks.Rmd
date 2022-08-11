@@ -60,7 +60,7 @@ the desired outcome is:
 tfrmt_spec <- tfrmt(
   # Specify columns in the data
   label = label,
-  column = column, 
+  column = c(treatment, column), 
   param = param,
   
   # Specify body plan
@@ -137,7 +137,7 @@ tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
     col_plan = col_plan(
       -starts_with("ord"),
       span_structure(
-        treament = "Treatment",
+        treatment = "Treatment",
         column = c(
           T1 = trt1,
           T2 = trt2,
@@ -162,29 +162,29 @@ To add a title, subtitle or footer pass arguments to their respective parameters
 
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
-  # Specify title, subtitle, footer
-  title = "Table Name",
-  subtitle = "Study ID: GSK12345",
-  footer = "A footnote about stuff<br/>Here is a new line with more stuff",
-  
-  # Specify columns in the data
-  label = label,
-  column = column, 
-  param = param,
-  values = value,
-  # Specify column structure
+    # Specify title, subtitle, footer
+    title = "Table Name",
+    subtitle = "Study ID: GSK12345",
+    footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+    
+    # Specify columns in the data
+    label = label,
+    column = c(treatment, column), 
+    param = param,
+    values = value,
+    # Specify column structure
     col_plan = col_plan(
       -starts_with("ord"),
       span_structure(
-        "Treatment",
-        T1 = trt1,
-        T2 = trt2,
-        `T1&T2`= `trt1&trt2`
-        ),
+        treatment = "Treatment",
+        column = c(T1 = trt1,
+                   T2 = trt2,
+                   `T1&T2` = `trt1&trt2`)
+      ),
       span_structure(
-        "Placebo",
-        PL = pl
-        ))
+        treatment = "Placebo",
+        column = c(PL = pl))
+    )
   )
   
 print_mock_gt(tfrmt_spec, df)
