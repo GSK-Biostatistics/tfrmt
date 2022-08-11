@@ -108,7 +108,7 @@ col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
         rename_val <- selected
       }
 
-      if(is_valid_tidyselect_call(quo_get_expr(x[[1]]))){
+      if(is_valid_tidyselect_call(quo_get_expr(x[[1]])) && length(selected) > 1){
         rename_val <- paste0(rename_val, seq_len(length(selected)))
       }
 
@@ -155,15 +155,11 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
         is_subtraction_selection <- grepl("^-",as_label(sel_id))
 
         if(!is_subtraction_selection){
-          if(!is.null(names(selections))){
+          if(!is.null(names(selections)) && names(selections)[[sel_id_idx]] != ""){
 
             rename_val <- names(selections)[[sel_id_idx]]
 
-            if(rename_val == ""){
-              rename_val <- sel_id_col_selections
-            }
-
-            if(is_valid_tidyselect_call(quo_get_expr(sel_id))){
+            if(is_valid_tidyselect_call(quo_get_expr(sel_id)) && length(sel_id_col_selections) > 1){
               rename_val <- paste0(rename_val, seq_len(length(sel_id_col_selections)))
             }
 
