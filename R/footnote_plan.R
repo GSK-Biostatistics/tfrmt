@@ -44,7 +44,10 @@ footnote_structure <- function(footnote_text, footnote_loc){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_gt_footnote <- function(gt, tfrmt){
-      if(is.null(tfrmt$footnote_plan)){
+
+
+
+  if(is.null(tfrmt$footnote_plan)){
     gt
   } else {
     for (i in 1:length(tfrmt$footnote_plan$struct_list)) {
@@ -61,7 +64,8 @@ apply_gt_footnote <- function(gt, tfrmt){
 
 
         # spanning headers
-      }else if (length(tfrmt$column)>1 && length(names(tfrmt$footnote_plan$struct_list[[i]]$location))==1 && names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$column[[1]])){
+        # check if mentioned column is in list of spanning columns
+      }else if (length(tfrmt$column)>1 && length(names(tfrmt$footnote_plan$struct_list[[i]]$location))==1 && names(tfrmt$footnote_plan$struct_list[[i]]$location) %in% str_remove(as.character(tfrmt$column),"~")[1:(length(as.character(tfrmt$column))-1)]){
 
         gt<- gt %>%
           tab_footnote(
@@ -73,7 +77,7 @@ apply_gt_footnote <- function(gt, tfrmt){
 
         # spanned columns - if they specify only spanned
       }else if (length(tfrmt$column)>1 && length(tfrmt$footnote_plan$struct_list[[i]]$location)==1){
-        if (names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$column[[2]])){
+        if (names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$column[[length(tfrmt$column)]])){
 
           # grab all delim strings containing value specified
           delim_list<- gt$`_boxhead`$var[str_detect(gt$`_boxhead`$var,paste0("delim___",as.character(tfrmt$footnote_plan$struct_list[[i]]$location)))]
@@ -92,16 +96,23 @@ apply_gt_footnote <- function(gt, tfrmt){
         }
          # spanned columns - if they specify spanner and spanned
       }else if (length(tfrmt$column)>1 && is.na(names(tfrmt$footnote_plan$struct_list[[i]]$location[2])) == FALSE){
-        if (names(tfrmt$footnote_plan$struct_list[[i]]$location[2]) == as_label(tfrmt$column[[2]])){
-
+        if (names(tfrmt$footnote_plan$struct_list[[i]]$location[length(tfrmt$footnote_plan$struct_list[[i]]$location)]) == as_label(tfrmt$column[[length(tfrmt$column)]])){
         # need to create string with __delim for spanned headers
-        delim_string <- paste0(tfrmt$footnote_plan$struct_list[[i]]$location[1],"___tlang_delim___",tfrmt$footnote_plan$struct_list[[i]]$location[2])
+          delim_list<- gt$`_boxhead`$var[str_detect(gt$`_boxhead`$var,"delim")]
+          delim_string=""
+        # find one mentioned by user
+
+        for(k in 1:(length(tfrmt$footnote_plan$struct_list[[i]]$location)-1)){
+          delim_string<-paste0(delim_string,tfrmt$footnote_plan$struct_list[[i]]$location[k],"___tlang_delim___")
+        }
+        delim_string<-paste0(delim_string,tfrmt$footnote_plan$struct_list[[i]]$location[length(tfrmt$footnote_plan$struct_list[[i]]$location)])
+        delim_string_final<-delim_list[str_detect(delim_list,delim_string)]
 
         gt<- gt %>%
           tab_footnote(
             footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
             locations = cells_column_labels(columns = all_of(
-              as.character(delim_string)
+              as.character(delim_string_final)
             ))
           )
         # labels
