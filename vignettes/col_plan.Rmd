@@ -129,103 +129,9 @@ tfrmt(
 ```
 
 
-## Editing column spanners
+# Editing and Moving Column Spanners
 
- The `col_plan` accepts a combination of tidyselect expressions, column names, and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to edit and reorder column spanners more specifically. These are placed strategically in the `col_plan` to inform `tfrmt` of the hierarchy of spanners and columns.
- 
-A `span_structure` is constructed from a collection of named arguments, where the name of the argument is the column variable and then the values entered are the values in that column, represented by a combination of tidyselect expressions and column names.
- 
-Let's try putting a moving the spanner over the columns starting with "col":
-
-```{r}
-tfrmt(
-    group = group,
-    label = label,
-    param = parm,
-    values = val,
-    column = my_col,
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-    ),
-    col_plan = col_plan(
-      group, 
-      label, 
-      span_structure(
-        "column cols",
-        starts_with("col")
-        ),
-      new_col_3 = mycol3,  
-     - mycol5            
-    )
-  ) %>% 
-  print_to_gt(dat)
-```
-
-A `span_structure` can also contain one or more child `span_structure` entries, defining a hierarchy of spanners:
-
-```{r}
-tfrmt(
-    group = group,
-    label = label,
-    param = parm,
-    values = val,
-    column = my_col,
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-    ),
-    col_plan = col_plan(
-      group, 
-      label, 
-      span_structure(
-        "column cols",
-        span_structure(
-          "cols 1,2",
-          col1, col2
-        ),
-        span_structure(
-          "col 4",
-          col4
-        )
-        ))
-  ) %>% 
-  print_to_gt(dat)
-```
- 
-Finally, we can do renaming as well:
-
-```{r}
-tfrmt(
-    group = group,
-    label = label,
-    param = parm,
-    values = val,
-    column = my_col,
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-    ),
-    col_plan = col_plan(
-      group, 
-      label, 
-      span_structure(
-        "column cols",
-        span_structure(
-          "cols 1,2",
-          col1, col2
-        ),
-        span_structure(
-          "col 4",
-          `new-col4` = col4
-        )
-        ))
-  ) %>% 
-  print_to_gt(dat)
-```
- 
- 
-
-# Option 2: >1 `column` variable
-
-Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable. With multiple `column` variables, however, specifying column ordering in the `col_plan` is a bit trickier. By default, `tfrmt` will display the columns as they appear in the data but these can be customized in the `col_plan`. The main limitation with >1 `column` variable is the inability to specify column spanners in the `col_plan`; the spanning labels will be created using the higher level `column` variable values, which will be displayed as-is. As such, there is a higher importance for preparing the analysis results data for display. 
+Multiple `column` variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the `column` variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label. Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable within col_plan. To edit or move the columns based on the the column spanners, span_structure must be used.
 
 Let's consider an example dataset with multiple `column` variables:
 
@@ -276,6 +182,7 @@ tfrmt(
 When there are multiple `column` variables provided, these are essentially combined together behind the scenes. This means that the column order can be defined by any of the `column` variables, including those representing the spanning. Specifically, we may order columns by leveraging `contains()` to reference any portion of those names.
 
 Reordering with multiple `column` variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. Let's suppose we want to move the "col 4" column to the beginning and also reorder "col1" and "col2". To achieve this, we can select "col 4" and then "col2" and finally all the other columns. 
+
 ```{r}
 tfrmt(
     group = group,
@@ -289,9 +196,9 @@ tfrmt(
     col_plan = col_plan(
       group, 
       label, 
-      contains("col 4"),
+      span_structure(span1 = c("col 4")),
       contains("col2"),
-      starts_with("col"),
+      everything(),
       new_col_3 = mycol3,  
       -mycol5            
     )
