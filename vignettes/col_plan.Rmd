@@ -20,7 +20,7 @@ library(tibble)
 library(dplyr)
 ```
 
-The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labelled and ordering. Similar to the column styling plan (`col_style_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like a glorified version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion. For column spanning, multiple column columns need to exist in the input dataset. 
+The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labelles and ordering. Similar to the column styling plan (`col_style_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like an advanced version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion, as well as preferentially selecting the _last_ instance a column is selected. For column spanning, multiple column columns need to exist in the input dataset. 
 
 
 Let's look at the workflow in more detail with the following dataset which includes a single `column` variable:
@@ -205,7 +205,7 @@ dat <- tribble(
 )
 ```
 
-For this table we want to ensure `"Treatment"` is always before `"Placebo"` and that `"mean"` comes before `"sd"`. To do that we can make one `span_structure` that specifices both the order of the `span` level and the order of the `my_col`  level. 
+For this table we want to ensure `"Treatment"` is always before `"Placebo"` and that `"mean"` comes before `"sd"`. To do that we can make one `span_structure` that specifies both the order of the `span` level and the order of the `my_col`  level. 
 
 ```{r}
 tfrmt(
