@@ -22,7 +22,7 @@ The following formatting functions may be passed to `frmt_structure`:
 
 ## Format (`frmt`)
 
-The `frmt` object is used to specify how a value should appear in a table: its number of digits, any white space padding, or extra characters, such as percents or parentheses. In pharma, it is a common convention to use x's to represent data values in mock tables. As such, the `frmt` complies with this familiar convention. For example:
+The `frmt` object is used to specify how a value should appear in a table: its number of digits, any white space padding, or extra characters, such as percentages or parentheses. In pharma, it is a common convention to use x's to represent data values in mock tables. As such, the `frmt` complies with this familiar convention. For example:
 
 - `frmt(expression = "xxx.x%")` displays 3.829765 as "  3.8%" (note the leading whitespace!)
 - `frmt(expression = "xxx.x%", missing = "Missing")` displays NA as "Missing"
@@ -97,7 +97,7 @@ A user can be as specific as they'd like, by providing any of these in combinati
 
 # Layering format structures
 
-The user may provide as many `frmt_structure` objects as needed. It is important to note that if there are overlapping `frmt_structure` objects, the last one specified will supercede the previous. In our CDISC demographics table example, the following `frmt_structures` are needed to cover all values:
+The user may provide as many `frmt_structure` objects as needed. It is important to note that if there are overlapping `frmt_structure` objects, the last one specified will supersede the previous. In our CDISC demographics table example, the following `frmt_structures` are needed to cover all values:
 
 ```
 body_plan(

@@ -9,7 +9,7 @@ row_grp_plan(..., label_loc = element_row_grp_loc(location = "indented"))
 \arguments{
 \item{...}{Row group structure objects separated by commas}
 
-\item{label_loc}{Boolean specifying whether or not the top-level group should be a spanning label}
+\item{label_loc}{\code{\link[=element_row_grp_loc]{element_row_grp_loc()}} object specifying location}
 }
 \value{
 row_grp_plan object

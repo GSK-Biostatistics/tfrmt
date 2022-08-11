@@ -24,6 +24,7 @@ articles:
 - title:
   navbar: More
   contents:
+  - print_to_ggplot
   - faq
   - mock_examples
   - unusual_tables

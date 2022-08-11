@@ -15,11 +15,11 @@
 #' @param title title of the table
 #' @param subtitle subtitle of the table
 #' @param footer footers of the table
-#' @param row_grp_plan plan of the row groups blocking. Takes a `row_grp_plan`
-#' @param body_plan combination and formatting of the input data
-#' @param col_style_plan how to style columns? including alignment (left, right, character) and width
+#' @param row_grp_plan plan of the row groups blocking. Takes a [row_grp_plan()]
+#' @param body_plan combination and formatting of the input data. Takes a [body_plan()]
+#' @param col_style_plan how to style columns? including alignment (left, right, character) and width. Takes a [col_style_plan()]
 #' @param col_plan a col_plan object which is used to select, rename, and nest
-#'   columns
+#'   columns. Takes a [col_plan()]
 #' @param sorting_cols which columns determine sorting of output
 #' @param ... These dots are for future extensions and must be empty.
 #'
@@ -30,8 +30,8 @@
 #'   - tfrmt allows users to pass `vars`, `quo`, and unquoted expressions to a
 #'   variety of arguments, such as `group`, `label`, `param`, `values`,
 #'   `column`, and `sorting_cols`. Users accustomed to tidyverse semantics
-#'   should be familiar with this behavior. However, there is an important
-#'   behavior difference between tfrmt and normal tidyverse functions. Because
+#'   should be familiar with this behaviour. However, there is an important
+#'   behaviour difference between tfrmt and normal tidyverse functions. Because
 #'   the data are not a part of tfrmt, it does not know when a value being
 #'   passed to it is intended to be an unquoted expression representing a column
 #'   name or an object from the environment. As such, it preferentially uses the
