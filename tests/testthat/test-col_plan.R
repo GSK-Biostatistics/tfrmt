@@ -1258,6 +1258,36 @@ test_that("col_plan returns correct errors",{
 
 })
 
+test_that("span_structure misc, including errors",{
+
+  ## unnamed values
+  expect_error(
+    span_structure(`blah blah blah`),
+    "Entries of a span_stucture must be named:\n span_structure(`blah blah blah`)",
+    fixed = TRUE
+  )
+
+  ## weird values
+  expect_error(
+    span_structure(
+      name_col = 1i
+    ),
+    "Unexpected entry type in span_structure()",
+    fixed = TRUE
+  )
+
+  ## other functions values
+  expect_error(
+    span_structure(
+      name_col = vars(matrix())
+    ),
+    "Invalid entry: `matrix()`\nOnly selection helpers (See <https://tidyselect.r-lib.org/reference>),",
+    fixed = TRUE
+  )
+
+})
+
+
 
 # this happens in the select_col_plan, rather than the row_grp_plan
 test_that("Suppress printing of groups", {

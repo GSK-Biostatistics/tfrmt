@@ -148,17 +148,13 @@ check_span_structure_dots <- function(x){
     }else if(is.call(x)){
       if(is_valid_tidyselect_call(x)){
         quo(!!x)
-      } else if(is_valid_tfrmt_col_plan_call(x)){
-        browser()
-        quo(q)
       }else if(is_valid_quo_call(x)){
         return(eval_tidy(x))
       }else{
         abort(
           message = paste0(
             "Invalid entry: `",format(x),"`\n",
-          "Only span_structures (`span_structure()`), ",
-          "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
+          "Only selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
           " or unquoted expressions representing variable names ",
           " can be entered as contents.",
           " Changing the names of individual variables using new_name = old_name syntax is allowable"
