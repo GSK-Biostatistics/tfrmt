@@ -24,13 +24,13 @@ The purpose of the column plan (`col_plan`) is to allow the user to specify how 
 
 The specification and behavior of the `col_plan` is dependent on the number of column variables that are provided to the tfrmt:
 
-| col_plan options:        | 1 column variable | >1 column variable                |
-| ------------------------ | ----------------- | --------------------------------- |
-| **Rename columns**       | Yes               | Yes (lowest level col only)       |
-| **Reorder columns**      | Yes               | Yes                               |
-| **Add spanning labels**  | Yes               | No (provided by upper level cols) |
+| col_plan options:          | 1 column variable | >1 column variable                |
+| -------------------------- | ----------------- | --------------------------------- |
+| **Rename columns**         | Yes               | Yes                               |
+| **Reorder columns**        | Yes               | Yes                               |
+| **Rename spanning labels** | NA                | Yes                               |
 
-As shown in the table, the `col_plan` is most powerful in conjunction with the use of a single `column` variable. However, in many cases, such as when a user performs the analysis by treatment group, these "by" variables can essentially be re-purposed as data-driven spanners in the form of upper level `column` variables. 
+As shown in the table, the `col_plan` is most powerful in conjunction with the use of multiple `column` variables. In many cases, such as when a user performs the analysis by treatment group, these "by" variables can essentially be re-purposed as data-driven spanners in the form of upper level `column` variables. 
 
 Let's look at each of these key workflows in more detail.
 
@@ -62,7 +62,7 @@ dat <- tribble(
 
 ## Simple Column Selection
 
-In the case of a single column variable with no column spanners, `col_plan` behaves identically to `dplyr::select`. 
+In the case of a single column variable with no column spanners, `col_plan` behaves similarly to `dplyr::select`. 
 
 Let's say we want to remove one of the columns:
 ```{r}
@@ -105,15 +105,37 @@ tfrmt(
   print_to_gt(dat)
 ```
 
+Unlike `dplyr::select` though, col_plan respects the _last_ time a column is defined in the plan. This allows for reordering/moving a column to the end very easily.
+
+```{r}
+tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    values = val,
+    column = my_col,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    col_plan = col_plan(
+      group, 
+      label, 
+      starts_with("col"),
+      everything(),
+      col1         
+    )
+  ) %>% 
+  print_to_gt(dat)
+```
 
 
-## Adding column spanners
+## Editing column spanners
 
- The `col_plan` accepts a combination of tidyselect expressions, column names, and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to add column spanners. These are placed strategically in the `col_plan` to inform `tfrmt` of the hierarchy of spanners and columns.
+ The `col_plan` accepts a combination of tidyselect expressions, column names, and/or span structure (`span_structure`) objects. Recall that `*_structure` objects are for modifying the *contents* (i.e., text) of the table; in the `col_plan`, we use `span_structure`s to edit and reorder column spanners more specifically. These are placed strategically in the `col_plan` to inform `tfrmt` of the hierarchy of spanners and columns.
  
-A `span_structure` is constructed from a label which defines the spanner text, and a combination of tidyselect expressions and column names.
+A `span_structure` is constructed from a collection of named arguments, where the name of the argument is the column variable and then the values entered are the values in that column, represented by a combination of tidyselect expressions and column names.
  
-Let's try putting a spanner over the columns starting with "col":
+Let's try putting a moving the spanner over the columns starting with "col":
 
 ```{r}
 tfrmt(
