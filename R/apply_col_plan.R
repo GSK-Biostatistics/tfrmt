@@ -76,7 +76,6 @@ create_col_order <- function(cp, columns, data_names){
 }
 
 col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
-
   ## ensure data_names order matches preselected_cols
   split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
 
@@ -100,13 +99,9 @@ col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
     split_data_names <- split_data_names %>%
       filter(!!col_quo %in% selected)
 
-    if(!is.null(names(x))){
+    if(!is.null(names(x)) && names(x) != ""){
 
       rename_val <- names(x)
-
-      if(rename_val == ""){
-        rename_val <- selected
-      }
 
       if(is_valid_tidyselect_call(quo_get_expr(x[[1]])) && length(selected) > 1){
         rename_val <- paste0(rename_val, seq_len(length(selected)))
