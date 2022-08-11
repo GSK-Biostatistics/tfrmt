@@ -41,7 +41,8 @@ Next, because our data is standardized as an analysis results dataset, we can pr
   - `AEBODYSYS` defines the body systems and overall grouping of the data.
   - `AETERM` defines the labels to display in the table.
   - `value` defines the values to present in the table.
-  - `treatment` defines the treatments and column for each value.
+  - `treatment` defines the treatment for each value.
+  - `col` defines the column for each value.
   - `param` is the column that describes the params of the `value` column. "AEs" indicates that the number in `value` represents the total counts, "n" represents the count for the specific AE, "pct" is the percent of the treatment population, and finally "pval" is the p-value.
   
 With this information we can construct a template AE `tfrmt`:
@@ -52,7 +53,7 @@ ae_tfrmt_template <- tfrmt(
     group = AEBODSYS,
     label = AETERM,
     param = param,
-    column = treatment,
+    column = c(treatment, col),
     value = value,
   body_plan = body_plan(
     ## All entries where the param column is `AEs` (representing total counts)
@@ -111,7 +112,7 @@ ae_base_tfrmt_template <- function(tfrmt_obj){
     group = AEBODSYS,
     label = AETERM,
     param = param,
-    column = treatment,
+    column = c(treatment, col),
     value = value,
     body_plan = body_plan(
       ## All entries where the param column is `AEs` (representing total counts)
@@ -190,25 +191,27 @@ study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>%
     
     ## remove order columns from final table
     col_plan = col_plan(
-      -ord1,-ord2,
       span_structure(
-        "Xanomeline High Dose (N=84)",
-        `n (%)` = `Xanomeline High Dose-n_pct` ,
-        `[AEs]` = `Xanomeline High Dose-AEs`
+        treatment = c(
+          "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
+          "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
+          "Placebo (N=86)" = Placebo
+        ),
+        col = c(
+          `n (%)` = `n_pct` ,
+          `[AEs]` = `AEs`
+          )
       ),
       span_structure(
-        "Xanomeline Low Dose (N=84)",
-        `n (%)` = `Xanomeline Low Dose-n_pct` ,
-        `[AEs]` = `Xanomeline Low Dose-AEs`
+        treatment = c(
+          "Fisher's Exact p-values" = fisher_pval
+        ),
+        col = c(
+          `Placebo vs. Low Dose` = `p_low` ,
+          `Placebo vs. High Dose` = `p_high`
+        )
       ),
-      span_structure("Placebo (N=86)",
-                     `n (%)` = `Placebo-n_pct` ,
-                     `[AEs]` = `Placebo-AEs`),
-      span_structure(
-        "Fisher's Exact p-values",
-        `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
-        `Placebo vs. High Dose` = `fisher_pval-p_high`
-      )
+      - starts_with("ord")
     )
   )
 
@@ -226,7 +229,10 @@ data_ae2 <- data_ae %>%
   ungroup %>% 
   filter(pct_high >10) %>% 
   select(-pct_high) %>% 
-  unite("treatment", c(col2, col1), sep = "-")
+  rename(
+    treatment = col2,
+    col = col1
+  )
 
 study_ae_tfrmt_multi_layer %>% 
   print_to_gt(data_ae2) %>% 
@@ -283,7 +289,7 @@ tfrmt(
     group = AEBODSYS,
     label = AETERM,
     param = param,
-    column = treatment,
+    column = c(treatment,col),
     value = value,
     
     body_plan = body_plan(
@@ -308,25 +314,27 @@ tfrmt(
     
     ## remove order columns from final table
     col_plan = col_plan(
-      -ord1,-ord2,
       span_structure(
-        "Xanomeline High Dose (N=84)",
-        `n (%)` = `Xanomeline High Dose-n_pct` ,
-        `[AEs]` = `Xanomeline High Dose-AEs`
+        treatment = c(
+          "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
+          "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
+          "Placebo (N=86)" = Placebo
+        ),
+        col = c(
+          `n (%)` = `n_pct` ,
+          `[AEs]` = `AEs`
+          )
       ),
       span_structure(
-        "Xanomeline Low Dose (N=84)",
-        `n (%)` = `Xanomeline Low Dose-n_pct` ,
-        `[AEs]` = `Xanomeline Low Dose-AEs`
+        treatment = c(
+          "Fisher's Exact p-values" = fisher_pval
+        ),
+        col = c(
+          `Placebo vs. Low Dose` = `p_low` ,
+          `Placebo vs. High Dose` = `p_high`
+        )
       ),
-      span_structure("Placebo (N=86)",
-                     `n (%)` = `Placebo-n_pct` ,
-                     `[AEs]` = `Placebo-AEs`),
-      span_structure(
-        "Fisher's Exact p-values",
-        `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
-        `Placebo vs. High Dose` = `fisher_pval-p_high`
-      )
+      - starts_with("ord")
     )
     
   ) %>% 
