@@ -532,6 +532,95 @@ test_that("Test applying a col_plan - renaming twice",{
 
 })
 
+test_that("Test applying a col_plan - tidyselect with renaming",{
+
+  col_vars <- vars(col1, col2)
+
+  cp_keep <- col_plan(
+    span_structure(col1 = c(new_col_name = starts_with("test")), col2 = c(val2, everything())),
+    everything(),
+    first_col,
+    starts_with("col")
+  )
+
+  cp_drop <- col_plan(
+    span_structure(col1 = c(new_col_name = starts_with("test")), col2 = c(val2, everything())),
+    everything(),
+    first_col,
+    starts_with("col"),
+    .drop = TRUE
+  )
+
+  name_col <- c(
+    "first_col",
+    "test one___tlang_delim___val1",
+    "test two___tlang_delim___val2",
+    "extra_col",
+    "col1",
+    "col2",
+    "col3"
+  )
+
+  cp_vars_keep <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_keep,
+    vars(
+      new_col_name1___tlang_delim___val1 = `test one___tlang_delim___val1`,
+      new_col_name2___tlang_delim___val2 = `test two___tlang_delim___val2`,
+      extra_col,
+      first_col,
+      col1,
+      col2,
+      col3
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  cp_vars_drop <- create_col_order(cp = cp_drop, columns = col_vars, data_names = name_col)
+
+  expect_equal(
+    cp_vars_drop,
+    vars(
+      new_col_name1___tlang_delim___val1 = `test one___tlang_delim___val1`,
+      new_col_name2___tlang_delim___val2 = `test two___tlang_delim___val2`,
+      extra_col,
+      first_col,
+      col1,
+      col2,
+      col3
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+  name_col_mixed_order <- c(
+    "col2",
+    "first_col",
+    "test two___tlang_delim___val2",
+    "test one___tlang_delim___val1",
+    "extra_col",
+    "col1",
+    "col3"
+  )
+
+  cp_vars_keep_mixed_order <- create_col_order(cp = cp_keep, columns = col_vars, data_names = name_col_mixed_order)
+
+  expect_equal(
+    cp_vars_keep_mixed_order,
+    vars(
+      new_col_name1___tlang_delim___val2 = `test two___tlang_delim___val2`,
+      new_col_name2___tlang_delim___val1 = `test one___tlang_delim___val1`,
+      extra_col,
+      first_col,
+      col2,
+      col1,
+      col3
+    ),
+    ignore_attr = c(".Environment")
+  )
+
+})
+
 test_that("Test applying a col_plan - ordering on multiple columns",{
 
   col_vars <- vars(c1, c2)
