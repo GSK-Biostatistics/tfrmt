@@ -19,9 +19,10 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     ungroup() %>%
     mutate(TEMP_row = row_number())
 
-  TEMP_appl_row = table_frmt_plan %>%
+  TEMP_appl_row <- table_frmt_plan %>%
     map(fmt_test_data, .data, label, group, param)
-  TEMP_fmt_to_apply = table_frmt_plan %>% map(~.$frmt_to_apply[[1]])
+
+  TEMP_fmt_to_apply <- table_frmt_plan %>% map(~.$frmt_to_apply[[1]])
 
   dat_plus_fmt <- tibble(
     TEMP_appl_row,
@@ -43,7 +44,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     map_dfr(function(x){
 
       cur_fmt <- x %>%
-        pull(TEMP_fmt_to_apply) %>%
+        pull(.data$TEMP_fmt_to_apply) %>%
         .[1] %>%
         .[[1]]
 
@@ -121,7 +122,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
       distinct() %>%
       group_by(!!!group, !!label) %>%
       mutate(test = sum(!!parse_expr(parm_expr))) %>%
-      filter(test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls)) %>%
+      filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls)) %>%
       ungroup()
     join_by <- c(group, label, param) %>%
       map_chr(as_label) %>%

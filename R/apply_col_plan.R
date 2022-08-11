@@ -201,8 +201,8 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
 
   split_data_names %>%
     left_join(ords, by = names(col_selections)) %>%
-    arrange(ord_col) %>%
-    select(-ord_col) %>%
+    arrange(.data$ord_col) %>%
+    select(-.data$ord_col) %>%
     unite_df_to_data_names(preselected_cols, column_names)
 
 }
@@ -271,7 +271,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
    ) %>%
     mutate(
       subtraction_status = str_detect(.data$original,"^-"),
-      original := str_remove(.data$original,"^-")
+      original = str_remove(.data$original,"^-")
     ) %>%
     separate(
       .data$original,

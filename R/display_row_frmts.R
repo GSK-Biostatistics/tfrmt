@@ -51,9 +51,9 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
                                  tfrmt$group,
                                  tfrmt$label,
                                  tfrmt$param) %>%
-      rename(frmt_applied = TEMP_fmt_to_apply) %>%
+      rename(frmt_applied = .data$TEMP_fmt_to_apply) %>%
       select(-starts_with("TEMP")) %>%
-      mutate(frmt_type = map_chr(frmt_applied, function(x) unlist(class(x)[1])))
+      mutate(frmt_type = map_chr(.data$frmt_applied, function(x) unlist(class(x)[1])))
 
   } else if (convert_to_txt == TRUE) {
     output <- match_frmt_to_rows(.data ,
@@ -61,11 +61,11 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
                                  tfrmt$group,
                                  tfrmt$label,
                                  tfrmt$param) %>%
-      rename(frmt_applied = TEMP_fmt_to_apply) %>%
+      rename(frmt_applied = .data$TEMP_fmt_to_apply) %>%
       select(-starts_with("TEMP")) %>%
       mutate(frmt_type = map_chr(frmt_applied, function(x) unlist(class(x)[1])),
-             frmt_details = map_chr(frmt_applied, format)) %>%
-      select(-frmt_applied)
+             frmt_details = map_chr(.data$frmt_applied, format)) %>%
+      select(-.data$frmt_applied)
 
     # extract < frmt > type from frmt_details
     output <- output %>%
