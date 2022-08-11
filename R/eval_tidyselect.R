@@ -27,10 +27,3 @@ eval_tidyselect_on_colvec.quosure <- function(x, column_vec){
   names(eval_select(expr(c(!!x)), data = column_vec))
 }
 
-eval_tidyselect_on_colvec.span_structure <- function(x, column_vec){
-  do.call('c',lapply(x$span_cols, eval_tidyselect_on_colvec, column_vec = column_vec))
-}
-
-eval_tidyselect_on_colvec.span_structures <- function(x, column_vec){
-  do.call('c',lapply(x$span_cols, eval_tidyselect_on_colvec, column_vec = column_vec))
-}
