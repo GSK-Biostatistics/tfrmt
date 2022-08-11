@@ -47,12 +47,6 @@ Alternatively, once the gt table is produced, use the
 \code{\link[gt]{cols_hide}} function to remove un-wanted columns.
 }
 }
-\section{Images}{
- Here are some example outputs:
-
-\if{html}{\out{ \verb{r "<img src=\\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg\\" style=\\"width:100\\\\\%;\\">"} }}
-}
-
 \examples{
 
 library(dplyr)
@@ -102,4 +96,5 @@ renaming_col_plan_ex2 <- col_plan(
     c3 = c(`the results column` = col_5)
    )
  )
+
 }
