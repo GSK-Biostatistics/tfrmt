@@ -89,11 +89,6 @@
 #'     c3 = c(`the results column` = col_5)
 #'    )
 #'  )
-#' @section Images: Here are some example outputs:
-#'
-#'   \if{html}{\out{ `r "<img
-#'   src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg\"
-#'   style=\"width:100\\%;\">"` }}
 #'
 col_plan <- function(..., .drop = FALSE){
 
