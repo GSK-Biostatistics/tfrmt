@@ -31,7 +31,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Failure while aligning data values"
     )
 
-  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$values) %>% map_chr(as_label))
+  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$values) %>% map_chr(as_label))
   data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
 
   tbl_dat_wide <- tbl_dat %>%

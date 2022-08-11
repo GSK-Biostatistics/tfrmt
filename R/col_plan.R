@@ -272,8 +272,8 @@ get_span_structure_dots.span_structures <- function(x){
 ## -----------------------------------------------
 ## When we have span structures in the col_plan,
 ## edit data to add in columns with the spanners to allow
-## us to have consistent behavior across multi-column
-## dfs and span_structs
+## us to have consistent behaviour across multi-column
+## dfs and span_structures
 ##-----------------------------------------------
 #' @importFrom purrr quietly
 apply_span_structures_to_data <- function(tfrmt_obj, x){

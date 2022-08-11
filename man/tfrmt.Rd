@@ -41,14 +41,14 @@ tfrmt(
 
 \item{footer}{footers of the table}
 
-\item{row_grp_plan}{plan of the row groups blocking. Takes a \code{row_grp_plan}}
+\item{row_grp_plan}{plan of the row groups blocking. Takes a \code{\link[=row_grp_plan]{row_grp_plan()}}}
 
-\item{body_plan}{combination and formatting of the input data}
+\item{body_plan}{combination and formatting of the input data. Takes a \code{\link[=body_plan]{body_plan()}}}
 
-\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width}
+\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width. Takes a \code{\link[=col_style_plan]{col_style_plan()}}}
 
 \item{col_plan}{a col_plan object which is used to select, rename, and nest
-columns}
+columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 
 \item{sorting_cols}{which columns determine sorting of output}
 
@@ -67,8 +67,8 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt
 \item tfrmt allows users to pass \code{vars}, \code{quo}, and unquoted expressions to a
 variety of arguments, such as \code{group}, \code{label}, \code{param}, \code{values},
 \code{column}, and \code{sorting_cols}. Users accustomed to tidyverse semantics
-should be familiar with this behavior. However, there is an important
-behavior difference between tfrmt and normal tidyverse functions. Because
+should be familiar with this behaviour. However, there is an important
+behaviour difference between tfrmt and normal tidyverse functions. Because
 the data are not a part of tfrmt, it does not know when a value being
 passed to it is intended to be an unquoted expression representing a column
 name or an object from the environment. As such, it preferentially uses the

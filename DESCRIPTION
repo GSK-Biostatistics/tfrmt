@@ -21,7 +21,8 @@ Authors@R:
              person(given = "Karima",
                     family = "Ahmad",
                     role = c("aut"),
-                    email = c("karima.j.ahmad@gsk.com")),
+                    email = "karima.j.ahmad@gsk.com",
+                    comment = c(ORCID = "0000-0002-8784-1712")),
             person(given = "Shannon",
                     family = "Haughton",
                     role = c("aut"),
@@ -30,6 +31,7 @@ Authors@R:
 Description: Creates a framework to store and apply display metadata to Analysis
     Results Datasets (ARDs). The use of tfrmt allows users to define table 
     format and styling without the data, and later apply the format to the data.
+Language: en-GB
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -39,7 +41,10 @@ Suggests:
     covr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    patchwork,
+    survival,
+    ggfortify
 Imports: 
     magrittr,
     dplyr,
@@ -50,7 +55,8 @@ Imports:
     gt (>= 0.6.0),
     tidyselect,
     forcats,
-    tibble
+    tibble,
+    ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://GSK-Biostatistics.github.io/tfrmt/,

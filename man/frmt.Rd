@@ -27,13 +27,13 @@ contents. By defining in this way, the formats can be
 layered to be more specific and general cell styling can be done first.
 
 \code{frmt()} is the base definition of a format. This defines spacing, rounding,
-and missing behavior.
+and missing behaviour.
 
 \code{frmt_combine()} is used when two or more rows need to be combined into a
 single cell in the table. Each of the rows needs to have a defined \code{frmt()}
 and need to share a label.
 
-\code{frmt_when()} is used when a rows format behavior is dependent on the value itself and is written similarly to \code{\link[dplyr:case_when]{dplyr::case_when()}}.
+\code{frmt_when()} is used when a rows format behaviour is dependent on the value itself and is written similarly to \code{\link[dplyr:case_when]{dplyr::case_when()}}.
 The left hand side of the equation is a \code{"TRUE"}for the default case or the right hand side of a boolean expression \code{">50"}.
 }
 \details{
