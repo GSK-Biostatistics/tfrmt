@@ -237,6 +237,10 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
     mutate(across(c(!!!group), fct_inorder),
            ..tfrmt_row_grp_lbl = FALSE)
 
+  # ensure label is character
+  .data <- .data %>%
+    mutate(across(!!label, as.character))
+
   if(is.null(element_row_grp_loc)){
     indent = "  "
   } else if(element_row_grp_loc$location %in% c("spanning", "column") & length(group) > 0){
