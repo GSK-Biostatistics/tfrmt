@@ -11,6 +11,7 @@
 #' @importFrom tidyr unnest nest
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
+#' @importFrom stringr str_split
 apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
 
   # Locate which groups need which formatting
@@ -42,7 +43,16 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     unnest(.data$data)
 
   # get max character width for each column in the full data
-  dat_max_widths <- .data %>% summarise(across(everything(), ~max(nchar(.x), na.rm = TRUE)))
+  dat_max_widths <- .data %>%
+    summarise(across(everything(), function(x) {
+      if (is.character(x)) {
+        max(sapply(str_split(x, "\\n"), function(y) {
+          max(nchar(y), na.rm = TRUE)
+        }), na.rm = TRUE)
+      } else{
+        max(nchar(x), na.rm = TRUE)
+      }
+    }))
 
   # apply group block function to data subsets
   add_ln_df <- map2_dfr(dat_plus_block$data,
@@ -65,7 +75,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
 
 
 
-#' Apply row group block labeling to data
+#' Apply row group block labelled to data
 #'
 #' @param .data data
 #' @param element_row_grp_loc element object specifying row group label location
@@ -156,6 +166,7 @@ grp_row_test_data <- function(cur_block, .data, group){
 apply_grp_block <- function(.data, group, element_block, widths){
 
   if (!is.null(element_block$post_space)){
+
     # create add-on row
     # utilize TEMP_row to retain the ordering
     grp_row_add <- .data %>%
@@ -186,9 +197,14 @@ apply_grp_block <- function(.data, group, element_block, widths){
 #' @importFrom stringr str_sub
 fill_post_space <- function(post_space, width){
 
+  ## if only white space, no need to make wider for visuals
+  if(grepl("^\\s*$", post_space)){
+    return(" ")
+  }
+
   length_post_space <- nchar(post_space)
   reps <- ceiling(width/length_post_space)
-  fill_val <- rep(post_space, reps) %>% paste(collapse = "") %>% str_sub(1, width)
+  fill_val <- strrep(post_space, reps) %>% str_sub(1, width)
 
   return(fill_val)
 

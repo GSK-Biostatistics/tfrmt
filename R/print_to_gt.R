@@ -200,7 +200,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     format_gt_column_labels(.data) %>%
     apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
-      style = cell_text(whitespace = "pre", align = align),
+      style = cell_text(whitespace = "pre-wrap", align = align),
       locations = cells_body(columns = everything())
     )
 
@@ -213,7 +213,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   gt_out_final  <- gt_out %>%
     tab_style(
       style = list(
-        cell_text(whitespace = "pre", align = "left")
+        cell_text(whitespace = "pre-wrap", align = "left")
       ),
       locations = list(cells_stub(), cells_row_groups())
     ) %>%

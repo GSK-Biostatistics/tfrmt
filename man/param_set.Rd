@@ -9,7 +9,8 @@ param_set(...)
 \arguments{
 \item{...}{Series of name-value pairs, optionally formatted using
 \code{glue::glue()} syntax (note \code{glue} syntax is required for combined
-parameters). For combined parameters (e.g., "{min}, {max}"), value should
+parameters).The name represents the parameter and the value represents the number of places to round the parameter to.
+For combined parameters (e.g., "{min}, {max}"), value should
 be a vector of the same length (e.g., c(1,1)).}
 }
 \value{
@@ -21,7 +22,7 @@ Set custom parameter-level significant digits rounding
 \details{
 Type \code{param_set()} in console to view package defaults. Use of the
 function will add to the defaults and/or override included defaults of the
-same name. For values that are integers, use \code{NA} so no demical places will
+same name. For values that are integers, use \code{NA} so no decimal places will
 be added.
 }
 \examples{

@@ -19,9 +19,10 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     ungroup() %>%
     mutate(TEMP_row = row_number())
 
-  TEMP_appl_row = table_frmt_plan %>%
+  TEMP_appl_row <- table_frmt_plan %>%
     map(fmt_test_data, .data, label, group, param)
-  TEMP_fmt_to_apply = table_frmt_plan %>% map(~.$frmt_to_apply[[1]])
+
+  TEMP_fmt_to_apply <- table_frmt_plan %>% map(~.$frmt_to_apply[[1]])
 
   dat_plus_fmt <- tibble(
     TEMP_appl_row,
@@ -43,7 +44,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     map_dfr(function(x){
 
       cur_fmt <- x %>%
-        pull(TEMP_fmt_to_apply) %>%
+        pull(.data$TEMP_fmt_to_apply) %>%
         .[1] %>%
         .[[1]]
 
@@ -104,15 +105,35 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
   parm_expr <- expr_to_filter(param, cur_fmt$param_val)
 
 
+
   filter_expr <- paste(
       c(lbl_expr,grp_expr,parm_expr),
       collapse = "&"
     ) %>%
     parse_expr()
 
-  .data %>%
-    filter(!!filter_expr) %>%
+  out <- .data %>%
+    filter(!!filter_expr)
+
+  # Protect against incomplete frmt_combines
+  if(is_frmt_combine(cur_fmt$frmt_to_apply[[1]])){
+    complet_combo_grps <- out %>%
+      select(!!!group, !!label, !!param) %>%
+      distinct() %>%
+      group_by(!!!group, !!label) %>%
+      mutate(test = sum(!!parse_expr(parm_expr))) %>%
+      filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls)) %>%
+      ungroup()
+    join_by <- c(group, label, param) %>%
+      map_chr(as_label) %>%
+      keep(~. != "<empty>")
+
+    out <- complet_combo_grps %>%
+      left_join(out, by = join_by)
+  }
+  out %>%
     pull(.data$TEMP_row)
+
 }
 
 
@@ -123,7 +144,6 @@ expr_to_filter <- function(cols, val){
 }
 
 expr_to_filter.quosure <- function(cols, val){
-
   ## If is missing a quosure, nothing to filter
   if(quo_is_missing(cols)){
     return("TRUE")

@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata To Analysis Results Datasets
-Version: 0.0.0.9000
+Version: 0.0.0.1100
 Authors@R: 
     c(person(given = "Christina",
              family = "Fillmore",
@@ -21,7 +21,8 @@ Authors@R:
              person(given = "Karima",
                     family = "Ahmad",
                     role = c("aut"),
-                    email = c("karima.j.ahmad@gsk.com")),
+                    email = "karima.j.ahmad@gsk.com",
+                    comment = c(ORCID = "0000-0002-8784-1712")),
             person(given = "Shannon",
                     family = "Haughton",
                     role = c("aut"),
@@ -30,16 +31,20 @@ Authors@R:
 Description: Creates a framework to store and apply display metadata to Analysis
     Results Datasets (ARDs). The use of tfrmt allows users to define table 
     format and styling without the data, and later apply the format to the data.
+Language: en-GB
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Suggests: 
     covr,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    patchwork,
+    survival,
+    ggfortify
 Imports: 
     magrittr,
     dplyr,
@@ -50,7 +55,8 @@ Imports:
     gt (>= 0.6.0),
     tidyselect,
     forcats,
-    tibble
+    tibble,
+    ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://GSK-Biostatistics.github.io/tfrmt/,
