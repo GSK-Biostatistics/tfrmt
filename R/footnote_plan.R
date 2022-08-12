@@ -8,9 +8,9 @@
 #' @export
 #'
 #' @examples
-footnote_plan <- function(...,marks="numbers"){
+footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")){
   footnote_structure_list <- list(...)
-
+  marks = match.arg(marks)
 
   structure(
     list(struct_list=footnote_structure_list, marks=marks),
