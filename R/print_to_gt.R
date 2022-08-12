@@ -274,7 +274,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
 
 
   gt_out_final %>%
-    apply_gt_footnote(tfrmt=tfrmt)
+    apply_footnote_plan(tfrmt=tfrmt)
 
 }
 
