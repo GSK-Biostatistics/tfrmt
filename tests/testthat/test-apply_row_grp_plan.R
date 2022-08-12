@@ -770,3 +770,43 @@ test_that("Row group plans with col style plan - error checks against group",{
 
 })
 
+
+test_that("Suppress printing of groups", {
+
+  mock_multi_grp <- tibble::tribble(
+    ~grp1,    ~grp2,     ~ my_label,
+    "grp1_1", "grp2_1", "my_label_1",
+    "grp1_1", "grp2_1", "my_label_2",
+    "grp1_1", "grp2_2", "my_label_1",
+    "grp1_1", "grp2_2", "my_label_2",
+    "grp1_2", "grp2_1", "my_label_1",
+    "grp1_2", "grp2_1", "my_label_2",
+    "grp1_2", "grp2_2", "my_label_1",
+    "grp1_2", "grp2_2", "my_label_2",
+  ) %>%
+    mutate(
+      trtA = rep("xx (xx%)", 8),
+      trtB = rep("xx (xx%)", 8),
+      trtC = rep("xx (xx%)", 8),
+    )
+
+
+  my_plan <- row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
+
+  df_no_grp <- tibble::tribble(
+    ~my_label,   ~trtA,     ~trtB,     ~trtC  ,
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
+  )
+
+  expect_equal(apply_row_grp_lbl(mock_multi_grp, my_plan$label_loc, vars(grp1, grp2), sym("my_label")),
+               df_no_grp)
+})
+
+

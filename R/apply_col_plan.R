@@ -7,14 +7,9 @@
 apply_col_plan <- function(data, tfrmt){
 
   if (is.null(tfrmt$col_plan)){
-    if(!is.null(tfrmt$row_grp_plan$label_loc$location) &&
-       tfrmt$row_grp_plan$label_loc$location=="noprint"){
 
-      out <- data %>% select(-c(!!!tfrmt$group))
+    out <- data
 
-    } else {
-      out <- data
-    }
   } else {
 
     col_plan_names <- create_col_order(tfrmt$col_plan, tfrmt$column, names(data))
