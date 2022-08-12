@@ -282,15 +282,16 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
 #' @importFrom dplyr pull if_else mutate
 #' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
+#' @importFrom tidyr replace_na
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
   if(mock){
-    frmt_to_prt <- frmt_def %>%
+    frmt_to_prt <- frmt_def$frmts_eval %>%
       keep(~f_lhs(.) == "TRUE")
     if(length(frmt_to_prt) < 1){
-      frmt_to_prt <- frmt_def
+      frmt_to_prt <- frmt_def$frmts_eval
     }
     str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
     out <- .data %>%
@@ -298,10 +299,10 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
   } else {
     values_str <- as_label(values)
-    n <- length(frmt_def)
+    n <- length(frmt_def$frmts_eval)
 
     val_len <- length(pull(.data, !!values))
-    right <- frmt_def %>%
+    right <- frmt_def$frmts_eval %>%
       map(f_rhs) %>%
       map(function(x) {
         if(is_frmt(x)){
@@ -312,12 +313,11 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
         out
       })
 
-    left <- frmt_def %>%
+    left <- frmt_def$frmts_eval %>%
       map_chr(f_lhs) %>%
       if_else(. == "TRUE", ., paste0(values_str, .)) %>%
       parse_exprs() %>%
       map(eval_tidy, .data)
-
 
     out <- rep(NA_character_, val_len)
     replaced <- rep(FALSE, val_len)
@@ -325,6 +325,12 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
     for(i in seq_len(n)){
       out <- replace_val(out, left[[i]] & !replaced, right[[i]])
       replaced <- replaced | (left[[i]] & !is.na(left[[i]]))
+    }
+
+    if (is.null(frmt_def$missing)){
+      out <- out
+    } else if (!is.null(frmt_def$missing)){
+      out <- out %>% replace_na(replace = frmt_def$missing)
     }
 
     out <- .data %>%
@@ -335,5 +341,3 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
   out
 
 }
-
-

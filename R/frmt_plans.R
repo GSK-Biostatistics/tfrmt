@@ -208,25 +208,17 @@ frmt_combine <- function(expression, ..., missing = NULL){
 #' @export
 #' @importFrom rlang list2 f_rhs f_rhs<-
 #' @importFrom purrr map
-frmt_when <- function(...){
+frmt_when <- function(..., missing = NULL){
   frmts <- list2(...)
 
-  frmts_eval <-frmts %>%
+  frmts_eval <- frmts %>%
     map(function(x){
       f_rhs(x) <- eval(f_rhs(x))
       x
     })
 
   structure(
-    frmts_eval,
+    list(frmts_eval = frmts_eval, missing = missing),
     class = c("frmt_when","frmt")
   )
 }
-
-
-
-
-
-
-
-
