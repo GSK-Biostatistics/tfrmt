@@ -5,31 +5,33 @@
 \alias{span_structure}
 \title{Define the Column Plan & Span Structures}
 \usage{
-col_plan(...)
+col_plan(..., .drop = FALSE)
 
-span_structure(label, ...)
+span_structure(...)
 }
 \arguments{
 \item{...}{For a col_plan and span_structure,
 <\code{\link[=dplyr_tidy_select]{tidy-select}}> arguments, unquoted expressions
-separated by commas, and span_structures. Span_structures can nest
-additional span_structures. To use a span_structure, there can only be one
-defined "column" in the tfrmt.}
+separated by commas, and span_structures. span_structures must have the
+arguments named to match the name the column in the input data has to identify the correct columns. See the examples}
 
-\item{label}{text label to span across the defined columns}
+\item{.drop}{Boolean. Should un-listed columns be dropped from the data.
+Defaults to FALSE.}
 }
 \description{
 Using <\code{\link[=dplyr_tidy_select]{tidy-select}}> expressions and a series
-span_structures, define the spanned column names, and the label to apply.
-span_structures can be nested to allow for layered spanning headers.
+span_structures, define the order of the columns. The selection follows "last
+selected" principals, meaning columns are moved to the \emph{last} selection as
+opposed to preserving the first location.
 }
 \details{
+#'
 \subsection{Column Selection}{
 
 When col_plan gets applied and is used to create the output table, the
-underlying logic becomes the input to \code{\link[dplyr]{select}}. Therefore,
-behaviour falls to the \code{\link[dplyr]{select}} for sub-setting columns, renaming,
-and reordering the columns.
+underlying logic sorts out which column specifically is being selected. If a column
+is selected twice, the \emph{last} instance in which the column is selected will be
+the location it gets rendered.
 
 Avoid beginning the \code{col_plan()} column selection with a deselection (ie
 \code{col_plan(-col1)}, \code{col_plan(-starts_with("value")))}. This will
@@ -39,46 +41,41 @@ creating the \code{col_plan()} to identify all the columns planned on
 preserving in the order they are wished to appear, or if
 <\code{\link[=dplyr_tidy_select]{tidy-select}}> arguments - such as
 \code{\link[dplyr]{everything}}- are used, identify the de-selection after
-the positive-selection. Experiment with the \code{\link[dplyr]{select}}
-function to understand this sort of behaviour better.
+the positive-selection.
 
-Alternatively, once the gt table is produced, use the \code{\link[gt]{cols_hide}}
-function to remove un-wanted columns.
+Alternatively, once the gt table is produced, use the
+\code{\link[gt]{cols_hide}} function to remove un-wanted columns.
 }
 }
-\section{Images}{
-
-Here are some example outputs:
-
-\if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure.jpg" style="width:100\%;">
-}}
-}
-
 \examples{
 
 library(dplyr)
 
 ## select col_1 as the first column, remove col_last, then create spanning
 ## structures that have multiple levels
+##
+## examples also assume the tfrmt has the column argument set to c(c1, c2, c3)
+##
 spanning_col_plan_ex <- col_plan(
  col_1,
  -col_last,
  span_structure(
-   label = "Top Label Level 1",
-   span_structure(
-     label = "Second Label Level 1.1",
-     col_3, col_4
-   ),
-   span_structure(
-     label = "Second Label Level 1.2",
-     starts_with("B")
-   ),
-   col_5
+   c1 = "Top Label Level 1",
+   c2 = "Second Label Level 1.1",
+   c3 = c(col_3, col_4)
  ),
  span_structure(
-   label = "Top Label Level 2",
-   col_6, col_7
+   c1 = "Top Label Level 1",
+   c2 = "Second Label Level 1.2",
+   c3 = starts_with("B")
+   ),
+ span_structure(
+   c1 = "Top Label Level 1",
+   c3 = col_5
+ ),
+ span_structure(
+   c2 = "Top Label Level 2",
+   c3 = c(col_6, col_7)
  )
 )
 
@@ -89,6 +86,15 @@ renaming_col_plan_ex <- col_plan(
    my_col_1,
    new_col_1 = col_2,
    everything()
+ )
+
+renaming_col_plan_ex2 <- col_plan(
+   my_col_1,
+   new_col_1 = col_2,
+   span_structure(
+    c1 = c(`My Favorite span name` = "Top Label Level 1"),
+    c3 = c(`the results column` = col_5)
    )
+ )
 
 }

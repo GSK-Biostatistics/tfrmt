@@ -200,15 +200,16 @@ test_that("Check mock when value it missing", {
 
 
 test_that("Test when no body_style or values is present", {
+
   tfrmt_obj_one_span <- tfrmt(
     label = label,
     group = group,
     param = param,
-    column = vars(columns),
+    column = vars(spanner, columns),
     col_plan = col_plan(
       group,label,
       col1, col2,
-      span_structure("test label", col3),
+      span_structure(spanner = "test label", columns= col3),
       vars(col4:col10)
       ))
 
@@ -216,6 +217,7 @@ test_that("Test when no body_style or values is present", {
     group = "groupvar",
     label = "labels",
     param = "params",
+    spanner = "test label",
     columns = paste0("col",1:10)
   )
 
@@ -229,10 +231,14 @@ test_that("Test when no body_style or values is present", {
   expect_equal(gt_out$`_data`,
                input_data %>%
                  mutate(val = "X.X") %>%
-                 pivot_wider(names_from = columns, values_from = val) %>%
+                 pivot_wider(
+                   names_from = c(spanner, columns),
+                   names_sep =  .tlang_delim,
+                   values_from = val
+                   ) %>%
                  select(-param) %>%
-                 rename(`test label___tlang_delim___col3` = col3) %>%
-                 mutate(..tfrmt_row_grp_lbl=FALSE))
+                 mutate(..tfrmt_row_grp_lbl=FALSE)
+               )
 
 
 })

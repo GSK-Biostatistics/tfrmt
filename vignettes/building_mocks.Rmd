@@ -60,7 +60,7 @@ the desired outcome is:
 tfrmt_spec <- tfrmt(
   # Specify columns in the data
   label = label,
-  column = column, 
+  column = c(treatment, column), 
   param = param,
   
   # Specify body plan
@@ -101,6 +101,7 @@ Here is an example:
 
 ```{r}
 df <- crossing(label = c("label 1", "label 2", "label 3"),
+               treatment = c("Treatment","Treatment","Treatment","Placebo"),
                column = c("trt1", "trt2", "trt1&trt2", "pl"),
                param = c("count", "percent")) %>%
   # Assign numerical order (optional - keep if using `sorting_cols` parameter)
@@ -121,14 +122,14 @@ You can adjust column names and structure using the `col_plan` parameter. It
 accepts selection helpers from the `{tidyselect}` package. For example, you 
 can select `everything()` and remove columns that `-starts_with("ord")`.
 
-You can also use `span_structure()` to add spanning labels as below.
+You can also use `span_structure()` provide specific information when trying to order across multiple columns. 
 
 ```{r}
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
   # Specify columns in the data
   label = label,
-  column = column, 
+  column = c(treatment, column), 
   param = param,
   values = value,
   
@@ -136,85 +137,54 @@ tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
     col_plan = col_plan(
       -starts_with("ord"),
       span_structure(
-        "Treatment",
-        T1 = trt1,
-        T2 = trt2,
-        `T1&T2`= `trt1&trt2`
-        ),
+        treatment = "Treatment",
+        column = c(
+          T1 = trt1,
+          T2 = trt2,
+          `T1&T2`= `trt1&trt2`
+        )
+      ),
       span_structure(
-        "Placebo",
-        PL = pl
-        ))
+        treatment = "Placebo",
+        column = c(PL = pl)
+        )
+      )
   )
   
 print_mock_gt(tfrmt_spec, df)
 ```
+
 *Note:* `tfrmt_n_pct()` function has been used in place of defining the `body_plan()`. This function returns a `tfrmt` with the same the formatting as the previous example, for more information about layering `tfrmt`s see the [vignette](layer.html).
 
-Alternatively you can add a span column to your dataset and allocate names for 
-each column. Subsequently, ensure you include both your `span` and `column` 
-within `c()` as arguments for the `column` parameter in `tfrmt()`.
-
-For more information on this please refer to the "Column Plan" article.
-
-```{r}
-span_df <- crossing(label = c("label 1", "label 2", "label 3"),
-                    column = c("PL", "T1", "T2"),
-                    param = c("count", "percent")) %>%
-  mutate(span = case_when(column == "PL" ~ "Placebo",
-                          column == "T1" ~ "Treatment",
-                          column == "T2" ~ "Treatment"))
-
-tfrmt(
-  # Specify columns in the data
-  label = label,
-  column = c(span, column),
-  param = param,
-  values = value,
-
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine(
-                     "{count} {percent}",
-                     count = frmt("xxx"),
-                     percent = frmt_when("==100"~ frmt(""),
-                                         "==0"~ "",
-                                         "TRUE" ~ frmt("(xx.x%)"))))
-  )) %>%
-  print_mock_gt(span_df)
-```
-
 To add a title, subtitle or footer pass arguments to their respective parameters.
-
 
 ```{r}
 
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
-  # Specify title, subtitle, footer
-  title = "Table Name",
-  subtitle = "Study ID: GSK12345",
-  footer = "A footnote about stuff<br/>Here is a new line with more stuff",
-  
-  # Specify columns in the data
-  label = label,
-  column = column, 
-  param = param,
-  values = value,
-  # Specify column structure
+    # Specify title, subtitle, footer
+    title = "Table Name",
+    subtitle = "Study ID: GSK12345",
+    footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+    
+    # Specify columns in the data
+    label = label,
+    column = c(treatment, column), 
+    param = param,
+    values = value,
+    # Specify column structure
     col_plan = col_plan(
       -starts_with("ord"),
       span_structure(
-        "Treatment",
-        T1 = trt1,
-        T2 = trt2,
-        `T1&T2`= `trt1&trt2`
-        ),
+        treatment = "Treatment",
+        column = c(T1 = trt1,
+                   T2 = trt2,
+                   `T1&T2` = `trt1&trt2`)
+      ),
       span_structure(
-        "Placebo",
-        PL = pl
-        ))
+        treatment = "Placebo",
+        column = c(PL = pl))
+    )
   )
   
 print_mock_gt(tfrmt_spec, df)
