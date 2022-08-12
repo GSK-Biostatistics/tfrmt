@@ -14,7 +14,7 @@ footnote_plan <- function(...,marks="numbers"){
 
   structure(
     list(struct_list=footnote_structure_list, marks=marks),
-    class = c("footnote_plan", "frmt_table")
+    class = c("footnote_plan", "plan")
   )
 }
 
@@ -28,8 +28,10 @@ footnote_plan <- function(...,marks="numbers"){
 #'
 #' @examples
 footnote_structure <- function(footnote_text, footnote_loc){
-
-  list("text" = footnote_text, "location"= as.list(footnote_loc))
+  structure(
+  list("text" = footnote_text, "location"= as.list(footnote_loc)),
+  class = c("footnote_structure","structure")
+  )
 
 
 }
@@ -44,8 +46,6 @@ footnote_structure <- function(footnote_text, footnote_loc){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_gt_footnote <- function(gt, tfrmt){
-
-
 
   if(is.null(tfrmt$footnote_plan)){
     gt
@@ -75,36 +75,21 @@ apply_gt_footnote <- function(gt, tfrmt){
             ))
           )
 
-        # spanned columns - if they specify only spanned
-      }else if (length(tfrmt$column)>1 && length(tfrmt$footnote_plan$struct_list[[i]]$location)==1){
-        if (names(tfrmt$footnote_plan$struct_list[[i]]$location) == as_label(tfrmt$column[[length(tfrmt$column)]])){
+        # spanned columns
+        # check multiple columns and check column names are listed in footnote plan
+      }else if (length(tfrmt$column)>1 && names(tfrmt$footnote_plan$struct_list[[i]]$location[length(tfrmt$footnote_plan$struct_list[[i]]$location)]) == as_label(tfrmt$column[[length(tfrmt$column)]])){
 
-          # grab all delim strings containing value specified
-          delim_list<- gt$`_boxhead`$var[str_detect(gt$`_boxhead`$var,paste0("delim___",as.character(tfrmt$footnote_plan$struct_list[[i]]$location)))]
-
-          for (j in 1: length(delim_list)){
-          gt<- gt %>%
-            tab_footnote(
-              footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
-              locations = cells_column_labels(columns = all_of(
-                as.character(delim_list[j])
-              ))
-            )
-
-          }
-          # labels
-        }
-         # spanned columns - if they specify spanner and spanned
-      }else if (length(tfrmt$column)>1 && is.na(names(tfrmt$footnote_plan$struct_list[[i]]$location[2])) == FALSE){
-        if (names(tfrmt$footnote_plan$struct_list[[i]]$location[length(tfrmt$footnote_plan$struct_list[[i]]$location)]) == as_label(tfrmt$column[[length(tfrmt$column)]])){
-        # need to create string with __delim for spanned headers
+           # need to create string with __delim for spanned headers
           delim_list<- gt$`_boxhead`$var[str_detect(gt$`_boxhead`$var,"delim")]
           delim_string=""
         # find one mentioned by user
 
+      # if user has specified the spanning col and spanned
+      if (length(tfrmt$footnote_plan$struct_list[[i]]$location)>1){
         for(k in 1:(length(tfrmt$footnote_plan$struct_list[[i]]$location)-1)){
           delim_string<-paste0(delim_string,tfrmt$footnote_plan$struct_list[[i]]$location[k],"___tlang_delim___")
-        }
+        }}
+      # add on end of delim string and search in variables
         delim_string<-paste0(delim_string,tfrmt$footnote_plan$struct_list[[i]]$location[length(tfrmt$footnote_plan$struct_list[[i]]$location)])
         delim_string_final<-delim_list[str_detect(delim_list,delim_string)]
 
@@ -116,7 +101,7 @@ apply_gt_footnote <- function(gt, tfrmt){
             ))
           )
         # labels
-      }}else if (names(tfrmt$footnote_plan$struct_list[[i]]$location[1]) == as_label(tfrmt$label[[2]])){
+      }else if (names(tfrmt$footnote_plan$struct_list[[i]]$location[1]) == as_label(quo_get_expr(tfrmt$label))){
 
         gt<- gt %>%
           tab_footnote(
@@ -127,7 +112,7 @@ apply_gt_footnote <- function(gt, tfrmt){
           )
 
         # groups
-      }else if(length(tfrmt$footnote_plan$struct_list[[i]]$location)==1 && names(tfrmt$footnote_plan$struct_list[[i]]$location[1]) == as_label(tfrmt$group[[1]])){
+      }else if(length(tfrmt$footnote_plan$struct_list[[i]]$location)==1 && names(tfrmt$footnote_plan$struct_list[[i]]$location[1]) %in% str_remove(as.character(tfrmt$group),"~")){
         # different scenarios depending on location of grouping
 
         # spanning
