@@ -57,7 +57,7 @@ data_input <- tribble(
 
 
 labs_tfrmt_template <- tfrmt_sigdig(
-  data = data_input,
+  sigdig_df = data_input,
   group = vars(group1, group2),
   label = rowlbl,
   param_defaults = param_set("[{n}]" = NA)

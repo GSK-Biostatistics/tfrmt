@@ -588,7 +588,8 @@ test_that("row order is retained for all selections",{
     "b"      ,NA , TRUE,
     "  p"    ,NA , TRUE,
     "    e"  ,"4", FALSE )
-  expect_equal(gt_indented_dat, gt_indented_man)
+
+  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars"))
 
 
   gt_spanning <-  tfrmt_temp %>%
@@ -649,7 +650,7 @@ test_that("row order is retained for all selections",{
     "b"      ,NA , TRUE,
     "  p"    ,NA , TRUE,
     "    e"  ,"4",  FALSE)
-  expect_equal(gt_indented_dat, gt_indented_man)
+  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars"))
 })
 
 

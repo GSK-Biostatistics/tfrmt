@@ -376,14 +376,18 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
     sample_df_frmted,
     tibble(
       group = "group",
-      lab = paste("lab",1:5),
+      lab = c("lab 1", "lab 10",
+              "lab 11", "lab 12", "lab 13", "lab 14", "lab 15", "lab 2", "lab 3",
+              "lab 4", "lab 5", "lab 6", "lab 7", "lab 8", "lab 9"),
       col = "col",
-      y = "A",
-      x = c("1234.6 NA - NA", "2345.7 NA - NA", "3456.8 NA - NA", "4567.9 NA - NA", "5678.9 NA - NA")
+      y = c("A", "B", "C", "C",
+           "C", "C", "C", "A", "A", "A", "A", "B", "B", "B", "B"),
+      x = c("1234.6 NA - NA", "NA (5.7%) - NA", "NA NA - *  10.0", "NA NA - * 111.0",
+            "NA NA - *1112.0", "NA NA - *  13.0", "NA NA - * 114.0", "2345.7 NA - NA",
+            "3456.8 NA - NA", "4567.9 NA - NA", "5678.9 NA - NA", "NA (1.2%) - NA",
+            "NA (2.3%) - NA", "NA (3.5%) - NA", "NA (4.6%) - NA")
     )
   )
-
-
 })
 
 
@@ -574,3 +578,104 @@ test_that("Space in Param", {
 
 
 })
+
+
+test_that("frmt_combine only applies when all parameters are in the data", {
+  data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+                 Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
+                 Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+                 Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
+                 Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
+                 )
+  ) %>%
+    # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
+    mutate(Value = case_when(Param == "pct" ~ Value * 100,
+                             TRUE ~ Value),
+           ord1 = if_else(Group == "Age (y)", 1, 2),
+           ord2 = if_else(Label == "n", 1, 2),
+           TEMP_row = row_number())
+
+
+  test_combo <- frmt_structure(group_val = ".default", label_val = ".default",
+                               frmt_combine("{n} ({pct}%)",
+                                            n = frmt("XX"),
+                                            pct = frmt("x.x"))
+  )
+
+  rows_to_use <- fmt_test_data(test_combo, data, group= vars(Group),
+                label = quo(Label), param = quo(Param) )
+  expected <- data %>%
+    filter(Label %in% c("Male","Female")) %>%
+    pull(TEMP_row)
+
+  expect_equal(rows_to_use, expected)
+})
+
+test_that("frmt_combine fills with partially missing values where a column is missing the value", {
+
+
+  data <- tibble(
+      Group = rep(c("Age (y)"), c(6)),
+      Label = rep(c("Mean (SD)"), c(6)),
+      Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
+      Param = rep(c("mean", "sd"),  times = c(3)),
+      Value = c(1, 2, 3, 4, 5, 6)
+    ) %>%
+    .[-1,] # remove first row - where a "mean" is, but is otherwise complete
+
+
+  test_combo <- frmt_combine(
+      "{mean} {sd}",
+      mean = frmt("XX", missing = " -"),
+      sd = frmt("(xx)")
+    )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = test_combo,
+    .data = data,
+    values = quo(Value),
+    param = quo(Param),
+    column = vars(Column),
+    label = quo(Label),
+    group = vars(Group),
+    mock = FALSE
+  )
+
+  expect_equal(sample_df_frmted,
+               tibble(
+                 Group = rep(c("Age (y)"), c(3)),
+                 Label = rep(c("Mean (SD)"), c(3)),
+                 Column = c("Placebo", "Total", "Treatment"),
+                 Param = c("sd","mean","mean"),
+                 Value = c(" - ( 2)", " 5 ( 6)", " 3 ( 4)")
+               ))
+  # Test the NA still comes through when missing isn't provided
+  test_combo_na <- frmt_combine(
+    "{mean} {sd}",
+    mean = frmt("XX"),
+    sd = frmt("(xx)")
+  )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = test_combo_na,
+    .data = data,
+    values = quo(Value),
+    param = quo(Param),
+    column = vars(Column),
+    label = quo(Label),
+    group = vars(Group),
+    mock = FALSE
+  )
+
+  expect_equal(sample_df_frmted,
+               tibble(
+                 Group = rep(c("Age (y)"), c(3)),
+                 Label = rep(c("Mean (SD)"), c(3)),
+                 Column = c("Placebo", "Total", "Treatment"),
+                 Param = c("sd","mean","mean"),
+                 Value = c("NA ( 2)", " 5 ( 6)", " 3 ( 4)")
+               ))
+
+
+})
+

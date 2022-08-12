@@ -31,22 +31,11 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Failure while aligning data values"
     )
 
-  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$values) %>% map_chr(as_label))
+  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$values) %>% map_chr(as_label))
   data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
 
-  ## append span structures to dataset for handling post-this function
-  if(!is.null(tfrmt$col_plan$span_structures)){
-    tbl_dat_span_cols <- apply_span_structures_to_data(
-      tfrmt,
-      tbl_dat
-    )
-  }else{
-    tbl_dat_span_cols <- tbl_dat
-  }
-
-  tbl_dat_wide <- tbl_dat_span_cols %>%
+  tbl_dat_wide <- tbl_dat %>%
     pivot_wider_tfrmt(tfrmt, mock) %>%
-
     # arrange if sorting cols are applied
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset") %>%
 
@@ -73,17 +62,29 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"
     ) %>%
-
-    #Select before grouping to not have to deal with if it indents or not
-    tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
-
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
                       tfrmt$label)
 
+  col_plan_vars <- tentative_process(
+    names(tbl_dat_wide),
+    create_col_order,
+    cp = tfrmt$col_plan,
+    columns = tfrmt$column,
+    fail_desc = "Unable to create dataset subset vars"
+    )
 
-  tbl_dat_wide
+  tbl_dat_wide_processed <- tbl_dat_wide %>%
+    #Select before grouping to not have to deal with if it indents or not
+    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns")
+
+  structure(
+    tbl_dat_wide_processed,
+    .col_plan_vars = col_plan_vars,
+    class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
+  )
+
 }
 
 
@@ -241,37 +242,38 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
       n = n()
     )
 
-  if (any(num_rec_by_row$n>1)){
+  if (any(num_rec_by_row$n>1) ){
 
     val_fill <- list("")
 
-    suggested_frmt_structs <- num_rec_by_row %>%
-      ungroup %>%
-      filter(n > 1) %>%
-      select(-c(!!!tfrmt$column)) %>%
-      unique() %>%
-      rowwise() %>%
-      mutate(
-        suggested_frmt_struct = frmt_struct_string(
-          grp = list(!!!tfrmt$group),
-          lbl = !!tfrmt$label,
-          param_vals = .data$param_list
-          )
-      ) %>%
-      pull(.data$suggested_frmt_struct) %>%
-      paste0("- `",.,"`",collapse = "\n")
+    if(!mock){
+      suggested_frmt_structs <- num_rec_by_row %>%
+        ungroup %>%
+        filter(n > 1) %>%
+        select(-c(!!!tfrmt$column)) %>%
+        unique() %>%
+        rowwise() %>%
+        mutate(
+          suggested_frmt_struct = frmt_struct_string(
+            grp = list(!!!tfrmt$group),
+            lbl = !!tfrmt$label,
+            param_vals = .data$param_list
+            )
+        ) %>%
+        pull(.data$suggested_frmt_struct) %>%
+        paste0("- `",.,"`",collapse = "\n")
 
 
-   inform(
-     paste0(
-     "Multiple param listed for the same group/label values.\n",
-     "The following frmt_structures may be missing from the body_plan\n",
-     "or the order may need to be changed:"
-     ),
-     body = suggested_frmt_structs,
-     class = "_tlang_missing_frmt_structs"
-   )
-
+     inform(
+       paste0(
+       "Multiple param listed for the same group/label values.\n",
+       "The following frmt_structures may be missing from the body_plan\n",
+       "or the order may need to be changed:"
+       ),
+       body = suggested_frmt_structs,
+       class = "_tlang_missing_frmt_structs"
+     )
+    }
   } else {
     val_fill <- ""
   }

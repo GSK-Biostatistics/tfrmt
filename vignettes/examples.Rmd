@@ -3,8 +3,10 @@ title: "Examples"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Examples}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -218,18 +220,18 @@ tfrmt(
 
 # AE table
 
-For the adverse events (AE) table, we will use the `data_ae` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns; these can be used in lieu of a `col_plan` with `span_structures()`, if desired. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
+For the adverse events (AE) table, we will use the `data_ae` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
 
 <details>
   <summary>Expand for the code used to produce this subset</summary>
-  ```{r}
-  data_ae2 <- data_ae %>% 
+```{r}
+data_ae2 <- data_ae %>% 
   group_by(AEBODSYS, AETERM) %>% 
   mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
   ungroup %>% 
   filter(pct_high >10) %>% 
   select(-pct_high)
-  ```
+```
 </details>
 
 
@@ -461,17 +463,15 @@ tfrmt(
 ```
 
 
-For better control over our column labels, we can provide a single column in lieu of the two columns. This allows us to make use of `col_plan`'s `span_structure`s to define the column labels and spanners:
+For better control over our column labels, we can make use of `col_plan`'s `span_structure`s to define the column labels and spanners order and names:
 
 ```{r }
-data_ae3 <- data_ae2 %>% 
-  unite("combined_col", c(col2, col1), sep = "-")
 
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = combined_col, 
+  column = c(col2, col1), 
   param = param,
   values = value,
   sorting_cols = c(ord1, ord2),
@@ -497,35 +497,32 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_col(align = c(".",","," "), col = vars(contains("pval")))
+    element_col(align = c(".",","," "), col = vars(p_low, p_high))
   ),
   
   # columns
   col_plan = col_plan(
-    -starts_with("ord"),
-        span_structure(
-      "Xanomeline High Dose (N=84)",
-       `n (%)` = `Xanomeline High Dose-n_pct` ,
-       `[AEs]` = `Xanomeline High Dose-AEs` 
+    ## defines the spanning column order, and then beneath them the order of their contents
+    span_structure(
+      col2 = c(
+        "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
+        "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
+        "Placebo (N=86)" = Placebo
+      ),
+      col1 = c(`n (%)` = `n_pct` ,
+               `[AEs]` = `AEs`)
     ),
     span_structure(
-      "Xanomeline Low Dose (N=84)",
-       `n (%)` = `Xanomeline Low Dose-n_pct` ,
-       `[AEs]` = `Xanomeline Low Dose-AEs` 
+      col2 = c("Fisher's Exact p-values" = fisher_pval),
+      col1 = c(
+        `Placebo vs. Low Dose` = `p_low` ,
+       `Placebo vs. High Dose` = `p_high` 
+      )
     ),
-    span_structure(
-      "Placebo (N=86)",
-       `n (%)` = `Placebo-n_pct` ,
-       `[AEs]` = `Placebo-AEs` 
-    ), 
-    span_structure(
-      "Fisher's Exact p-values",
-       `Placebo vs. Low Dose` = `fisher_pval-p_low` ,
-       `Placebo vs. High Dose` = `fisher_pval-p_high` 
+    -starts_with("ord")
     )
-  )
   ) %>% 
-  print_to_gt(data_ae3)  %>% 
+  print_to_gt(data_ae2)  %>% 
   tab_options(
     container.width = 1000
   )
@@ -610,7 +607,7 @@ tfrmt(
 
 Through judicious use of `body_plan`'s `frmt`, `frmt_combine`, and `frmt_when`, we can conditionally format each of the different pieces of results. For the summary statistics, we have the number of observations (n), the mean and standard deviation (mean, sd), and the median and range (median, min, max). For the models, we have the p-value (p.value) and the least squares mean difference (diff) as well as its associated standard error (diff_se) and 95% confidence interval (diff_lcl, diff_ucl). 
 
-The `label` column indicates which row the various measures belong on. First, let's format the standalone values: n and p-value. Notice that n always sits on a row labeled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`. 
+The `label` column indicates which row the various measures belong on. First, let's format the standalone values: n and p-value. Notice that n always sits on a row labelled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`. 
 
 ```{r} 
 tfrmt(
@@ -714,7 +711,7 @@ tfrmt(
                                 diff_ucl = frmt("xx.x"), missing = " "))
   ),
   col_plan = col_plan(
-    group, label, Placebo, contains("Low"), contains("High")
+    group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   )
 ) %>%
   print_to_gt(data_efficacy) %>% 
@@ -760,7 +757,7 @@ tfrmt(
                                 diff_ucl = frmt("xx.x"), missing = " "))
   ),
   col_plan = col_plan(
-    group, label, Placebo, contains("Low"), contains("High")
+    group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   ),
   row_grp_plan = row_grp_plan(
     label_loc = element_row_grp_loc(location = "indented")
@@ -808,7 +805,7 @@ tfrmt(
                                 diff_ucl = frmt("xx.x"), missing = " "))
   ),
   col_plan = col_plan(
-    group, label, Placebo, contains("Low"), contains("High")
+    group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   ),
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = list(group="Change from Baseline"), 
