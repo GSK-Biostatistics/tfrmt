@@ -4,69 +4,58 @@
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
-apply_col_plan <- function(data, tfrmt){
+apply_col_plan <- function(data, col_selection){
 
-  if (is.null(tfrmt$col_plan)){
-    if(!is.null(tfrmt$row_grp_plan$label_loc$location) &&
-       tfrmt$row_grp_plan$label_loc$location=="noprint"){
-
-      out <- data %>% select(-c(!!!tfrmt$group))
-
-    } else {
-      out <- data
-    }
-  } else {
-
-    col_plan_names <- create_col_order(tfrmt$col_plan, tfrmt$column, names(data))
-
-    out <- select(data, !!!col_plan_names)
-
+  if(is.character(col_selection)){
+    quo_col_selections <- map(col_selection, ~char_as_quo(.x))
+    col_selection <- do.call(vars, quo_col_selections)
   }
 
-  out
+  select(data,!!!col_selection)
+
 }
 
 #' @importFrom rlang is_empty
-create_col_order <- function(cp, columns, data_names){
+create_col_order <- function(data_names, cp, columns){
 
-  if(is_empty(columns)){
-    # create placeholder
-    column_names <- "col"
+  if(is.null(cp)){
+    col_selections <- data_names
   }else{
-    column_names <- map_chr(columns, as_label)
-  }
-
-  col_selections <- c()
-
-  for(cp_el_idx in seq_along(cp$dots)){
-    cp_el <- cp$dots[cp_el_idx]
-    if(!is_span_structure(cp_el[[1]])){
-      col_selections <- col_plan_quo_to_vars(
-        x = cp_el,
-        column_names = column_names,
-        data_names = data_names,
-        preselected_cols = col_selections
-      )
+    if(is_empty(columns)){
+      # create placeholder
+      column_names <- "col"
     }else{
-      col_selections <- col_plan_span_structure_to_vars(
-        x = cp_el,
-        column_names = column_names,
-        data_names = data_names,
-        preselected_cols = col_selections
-        )
+      column_names <- map_chr(columns, as_label)
     }
 
-    col_selections <- col_selections[!duplicated(gsub("^-","",col_selections), fromLast = TRUE)]
+    col_selections <- c()
 
-  }
+    for(cp_el_idx in seq_along(cp$dots)){
+      cp_el <- cp$dots[cp_el_idx]
+      if(!is_span_structure(cp_el[[1]])){
+        col_selections <- col_plan_quo_to_vars(
+          x = cp_el,
+          column_names = column_names,
+          data_names = data_names,
+          preselected_cols = col_selections
+        )
+      }else{
+        col_selections <- col_plan_span_structure_to_vars(
+          x = cp_el,
+          column_names = column_names,
+          data_names = data_names,
+          preselected_cols = col_selections
+          )
+      }
 
-  ## remove duplicates, keeping _last_ version
+      col_selections <- col_selections[!duplicated(gsub("^-","",col_selections), fromLast = TRUE)]
+    }
 
-
-  ## add back in the non-specified columns
-  if(cp$.drop == FALSE){
-    missing_cols <- setdiff(data_names, gsub("^-","",col_selections))
-    col_selections <- c(col_selections,missing_cols)
+    ## add back in the non-specified columns
+    if(cp$.drop == FALSE){
+      missing_cols <- setdiff(data_names, gsub("^-","",col_selections))
+      col_selections <- c(col_selections,missing_cols)
+    }
   }
 
   quo_col_selections <- map(col_selections, ~char_as_quo(.x))
