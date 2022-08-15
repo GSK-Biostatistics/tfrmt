@@ -8,7 +8,6 @@
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_footnote_plan <- function(gt, tfrmt){
-
   if(is.null(tfrmt$footnote_plan)){
     gt
   } else {
@@ -16,10 +15,10 @@ apply_footnote_plan <- function(gt, tfrmt){
 
      gt <- gt %>%
        apply_cells_column_labels(tfrmt,i) %>%
-       apply_cells_column_spanners(tfrmt,i)
-       #apply_cells_stub(gt,tfrmt,i)
-     #apply_cells_row_groups(gt,tfrmt,i)
-     #
+       apply_cells_column_spanners(tfrmt,i) %>%
+       apply_cells_stub(tfrmt,i) #%>%
+      # apply_cells_row_groups(tfrmt,i)
+
 
     }
     gt %>%
@@ -39,7 +38,29 @@ apply_footnote_plan <- function(gt, tfrmt){
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
+#' @importFrom rlang quo_get_expr
 apply_cells_stub <- function(gt,tfrmt,i){
+  # check label in location
+  # check location contains only groups and labels
+  if((as_label(tfrmt$label[[2]]) %in% names(tfrmt$footnote_plan$struct_list[[i]]$location)) && (all(names(tfrmt$footnote_plan$struct_list[[i]]$location) %in% c(str_remove(as.character(tfrmt$group),"~"),as_label(tfrmt$label[[2]]))))){
+    if(length(as_label(tfrmt$group[[1]]))==0 ||  tfrmt$row_grp_plan$label_loc$location != "indented"){
+    # get dataframe of groups and labels
+    data<-gt$`_data` %>%
+      mutate(n = 1:n()) %>%
+      filter(!!parse_expr(paste0(paste0(names(tfrmt$footnote_plan$struct_list[[i]]$location),"== '",tfrmt$footnote_plan$struct_list[[i]]$location,"'") ,collapse = " & ")))
+    }
+
+    gt<- gt %>%
+      tab_footnote(
+        footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
+        locations = cells_stub(rows = all_of(data$n)
+        ))
+    gt
+
+
+  }else{
+      gt
+    }
 
 }
 
@@ -53,7 +74,20 @@ apply_cells_stub <- function(gt,tfrmt,i){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_row_groups <- function(gt,tfrmt,i){
+  # only top level group treated as row_group, lower levels treated as labels
+  if(length(tfrmt$footnote_plan$struct_list[[i]]$location)==1 && names(tfrmt$footnote_plan$struct_list[[i]]$location)== as_label(tfrmt$group[[1]])){
+  # spanning
+  if(tfrmt$row_grp_plan$label_loc$location == "spanning"){
+    gt<- gt %>%
+      tab_footnote(
+        footnote = as.character(tfrmt$footnote_plan$struct_list[[i]]$text),
+        locations = cells_row_groups(groups = all_of(
+          as.character(tfrmt$footnote_plan$struct_list[[i]]$location[[1]])
+        ))
+      )
 
+  }
+  }
 }
 
 #' Apply Cells Column Labels
@@ -66,7 +100,6 @@ apply_cells_row_groups <- function(gt,tfrmt,i){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_labels <- function(gt,tfrmt,i){
-
   # are all locations supplied in the column list
   # is lowest level column in location
   if (all(names(tfrmt$footnote_plan$struct_list[[i]]$location) %in% str_remove(as.character(tfrmt$column),"~"))&&
@@ -79,16 +112,9 @@ apply_cells_column_labels <- function(gt,tfrmt,i){
     }else{
     # need to create string with __delim for spanned headers
     delim_list<- gt$`_boxhead`$var[str_detect(gt$`_boxhead`$var,"delim")]
-    delim_string=""
     # find one mentioned by user
-
-    # if user has specified the spanning col and spanned
-    if (length(tfrmt$footnote_plan$struct_list[[i]]$location)>1){
-      for(k in 1:(length(tfrmt$footnote_plan$struct_list[[i]]$location)-1)){
-        delim_string<-paste0(delim_string,tfrmt$footnote_plan$struct_list[[i]]$location[k],"___tlang_delim___")
-      }}
-    # add on end of delim string and search in variables
-    delim_string<-paste0(delim_string,tfrmt$footnote_plan$struct_list[[i]]$location[length(tfrmt$footnote_plan$struct_list[[i]]$location)])
+    delim_string <- paste0(tfrmt$footnote_plan$struct_list[[i]]$location,collapse="___tlang_delim___")
+    # search in variables
     col_name<-delim_list[str_detect(delim_list,delim_string)]
     }
 
