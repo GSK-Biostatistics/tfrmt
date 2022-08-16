@@ -19,6 +19,7 @@ tfrmt(
   col_style_plan,
   col_plan,
   sorting_cols,
+  big_n,
   ...
 )
 }
@@ -51,6 +52,8 @@ tfrmt(
 columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 
 \item{sorting_cols}{which columns determine sorting of output}
+
+\item{big_n}{Takes a \code{\link[=big_n_structure]{big_n_structure()}} to select with rows of the ARD should go into the column labels as big N's}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

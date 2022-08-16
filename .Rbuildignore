@@ -11,3 +11,5 @@
 ^data-raw$
 ^images$
 ^man/figures/$
+^doc$
+^Meta$
