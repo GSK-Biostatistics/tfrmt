@@ -16,7 +16,8 @@ apply_col_plan <- function(data, col_selection){
 }
 
 #' @importFrom rlang is_empty
-create_col_order <- function(data_names, cp, columns){
+#' # Creates a named vector explicitly calling all the columns
+create_col_order <- function(data_names, columns, cp){
 
   if(is.null(cp)){
     col_selections <- data_names
@@ -65,6 +66,7 @@ create_col_order <- function(data_names, cp, columns){
 }
 
 col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
+
   ## ensure data_names order matches preselected_cols
   split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
 

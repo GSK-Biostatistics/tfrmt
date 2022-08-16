@@ -27,16 +27,30 @@ big_n_structure<- function(param_val, n_frmt = frmt("\nN = xx")){
 
 
 
-apply_big_n_structure <- function(.data, big_n_df){
-  browser()
-  to_rename <- big_n_df %>%
-    mutate(new_col_part = paste0(col_part, val))
+apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
+  if(!is.null(big_n_df)){
+    col_lab <- columns %>% map_chr(as_label)
+    data_names <- col_plan_vars %>%
+      map_chr(as_label) %>%
+      split_data_names_to_df(data_names= c(), preselected_cols = .,
+                             column_names = col_lab)
 
-  new_nm <- names(.data)
-  for(i in seq(nrow(to_rename))){
-    new_nm <- str_replace(new_nm, to_rename$col_part[i],
-                          to_rename$new_col_part[i])
+    for(i in seq(nrow(big_n_df))){
+      big_n_i <- big_n_df %>%
+        slice(i)
+      data_names <- data_names %>%
+        mutate(!!big_n_i$name := if_else(!!parse_expr(big_n_i$exp),
+                                         paste0(!!sym(big_n_i$name),
+                                                pull(big_n_i, !!value)),
+                                         !!sym(big_n_i$name)
+        ))
+    }
+
+    out <- unite_df_to_data_names(data_names, preselected_cols = c(), column_names = col_lab)
+  } else {
+    out <- col_plan_vars
   }
+  out
 }
 
 remove_big_ns <- function(.data, param, big_n_structure){
@@ -49,12 +63,22 @@ remove_big_ns <- function(.data, param, big_n_structure){
 
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
   if(!is.null(big_n_structure)){
-    .data <- .data %>%
+    foo <- .data %>%
       filter((!!param) %in% big_n_structure$param_val) %>%
       apply_frmt.frmt(big_n_structure$n_frmt, ., value, mock) %>%
       select(!!!columns, !!value)
-    # %>%
-      # unite("col_part", !!!columns, sep = .tlang_delim, na.rm = TRUE)
+
+    .data <- foo %>%
+      mutate(`_tfrmt______id` = row_number()) %>%
+      pivot_longer(-c(`_tfrmt______id`, !!value)) %>%
+      filter(!is.na(value)) %>%
+      group_by(`_tfrmt______id`) %>%
+      mutate(exp = paste0(name, "=='", value, "'",  collapse = "&"),
+             name = paste0("__tfrmt_new_name__", name)) %>%
+      dplyr::slice_tail() %>%
+      ungroup()%>%
+      select(-`_tfrmt______id`)
+
   } else {
     .data <- NULL
   }
