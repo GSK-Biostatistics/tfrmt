@@ -15,8 +15,11 @@ apply_col_plan <- function(data, col_selection){
 
 }
 
+#' Creates a named vector explicitly calling all the columns
+#'
 #' @importFrom rlang is_empty
-#' # Creates a named vector explicitly calling all the columns
+#'
+#' @noRd
 create_col_order <- function(data_names, columns, cp){
 
   if(is.null(cp)){
@@ -50,6 +53,7 @@ create_col_order <- function(data_names, columns, cp){
       }
 
       col_selections <- col_selections[!duplicated(gsub("^-","",col_selections), fromLast = TRUE)]
+
     }
 
     ## add back in the non-specified columns
@@ -232,16 +236,35 @@ char_as_quo <- function(x) {
 
 #' @importFrom rlang quo_get_expr as_label
 eval_col_plan_quo <- function(x, data_names, preselected_vals){
-  if(identical(as_label(x), "everything()")){
 
+
+
+  if(identical(as_label(x), "everything()")){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
-    data_names <- data_names[-seq_along(preselected_vals)]
+
+    if(!is.null(preselected_vals)){
+      data_names <- data_names[-seq_along(preselected_vals)]
+    }
   }
+
   eval_tidyselect_on_colvec(x, data_names)
 }
 
 
+#' Creates a split out data.frame of the potential columns and their spans.
+#'
+#' Combines the original column names with the potential renamed ones from
+#' preselected_cols into a single vector, removing duplicates then splits out
+#' the contents into a data.frame.
+#'
+#' @param data_names original names of the dataset
+#' @param preselected_cols named character vector of selected columns from the
+#'   dataset. names of the vector reflect the new name to apply
+#' @param column_names the original ARD column names as a character vector
+#'
+#' @noRd
+#'
 #' @importFrom tidyr separate unite
 #' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
@@ -279,6 +302,18 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 
 }
 
+#' Combines the split out data.frame of the potential columns and their spans into a named vector.
+#'
+#'
+#' @param data_names original names of the dataset
+#' @param preselected_cols named character vector of selected columns from the
+#'   dataset. names of the vector reflect the new name to apply
+#' @param column_names the original ARD column names as a character vector
+#'
+#' @noRd
+#'
+#' @importFrom tidyr separate unite
+#' @importFrom tibble tibble
 unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names){
 
   new_preselected_cols_full <- split_data_names %>%
