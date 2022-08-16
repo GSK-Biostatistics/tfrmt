@@ -12,7 +12,7 @@
 #'   are big n's
 #' @param n_frmt [frmt()] to control the formatting of the big n's
 #'
-#' @return
+#' @return big_n_structure object
 #' @export
 #'
 big_n_structure<- function(param_val, n_frmt = frmt("\nN = xx")){
