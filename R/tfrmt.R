@@ -21,6 +21,7 @@
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns. Takes a [col_plan()]
 #' @param sorting_cols which columns determine sorting of output
+#' @param big_n Takes a [big_n_structure()] to select with rows of the ARD should go into the column labels as big N's
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #' @details
@@ -179,6 +180,7 @@ tfrmt <- function(
   col_style_plan,
   col_plan,
   sorting_cols,
+  big_n,
   ...
 ){
 
