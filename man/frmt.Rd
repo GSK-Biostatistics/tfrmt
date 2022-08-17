@@ -10,7 +10,7 @@ frmt(expression, missing = NULL, scientific = NULL, ...)
 
 frmt_combine(expression, ..., missing = NULL)
 
-frmt_when(...)
+frmt_when(..., missing = NULL)
 }
 \arguments{
 \item{expression}{this is the string representing the intended format. See details: expression for more a detailed description.}
