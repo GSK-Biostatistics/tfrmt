@@ -28,8 +28,8 @@ big_n_structure<- function(param_val, n_frmt = frmt("\nN = xx")){
 
 
 apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
-  if(!is.null(big_n_df)){
 
+  if(!is.null(big_n_df) && nrow(big_n_df) > 0){
     col_lab <- columns %>% map_chr(as_label)
     data_names <- col_plan_vars %>%
       as_vars() %>% # Ensures col_plan_vars is a vars w/ names
@@ -63,21 +63,39 @@ remove_big_ns <- function(.data, param, big_n_structure){
   .data
 }
 
+#' @importFrom dplyr slice_tail
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
   if(!is.null(big_n_structure)){
-    foo <- .data %>%
+    frmtted_vals <- .data %>%
       filter((!!param) %in% big_n_structure$param_val) %>%
       apply_frmt.frmt(big_n_structure$n_frmt, ., value, mock) %>%
       select(!!!columns, !!value)
+    # Test for missing big n's
+    if(nrow(frmtted_vals) == 0){
+      warning("Unable to add big n's as there are no matching parameter values in the given ARD")
+    }
 
-    .data <- foo %>%
+    # Test for too many big n's
+    multi_test <- frmtted_vals %>%
+      group_by(!!!columns) %>%
+      summarise(n = n()) %>%
+      filter(n > 1)
+    if(nrow(multi_test) > 0){
+
+      warn_df <- multi_test %>%
+        select(-n)
+
+      warning(c("The following columns have multiple Big N's associated with them :\n", warn_df),
+              call. = FALSE)
+    }
+    .data <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
       pivot_longer(-c(`_tfrmt______id`, !!value)) %>%
       filter(!is.na(value)) %>%
       group_by(`_tfrmt______id`) %>%
       mutate(exp = paste0(name, "=='", value, "'",  collapse = "&"),
              name = paste0("__tfrmt_new_name__", name)) %>%
-      dplyr::slice_tail() %>%
+      slice_tail() %>%
       ungroup()%>%
       select(-`_tfrmt______id`)
 
