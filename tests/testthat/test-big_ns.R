@@ -38,7 +38,7 @@ test_that("Simple Case big_n", {
 
   data <- bind_rows(data, big_ns)
 
-  auto <- tfrmt(
+  tfrmt_sans_colplan <- tfrmt(
     group = Group,
     label = Label,
     column = Column,
@@ -60,20 +60,50 @@ test_that("Simple Case big_n", {
                      )
       )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default", element_block(post_space = " "))
     ),
     big_n = big_n_structure(param = "bigN")
-  ) %>%
+  )
+
+  tfrmt_wit_colplan <- tfrmt_sans_colplan %>%
+    tfrmt(
+      col_plan = col_plan(everything(), -starts_with("ord"), "Total")
+    )
+
+  auto_sans_colplan <- tfrmt_sans_colplan %>%
     apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
     names()
 
-  man <- big_ns %>%
-    mutate(foo = str_c(Column, "\nN = ", Value)) %>%
-    pull(foo) %>%
-    c("Label", . , "..tfrmt_row_grp_lbl")
-  expect_equal(auto, man)
+  expect_equal(
+    auto_sans_colplan,
+    c(
+      "Label",
+      "ord1",
+      "ord2",
+      "Placebo\nN = 30",
+      "Total\nN = 60",
+      "Treatment\nN = 30",
+      "..tfrmt_row_grp_lbl"
+    )
+  )
+
+  auto_wit_colplan <- tfrmt_wit_colplan %>%
+    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+    names()
+
+  expect_equal(
+    auto_wit_colplan,
+    c(
+      "Label",
+      "ord1",
+      "ord2",
+      "Placebo\nN = 30",
+      "Treatment\nN = 30",
+      "Total\nN = 60",
+      "..tfrmt_row_grp_lbl"
+    )
+  )
 
 })
 
