@@ -185,7 +185,8 @@ test_that("Multiple big N params", {
                                   mean = frmt("XX.X"),
                                   sd = frmt("x.xx")
                      )
-      )
+      ),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
     ),
     col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
     row_grp_plan = row_grp_plan(
@@ -245,7 +246,8 @@ test_that("Overlapping Big N's",{
                                   mean = frmt("XX.X"),
                                   sd = frmt("x.xx")
                      )
-      )
+      ),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
     ),
     col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
     row_grp_plan = row_grp_plan(
@@ -296,7 +298,7 @@ test_that("Missing Big N in dataset", {
     big_n = big_n_structure(param = "bigN")
   )
 
-  expect_warning(apply_tfrmt(.data = data, tfrmt = tfrmt_test, mock = FALSE))
+  expect_warning(apply_tfrmt(.data = dat, tfrmt = tfrmt_test, mock = FALSE))
 })
 
 
