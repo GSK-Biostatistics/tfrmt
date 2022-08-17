@@ -18,6 +18,7 @@ apply_col_plan <- function(data, col_selection){
 #' Creates a named vector explicitly calling all the columns
 #'
 #' @importFrom rlang is_empty
+#' @importFrom purrr map map_chr
 #'
 #' @noRd
 create_col_order <- function(data_names, columns, cp){
@@ -265,7 +266,8 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals){
 #'
 #' @noRd
 #'
-#' @importFrom tidyr separate unite
+#' @importFrom dplyr mutate
+#' @importFrom tidyr separate
 #' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 
@@ -305,14 +307,18 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 #' Combines the split out data.frame of the potential columns and their spans into a named vector.
 #'
 #'
-#' @param data_names original names of the dataset
+#' @param split_data_names tibble containing a two columns for every
+#'   "column_name" value - one that is the column name, the second is the column
+#'   name prepended with "__tfrmt_new_name__". Finally, there is a "subtraction_status" column,
+#'   indicating if the column should be subtracted or not.
 #' @param preselected_cols named character vector of selected columns from the
 #'   dataset. names of the vector reflect the new name to apply
 #' @param column_names the original ARD column names as a character vector
 #'
 #' @noRd
 #'
-#' @importFrom tidyr separate unite
+#' @importFrom dplyr case_when mutate pull
+#' @importFrom tidyr unite
 #' @importFrom tibble tibble
 unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names){
 
