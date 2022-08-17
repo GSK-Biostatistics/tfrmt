@@ -12,7 +12,6 @@ apply_footnote_plan <- function(gt, tfrmt){
     gt
   } else {
     for (i in 1:length(tfrmt$footnote_plan$struct_list)) {
-
      gt <- gt %>%
        apply_cells_column_labels(tfrmt,i) %>%
        apply_cells_column_spanners(tfrmt,i) %>%
@@ -33,6 +32,7 @@ apply_footnote_plan <- function(gt, tfrmt){
 #'
 #' @param gt gt object to potentially add a footnote to
 #' @param tfrmt tfrmt object
+#' @param i the numberof the current footnote structure within the footnote plan
 #'
 #' @return gt object
 #' @noRd
@@ -42,6 +42,7 @@ apply_footnote_plan <- function(gt, tfrmt){
 apply_cells_stub <- function(gt,tfrmt,i){
   # check label in location
   # check location contains only groups and labels
+
   if((as_label(tfrmt$label[[2]]) %in% names(tfrmt$footnote_plan$struct_list[[i]]$location)) && (all(names(tfrmt$footnote_plan$struct_list[[i]]$location) %in% c(str_remove(as.character(tfrmt$group),"~"),as_label(tfrmt$label[[2]]))))){
     if(length(as_label(tfrmt$group[[1]]))==0 ||  tfrmt$row_grp_plan$label_loc$location != "indented"){
     # get dataframe of groups and labels
@@ -57,6 +58,7 @@ apply_cells_stub <- function(gt,tfrmt,i){
         ))
     gt
 
+    # need to add indented labels and also groups here.
 
   }else{
       gt
@@ -68,6 +70,7 @@ apply_cells_stub <- function(gt,tfrmt,i){
 #'
 #' @param gt gt object to potentially add a footnote to
 #' @param tfrmt tfrmt object
+#' @param i the numberof the current footnote structure within the footnote plan
 #'
 #' @return gt object
 #' @noRd
@@ -94,6 +97,8 @@ apply_cells_row_groups <- function(gt,tfrmt,i){
 #'
 #' @param gt gt object to potentially add a footnote to
 #' @param tfrmt tfrmt object
+#' @param i the numberof the current footnote structure within the footnote plan
+#'
 #'
 #' @return gt object
 #' @noRd
@@ -136,6 +141,7 @@ apply_cells_column_labels <- function(gt,tfrmt,i){
 #'
 #' @param gt gt object to potentially add a footnote to
 #' @param tfrmt tfrmt object
+#' @param i the numberof the current footnote structure within the footnote plan
 #'
 #' @return gt object
 #' @noRd
@@ -160,4 +166,56 @@ apply_cells_column_spanners <- function(gt,tfrmt,i){
   }
 
 }
+
+
+#' Create Indent Filter
+#'
+#' @param tfrmt tfrmt object
+#' @param footnote_loc list of footnote location from footnote structure
+#'
+#' @return
+#' @export
+#'
+#' @examples
+create_indent_filter <- function(tfrmt,footnote_loc){
+
+  filter_statement <- list()
+
+  for (i in 1:length(footnote_loc)){
+
+    # if indented
+    if(tfrmt$row_grp_plan$label_loc$location=="indented"){
+
+      # if label
+      if(names(footnote_loc[i])==as_label(tfrmt$label)){
+        # one indent for each group
+        filter_statement[i] <- paste0(names(footnote_loc[i]), " == '",paste0(rep(tfrmt$row_grp_plan$label_loc$indent,length(tfrmt$group)),collapse=""),footnote_loc[i],"'")
+      # if group
+      }else if(names(footnote_loc[i]) %in% str_remove(as.character(tfrmt$group),"~")){
+        # if x level group, x-1 indents
+        x<- match(names(footnote_loc[i]),str_remove(as.character(tfrmt$group),"~"))
+        filter_statement[i] <- paste0(names(footnote_loc[i]), " == '",paste0(rep(tfrmt$row_grp_plan$label_loc$indent,x-1),collapse=""),footnote_loc[i],"'")
+      }
+
+    }else{
+      # if label
+      if(names(footnote_loc[i])==as_label(tfrmt$label)){
+        filter_statement[i] <- paste0(names(footnote_loc[i]), " == '",paste0(rep(tfrmt$row_grp_plan$label_loc$indent,length(tfrmt$group)-1),collapse=""),footnote_loc[i],"'")
+      # if group
+      }else if(names(footnote_loc[i]) %in% str_remove(as.character(tfrmt$group),"~")){
+        # if x level group, x-2 indents
+        # turn negatives into 0
+        x<- match(names(footnote_loc[i]),str_remove(as.character(tfrmt$group),"~"))
+        filter_statement[i] <- paste0(names(footnote_loc[i]), " == '",paste0(rep(tfrmt$row_grp_plan$label_loc$indent,pmax(x-2,0)),collapse=""),footnote_loc[i],"'")
+
+    }
+
+  }
+
+
+}
+  filter_statement <- paste0(filter_statement,collapse = " & ")
+  filter_statement
+}
+
 
