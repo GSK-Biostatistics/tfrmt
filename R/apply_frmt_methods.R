@@ -170,13 +170,13 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
 
   # Check if unspecified param values are in the dataset
 
-  if(!setequal(names(frmt_def$fmt_ls), fmt_param_vals)){
+  if(!setequal(names(frmt_def$frmt_ls), fmt_param_vals)){
     stop("The values in the expression don't match the names of the given formats ")
   }
 
   ## format params as needed
   .tmp_data <- map_dfr(fmt_param_vals, function(var){
-    fmt_to_apply <- frmt_def$fmt_ls[[var]]
+    fmt_to_apply <- frmt_def$frmt_ls[[var]]
 
     .data %>%
       filter(!!param == str_remove_all(var, "`")) %>%
@@ -215,7 +215,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
     )
 
   missing_param_replacements <-
-    map(fmt_param_vals, ~ frmt_def$fmt_ls[[.x]]$missing) %>%
+    map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
     setNames(fmt_param_vals) %>%
     discard(is.null)
 
@@ -288,10 +288,10 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
 apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
   if(mock){
-    frmt_to_prt <- frmt_def$frmts_eval %>%
+    frmt_to_prt <- frmt_def$frmt_ls %>%
       keep(~f_lhs(.) == "TRUE")
     if(length(frmt_to_prt) < 1){
-      frmt_to_prt <- frmt_def$frmts_eval
+      frmt_to_prt <- frmt_def$frmt_ls
     }
     str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
     out <- .data %>%
@@ -299,10 +299,10 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
   } else {
     values_str <- as_label(values)
-    n <- length(frmt_def$frmts_eval)
+    n <- length(frmt_def$frmt_ls)
 
     val_len <- length(pull(.data, !!values))
-    right <- frmt_def$frmts_eval %>%
+    right <- frmt_def$frmt_ls %>%
       map(f_rhs) %>%
       map(function(x) {
         if(is_frmt(x)){
@@ -313,7 +313,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
         out
       })
 
-    left <- frmt_def$frmts_eval %>%
+    left <- frmt_def$frmt_ls %>%
       map_chr(f_lhs) %>%
       if_else(. == "TRUE", ., paste0(values_str, .)) %>%
       parse_exprs() %>%

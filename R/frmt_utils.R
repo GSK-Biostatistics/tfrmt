@@ -85,8 +85,8 @@ print.frmt_combine <- function(x,...){
 
 #' @export
 format.frmt_when <- function(x, ...){
-  lhs <- map_chr(x$frmts_eval, f_lhs)
-  rhs <- map(x$frmts_eval, f_rhs) %>% map_chr(format)
+  lhs <- map_chr(x$frmt_ls, f_lhs)
+  rhs <- map(x$frmt_ls, f_rhs) %>% map_chr(format)
 
   frmt_str <- paste(
     "< frmt_when | ", "\n ",
