@@ -34,26 +34,6 @@ test_that("inputs are as expected",{
     values = value,
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")))
 
-  # span structures
-  tfrmt_3<-tfrmt(
-    # specify columns in the data
-    group = group,
-    label = label ,
-    column = time,
-    param = param,
-    values = value,
-    col_plan = col_plan(
-      group,
-      label,
-      span_structure(
-        "column cols",
-        `0`,
-        `1000`,
-        `2000`,
-        `3000`),
-    ))
-
-
   # two column variables
   tfrmt_4<-tfrmt(
     # specify columns in the data
@@ -78,7 +58,6 @@ test_that("inputs are as expected",{
   expect_error(print_to_ggplot(tfrmt_1,"test"),"Requires data")
   expect_error(print_to_ggplot(tfrmt="test",.data=test_data),"Requires a tfrmt object")
   expect_error(print_to_ggplot(tfrmt_2,risk),"print_to_ggplot must have label location 'indented' if row_group_plan is present")
-  expect_error(print_to_ggplot(tfrmt_3,risk),"print_to_ggplot does not support spanning headers")
   expect_error(print_to_ggplot(tfrmt_4,risk),"print_to_ggplot does not support multiple column variables")
   expect_error(print_to_ggplot(tfrmt_5,risk),"print_to_ggplot does not support col_style_plan elements")
 
@@ -103,7 +82,7 @@ test_that("group columns are created correctly",{
   expected_data<-tibble(label=c("A",rep("    Obs",4),rep("    Lev",4),rep("    Lev+5FU",4)),
                         time=c(NA,rep(c(0,1000,2000,3000),3)),
                         value=c(NA,630,372,256,11,620,360,266,8,608,425,328,14),
-                        param=c("NA",rep("n",12)),
+                        param=c(NA,rep("n",12)),
                         `..tfrmt_row_grp_lbl`=c(TRUE,rep(FALSE,12)))
 
 

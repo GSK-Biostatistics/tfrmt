@@ -770,3 +770,55 @@ test_that("Row group plans with col style plan - error checks against group",{
 
 })
 
+
+
+
+test_that("Row group plan indenting handles factor variables", {
+
+  dat <- tibble::tribble(
+    ~grp_span, ~grp,      ~rowlbl,    ~column, ~param, ~value,
+    "span", "topgrp1", "topgrp1"  ,  "A",  "mean",   1,
+    "span", "topgrp1", "topgrp1"  ,  "B",  "mean",   1,
+    "span", "topgrp1", "lowergrp1",  "A",  "mean",   1,
+    "span", "topgrp1", "lowergrp1",  "B",  "mean",   2,
+    "span", "topgrp2", "topgrp2"  ,  "A",  "mean",   3,
+    "span", "topgrp2", "topgrp2"  ,  "B",  "mean",   4,
+    "span", "topgrp2", "lowergrp1",  "A",  "mean",   2,
+    "span", "topgrp2", "lowergrp1",  "B",  "mean",   1,
+  )
+
+  grp_plan <- row_grp_plan(
+  )
+
+  expected <-  tibble::tribble(
+    ~ rowlbl,  ~ column,  ~param,  ~value, ~..tfrmt_row_grp_lbl,
+    "span"          , NA ,    NA    ,   NA  , TRUE   ,
+    "  topgrp1"     ,"A",   "mean",      1 , FALSE,
+    "  topgrp1"     ,"B",   "mean",      1 , FALSE,
+    "    lowergrp1" ,"A",   "mean",      1 , FALSE,
+    "    lowergrp1" ,"B",   "mean",      2 , FALSE,
+    "  topgrp2"     ,"A",   "mean",      3 , FALSE,
+    "  topgrp2"     ,"B",   "mean",      4 , FALSE,
+    "    lowergrp1" ,"A",   "mean",      2 , FALSE,
+    "    lowergrp1" ,"B",   "mean",      1 , FALSE)
+
+  expect_equal(
+    apply_row_grp_lbl(dat %>% mutate(across(grp_span:rowlbl, as.factor)),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+    expected)
+
+  expect_equal(
+    apply_row_grp_lbl(dat %>% mutate(across(rowlbl, as.factor)),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+    expected)
+
+  expect_equal(
+    apply_row_grp_lbl(dat %>% mutate(across(grp, as.factor)),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+    expected)
+
+  expect_equal(
+    apply_row_grp_lbl(dat %>% mutate(across(grp_span, as.factor)),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+    expected)
+})

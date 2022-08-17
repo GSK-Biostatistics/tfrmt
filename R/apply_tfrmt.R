@@ -31,20 +31,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Failure while aligning data values"
     )
 
-  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$values) %>% map_chr(as_label))
+  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$values) %>% map_chr(as_label))
   data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
 
-  ## append span structures to dataset for handling post-this function
-  if(!is.null(tfrmt$col_plan$span_structures)){
-    tbl_dat_span_cols <- apply_span_structures_to_data(
-      tfrmt,
-      tbl_dat
-    )
-  }else{
-    tbl_dat_span_cols <- tbl_dat
-  }
-
-  tbl_dat_wide <- tbl_dat_span_cols %>%
+  tbl_dat_wide <- tbl_dat %>%
     pivot_wider_tfrmt(tfrmt, mock) %>%
 
     # arrange if sorting cols are applied
@@ -69,7 +59,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     ) %>%
 
     #Select before grouping to not have to deal with if it indents or not
-    tentative_process(select_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
+    tentative_process(apply_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
 
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
