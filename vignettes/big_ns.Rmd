@@ -141,7 +141,7 @@ with_big_n_data <- tribble(
 
 #Now we can add the big_n to the tfrmt from before 
 n_span_tfrmt <- spanning_tfrmt %>% 
-  tfrmt(big_n = big_n_structure(param_val = "bigN", n_frmt = frmt(" N = xx"))) 
+  tfrmt(big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))) 
 
 print_to_gt(n_span_tfrmt, .data = with_big_n_data)
 ```
