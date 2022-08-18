@@ -54,7 +54,7 @@ data <- bind_rows(data, big_ns)
 ```
 
 
-Now we can make our `tfrmt` as normal, but this time we are going to add a `big_n_structure` to `big_n`. Here we will specify that values with the parameter of `"bigN"` should be in the column labels and they should be formatted as `"N = XX"` and on a seperate line.
+Now we can make our `tfrmt` as normal, but this time we are going to add a `big_n_structure` to `big_n`. Here we will specify that values with the parameter of `"bigN"` should be appended to the column labels and they should be formatted as `"N = XX"` and on a separate line.
 ```{r}
 tfrmt(
   group = Group,
