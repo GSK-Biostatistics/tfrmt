@@ -2,6 +2,7 @@ pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
+  big_ns: big_ns.html
   body_plan: body_plan.html
   building_blocks: building_blocks.html
   building_mocks: building_mocks.html
@@ -15,7 +16,7 @@ articles:
   row_grp_plan: row_grp_plan.html
   templates: templates.html
   unusual_tables: unusual_tables.html
-last_built: 2022-08-18T11:56Z
+last_built: 2022-08-18T15:34Z
 urls:
   reference: https://gsk-biostatistics.github.io/tfrmt/reference
   article: https://gsk-biostatistics.github.io/tfrmt/articles
