@@ -2,7 +2,7 @@
 #'
 #' Big N structure allows you to specify which values should become the subject totals ("big N" values)
 #' and how they should be formatted in the table's column labels. Values are specified by providing
-#' the row value(s) of the parameter column for which the values are big n's.
+#' the value(s) of the `param` column for which the values are big N's.
 #' This will remove these from the body of the table and place them into columns
 #' matching the values in the column column(s). The default formatting is `N = xx`,
 #' on its own line, but that can be changed by providing a different `frmt()` to
