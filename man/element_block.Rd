@@ -6,14 +6,11 @@
 \usage{
 element_block(
   post_space = c(NULL, " ", "-"),
-  background_fill = NULL,
   border = c(NULL, "outline", "bottom")
 )
 }
 \arguments{
 \item{post_space}{Option to create a new line after group block; specified characters will fill the cells}
-
-\item{background_fill}{Option to fill background for group block}
 
 \item{border}{Option to add a solid border to group block (rectangle or just bottom border)}
 }
