@@ -23,7 +23,8 @@ library(dplyr)
 Displaying subject totals ("Big N's") at the top of a table is a very common and necessary part of building tables for clinical trials. {tfrmt} allows you to do this via the `big_n` argument, which allows you to use a `big_n_structure` object to specify which values in the ARD should be added to the columns and how they should be formatted. 
 
 
-To dynamically add big N's to column labels first the information needs to be in the ARD. For a simple example let's take a small demographics table that just has Age ad Sex for Placebo, Treatment and Total. 
+To dynamically add big N's to column labels, the information needs to be included in the ARD. As a simple example, let's take a small demographics table that just has Age and Sex for Placebo, Treatment and Total. 
+Below is our ARD prior to incorporating the big Ns:
 ```{r}
 
 data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
