@@ -83,7 +83,7 @@ tfrmt(
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = " "))
   ),
-  big_n = big_n_structure(param = "bigN", n_frmt = frmt("\nN = xx"))
+  big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
 ) %>% 
   print_to_gt(data)
 ```
