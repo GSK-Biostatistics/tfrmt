@@ -246,6 +246,7 @@ frmt_combine_builder <- function(param_combine, param, frmt_string, missing = NU
 #' @return list of `frmt_structure` objects
 #' @noRd
 #' @importFrom purrr pmap
+#' @importFrom rlang `%||%`
 frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 
   grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
