@@ -159,7 +159,7 @@ with_more_big_n_data <- tribble(
 print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
 ```
  
-As a final note, column names for the big N's should match the ARD column names not any future names. So regardless, if column names get changed in the `col_plan`, the column name for the big N's should reflect the column name of that column you want it to go in the ARD. The big N's will still be added if names do get updated.  
+As a final note, column names for the big N's should match the ARD column names, rather than any future names. Regardless of any renaming that happens in the `col_plan`, the column name for the big N's should be consistent with column values in the ARD. The big N's will still be added if names do get updated in the `col_plan`.  
 ```{r}
 n_span_tfrmt %>% 
   tfrmt(col_plan = col_plan(

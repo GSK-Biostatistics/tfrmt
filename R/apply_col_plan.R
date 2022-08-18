@@ -307,7 +307,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 #' Combines the split out data.frame of the potential columns and their spans into a named vector.
 #'
 #'
-#' @param split_data_names tibble containing a two columns for every
+#' @param split_data_names tibble containing two columns for every
 #'   "column_name" value - one that is the column name, the second is the column
 #'   name prepended with "__tfrmt_new_name__". Finally, there is a "subtraction_status" column,
 #'   indicating if the column should be subtracted or not.
