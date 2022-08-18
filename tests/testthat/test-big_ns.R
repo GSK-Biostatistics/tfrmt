@@ -222,7 +222,7 @@ test_that("Multiple big N params", {
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default", element_block(post_space = " "))
     ),
-    big_n = big_n_structure(param = c("bigN", "big_n"))
+    big_n = big_n_structure(param_val = c("bigN", "big_n"))
   ) %>%
     apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
     names()
