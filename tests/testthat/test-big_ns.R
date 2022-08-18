@@ -62,7 +62,7 @@ test_that("Simple Case big_n", {
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default", element_block(post_space = " "))
     ),
-    big_n = big_n_structure(param = "bigN")
+    big_n = big_n_structure(param_val = "bigN")
   )
 
   tfrmt_wit_colplan <- tfrmt_sans_colplan %>%
