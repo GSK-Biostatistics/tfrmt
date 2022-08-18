@@ -1,7 +1,7 @@
 test_that("Defining the big Ns", {
   bn1 <- big_n_structure(param_val = "bigN", n_frmt = frmt("Hello World"))
 
-  bn2 <- big_n_structure(param = c("bigN", "N"))
+  bn2 <- big_n_structure(param_val = c("bigN", "N"))
 
   expect_s3_class(bn1,"big_n_structure")
   expect_s3_class(bn2,"big_n_structure")
