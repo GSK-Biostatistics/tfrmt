@@ -1,5 +1,5 @@
 test_that("Defining the big Ns", {
-  bn1 <- big_n_structure(param = "bigN", n_frmt = frmt("Hello World"))
+  bn1 <- big_n_structure(param_val = "bigN", n_frmt = frmt("Hello World"))
 
   bn2 <- big_n_structure(param = c("bigN", "N"))
 
