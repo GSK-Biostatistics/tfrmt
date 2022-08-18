@@ -146,7 +146,7 @@ n_span_tfrmt <- spanning_tfrmt %>%
 print_to_gt(n_span_tfrmt, .data = with_big_n_data)
 ```
  
- If we also wanted big N's on `col 1,2`, `col4`, and `mycol3`. So we will need Add 3 more rows to our ARD. One that goes down to teh `span1` level of specificity and two that go all the way down to `my_col` level of specificity. (Note: because we are keeping the `parm` values the same we can use the same tfrmt)
+ If we also want big N's on `col 1,2`, `col4`, and `mycol3`, we will need Add 3 more rows to our ARD. One that goes down to the `span1` level of specificity and two that go all the way down to `my_col` level of specificity. (Note: because we are keeping the `parm` values the same we can use the same tfrmt)
 ```{r}
 with_more_big_n_data <- tribble(
   ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~val,
