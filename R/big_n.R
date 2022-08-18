@@ -1,6 +1,6 @@
 #' Big N Structure
 #'
-#' Big N strucutre allows you to specify which values should become the big n
+#' Big N structure allows you to specify which values should become the subject totals ("big N" values)
 #' values and how they should be formatted. Values are specified by providing
 #' the row value(s) of the parameter column for which the values are big n's.
 #' This will remove these from the body of the table and place them into columns
