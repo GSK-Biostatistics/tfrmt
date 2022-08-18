@@ -15,8 +15,11 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     stop("Requires a tfrmt object")
   }
 
-  tbl_dat <- apply_table_frmt_plan(
-      .data = .data,
+  tbl_dat <- .data %>%
+    remove_big_ns(param = tfrmt$param,
+                  big_n_structure = tfrmt$big_n) %>%
+    apply_table_frmt_plan(
+      .data = .,
       table_frmt_plan = tfrmt$body_plan,
       group = tfrmt$group,
       label = tfrmt$label,
@@ -33,10 +36,14 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
   non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$values) %>% map_chr(as_label))
   data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
+  big_n_df <- get_big_ns(.data, param = tfrmt$param,
+                         value = tfrmt$values,
+                         columns =tfrmt$column,
+                         big_n_structure = tfrmt$big_n,
+                         mock = mock)
 
   tbl_dat_wide <- tbl_dat %>%
     pivot_wider_tfrmt(tfrmt, mock) %>%
-
     # arrange if sorting cols are applied
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset") %>%
 
@@ -47,7 +54,27 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       non_data_cols,
       data_col_values,
       fail_desc = "Failure while aligning non-data values"
+    )
+
+  col_plan_vars <- tentative_process(
+    names(tbl_dat_wide),
+    create_col_order,
+    cp = tfrmt$col_plan,
+    columns = tfrmt$column,
+    fail_desc = "Unable to create dataset subset vars"
     ) %>%
+    tentative_process(
+      .,
+      apply_big_n_df,
+      columns = tfrmt$column,
+      value = tfrmt$values,
+      big_n_df = big_n_df,
+      fail_desc = "Unable to add big N's"
+    )
+
+  tbl_dat_wide_processed <- tbl_dat_wide %>%
+    #Select before grouping to not have to deal with if it indents or not
+    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns") %>%
 
     #Apply row group structures defined in row_grp_plan
     tentative_process(
@@ -57,17 +84,18 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"
     ) %>%
-
-    #Select before grouping to not have to deal with if it indents or not
-    tentative_process(apply_col_plan, tfrmt, fail_desc = "Unable to subset dataset columns") %>%
-
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
                       tfrmt$label)
 
 
-  tbl_dat_wide
+  structure(
+    tbl_dat_wide_processed,
+    .col_plan_vars = col_plan_vars,
+    class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
+  )
+
 }
 
 

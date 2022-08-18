@@ -17,10 +17,11 @@
 #' @param footer footers of the table
 #' @param row_grp_plan plan of the row groups blocking. Takes a [row_grp_plan()]
 #' @param body_plan combination and formatting of the input data. Takes a [body_plan()]
-#' @param col_style_plan how to style columns? including alignment (left, right, character) and width. Takes a [col_style_plan()]
+#' @param col_style_plan how to style columns including alignment (left, right, character) and width. Takes a [col_style_plan()]
 #' @param col_plan a col_plan object which is used to select, rename, and nest
 #'   columns. Takes a [col_plan()]
 #' @param sorting_cols which columns determine sorting of output
+#' @param big_n how to format subject totals ("big Ns") for inclusion in the column labels. Takes a [big_n_structure()]
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #' @details
@@ -179,6 +180,7 @@ tfrmt <- function(
   col_style_plan,
   col_plan,
   sorting_cols,
+  big_n,
   ...
 ){
 

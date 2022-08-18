@@ -232,8 +232,8 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       table.font.names = c("Courier", default_fonts())) %>%
 
     tab_style(
-      style = cell_text(whitespace = "pre", align = "center"),
-      locations = cells_column_labels()
+      style = cell_text(whitespace = "pre-wrap", align = "center"),
+      locations = list(cells_column_spanners(),cells_column_labels())
     ) %>%
 
     tab_style(
