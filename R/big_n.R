@@ -32,6 +32,15 @@ big_n_structure<- function(param_val, n_frmt = frmt("\nN = xx")){
 
 
 
+#' Applies the big N df to the column names
+#'
+#' @param col_plan_vars named string vector of columns
+#' @param columns column quosure list
+#' @param value value column quosure
+#' @param big_n_df big_n_df
+#'
+#' @return named string vector
+#' @noRd
 apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
 
   if(!is.null(big_n_df) && nrow(big_n_df) > 0){
@@ -60,6 +69,14 @@ apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
   out
 }
 
+#' Remove big n's from data
+#'
+#' @param .data ARD
+#' @param param param quosure
+#' @param big_n_structure big_n_structure object
+#'
+#' @return ARD with big n's in
+#' @noRd
 remove_big_ns <- function(.data, param, big_n_structure){
   if(!is.null(big_n_structure)){
     .data <- .data %>%
@@ -68,7 +85,19 @@ remove_big_ns <- function(.data, param, big_n_structure){
   .data
 }
 
+
+#' Makes the big n data from the raw ARD
+#'
+#' @param .data raw ARD
+#' @param param param quosures
+#' @param value value quosures
+#' @param columns list of column quosures
+#' @param big_n_structure big_n_stcuture object
+#' @param mock boolean if it is T/F
+#' @return tibble of the formatted big n's and expressions for where each goes
+#'
 #' @importFrom dplyr slice_tail
+#' @noRd
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
   if(!is.null(big_n_structure)){
     frmtted_vals <- .data %>%

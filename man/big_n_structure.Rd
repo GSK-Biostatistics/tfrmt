@@ -16,9 +16,9 @@ are big n's}
 big_n_structure object
 }
 \description{
-Big N strucutre allows you to specify which values should become the big n
-values and how they should be formatted. Values are specified by providing
-the row value(s) of the parameter column for which the values are big n's.
+Big N structure allows you to specify which values should become the subject totals ("big N" values)
+and how they should be formatted in the table's column labels. Values are specified by providing
+the value(s) of the \code{param} column for which the values are big N's.
 This will remove these from the body of the table and place them into columns
 matching the values in the column column(s). The default formatting is \code{N = xx},
 on its own line, but that can be changed by providing a different \code{frmt()} to
