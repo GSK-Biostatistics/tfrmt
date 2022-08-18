@@ -16,6 +16,11 @@
 #' @export
 #'
 big_n_structure<- function(param_val, n_frmt = frmt("\nN = xx")){
+
+  if(!is_frmt(n_frmt)){
+    stop("`n_frmt` must be given a frmt object")
+  }
+
   structure(
     list(
       param_val = param_val,
@@ -83,21 +88,21 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
     if(nrow(multi_test) > 0){
 
       warn_df <- multi_test %>%
-        select(-n)
+        select(-.data$n)
 
       warning(c("The following columns have multiple Big N's associated with them :\n", warn_df),
               call. = FALSE)
     }
     .data <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
-      pivot_longer(-c(`_tfrmt______id`, !!value)) %>%
-      filter(!is.na(value)) %>%
-      group_by(`_tfrmt______id`) %>%
-      mutate(exp = paste0(name, "=='", value, "'",  collapse = "&"),
-             name = paste0("__tfrmt_new_name__", name)) %>%
+      pivot_longer(-c(.data$`_tfrmt______id`, !!value)) %>%
+      filter(!is.na(.data$value)) %>%
+      group_by(.data$`_tfrmt______id`) %>%
+      mutate(exp = paste0(.data$name, "=='", .data$value, "'",  collapse = "&"),
+             name = paste0("__tfrmt_new_name__", .data$name)) %>%
       slice_tail() %>%
       ungroup()%>%
-      select(-`_tfrmt______id`)
+      select(-.data$`_tfrmt______id`)
 
   } else {
     .data <- NULL

@@ -1,6 +1,5 @@
 test_that("Defining the big Ns", {
   bn1 <- big_n_structure(param_val = "bigN", n_frmt = frmt("Hello World"))
-
   bn2 <- big_n_structure(param_val = c("bigN", "N"))
 
   expect_s3_class(bn1,"big_n_structure")
@@ -10,6 +9,8 @@ test_that("Defining the big Ns", {
   expect_equal(bn1[["n_frmt"]], frmt("Hello World"), ignore_attr = c(".Environment"))
   expect_equal(bn2[["param_val"]], c("bigN", "N"), ignore_attr = c(".Environment"))
   expect_equal(bn2[["n_frmt"]], frmt("\nN = xx"), ignore_attr = c(".Environment"))
+
+  expect_error(big_n_structure(param_val = "bigN", n_frmt = "Hello World"))
 })
 
 
@@ -330,6 +331,4 @@ test_that("Missing Big N in dataset", {
 
   expect_warning(apply_tfrmt(.data = dat, tfrmt = tfrmt_test, mock = FALSE))
 })
-
-
 

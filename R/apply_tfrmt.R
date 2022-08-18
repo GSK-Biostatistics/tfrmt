@@ -63,8 +63,14 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     columns = tfrmt$column,
     fail_desc = "Unable to create dataset subset vars"
     ) %>%
-    apply_big_n_df(columns = tfrmt$column, value = tfrmt$values, big_n_df = big_n_df)
-
+    tentative_process(
+      .,
+      apply_big_n_df,
+      columns = tfrmt$column,
+      value = tfrmt$values,
+      big_n_df = big_n_df,
+      fail_desc = "Unable to add big N's"
+    )
 
   tbl_dat_wide_processed <- tbl_dat_wide %>%
     #Select before grouping to not have to deal with if it indents or not
