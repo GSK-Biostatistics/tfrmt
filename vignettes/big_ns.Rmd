@@ -43,7 +43,7 @@ data
 ```
 
 
-In this study we have 30 subjects per Arm, for a total of 60 subjects. To make the N's go to the right place we need to ensure the values in the `Column` column match the rest of the data. Then we can combine this information with teh data above to make the full ARD for this table.  
+In this study we have 30 subjects per treatment arm for a total of 60 subjects. Because the ARD is 1 row per unique value, our Ns will contribute 3 rows to the ARD. To make the N's go to the right place, we need to supply information about the `column` column values. The `column` column values should map to those already available in the ARD. Then we can combine this information with the data above to make the full ARD for this table.  
 ```{r}
 big_ns <- tibble(Column = c("Placebo", "Treatment", "Total"),
                  Param = "bigN",
