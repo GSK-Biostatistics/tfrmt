@@ -444,12 +444,11 @@ tfrmt(
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
-  
+
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_col(align = c(".",","," "), col = vars(contains("pval")))
+    element_col(align = c(".",","," "), col = vars(p_low, p_high))
   ),
-  
   # columns
   col_plan = col_plan(
     -starts_with("ord")
@@ -503,6 +502,7 @@ tfrmt(
   # columns
   col_plan = col_plan(
     ## defines the spanning column order, and then beneath them the order of their contents
+    -starts_with("ord"),
     span_structure(
       col2 = c(
         "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
@@ -511,15 +511,17 @@ tfrmt(
       ),
       col1 = c(`n (%)` = `n_pct` ,
                `[AEs]` = `AEs`)
-    ),
+    )
+    ,
     span_structure(
       col2 = c("Fisher's Exact p-values" = fisher_pval),
       col1 = c(
-        `Placebo vs. Low Dose` = `p_low` ,
-       `Placebo vs. High Dose` = `p_high` 
+        # add a line break to help with table formatting
+        `Placebo vs.\n Low Dose` = `p_low` ,
+       `Placebo vs.\n High Dose` = `p_high` 
       )
-    ),
-    -starts_with("ord")
+    )
+    
     )
   ) %>% 
   print_to_gt(data_ae2)  %>% 
