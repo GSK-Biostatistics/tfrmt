@@ -4,69 +4,64 @@
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
-apply_col_plan <- function(data, tfrmt){
+apply_col_plan <- function(data, col_selection){
 
-  if (is.null(tfrmt$col_plan)){
-    if(!is.null(tfrmt$row_grp_plan$label_loc$location) &&
-       tfrmt$row_grp_plan$label_loc$location=="noprint"){
-
-      out <- data %>% select(-c(!!!tfrmt$group))
-
-    } else {
-      out <- data
-    }
-  } else {
-
-    col_plan_names <- create_col_order(tfrmt$col_plan, tfrmt$column, names(data))
-
-    out <- select(data, !!!col_plan_names)
-
+  if(is.character(col_selection)){
+    quo_col_selections <- map(col_selection, ~char_as_quo(.x))
+    col_selection <- do.call(vars, quo_col_selections)
   }
 
-  out
+  select(data,!!!col_selection)
+
 }
 
+#' Creates a named vector explicitly calling all the columns
+#'
 #' @importFrom rlang is_empty
-create_col_order <- function(cp, columns, data_names){
+#' @importFrom purrr map map_chr
+#'
+#' @noRd
+create_col_order <- function(data_names, columns, cp){
 
-  if(is_empty(columns)){
-    # create placeholder
-    column_names <- "col"
+  if(is.null(cp)){
+    col_selections <- data_names
   }else{
-    column_names <- map_chr(columns, as_label)
-  }
-
-  col_selections <- c()
-
-  for(cp_el_idx in seq_along(cp$dots)){
-    cp_el <- cp$dots[cp_el_idx]
-    if(!is_span_structure(cp_el[[1]])){
-      col_selections <- col_plan_quo_to_vars(
-        x = cp_el,
-        column_names = column_names,
-        data_names = data_names,
-        preselected_cols = col_selections
-      )
+    if(is_empty(columns)){
+      # create placeholder
+      column_names <- "col"
     }else{
-      col_selections <- col_plan_span_structure_to_vars(
-        x = cp_el,
-        column_names = column_names,
-        data_names = data_names,
-        preselected_cols = col_selections
-        )
+      column_names <- map_chr(columns, as_label)
     }
 
-    col_selections <- col_selections[!duplicated(gsub("^-","",col_selections), fromLast = TRUE)]
+    col_selections <- c()
 
-  }
+    for(cp_el_idx in seq_along(cp$dots)){
+      cp_el <- cp$dots[cp_el_idx]
+      if(!is_span_structure(cp_el[[1]])){
+        col_selections <- col_plan_quo_to_vars(
+          x = cp_el,
+          column_names = column_names,
+          data_names = data_names,
+          preselected_cols = col_selections
+        )
+      }else{
+        col_selections <- col_plan_span_structure_to_vars(
+          x = cp_el,
+          column_names = column_names,
+          data_names = data_names,
+          preselected_cols = col_selections
+          )
+      }
 
-  ## remove duplicates, keeping _last_ version
+      col_selections <- col_selections[!duplicated(gsub("^-","",col_selections), fromLast = TRUE)]
 
+    }
 
-  ## add back in the non-specified columns
-  if(cp$.drop == FALSE){
-    missing_cols <- setdiff(data_names, gsub("^-","",col_selections))
-    col_selections <- c(col_selections,missing_cols)
+    ## add back in the non-specified columns
+    if(cp$.drop == FALSE){
+      missing_cols <- setdiff(data_names, gsub("^-","",col_selections))
+      col_selections <- c(col_selections,missing_cols)
+    }
   }
 
   quo_col_selections <- map(col_selections, ~char_as_quo(.x))
@@ -76,6 +71,7 @@ create_col_order <- function(cp, columns, data_names){
 }
 
 col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
+
   ## ensure data_names order matches preselected_cols
   split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
 
@@ -241,17 +237,37 @@ char_as_quo <- function(x) {
 
 #' @importFrom rlang quo_get_expr as_label
 eval_col_plan_quo <- function(x, data_names, preselected_vals){
-  if(identical(as_label(x), "everything()")){
 
+
+
+  if(identical(as_label(x), "everything()")){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
-    data_names <- data_names[-seq_along(preselected_vals)]
+
+    if(!is.null(preselected_vals)){
+      data_names <- data_names[-seq_along(preselected_vals)]
+    }
   }
+
   eval_tidyselect_on_colvec(x, data_names)
 }
 
 
-#' @importFrom tidyr separate unite
+#' Creates a split out data.frame of the potential columns and their spans.
+#'
+#' Combines the original column names with the potential renamed ones from
+#' preselected_cols into a single vector, removing duplicates then splits out
+#' the contents into a data.frame.
+#'
+#' @param data_names original names of the dataset
+#' @param preselected_cols named character vector of selected columns from the
+#'   dataset. names of the vector reflect the new name to apply
+#' @param column_names the original ARD column names as a character vector
+#'
+#' @noRd
+#'
+#' @importFrom dplyr mutate
+#' @importFrom tidyr separate
 #' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 
@@ -288,6 +304,22 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 
 }
 
+#' Combines the split out data.frame of the potential columns and their spans into a named vector.
+#'
+#'
+#' @param split_data_names tibble containing two columns for every
+#'   "column_name" value - one that is the column name, the second is the column
+#'   name prepended with "__tfrmt_new_name__". Finally, there is a "subtraction_status" column,
+#'   indicating if the column should be subtracted or not.
+#' @param preselected_cols named character vector of selected columns from the
+#'   dataset. names of the vector reflect the new name to apply
+#' @param column_names the original ARD column names as a character vector
+#'
+#' @noRd
+#'
+#' @importFrom dplyr case_when mutate pull
+#' @importFrom tidyr unite
+#' @importFrom tibble tibble
 unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names){
 
   new_preselected_cols_full <- split_data_names %>%

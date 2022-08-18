@@ -76,7 +76,8 @@ test_that("Check apply_tfrmt", {
 
   expect_equal(
     apply_tfrmt(raw_dat, plan) %>% arrange(group, label),
-    man_df %>% arrange(group, label)
+    man_df %>% arrange(group, label),
+    ignore_attr = c("class",".col_plan_vars")
     )
 
   plan$sorting_cols <- NULL
@@ -90,7 +91,8 @@ test_that("Check apply_tfrmt", {
     select(-foo)
 
   expect_equal(apply_tfrmt(raw_dat, plan),
-               man_df_ord)
+               man_df_ord,
+               ignore_attr = c("class",".col_plan_vars"))
 
   expect_error(
     apply_tfrmt(raw_dat, tfrmt(
@@ -125,7 +127,8 @@ test_that("Check apply_tfrmt for mock data",{
   )
 
   expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE),
-               mock_man_df)
+               mock_man_df,
+               ignore_attr = c("class",".col_plan_vars"))
 
 
   # mock for plan alone
@@ -170,7 +173,8 @@ test_that("Check apply_tfrmt for mock data",{
 
   expect_equal(
     apply_tfrmt(mock_dat, plan, mock = TRUE),
-    mock_man_df
+    mock_man_df,
+    ignore_attr = c("class",".col_plan_vars")
     )
 
 
@@ -203,7 +207,9 @@ test_that("Check apply_tfrmt for mock data",{
       "grp1_1" ,"grp2_1" ,"C"      ,"b"      ,"my_label_1" ,"xx.x" ,
       "grp1_1" ,"grp2_1" ,"D"      ,"a"      ,"my_label_1" ,"xx.x" ,
       "grp1_1" ,"grp2_1" ,"D"      ,"b"      ,"my_label_1" ,"xx.x"
-    )
+    ),
+
+    ignore_attr = c("class",".col_plan_vars")
   )
 
   # duplicate params for a single group/label combo
@@ -245,7 +251,8 @@ test_that("Check apply_tfrmt for mock data",{
                   "grp1_2", "my_label_1", "xx.x",  "xx.x" ,
                   "grp1_2", "my_label_2", "xxx" ,  "xxx"  ,
                   "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
-               ))
+               ),
+               ignore_attr = c("class",".col_plan_vars"))
 
 })
 
@@ -271,7 +278,8 @@ test_that("Test body_plan missing", {
                input_data %>%
                  select(-param) %>%
                  mutate(val = as.character(val)) %>%
-                 pivot_wider(names_from = column, values_from = val))
+                 pivot_wider(names_from = column, values_from = val),
+               ignore_attr = c("class",".col_plan_vars"))
 })
 
 
@@ -316,5 +324,6 @@ test_that("incomplete body_plan where params share label",{
       "topgrp", "  n pct"  , c("2","40"),   FALSE
   ) %>% group_by(rowlbl1)
 
- expect_equal(auto_tfrmt, man_tfrmt)
+ expect_equal(auto_tfrmt, man_tfrmt,
+              ignore_attr = c("class",".col_plan_vars"))
   })

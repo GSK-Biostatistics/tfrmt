@@ -14,6 +14,7 @@ articles:
   - row_grp_plan
   - col_plan
   - col_style_plan
+  - big_ns
 - title: Building Tables
   navbar: Building Tables
   contents:

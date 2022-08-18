@@ -1288,65 +1288,6 @@ test_that("span_structure misc, including errors",{
 })
 
 
-
-# this happens in the select_col_plan, rather than the row_grp_plan
-test_that("Suppress printing of groups", {
-
-  mock_multi_grp <- tibble::tribble(
-    ~grp1,    ~grp2,     ~ my_label,
-    "grp1_1", "grp2_1", "my_label_1",
-    "grp1_1", "grp2_1", "my_label_2",
-    "grp1_1", "grp2_2", "my_label_1",
-    "grp1_1", "grp2_2", "my_label_2",
-    "grp1_2", "grp2_1", "my_label_1",
-    "grp1_2", "grp2_1", "my_label_2",
-    "grp1_2", "grp2_2", "my_label_1",
-    "grp1_2", "grp2_2", "my_label_2",
-  ) %>%
-    mutate(
-      trtA = rep("xx (xx%)", 8),
-      trtB = rep("xx (xx%)", 8),
-      trtC = rep("xx (xx%)", 8),
-    )
-
-  #option 1
-  spec_noprint_row_grp <- tfrmt(
-    group = c(grp1, grp2),
-    label = my_label,
-    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint"))
-  )
-  #option 2
-  spec_noprint_col_plan1 <- tfrmt(
-    group = c(grp1, grp2),
-    label = my_label,
-    col_plan = col_plan(my_label, starts_with("trt"), .drop = TRUE)
-  )
-  #option 3
-  spec_noprint_col_plan2 <- tfrmt(
-    group = c(grp1, grp2),
-    label = my_label,
-    col_plan = col_plan(-starts_with("grp"))
-  )
-
-  df_no_grp <- tibble::tribble(
-    ~my_label,   ~trtA,     ~trtB,     ~trtC  ,
-    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-  )
-
-  expect_equal(apply_col_plan(mock_multi_grp, spec_noprint_row_grp), df_no_grp)
-  expect_equal(apply_col_plan(mock_multi_grp, spec_noprint_col_plan1), df_no_grp)
-  expect_equal(apply_col_plan(mock_multi_grp, spec_noprint_col_plan2), df_no_grp)
-
-})
-
-
 test_that("Tidyselect subtraction with span_structure",{
 
   df <- crossing(label = c("label 1", "label 2", "label 3"),

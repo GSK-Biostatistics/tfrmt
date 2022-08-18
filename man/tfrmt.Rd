@@ -19,6 +19,7 @@ tfrmt(
   col_style_plan,
   col_plan,
   sorting_cols,
+  big_n,
   ...
 )
 }
@@ -45,12 +46,14 @@ tfrmt(
 
 \item{body_plan}{combination and formatting of the input data. Takes a \code{\link[=body_plan]{body_plan()}}}
 
-\item{col_style_plan}{how to style columns? including alignment (left, right, character) and width. Takes a \code{\link[=col_style_plan]{col_style_plan()}}}
+\item{col_style_plan}{how to style columns including alignment (left, right, character) and width. Takes a \code{\link[=col_style_plan]{col_style_plan()}}}
 
 \item{col_plan}{a col_plan object which is used to select, rename, and nest
 columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 
 \item{sorting_cols}{which columns determine sorting of output}
+
+\item{big_n}{how to format subject totals ("big Ns") for inclusion in the column labels. Takes a \code{\link[=big_n_structure]{big_n_structure()}}}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
