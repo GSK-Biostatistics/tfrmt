@@ -159,7 +159,7 @@ test_that("Test with spanning headers", {
       new_col_3 = mycol3,
       -mycol5
     ),
-    big_n = big_n_structure(param = "bigN")
+    big_n = big_n_structure(param_val = "bigN")
   ) %>%
     apply_tfrmt(.data = dat, tfrmt = ., mock = FALSE) %>%
     names()
