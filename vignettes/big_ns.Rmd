@@ -88,7 +88,7 @@ tfrmt(
   print_to_gt(data)
 ```
 
-This will work no matter how complicated the table, but column names must always match in the ARD. For tables with spanning columns, column information up to the point where you want the big N to go. 
+No matter how complicated the table, this feature will work as long as the ARD is set up appropriately with the correct `column` column values on the big N rows. For tables with spanning columns (i.e. multiple `column` columns), the big N will be appended to the lowest level `column` column value that is supplied (based on the order of the column variables supplied to the `tfrmt`).
  Let's look at this table, which has 3 layers of column spanning
 ```{r}
   data <- tribble(
