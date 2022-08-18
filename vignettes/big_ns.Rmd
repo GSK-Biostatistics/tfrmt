@@ -131,7 +131,7 @@ spanning_tfrmt<- tfrmt(
 print_to_gt(spanning_tfrmt, data)
 ```
  
- If we just wanted to put the big N on the highest "column cols" we would need to add a row to the ARD where `span2` equals `"column cols"` and all other column columns are missing. 
+ If we just want to put the big N on the highest "column cols", we need to add a row to the ARD where `span2` equals `"column cols"` and all other `column` columns are missing. 
 ```{r}
 with_big_n_data <- tribble(
   ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~val,
