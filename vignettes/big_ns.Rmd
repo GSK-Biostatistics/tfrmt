@@ -174,4 +174,4 @@ n_span_tfrmt %>%
 ```
 
 
-`big_n_structure`s provide a straight forward way of adding big N's from the ARD into the column labels. Allowing for big N's at any level of column spanning depending on how it is paramterized in the ARD. 
+`big_n_structure`s provide a straightforward way of adding big N's from the ARD into the column labels. The functionality allows for big N's at any level of column spanning depending on how it is parameterized in the ARD. 
