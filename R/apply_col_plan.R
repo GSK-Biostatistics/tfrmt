@@ -6,6 +6,7 @@
 #' @importFrom rlang quo
 apply_col_plan <- function(data, col_selection){
 
+
   if(is.character(col_selection)){
     quo_col_selections <- map(col_selection, ~char_as_quo(.x))
     col_selection <- do.call(vars, quo_col_selections)

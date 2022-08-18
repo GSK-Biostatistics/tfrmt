@@ -100,22 +100,32 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
 
     group <- group[grps_avail]
 
-    # Step 1: combine any grouping columns that need combining into label
-    add_ln_df <- .data %>% combine_group_cols(group[grps_avail],
-                                          label,
-                                          element_row_grp_loc)
+    # Either drop group columns ("no print"), or format them w/ label
 
-    if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
-      add_ln_df <- add_ln_df %>%
-        select(-c(!!!group))
-    } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
-      add_ln_df <- add_ln_df %>%
-        group_by(!!group[[1]])
-    } else { # Using the grouping in gt, but needs to drop all groups in label
-      add_ln_df <- add_ln_df %>%
-        group_by(!!group[[1]]) %>%
-        select(-c(!!!group[-1]))
+    if (element_row_grp_loc$location=="noprint"){
+
+      add_ln_df <- .data %>% select(-c(!!!group))
+
+    } else {
+
+      #  combine any grouping columns that need combining into label
+      add_ln_df <- .data %>% combine_group_cols(group[grps_avail],
+                                                label,
+                                                element_row_grp_loc)
+
+      if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
+        add_ln_df <- add_ln_df %>%
+          select(-c(!!!group))
+      } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
+        add_ln_df <- add_ln_df %>%
+          group_by(!!group[[1]])
+      } else { # Using the grouping in gt, but needs to drop all groups in label
+        add_ln_df <- add_ln_df %>%
+          group_by(!!group[[1]]) %>%
+          select(-c(!!!group[-1]))
+      }
     }
+
   }
 
   add_ln_df
