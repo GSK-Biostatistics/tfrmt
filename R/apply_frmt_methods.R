@@ -3,7 +3,7 @@
 #'
 #' @param .data data, but only what is getting changed
 #' @param frmt_def formatting to be applied
-#' @param values values symbol should only be one
+#' @param value value symbol should only be one
 #' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #' @param ... additional arguments for methods
 #' @param param param column as a quosure
@@ -26,10 +26,10 @@
 #' apply_frmt(
 #'  frmt_def = frmt("XX.X"),
 #'  .data=df,
-#'  values=quo(x))
+#'  value=quo(x))
 #'
 #' @rdname apply_frmt
-apply_frmt <- function(frmt_def, .data, values, mock = FALSE, ...){
+apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...){
   UseMethod("apply_frmt", frmt_def)
 }
 
@@ -40,14 +40,14 @@ apply_frmt <- function(frmt_def, .data, values, mock = FALSE, ...){
 #' @export
 #'
 #' @rdname apply_frmt
-apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
+apply_frmt.frmt <- function( frmt_def, .data, value, mock = FALSE, ...){
   if(mock){
     out <- .data %>%
-      mutate(!!values := frmt_def$expression)
+      mutate(!!value := frmt_def$expression)
   } else {
 
     vals <- .data %>%
-      pull(!!values)
+      pull(!!value)
 
     if(length(vals) == 0){
       return(.data)
@@ -142,7 +142,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 
     out <- .data %>%
       mutate(
-        !!values := fmt_val_output
+        !!value := fmt_val_output
       )
   }
 
@@ -159,7 +159,7 @@ apply_frmt.frmt <- function( frmt_def, .data, values, mock = FALSE, ...){
 #' @export
 #'
 #' @rdname apply_frmt
-apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param, column, label, group, ...){
+apply_frmt.frmt_combine <- function(frmt_def, .data, value, mock = FALSE, param, column, label, group, ...){
 
   fmt_param_vals <- frmt_def$expression %>%
     str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
@@ -183,7 +183,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
       apply_frmt(
         frmt_def = fmt_to_apply,
         .data = .,
-        values = values,
+        value = value,
         column = column,
         param = param,
         label = label,
@@ -205,9 +205,9 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   }
 
   .tmp_data_wide <- .tmp_data %>%
-    select(!!values, !!param, !!!column, !!label, !!!group) %>%
+    select(!!value, !!param, !!!column, !!label, !!!group) %>%
     pivot_wider(
-      values_from = !!values,
+      values_from = !!value,
       names_from = !!param
     ) %>%
     mutate(
@@ -244,7 +244,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   ## otherwise concat the params
   .tmp_data_fmted <- .tmp_data_wide %>%
     mutate(
-      !!values := case_when(
+      !!value := case_when(
         .data$.is_all_missing ~ frmt_def$missing,
         TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
       )
@@ -254,7 +254,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
   ## if not mock remove
   if(!mock){
     .data <- .data %>%
-      select(-!!values)
+      select(-!!value)
   }
 
   merge_group <- map(
@@ -284,7 +284,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, values, mock = FALSE, param
 #' @importFrom rlang :=
 #'
 #' @rdname apply_frmt
-apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
+apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...){
 
   if(mock){
     frmt_to_prt <- frmt_def %>%
@@ -294,18 +294,18 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
     }
     str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
     out <- .data %>%
-      mutate(!!values := str_to_prnt)
+      mutate(!!value := str_to_prnt)
 
   } else {
-    values_str <- as_label(values)
+    values_str <- as_label(value)
     n <- length(frmt_def)
 
-    val_len <- length(pull(.data, !!values))
+    val_len <- length(pull(.data, !!value))
     right <- frmt_def %>%
       map(f_rhs) %>%
       map(function(x) {
         if(is_frmt(x)){
-          out <- apply_frmt(x, .data, values, ...) %>% pull(!!values)
+          out <- apply_frmt(x, .data, value, ...) %>% pull(!!value)
         } else {
           out <- rep(x, val_len)
         }
@@ -329,7 +329,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, values, mock = FALSE, ...){
 
     out <- .data %>%
       mutate(
-        !!values := out
+        !!value := out
       )
   }
   out
