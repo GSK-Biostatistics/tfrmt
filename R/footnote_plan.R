@@ -24,13 +24,12 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #' @param column_val string or a named list of strings which represent the column to apply the footnote to
 #' @param group_val string or a named list of strings which represent the value of group to apply the footnote to
 #' @param label_val string which represents the value of label to apply the footnote to
-#' @param param_val string which represents the value of param to apply the footnote to
 #'
 #' @return footnote structure object
 #' @export
 #'
 #' @examples
-footnote_structure <- function(footnote_text, column_val = ".default", group_val = ".default", label_val = ".default", param_val = ".default"){
+footnote_structure <- function(footnote_text, column_val = NULL, group_val = NULL, label_val = NULL){
 
   # warnings if elements arent named
 
@@ -57,7 +56,6 @@ footnote_structure <- function(footnote_text, column_val = ".default", group_val
       column_val = column_val,
       group_val = group_val,
       label_val = label_val,
-      param_val = param_val,
       footnote_text = footnote_text),
     class = c("footnote_structure","structure")
   )

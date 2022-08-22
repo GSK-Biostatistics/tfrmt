@@ -87,14 +87,21 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
-                      tfrmt$label)
-
-
-  structure(
-    tbl_dat_wide_processed,
-    .col_plan_vars = col_plan_vars,
-    class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
-  )
+                      tfrmt$label) %>%
+    #Not in a tentative process cause some of the inputs might be null but still valid
+    apply_footnote_meta(
+                      footnote_plan = tfrmt$footnote_plan,
+                      col_plan_vars = col_plan_vars,
+                      element_row_grp_loc = tfrmt$row_grp_plan$label_loc,
+                      tfrmt$group,
+                      tfrmt$label,
+                      columns = tfrmt$column
+                      ) %>%
+    tentative_process(remove_grp_cols,
+                      tfrmt$row_grp_plan$label_loc,
+                      tfrmt$group,
+                      tfrmt$label
+                      )
 
 }
 
