@@ -15,7 +15,7 @@ tfrmt_spec  <- tfrmt(
   group = vars(row_label1),
   label = "row_label2",
   param = "param",
-  values = "value",
+  value = "value",
   column = "column",
   #This controls how the rows are sorted
   sorting_cols = vars(ord_layer_1, ord_layer_2),
@@ -112,7 +112,7 @@ demog_tbl() %>%
     group = vars(row_label1),
     label = "row_label2",
     param = "param",
-    values = "value",
+    value = "value",
     column = "column",
   ) %>%
   print_to_gt(data)

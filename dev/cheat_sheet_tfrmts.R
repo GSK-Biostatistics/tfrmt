@@ -243,13 +243,13 @@ df <- crossing(
   label = c("label 1", "label 2", "label 3"),
   column = c("PL", "T1", "T2"),
   param = c("n")) %>%
-  mutate(values = c(50, 45, 52, 52, 49, 55, 50, 47, 43))
+  mutate(value = c(50, 45, 52, 52, 49, 55, 50, 47, 43))
 
 tfrmt(
   label = label,
   column = column,
   param = param,
-  values = values,
+  value = value,
 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -263,14 +263,14 @@ df <- crossing(
   label = c("label 1", "label 2", "label 3"),
   column = c("PL", "T1", "T2"),
   param = c("count", "pct")) %>%
-  mutate(values = c(50, 4.49, 45, 4.77, 52, 3.29, 52, 4.71, 49, 3.82,
+  mutate(value = c(50, 4.49, 45, 4.77, 52, 3.29, 52, 4.71, 49, 3.82,
                     55, 2.56, 50, 5.38, 47, 2.83, 43, 3.07))
 
 tfrmt(
   label = label,
   column = column,
   param = param,
-  values = values,
+  value = value,
 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -286,14 +286,14 @@ df <- crossing(
   label = c("label 1", "label 2", "label 3"),
   column = c("PL", "T1", "T2"),
   param = c("n")) %>%
-  mutate(values = c(50, 45, 52, 52, 49, 55, 50, 47, 43))
+  mutate(value = c(50, 45, 52, 52, 49, 55, 50, 47, 43))
 
 
 tfrmt(
   label = label,
   column = column,
   param = param,
-  values = values,
+  value = value,
 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -322,7 +322,7 @@ mock_tbl <- function(tfrmt_object){
     label = "label",
     param = "param",
     column = "column",
-    values = value,
+    value = value,
 
     # Specify body plan
     body_plan = body_plan(
