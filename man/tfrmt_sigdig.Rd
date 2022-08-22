@@ -90,7 +90,7 @@ tfrmt_sigdig(sigdig_df = sig_input,
              param_defaults = param_set("[\{n\}]" = NA)) \%>\%
   tfrmt(column = vars(col1, col2),
         param = param,
-        values = value,
+        value = value,
         sorting_cols = vars(ord1, ord2, ord3),
         col_plan = col_plan(-starts_with("ord"))) \%>\%
   print_to_gt(.data = data)

@@ -39,7 +39,7 @@ tfrmt_spec <- tfrmt(
   group = c(grp1, grp2),
   label = label,
   param = param,
-  values = value,
+  value = value,
   column = column,
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
   body_plan = body_plan(
