@@ -67,7 +67,7 @@ labs_tfrmt <- labs_tfrmt_template %>%
   tfrmt(
     column = vars(col1, col2),
     param = param,
-     = value,
+    value = value,
     sorting_cols = vars(ord1, ord2, ord3),
     row_grp_plan = row_grp_plan(
       label_loc = element_row_grp_loc(location = "indent")
