@@ -123,8 +123,6 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
               call. = FALSE)
     }
 
-    browser()
-
     .data <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
       pivot_longer(
