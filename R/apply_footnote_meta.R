@@ -24,7 +24,9 @@ apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row
 #' @param columns column quosure
 #'
 #' @return list with the row, column and footnote
-#' @noRd purrr cross_df
+#' @noRd
+#' @importFrom purrr cross_df
+#' @importFrom tidyr inner_join
 locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_loc,
                             group, label, columns){
   loc_info <- footnote_structure %>%
@@ -110,7 +112,7 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
     }
   }
 
-  list(row = row_loc, col = col_loc, note = footnote_structure$footnote_text)
+  list(row = row_loc, col = col_loc, spanning = spanning, note = footnote_structure$footnote_text)
 
 }
 
