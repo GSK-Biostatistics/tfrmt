@@ -26,7 +26,7 @@ apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row
 #' @return list with the row, column and footnote
 #' @noRd
 #' @importFrom purrr cross_df
-#' @importFrom tidyr inner_join
+#' @importFrom dplyr inner_join
 locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_loc,
                             group, label, columns){
   loc_info <- footnote_structure %>%
@@ -62,7 +62,7 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
 
     if(last(col_str) == span_lvl){
       col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
-      if(!is_null(names(col_loc))){
+      if(!is.null(names(col_loc))){
         col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
       }
     } else {
