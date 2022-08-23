@@ -36,12 +36,17 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
   row_loc <- NULL
 
   # Get column information
-  if(names(loc_info) == "column_val"){
+  if( "column_val" %in% names(loc_info)){
     col_str <- columns %>% map_chr(as_label)
 
-    loc_col_df <- loc_info$column_val %>%
-      cross_df()
-    col_val_nm <- names(loc_info$column_val)
+    if(is_empty(names(loc_info$column_val))){
+      col_val_nm <- col_str
+      loc_col_df <- tibble(!!col_str := loc_info$column_val)
+    } else {
+      loc_col_df <- loc_info$column_val %>%
+        cross_df()
+      col_val_nm <- names(loc_info$column_val)
+    }
 
     col_loc_df <- split_data_names_to_df(NULL, col_plan_vars%>%
                                            map_chr(as_label), col_str) %>%
@@ -55,7 +60,7 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
 
     if(last(col_str) == span_lvl){
       col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
-      if(!is_null(names(loc_col))){
+      if(!is_null(names(col_loc))){
         col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
       }
     } else {
