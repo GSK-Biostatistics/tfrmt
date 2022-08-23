@@ -26,12 +26,15 @@ apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row
 #' @return list with the row, column and footnote
 #' @noRd
 #' @importFrom purrr cross_df
-#' @importFrom dplyr inner_join
+#' @importFrom dplyr inner_join first last cur_group_id
 locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_loc,
                             group, label, columns){
+
   loc_info <- footnote_structure %>%
     discard(is.null) %>%
     .[names(.) != "footnote_text"]
+
+  row_grp <- if_else(is.null(element_row_grp_loc$location), "", element_row_grp_loc$location)
 
   spanning <- FALSE
   col_loc <- NULL
@@ -73,13 +76,10 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
     }
   }
 
-
-  if(names(loc_info) %in% c("group_val", "label_val")){
-
-    # Add row information
+  # Add row information
+  if(any(names(loc_info) %in% c("group_val", "label_val"))){
     grp_expr <- expr_to_filter(group, loc_info$group_val)
     lbl_expr <- expr_to_filter(label, loc_info$label_val)
-
 
     filter_expr <- paste(
       c(lbl_expr,grp_expr),
@@ -87,18 +87,32 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
     ) %>%
       parse_expr()
 
-    row_loc<- .data %>%
-      ungroup() %>%
-      mutate(`___tfrmt_test` = !!filter_expr,
-             `___tfrmt_TEMP_rows` = row_number()) %>%
-      filter(`___tfrmt_test`) %>%
-      pull(`___tfrmt_TEMP_rows`)
+    group_col_test <- row_grp != "indented" & is.null(loc_info$label_val) & (length(group) == 1 || names(loc_info$group_val) == as_label(first(group)))
+    if(group_col_test){
+      row_loc<-.data %>%
+        group_by(!!first(group)) %>%
+        mutate(`___tfrmt_grp_n` = cur_group_id(),
+               `___tfrmt_test` = !!filter_expr) %>%
+        filter(`___tfrmt_test`) %>%
+        pull(`___tfrmt_grp_n`) %>%
+        unique()
+
+    } else {
+      row_loc<- .data %>%
+        ungroup() %>%
+        mutate(
+          across(c(!!!group, !!label), str_remove, "^\\s*"), # THIS WILL NOT WORK IF YOU MODIFY THE INDENTS!! SHOULD BE UPDATED OR RAWLABELS KEPT
+          `___tfrmt_test` = !!filter_expr,
+          `___tfrmt_TEMP_rows` = row_number()) %>%
+        filter(`___tfrmt_test`) %>%
+        pull(`___tfrmt_TEMP_rows`)
+    }
 
     # If column is still missing
-    if(is_null(col_loc)){
-      if(element_row_grp_loc$location == "indented" | !is_null(loc_info$label_val)){
+    if(is_empty(col_loc)){
+      if(row_grp == "indented" | !is_empty(loc_info$label_val)){
         col_loc <- as_label(label)
-      } else if(element_row_grp_loc$location == "noprint" & !is_null(loc_info$group_val)){
+      } else if(row_grp == "noprint" & !is_empty(loc_info$group_val)){
         row_loc <- NULL
         warning("Can not apply footnotes to group columns without printing the group")
       } else if(spanning){
@@ -111,6 +125,7 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
       }
     }
   }
+
 
   list(row = row_loc, col = col_loc, spanning = spanning, note = footnote_structure$footnote_text)
 
