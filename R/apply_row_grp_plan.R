@@ -299,7 +299,7 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
   # check which group/label columns are available
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if(sum(grps_avail)==0){
+  if(length(grps_avail)==0){
     add_ln_df <- .data
   } else{
 
@@ -312,13 +312,13 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
       add_ln_df <- .data %>% select(-c(!!!group))
 
     } else if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
-      add_ln_df <- add_ln_df %>%
+      add_ln_df <- .data %>%
         select(-c(!!!group))
     } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
-      add_ln_df <- add_ln_df %>%
+      add_ln_df <- .data %>%
         group_by(!!group[[1]])
     } else { # Using the grouping in gt, but needs to drop all groups in label
-      add_ln_df <- add_ln_df %>%
+      add_ln_df <- .data %>%
         group_by(!!group[[1]]) %>%
         select(-c(!!!group[-1]))
     }
