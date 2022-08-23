@@ -274,7 +274,9 @@ cleaned_data_to_gt <- function(.data, tfrmt){
                        cells_column_labels(), cells_column_spanners())
     )
 
-  gt_out_final
+  # add footnotes and output
+  gt_out_final %>%
+    apply_footnote_plan(tfrmt,attr(.data,".footnote_locs"))
 
 }
 
