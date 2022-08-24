@@ -63,6 +63,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     columns = tfrmt$column,
     fail_desc = "Unable to create dataset subset vars"
     ) %>%
+    as_vars() %>% # Ensures col_plan_vars is a vars w/ names
     tentative_process(
       .,
       apply_big_n_df,

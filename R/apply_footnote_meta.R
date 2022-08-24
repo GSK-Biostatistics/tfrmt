@@ -29,16 +29,21 @@ apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row
 #' @importFrom dplyr inner_join first last cur_group_id
 locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_loc,
                             group, label, columns){
+  col_info <- get_col_loc(footnote_structure, .data, col_plan_vars, columns)
 
+  loc_info <- get_row_loc(footnote_structure, .data, element_row_grp_loc,
+                          group, label, col_info)
+  loc_info$note <- footnote_structure$footnote_text
+  loc_info
+}
+
+
+
+
+get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
   loc_info <- footnote_structure %>%
     discard(is.null) %>%
     .[names(.) != "footnote_text"]
-
-  row_grp <- if_else(is.null(element_row_grp_loc$location), "", element_row_grp_loc$location)
-
-  spanning <- FALSE
-  col_loc <- NULL
-  row_loc <- NULL
 
   # Get column information
   if( "column_val" %in% names(loc_info)){
@@ -68,68 +73,83 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
       if(!is.null(names(col_loc))){
         col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
       }
+      out <- list(col_loc = col_loc)
     } else {
-      spanning <- TRUE
       col_loc <- col_loc_df %>%
         pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
         unique()
+      out <- list(col_loc = col_loc, spanning = TRUE)
     }
+  } else {
+    out <- NULL
   }
-
-  # Add row information
-  if(any(names(loc_info) %in% c("group_val", "label_val"))){
-    grp_expr <- expr_to_filter(group, loc_info$group_val)
-    lbl_expr <- expr_to_filter(label, loc_info$label_val)
-
-    filter_expr <- paste(
-      c(lbl_expr,grp_expr),
-      collapse = "&"
-    ) %>%
-      parse_expr()
-
-    group_col_test <- row_grp != "indented" & is.null(loc_info$label_val) & (length(group) == 1 || names(loc_info$group_val) == as_label(first(group)))
-    if(group_col_test){
-      row_loc<-.data %>%
-        group_by(!!first(group)) %>%
-        mutate(`___tfrmt_grp_n` = cur_group_id(),
-               `___tfrmt_test` = !!filter_expr) %>%
-        filter(`___tfrmt_test`) %>%
-        pull(`___tfrmt_grp_n`) %>%
-        unique()
-
-    } else {
-      row_loc<- .data %>%
-        ungroup() %>%
-        mutate(
-          across(c(!!!group, !!label), str_remove, "^\\s*"), # THIS WILL NOT WORK IF YOU MODIFY THE INDENTS!! SHOULD BE UPDATED OR RAWLABELS KEPT
-          `___tfrmt_test` = !!filter_expr,
-          `___tfrmt_TEMP_rows` = row_number()) %>%
-        filter(`___tfrmt_test`) %>%
-        pull(`___tfrmt_TEMP_rows`)
-    }
-
-    # If column is still missing
-    if(is_empty(col_loc)){
-      if(row_grp == "indented" | !is_empty(loc_info$label_val)){
-        col_loc <- as_label(label)
-      } else if(row_grp == "noprint" & !is_empty(loc_info$group_val)){
-        row_loc <- NULL
-        warning("Can not apply footnotes to group columns without printing the group")
-      } else if(spanning){
-        row_loc <- NULL
-        warning("Can not apply footnotes to group cells when only the columns and rows are specified")
-      }else if(length(group) > 1 &loc_info$group_val != as_label(first(group))){
-        col_loc <- as_label(label)
-      } else {
-        col_loc <- as_label(group[[1]])
-      }
-    }
-  }
-
-
-  list(row = row_loc, col = col_loc, spanning = spanning, note = footnote_structure$footnote_text)
-
+  out
 }
 
+get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
+                        group, label, col_info){
+
+  loc_info <- footnote_structure %>%
+    discard(is.null) %>%
+    .[names(.) != "footnote_text"]
+
+  row_grp <- if_else(is.null(element_row_grp_loc$location), "",
+                     element_row_grp_loc$location)
+   if(any(names(loc_info) %in% c("group_val", "label_val"))){
+     # Things that don't have rows
+     if(!is.null(col_info$spanning) && col_info$spanning){
+       warning("Can not apply footnotes to group cells when only the columns and rows are specified")
+       col_info$row_loc <- NULL
+     } else if(row_grp == "noprint" & !is_empty(loc_info$group_val)){
+       warning("Can not apply footnotes to group cells when only the columns and rows are specified")
+       col_info$row_loc <- NULL
+     } else {
+       group_str <- group %>% map_chr(as_label)
+       # Test if there are more than the first group
+       highest_grp <- setdiff(names(loc_info$group_val), first(group_str)) %>%
+         length() == 0
+
+       #Will the footnote be in the label column
+       if(!is.null(loc_info$label_val) || row_grp == "intented" |!highest_grp){
+         grp_expr <- expr_to_filter(group, loc_info$group_val)
+         label_vals <- ifelse(is.null(loc_info$label_val), loc_info$group_val,
+                               loc_info$label_val)
+         lbl_expr <- expr_to_filter(label, label_vals)
+
+         filter_expr <- paste(c(lbl_expr,grp_expr),collapse = "&") %>%
+           parse_expr()
+
+         col_info$row_loc <- .data %>%
+           ungroup() %>%
+           mutate(
+             across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent)),
+             `___tfrmt_test` = !!filter_expr,
+             `___tfrmt_TEMP_rows` = row_number()) %>%
+           filter(`___tfrmt_test`) %>%
+           pull(`___tfrmt_TEMP_rows`)
+
+         col_info$col_loc <- ifelse(is.null(col_info$col_loc), as_label(label),
+                                     col_info$col_loc)
+
+       } else if(highest_grp){
+         col_info$row_loc<-.data %>%
+           group_by(!!first(group)) %>%
+           mutate(`___tfrmt_grp_n` = cur_group_id(),
+                  `___tfrmt_test` = !!filter_expr) %>%
+           filter(`___tfrmt_test`) %>%
+           pull(`___tfrmt_grp_n`) %>%
+           unique()
+         col_info$col_loc <- ifelse(is.null(col_info$col_loc), first(group_str),
+                                     col_info$col_loc)
+       } else if(row_grp == ""){
+
+       }
 
 
+     }
+  } else{
+    col_info$row_loc <- NULL
+  }
+  col_info
+
+}
