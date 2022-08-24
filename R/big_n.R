@@ -46,7 +46,6 @@ apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
   if(!is.null(big_n_df) && nrow(big_n_df) > 0){
     col_lab <- columns %>% map_chr(as_label)
     data_names <- col_plan_vars %>%
-      as_vars() %>% # Ensures col_plan_vars is a vars w/ names
       map_chr(as_label) %>%
       split_data_names_to_df(data_names= c(), preselected_cols = .,
                              column_names = col_lab)
