@@ -34,14 +34,14 @@ footnote_structure <- function(footnote_text, column_val = NULL, group_val = NUL
   # force column_val and group_val to list
   if(length(column_val)>1 && is.list(column_val)==FALSE){
     column_val <- as.list(column_val)
-  }else if(length(column_val)==1 ){
-    column_val<-as.character(column_val)
+  }else if(length(column_val)==1 && !is.null(names(column_val))){
+    column_val<-as.list(column_val)
   }
 
   if(length(group_val)>1 && is.list(group_val)==FALSE){
     group_val <- as.list(group_val)
-  }else if(length(group_val)==1 ){
-    group_val<-as.character(group_val)
+  }else if(length(group_val)==1 && !is.null(names(group_val))){
+    group_val<-as.list(group_val)
   }
 
   # warnings if elements arent named
