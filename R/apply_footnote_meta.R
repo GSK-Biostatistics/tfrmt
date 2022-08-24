@@ -50,6 +50,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
     col_str <- columns %>% map_chr(as_label)
 
     if(is_empty(names(loc_info$column_val))){
+      browser()
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
@@ -73,7 +74,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       if(!is.null(names(col_loc))){
         col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
       }
-      out <- list(col_loc = col_loc)
+      out <- list(col_loc = col_loc, spanning = FALSE)
     } else {
       col_loc <- col_loc_df %>%
         pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
@@ -81,7 +82,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       out <- list(col_loc = col_loc, spanning = TRUE)
     }
   } else {
-    out <- NULL
+    out <- list(col_loc = NULL, spanning = FALSE)
   }
   out
 }
