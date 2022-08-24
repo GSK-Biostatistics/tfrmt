@@ -16,6 +16,7 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
       gt <- gt %>%
         apply_source_note(footnote_loc[[i]]) %>%
         apply_cells_column_labels(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
+        apply_cells_column_spanners(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
         apply_cells_stub(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
         apply_cells_row_groups(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]])
 
@@ -64,10 +65,9 @@ apply_source_note <- function(gt,loc){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_labels <- function(gt,tfrmt,loc,footnote){
-  # check row is empty - therefore a column footnote
+  # check row is empty - therefore a column footnote, and not a spanning column
   if(is.null(loc$row) && loc$spanning ==FALSE){
-    # check lowest level column
-    if(length(footnote$column_val)==1 || as_label(tfrmt$column[[length(tfrmt$column)]]) %in% names(footnote$column_val)){
+
       # no spanning
       if(length(tfrmt$column)==1){
         col_name <- loc$col
@@ -81,7 +81,7 @@ apply_cells_column_labels <- function(gt,tfrmt,loc,footnote){
         )
 
 
-    }
+
     gt
   }else{
     gt
@@ -104,9 +104,19 @@ apply_cells_column_labels <- function(gt,tfrmt,loc,footnote){
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_spanners <- function(gt,tfrmt,loc,footnote){
   # check row is empty - therefore a column footnote
-  if(is.null(loc$row)){
+  if(is.null(loc$row) && loc$spanning ==TRUE){
 
+    gt<- gt %>%
+      tab_footnote(
+        footnote = loc$note,
+        locations = cells_column_spanners(spanners = all_of(
+          loc$col
+        ))
+      )
+    gt
 
+  }else{
+    gt
   }
 }
 
