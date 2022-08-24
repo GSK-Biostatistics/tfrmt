@@ -150,7 +150,6 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
   } else{
     col_info$row_loc <- NULL
   }
-  browser()
   col_info
 
 }
