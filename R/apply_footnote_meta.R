@@ -104,13 +104,14 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
        warning("Can not apply footnotes to group cells when only the columns and rows are specified")
        col_info$row_loc <- NULL
      } else {
+       # browser()
        group_str <- group %>% map_chr(as_label)
        # Test if there are more than the first group
        highest_grp <- setdiff(names(loc_info$group_val), first(group_str)) %>%
          length() == 0
 
        #Will the footnote be in the label column
-       if(!is.null(loc_info$label_val) || row_grp == "intented" |!highest_grp){
+       if(!is.null(loc_info$label_val) || row_grp == "indented" |!highest_grp){
          grp_expr <- expr_to_filter(group, loc_info$group_val)
          label_vals <- ifelse(is.null(loc_info$label_val), loc_info$group_val,
                                loc_info$label_val)
