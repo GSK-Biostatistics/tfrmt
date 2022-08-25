@@ -13,8 +13,6 @@ test_that("Defining the big Ns", {
   expect_error(big_n_structure(param_val = "bigN", n_frmt = "Hello World"))
 })
 
-
-
 test_that("Simple Case big_n", {
 
   data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
@@ -162,17 +160,16 @@ test_that("Test with spanning headers", {
     ),
     big_n = big_n_structure(param_val = "bigN")
   ) %>%
-    apply_tfrmt(.data = dat, tfrmt = ., mock = FALSE) %>%
+    apply_tfrmt(.data = dat, tfrmt = .) %>%
     names()
 
   man <- c("group"                                                                    , "label",
            "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1", "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
            "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6")
+
   expect_equal(auto, man)
+
 })
-
-
-
 
 test_that("Multiple big N params", {
 
@@ -284,7 +281,7 @@ test_that("Overlapping Big N's",{
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default", element_block(post_space = " "))
     ),
-    big_n = big_n_structure(param = "bigN")
+    big_n = big_n_structure(param_val = "bigN")
   )
 
   expect_warning(apply_tfrmt(.data = data, tfrmt = tfrmt_test, mock = FALSE) %>%
@@ -326,9 +323,65 @@ test_that("Missing Big N in dataset", {
       label,
       starts_with("col")
     ),
-    big_n = big_n_structure(param = "bigN")
+    big_n = big_n_structure(param_val = "bigN")
   )
 
   expect_warning(apply_tfrmt(.data = dat, tfrmt = tfrmt_test, mock = FALSE))
 })
 
+test_that("using 'value' for values column where there may be conflict in big_n", {
+
+  dat <- tibble::tribble(
+    ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~value,
+    "g1", "rowlabel1",  "column cols", "cols 1,2", "col1"  ,  "value",    1,
+    "g1", "rowlabel1",  "column cols", "cols 1,2", "col2"  ,  "value",    1,
+    "g1", "rowlabel1",             NA,         NA, "mycol3",  "value",    1,
+    "g1", "rowlabel1",  "column cols", "col 4"   , "col4"  ,  "value",    1,
+    "g1", "rowlabel1",             NA,         NA, "mycol5",  "value",    1,
+    "g1", "rowlabel2",  "column cols", "cols 1,2", "col1"  ,  "value",    2,
+    "g1", "rowlabel2",  "column cols", "cols 1,2", "col2"  ,  "value",    2,
+    "g1", "rowlabel2",             NA,        NA , "mycol3",  "value",    2,
+    "g1", "rowlabel2",  "column cols", "col 4"   , "col4"  ,  "value",    2,
+    "g1", "rowlabel2",             NA,         NA, "mycol5",  "value",    2,
+    "g2", "rowlabel3",  "column cols", "cols 1,2", "col1"  ,  "value",    3,
+    "g2", "rowlabel3",  "column cols", "cols 1,2", "col2"  ,  "value",    3,
+    "g2", "rowlabel3",             NA,         NA, "mycol3",  "value",    3,
+    "g2", "rowlabel3",  "column cols", "col 4"   , "col4"  ,  "value",    3,
+    "g2", "rowlabel3",             NA,         NA, "mycol5",  "value",    3,
+    #big n's
+    NA, NA,  "column cols", NA, NA  ,  "bigN",    18,
+    NA, NA,  "column cols", "cols 1,2", NA  ,  "bigN",    12,
+    NA, NA,  "column cols", "col 4"   , "col4"  ,  "bigN",    6,
+    NA, NA,             NA,         NA, "mycol3",  "bigN",    6,
+  )
+
+
+
+  auto <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    value = value,
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    col_plan = col_plan(
+      group,
+      label,
+      starts_with("col"),
+      new_col_3 = mycol3,
+      -mycol5
+    ),
+    big_n = big_n_structure(param_val = "bigN")
+  ) %>%
+    apply_tfrmt(.data = dat, tfrmt = .) %>%
+    names()
+
+  man <- c("group"                                                                    , "label",
+           "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1", "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
+           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6")
+
+  expect_equal(auto, man)
+
+})
