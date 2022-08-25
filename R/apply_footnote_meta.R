@@ -132,6 +132,8 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
                                      col_info$col_loc)
 
        } else if(highest_grp){
+         filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
+           parse_expr()
          col_info$row_loc<-.data %>%
            group_by(!!first(group)) %>%
            mutate(`___tfrmt_grp_n` = cur_group_id(),
