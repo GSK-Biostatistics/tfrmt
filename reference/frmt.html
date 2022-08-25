@@ -103,7 +103,7 @@ The left hand side of the equation is a <code>"TRUE"</code>for the default case 
 <span></span>
 <span><span class="fu">frmt_combine</span><span class="op">(</span><span class="va">expression</span>, <span class="va">...</span>, missing <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">frmt_when</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">frmt_when</span><span class="op">(</span><span class="va">...</span>, missing <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -195,6 +195,7 @@ to.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt; frmt_when |  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &gt;3 ~ &lt; frmt | Expression: `(X.X%)` &gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;=3 ~ &lt; frmt | Expression: `Undetectable` &gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Missing:  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  &gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">frmt_when</span><span class="op">(</span></span></span>
@@ -206,6 +207,7 @@ to.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ==100 ~ &lt; frmt | Expression: `` &gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ==0 ~ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   TRUE ~ &lt; frmt | Expression: `(XXX.X%)` &gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Missing:  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  &gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
