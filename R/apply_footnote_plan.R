@@ -13,6 +13,7 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
     gt
   } else {
     for (i in 1:length(tfrmt$footnote_plan$struct_list)) {
+
       gt <- gt %>%
         apply_source_note(footnote_loc[[i]]) %>%
         apply_cells_column_labels(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
@@ -132,7 +133,7 @@ apply_cells_column_spanners <- function(gt,tfrmt,loc,footnote){
 #' @importFrom rlang quo_get_expr
 apply_cells_stub <-  function(gt,tfrmt,loc,footnote){
   if(length(loc$col)>0){
-  if(loc$col == as_label(tfrmt$label)){
+  if(all(loc$col == as_label(tfrmt$label))){
 
     gt<- gt %>%
       tab_footnote(
@@ -163,8 +164,9 @@ apply_cells_stub <-  function(gt,tfrmt,loc,footnote){
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_row_groups <- function(gt,tfrmt,loc,footnote){
+
   if(length(loc$col)>0){
-    if(loc$col %in% as_label(tfrmt$group[[1]])){
+    if(all(loc$col %in% as_label(tfrmt$group[[1]]))){
 
       gt<- gt %>%
         tab_footnote(
