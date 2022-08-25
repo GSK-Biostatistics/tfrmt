@@ -50,7 +50,6 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
     col_str <- columns %>% map_chr(as_label)
 
     if(is_empty(names(loc_info$column_val))){
-      browser()
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
@@ -94,7 +93,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
     discard(is.null) %>%
     .[names(.) != "footnote_text"]
 
-  row_grp <- if_else(is.null(element_row_grp_loc$location), "",
+  row_grp <- ifelse(is.null(element_row_grp_loc$location), "",
                      element_row_grp_loc$location)
    if(any(names(loc_info) %in% c("group_val", "label_val"))){
      # Things that don't have rows
