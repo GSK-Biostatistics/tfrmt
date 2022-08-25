@@ -361,7 +361,7 @@ test_that("using 'value' for values column where there may be conflict in big_n"
     group = group,
     label = label,
     param = parm,
-    values = value,
+    value = value,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
