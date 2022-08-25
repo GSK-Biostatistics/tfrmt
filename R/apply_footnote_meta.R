@@ -123,7 +123,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
          col_info$row <- .data %>%
            ungroup() %>%
            mutate(
-             across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent)),
+             across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent, "+")),
              `___tfrmt_test` = !!filter_expr,
              `___tfrmt_TEMP_rows` = row_number()) %>%
            filter(`___tfrmt_test`) %>%
