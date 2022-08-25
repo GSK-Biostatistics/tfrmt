@@ -24,7 +24,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       group = tfrmt$group,
       label = tfrmt$label,
       param = tfrmt$param,
-      values = tfrmt$values,
+      value = tfrmt$value,
       column = tfrmt$column,
       mock = mock
     ) %>%
@@ -34,10 +34,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Failure while aligning data values"
     )
 
-  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$values) %>% map_chr(as_label))
+  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$value) %>% map_chr(as_label))
   data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
   big_n_df <- get_big_ns(.data, param = tfrmt$param,
-                         value = tfrmt$values,
+                         value = tfrmt$value,
                          columns =tfrmt$column,
                          big_n_structure = tfrmt$big_n,
                          mock = mock)
@@ -67,7 +67,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       .,
       apply_big_n_df,
       columns = tfrmt$column,
-      value = tfrmt$values,
+      value = tfrmt$value,
       big_n_df = big_n_df,
       fail_desc = "Unable to add big N's"
     )
@@ -124,10 +124,16 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
       if(is.null(fail_desc)){
         fail_desc <- paste0("Unable to to apply ",format(substitute(fx)),".")
       }
+      error_message <- out[["error"]]$message
+
+      if(error_message == ""){
+        error_message <- format(out[["error"]])
+      }
+
       fail_desc <-paste0(
         fail_desc,"\n",
         "Reason: ",
-        out[["error"]]$message
+        error_message
       )
       message(fail_desc)
 
@@ -157,7 +163,7 @@ validate_cols_match <- function(.data, tfrmt, mock){
   if(mock){
     req_quo <- c("label", "param")
   } else {
-    req_quo <- c("label", "param", "values")
+    req_quo <- c("label", "param", "value")
   }
   req_var <- c("group","column")
 
@@ -247,7 +253,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
   # check if data can be transformed wide w/o list columns
   num_rec_by_row <- data %>%
-    group_by(across(c(-!!tfrmt$values, -!!tfrmt$param))) %>%
+    group_by(across(c(-!!tfrmt$value, -!!tfrmt$param))) %>%
     summarise(
       param_list = list(!!tfrmt$param),
       n = n()
@@ -295,12 +301,12 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     quietly(pivot_wider)(
       names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
       names_sep = .tlang_delim,
-      values_from = !!tfrmt$values,
+      values_from = !!tfrmt$value,
       values_fill = val_fill
       )
 
   if (mock == TRUE && length(tbl_dat_wide$warnings)>0 &&
-      str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$values), "` are not uniquely identified"))){
+      str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$value), "` are not uniquely identified"))){
     message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
     tbl_dat_wide <- tbl_dat_wide$result %>%
       unnest(cols = everything()) %>%

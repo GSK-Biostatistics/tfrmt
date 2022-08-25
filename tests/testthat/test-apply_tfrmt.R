@@ -42,7 +42,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     group = grp2,
     label = lbl,
     column = column,
-    values = val,
+    value = val,
     param = prm,
     sorting_cols = ord,
     col_plan = col_plan(-ord),

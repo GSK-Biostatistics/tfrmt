@@ -62,7 +62,7 @@ tfrmt_n_pct <- function(n = "n",
       param = "param",
       label = "row_label1",
       column = "col1",
-      values = "value",
+      value = "value",
       body_plan = body_plan(
         frmt_structure(
           group_val = ".default", label_val = ".default",

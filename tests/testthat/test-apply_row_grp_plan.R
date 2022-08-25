@@ -557,7 +557,7 @@ test_that("row order is retained for all selections",{
     group = c(grp1, grp2),
     label = lbl,
     column = column,
-    values = val,
+    value = val,
     param = prm,
     sorting_cols = ord,
     col_plan = col_plan(-ord),
@@ -625,7 +625,7 @@ test_that("row order is retained for all selections",{
     group = c(grp1, grp2),
     label = lbl,
     column = column,
-    values = val,
+    value = val,
     param = prm,
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
@@ -680,7 +680,7 @@ test_that("Row group plans with col style plan",{
     label = one,
     group = c(g1,g2),
     column = vars(column),
-    values = value,
+    value = value,
     param = param,
     body_plan = body_plan(
       frmt_structure(

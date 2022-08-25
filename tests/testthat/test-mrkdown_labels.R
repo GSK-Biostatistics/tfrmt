@@ -15,7 +15,7 @@ test_that("markdown column labels - no spanning",{
     label = rowlbl2,
     column = column,
     param = param,
-    values = value,
+    value = value,
     # set formatting for values
     body_plan = body_plan(
       frmt_structure(
@@ -82,7 +82,7 @@ test_that("markdown column labels - spanning", {
   # create output with spanning headers
   test_tfrmt<-tfrmt(
     param = "param",
-    values = "val",
+    value = "val",
     column = vars(col1, col2),
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("XX"))
@@ -132,7 +132,7 @@ test_that("markdown column labels - renamed", {
     group = group,
     label = label,
     param = parm,
-    values = val,
+    value = val,
     column = my_col,
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))

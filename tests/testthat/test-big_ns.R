@@ -146,7 +146,7 @@ test_that("Test with spanning headers", {
     group = group,
     label = label,
     param = parm,
-    values = val,
+    value = val,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
@@ -313,7 +313,7 @@ test_that("Missing Big N in dataset", {
     group = group,
     label = label,
     param = parm,
-    values = val,
+    value = val,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))

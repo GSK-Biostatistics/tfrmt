@@ -5,13 +5,13 @@ test_that("Display row formats for tfrmt with <frmt>", {
     column = c("PL", "T1", "T2"),
     param = c("count")) %>%
     dplyr::arrange_all() %>%
-    mutate(values = seq(1:nrow(.)))
+    mutate(value = seq(1:nrow(.)))
 
   my_tfrmt <- tfrmt(
     label = label,
     column = column,
     param = param,
-    values = values,
+    value = value,
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default",
                         element_block(post_space = "   ")) ),
@@ -55,13 +55,13 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
       param = c("count", "percent"))
   ) %>%
     dplyr::arrange_all() %>%
-    mutate(values = seq(1:nrow(.)))
+    mutate(value = seq(1:nrow(.)))
 
   my_tfrmt <- tfrmt(
     label = label,
     column = column,
     param = param,
-    values = values,
+    value = value,
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default",
                         element_block(post_space = "   ")) ),
@@ -113,13 +113,13 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
       param = c("pval"))
   ) %>%
     dplyr::arrange_all() %>%
-    mutate(values = seq(1:nrow(.)))
+    mutate(value = seq(1:nrow(.)))
 
   my_tfrmt <- tfrmt(
     label = label,
     column = column,
     param = param,
-    values = values,
+    value = value,
 
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = "label 1",

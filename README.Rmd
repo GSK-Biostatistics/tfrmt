@@ -62,7 +62,7 @@ We expect an input dataset that is long, with 1 record per computed value. Requi
 -   A single **label** column, containing row label values
 -   1 or more **column** columns, containing column values
 -   A single **param** column, which provides a label for distinct types of values
--   A single **values** column, containing the computed, raw data values
+-   A single **value** column, containing the computed, raw data values
 -   [Optional] 1 or more **sorting_cols** columns, containing numeric values to be used in the row ordering
 
 # Functionality
@@ -92,7 +92,7 @@ tfrmt <- tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = vars(ord1, ord2),
   
   # Specify body plan

@@ -71,7 +71,7 @@ test_that("alignment of multiple columns works", {
   tfrmt_obj <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan = col_style_plan(
       element_col(align = "left", col = vars(one)),
       element_col(align = "right", col = vars(four)),
@@ -107,7 +107,7 @@ test_that("alignment of multiple columns works", {
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan = col_style_plan(
       element_col(align = "left", col = vars(one)),
       element_col(align = "right", col = vars(two, three, four))
@@ -143,7 +143,7 @@ test_that("alignment of multiple columns works", {
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan = col_style_plan(
       element_col(align = "right", col = vars(one)),
       element_col(align = "right", col = vars(two, three, four))
@@ -195,7 +195,7 @@ test_that("tidyselect works", {
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan = col_style_plan(
       element_col(align = c(".", ",", " "), col = vars(starts_with("trt"))),
       element_col(align = "right", col = vars(four)))
@@ -227,7 +227,7 @@ test_that("tidyselect works", {
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan = col_style_plan(
       element_col(align = "right", col = vars(starts_with("trt")))
     ))
@@ -255,7 +255,7 @@ test_that("tidyselect works", {
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan = col_style_plan(
       element_col(align = "right", col = starts_with("trt"))
     ))
@@ -305,7 +305,7 @@ test_that("Overlapping element_cols favors last one",{
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan =  col_style_plan(
       element_col(align = "right", col = vars(starts_with("trt"))),
       element_col(align = c(".",","," "), col = trt1)))
@@ -357,7 +357,7 @@ test_that("Align strings >1 in length",{
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan =  col_style_plan(
       element_col(align = "right", col = vars(starts_with("trt"))),
       element_col(align = c("...",",,,,"," "), col = trt1)))
@@ -411,7 +411,7 @@ test_that("Alphanumeric align string supplied",{
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     col_style_plan =  col_style_plan(
       element_col(align = "right", col = vars(starts_with("trt"))),
       element_col(align = c("2","4"), col = trt1)))
@@ -464,7 +464,7 @@ test_that("Col width assignment in gt",{
   plan <- tfrmt(
     label = one,
     column = vars(column),
-    values = value,
+    value = value,
     param = param,
     body_plan = body_plan(
       frmt_structure(
