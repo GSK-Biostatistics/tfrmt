@@ -124,10 +124,16 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
       if(is.null(fail_desc)){
         fail_desc <- paste0("Unable to to apply ",format(substitute(fx)),".")
       }
+      error_message <- out[["error"]]$message
+
+      if(error_message == ""){
+        error_message <- format(out[["error"]])
+      }
+
       fail_desc <-paste0(
         fail_desc,"\n",
         "Reason: ",
-        out[["error"]]$message
+        error_message
       )
       message(fail_desc)
 
