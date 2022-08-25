@@ -4,7 +4,7 @@ library(tidyverse)
 ####################################################################
 # Source note
 ####################################################################
-es_data <-tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
+es_data <-tibble::tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
                  rowlbl2 =c(rep("Completed",4),rep("Adverse Event",4),rep("Unknown",4),rep("Adverse Event",4),rep("Lost to follow-up",4),rep("Protocol violation",4),rep("Subject decided to withdraw",4),rep("Protocol Violation",4),rep("Pre-Operative Dose[1]",4),rep("Other",4)),
                  param=c(rep(c("n","n","pct","pct"),10)),
                  trt=c(rep(c("Placebo","Treatment"),20)),
@@ -26,7 +26,7 @@ tfrmt<-tfrmt(
                                                                                 n = frmt("xxx"),
                                                                                 pct = frmt_when("==100" ~ "",
                                                                                                 "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)"))))),
+                                                                        TRUE ~ frmt("(xx.x %)"))))),
 
   # Specify row group plan
   # Indent the rowlbl2
@@ -51,7 +51,7 @@ tfrmt %>%
 
 
 
-tfrmt<-tfrmt(
+tfrmt2<-tfrmt(
   # specify columns in the data
   group = c(rowlbl1),
   label = rowlbl2,
@@ -68,9 +68,9 @@ tfrmt<-tfrmt(
 
   # Specify row group plan
   # Indent the rowlbl2
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")),
+  # row_grp_plan = row_grp_plan(
+  #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+  #   label_loc = element_row_grp_loc(location = "column")),
   footnote_plan = footnote_plan(
     footnote_structure("Test footnote 2",column_val ="Placebo"),
     marks="letters"
@@ -78,8 +78,49 @@ tfrmt<-tfrmt(
   )
 )
 
-tfrmt %>%
+tfrmt2 %>%
   print_to_gt(es_data)
+
+
+####################################################################
+# single cell
+####################################################################
+
+
+
+tfrmt2<-tfrmt(
+  # specify columns in the data
+  group = c(rowlbl1),
+  label = rowlbl2,
+  column = trt,
+  param = param,
+  values = value,
+  # set formatting for values
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                n = frmt("xxx"),
+                                                                                pct = frmt_when("==100" ~ "",
+                                                                                                "==0" ~ "",
+                                                                                                TRUE ~ frmt("(xx.x %)"))))),
+
+  # Specify row group plan
+  # Indent the rowlbl2
+  # row_grp_plan = row_grp_plan(
+  #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+  #   label_loc = element_row_grp_loc(location = "column")),
+  footnote_plan = footnote_plan(
+    footnote_structure("Test footnote 2",
+                       # column_val ="Placebo",
+                       label_val = "Adverse Event"),
+    marks="letters"
+
+  )
+)
+
+tfrmt2 %>%
+  print_to_gt(es_data)
+
+
 
 ####################################################################
 # spanning column headers
@@ -252,7 +293,7 @@ tfrmt %>%
 ####################################################################
 
 
-tfrmt<-tfrmt(
+tfrmt2<-tfrmt(
   # specify columns in the data
   group = c(rowlbl1),
   label = rowlbl2,
@@ -279,7 +320,7 @@ tfrmt<-tfrmt(
   )
 )
 
-tfrmt %>%
+tfrmt2 %>%
   print_to_gt(es_data)
 
 
@@ -389,7 +430,7 @@ tfrmt %>%
 ####################################################################
 
 # spanning
-tfrmt<-tfrmt(
+tfrmt2<-tfrmt(
   # specify columns in the data
   group = c(rowlbl1),
   label = rowlbl2,
@@ -416,11 +457,11 @@ tfrmt<-tfrmt(
   )
 )
 
-tfrmt %>%
+tfrmt2 %>%
   print_to_gt(es_data)
 
 # indented
-tfrmt<-tfrmt(
+tfrmt2<-tfrmt(
   # specify columns in the data
   group = c(rowlbl1),
   label = rowlbl2,
@@ -448,7 +489,7 @@ tfrmt<-tfrmt(
 )
 
 
-tfrmt %>%
+tfrmt2 %>%
   print_to_gt(es_data)
 
 
@@ -492,7 +533,7 @@ es_data5<- es_data %>%
          rowlbl_1="Test group 2")
 
 
-tfrmt<-tfrmt(
+tfrmt2<-tfrmt(
   # specify columns in the data
   group = c(rowlbl0,rowlbl1),
   label = rowlbl2,
@@ -509,17 +550,21 @@ tfrmt<-tfrmt(
 
   # Specify row group plan
   # Indent the rowlbl2
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "indented")),
+  # row_grp_plan = row_grp_plan(
+  #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+  #   label_loc = element_row_grp_loc(location = "indented")),
   footnote_plan = footnote_plan(
-    footnote_structure("Test footnote",group_val=list(rowlbl0="Test group",rowlbl1="Completion Status"),label_val=list(rowlbl2="Adverse Event")),
+    footnote_structure("Test footnote",group_val=list(rowlbl0="Test group",rowlbl1="Completion Status"),
+                       # label_val=list(rowlbl2="Adverse Event")
+                       ),
     marks="letters"
-
   )
 )
 
-tfrmt<-tfrmt(
+tfrmt2 %>%
+  print_to_gt(es_data5)
+
+tfrmt2<-tfrmt(
   # specify columns in the data
   group = c(rowlbl_1,rowlbl0,rowlbl1),
   label = rowlbl2,
@@ -543,6 +588,11 @@ tfrmt<-tfrmt(
 )
 
 
-tfrmt %>%
+tfrmt2 %>%
   print_to_gt(es_data5)
+
+
+
+
+
 

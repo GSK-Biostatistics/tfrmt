@@ -104,14 +104,17 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
        warning("Can not apply footnotes to group cells when only the columns and rows are specified")
        col_info$row <- NULL
      } else {
-       # browser()
        group_str <- group %>% map_chr(as_label)
        # Test if there are more than the first group
        highest_grp <- setdiff(names(loc_info$group_val), first(group_str)) %>%
          length() == 0
 
        #Will the footnote be in the label column
-       if(!is.null(loc_info$label_val) || row_grp == "indented" |!highest_grp){
+       lb_col_test <- !is.null(loc_info$label_val) | #label level so in label col
+         row_grp == "indented" | #indented so in label column
+         (!highest_grp & row_grp != "") #there is a row_grp_plan and this isn't the highest group so indented
+
+       if(lb_col_test){
          grp_expr <- expr_to_filter(group, loc_info$group_val)
          label_vals <- ifelse(is.null(loc_info$label_val), loc_info$group_val,
                                loc_info$label_val)
@@ -145,9 +148,25 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
          col_info$col <- ifelse(is.null(col_info$col), first(group_str),
                                      col_info$col)
        } else if(row_grp == ""){
+         filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
+           parse_expr()
+         col_info$row<-.data %>%
+           group_by(!!first(group)) %>%
+           mutate(`___tfrmt_grp_n` = cur_group_id(),
+                  `___tfrmt_test` = !!filter_expr) %>%
+           filter(`___tfrmt_test`) %>%
+           pull(`___tfrmt_grp_n`) %>%
+           unique()
+
+         lowest_grp <- group_str %in% names(loc_info$group_val) %>%
+           which() %>%
+           max() %>%
+           group_str[.]
+
+         col_info$col <- ifelse(is.null(col_info$col), lowest_grp,
+                                col_info$col)
 
        }
-
 
      }
   } else{
