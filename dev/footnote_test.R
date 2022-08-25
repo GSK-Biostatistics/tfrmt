@@ -191,7 +191,7 @@ tfrmt<-tfrmt(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")),
   footnote_plan = footnote_plan(
-    footnote_structure("Test footnote 2",column_val="Placebo"),
+    footnote_structure("Test footnote 2",column_val=list(trt="Placebo")),
     marks="letters"
 
   )
@@ -271,7 +271,7 @@ tfrmt<-tfrmt(
   footnote_plan = footnote_plan(
     footnote_structure("Test footnote 1",column_val=list(col2="Treatment column 2")),
     footnote_structure("Test footnote 2",column_val=list(col2="Treatment column")),
-    footnote_structure("Test footnote 3",column_val=list(col2="Treatment columns")),
+    footnote_structure("Test footnote 3",column_val=list(col3="Treatment columns")),
     footnote_structure("Test footnote 4",column_val=list(trt="Placebo")),
     footnote_structure("Test footnote 5",column_val=list(col2="Treatment column",trt="Treatment")),
     footnote_structure("Test footnote 6",column_val=list(col3="Treatment columns",col2="Treatment column 2",trt="Treatment")),
