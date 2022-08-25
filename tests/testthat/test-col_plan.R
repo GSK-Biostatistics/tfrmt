@@ -765,7 +765,7 @@ test_that("Order is kept for multi-col columns",{
   tfrmt <- tfrmt(
     label = label,
     param = param,
-    values = value,
+    value = value,
     column = vars(col_1, col_2, col_3),
     body_plan = body_plan(
       frmt_structure(pam = frmt("x.xx"))
@@ -794,7 +794,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     group = group,
     label = quo(label),
     param = parm,
-    values = val,
+    value = val,
     column = c(test1,test2),
     col_plan = col_plan(
       group,
@@ -855,7 +855,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     group = group,
     label = quo(label),
     param = parm,
-    values = val,
+    value = val,
     column = c(test1,test2),
     col_plan = col_plan(
       new_col_4 = col4, new_col_1 = col1, col2, col3, -col5
@@ -912,7 +912,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     group = group,
     label = quo(label),
     param = parm,
-    values = val,
+    value = val,
     column = c(test1,test2),
     col_plan = col_plan(
       new_col_4 = col4,
@@ -1088,7 +1088,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     group = group,
     label = label,
     param = parm,
-    values = val,
+    value = val,
     column = c(top_span, child_span, my_col),
     col_plan = col_plan(
       group,
@@ -1177,7 +1177,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     group = group,
     label = label,
     param = parm,
-    values = val,
+    value = val,
     column = c(top_span, child_span, my_col),
     col_plan = col_plan(
       group,
@@ -1299,14 +1299,14 @@ test_that("Tidyselect subtraction with span_structure",{
       column %in% c("pl") ~ "Placebo",
     ))
 
-  df_fake_values <- df %>% mutate(values = runif(nrow(df)))
+  df_fake_values <- df %>% mutate(value = runif(nrow(df)))
 
   tfrmt_minus_selection <-  tfrmt(
       # Specify columns in the data
       label = label,
       column = c(t_or_p, column),
       param = param,
-      values = values,
+      value = value,
       sorting_cols = c(ord1),
       # Specify body plan
       body_plan = body_plan(

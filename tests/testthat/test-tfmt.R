@@ -10,19 +10,19 @@ test_that("basic tfrmt - title", {
   expect_equal(t_frmt$group,vars())
   expect_equal(t_frmt$label,quo())
   expect_equal(t_frmt$param,quo())
-  expect_equal(t_frmt$values,quo())
+  expect_equal(t_frmt$value,quo())
   expect_equal(t_frmt$column,vars())
 
 })
 
-test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
+test_that("basic tfrmt - selecting group/label/param/value/column - quo", {
 
   t_frmt <- tfrmt(
     title = "Table Title",
     group = vars(row_label1),
     label = quo(row_label2),
     param = quo(param),
-    values = quo(values),
+    value = quo(value),
     column = vars(column)
   )
 
@@ -32,18 +32,18 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo", {
   expect_equal( t_frmt$group, vars(row_label1), ignore_attr = TRUE )
   expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE )
   expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE )
-  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE )
+  expect_equal( t_frmt$value, quo(value), ignore_attr = TRUE )
   expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE )
 })
 
-test_that("basic tfrmt - selecting group/label/param/values/column - quo into var entries", {
+test_that("basic tfrmt - selecting group/label/param/value/column - quo into var entries", {
 
   t_frmt <- tfrmt(
     title = "Table Title",
     group = quo(row_label1),
     label = quo(row_label2),
     param = quo(param),
-    values = quo(values),
+    value = quo(value),
     column = quo(column)
   )
 
@@ -53,18 +53,18 @@ test_that("basic tfrmt - selecting group/label/param/values/column - quo into va
   expect_equal( t_frmt$group, vars(row_label1), ignore_attr = TRUE )
   expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE )
   expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE )
-  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE )
+  expect_equal( t_frmt$value, quo(value), ignore_attr = TRUE )
   expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE )
 })
 
-test_that("basic tfrmt - selecting group/label/param/values/column - char", {
+test_that("basic tfrmt - selecting group/label/param/value/column - char", {
 
   t_frmt <- tfrmt(
     title = "Table Title",
     group = c("row_label1"),
     label = c("row_label2"),
     param = c("param"),
-    values = c("values"),
+    value = c("value"),
     column = c("column")
   )
 
@@ -74,18 +74,18 @@ test_that("basic tfrmt - selecting group/label/param/values/column - char", {
   expect_equal( t_frmt$group, vars(row_label1), ignore_attr = TRUE )
   expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE)
-  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE)
+  expect_equal( t_frmt$value, quo(value), ignore_attr = TRUE)
   expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
-test_that("basic tfrmt - selecting group/label/param/values/column - bare", {
+test_that("basic tfrmt - selecting group/label/param/value/column - bare", {
 
   t_frmt <- tfrmt(
     title = "Table Title",
     group = c(row_label1, row_label4),
     label = row_label2,
     param = param,
-    values = values,
+    value = value,
     column = column
   )
 
@@ -94,7 +94,7 @@ test_that("basic tfrmt - selecting group/label/param/values/column - bare", {
   expect_equal( t_frmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
   expect_equal( t_frmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal( t_frmt$param, quo(param), ignore_attr = TRUE)
-  expect_equal( t_frmt$values, quo(values), ignore_attr = TRUE)
+  expect_equal( t_frmt$value, quo(value), ignore_attr = TRUE)
   expect_equal( t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
@@ -106,7 +106,7 @@ test_that("basic tfrmt - length one quo warning", {
       group = row_label1,
       label = vars(row_label2,row_label3),
       param = param,
-      values = values,
+      value = value,
       column = column
     )
   })
@@ -126,7 +126,7 @@ test_that("basic tfrmt - length one quo warning", {
       group = row_label1,
       label = vars(row_label2,row_label3),
       param = vars(param, param2),
-      values = vars(values, values2),
+      value = vars(value, value2),
       column = vars(column, column2)
     )
   })
@@ -136,7 +136,7 @@ test_that("basic tfrmt - length one quo warning", {
     c(
       "Passed more than one quosure to the argument `label`. Selecting the first entry.",
       "Passed more than one quosure to the argument `param`. Selecting the first entry.",
-      "Passed more than one quosure to the argument `values`. Selecting the first entry."
+      "Passed more than one quosure to the argument `value`. Selecting the first entry."
     )
   )
 
@@ -150,7 +150,7 @@ test_that("basic tfrmt - bare/char mix error", {
       group = c(row_label1, "row_label4"),
       label = row_label2,
       param = param,
-      values = values,
+      value = value,
       column = column
     ),
     paste0(
@@ -197,7 +197,7 @@ test_that("layering tfrmt - default table elements - func/tfrmt",{
   expect_equal(t_frmt_layered$group,vars())
   expect_equal(t_frmt_layered$label,quo())
   expect_equal(t_frmt_layered$param,quo())
-  expect_equal(t_frmt_layered$values,quo())
+  expect_equal(t_frmt_layered$value,quo())
   expect_equal(t_frmt_layered$column,vars())
 
 })
@@ -453,7 +453,7 @@ test_that("basic tfrmt - func calls into quo and var args", {
     group = c(col, df),
     label = runif,
     param = abs,
-    values = acos,
+    value = acos,
     column = adist
   )
 
@@ -462,7 +462,7 @@ test_that("basic tfrmt - func calls into quo and var args", {
   expect_equal( t_frmt$group, vars(col, df), ignore_attr = TRUE)
   expect_equal( t_frmt$label, quo(runif), ignore_attr = TRUE)
   expect_equal( t_frmt$param, quo(abs), ignore_attr = TRUE)
-  expect_equal( t_frmt$values, quo(acos), ignore_attr = TRUE)
+  expect_equal( t_frmt$value, quo(acos), ignore_attr = TRUE)
   expect_equal( t_frmt$column, vars(adist), ignore_attr = TRUE)
 })
 

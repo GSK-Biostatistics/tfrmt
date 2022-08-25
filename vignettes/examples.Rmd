@@ -39,7 +39,7 @@ tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   
   # Specify body plan
@@ -89,7 +89,7 @@ tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2)) %>% 
   print_to_gt(data_demog) %>% 
   tab_options(
@@ -109,7 +109,7 @@ tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -137,7 +137,7 @@ tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -179,7 +179,7 @@ tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -288,7 +288,7 @@ tfrmt(
   label = AETERM,
   column = c(col2, col1), 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2)) %>% 
   print_to_gt(data_ae2) %>% 
   tab_options(
@@ -305,7 +305,7 @@ tfrmt(
   label = AETERM,
   column = c(col2, col1), 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -340,7 +340,7 @@ tfrmt(
   label = AETERM,
   column = c(col2, col1), 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -378,7 +378,7 @@ tfrmt(
   label = AETERM,
   column = c(col2, col1), 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -423,7 +423,7 @@ tfrmt(
   label = AETERM,
   column = c(col2, col1), 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -472,7 +472,7 @@ tfrmt(
   label = AETERM,
   column = c(col2, col1), 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting 
   body_plan = body_plan(
@@ -551,7 +551,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = list(group="Change from Baseline"), element_block(post_space = " ")),
@@ -598,7 +598,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value 
+  value = value 
 ) %>%
   print_to_gt(data_efficacy) %>% 
   tab_options(
@@ -617,7 +617,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value, 
+  value = value, 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = "n", 
                    frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
@@ -643,7 +643,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value, 
+  value = value, 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = "n", 
                    frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
@@ -685,7 +685,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = "n", 
@@ -731,7 +731,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = "n", 
@@ -779,7 +779,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = "n", 

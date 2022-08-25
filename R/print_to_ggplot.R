@@ -21,7 +21,7 @@
 #'  label = label ,
 #'  column = time,
 #'  param = param,
-#'  values = value) %>%
+#'  value = value) %>%
 #'   print_to_ggplot(risk)
 #'
 #'table
@@ -75,8 +75,8 @@ print_to_ggplot <- function(tfrmt, .data, ...){
     stop("label variable required for print_to_ggplot")
   }
 
-  if(quo_is_missing(tfrmt$values)){
-    stop("values variable required for print_to_ggplot")
+  if(quo_is_missing(tfrmt$value)){
+    stop("value variable required for print_to_ggplot")
   }
 
 

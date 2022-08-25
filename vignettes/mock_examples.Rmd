@@ -76,7 +76,7 @@ ae_mock_table() %>%
     label = "label",
     param = "param",
     column = "column",
-    values = value,
+    value = value,
     sorting_cols = vars(ord1)
     ) %>%
   print_mock_gt(df)
@@ -102,7 +102,7 @@ ae_mock_table() %>%
     label = "label",
     param = "param",
     column = "column",
-    values = value,
+    value = value,
     row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
     
     col_plan = col_plan(
@@ -136,7 +136,7 @@ ae_mock_table() %>%
     label = "label",
     param = "param",
     column = "column",
-    values = value,
+    value = value,
     row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default", element_block(post_space = "   ")) ),
     
     col_plan = col_plan(
@@ -157,7 +157,7 @@ ae_mock_table() %>%
     label = "label",
     param = "param",
     column = "column",
-    values = value,
+    value = value,
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),    
     
     col_plan = col_plan(
@@ -220,7 +220,7 @@ tfrmt(
   label = rowlbl2,
   column = column, 
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   
   # Specify body plan
@@ -266,7 +266,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord1, ord2),
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = list(group="Change from Baseline"), element_block(post_space = " ")),

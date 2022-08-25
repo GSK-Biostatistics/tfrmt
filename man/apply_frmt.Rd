@@ -7,14 +7,14 @@
 \alias{apply_frmt.frmt_when}
 \title{Apply formatting}
 \usage{
-apply_frmt(frmt_def, .data, values, mock = FALSE, ...)
+apply_frmt(frmt_def, .data, value, mock = FALSE, ...)
 
-\method{apply_frmt}{frmt}(frmt_def, .data, values, mock = FALSE, ...)
+\method{apply_frmt}{frmt}(frmt_def, .data, value, mock = FALSE, ...)
 
 \method{apply_frmt}{frmt_combine}(
   frmt_def,
   .data,
-  values,
+  value,
   mock = FALSE,
   param,
   column,
@@ -23,14 +23,14 @@ apply_frmt(frmt_def, .data, values, mock = FALSE, ...)
   ...
 )
 
-\method{apply_frmt}{frmt_when}(frmt_def, .data, values, mock = FALSE, ...)
+\method{apply_frmt}{frmt_when}(frmt_def, .data, value, mock = FALSE, ...)
 }
 \arguments{
 \item{frmt_def}{formatting to be applied}
 
 \item{.data}{data, but only what is getting changed}
 
-\item{values}{values symbol should only be one}
+\item{value}{value symbol should only be one}
 
 \item{mock}{Logical value is this is for a mock or not. By default \code{FALSE}}
 
@@ -60,6 +60,6 @@ df <- tibble(x = c(20.12,34.54,12.34))
 apply_frmt(
  frmt_def = frmt("XX.X"),
  .data=df,
- values=quo(x))
+ value=quo(x))
 
 }

@@ -9,7 +9,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value, # not sure why this is needed??
+  value = value, # not sure why this is needed??
 
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -32,7 +32,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
                       element_block(post_space = "   ")) ),
@@ -59,7 +59,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
                       element_block(post_space = "   ")) ),
@@ -94,7 +94,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
                       element_block(post_space = "   ")) ),
@@ -133,7 +133,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
                       element_block(post_space = "   ")) ),
@@ -162,7 +162,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   #sorting_cols = c(ord1),
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
@@ -206,7 +206,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   row_grp_plan = row_grp_plan( row_grp_structure(group_val = ".default",
                                                  element_block(post_space = "   ")) ),
 
@@ -238,7 +238,7 @@ tfrmt(
   label = label,
   column = c(span, column), # REFER TO COL_PLAN ARTICLE FOR MORE DETAILS
   param = param,
-  values = value,
+  value = value,
 
   # Specify body plan
   body_plan = body_plan(
@@ -265,7 +265,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
 
   # Specify body plan
   body_plan = body_plan(
@@ -310,7 +310,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = vars(ord1, ord2),
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
@@ -346,7 +346,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
                       element_block(post_space = "   ")) ),
@@ -383,7 +383,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  #values = value,
+  #value = value,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default",
                       element_block(post_space = "   ")) ),

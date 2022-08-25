@@ -72,7 +72,7 @@ value. Required columns include:
 -   1 or more **column** columns, containing column values
 -   A single **param** column, which provides a label for distinct types
     of values
--   A single **values** column, containing the computed, raw data values
+-   A single **value** column, containing the computed, raw data values
 -   \[Optional\] 1 or more **sorting_cols** columns, containing numeric
     vlaues to be used in the row ordering
 

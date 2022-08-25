@@ -110,7 +110,7 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
   }
 
   column <- tfrmt_obj$column
-  values <- tfrmt_obj$values
+  value <- tfrmt_obj$value
 
   last_col <- column[[length(column)]]
 
@@ -118,7 +118,7 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
     pull(!!last_col) %>%
     unique()
 
-  valid_data_col_vals <- setdiff(names(.data),c(column, values) %>% map_chr(as_label))
+  valid_data_col_vals <- setdiff(names(.data),c(column, value) %>% map_chr(as_label))
 
   ## allow identify alignment to which columns (where assigned)
 
@@ -178,7 +178,7 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
           unique()
 
         x <-  x %>%
-          mutate(!!values := apply_col_alignment(!!values, x$align[[1]], column_name = column_name))
+          mutate(!!value := apply_col_alignment(!!value, x$align[[1]], column_name = column_name))
       }
       x
     }) %>%
