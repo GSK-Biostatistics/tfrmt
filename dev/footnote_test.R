@@ -110,8 +110,9 @@ tfrmt2<-tfrmt(
   #   label_loc = element_row_grp_loc(location = "column")),
   footnote_plan = footnote_plan(
     footnote_structure("Test footnote 2",
-                       # column_val ="Placebo",
-                       label_val = "Adverse Event"),
+                       column_val ="Placebo",
+                       label_val = "Adverse Event",
+                       group_val = "Completion Status"),
     marks="letters"
 
   )
