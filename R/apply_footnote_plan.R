@@ -66,18 +66,15 @@ apply_source_note <- function(gt,loc){
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_labels <- function(gt,tfrmt,loc,footnote){
   # check row is empty - therefore a column footnote, and not a spanning column
+
   if(is.null(loc$row) && loc$spanning ==FALSE){
 
-      # no spanning
-      if(length(tfrmt$column)==1){
-        col_name <- loc$col
-      }
 
       gt<- gt %>%
         tab_footnote(
           footnote = loc$note,
           locations = cells_column_labels(columns = all_of(
-            as.character(col_name)))
+            as.character(loc$col)))
         )
 
 

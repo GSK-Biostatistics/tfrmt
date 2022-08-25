@@ -166,7 +166,6 @@ print_to_gt <- function(tfrmt, .data){
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md cols_hide sub_missing
 cleaned_data_to_gt <- function(.data, tfrmt){
-
   if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
       keep(function(x){
@@ -181,11 +180,12 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   } else {
     align <- NULL
   }
-
   if (!"..tfrmt_row_grp_lbl" %in% names(.data)) {
+    # keep attribute for footnotes
+    attr_footnote <- attr(.data,".footnote_locs")
     .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
+    attr(.data,".footnote_locs") <- attr_footnote
   }
-
   gt_out <- .data %>%
     gt(
       rowname_col = as_label(tfrmt$label)) %>%
@@ -273,7 +273,6 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
-
   # add footnotes and output
   gt_out_final %>%
     apply_footnote_plan(tfrmt,attr(.data,".footnote_locs"))
