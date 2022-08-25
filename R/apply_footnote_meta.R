@@ -73,15 +73,15 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       if(!is.null(names(col_loc))){
         col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
       }
-      out <- list(col_loc = col_loc, spanning = FALSE)
+      out <- list(col = col_loc, spanning = FALSE)
     } else {
       col_loc <- col_loc_df %>%
         pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
         unique()
-      out <- list(col_loc = col_loc, spanning = TRUE)
+      out <- list(col = col_loc, spanning = TRUE)
     }
   } else {
-    out <- list(col_loc = NULL, spanning = FALSE)
+    out <- list(col = NULL, spanning = FALSE)
   }
   out
 }
@@ -99,10 +99,10 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
      # Things that don't have rows
      if(!is.null(col_info$spanning) && col_info$spanning){
        warning("Can not apply footnotes to group cells when only the columns and rows are specified")
-       col_info$row_loc <- NULL
+       col_info$row <- NULL
      } else if(row_grp == "noprint" & !is_empty(loc_info$group_val)){
        warning("Can not apply footnotes to group cells when only the columns and rows are specified")
-       col_info$row_loc <- NULL
+       col_info$row <- NULL
      } else {
        # browser()
        group_str <- group %>% map_chr(as_label)
@@ -120,30 +120,30 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
          filter_expr <- paste(c(lbl_expr,grp_expr),collapse = "&") %>%
            parse_expr()
 
-         col_info$row_loc <- .data %>%
+         col_info$row <- .data %>%
            ungroup() %>%
            mutate(
-             across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent)),
+             across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent, "+")),
              `___tfrmt_test` = !!filter_expr,
              `___tfrmt_TEMP_rows` = row_number()) %>%
            filter(`___tfrmt_test`) %>%
            pull(`___tfrmt_TEMP_rows`)
 
-         col_info$col_loc <- ifelse(is.null(col_info$col_loc), as_label(label),
-                                     col_info$col_loc)
+         col_info$col <- ifelse(is.null(col_info$col), as_label(label),
+                                     col_info$col)
 
        } else if(highest_grp){
          filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
            parse_expr()
-         col_info$row_loc<-.data %>%
+         col_info$row<-.data %>%
            group_by(!!first(group)) %>%
            mutate(`___tfrmt_grp_n` = cur_group_id(),
                   `___tfrmt_test` = !!filter_expr) %>%
            filter(`___tfrmt_test`) %>%
            pull(`___tfrmt_grp_n`) %>%
            unique()
-         col_info$col_loc <- ifelse(is.null(col_info$col_loc), first(group_str),
-                                     col_info$col_loc)
+         col_info$col <- ifelse(is.null(col_info$col), first(group_str),
+                                     col_info$col)
        } else if(row_grp == ""){
 
        }
@@ -151,7 +151,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
 
      }
   } else{
-    col_info$row_loc <- NULL
+    col_info$row <- NULL
   }
   col_info
 
