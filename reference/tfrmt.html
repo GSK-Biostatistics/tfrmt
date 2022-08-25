@@ -89,7 +89,7 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt</p>
 <span>  group <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  label <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  param <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  values <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  column <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">title</span>,</span>
 <span>  <span class="va">subtitle</span>,</span>
@@ -122,8 +122,8 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt</p>
 <dd><p>what is the param column of the input dataset</p></dd>
 
 
-<dt>values</dt>
-<dd><p>what is the values column of the input dataset</p></dd>
+<dt>value</dt>
+<dd><p>what is the value column of the input dataset</p></dd>
 
 
 <dt>column</dt>
@@ -178,7 +178,7 @@ columns. Takes a <code><a href="col_plan.html">col_plan()</a></code></p></dd>
 <h3 id="nse-and-argument-evaluation">NSE and Argument Evaluation<a class="anchor" aria-label="anchor" href="#nse-and-argument-evaluation"></a></h3>
 
 <ul><li><p>tfrmt allows users to pass <code>vars</code>, <code>quo</code>, and unquoted expressions to a
-variety of arguments, such as <code>group</code>, <code>label</code>, <code>param</code>, <code>values</code>,
+variety of arguments, such as <code>group</code>, <code>label</code>, <code>param</code>, <code>value</code>,
 <code>column</code>, and <code>sorting_cols</code>. Users accustomed to tidyverse semantics
 should be familiar with this behaviour. However, there is an important
 behaviour difference between tfrmt and normal tidyverse functions. Because
@@ -215,13 +215,13 @@ from assigning its <code>group</code> input value to the <code>label</code> valu
 <span class="r-in"><span>  label <span class="op">=</span> <span class="va">label</span>,</span></span>
 <span class="r-in"><span>  column <span class="op">=</span> <span class="va">column</span>,</span></span>
 <span class="r-in"><span>  param <span class="op">=</span> <span class="va">param</span>,</span></span>
-<span class="r-in"><span>  values<span class="op">=</span><span class="va">value</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  value<span class="op">=</span><span class="va">value</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tfrmt_spec</span> <span class="op">&lt;-</span> <span class="fu">tfrmt</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  label <span class="op">=</span> <span class="va">label</span>,</span></span>
 <span class="r-in"><span>  column <span class="op">=</span> <span class="va">column</span>,</span></span>
 <span class="r-in"><span>  param <span class="op">=</span> <span class="va">param</span>,</span></span>
-<span class="r-in"><span>  values<span class="op">=</span><span class="va">value</span>,</span></span>
+<span class="r-in"><span>  value<span class="op">=</span><span class="va">value</span>,</span></span>
 <span class="r-in"><span><span class="co"># Set the formatting for values</span></span></span>
 <span class="r-in"><span>  body_plan <span class="op">=</span> <span class="fu"><a href="body_plan.html">body_plan</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span></span>
@@ -247,7 +247,7 @@ from assigning its <code>group</code> input value to the <code>label</code> valu
 <span class="r-in"><span>  label <span class="op">=</span> <span class="va">label</span>,</span></span>
 <span class="r-in"><span>  column <span class="op">=</span> <span class="va">column</span>,</span></span>
 <span class="r-in"><span>  param <span class="op">=</span> <span class="va">param</span>,</span></span>
-<span class="r-in"><span>  values<span class="op">=</span><span class="va">value</span>,</span></span>
+<span class="r-in"><span>  value<span class="op">=</span><span class="va">value</span>,</span></span>
 <span class="r-in"><span>  sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="co"># specify value formatting</span></span></span>
 <span class="r-in"><span>  body_plan <span class="op">=</span> <span class="fu"><a href="body_plan.html">body_plan</a></span><span class="op">(</span></span></span>

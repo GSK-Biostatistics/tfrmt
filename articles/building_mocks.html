@@ -108,12 +108,12 @@ The <a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">t
 generating mocks from a tfrmt object with no data
 </li>
 <li>
-generating mocks from a tfrmt object plus “mock” data (i.e. data that is representative of your final ARD, except without the <code>values</code> column)
+generating mocks from a tfrmt object plus “mock” data (i.e. data that is representative of your final ARD, except without the <code>value</code> column)
 </li>
 
 <p>While the former is simpler and quicker, the latter offers greater control over the end result. For either option, placeholders (e.g. <code>xx.x</code>, <code>XXX</code>) are used rather than numerical values. Note that using the lower or upper case is up to your preference.</p>
 <p>Tables are generally built by creating a tfrmt specification tailored to your data, and then feeding that into one of the available print functions. In this article we will only explore the use of the <code><a href="../reference/print_mock_gt.html">print_mock_gt()</a></code> function, which is specialised for printing mock tables to <a href="https://gt.rstudio.com/" class="external-link">gt</a>. For information on <code><a href="../reference/print_to_gt.html">print_to_gt()</a></code> please refer to its documentation.</p>
-<p>All tfrmt specifications are created using the <code><a href="../reference/tfrmt.html">tfrmt()</a></code> function. The foundation of this function are the <code>label</code>, <code>column</code>, <code>param</code> and <code>values</code> parameters. From here you can specify a <code>body_plan</code> where custom <code>frmt_structures</code> can be added and built upon.</p>
+<p>All tfrmt specifications are created using the <code><a href="../reference/tfrmt.html">tfrmt()</a></code> function. The foundation of this function are the <code>label</code>, <code>column</code>, <code>param</code> and <code>value</code> parameters. From here you can specify a <code>body_plan</code> where custom <code>frmt_structures</code> can be added and built upon.</p>
 <div class="section level2">
 <h2 id="making-a-simple-mock-table">Making a simple mock table<a class="anchor" aria-label="anchor" href="#making-a-simple-mock-table"></a>
 </h2>
@@ -148,21 +148,21 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>    <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>First, we will explore how to create a mock table using this tfrmt object alone. The <code><a href="../reference/print_mock_gt.html">print_mock_gt()</a></code> function has parameters <code>.default</code> and <code>n_cols</code>; these options inform the number of rows and columns of the mock table. In this example, we will use their default values (3) to print three row labels and three columns.</p>
 <p>You may enter different arguments into these parameters to alter the number of rows and columns shown.</p>
-<p>You may notice that a message appears in the console - this is not an error, it is a reminder to include a <code>values</code> parameter to the tfrmt specification when using the <code><a href="../reference/print_to_gt.html">print_to_gt()</a></code> function.</p>
+<p>You may notice that a message appears in the console - this is not an error, it is a reminder to include a <code>value</code> parameter to the tfrmt specification when using the <code><a href="../reference/print_to_gt.html">print_to_gt()</a></code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print table</span></span>
 <span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">tfrmt_spec</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable</span></span>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "title": longer object length is not a multiple</span></span>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="mrqknuurda" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="aurkoddpjk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mrqknuurda .gt_table {
+#aurkoddpjk .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -187,7 +187,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_heading {
+#aurkoddpjk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -199,7 +199,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_title {
+#aurkoddpjk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -211,7 +211,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#mrqknuurda .gt_subtitle {
+#aurkoddpjk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -223,13 +223,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#mrqknuurda .gt_bottom_border {
+#aurkoddpjk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_col_headings {
+#aurkoddpjk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -244,7 +244,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_col_heading {
+#aurkoddpjk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -264,7 +264,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#mrqknuurda .gt_column_spanner_outer {
+#aurkoddpjk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -276,15 +276,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#mrqknuurda .gt_column_spanner_outer:first-child {
+#aurkoddpjk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mrqknuurda .gt_column_spanner_outer:last-child {
+#aurkoddpjk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mrqknuurda .gt_column_spanner {
+#aurkoddpjk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -296,7 +296,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#mrqknuurda .gt_group_heading {
+#aurkoddpjk .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -321,7 +321,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#mrqknuurda .gt_empty_group_heading {
+#aurkoddpjk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -336,15 +336,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#mrqknuurda .gt_from_md > :first-child {
+#aurkoddpjk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mrqknuurda .gt_from_md > :last-child {
+#aurkoddpjk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mrqknuurda .gt_row {
+#aurkoddpjk .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -363,7 +363,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#mrqknuurda .gt_stub {
+#aurkoddpjk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -376,7 +376,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#mrqknuurda .gt_stub_row_group {
+#aurkoddpjk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -390,11 +390,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#mrqknuurda .gt_row_group_first td {
+#aurkoddpjk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mrqknuurda .gt_summary_row {
+#aurkoddpjk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -404,16 +404,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#mrqknuurda .gt_first_summary_row {
+#aurkoddpjk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_first_summary_row.thick {
+#aurkoddpjk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mrqknuurda .gt_last_summary_row {
+#aurkoddpjk .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -423,7 +423,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_grand_summary_row {
+#aurkoddpjk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -433,7 +433,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#mrqknuurda .gt_first_grand_summary_row {
+#aurkoddpjk .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -443,11 +443,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_striped {
+#aurkoddpjk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mrqknuurda .gt_table_body {
+#aurkoddpjk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -456,7 +456,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_footnotes {
+#aurkoddpjk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -470,7 +470,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_footnote {
+#aurkoddpjk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -479,7 +479,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#mrqknuurda .gt_sourcenotes {
+#aurkoddpjk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -493,7 +493,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#mrqknuurda .gt_sourcenote {
+#aurkoddpjk .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -501,64 +501,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#mrqknuurda .gt_left {
+#aurkoddpjk .gt_left {
   text-align: left;
 }
 
-#mrqknuurda .gt_center {
+#aurkoddpjk .gt_center {
   text-align: center;
 }
 
-#mrqknuurda .gt_right {
+#aurkoddpjk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mrqknuurda .gt_font_normal {
+#aurkoddpjk .gt_font_normal {
   font-weight: normal;
 }
 
-#mrqknuurda .gt_font_bold {
+#aurkoddpjk .gt_font_bold {
   font-weight: bold;
 }
 
-#mrqknuurda .gt_font_italic {
+#aurkoddpjk .gt_font_italic {
   font-style: italic;
 }
 
-#mrqknuurda .gt_super {
+#aurkoddpjk .gt_super {
   font-size: 65%;
 }
 
-#mrqknuurda .gt_footnote_marks {
+#aurkoddpjk .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#mrqknuurda .gt_asterisk {
+#aurkoddpjk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mrqknuurda .gt_indent_1 {
+#aurkoddpjk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mrqknuurda .gt_indent_2 {
+#aurkoddpjk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mrqknuurda .gt_indent_3 {
+#aurkoddpjk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mrqknuurda .gt_indent_4 {
+#aurkoddpjk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mrqknuurda .gt_indent_5 {
+#aurkoddpjk .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -627,17 +627,17 @@ the percent value is formatted to be two digits rounded to one decimal place
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print table</span></span>
 <span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">tfrmt_spec</span>, <span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable</span></span>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "title": longer object length is not a multiple</span></span>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="dmrisyfbxt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="qtdfmbjefs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#dmrisyfbxt .gt_table {
+#qtdfmbjefs .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -662,7 +662,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_heading {
+#qtdfmbjefs .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -674,7 +674,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_title {
+#qtdfmbjefs .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -686,7 +686,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#dmrisyfbxt .gt_subtitle {
+#qtdfmbjefs .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -698,13 +698,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#dmrisyfbxt .gt_bottom_border {
+#qtdfmbjefs .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_col_headings {
+#qtdfmbjefs .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -719,7 +719,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_col_heading {
+#qtdfmbjefs .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -739,7 +739,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#dmrisyfbxt .gt_column_spanner_outer {
+#qtdfmbjefs .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -751,15 +751,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#dmrisyfbxt .gt_column_spanner_outer:first-child {
+#qtdfmbjefs .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dmrisyfbxt .gt_column_spanner_outer:last-child {
+#qtdfmbjefs .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dmrisyfbxt .gt_column_spanner {
+#qtdfmbjefs .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -771,7 +771,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#dmrisyfbxt .gt_group_heading {
+#qtdfmbjefs .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -796,7 +796,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#dmrisyfbxt .gt_empty_group_heading {
+#qtdfmbjefs .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -811,15 +811,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#dmrisyfbxt .gt_from_md > :first-child {
+#qtdfmbjefs .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dmrisyfbxt .gt_from_md > :last-child {
+#qtdfmbjefs .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dmrisyfbxt .gt_row {
+#qtdfmbjefs .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -838,7 +838,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#dmrisyfbxt .gt_stub {
+#qtdfmbjefs .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -851,7 +851,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#dmrisyfbxt .gt_stub_row_group {
+#qtdfmbjefs .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -865,11 +865,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#dmrisyfbxt .gt_row_group_first td {
+#qtdfmbjefs .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dmrisyfbxt .gt_summary_row {
+#qtdfmbjefs .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -879,16 +879,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#dmrisyfbxt .gt_first_summary_row {
+#qtdfmbjefs .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_first_summary_row.thick {
+#qtdfmbjefs .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dmrisyfbxt .gt_last_summary_row {
+#qtdfmbjefs .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -898,7 +898,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_grand_summary_row {
+#qtdfmbjefs .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -908,7 +908,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#dmrisyfbxt .gt_first_grand_summary_row {
+#qtdfmbjefs .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -918,11 +918,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_striped {
+#qtdfmbjefs .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dmrisyfbxt .gt_table_body {
+#qtdfmbjefs .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -931,7 +931,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_footnotes {
+#qtdfmbjefs .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -945,7 +945,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_footnote {
+#qtdfmbjefs .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -954,7 +954,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#dmrisyfbxt .gt_sourcenotes {
+#qtdfmbjefs .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -968,7 +968,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#dmrisyfbxt .gt_sourcenote {
+#qtdfmbjefs .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -976,64 +976,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#dmrisyfbxt .gt_left {
+#qtdfmbjefs .gt_left {
   text-align: left;
 }
 
-#dmrisyfbxt .gt_center {
+#qtdfmbjefs .gt_center {
   text-align: center;
 }
 
-#dmrisyfbxt .gt_right {
+#qtdfmbjefs .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dmrisyfbxt .gt_font_normal {
+#qtdfmbjefs .gt_font_normal {
   font-weight: normal;
 }
 
-#dmrisyfbxt .gt_font_bold {
+#qtdfmbjefs .gt_font_bold {
   font-weight: bold;
 }
 
-#dmrisyfbxt .gt_font_italic {
+#qtdfmbjefs .gt_font_italic {
   font-style: italic;
 }
 
-#dmrisyfbxt .gt_super {
+#qtdfmbjefs .gt_super {
   font-size: 65%;
 }
 
-#dmrisyfbxt .gt_footnote_marks {
+#qtdfmbjefs .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#dmrisyfbxt .gt_asterisk {
+#qtdfmbjefs .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dmrisyfbxt .gt_indent_1 {
+#qtdfmbjefs .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dmrisyfbxt .gt_indent_2 {
+#qtdfmbjefs .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dmrisyfbxt .gt_indent_3 {
+#qtdfmbjefs .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dmrisyfbxt .gt_indent_4 {
+#qtdfmbjefs .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dmrisyfbxt .gt_indent_5 {
+#qtdfmbjefs .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1109,7 +1109,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treatment</span>, <span class="va">column</span><span class="op">)</span>, </span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  </span>
 <span>  <span class="co"># Specify column structure</span></span>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
@@ -1134,12 +1134,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="tifinaztje" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="cmdczpmpne" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#tifinaztje .gt_table {
+#cmdczpmpne .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1164,7 +1164,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#tifinaztje .gt_heading {
+#cmdczpmpne .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1176,7 +1176,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#tifinaztje .gt_title {
+#cmdczpmpne .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1188,7 +1188,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#tifinaztje .gt_subtitle {
+#cmdczpmpne .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1200,13 +1200,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#tifinaztje .gt_bottom_border {
+#cmdczpmpne .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tifinaztje .gt_col_headings {
+#cmdczpmpne .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1221,7 +1221,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#tifinaztje .gt_col_heading {
+#cmdczpmpne .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1241,7 +1241,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#tifinaztje .gt_column_spanner_outer {
+#cmdczpmpne .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1253,15 +1253,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#tifinaztje .gt_column_spanner_outer:first-child {
+#cmdczpmpne .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tifinaztje .gt_column_spanner_outer:last-child {
+#cmdczpmpne .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tifinaztje .gt_column_spanner {
+#cmdczpmpne .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1273,7 +1273,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#tifinaztje .gt_group_heading {
+#cmdczpmpne .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1298,7 +1298,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#tifinaztje .gt_empty_group_heading {
+#cmdczpmpne .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1313,15 +1313,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#tifinaztje .gt_from_md > :first-child {
+#cmdczpmpne .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tifinaztje .gt_from_md > :last-child {
+#cmdczpmpne .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tifinaztje .gt_row {
+#cmdczpmpne .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1340,7 +1340,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#tifinaztje .gt_stub {
+#cmdczpmpne .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1353,7 +1353,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#tifinaztje .gt_stub_row_group {
+#cmdczpmpne .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1367,11 +1367,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#tifinaztje .gt_row_group_first td {
+#cmdczpmpne .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tifinaztje .gt_summary_row {
+#cmdczpmpne .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1381,16 +1381,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#tifinaztje .gt_first_summary_row {
+#cmdczpmpne .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tifinaztje .gt_first_summary_row.thick {
+#cmdczpmpne .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tifinaztje .gt_last_summary_row {
+#cmdczpmpne .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1400,7 +1400,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#tifinaztje .gt_grand_summary_row {
+#cmdczpmpne .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1410,7 +1410,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#tifinaztje .gt_first_grand_summary_row {
+#cmdczpmpne .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1420,11 +1420,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#tifinaztje .gt_striped {
+#cmdczpmpne .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tifinaztje .gt_table_body {
+#cmdczpmpne .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1433,7 +1433,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#tifinaztje .gt_footnotes {
+#cmdczpmpne .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1447,7 +1447,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#tifinaztje .gt_footnote {
+#cmdczpmpne .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1456,7 +1456,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#tifinaztje .gt_sourcenotes {
+#cmdczpmpne .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1470,7 +1470,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#tifinaztje .gt_sourcenote {
+#cmdczpmpne .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1478,64 +1478,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#tifinaztje .gt_left {
+#cmdczpmpne .gt_left {
   text-align: left;
 }
 
-#tifinaztje .gt_center {
+#cmdczpmpne .gt_center {
   text-align: center;
 }
 
-#tifinaztje .gt_right {
+#cmdczpmpne .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tifinaztje .gt_font_normal {
+#cmdczpmpne .gt_font_normal {
   font-weight: normal;
 }
 
-#tifinaztje .gt_font_bold {
+#cmdczpmpne .gt_font_bold {
   font-weight: bold;
 }
 
-#tifinaztje .gt_font_italic {
+#cmdczpmpne .gt_font_italic {
   font-style: italic;
 }
 
-#tifinaztje .gt_super {
+#cmdczpmpne .gt_super {
   font-size: 65%;
 }
 
-#tifinaztje .gt_footnote_marks {
+#cmdczpmpne .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#tifinaztje .gt_asterisk {
+#cmdczpmpne .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tifinaztje .gt_indent_1 {
+#cmdczpmpne .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tifinaztje .gt_indent_2 {
+#cmdczpmpne .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tifinaztje .gt_indent_3 {
+#cmdczpmpne .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tifinaztje .gt_indent_4 {
+#cmdczpmpne .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tifinaztje .gt_indent_5 {
+#cmdczpmpne .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1613,7 +1613,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>    label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treatment</span>, <span class="va">column</span><span class="op">)</span>, </span>
 <span>    param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>    values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>    <span class="co"># Specify column structure</span></span>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
 <span>      <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span>,</span>
@@ -1630,12 +1630,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  <span class="op">)</span></span>
 <span>  </span>
 <span><span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">tfrmt_spec</span>, <span class="va">df</span><span class="op">)</span></span></code></pre></div>
-<div id="pmqdjlinip" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="hijmbhsmgk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#pmqdjlinip .gt_table {
+#hijmbhsmgk .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1660,7 +1660,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_heading {
+#hijmbhsmgk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1672,7 +1672,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_title {
+#hijmbhsmgk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1684,7 +1684,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#pmqdjlinip .gt_subtitle {
+#hijmbhsmgk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1696,13 +1696,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#pmqdjlinip .gt_bottom_border {
+#hijmbhsmgk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_col_headings {
+#hijmbhsmgk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1717,7 +1717,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_col_heading {
+#hijmbhsmgk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1737,7 +1737,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#pmqdjlinip .gt_column_spanner_outer {
+#hijmbhsmgk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1749,15 +1749,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#pmqdjlinip .gt_column_spanner_outer:first-child {
+#hijmbhsmgk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pmqdjlinip .gt_column_spanner_outer:last-child {
+#hijmbhsmgk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pmqdjlinip .gt_column_spanner {
+#hijmbhsmgk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1769,7 +1769,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#pmqdjlinip .gt_group_heading {
+#hijmbhsmgk .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1794,7 +1794,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#pmqdjlinip .gt_empty_group_heading {
+#hijmbhsmgk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1809,15 +1809,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#pmqdjlinip .gt_from_md > :first-child {
+#hijmbhsmgk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pmqdjlinip .gt_from_md > :last-child {
+#hijmbhsmgk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pmqdjlinip .gt_row {
+#hijmbhsmgk .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1836,7 +1836,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#pmqdjlinip .gt_stub {
+#hijmbhsmgk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1849,7 +1849,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#pmqdjlinip .gt_stub_row_group {
+#hijmbhsmgk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1863,11 +1863,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#pmqdjlinip .gt_row_group_first td {
+#hijmbhsmgk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#pmqdjlinip .gt_summary_row {
+#hijmbhsmgk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1877,16 +1877,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#pmqdjlinip .gt_first_summary_row {
+#hijmbhsmgk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_first_summary_row.thick {
+#hijmbhsmgk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#pmqdjlinip .gt_last_summary_row {
+#hijmbhsmgk .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1896,7 +1896,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_grand_summary_row {
+#hijmbhsmgk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1906,7 +1906,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#pmqdjlinip .gt_first_grand_summary_row {
+#hijmbhsmgk .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1916,11 +1916,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_striped {
+#hijmbhsmgk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pmqdjlinip .gt_table_body {
+#hijmbhsmgk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1929,7 +1929,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_footnotes {
+#hijmbhsmgk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1943,7 +1943,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_footnote {
+#hijmbhsmgk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1952,7 +1952,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#pmqdjlinip .gt_sourcenotes {
+#hijmbhsmgk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1966,7 +1966,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#pmqdjlinip .gt_sourcenote {
+#hijmbhsmgk .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1974,64 +1974,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#pmqdjlinip .gt_left {
+#hijmbhsmgk .gt_left {
   text-align: left;
 }
 
-#pmqdjlinip .gt_center {
+#hijmbhsmgk .gt_center {
   text-align: center;
 }
 
-#pmqdjlinip .gt_right {
+#hijmbhsmgk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pmqdjlinip .gt_font_normal {
+#hijmbhsmgk .gt_font_normal {
   font-weight: normal;
 }
 
-#pmqdjlinip .gt_font_bold {
+#hijmbhsmgk .gt_font_bold {
   font-weight: bold;
 }
 
-#pmqdjlinip .gt_font_italic {
+#hijmbhsmgk .gt_font_italic {
   font-style: italic;
 }
 
-#pmqdjlinip .gt_super {
+#hijmbhsmgk .gt_super {
   font-size: 65%;
 }
 
-#pmqdjlinip .gt_footnote_marks {
+#hijmbhsmgk .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#pmqdjlinip .gt_asterisk {
+#hijmbhsmgk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#pmqdjlinip .gt_indent_1 {
+#hijmbhsmgk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#pmqdjlinip .gt_indent_2 {
+#hijmbhsmgk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#pmqdjlinip .gt_indent_3 {
+#hijmbhsmgk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#pmqdjlinip .gt_indent_4 {
+#hijmbhsmgk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#pmqdjlinip .gt_indent_5 {
+#hijmbhsmgk .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2147,7 +2147,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="st">"label"</span>,</span>
 <span>  param <span class="op">=</span> <span class="st">"param"</span>,</span>
 <span>  column <span class="op">=</span> <span class="st">"column"</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  </span>
 <span>  <span class="co"># Specify body plan</span></span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
@@ -2170,12 +2170,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="vvznowzyvf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="iqcpawsjuc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#vvznowzyvf .gt_table {
+#iqcpawsjuc .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2200,7 +2200,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_heading {
+#iqcpawsjuc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2212,7 +2212,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_title {
+#iqcpawsjuc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2224,7 +2224,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#vvznowzyvf .gt_subtitle {
+#iqcpawsjuc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2236,13 +2236,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#vvznowzyvf .gt_bottom_border {
+#iqcpawsjuc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_col_headings {
+#iqcpawsjuc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2257,7 +2257,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_col_heading {
+#iqcpawsjuc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2277,7 +2277,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#vvznowzyvf .gt_column_spanner_outer {
+#iqcpawsjuc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2289,15 +2289,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#vvznowzyvf .gt_column_spanner_outer:first-child {
+#iqcpawsjuc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vvznowzyvf .gt_column_spanner_outer:last-child {
+#iqcpawsjuc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vvznowzyvf .gt_column_spanner {
+#iqcpawsjuc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2309,7 +2309,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#vvznowzyvf .gt_group_heading {
+#iqcpawsjuc .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2334,7 +2334,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#vvznowzyvf .gt_empty_group_heading {
+#iqcpawsjuc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2349,15 +2349,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#vvznowzyvf .gt_from_md > :first-child {
+#iqcpawsjuc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vvznowzyvf .gt_from_md > :last-child {
+#iqcpawsjuc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vvznowzyvf .gt_row {
+#iqcpawsjuc .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2376,7 +2376,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#vvznowzyvf .gt_stub {
+#iqcpawsjuc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2389,7 +2389,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#vvznowzyvf .gt_stub_row_group {
+#iqcpawsjuc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2403,11 +2403,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#vvznowzyvf .gt_row_group_first td {
+#iqcpawsjuc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vvznowzyvf .gt_summary_row {
+#iqcpawsjuc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2417,16 +2417,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#vvznowzyvf .gt_first_summary_row {
+#iqcpawsjuc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_first_summary_row.thick {
+#iqcpawsjuc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vvznowzyvf .gt_last_summary_row {
+#iqcpawsjuc .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2436,7 +2436,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_grand_summary_row {
+#iqcpawsjuc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2446,7 +2446,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#vvznowzyvf .gt_first_grand_summary_row {
+#iqcpawsjuc .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2456,11 +2456,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_striped {
+#iqcpawsjuc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vvznowzyvf .gt_table_body {
+#iqcpawsjuc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2469,7 +2469,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_footnotes {
+#iqcpawsjuc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2483,7 +2483,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_footnote {
+#iqcpawsjuc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2492,7 +2492,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#vvznowzyvf .gt_sourcenotes {
+#iqcpawsjuc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2506,7 +2506,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#vvznowzyvf .gt_sourcenote {
+#iqcpawsjuc .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2514,64 +2514,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#vvznowzyvf .gt_left {
+#iqcpawsjuc .gt_left {
   text-align: left;
 }
 
-#vvznowzyvf .gt_center {
+#iqcpawsjuc .gt_center {
   text-align: center;
 }
 
-#vvznowzyvf .gt_right {
+#iqcpawsjuc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vvznowzyvf .gt_font_normal {
+#iqcpawsjuc .gt_font_normal {
   font-weight: normal;
 }
 
-#vvznowzyvf .gt_font_bold {
+#iqcpawsjuc .gt_font_bold {
   font-weight: bold;
 }
 
-#vvznowzyvf .gt_font_italic {
+#iqcpawsjuc .gt_font_italic {
   font-style: italic;
 }
 
-#vvznowzyvf .gt_super {
+#iqcpawsjuc .gt_super {
   font-size: 65%;
 }
 
-#vvznowzyvf .gt_footnote_marks {
+#iqcpawsjuc .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#vvznowzyvf .gt_asterisk {
+#iqcpawsjuc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vvznowzyvf .gt_indent_1 {
+#iqcpawsjuc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vvznowzyvf .gt_indent_2 {
+#iqcpawsjuc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vvznowzyvf .gt_indent_3 {
+#iqcpawsjuc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vvznowzyvf .gt_indent_4 {
+#iqcpawsjuc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vvznowzyvf .gt_indent_5 {
+#iqcpawsjuc .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2621,7 +2621,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="st">"label"</span>,</span>
 <span>  param <span class="op">=</span> <span class="st">"param"</span>,</span>
 <span>  column <span class="op">=</span> <span class="st">"column"</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  </span>
 <span>  <span class="co"># Specify body plan</span></span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
@@ -2645,12 +2645,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="rrajjwtsrr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="plzviuoxgq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#rrajjwtsrr .gt_table {
+#plzviuoxgq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2675,7 +2675,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_heading {
+#plzviuoxgq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2687,7 +2687,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_title {
+#plzviuoxgq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2699,7 +2699,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#rrajjwtsrr .gt_subtitle {
+#plzviuoxgq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2711,13 +2711,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#rrajjwtsrr .gt_bottom_border {
+#plzviuoxgq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_col_headings {
+#plzviuoxgq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2732,7 +2732,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_col_heading {
+#plzviuoxgq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2752,7 +2752,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#rrajjwtsrr .gt_column_spanner_outer {
+#plzviuoxgq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2764,15 +2764,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#rrajjwtsrr .gt_column_spanner_outer:first-child {
+#plzviuoxgq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rrajjwtsrr .gt_column_spanner_outer:last-child {
+#plzviuoxgq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rrajjwtsrr .gt_column_spanner {
+#plzviuoxgq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2784,7 +2784,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#rrajjwtsrr .gt_group_heading {
+#plzviuoxgq .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2809,7 +2809,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#rrajjwtsrr .gt_empty_group_heading {
+#plzviuoxgq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2824,15 +2824,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#rrajjwtsrr .gt_from_md > :first-child {
+#plzviuoxgq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rrajjwtsrr .gt_from_md > :last-child {
+#plzviuoxgq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rrajjwtsrr .gt_row {
+#plzviuoxgq .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2851,7 +2851,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#rrajjwtsrr .gt_stub {
+#plzviuoxgq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2864,7 +2864,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#rrajjwtsrr .gt_stub_row_group {
+#plzviuoxgq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2878,11 +2878,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#rrajjwtsrr .gt_row_group_first td {
+#plzviuoxgq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rrajjwtsrr .gt_summary_row {
+#plzviuoxgq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2892,16 +2892,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#rrajjwtsrr .gt_first_summary_row {
+#plzviuoxgq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_first_summary_row.thick {
+#plzviuoxgq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rrajjwtsrr .gt_last_summary_row {
+#plzviuoxgq .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2911,7 +2911,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_grand_summary_row {
+#plzviuoxgq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2921,7 +2921,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#rrajjwtsrr .gt_first_grand_summary_row {
+#plzviuoxgq .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2931,11 +2931,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_striped {
+#plzviuoxgq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rrajjwtsrr .gt_table_body {
+#plzviuoxgq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2944,7 +2944,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_footnotes {
+#plzviuoxgq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2958,7 +2958,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_footnote {
+#plzviuoxgq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2967,7 +2967,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#rrajjwtsrr .gt_sourcenotes {
+#plzviuoxgq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2981,7 +2981,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#rrajjwtsrr .gt_sourcenote {
+#plzviuoxgq .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2989,64 +2989,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#rrajjwtsrr .gt_left {
+#plzviuoxgq .gt_left {
   text-align: left;
 }
 
-#rrajjwtsrr .gt_center {
+#plzviuoxgq .gt_center {
   text-align: center;
 }
 
-#rrajjwtsrr .gt_right {
+#plzviuoxgq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rrajjwtsrr .gt_font_normal {
+#plzviuoxgq .gt_font_normal {
   font-weight: normal;
 }
 
-#rrajjwtsrr .gt_font_bold {
+#plzviuoxgq .gt_font_bold {
   font-weight: bold;
 }
 
-#rrajjwtsrr .gt_font_italic {
+#plzviuoxgq .gt_font_italic {
   font-style: italic;
 }
 
-#rrajjwtsrr .gt_super {
+#plzviuoxgq .gt_super {
   font-size: 65%;
 }
 
-#rrajjwtsrr .gt_footnote_marks {
+#plzviuoxgq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#rrajjwtsrr .gt_asterisk {
+#plzviuoxgq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rrajjwtsrr .gt_indent_1 {
+#plzviuoxgq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rrajjwtsrr .gt_indent_2 {
+#plzviuoxgq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rrajjwtsrr .gt_indent_3 {
+#plzviuoxgq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rrajjwtsrr .gt_indent_4 {
+#plzviuoxgq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rrajjwtsrr .gt_indent_5 {
+#plzviuoxgq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3106,7 +3106,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -3115,12 +3115,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="hwmxopbjbw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="mdewhonqsz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hwmxopbjbw .gt_table {
+#mdewhonqsz .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3145,7 +3145,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_heading {
+#mdewhonqsz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3157,7 +3157,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_title {
+#mdewhonqsz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3169,7 +3169,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#hwmxopbjbw .gt_subtitle {
+#mdewhonqsz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3181,13 +3181,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#hwmxopbjbw .gt_bottom_border {
+#mdewhonqsz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_col_headings {
+#mdewhonqsz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3202,7 +3202,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_col_heading {
+#mdewhonqsz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3222,7 +3222,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#hwmxopbjbw .gt_column_spanner_outer {
+#mdewhonqsz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3234,15 +3234,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#hwmxopbjbw .gt_column_spanner_outer:first-child {
+#mdewhonqsz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hwmxopbjbw .gt_column_spanner_outer:last-child {
+#mdewhonqsz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hwmxopbjbw .gt_column_spanner {
+#mdewhonqsz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3254,7 +3254,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#hwmxopbjbw .gt_group_heading {
+#mdewhonqsz .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3279,7 +3279,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#hwmxopbjbw .gt_empty_group_heading {
+#mdewhonqsz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3294,15 +3294,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#hwmxopbjbw .gt_from_md > :first-child {
+#mdewhonqsz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hwmxopbjbw .gt_from_md > :last-child {
+#mdewhonqsz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hwmxopbjbw .gt_row {
+#mdewhonqsz .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3321,7 +3321,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#hwmxopbjbw .gt_stub {
+#mdewhonqsz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3334,7 +3334,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#hwmxopbjbw .gt_stub_row_group {
+#mdewhonqsz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3348,11 +3348,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#hwmxopbjbw .gt_row_group_first td {
+#mdewhonqsz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hwmxopbjbw .gt_summary_row {
+#mdewhonqsz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3362,16 +3362,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#hwmxopbjbw .gt_first_summary_row {
+#mdewhonqsz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_first_summary_row.thick {
+#mdewhonqsz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hwmxopbjbw .gt_last_summary_row {
+#mdewhonqsz .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3381,7 +3381,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_grand_summary_row {
+#mdewhonqsz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3391,7 +3391,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#hwmxopbjbw .gt_first_grand_summary_row {
+#mdewhonqsz .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3401,11 +3401,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_striped {
+#mdewhonqsz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hwmxopbjbw .gt_table_body {
+#mdewhonqsz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3414,7 +3414,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_footnotes {
+#mdewhonqsz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3428,7 +3428,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_footnote {
+#mdewhonqsz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -3437,7 +3437,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#hwmxopbjbw .gt_sourcenotes {
+#mdewhonqsz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3451,7 +3451,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#hwmxopbjbw .gt_sourcenote {
+#mdewhonqsz .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3459,64 +3459,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#hwmxopbjbw .gt_left {
+#mdewhonqsz .gt_left {
   text-align: left;
 }
 
-#hwmxopbjbw .gt_center {
+#mdewhonqsz .gt_center {
   text-align: center;
 }
 
-#hwmxopbjbw .gt_right {
+#mdewhonqsz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hwmxopbjbw .gt_font_normal {
+#mdewhonqsz .gt_font_normal {
   font-weight: normal;
 }
 
-#hwmxopbjbw .gt_font_bold {
+#mdewhonqsz .gt_font_bold {
   font-weight: bold;
 }
 
-#hwmxopbjbw .gt_font_italic {
+#mdewhonqsz .gt_font_italic {
   font-style: italic;
 }
 
-#hwmxopbjbw .gt_super {
+#mdewhonqsz .gt_super {
   font-size: 65%;
 }
 
-#hwmxopbjbw .gt_footnote_marks {
+#mdewhonqsz .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#hwmxopbjbw .gt_asterisk {
+#mdewhonqsz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hwmxopbjbw .gt_indent_1 {
+#mdewhonqsz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hwmxopbjbw .gt_indent_2 {
+#mdewhonqsz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hwmxopbjbw .gt_indent_3 {
+#mdewhonqsz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hwmxopbjbw .gt_indent_4 {
+#mdewhonqsz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hwmxopbjbw .gt_indent_5 {
+#mdewhonqsz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3608,7 +3608,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
@@ -3631,12 +3631,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="ltnzsnmrvi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zxnctscwkq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ltnzsnmrvi .gt_table {
+#zxnctscwkq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3661,7 +3661,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_heading {
+#zxnctscwkq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3673,7 +3673,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_title {
+#zxnctscwkq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3685,7 +3685,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#ltnzsnmrvi .gt_subtitle {
+#zxnctscwkq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3697,13 +3697,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#ltnzsnmrvi .gt_bottom_border {
+#zxnctscwkq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_col_headings {
+#zxnctscwkq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3718,7 +3718,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_col_heading {
+#zxnctscwkq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3738,7 +3738,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#ltnzsnmrvi .gt_column_spanner_outer {
+#zxnctscwkq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3750,15 +3750,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#ltnzsnmrvi .gt_column_spanner_outer:first-child {
+#zxnctscwkq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ltnzsnmrvi .gt_column_spanner_outer:last-child {
+#zxnctscwkq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ltnzsnmrvi .gt_column_spanner {
+#zxnctscwkq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3770,7 +3770,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#ltnzsnmrvi .gt_group_heading {
+#zxnctscwkq .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3795,7 +3795,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#ltnzsnmrvi .gt_empty_group_heading {
+#zxnctscwkq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3810,15 +3810,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#ltnzsnmrvi .gt_from_md > :first-child {
+#zxnctscwkq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ltnzsnmrvi .gt_from_md > :last-child {
+#zxnctscwkq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ltnzsnmrvi .gt_row {
+#zxnctscwkq .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3837,7 +3837,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#ltnzsnmrvi .gt_stub {
+#zxnctscwkq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3850,7 +3850,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#ltnzsnmrvi .gt_stub_row_group {
+#zxnctscwkq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3864,11 +3864,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#ltnzsnmrvi .gt_row_group_first td {
+#zxnctscwkq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ltnzsnmrvi .gt_summary_row {
+#zxnctscwkq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3878,16 +3878,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#ltnzsnmrvi .gt_first_summary_row {
+#zxnctscwkq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_first_summary_row.thick {
+#zxnctscwkq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ltnzsnmrvi .gt_last_summary_row {
+#zxnctscwkq .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3897,7 +3897,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_grand_summary_row {
+#zxnctscwkq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3907,7 +3907,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#ltnzsnmrvi .gt_first_grand_summary_row {
+#zxnctscwkq .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3917,11 +3917,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_striped {
+#zxnctscwkq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ltnzsnmrvi .gt_table_body {
+#zxnctscwkq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3930,7 +3930,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_footnotes {
+#zxnctscwkq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3944,7 +3944,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_footnote {
+#zxnctscwkq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -3953,7 +3953,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#ltnzsnmrvi .gt_sourcenotes {
+#zxnctscwkq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3967,7 +3967,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#ltnzsnmrvi .gt_sourcenote {
+#zxnctscwkq .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3975,64 +3975,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#ltnzsnmrvi .gt_left {
+#zxnctscwkq .gt_left {
   text-align: left;
 }
 
-#ltnzsnmrvi .gt_center {
+#zxnctscwkq .gt_center {
   text-align: center;
 }
 
-#ltnzsnmrvi .gt_right {
+#zxnctscwkq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ltnzsnmrvi .gt_font_normal {
+#zxnctscwkq .gt_font_normal {
   font-weight: normal;
 }
 
-#ltnzsnmrvi .gt_font_bold {
+#zxnctscwkq .gt_font_bold {
   font-weight: bold;
 }
 
-#ltnzsnmrvi .gt_font_italic {
+#zxnctscwkq .gt_font_italic {
   font-style: italic;
 }
 
-#ltnzsnmrvi .gt_super {
+#zxnctscwkq .gt_super {
   font-size: 65%;
 }
 
-#ltnzsnmrvi .gt_footnote_marks {
+#zxnctscwkq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#ltnzsnmrvi .gt_asterisk {
+#zxnctscwkq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ltnzsnmrvi .gt_indent_1 {
+#zxnctscwkq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ltnzsnmrvi .gt_indent_2 {
+#zxnctscwkq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ltnzsnmrvi .gt_indent_3 {
+#zxnctscwkq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ltnzsnmrvi .gt_indent_4 {
+#zxnctscwkq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ltnzsnmrvi .gt_indent_5 {
+#zxnctscwkq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -4131,7 +4131,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"group"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"group 1"</span>, <span class="st">"group 2"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
@@ -4153,12 +4153,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="avhpobsdbe" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="meecuwlnrv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#avhpobsdbe .gt_table {
+#meecuwlnrv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -4183,7 +4183,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_heading {
+#meecuwlnrv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -4195,7 +4195,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_title {
+#meecuwlnrv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4207,7 +4207,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#avhpobsdbe .gt_subtitle {
+#meecuwlnrv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4219,13 +4219,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#avhpobsdbe .gt_bottom_border {
+#meecuwlnrv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_col_headings {
+#meecuwlnrv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4240,7 +4240,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_col_heading {
+#meecuwlnrv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4260,7 +4260,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#avhpobsdbe .gt_column_spanner_outer {
+#meecuwlnrv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4272,15 +4272,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#avhpobsdbe .gt_column_spanner_outer:first-child {
+#meecuwlnrv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#avhpobsdbe .gt_column_spanner_outer:last-child {
+#meecuwlnrv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#avhpobsdbe .gt_column_spanner {
+#meecuwlnrv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4292,7 +4292,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#avhpobsdbe .gt_group_heading {
+#meecuwlnrv .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4317,7 +4317,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#avhpobsdbe .gt_empty_group_heading {
+#meecuwlnrv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4332,15 +4332,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#avhpobsdbe .gt_from_md > :first-child {
+#meecuwlnrv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#avhpobsdbe .gt_from_md > :last-child {
+#meecuwlnrv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#avhpobsdbe .gt_row {
+#meecuwlnrv .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4359,7 +4359,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#avhpobsdbe .gt_stub {
+#meecuwlnrv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4372,7 +4372,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#avhpobsdbe .gt_stub_row_group {
+#meecuwlnrv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4386,11 +4386,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#avhpobsdbe .gt_row_group_first td {
+#meecuwlnrv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#avhpobsdbe .gt_summary_row {
+#meecuwlnrv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4400,16 +4400,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#avhpobsdbe .gt_first_summary_row {
+#meecuwlnrv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_first_summary_row.thick {
+#meecuwlnrv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#avhpobsdbe .gt_last_summary_row {
+#meecuwlnrv .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4419,7 +4419,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_grand_summary_row {
+#meecuwlnrv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4429,7 +4429,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#avhpobsdbe .gt_first_grand_summary_row {
+#meecuwlnrv .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4439,11 +4439,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_striped {
+#meecuwlnrv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#avhpobsdbe .gt_table_body {
+#meecuwlnrv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4452,7 +4452,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_footnotes {
+#meecuwlnrv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4466,7 +4466,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_footnote {
+#meecuwlnrv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -4475,7 +4475,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#avhpobsdbe .gt_sourcenotes {
+#meecuwlnrv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4489,7 +4489,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#avhpobsdbe .gt_sourcenote {
+#meecuwlnrv .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -4497,64 +4497,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#avhpobsdbe .gt_left {
+#meecuwlnrv .gt_left {
   text-align: left;
 }
 
-#avhpobsdbe .gt_center {
+#meecuwlnrv .gt_center {
   text-align: center;
 }
 
-#avhpobsdbe .gt_right {
+#meecuwlnrv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#avhpobsdbe .gt_font_normal {
+#meecuwlnrv .gt_font_normal {
   font-weight: normal;
 }
 
-#avhpobsdbe .gt_font_bold {
+#meecuwlnrv .gt_font_bold {
   font-weight: bold;
 }
 
-#avhpobsdbe .gt_font_italic {
+#meecuwlnrv .gt_font_italic {
   font-style: italic;
 }
 
-#avhpobsdbe .gt_super {
+#meecuwlnrv .gt_super {
   font-size: 65%;
 }
 
-#avhpobsdbe .gt_footnote_marks {
+#meecuwlnrv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#avhpobsdbe .gt_asterisk {
+#meecuwlnrv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#avhpobsdbe .gt_indent_1 {
+#meecuwlnrv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#avhpobsdbe .gt_indent_2 {
+#meecuwlnrv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#avhpobsdbe .gt_indent_3 {
+#meecuwlnrv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#avhpobsdbe .gt_indent_4 {
+#meecuwlnrv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#avhpobsdbe .gt_indent_5 {
+#meecuwlnrv .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -4631,7 +4631,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"group"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"group 1"</span>, <span class="st">"group 2"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
@@ -4657,12 +4657,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="bwqlimxreo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="asdbmbujvf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#bwqlimxreo .gt_table {
+#asdbmbujvf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -4687,7 +4687,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_heading {
+#asdbmbujvf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -4699,7 +4699,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_title {
+#asdbmbujvf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4711,7 +4711,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#bwqlimxreo .gt_subtitle {
+#asdbmbujvf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4723,13 +4723,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#bwqlimxreo .gt_bottom_border {
+#asdbmbujvf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_col_headings {
+#asdbmbujvf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4744,7 +4744,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_col_heading {
+#asdbmbujvf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4764,7 +4764,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#bwqlimxreo .gt_column_spanner_outer {
+#asdbmbujvf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4776,15 +4776,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#bwqlimxreo .gt_column_spanner_outer:first-child {
+#asdbmbujvf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bwqlimxreo .gt_column_spanner_outer:last-child {
+#asdbmbujvf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bwqlimxreo .gt_column_spanner {
+#asdbmbujvf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4796,7 +4796,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#bwqlimxreo .gt_group_heading {
+#asdbmbujvf .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4821,7 +4821,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#bwqlimxreo .gt_empty_group_heading {
+#asdbmbujvf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4836,15 +4836,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#bwqlimxreo .gt_from_md > :first-child {
+#asdbmbujvf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bwqlimxreo .gt_from_md > :last-child {
+#asdbmbujvf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bwqlimxreo .gt_row {
+#asdbmbujvf .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4863,7 +4863,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#bwqlimxreo .gt_stub {
+#asdbmbujvf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4876,7 +4876,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#bwqlimxreo .gt_stub_row_group {
+#asdbmbujvf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4890,11 +4890,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#bwqlimxreo .gt_row_group_first td {
+#asdbmbujvf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bwqlimxreo .gt_summary_row {
+#asdbmbujvf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4904,16 +4904,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#bwqlimxreo .gt_first_summary_row {
+#asdbmbujvf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_first_summary_row.thick {
+#asdbmbujvf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bwqlimxreo .gt_last_summary_row {
+#asdbmbujvf .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4923,7 +4923,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_grand_summary_row {
+#asdbmbujvf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4933,7 +4933,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#bwqlimxreo .gt_first_grand_summary_row {
+#asdbmbujvf .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -4943,11 +4943,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_striped {
+#asdbmbujvf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bwqlimxreo .gt_table_body {
+#asdbmbujvf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4956,7 +4956,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_footnotes {
+#asdbmbujvf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4970,7 +4970,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_footnote {
+#asdbmbujvf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -4979,7 +4979,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#bwqlimxreo .gt_sourcenotes {
+#asdbmbujvf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4993,7 +4993,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#bwqlimxreo .gt_sourcenote {
+#asdbmbujvf .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -5001,64 +5001,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#bwqlimxreo .gt_left {
+#asdbmbujvf .gt_left {
   text-align: left;
 }
 
-#bwqlimxreo .gt_center {
+#asdbmbujvf .gt_center {
   text-align: center;
 }
 
-#bwqlimxreo .gt_right {
+#asdbmbujvf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bwqlimxreo .gt_font_normal {
+#asdbmbujvf .gt_font_normal {
   font-weight: normal;
 }
 
-#bwqlimxreo .gt_font_bold {
+#asdbmbujvf .gt_font_bold {
   font-weight: bold;
 }
 
-#bwqlimxreo .gt_font_italic {
+#asdbmbujvf .gt_font_italic {
   font-style: italic;
 }
 
-#bwqlimxreo .gt_super {
+#asdbmbujvf .gt_super {
   font-size: 65%;
 }
 
-#bwqlimxreo .gt_footnote_marks {
+#asdbmbujvf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#bwqlimxreo .gt_asterisk {
+#asdbmbujvf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bwqlimxreo .gt_indent_1 {
+#asdbmbujvf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bwqlimxreo .gt_indent_2 {
+#asdbmbujvf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bwqlimxreo .gt_indent_3 {
+#asdbmbujvf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bwqlimxreo .gt_indent_4 {
+#asdbmbujvf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bwqlimxreo .gt_indent_5 {
+#asdbmbujvf .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -5146,7 +5146,7 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>  values <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
@@ -5166,12 +5166,12 @@ the percent value is formatted to be two digits rounded to one decimal place
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="wqbnuazzuw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="truwesziyy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wqbnuazzuw .gt_table {
+#truwesziyy .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -5196,7 +5196,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-left-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_heading {
+#truwesziyy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -5208,7 +5208,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_title {
+#truwesziyy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -5220,7 +5220,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-width: 0;
 }
 
-#wqbnuazzuw .gt_subtitle {
+#truwesziyy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -5232,13 +5232,13 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-width: 0;
 }
 
-#wqbnuazzuw .gt_bottom_border {
+#truwesziyy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_col_headings {
+#truwesziyy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5253,7 +5253,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_col_heading {
+#truwesziyy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5273,7 +5273,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#wqbnuazzuw .gt_column_spanner_outer {
+#truwesziyy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5285,15 +5285,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 4px;
 }
 
-#wqbnuazzuw .gt_column_spanner_outer:first-child {
+#truwesziyy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wqbnuazzuw .gt_column_spanner_outer:last-child {
+#truwesziyy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wqbnuazzuw .gt_column_spanner {
+#truwesziyy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -5305,7 +5305,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   width: 100%;
 }
 
-#wqbnuazzuw .gt_group_heading {
+#truwesziyy .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5330,7 +5330,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#wqbnuazzuw .gt_empty_group_heading {
+#truwesziyy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -5345,15 +5345,15 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: middle;
 }
 
-#wqbnuazzuw .gt_from_md > :first-child {
+#truwesziyy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wqbnuazzuw .gt_from_md > :last-child {
+#truwesziyy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wqbnuazzuw .gt_row {
+#truwesziyy .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5372,7 +5372,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   overflow-x: hidden;
 }
 
-#wqbnuazzuw .gt_stub {
+#truwesziyy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5385,7 +5385,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#wqbnuazzuw .gt_stub_row_group {
+#truwesziyy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -5399,11 +5399,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   vertical-align: top;
 }
 
-#wqbnuazzuw .gt_row_group_first td {
+#truwesziyy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wqbnuazzuw .gt_summary_row {
+#truwesziyy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5413,16 +5413,16 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#wqbnuazzuw .gt_first_summary_row {
+#truwesziyy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_first_summary_row.thick {
+#truwesziyy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wqbnuazzuw .gt_last_summary_row {
+#truwesziyy .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5432,7 +5432,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_grand_summary_row {
+#truwesziyy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -5442,7 +5442,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#wqbnuazzuw .gt_first_grand_summary_row {
+#truwesziyy .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -5452,11 +5452,11 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-top-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_striped {
+#truwesziyy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wqbnuazzuw .gt_table_body {
+#truwesziyy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -5465,7 +5465,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-bottom-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_footnotes {
+#truwesziyy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5479,7 +5479,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_footnote {
+#truwesziyy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -5488,7 +5488,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#wqbnuazzuw .gt_sourcenotes {
+#truwesziyy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -5502,7 +5502,7 @@ the percent value is formatted to be two digits rounded to one decimal place
   border-right-color: #D3D3D3;
 }
 
-#wqbnuazzuw .gt_sourcenote {
+#truwesziyy .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -5510,64 +5510,64 @@ the percent value is formatted to be two digits rounded to one decimal place
   padding-right: 5px;
 }
 
-#wqbnuazzuw .gt_left {
+#truwesziyy .gt_left {
   text-align: left;
 }
 
-#wqbnuazzuw .gt_center {
+#truwesziyy .gt_center {
   text-align: center;
 }
 
-#wqbnuazzuw .gt_right {
+#truwesziyy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wqbnuazzuw .gt_font_normal {
+#truwesziyy .gt_font_normal {
   font-weight: normal;
 }
 
-#wqbnuazzuw .gt_font_bold {
+#truwesziyy .gt_font_bold {
   font-weight: bold;
 }
 
-#wqbnuazzuw .gt_font_italic {
+#truwesziyy .gt_font_italic {
   font-style: italic;
 }
 
-#wqbnuazzuw .gt_super {
+#truwesziyy .gt_super {
   font-size: 65%;
 }
 
-#wqbnuazzuw .gt_footnote_marks {
+#truwesziyy .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#wqbnuazzuw .gt_asterisk {
+#truwesziyy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wqbnuazzuw .gt_indent_1 {
+#truwesziyy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wqbnuazzuw .gt_indent_2 {
+#truwesziyy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wqbnuazzuw .gt_indent_3 {
+#truwesziyy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wqbnuazzuw .gt_indent_4 {
+#truwesziyy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wqbnuazzuw .gt_indent_5 {
+#truwesziyy .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
