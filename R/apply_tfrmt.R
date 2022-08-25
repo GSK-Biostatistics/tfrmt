@@ -103,7 +103,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
                       tfrmt$group,
                       tfrmt$label
                       )
-
 }
 
 
