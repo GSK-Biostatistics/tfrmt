@@ -301,7 +301,7 @@ test_that("applying footnote meta group val",{
 
   expect_equal(
     attr(apply_tfrmt(es_data2,tfrmt4),".footnote_locs"),
-    list(list("col"="rowlbl1","spanning"=FALSE,"row" =1,"note"="Test footnote"))
+    list(list("col"="rowlbl2","spanning"=FALSE,"row" =1,"note"="Test footnote"))
 
   )
 
