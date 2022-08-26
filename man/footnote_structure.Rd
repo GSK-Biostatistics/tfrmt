@@ -26,3 +26,13 @@ footnote structure object
 \description{
 Footnote Structure
 }
+\examples{
+
+footnote_structure <- footnote_structure("Source Note")
+
+footnote_structure <- footnote_structure(column_val = "Placebo")
+
+footnote_structure <- footnote_structure(column_val = list(col1 = "Placebo", col2= "Treatment groups"))
+
+footnote_structure <- footnote_structure(label_val = "Adverse Event")
+}

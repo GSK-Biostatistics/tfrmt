@@ -8,6 +8,15 @@
 #' @export
 #'
 #' @examples
+#'
+#' footnote_plan <- footnote_plan(
+#'     footnote_structure("Source Note"),
+#'     marks="letters")
+#'
+#' footnote_plan <- footnote_plan(
+#'     footnote_structure(column_val = "Placebo"),
+#'     marks="numbers")
+#'
 footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")){
   footnote_structure_list <- list(...)
   marks = match.arg(marks)
@@ -29,6 +38,14 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #' @export
 #'
 #' @examples
+#'
+#' footnote_structure <- footnote_structure("Source Note")
+#'
+#' footnote_structure <- footnote_structure(column_val = "Placebo")
+#'
+#' footnote_structure <- footnote_structure(column_val = list(col1 = "Placebo", col2= "Treatment groups"))
+#'
+#' footnote_structure <- footnote_structure(label_val = "Adverse Event")
 footnote_structure <- function(footnote_text, column_val = NULL, group_val = NULL, label_val = NULL){
 
   # force column_val and group_val to list

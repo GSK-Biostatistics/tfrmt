@@ -18,3 +18,14 @@ footnote plan object
 \description{
 Footnote Plan
 }
+\examples{
+
+footnote_plan <- footnote_plan(
+    footnote_structure("Source Note"),
+    marks="letters")
+
+footnote_plan <- footnote_plan(
+    footnote_structure(column_val = "Placebo"),
+    marks="numbers")
+
+}
