@@ -129,8 +129,8 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
              across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent, "+")),
              `___tfrmt_test` = !!filter_expr,
              `___tfrmt_TEMP_rows` = row_number()) %>%
-           filter(`___tfrmt_test`) %>%
-           pull(`___tfrmt_TEMP_rows`)
+           filter(.data$`___tfrmt_test`) %>%
+           pull(.data$`___tfrmt_TEMP_rows`)
 
          col_info$col <- ifelse(is.null(col_info$col), as_label(label),
                                      col_info$col)
@@ -142,8 +142,8 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
            group_by(!!first(group)) %>%
            mutate(`___tfrmt_grp_n` = cur_group_id(),
                   `___tfrmt_test` = !!filter_expr) %>%
-           filter(`___tfrmt_test`) %>%
-           pull(`___tfrmt_grp_n`) %>%
+           filter(.data$`___tfrmt_test`) %>%
+           pull(.data$`___tfrmt_grp_n`) %>%
            unique()
          col_info$col <- ifelse(is.null(col_info$col), first(group_str),
                                      col_info$col)
@@ -154,8 +154,8 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
            group_by(!!first(group)) %>%
            mutate(`___tfrmt_grp_n` = cur_group_id(),
                   `___tfrmt_test` = !!filter_expr) %>%
-           filter(`___tfrmt_test`) %>%
-           pull(`___tfrmt_grp_n`) %>%
+           filter(.data$`___tfrmt_test`) %>%
+           pull(.data$`___tfrmt_grp_n`) %>%
            unique()
 
          lowest_grp <- group_str %in% names(loc_info$group_val) %>%
