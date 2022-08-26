@@ -70,9 +70,9 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
-  if(quo_is_missing(tfrmt$values)){
-    message("Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable")
-    tfrmt$values <- quo(!!sym("__tfrmt__val"))
+  if(quo_is_missing(tfrmt$value)){
+    message("Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
+    tfrmt$value <- quo(!!sym("__tfrmt__val"))
   }
 
   if(is.null(tfrmt$body_plan)){
@@ -84,10 +84,10 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
   if(is.null(.data)){
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }else{
-    ## check that if values column exists in data, remove it for mocking
-    select_try <- safely(quietly(eval_select))(tfrmt$values, data = .data)
+    ## check that if value column exists in data, remove it for mocking
+    select_try <- safely(quietly(eval_select))(tfrmt$value, data = .data)
     if(!is.null(select_try$result)){
-      message(" Removing `",as_label(tfrmt$values),"` from input data for mocking.")
+      message(" Removing `",as_label(tfrmt$value),"` from input data for mocking.")
       .data <- .data[,-select_try$result$result]
     }
   }

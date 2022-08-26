@@ -32,7 +32,7 @@ plan  <- tfrmt(
   group = vars(group),
   label = "label",
   param = "param2",
-  values = "val2",
+  value = "val2",
   column = "col",
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
@@ -137,7 +137,7 @@ test_that("Check apply_tfrmt for mock data",{
     group = vars(group),
     label = "label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default",
@@ -183,7 +183,7 @@ test_that("Check apply_tfrmt for mock data",{
     group = vars(grp1, grp2, grp3, grp4),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
@@ -217,7 +217,7 @@ test_that("Check apply_tfrmt for mock data",{
     group = "grp1",
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xxx")),
@@ -270,7 +270,7 @@ test_that("Test body_plan missing", {
     label = label,
     param = param,
     column = column,
-    values = val
+    value = val
   ) %>%
     apply_tfrmt(input_data, .)
 
@@ -300,7 +300,7 @@ test_that("incomplete body_plan where params share label",{
     label = rowlbl2,
     column = column,
     param = param,
-    values = value,
+    value = value,
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = "mean", frmt("xx.x"))
     ),

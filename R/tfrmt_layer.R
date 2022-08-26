@@ -102,7 +102,7 @@ layer_tfrmt_arg_vars<- function(x, y, arg_name, ...){
   }
 }
 
-## if label/param/values/column is an empty quo, keep the original value
+## if label/param/value/column is an empty quo, keep the original value
 layer_tfrmt_arg_quo<- function(x, y, arg_name, ...){
   x_arg_val <- x[[arg_name]]
   y_arg_val <- y[[arg_name]]
@@ -117,7 +117,7 @@ layer_tfrmt_arg_quo<- function(x, y, arg_name, ...){
 layer_tfrmt_arg.group <- layer_tfrmt_arg_vars
 layer_tfrmt_arg.label <- layer_tfrmt_arg_quo
 layer_tfrmt_arg.param <- layer_tfrmt_arg_quo
-layer_tfrmt_arg.values <- layer_tfrmt_arg_quo
+layer_tfrmt_arg.value <- layer_tfrmt_arg_quo
 layer_tfrmt_arg.column <- layer_tfrmt_arg_vars
 layer_tfrmt_arg.sorting_cols <- layer_tfrmt_arg_vars
 

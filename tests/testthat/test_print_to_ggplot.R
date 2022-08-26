@@ -22,7 +22,7 @@ test_that("inputs are as expected",{
     label = label ,
     column = time,
     param = param,
-    values = value)
+    value = value)
 
   # label loc not indented
   tfrmt_2<-tfrmt(
@@ -31,7 +31,7 @@ test_that("inputs are as expected",{
     label = label ,
     column = time,
     param = param,
-    values = value,
+    value = value,
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")))
 
   # two column variables
@@ -41,7 +41,7 @@ test_that("inputs are as expected",{
     label = label ,
     column = c(time,time2),
     param = param,
-    values = value
+    value = value
   )
 
   # col style plan
@@ -50,7 +50,7 @@ test_that("inputs are as expected",{
     label = label ,
     column = time,
     param = param,
-    values = value,
+    value = value,
     col_style_plan =  col_style_plan(
       element_col(align = "right", col = `1000`))
   )
@@ -72,7 +72,7 @@ test_that("group columns are created correctly",{
     label = label ,
     column = time,
     param = param,
-    values = value)
+    value = value)
 
   test_data<-tibble(time=c(rep(c(0,1000,2000,3000),3)),
                     label=c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),
@@ -103,19 +103,19 @@ test_that("tfrmt is as expected",{
     group = group,
     label = label ,
     param = param,
-    values = value)
+    value = value)
 
   tfrmt_2<-tfrmt(
     group = group,
     column = time,
     param = param,
-    values = value)
+    value = value)
 
   tfrmt_3<-tfrmt(
     group = group,
     label = label ,
     column = time,
-    values = value)
+    value = value)
 
   tfrmt_4<-tfrmt(
     group = group,
@@ -126,7 +126,7 @@ test_that("tfrmt is as expected",{
   expect_error(print_to_ggplot(tfrmt_1,test_data),"column variable required for print_to_ggplot")
   expect_error(print_to_ggplot(tfrmt_2,test_data),"label variable required for print_to_ggplot")
   expect_error(print_to_ggplot(tfrmt_3,test_data),"param variable required for print_to_ggplot")
-  expect_error(print_to_ggplot(tfrmt_4,test_data),"values variable required for print_to_ggplot")
+  expect_error(print_to_ggplot(tfrmt_4,test_data),"value variable required for print_to_ggplot")
 
 
 })
@@ -197,7 +197,7 @@ test_that("column type has been preserved",{
     label = label ,
     column = column,
     param = param,
-    values = value) %>%
+    value = value) %>%
     print_to_ggplot(table_data)
 
   # continuous mock data
@@ -211,7 +211,7 @@ test_that("column type has been preserved",{
     label = label ,
     column = time,
     param = param,
-    values = value) %>%
+    value = value) %>%
     print_to_ggplot(risk)
 
   expect_equal(class(table_data$column),class(x2$data$column))

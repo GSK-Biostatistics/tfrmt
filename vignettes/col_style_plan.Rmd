@@ -75,7 +75,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
@@ -108,7 +108,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
@@ -144,7 +144,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
@@ -179,7 +179,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
@@ -215,7 +215,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(
@@ -269,7 +269,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  values = value,
+  value = value,
   sorting_cols = c(ord),
   col_plan = col_plan(-ord), 
   body_plan = body_plan(

@@ -41,7 +41,7 @@ tfrmt(
   label = rowlbl2,
   column = column,
   param = param,
-  values = value,
+  value = value,
   # set formatting for values
   body_plan = body_plan(
     frmt_structure(

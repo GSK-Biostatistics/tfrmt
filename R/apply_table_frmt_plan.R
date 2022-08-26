@@ -5,7 +5,7 @@
 #' @param group symbolic list of grouping
 #' @param label symbolic label
 #' @param param symbolic parameter
-#' @param values symbolic value
+#' @param value symbolic value
 #' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
@@ -13,7 +13,7 @@
 #' @importFrom purrr map map_dfr
 #' @importFrom tidyr unnest
 #' @importFrom rlang !! :=
-apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, values, column, mock = FALSE,...){
+apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, value, column, mock = FALSE,...){
   ## identify which formatting needs to be applied where
   .data <- .data %>%
     ungroup() %>%
@@ -55,7 +55,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
       if(is.null(cur_fmt)){
         if(!mock){
           out <- data_only %>%
-            mutate(!!values := as.character(!!values))
+            mutate(!!value := as.character(!!value))
         } else {
           out <- data_only
         }
@@ -72,7 +72,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
         out <- apply_frmt(
           frmt_def = cur_fmt,
           .data = data_only,
-          values = values,
+          value = value,
           param = param,
           column = column,
           label = label,
@@ -122,7 +122,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
       distinct() %>%
       group_by(!!!group, !!label) %>%
       mutate(test = sum(!!parse_expr(parm_expr))) %>%
-      filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$fmt_ls)) %>%
+      filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)) %>%
       ungroup()
     join_by <- c(group, label, param) %>%
       map_chr(as_label) %>%

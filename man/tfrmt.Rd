@@ -9,7 +9,7 @@ tfrmt(
   group = vars(),
   label = quo(),
   param = quo(),
-  values = quo(),
+  value = quo(),
   column = vars(),
   title,
   subtitle,
@@ -33,7 +33,7 @@ tfrmt(
 
 \item{param}{what is the param column of the input dataset}
 
-\item{values}{what is the values column of the input dataset}
+\item{value}{what is the value column of the input dataset}
 
 \item{column}{what is the column names column in the input dataset}
 
@@ -71,7 +71,7 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt
 \subsection{NSE and Argument Evaluation}{
 \itemize{
 \item tfrmt allows users to pass \code{vars}, \code{quo}, and unquoted expressions to a
-variety of arguments, such as \code{group}, \code{label}, \code{param}, \code{values},
+variety of arguments, such as \code{group}, \code{label}, \code{param}, \code{value},
 \code{column}, and \code{sorting_cols}. Users accustomed to tidyverse semantics
 should be familiar with this behaviour. However, there is an important
 behaviour difference between tfrmt and normal tidyverse functions. Because
@@ -108,13 +108,13 @@ tfrmt_spec <- tfrmt(
   label = label,
   column = column,
   param = param,
-  values=value)
+  value=value)
 
 tfrmt_spec <- tfrmt(
   label = label,
   column = column,
   param = param,
-  values=value,
+  value=value,
 # Set the formatting for values
   body_plan = body_plan(
     frmt_structure(
@@ -140,7 +140,7 @@ tfrmt_spec <- tfrmt(
   label = label,
   column = column,
   param = param,
-  values=value,
+  value=value,
   sorting_cols = c(ord1, ord2),
   # specify value formatting
   body_plan = body_plan(

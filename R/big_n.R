@@ -54,10 +54,10 @@ apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
       big_n_i <- big_n_df %>%
         slice(i)
       data_names <- data_names %>%
-        mutate(!!big_n_i$name := if_else(!!parse_expr(big_n_i$exp),
-                                         paste0(!!sym(big_n_i$name),
+        mutate(!!big_n_i$`__tfrmt_big_n_names__` := if_else(!!parse_expr(big_n_i$exp),
+                                         paste0(!!sym(big_n_i$`__tfrmt_big_n_names__`),
                                                 pull(big_n_i, !!value)),
-                                         !!sym(big_n_i$name)
+                                         !!sym(big_n_i$`__tfrmt_big_n_names__`)
         ))
     }
 
@@ -121,13 +121,18 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
       warning(c("The following columns have multiple Big N's associated with them :\n", warn_df),
               call. = FALSE)
     }
+
     .data <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
-      pivot_longer(-c(.data$`_tfrmt______id`, !!value)) %>%
-      filter(!is.na(.data$value)) %>%
+      pivot_longer(
+        -c(.data$`_tfrmt______id`, !!value),
+        names_to = "__tfrmt_big_n_names__",
+        values_to = "__tfrmt_big_n_values__"
+      ) %>%
+      filter(!is.na(.data$`__tfrmt_big_n_values__`)) %>%
       group_by(.data$`_tfrmt______id`) %>%
-      mutate(exp = paste0(.data$name, "=='", .data$value, "'",  collapse = "&"),
-             name = paste0("__tfrmt_new_name__", .data$name)) %>%
+      mutate(exp = paste0(.data$`__tfrmt_big_n_names__`, "=='", .data$`__tfrmt_big_n_values__`, "'",  collapse = "&"),
+             `__tfrmt_big_n_names__` = paste0("__tfrmt_new_name__", .data$`__tfrmt_big_n_names__`)) %>%
       slice_tail() %>%
       ungroup()%>%
       select(-.data$`_tfrmt______id`)

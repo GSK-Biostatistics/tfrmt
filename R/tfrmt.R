@@ -10,7 +10,7 @@
 #' @param group what are the grouping vars of the input dataset
 #' @param label what is the label column of the input dataset
 #' @param param what is the param column of the input dataset
-#' @param values what is the values column of the input dataset
+#' @param value what is the value column of the input dataset
 #' @param column what is the column names column in the input dataset
 #' @param title title of the table
 #' @param subtitle subtitle of the table
@@ -30,7 +30,7 @@
 #'  ## NSE and Argument Evaluation
 #'
 #'   - tfrmt allows users to pass `vars`, `quo`, and unquoted expressions to a
-#'   variety of arguments, such as `group`, `label`, `param`, `values`,
+#'   variety of arguments, such as `group`, `label`, `param`, `value`,
 #'   `column`, and `sorting_cols`. Users accustomed to tidyverse semantics
 #'   should be familiar with this behaviour. However, there is an important
 #'   behaviour difference between tfrmt and normal tidyverse functions. Because
@@ -62,13 +62,13 @@
 #'   label = label,
 #'   column = column,
 #'   param = param,
-#'   values=value)
+#'   value=value)
 #'
 #' tfrmt_spec <- tfrmt(
 #'   label = label,
 #'   column = column,
 #'   param = param,
-#'   values=value,
+#'   value=value,
 #' # Set the formatting for values
 #'   body_plan = body_plan(
 #'     frmt_structure(
@@ -94,7 +94,7 @@
 #'   label = label,
 #'   column = column,
 #'   param = param,
-#'   values=value,
+#'   value=value,
 #'   sorting_cols = c(ord1, ord2),
 #'   # specify value formatting
 #'   body_plan = body_plan(
@@ -171,7 +171,7 @@ tfrmt <- function(
   group = vars(),
   label = quo(),
   param = quo(),
-  values = quo(),
+  value = quo(),
   column = vars(),
   title,
   subtitle,
@@ -229,7 +229,7 @@ tfrmt_find_args <- function(..., env = parent.frame(), parent_env = parent.env(e
   vals <- quo_get(
     args,
     as_var_args = c("group","column","sorting_cols"),
-    as_quo_args = c("label","param","values"),
+    as_quo_args = c("label","param","value"),
     envir = env,
     parent_env = parent_env
   )

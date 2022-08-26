@@ -5,7 +5,7 @@ test_that("Mock data column names are correct", {
     group = "my_group",
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
@@ -25,7 +25,7 @@ test_that("Mock data contains all levels", {
     group = vars(grp1, grp2),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
@@ -51,7 +51,7 @@ test_that("Mock data contains all levels", {
     group = vars(grp1, grp2, grp3, grp4),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = "A", grp2 = c("a","b")), label_val = ".default", frmt("xx.x")),
@@ -83,7 +83,7 @@ test_that("Mock data contains all levels", {
     group = vars(grp1, grp2),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = ".default", grp2 = c("c","d")), label_val = c("e","f"), mean = frmt("xx.x"))
@@ -130,7 +130,7 @@ test_that("Mock data contains all levels", {
     group = vars(grp1, grp2),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     body_plan = body_plan(
       frmt_structure(group_val = list(grp1 = ".default", grp2 = c("c","d")), label_val = c("e","f"), mean = frmt("xx.x")),
@@ -224,7 +224,7 @@ test_that("Test when no body_style or values is present", {
 
   expect_message(
     gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data),
-    "Message: `tfrmt` will need `values` value to `print_to_gt` when data is avaliable",
+    "Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable",
     fixed = TRUE
   )
 
@@ -250,7 +250,7 @@ test_that("Mock data contains sorting_cols when available", {
     group = vars(grp1, grp2),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     sorting_cols = c(ord1),
     body_plan = body_plan(
@@ -278,7 +278,7 @@ test_that("Mock data contains sorting_cols when available", {
     group = vars(grp1, grp2),
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = "col",
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
@@ -310,7 +310,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     group = grp,
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = col,
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
@@ -337,7 +337,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     group = grp,
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = c(col1,col2),
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
@@ -364,7 +364,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     group = grp,
     label = "my_label",
     param = "param2",
-    values = "val2",
+    value = "val2",
     column = c(col1,col2,col3),
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
