@@ -10,11 +10,11 @@
 #' @examples
 #'
 #' footnote_plan <- footnote_plan(
-#'     footnote_structure("Source Note"),
+#'     footnote_structure(footnote_text = "Source Note"),
 #'     marks="letters")
 #'
 #' footnote_plan <- footnote_plan(
-#'     footnote_structure(column_val = "Placebo"),
+#'     footnote_structure(footnote_text = "footnote", column_val = "Placebo"),
 #'     marks="numbers")
 #'
 footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")){
@@ -39,11 +39,12 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #'
 #' @examples
 #'
-#' footnote_structure <- footnote_structure("Source Note")
+#' footnote_structure <- footnote_structure(footnote_text = "Source Note")
 #'
-#' footnote_structure <- footnote_structure("Text",column_val = "Placebo")
+#' footnote_structure <- footnote_structure(footnote_text = "Text",
+#'                                column_val = "Placebo")
 #'
-#' footnote_structure <- footnote_structure("Text",
+#' footnote_structure <- footnote_structure(footnote_text = "Text",
 #'       column_val = list(col1 = "Placebo", col2= "Treatment groups"))
 #'
 #' footnote_structure <- footnote_structure("Text",label_val = "Adverse Event")

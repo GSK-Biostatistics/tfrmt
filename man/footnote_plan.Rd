@@ -21,11 +21,11 @@ Footnote Plan
 \examples{
 
 footnote_plan <- footnote_plan(
-    footnote_structure("Source Note"),
+    footnote_structure(footnote_text = "Source Note"),
     marks="letters")
 
 footnote_plan <- footnote_plan(
-    footnote_structure(column_val = "Placebo"),
+    footnote_structure(footnote_text = "footnote", column_val = "Placebo"),
     marks="numbers")
 
 }

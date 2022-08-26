@@ -1,4 +1,4 @@
----
+ ---
 title: "Print to ggplot"
 output: rmarkdown::html_vignette
 vignette: >
