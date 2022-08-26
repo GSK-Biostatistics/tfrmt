@@ -34,7 +34,7 @@ test_that("element_col - errors", {
 
   expect_error(
     element_col(col = "n_tot", width = "INVALID"),
-    "`width` must be a positive numeric value.",
+    "Invalid Units provided for column width: `INVALID`.",
     fixed = TRUE
   )
 
