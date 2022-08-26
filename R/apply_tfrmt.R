@@ -74,9 +74,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     )
 
   tbl_dat_wide_processed <- tbl_dat_wide %>%
-    #Select before grouping to not have to deal with if it indents or not
-    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns") %>%
-
     #Apply row group structures defined in row_grp_plan
     tentative_process(
       apply_row_grp_struct,
@@ -85,6 +82,8 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"
     ) %>%
+    #Select before grouping to not have to deal with if it indents or not
+    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns") %>%
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,

@@ -13,7 +13,6 @@
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
 apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
-
   # Locate which groups need which formatting
   # determine which rows each block applies to
   .data <- .data %>%
