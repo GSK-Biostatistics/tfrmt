@@ -117,7 +117,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
        if(lb_col_test){
          grp_expr <- expr_to_filter(group, loc_info$group_val)
          label_vals <- ifelse(is.null(loc_info$label_val), loc_info$group_val,
-                               loc_info$label_val)
+                               loc_info$label_val) %>% unlist()
          lbl_expr <- expr_to_filter(label, label_vals)
 
          filter_expr <- paste(c(lbl_expr,grp_expr),collapse = "&") %>%
