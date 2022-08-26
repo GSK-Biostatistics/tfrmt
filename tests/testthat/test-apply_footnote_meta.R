@@ -17,7 +17,7 @@ test_that("applying footnote meta column val",{
     label = rowlbl2,
     column = trt,
     param = param,
-    values = value,
+    value = value,
     # set formatting for values
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
@@ -54,7 +54,7 @@ test_that("applying footnote meta column val",{
     label = rowlbl2,
     column = c(col2,trt),
     param = param,
-    values = value,
+    value = value,
     # set formatting for values
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
