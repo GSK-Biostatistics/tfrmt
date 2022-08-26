@@ -327,3 +327,64 @@ test_that("incomplete body_plan where params share label",{
  expect_equal(auto_tfrmt, man_tfrmt,
               ignore_attr = c("class",".col_plan_vars"))
   })
+
+
+
+test_that("incorrect footnote plan formats",{
+ expect_error( tfrmt(
+    # specify columns in the data
+    group = c(rowlbl0,rowlbl1),
+    label = rowlbl2,
+    column = trt,
+    param = param,
+    value = value,
+    # set formatting for values
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
+
+    # Specify row group plan
+    # Indent the rowlbl2
+    # row_grp_plan = row_grp_plan(
+    #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+    #   label_loc = element_row_grp_loc(location = "indented")),
+    footnote_plan = footnote_plan(
+      footnote_structure("Test footnote",group_val="Test group"),
+      marks="letters"
+    )
+  ),
+  "when tfrmt contains multiple groups, group_val must be a named list")
+
+
+  expect_error(tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1),
+    label = rowlbl2,
+    column = c(col2,trt),
+    param = param,
+    value = value,
+    # set formatting for values
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
+
+    # Specify row group plan
+    # Indent the rowlbl2
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+      label_loc = element_row_grp_loc(location = "column")),
+    footnote_plan = footnote_plan(
+      footnote_structure("Test footnote 2",column_val="Treatment column"),
+      marks="letters"
+
+    )
+  ),
+  "when tfrmt contains multiple columns, column_val must be a named list")
+
+})
