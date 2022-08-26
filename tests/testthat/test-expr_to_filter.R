@@ -40,13 +40,6 @@ test_that("expr_to_filter - quosures", {
     fixed = TRUE
   )
 
-  ### must have all cols defined
-  expect_error(
-    expr_to_filter.quosures(cols = quos_val_2, val = var_list_missing),
-    "Every col must have a val defined. If all values of the col is to be used, set to \".default\"",
-    fixed = TRUE
-  )
-
   ### .default is allowed
   expect_equal(
     expr_to_filter.quosures(cols = quos_val_2, val = default),

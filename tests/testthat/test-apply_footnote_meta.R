@@ -11,7 +11,7 @@ test_that("applying footnote meta column val",{
   )
 
   # tfrmt with column val
-  tfrmt<-tfrmt(
+  tfrmt_test<-tfrmt(
     # specify columns in the data
     group = c(rowlbl1),
     label = rowlbl2,
@@ -39,7 +39,7 @@ test_that("applying footnote meta column val",{
   )
 
   expect_equal(
-    attr(apply_tfrmt(es_data,tfrmt),".footnote_locs"),
+    attr(apply_tfrmt(es_data,tfrmt_test),".footnote_locs"),
     list(list("col"="Placebo","spanning"=FALSE,"note"="Test footnote 1"))
 
   )
@@ -77,7 +77,7 @@ test_that("applying footnote meta column val",{
 
   expect_equal(
     attr(apply_tfrmt(es_data2,tfrmt2),".footnote_locs"),
-    list(list("col"="Treatment column","spanning"=TRUE,"note"="Test footnote 2"))
+    list(list("col"="Treatment column","spanning"=TRUE,"note"="Test footnote 3"))
 
   )
 
