@@ -14,7 +14,6 @@
 #' @param column what is the column names column in the input dataset
 #' @param title title of the table
 #' @param subtitle subtitle of the table
-#' @param footer footers of the table
 #' @param row_grp_plan plan of the row groups blocking. Takes a [row_grp_plan()]
 #' @param body_plan combination and formatting of the input data. Takes a [body_plan()]
 #' @param col_style_plan how to style columns including alignment (left, right, character) and width. Takes a [col_style_plan()]
@@ -175,7 +174,6 @@ tfrmt <- function(
   column = vars(),
   title,
   subtitle,
-  footer,
   row_grp_plan, #the style between blocking
   body_plan,
   col_style_plan,

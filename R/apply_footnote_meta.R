@@ -13,7 +13,7 @@
 #' @noRd
 apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row_grp_loc,
                                 group, label, columns){
-  footnotŸe_locs <- footnote_plan$struct_list %>%
+  footnote_locs <- footnote_plan$struct_list %>%
     map(locate_fn, .data = .data,
         col_plan_vars = col_plan_vars, element_row_grp_loc = element_row_grp_loc,
         group = group, label = label, columns = columns)

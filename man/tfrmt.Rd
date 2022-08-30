@@ -13,7 +13,6 @@ tfrmt(
   column = vars(),
   title,
   subtitle,
-  footer,
   row_grp_plan,
   body_plan,
   col_style_plan,
@@ -40,8 +39,6 @@ tfrmt(
 \item{title}{title of the table}
 
 \item{subtitle}{subtitle of the table}
-
-\item{footer}{footers of the table}
 
 \item{row_grp_plan}{plan of the row groups blocking. Takes a \code{\link[=row_grp_plan]{row_grp_plan()}}}
 

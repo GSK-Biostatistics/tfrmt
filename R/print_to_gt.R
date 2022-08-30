@@ -196,7 +196,6 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       missing_text = ""
     ) %>%
     cols_hide(columns = .data$..tfrmt_row_grp_lbl) %>%
-    apply_gt_footnote(tfrmt$footer) %>%
     format_gt_column_labels(.data) %>%
     apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
@@ -280,25 +279,6 @@ cleaned_data_to_gt <- function(.data, tfrmt){
 }
 
 
-#' Apply gt Footnote
-#'
-#' @param gt gt object  to potentially add a footnote to
-#' @param footer footnote text (should become a footnote element at somepoint )
-#'
-#' @return gt object
-#' @noRd
-#'
-#' @importFrom gt tab_footnote md
-apply_gt_footnote<- function(gt, footer){
-  if(is.null(footer)){
-    gt
-  } else {
-    gt %>%
-      tab_footnote( footnote = md(footer)
-      )
-
-  }
-}
 
 #' Format gt column labels
 #'
