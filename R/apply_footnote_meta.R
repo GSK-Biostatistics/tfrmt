@@ -131,10 +131,10 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
    if(any(names(loc_info) %in% c("group_val", "label_val"))){
      # Things that don't have rows
      if(!is.null(col_info$spanning) && col_info$spanning){
-       warning("Can not apply footnotes to group cells when only the columns and rows are specified")
+       warning("Cannot apply footnotes rows when you have only specified a spanning column")
        col_info$row <- NULL
      } else if(row_grp == "noprint" & !is_empty(loc_info$group_val)){
-       warning("Can not apply footnotes to group cells when only the columns and rows are specified")
+       warning("Can not apply footnotes to group columns when 'noprint' is set")
        col_info$row <- NULL
      } else {
        group_str <- group %>% map_chr(as_label)
