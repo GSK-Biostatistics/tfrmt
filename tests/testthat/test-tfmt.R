@@ -1,4 +1,4 @@
-test_that("basic tfrmt - title", {
+xtest_that("basic tfrmt - title", {
 
   t_frmt <- tfrmt(
     title = "Table Title"
@@ -597,8 +597,7 @@ test_that("layering tfrmt - valid layering should be silent - even when a quo ar
       tfrmt(
         # Specify title, subtitle, footer
         title = "Table Name",
-        subtitle = "Study ID: GSK12345",
-        footer = "A footnote about stuff"
+        subtitle = "Study ID: GSK12345"
       )
   })
 
