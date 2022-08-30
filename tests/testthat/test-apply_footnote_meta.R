@@ -204,7 +204,7 @@ test_that("applying footnote meta group val",{
   )
 
   expect_warning(apply_tfrmt(es_data2,tfrmt),
-                 "Cannot apply footnotes rows when you have only specified a spanning column")
+                 "Cannot apply footnotes to rows when you have only specified a spanning column")
 
   tfrmt2<-tfrmt(
     # specify columns in the data
