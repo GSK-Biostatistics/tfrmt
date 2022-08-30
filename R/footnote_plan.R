@@ -6,17 +6,19 @@
 #' @param ...  a series of [footnote_structure()] separated by commas
 #' @param marks type of marks required for footnotes. available options are
 #'   "numbers", "letters", "standard" and "extended". The default option is set
-#'   to "numeric".
+#'   to "numbers".
 #'
 #' @return footnote plan object
 #' @export
 #'
 #' @examples
 #'
+#' # Adds a footnote indicated by letters rather than numbers to Group 1
 #' footnote_plan <- footnote_plan(
-#'     footnote_structure(footnote_text = "Source Note"),
+#'     footnote_structure(footnote_text = "Source Note", group_val = "Group 1"),
 #'     marks="letters")
 #'
+#' # Adds a footnote to the 'Placebo' column
 #' footnote_plan <- footnote_plan(
 #'     footnote_structure(footnote_text = "footnote", column_val = "Placebo"),
 #'     marks="numbers")
@@ -43,14 +45,19 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #'
 #' @examples
 #'
+#' # Adds a source note aka a footnote withouth a symbol in the table
 #' footnote_structure <- footnote_structure(footnote_text = "Source Note")
 #'
+#' # Adds a footnote to the 'Placebo' column
 #' footnote_structure <- footnote_structure(footnote_text = "Text",
 #'                                column_val = "Placebo")
 #'
+#' # Adds a footnote to either 'Placebo' or 'Treatment groups' depending on which
+#' # which is last to appear in the column vector
 #' footnote_structure <- footnote_structure(footnote_text = "Text",
 #'       column_val = list(col1 = "Placebo", col2= "Treatment groups"))
 #'
+#' #Adds a footnote to the 'Adverse Event' label
 #' footnote_structure <- footnote_structure("Text",label_val = "Adverse Event")
 footnote_structure <- function(footnote_text, column_val = NULL, group_val = NULL, label_val = NULL){
 
