@@ -1,4 +1,4 @@
-xtest_that("basic tfrmt - title", {
+test_that("basic tfrmt - title", {
 
   t_frmt <- tfrmt(
     title = "Table Title"
