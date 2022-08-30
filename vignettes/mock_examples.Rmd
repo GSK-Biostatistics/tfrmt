@@ -29,7 +29,7 @@ ae_mock_table <- function(tfrmt_obj){
   tfrmt(
     title = "Table Name",
     subtitle = "Study ID: GSK12345",
-    footer = "A footnote about stuff<br/>Here is a new line with more stuff",  body_plan = body_plan(
+    body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default",
                    frmt_combine(
                      "{count} {percent}",

@@ -20,8 +20,6 @@ a stylized ggplot object
 Print to ggplot
 }
 \section{Examples}{
-
-
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Create data
 risk<-tibble(time=c(rep(c(0,1000,2000,3000),3)),

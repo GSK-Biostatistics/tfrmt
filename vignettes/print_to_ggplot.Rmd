@@ -71,7 +71,7 @@ km_plot/table
 ```
 
 Because we don't have to duplicate the time points, we can just remove the x-axis labels using the theme
-```{r}
+```{r, warning=FALSE}
 table2 <- table +
   theme(axis.text.x = NULL)
 
@@ -146,7 +146,7 @@ tbl_p
 
 
 Next we need to plot the rate ratios. This plot requires a bit more finessing because we need to remove the y-axis label so it can be combined with the table plot. Also we need to add a row in the data for the group value to make the plots match up correctly.   
-```{r}
+```{r, warning=FALSE}
 
 plot_dat <- tibble(
   ae = aes,

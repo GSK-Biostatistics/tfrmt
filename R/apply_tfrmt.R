@@ -63,6 +63,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     columns = tfrmt$column,
     fail_desc = "Unable to create dataset subset vars"
     ) %>%
+    as_vars() %>% # Ensures col_plan_vars is a vars w/ names
     tentative_process(
       .,
       apply_big_n_df,
@@ -73,9 +74,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     )
 
   tbl_dat_wide_processed <- tbl_dat_wide %>%
-    #Select before grouping to not have to deal with if it indents or not
-    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns") %>%
-
     #Apply row group structures defined in row_grp_plan
     tentative_process(
       apply_row_grp_struct,
@@ -84,18 +82,26 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"
     ) %>%
+    #Select before grouping to not have to deal with if it indents or not
+    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns") %>%
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
-                      tfrmt$label)
-
-
-  structure(
-    tbl_dat_wide_processed,
-    .col_plan_vars = col_plan_vars,
-    class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
-  )
-
+                      tfrmt$label) %>%
+    #Not in a tentative process cause some of the inputs might be null but still valid
+    apply_footnote_meta(
+                      footnote_plan = tfrmt$footnote_plan,
+                      col_plan_vars = col_plan_vars,
+                      element_row_grp_loc = tfrmt$row_grp_plan$label_loc,
+                      tfrmt$group,
+                      tfrmt$label,
+                      columns = tfrmt$column
+                      ) %>%
+    tentative_process(remove_grp_cols,
+                      tfrmt$row_grp_plan$label_loc,
+                      tfrmt$group,
+                      tfrmt$label
+                      )
 }
 
 

@@ -162,3 +162,30 @@ check_col_style_row_grp_consistency <- function(x){
 
   }
 }
+
+
+
+
+
+check_footnote_plan <- function(x){
+
+
+
+
+  if(!is_empty(x$footnote_plan)){
+  for(i in 1:length(x$footnote_plan$struct_list)){
+    # if multiple columns then column_val must be a named list
+    if(length(x$column)>1 && is.list(x$footnote_plan$struct_list[[i]]$column_val)==FALSE && is.null(x$footnote_plan$struct_list[[i]]$column_val)==FALSE){
+      stop("when tfrmt contains multiple columns, column_val must be a named list")
+    }
+
+    # if multiple groups then group_val must be a named list
+    if(length(x$group)>1 && is.list(x$footnote_plan$struct_list[[i]]$group_val)==FALSE && is.null(x$footnote_plan$struct_list[[i]]$group_val)==FALSE){
+      stop("when tfrmt contains multiple groups, group_val must be a named list")
+    }
+  }
+    }
+
+
+}
+

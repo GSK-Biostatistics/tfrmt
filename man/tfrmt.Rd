@@ -13,13 +13,13 @@ tfrmt(
   column = vars(),
   title,
   subtitle,
-  footer,
   row_grp_plan,
   body_plan,
   col_style_plan,
   col_plan,
   sorting_cols,
   big_n,
+  footnote_plan,
   ...
 )
 }
@@ -40,8 +40,6 @@ tfrmt(
 
 \item{subtitle}{subtitle of the table}
 
-\item{footer}{footers of the table}
-
 \item{row_grp_plan}{plan of the row groups blocking. Takes a \code{\link[=row_grp_plan]{row_grp_plan()}}}
 
 \item{body_plan}{combination and formatting of the input data. Takes a \code{\link[=body_plan]{body_plan()}}}
@@ -54,6 +52,8 @@ columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 \item{sorting_cols}{which columns determine sorting of output}
 
 \item{big_n}{how to format subject totals ("big Ns") for inclusion in the column labels. Takes a \code{\link[=big_n_structure]{big_n_structure()}}}
+
+\item{footnote_plan}{footnotes to be added to the table. Takes a \code{\link[=footnote_plan]{footnote_plan()}}}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

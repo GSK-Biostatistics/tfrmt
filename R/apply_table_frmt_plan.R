@@ -177,9 +177,6 @@ expr_to_filter.quosures <- function(cols, val){
     if(!all(names(val) %in% map_chr(cols, as_label))){
       stop("Names of val entries do not all match col values")
     }
-    if(!all(map_chr(cols, as_label) %in% names(val) )){
-      stop("Every col must have a val defined. If all values of the col is to be used, set to \".default\"")
-    }
     out <- map2_chr(cols, val[map_chr(cols, as_label)], ~ expr_to_filter(.x, .y)) %>%
       paste0(collapse = " & ")
   }

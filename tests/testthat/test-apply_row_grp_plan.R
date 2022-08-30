@@ -367,7 +367,8 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
     label_loc = element_row_grp_loc(location = "indented")
   )
 
-  auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label"))
+  auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label")) %>%
+    remove_grp_cols(sample_grp_plan$label_loc,group = vars(grp1, grp2),label = sym("my_label"))
 
   man_test_listcols <- tibble::tribble(
     ~my_label,      ~trtA,     ~trtB,     ~trtC,         ~..tfrmt_row_grp_lbl,
@@ -440,7 +441,8 @@ test_that("> 2 groups with and without spanner_label", {
   )
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")) %>%
+      remove_grp_cols(plan_no_span$label_loc,vars(grp1, grp2, grp3)),
     tibble::tribble(
       ~my_label        , ~trtA     , ~trtB     , ~trtC   ,     ~..tfrmt_row_grp_lbl,
       "grp1_1"           ,NA          ,NA         ,NA        , TRUE,
@@ -464,7 +466,8 @@ test_that("> 2 groups with and without spanner_label", {
   plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2, grp3), sym("my_label")) %>%
+      remove_grp_cols(plan_with_span$label_loc, vars(grp1, grp2, grp3)),
     tibble::tribble(
      ~grp1,   ~my_label        , ~trtA     , ~trtB     , ~trtC   ,    ~..tfrmt_row_grp_lbl,
      "grp1_1", "grp2_1"         ,NA         ,NA         ,NA,          TRUE,
@@ -508,7 +511,8 @@ test_that("Summary rows are not indented", {
   )
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_no_span$label_loc, vars(grp1, grp2), sym("my_label")) %>%
+      remove_grp_cols( plan_no_span$label_loc, vars(grp1, grp2)),
     tibble::tribble(
       ~my_label ,        ~trtA       , ~trtB       , ~trtC,   ~..tfrmt_row_grp_lbl,
       "cat_1"            ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)", FALSE,
@@ -526,7 +530,8 @@ test_that("Summary rows are not indented", {
   plan_with_span <- row_grp_plan(label_loc= element_row_grp_loc(location = "spanning"))
 
   expect_equal(
-    apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2), sym("my_label")),
+    apply_row_grp_lbl(mock_multi_grp, plan_with_span$label_loc, vars(grp1, grp2), sym("my_label")) %>%
+      remove_grp_cols(plan_with_span$label_loc, vars(grp1, grp2)),
     tibble::tribble(
       ~grp1,   ~my_label ,        ~trtA       , ~trtB       , ~trtC,  ~..tfrmt_row_grp_lbl,
        "cat_1", "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",FALSE,
@@ -589,7 +594,7 @@ test_that("row order is retained for all selections",{
     "  p"    ,NA , TRUE,
     "    e"  ,"4", FALSE )
 
-  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars"))
+  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars",".footnote_locs"))
 
 
   gt_spanning <-  tfrmt_temp %>%
@@ -650,7 +655,7 @@ test_that("row order is retained for all selections",{
     "b"      ,NA , TRUE,
     "  p"    ,NA , TRUE,
     "    e"  ,"4",  FALSE)
-  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars"))
+  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars",".footnote_locs"))
 })
 
 
@@ -805,7 +810,8 @@ test_that("Suppress printing of groups", {
     "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
   )
 
-  expect_equal(apply_row_grp_lbl(mock_multi_grp, my_plan$label_loc, vars(grp1, grp2), sym("my_label")),
+  expect_equal(apply_row_grp_lbl(mock_multi_grp, my_plan$label_loc, vars(grp1, grp2), sym("my_label")) %>%
+                 remove_grp_cols(my_plan$label_loc, vars(grp1, grp2)),
                df_no_grp)
 })
 
@@ -841,21 +847,25 @@ test_that("Row group plan indenting handles factor variables", {
 
   expect_equal(
     apply_row_grp_lbl(dat %>% mutate(across(grp_span:rowlbl, as.factor)),
-                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")) %>%
+      remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
     expected)
 
   expect_equal(
     apply_row_grp_lbl(dat %>% mutate(across(rowlbl, as.factor)),
-                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")) %>%
+      remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
     expected)
 
   expect_equal(
     apply_row_grp_lbl(dat %>% mutate(across(grp, as.factor)),
-                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")) %>%
+      remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
     expected)
 
   expect_equal(
     apply_row_grp_lbl(dat %>% mutate(across(grp_span, as.factor)),
-                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")),
+                      grp_plan$label_loc, vars(grp_span, grp), sym("rowlbl")) %>%
+      remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
     expected)
 })

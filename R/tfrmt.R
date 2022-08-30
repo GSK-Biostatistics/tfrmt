@@ -14,7 +14,6 @@
 #' @param column what is the column names column in the input dataset
 #' @param title title of the table
 #' @param subtitle subtitle of the table
-#' @param footer footers of the table
 #' @param row_grp_plan plan of the row groups blocking. Takes a [row_grp_plan()]
 #' @param body_plan combination and formatting of the input data. Takes a [body_plan()]
 #' @param col_style_plan how to style columns including alignment (left, right, character) and width. Takes a [col_style_plan()]
@@ -22,6 +21,7 @@
 #'   columns. Takes a [col_plan()]
 #' @param sorting_cols which columns determine sorting of output
 #' @param big_n how to format subject totals ("big Ns") for inclusion in the column labels. Takes a [big_n_structure()]
+#' @param footnote_plan footnotes to be added to the table. Takes a [footnote_plan()]
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #' @details
@@ -174,13 +174,13 @@ tfrmt <- function(
   column = vars(),
   title,
   subtitle,
-  footer,
   row_grp_plan, #the style between blocking
   body_plan,
   col_style_plan,
   col_plan,
   sorting_cols,
   big_n,
+  footnote_plan,
   ...
 ){
 
@@ -198,11 +198,13 @@ tfrmt <- function(
     )
   }
 
+
   ## check to confirm user has not defined multiple columns and
   ## any span_structures in col_plan
   check_column_and_col_plan(new_tfrmt)
   check_group_var_consistency(new_tfrmt)
   check_col_style_row_grp_consistency(new_tfrmt)
+  check_footnote_plan(new_tfrmt)
 
   new_tfrmt
 

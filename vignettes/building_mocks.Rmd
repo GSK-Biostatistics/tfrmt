@@ -156,16 +156,15 @@ print_mock_gt(tfrmt_spec, df)
 
 *Note:* `tfrmt_n_pct()` function has been used in place of defining the `body_plan()`. This function returns a `tfrmt` with the same the formatting as the previous example, for more information about layering `tfrmt`s see the [vignette](layer.html).
 
-To add a title, subtitle or footer pass arguments to their respective parameters.
+To add a title or subtitle, pass arguments to their respective parameters.
 
 ```{r}
 
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
   tfrmt(
-    # Specify title, subtitle, footer
+    # Specify title, subtitle 
     title = "Table Name",
-    subtitle = "Study ID: GSK12345",
-    footer = "A footnote about stuff<br/>Here is a new line with more stuff",
+    subtitle = "Study ID: GSK12345", 
     
     # Specify columns in the data
     label = label,
