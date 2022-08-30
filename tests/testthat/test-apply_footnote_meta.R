@@ -203,7 +203,8 @@ test_that("applying footnote meta group val",{
     )
   )
 
-  expect_warning(apply_tfrmt(es_data2,tfrmt),"Can not apply footnotes to group cells when only the columns and rows are specified")
+  expect_warning(apply_tfrmt(es_data2,tfrmt),
+                 "Cannot apply footnotes rows when you have only specified a spanning column")
 
   tfrmt2<-tfrmt(
     # specify columns in the data
@@ -232,7 +233,9 @@ test_that("applying footnote meta group val",{
     )
   )
 
-  expect_warning(apply_tfrmt(es_data2,tfrmt2),"Can not apply footnotes to group cells when only the columns and rows are specified")
+  expect_warning(apply_tfrmt(es_data2,tfrmt2),
+                 "Can not apply footnotes to group columns when 'noprint' is set"
+                 )
 
 
   # footnote in group column

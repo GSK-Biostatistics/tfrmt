@@ -161,7 +161,7 @@ apply_cells_stub <-  function(gt,tfrmt,loc,footnote){
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_row_groups <- function(gt,tfrmt,loc,footnote){
   if(length(loc$col)>0){
-    if(all(loc$col %in% str_remove(as.character(tfrmt$group),"~"))){
+    if(all(loc$col %in% map_chr(tfrmt$group, as_label) )){
 
       gt<- gt %>%
         tab_footnote(
