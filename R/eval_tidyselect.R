@@ -3,13 +3,12 @@
 ## ---------------------------------------
 eval_tidyselect_on_colvec <- function(x, column_vec){
   UseMethod("eval_tidyselect_on_colvec", x)
-  # span_col_select_function <- get(paste0("eval_tidyselect_on_colvec.",class(x)[1]),envir = asNamespace("tfrmt"))
-  # span_col_select_function(x, column_vec = column_vec)
 }
 
 #' @importFrom tidyselect eval_select
-#' @importFrom rlang !!!
+#' @importFrom rlang !!! as_label
 #' @importFrom dplyr expr
+#' @importFrom purrr keep
 eval_tidyselect_on_colvec.quosures <- function(x, column_vec){
   names(column_vec) <- column_vec
   avli_x <- x %>%

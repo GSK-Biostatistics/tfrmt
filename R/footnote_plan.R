@@ -1,8 +1,12 @@
 #' Footnote Plan
 #'
-#' @param ...  footnote structure objects separated by commas
-#' @param marks type of marks required for footnotes. available options are "numbers", "letters", "standard" and "extended".
-#' The default option is set to "numeric".
+#' Defining the location and content of footnotes with a series of footnote
+#' structures. Each structure is a footntoe and can be applied in multiple locations.
+#'
+#' @param ...  a series of [footnote_structure()] separated by commas
+#' @param marks type of marks required for footnotes. available options are
+#'   "numbers", "letters", "standard" and "extended". The default option is set
+#'   to "numeric".
 #'
 #' @return footnote plan object
 #' @export
