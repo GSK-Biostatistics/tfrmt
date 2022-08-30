@@ -7,23 +7,27 @@
 footnote_plan(..., marks = c("numbers", "letters", "standard", "extended"))
 }
 \arguments{
-\item{...}{footnote structure objects separated by commas}
+\item{...}{a series of \code{\link[=footnote_structure]{footnote_structure()}} separated by commas}
 
-\item{marks}{type of marks required for footnotes. available options are "numbers", "letters", "standard" and "extended".
-The default option is set to "numeric".}
+\item{marks}{type of marks required for footnotes. available options are
+"numbers", "letters", "standard" and "extended". The default option is set
+to "numbers".}
 }
 \value{
 footnote plan object
 }
 \description{
-Footnote Plan
+Defining the location and content of footnotes with a series of footnote
+structures. Each structure is a footntoe and can be applied in multiple locations.
 }
 \examples{
 
+# Adds a footnote indicated by letters rather than numbers to Group 1
 footnote_plan <- footnote_plan(
-    footnote_structure(footnote_text = "Source Note"),
+    footnote_structure(footnote_text = "Source Note", group_val = "Group 1"),
     marks="letters")
 
+# Adds a footnote to the 'Placebo' column
 footnote_plan <- footnote_plan(
     footnote_structure(footnote_text = "footnote", column_val = "Placebo"),
     marks="numbers")

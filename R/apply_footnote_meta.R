@@ -1,6 +1,19 @@
+#' Apply the footnote metadata to data
+#'
+#' Gets the location of each footnote in the footnote plan and adds it to the dataset as an attribute
+#' @param .data formatted data
+#' @param footnote_plan footnote plan
+#' @param col_plan_vars named vector of the columns with new and old names
+#' @param element_row_grp_loc element_row_grp_loc to help with where the footnote should go
+#' @param group symbolic group(s)
+#' @param label symbolic label
+#' @param columns symbolic column(s)
+#'
+#' @return a processed tfrmt tbl object, which has a .footnote_locs attribute
+#' @noRd
 apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row_grp_loc,
                                 group, label, columns){
-  footnote_locs <- footnote_plan$struct_list %>%
+  footnotŸe_locs <- footnote_plan$struct_list %>%
     map(locate_fn, .data = .data,
         col_plan_vars = col_plan_vars, element_row_grp_loc = element_row_grp_loc,
         group = group, label = label, columns = columns)
@@ -40,6 +53,15 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
 
 
 
+#' Get the column location of the footnote
+#'
+#' @param footnote_structure a single footnote structure
+#' @param .data formatted data
+#' @param col_plan_vars named vector of the columns with new and old names
+#' @param columns symbolic column(s)
+#'
+#' @return list with column locations (col) and if they are spanning or not (spanning)
+#' @noRd
 get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
   loc_info <- footnote_structure %>%
     discard(is.null) %>%
@@ -86,6 +108,17 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
   out
 }
 
+#' Get the row location of the footnote
+#'
+#' @param footnote_structure a single footnote structure
+#' @param .data formatted dataset
+#' @param element_row_grp_loc row group location element
+#' @param group group quosures
+#' @param label label quosure
+#' @param col_info list of column information from [get_col_loc()]
+#'
+#' @return a list with all column information, row, col, and spanning
+#' @noRd
 get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
                         group, label, col_info){
 
