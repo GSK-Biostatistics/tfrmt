@@ -2,7 +2,7 @@
 #'
 #' @param ...  footnote structure objects separated by commas
 #' @param marks type of marks required for footnotes. available options are "numbers", "letters", "standard" and "extended".
-#' The default option is set to "numeric".
+#' The default option is set to "numbers".
 #'
 #' @return footnote plan object
 #' @export
