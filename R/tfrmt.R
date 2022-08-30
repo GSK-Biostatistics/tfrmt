@@ -22,7 +22,7 @@
 #'   columns. Takes a [col_plan()]
 #' @param sorting_cols which columns determine sorting of output
 #' @param big_n how to format subject totals ("big Ns") for inclusion in the column labels. Takes a [big_n_structure()]
-#' @param footnote_plan footnote data. Takes a [footnote_plan()]
+#' @param footnote_plan footnotes to be added to the table. Takes a [footnote_plan()]
 #' @param ... These dots are for future extensions and must be empty.
 #'
 #' @details
