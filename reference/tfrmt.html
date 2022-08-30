@@ -93,13 +93,13 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt</p>
 <span>  column <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">title</span>,</span>
 <span>  <span class="va">subtitle</span>,</span>
-<span>  <span class="va">footer</span>,</span>
 <span>  <span class="va">row_grp_plan</span>,</span>
 <span>  <span class="va">body_plan</span>,</span>
 <span>  <span class="va">col_style_plan</span>,</span>
 <span>  <span class="va">col_plan</span>,</span>
 <span>  <span class="va">sorting_cols</span>,</span>
 <span>  <span class="va">big_n</span>,</span>
+<span>  <span class="va">footnote_plan</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -138,10 +138,6 @@ value can be used, the newly defined tfrmt accepts the latest tfrmt</p>
 <dd><p>subtitle of the table</p></dd>
 
 
-<dt>footer</dt>
-<dd><p>footers of the table</p></dd>
-
-
 <dt>row_grp_plan</dt>
 <dd><p>plan of the row groups blocking. Takes a <code><a href="row_grp_plan.html">row_grp_plan()</a></code></p></dd>
 
@@ -165,6 +161,10 @@ columns. Takes a <code><a href="col_plan.html">col_plan()</a></code></p></dd>
 
 <dt>big_n</dt>
 <dd><p>how to format subject totals ("big Ns") for inclusion in the column labels. Takes a <code><a href="big_n_structure.html">big_n_structure()</a></code></p></dd>
+
+
+<dt>footnote_plan</dt>
+<dd><p>footnotes to be added to the table. Takes a <code><a href="footnote_plan.html">footnote_plan()</a></code></p></dd>
 
 
 <dt>...</dt>

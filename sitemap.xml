@@ -94,6 +94,12 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_row_grp_loc.html</loc>
   </url>
   <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_structure.html</loc>
+  </url>
+  <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt.html</loc>
   </url>
   <url>
@@ -122,6 +128,9 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/remove_grp_cols.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_plan.html</loc>
