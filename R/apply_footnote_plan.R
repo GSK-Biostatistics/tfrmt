@@ -16,11 +16,11 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
 
       gt <- gt %>%
         apply_source_note(footnote_loc[[i]]) %>%
-        apply_cells_column_labels(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_column_spanners(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_stub(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_row_groups(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_body(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]])
+        apply_cells_column_labels(footnote_loc[[i]]) %>%
+        apply_cells_column_spanners(footnote_loc[[i]]) %>%
+        apply_cells_stub(tfrmt,footnote_loc[[i]]) %>%
+        apply_cells_row_groups(tfrmt,footnote_loc[[i]]) %>%
+        apply_cells_body(footnote_loc[[i]])
 
     }
     gt %>%
