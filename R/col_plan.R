@@ -8,7 +8,6 @@
 #'
 #' @details
 #'
-#'#'
 #' ## Column Selection
 #'
 #' When col_plan gets applied and is used to create the output table, the
@@ -89,6 +88,13 @@
 #'     c3 = c(`the results column` = col_5)
 #'    )
 #'  )
+#'
+##' @section Images:
+#' Here are some example outputs:
+#'
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span-cropped-jpg.jpg\" style=\"width:100\\%;\">"`
+#' }}
 #'
 col_plan <- function(..., .drop = FALSE){
 
