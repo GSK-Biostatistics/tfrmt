@@ -7,8 +7,8 @@
 tfrmt_n_pct(
   n = "n",
   pct = "pct",
-  pct_frmt_when = frmt_when("==100" ~ frmt(""), ">99" ~ frmt("(>99\%)"), "==0" ~ "",
-    "<1" ~ frmt("(<1\%)"), "TRUE" ~ frmt("(xx.x\%)")),
+  pct_frmt_when = frmt_when("==100" ~ frmt(""), ">99" ~ frmt("(>99\%)"), "==0" ~ "", "<1"
+    ~ frmt("(<1\%)"), "TRUE" ~ frmt("(xx.x\%)")),
   tfrmt_obj = NULL
 )
 }
@@ -30,6 +30,8 @@ be specified. By default 100\% and 0\% will not appear and everything between
 than (<) signs respectively.
 }
 \section{Examples}{
+
+
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{print_mock_gt(tfrmt_n_pct())
 }\if{html}{\out{</div>}}
 
