@@ -101,4 +101,6 @@ frmt_when(
 \code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the
 table body, and \code{\link[=frmt_structure]{frmt_structure()}} defines which rows the formats will be applied
 to.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
 }

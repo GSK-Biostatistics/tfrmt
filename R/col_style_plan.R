@@ -17,6 +17,8 @@
 #'
 #' @seealso [element_col()] for more information on how to specify how to and which columns to align.
 #'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html}{Link to related article}
+#'
 #' @export
 #'
 col_style_plan <- function(...){

@@ -17,6 +17,8 @@
 #'   structures, [element_block()] for more details on how to specify spacing
 #'   between each group.
 #'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
+#'
 #'@export
 #'@examples
 #'
@@ -43,7 +45,7 @@ element_row_grp_loc <- function(location = c("indented", "spanning", "column", "
                                 indent = "  "){
   location = match.arg(location)
   structure(
-    list(location= location, indent = indent),
+    list(location = location, indent = indent),
     class = c("element_row_grp_loc", "element")
   )
 }
@@ -116,6 +118,8 @@ is_element_block <- function(x){
 #'
 #' @seealso [col_style_plan()] for more information on how to combine
 #'   element_col()'s together to form a plan.
+#'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html}{Link to related article}
 #'
 #' @export
 #' @examples
