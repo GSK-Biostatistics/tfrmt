@@ -28,7 +28,7 @@ Footnote Structure
 }
 \examples{
 
-# Adds a source note aka a footnote withouth a symbol in the table
+# Adds a source note aka a footnote without a symbol in the table
 footnote_structure <- footnote_structure(footnote_text = "Source Note")
 
 # Adds a footnote to the 'Placebo' column
@@ -40,6 +40,6 @@ footnote_structure <- footnote_structure(footnote_text = "Text",
 footnote_structure <- footnote_structure(footnote_text = "Text",
       column_val = list(col1 = "Placebo", col2= "Treatment groups"))
 
-#Adds a footnote to the 'Adverse Event' label
-footnote_structure <- footnote_structure("Text",label_val = "Adverse Event")
+# Adds a footnote to the 'Adverse Event' label
+footnote_structure <- footnote_structure("Text", label_val = "Adverse Event")
 }

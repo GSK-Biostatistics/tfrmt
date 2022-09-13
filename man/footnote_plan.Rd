@@ -18,7 +18,7 @@ footnote plan object
 }
 \description{
 Defining the location and content of footnotes with a series of footnote
-structures. Each structure is a footntoe and can be applied in multiple locations.
+structures. Each structure is a footnote and can be applied in multiple locations.
 }
 \examples{
 

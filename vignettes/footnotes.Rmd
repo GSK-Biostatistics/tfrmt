@@ -1,0 +1,71 @@
+---
+title: "Using Footnotes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using Footnotes}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE, warning = FALSE}
+library(tfrmt)
+library(dplyr)
+library(gt)
+library(tidyr)
+```
+
+In `tfrmt` footnotes are a table component which can be added and used to the 
+specification in a manner similar to `body_plan` and `col_plan`. It has its own 
+dedicated function called `footnote_plan` which consists of a list of 
+`footnote_structure`s.
+
+Some options for the marks used to indicate footnotes are the following:
+ - letters (letters: a, b, c, etc.)
+ - numbers (numbers: 1, 2, 3, etc.)
+ - standard (columns: asterisk, groups: obelisk/dagger)
+
+# Example (with groups)
+
+```{r}
+# Create data
+df <- crossing(group = c("group 1", "group 2"),
+               label = c("label 1", "label 2"),
+               column = c("PL", "T1", "T2", "T1&T2"),
+               param = c("count", "percent"))
+
+# Write specification
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+  
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{count} ({percent})",
+                                count = frmt("xx"),
+                                percent = frmt("xx.x")))
+  ),
+  
+  # Add footnotes here:
+  footnote_plan = footnote_plan(
+    footnote_structure(footnote_text = "Source Note", group_val = "group 1"),
+    footnote_structure(footnote_text = "Placebo", column_val = "PL"),
+    marks = "numbers"),
+  
+  ) %>%
+  print_mock_gt(df)
+```
+
