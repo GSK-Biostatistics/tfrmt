@@ -15,6 +15,7 @@ articles:
   - col_plan
   - col_style_plan
   - big_ns
+  - footnotes
 - title: Building Tables
   navbar: Building Tables
   contents:
