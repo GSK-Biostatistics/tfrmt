@@ -29,9 +29,11 @@ dedicated function called `footnote_plan` which consists of a list of
 `footnote_structure`s.
 
 Some options for the marks used to indicate footnotes are the following:
- - letters (letters: a, b, c, etc.)
- - numbers (numbers: 1, 2, 3, etc.)
- - standard (columns: asterisk, groups: obelisk/dagger)
+<ul>
+<li> letters (letters: a, b, c, etc.) </li>
+<li> numbers (numbers: 1, 2, 3, etc.) </li>
+<li> standard (columns: asterisk, groups: obelisk/dagger) </li>
+</ul>
 
 # Example (with groups)
 
