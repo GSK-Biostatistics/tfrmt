@@ -16,11 +16,11 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
 
       gt <- gt %>%
         apply_source_note(footnote_loc[[i]]) %>%
-        apply_cells_column_labels(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_column_spanners(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_stub(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_row_groups(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]]) %>%
-        apply_cells_body(tfrmt,footnote_loc[[i]],tfrmt$footnote_plan$struct_list[[i]])
+        apply_cells_column_labels(footnote_loc[[i]]) %>%
+        apply_cells_column_spanners(footnote_loc[[i]]) %>%
+        apply_cells_stub(tfrmt,footnote_loc[[i]]) %>%
+        apply_cells_row_groups(tfrmt,footnote_loc[[i]]) %>%
+        apply_cells_body(footnote_loc[[i]])
 
     }
     gt %>%
@@ -55,16 +55,14 @@ apply_source_note <- function(gt,loc){
 #' Apply Cells Column Labels
 #'
 #' @param gt gt object to potentially add a footnote to
-#' @param tfrmt tfrmt object
 #' @param loc list containing location of footnote and footnote text
-#' @param footnote footnote structure information
 #'
 #'
 #' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
-apply_cells_column_labels <- function(gt,tfrmt,loc,footnote){
+apply_cells_column_labels <- function(gt,loc){
   # check row is empty - therefore a column footnote, and not a spanning column
 
   if(is.null(loc$row) && loc$spanning ==FALSE){
@@ -90,15 +88,13 @@ apply_cells_column_labels <- function(gt,tfrmt,loc,footnote){
 #' Apply Cells Column Spanners
 #'
 #' @param gt gt object to potentially add a footnote to
-#' @param tfrmt tfrmt object
 #' @param loc list containing location of footnote and footnote text
-#' @param footnote footnote structure information
 #'
 #' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
-apply_cells_column_spanners <- function(gt,tfrmt,loc,footnote){
+apply_cells_column_spanners <- function(gt,loc){
   # check row is empty - therefore a column footnote
   if(is.null(loc$row) && loc$spanning ==TRUE){
 
@@ -121,14 +117,13 @@ apply_cells_column_spanners <- function(gt,tfrmt,loc,footnote){
 #' @param gt gt object to potentially add a footnote to
 #' @param tfrmt tfrmt object
 #' @param loc list containing location of footnote and footnote text
-#' @param footnote footnote structure information
 #'
 #' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
 #' @importFrom rlang quo_get_expr
-apply_cells_stub <-  function(gt,tfrmt,loc,footnote){
+apply_cells_stub <-  function(gt,tfrmt,loc){
   if(length(loc$col)>0){
   if(all(loc$col == as_label(tfrmt$label))){
 
@@ -153,13 +148,12 @@ apply_cells_stub <-  function(gt,tfrmt,loc,footnote){
 #' @param gt gt object to potentially add a footnote to
 #' @param tfrmt tfrmt object
 #' @param loc list containing location of footnote and footnote text
-#' @param footnote footnote structure information
 #'
 #' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
-apply_cells_row_groups <- function(gt,tfrmt,loc,footnote){
+apply_cells_row_groups <- function(gt,tfrmt,loc){
   if(length(loc$col)>0){
     if(all(loc$col %in% map_chr(tfrmt$group, as_label) )){
 
@@ -180,15 +174,13 @@ apply_cells_row_groups <- function(gt,tfrmt,loc,footnote){
 #' Apply Cells Body
 #'
 #' @param gt gt object to potentially add a footnote to
-#' @param tfrmt tfrmt object
 #' @param loc list containing location of footnote and footnote text
-#' @param footnote footnote structure information
 #'
 #' @return gt object
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
-apply_cells_body<- function(gt,tfrmt,loc,footnote){
+apply_cells_body<- function(gt,loc){
   if(!is.null(loc$col) && !is.null(loc$row)){
     gt<- gt %>%
       tab_footnote(
