@@ -266,20 +266,23 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     )
 
   if (any(num_rec_by_row$n>1) ){
-
+browser()
     val_fill <- list("")
-
     if(!mock){
       suggested_frmt_structs <- num_rec_by_row %>%
         ungroup %>%
         filter(n > 1) %>%
         select(-c(!!!tfrmt$column)) %>%
         unique() %>%
+        group_by(!!!tfrmt$group,param_list) %>%
+        mutate(label_quote=paste0('"',!!tfrmt$label,'"')) %>%
+        summarise(label_collapse=as.character(paste(label_quote,collapse=',')),!!!tfrmt$group,n) %>%
+        unique() %>%
         rowwise() %>%
         mutate(
           suggested_frmt_struct = frmt_struct_string(
             grp = list(!!!tfrmt$group),
-            lbl = !!tfrmt$label,
+            lbl = label_collapse,
             param_vals = .data$param_list
             )
         ) %>%
@@ -328,9 +331,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
 
 frmt_struct_string <- function(grp, lbl, param_vals){
-
   group_names <- substitute(grp) %>% map_chr(as_label) %>% .[-1]
-
   if(length(group_names) > 1){
     group_val_char <- capture.output(dput(setNames(grp, group_names)))
   }else if(length(group_names) == 1){
@@ -339,7 +340,7 @@ frmt_struct_string <- function(grp, lbl, param_vals){
     group_val_char <-  "\".default\""
   }
 
-  label_val_char <- capture.output(dput(lbl))
+  #label_val_char <- capture.output(dput(lbl))
 
   param_expr_char <- paste0("\"",paste0("{",param_vals,"}", collapse = ", "),"\"")
   param_frmt_char <- paste0(param_vals," = frmt(\"xx\")", collapse = ", ")
@@ -347,7 +348,7 @@ frmt_struct_string <- function(grp, lbl, param_vals){
   paste0(
     "frmt_structure(",
     "group_val = ",group_val_char,
-    ", label_val = ",label_val_char,
+    ", label_val = c(",lbl,")",
     ", frmt_combine(",
     param_expr_char,",",
     param_frmt_char,
