@@ -106,3 +106,6 @@ renaming_col_plan_ex2 <- col_plan(
  )
 
 }
+\seealso{
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html}{Link to related article}
+}

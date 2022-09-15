@@ -23,7 +23,6 @@ of \code{\link[=body_plan]{body_plan()}}. This specifies the rows the format wil
 \section{Images}{
 
 Here are some example outputs:
-
 \if{html}{\out{
 <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg" style="width:100\%;">
 }}
@@ -48,4 +47,6 @@ sample_structure <- frmt_structure(
 \code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the
 table body, and \code{\link[=frmt]{frmt()}}, \code{\link[=frmt_combine]{frmt_combine()}}, and \code{\link[=frmt_when]{frmt_when()}} define the
 format semantics.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
 }

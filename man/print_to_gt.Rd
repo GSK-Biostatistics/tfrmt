@@ -18,6 +18,8 @@ a stylized gt object
 Print to gt
 }
 \section{Examples}{
+
+
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Create tfrmt specification
 tfrmt_spec <- tfrmt(

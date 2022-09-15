@@ -24,3 +24,6 @@ matching the values in the column column(s). The default formatting is \code{N =
 on its own line, but that can be changed by providing a different \code{frmt()} to
 \code{n_frmt}
 }
+\seealso{
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/big_ns.html}{Link to related article}
+}

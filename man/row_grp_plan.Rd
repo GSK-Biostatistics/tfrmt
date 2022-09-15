@@ -41,4 +41,6 @@ whether they span the entire table or are nested as a column.
 structures, \code{\link[=element_block]{element_block()}} for more details on how to specify spacing
 between each group, \code{\link[=element_row_grp_loc]{element_row_grp_loc()}} for more details on how to
 specify whether row group titles span the entire table or collapse.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
 }
