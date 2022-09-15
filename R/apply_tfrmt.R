@@ -266,7 +266,6 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     )
 
   if (any(num_rec_by_row$n>1) ){
-browser()
     val_fill <- list("")
     if(!mock){
       suggested_frmt_structs <- num_rec_by_row %>%
@@ -331,6 +330,7 @@ browser()
 
 
 frmt_struct_string <- function(grp, lbl, param_vals){
+  length_lbl <- str_count(lbl,",")+1
   group_names <- substitute(grp) %>% map_chr(as_label) %>% .[-1]
   if(length(group_names) > 1){
     group_val_char <- capture.output(dput(setNames(grp, group_names)))
@@ -338,6 +338,12 @@ frmt_struct_string <- function(grp, lbl, param_vals){
     group_val_char <-  capture.output(dput(grp[[1]]))
   }else{
     group_val_char <-  "\".default\""
+  }
+
+  if(length_lbl>1){
+    lbl_names=paste0( "c(",lbl,")")
+  }else{
+    lbl_names = lbl
   }
 
   #label_val_char <- capture.output(dput(lbl))
@@ -348,7 +354,7 @@ frmt_struct_string <- function(grp, lbl, param_vals){
   paste0(
     "frmt_structure(",
     "group_val = ",group_val_char,
-    ", label_val = c(",lbl,")",
+    ", label_val = ",lbl_names,
     ", frmt_combine(",
     param_expr_char,",",
     param_frmt_char,
