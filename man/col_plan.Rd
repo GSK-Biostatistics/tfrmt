@@ -25,7 +25,6 @@ selected" principals, meaning columns are moved to the \emph{last} selection as
 opposed to preserving the first location.
 }
 \details{
-#'
 \subsection{Column Selection}{
 
 When col_plan gets applied and is used to create the output table, the
@@ -47,6 +46,15 @@ Alternatively, once the gt table is produced, use the
 \code{\link[gt]{cols_hide}} function to remove un-wanted columns.
 }
 }
+\section{Images}{
+
+Here are some example outputs:
+
+\if{html}{\out{
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg" style="width:100\%;">
+}}
+}
+
 \examples{
 
 library(dplyr)

@@ -7,8 +7,8 @@
 tfrmt_n_pct(
   n = "n",
   pct = "pct",
-  pct_frmt_when = frmt_when("==100" ~ frmt(""), ">99" ~ frmt("(>99\%)"), "==0" ~ "",
-    "<1" ~ frmt("(<1\%)"), "TRUE" ~ frmt("(xx.x\%)")),
+  pct_frmt_when = frmt_when("==100" ~ frmt(""), ">99" ~ frmt("(>99\%)"), "==0" ~ "", "<1"
+    ~ frmt("(<1\%)"), "TRUE" ~ frmt("(xx.x\%)")),
   tfrmt_obj = NULL
 )
 }
