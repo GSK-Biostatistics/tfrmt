@@ -40,5 +40,5 @@ test_that("Testing error messages for missing argument element_col",{
 
   )
 
-  expect_equal(tfrmt$error$message,"Error in evaluating argument `col_style_plan`:\n Error in element_col(align = c(\".\", \",\", \" \")): Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself\n")
+  expect_equal(tfrmt$error$message,"Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
 })

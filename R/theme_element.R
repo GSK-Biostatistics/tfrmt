@@ -145,10 +145,6 @@ element_col <- function( col = vars(),
           class = "missing_element_col_value")
   }
 
-  if(length(col) == 0){
-    stop("Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
-  }
-
 
   structure(
     list(
