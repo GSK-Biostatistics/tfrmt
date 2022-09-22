@@ -81,7 +81,7 @@ tfrmt(
 # Example (same footnote for multiple columns)
 
 When applying a footnote to multiple columns you must enter a named list where 
-the LHS is the name of the column containing columns in the data, and the RHS 
+the LHS is the name of the column variable in your input data ("column" in the case below) containing column header names for the output table, and the RHS 
 is the columns.
 
 ```{r}
