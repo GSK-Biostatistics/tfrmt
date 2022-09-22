@@ -148,7 +148,7 @@ tfrmt(
   
   # Add footnotes here
   footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "label", label_val = "label 1"),
+    footnote_structure(footnote_text = "Footnote goes here", label_val = "label 1"),
     marks = "standard"),
   
 ) %>%
@@ -178,7 +178,7 @@ tfrmt(
   
   # Add footnotes here
   footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "label", group_val = "group 1", label_val = "label 1"),
+    footnote_structure(footnote_text = "Footnote goes here", group_val = "group 1", label_val = "label 1"),
     marks = "standard"),
   
 ) %>%
@@ -255,7 +255,7 @@ tfrmt(
   
   # Add footnote here
   footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "Note", column_val = list(span = "Treatment", column = "T1&T2")),
+    footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment", column = "T1&T2")),
     marks = "extended"
   )
 ) %>%
