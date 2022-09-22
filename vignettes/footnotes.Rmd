@@ -32,10 +32,57 @@ Some options for the marks used to indicate footnotes are the following:
 <ul>
 <li> letters (letters: a, b, c, etc.) </li>
 <li> numbers (numbers: 1, 2, 3, etc.) </li>
-<li> standard (columns: asterisk, groups: obelisk/dagger) </li>
+<li> standard (set of 4 distinct symbols) </li>
+<li> standard (set of 6 distinct symbols) </li>
 </ul>
 
-# Example (with groups)
+
+```{r}
+# Create mock data
+df <- crossing(group = c("group 1", "group 2"),
+               label = c("label 1", "label 2"),
+               column = c("PL", "T1", "T2", "T1&T2"),
+               param = c("count", "percent"))
+```
+
+# Example (one footnote per group/column)
+
+Different footnotes are separated by individual footnote_structures.
+
+```{r}
+# Write specification
+tfrmt(
+  group = group,
+  label = label,
+  column = column,
+  param = param,
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default",
+                      element_block(post_space = "   ")) ),
+  
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default",
+                   frmt_combine("{count} ({percent})",
+                                count = frmt("xx"),
+                                percent = frmt("xx.x")))
+  ),
+  
+  # Add footnotes here
+  footnote_plan = footnote_plan(
+    footnote_structure(footnote_text = "Source Note", group_val = "group 1"),
+    footnote_structure(footnote_text = "Placebo", column_val = "PL"),
+    marks = "standard"),
+  
+  ) %>%
+  print_mock_gt(df)
+```
+
+
+# Example (same footnote for multiple columns)
+
+When applying a footnote to multiple columns you must enter a named list where 
+the LHS is the name of the column containing columns in the data, and the RHS 
+is the columns.
 
 ```{r}
 # Create data
@@ -61,13 +108,13 @@ tfrmt(
                                 percent = frmt("xx.x")))
   ),
   
-  # Add footnotes here:
+  # Add footnotes here
   footnote_plan = footnote_plan(
     footnote_structure(footnote_text = "Source Note", group_val = "group 1"),
-    footnote_structure(footnote_text = "Placebo", column_val = "PL"),
+    footnote_structure(footnote_text = "Treatment", list(column = c("T1","T2", "T1&T2"))),
     marks = "numbers"),
   
-  ) %>%
+) %>%
   print_mock_gt(df)
 ```
 
