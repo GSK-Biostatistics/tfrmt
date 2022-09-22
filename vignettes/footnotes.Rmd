@@ -23,7 +23,7 @@ library(gt)
 library(tidyr)
 ```
 
-In `tfrmt` footnotes are a table component which can be added and used to the 
+In `tfrmt` footnotes are a table component which can be added to the 
 specification in a manner similar to `body_plan` and `col_plan`. It has its own 
 dedicated function called `footnote_plan` which consists of a list of 
 `footnote_structure`s.
