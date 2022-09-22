@@ -1,12 +1,13 @@
 #' Footnote Plan
 #'
 #' Defining the location and content of footnotes with a series of footnote
-#' structures. Each structure is a footntoe and can be applied in multiple locations.
+#' structures. Each structure is a footnote and can be applied in multiple locations.
 #'
 #' @param ...  a series of [footnote_structure()] separated by commas
-#' @param marks type of marks required for footnotes. available options are
-#'   "numbers", "letters", "standard" and "extended". The default option is set
-#'   to "numbers".
+#' @param marks type of marks required for footnotes, properties inherited from
+#'   tab_footnote in {gt}. Available options are "numbers", "letters",
+#'   "standard" and "extended" (standard for a traditional set of 4 symbols,
+#'   extended for 6 symbols). The default option is set to "numbers".
 #'
 #' @return footnote plan object
 #' @export
@@ -45,7 +46,7 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #'
 #' @examples
 #'
-#' # Adds a source note aka a footnote withouth a symbol in the table
+#' # Adds a source note aka a footnote without a symbol in the table
 #' footnote_structure <- footnote_structure(footnote_text = "Source Note")
 #'
 #' # Adds a footnote to the 'Placebo' column
@@ -57,8 +58,8 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #' footnote_structure <- footnote_structure(footnote_text = "Text",
 #'       column_val = list(col1 = "Placebo", col2= "Treatment groups"))
 #'
-#' #Adds a footnote to the 'Adverse Event' label
-#' footnote_structure <- footnote_structure("Text",label_val = "Adverse Event")
+#' # Adds a footnote to the 'Adverse Event' label
+#' footnote_structure <- footnote_structure("Text", label_val = "Adverse Event")
 footnote_structure <- function(footnote_text, column_val = NULL, group_val = NULL, label_val = NULL){
 
   # force column_val and group_val to list

@@ -1,8 +1,8 @@
 ---
-title: "Row group plan"
+title: "Row Group Plan"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Row group plan}
+  %\VignetteIndexEntry{Row Group Plan}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
