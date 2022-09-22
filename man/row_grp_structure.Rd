@@ -29,4 +29,6 @@ row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_s
 \code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group
 structures, \code{\link[=element_block]{element_block()}} for more details on how to specify spacing
 between each group.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
 }

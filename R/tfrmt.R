@@ -50,6 +50,14 @@
 #'   `tfrmt(label = "group")`. In this case, the quoting will prevent `tfrmt`
 #'   from assigning its `group` input value to the `label` value.
 #'
+#' @seealso \href{https://gsk-biostatistics.github.io/tfrmt/articles/building_blocks.html}{Link to related article}
+#'
+#' @section Images:
+#' Here are some example outputs:
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-groups-three-cols-cropped.jpg\" style=\"width:100\\%;\">"`
+#' }}
+#'
 #' @rdname tfrmt
 #'
 #' @importFrom rlang caller_env
@@ -158,12 +166,6 @@
 #'
 #' )
 #'
-#' @section Images:
-#' Here are some example outputs:
-#'
-#' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-groups-three-cols-cropped.jpg\" style=\"width:100\\%;\">"`
-#' }}
 #'
 tfrmt <- function(
   tfrmt_obj,

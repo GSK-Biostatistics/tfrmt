@@ -38,6 +38,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
 
 
 
+
   tfrmt_temp <- tfrmt(
     group = grp2,
     label = lbl,
@@ -107,6 +108,25 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
     fixed = TRUE
   )
 
+
+  tfrmt_temp2<-tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1,grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2))
+
+  # use quietly to grab messages from apply_tfrmt
+  safe_apply_tfrmt<-purrr::quietly(apply_tfrmt)
+
+  expect_equal(
+    safe_apply_tfrmt(data_demog %>% filter(rowlbl1=="Age (y)"), tfrmt_temp2 , mock = FALSE)$messages,
+    c(
+    "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57\n"
+    ,"Multiple param listed for the same group/label values.\nThe following frmt_structures may be missing from the body_plan\nor the order may need to be changed:\n- `frmt_structure(group_val = list(rowlbl1 = \"Age (y)\", grp = \"cat\"), label_val = c(\"65-80 yrs\",\"<65 yrs\",\">80 yrs\"), frmt_combine(\"{n}, {pct}\",n = frmt(\"xx\"), pct = frmt(\"xx\")))`"      )
+    )
 
 
 })

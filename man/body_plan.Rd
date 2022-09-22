@@ -35,4 +35,6 @@ added structure is the first applied.
 \code{\link[=frmt_structure]{frmt_structure()}} defines which rows the formats will be applied
 to, and \code{\link[=frmt]{frmt()}}, \code{\link[=frmt_combine]{frmt_combine()}}, and \code{\link[=frmt_when]{frmt_when()}} define the format
 semantics.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
 }

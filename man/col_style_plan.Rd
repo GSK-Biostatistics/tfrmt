@@ -27,4 +27,6 @@ right or on a specific character(s).
 }
 \seealso{
 \code{\link[=element_col]{element_col()}} for more information on how to specify how to and which columns to align.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html}{Link to related article}
 }

@@ -9,6 +9,8 @@
 #'   between each group, [element_row_grp_loc()] for more details on how to
 #'   specify whether row group titles span the entire table or collapse.
 #'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
+#'
 #' @param ...  Row group structure objects separated by commas
 #' @param label_loc [element_row_grp_loc()] object specifying location
 #'
@@ -58,6 +60,8 @@ row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indent
 #' @seealso [row_grp_plan()] for more details on how to group row group
 #'   structures, [element_block()] for more details on how to specify spacing
 #'   between each group.
+#'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
 #'
 #' @param group_val A string or a named list of strings which represent the
 #'   value of group should be when the given frmt is implemented

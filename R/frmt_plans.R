@@ -7,12 +7,20 @@
 #'   table body, and [frmt()], [frmt_combine()], and [frmt_when()] define the
 #'   format semantics.
 #'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
+#'
 #' @param group_val A string or a named list of strings which represent the
 #'   value of group should be when the given frmt is implemented
 #' @param label_val A string which represent the value of label should be when
 #'   the given frmt is implemented
 #' @param ... either a [frmt()], [frmt_combine()], or a [frmt_when()] object.
 #'   This can be named to also specify the parameter value
+#'
+#' @section Images:
+#' Here are some example outputs:
+#' \if{html}{\out{
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" style=\"width:100\\%;\">"`
+#' }}
 #'
 #' @examples
 #'
@@ -27,13 +35,6 @@
 #'           label_val = ".default",
 #'           frmt("XXX")
 #'         )
-#'
-#' @section Images:
-#' Here are some example outputs:
-#'
-#' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" style=\"width:100\\%;\">"`
-#' }}
 #'
 #' @importFrom tidyr expand_grid
 #' @export
@@ -97,6 +98,8 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #' @seealso [body_plan()] combines the frmt_structures to be applied to the
 #'   table body, and [frmt_structure()] defines which rows the formats will be applied
 #'   to.
+#'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
 #'
 #' @param expression this is the string representing the intended format. See details: expression for more a detailed description.
 #' @param missing when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.

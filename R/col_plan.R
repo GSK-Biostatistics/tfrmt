@@ -38,6 +38,8 @@
 #' @param .drop Boolean. Should un-listed columns be dropped from the data.
 #'   Defaults to FALSE.
 #'
+#' @seealso \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html}{Link to related article}
+#'
 #' @export
 #' @examples
 #'

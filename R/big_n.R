@@ -12,10 +12,12 @@
 #'   are big n's
 #' @param n_frmt [frmt()] to control the formatting of the big n's
 #'
+#' @seealso \href{https://gsk-biostatistics.github.io/tfrmt/articles/big_ns.html}{Link to related article}
+#'
 #' @return big_n_structure object
 #' @export
 #'
-big_n_structure<- function(param_val, n_frmt = frmt("\nN = xx")){
+big_n_structure <- function(param_val, n_frmt = frmt("\nN = xx")){
 
   if(!is_frmt(n_frmt)){
     stop("`n_frmt` must be given a frmt object")

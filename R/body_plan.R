@@ -8,6 +8,8 @@
 #'   to, and [frmt()], [frmt_combine()], and [frmt_when()] define the format
 #'   semantics.
 #'
+#'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
+#'
 #' @param ... list of frmt_structures defining the body formatting
 #'
 #' @return body_plan object

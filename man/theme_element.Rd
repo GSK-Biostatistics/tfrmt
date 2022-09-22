@@ -41,4 +41,6 @@ columns are left-aligned by default.
 \seealso{
 \code{\link[=col_style_plan]{col_style_plan()}} for more information on how to combine
 element_col()'s together to form a plan.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html}{Link to related article}
 }

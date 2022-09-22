@@ -53,4 +53,6 @@ tfrmt_spec <- tfrmt(
 structures, \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group
 structures, \code{\link[=element_block]{element_block()}} for more details on how to specify spacing
 between each group.
+
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
 }
