@@ -34,26 +34,8 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Failure while aligning data values"
     )
 
-if(is_empty(tfrmt$sorting_cols)==FALSE){
-  # check for values printing on different lines due to incorrect order variables
-  if(is_empty(tfrmt$group)==FALSE){
-  order_check <- tbl_dat %>%
-    group_by(!!!tfrmt$group,!!(tfrmt$label)) %>%
-    mutate(n1=n_distinct(!!(tfrmt$label),!!!tfrmt$sorting_cols),
-           n2=n_distinct(!!(tfrmt$label)))
-  }else{
-    order_check <- tbl_dat %>%
-      group_by(!!tfrmt$label) %>%
-      mutate(n1=n_distinct(!!tfrmt$label,!!!tfrmt$sorting_cols),
-             n2=n_distinct(!!tfrmt$label))
-  }
-
-  # print warning if the number of lines printed over is greater than 1
-  if(sum(order_check$n1)>nrow(order_check) & all(order_check$n1 == order_check$n2)==FALSE){
-    message("Note: Some row labels have values printed over more than 1 line. ")
-      message("This could be due to incorrect order variables. Each row in your output table should have only one order var combination assigned to it.")
-
-  }}
+  # check if order vars are causing rows to print over 2 lines
+  check_order_vars(tbl_dat,tfrmt)
 
   non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$value) %>% map_chr(as_label))
   data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
@@ -381,4 +363,40 @@ frmt_struct_string <- function(grp, lbl, param_vals){
     param_frmt_char,
     "))"
   )
+}
+
+
+
+#' Check Order Vars
+#'
+#' @param .data data into apply_tfrmt
+#' @param tfrmt tfrmt object to apply to the data
+#'
+#' @return warning if order variables are causing formatting issues
+#'
+#'
+#' @examples
+#'
+check_order_vars <- function(.data,tfrmt){
+
+  if(is_empty(tfrmt$sorting_cols)==FALSE){
+    # check for values printing on different lines due to incorrect order variables
+    if(is_empty(tfrmt$group)==FALSE){
+      order_check <- .data %>%
+        group_by(!!!tfrmt$group,!!(tfrmt$label)) %>%
+        mutate(n1=n_distinct(!!(tfrmt$label),!!!tfrmt$sorting_cols),
+               n2=n_distinct(!!(tfrmt$label)))
+    }else{
+      order_check <- .data %>%
+        group_by(!!tfrmt$label) %>%
+        mutate(n1=n_distinct(!!tfrmt$label,!!!tfrmt$sorting_cols),
+               n2=n_distinct(!!tfrmt$label))
+    }
+
+    # print warning if the number of lines printed over is greater than 1
+    if(sum(order_check$n1)>nrow(order_check) & all(order_check$n1 == order_check$n2)==FALSE){
+      message("Note: Some row labels have values printed over more than 1 line. ")
+      message("This could be due to incorrect order variables. Each row in your output table should have only one order var combination assigned to it.")
+
+    }}
 }
