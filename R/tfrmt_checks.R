@@ -118,6 +118,7 @@ check_col_style_row_grp_consistency <- function(x){
 
   if(!is_empty(x$group) & !is.null(x$col_style_plan) & !is_empty(x$row_grp_plan)){
 
+
     is_invalid_plan <- FALSE
     is_invalid_plan_message <- "Invalid Entries based on col_align_plan and row_grp_plan"
     group_as_char <- map_chr(x$group, as_label)
@@ -126,9 +127,12 @@ check_col_style_row_grp_consistency <- function(x){
 
     col_align_plan_as_char <- x$col_style_plan %>%
       lapply(function(x) x$col %>% map_chr(as_label))
-
     for(cap_vars_idx in seq_along(col_align_plan_as_char)){
       grp_in_cap <- group_as_char %in% col_align_plan_as_char[[cap_vars_idx]]
+      if(length(x$col_style_plan[[cap_vars_idx]]$col) == 0){
+        stop("Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
+      }
+
       if(r_grp_plan_col_loc == "column" & any(grp_in_cap[-1])){
         is_invalid_plan <- TRUE
         invalid_groups <- setdiff(group_as_char[grp_in_cap], group_as_char[1])

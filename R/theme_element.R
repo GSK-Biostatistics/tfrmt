@@ -136,7 +136,6 @@ element_col <- function( col = vars(),
                          align = NULL,
                          width = NULL
 ){
-
   cols <- quo_get("col", as_var_args = "col", allow_tidy_select = TRUE)$col
 
   width <- validate_width_units(width)
@@ -145,6 +144,7 @@ element_col <- function( col = vars(),
     abort("Alignment or column width definition must be applied to create this element_col",
           class = "missing_element_col_value")
   }
+
 
   structure(
     list(
