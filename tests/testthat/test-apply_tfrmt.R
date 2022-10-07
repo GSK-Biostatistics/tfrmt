@@ -132,7 +132,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
 })
 
 test_that("Message is printed if order variables are causing mismatching rows",{
-  data <- tibble(param = c("N","N","n","n","pct","pct"),
+  data <- tibble::tibble(param = c("N","N","n","n","pct","pct"),
                  value = c(111,222,11,22,11,22),
                  order1=c(NA,NA,1,1,1,1),
                  order2=c(NA,NA,1,2,1,2),
@@ -142,7 +142,7 @@ test_that("Message is printed if order variables are causing mismatching rows",{
 
   data2 <- data %>%
     rbind(data) %>%
-    mutate(group= rep("group1",6),"group2",6)
+    mutate(group= c(rep("group1",6),rep("group2",6)))
 
   tfrmt = tfrmt(
     label = label,
