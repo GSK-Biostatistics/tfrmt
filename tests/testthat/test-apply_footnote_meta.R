@@ -355,3 +355,86 @@ test_that("applying footnote meta group val",{
 })
 
 
+test_that("If 1 group/column var, can pass an unnamed vector",{
+
+
+  # set up data
+  dd <- tibble::tibble(
+      rowlbl1 = "Completion Status",
+      rowlbl2 = c("Completed", "Ongoing", "Unknown")) %>%
+    bind_rows(
+      tibble(
+        rowlbl1 = "Primary reason for withdrawal",
+        rowlbl2 = c("Other", "Lost to follow-up"))
+      ) %>%
+    crossing(
+    param = c("n","pct"),
+    trt = c("Placebo", "Trt1","Trt2","Trt3")
+  ) %>%
+    bind_cols(
+       value=c(24,19,2400/48,1900/38,5,1,500/48,100/38,19,18,1900/48,1800/38,1,1,100/48,100/38,0,0,0,0,0,0,0,0,1,1,100/48,100/38,1,4,100/48,400/38,1,0,100/48,0,2,3,200/48,300/38)
+  )
+
+  # column_val locs
+
+  tfrmt<-tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1),
+    label = rowlbl2,
+    column = trt,
+    param = param,
+    value = value,
+    # set formatting for value
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
+    footnote_plan = footnote_plan(
+      footnote_structure("Test footnote 1",column_val = c("Trt1", "Trt2", "Trt3")),
+      marks="letters"
+
+    )
+  )
+
+  expect_equal(
+    attr(apply_tfrmt(dd,tfrmt),".footnote_locs"),
+    list(list("col"=c("Trt1","Trt2","Trt3"),"spanning"=FALSE,"note"="Test footnote 1"))
+
+  )
+
+
+  # group_val locs
+
+  tfrmt<-tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1),
+    label = rowlbl2,
+    column = trt,
+    param = param,
+    value = value,
+    # set formatting for value
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
+    footnote_plan = footnote_plan(
+      footnote_structure("Test footnote 1",group_val = c("Completion Status", "Primary reason for withdrawal")),
+      marks="letters"
+
+    )
+  )
+
+  expect_equal(
+    attr(apply_tfrmt(dd,tfrmt),".footnote_locs"),
+    list(list("col"="rowlbl1","spanning"=FALSE,"row"=c(1,2), note="Test footnote 1"))
+
+  )
+
+
+})
+
+
