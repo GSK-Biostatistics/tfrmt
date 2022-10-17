@@ -102,6 +102,12 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
                       tfrmt$group,
                       tfrmt$label
                       )
+
+  structure(
+    tbl_dat_wide_processed,
+    .col_plan_vars = col_plan_vars,
+    class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
+  )
 }
 
 
