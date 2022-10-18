@@ -140,9 +140,7 @@ test_that("Test with spanning headers", {
     NA, NA,             NA,         NA, "mycol3",  "bigN",    6,
   )
 
-
-
-  auto <- tfrmt(
+  auto_tfrmt <- tfrmt(
     group = group,
     label = label,
     param = parm,
@@ -159,8 +157,9 @@ test_that("Test with spanning headers", {
       -mycol5
     ),
     big_n = big_n_structure(param_val = "bigN")
-  ) %>%
-    apply_tfrmt(.data = dat, tfrmt = .) %>%
+  )
+
+  auto <- apply_tfrmt(.data = dat, tfrmt = auto_tfrmt) %>%
     names()
 
   man <- c("group"                                                                    , "label",
@@ -168,6 +167,16 @@ test_that("Test with spanning headers", {
            "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6")
 
   expect_equal(auto, man)
+
+
+  # try with empty strings rather than NA
+  dat_blank <- dat %>%
+    mutate(across(where(is.character), tidyr::replace_na, ""))
+
+  auto_blank <- apply_tfrmt(.data = dat_blank, tfrmt = auto_tfrmt) %>%
+    names()
+
+  expect_equal(auto_blank, man)
 
 })
 
@@ -285,7 +294,7 @@ test_that("Overlapping Big N's",{
   )
 
   expect_warning(apply_tfrmt(.data = data, tfrmt = tfrmt_test, mock = FALSE) %>%
-    names())
+                   names())
 
 })
 
