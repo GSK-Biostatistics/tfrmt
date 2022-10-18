@@ -176,8 +176,9 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
 #' @return dataset wth grouping columns combined
 #' @noRd
 #'
-#' @importFrom rlang quo_name
+#' @importFrom rlang quo_name is_empty
 #' @importFrom magrittr %>%
+#' @importFrom dplyr all_of select
 apply_grp_ggplot<-function(.data,tfrmt){
 
 
@@ -187,7 +188,7 @@ apply_grp_ggplot<-function(.data,tfrmt){
     element<-element_row_grp_loc(location="indented", indent = "    ")
 
     combine_group_cols(.data,tfrmt$group,tfrmt$label,element) %>%
-      select(-group_name)
+      select(-all_of(group_name))
 
 
   }else{

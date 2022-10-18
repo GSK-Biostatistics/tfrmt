@@ -118,7 +118,7 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
     if(nrow(multi_test) > 0){
 
       warn_df <- multi_test %>%
-        select(-.data$n)
+        select(-"n")
 
       warning(c("The following columns have multiple Big N's associated with them :\n", warn_df),
               call. = FALSE)
@@ -127,7 +127,7 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
     .data <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
       pivot_longer(
-        -c(.data$`_tfrmt______id`, !!value),
+        -c("_tfrmt______id", !!value),
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
       ) %>%
@@ -137,7 +137,7 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
              `__tfrmt_big_n_names__` = paste0("__tfrmt_new_name__", .data$`__tfrmt_big_n_names__`)) %>%
       slice_tail() %>%
       ungroup()%>%
-      select(-.data$`_tfrmt______id`)
+      select(-"_tfrmt______id")
 
   } else {
     .data <- NULL
