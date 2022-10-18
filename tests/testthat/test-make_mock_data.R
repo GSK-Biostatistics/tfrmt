@@ -486,7 +486,8 @@ test_that("Mock data can be printed from a tfrmt without a body plan",{
   expect_equal(
     mock_gt,
     print_mock_gt(plan, .data = tibble::tibble(column = c("column1","column2","column3"), param = "n")),
-    ignore_function_env = TRUE
+    ignore_function_env = TRUE,
+    ignore_attr = ".col_plan_vars"
   )
 
 
