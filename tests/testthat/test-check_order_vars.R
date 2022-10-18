@@ -50,17 +50,11 @@ test_that("Message is printed if order variables are causing mismatching rows",{
 
   expect_equal(
     safe_check_order(data, tfrmt)$messages[1],
-    "Note: Some row labels have values printed over more than 1 line. \n")
-  expect_equal(
-    safe_check_order(data, tfrmt)$messages[2],
-    "This could be due to incorrect order variables. Each row in your output table should have only one order var combination assigned to it.\n")
+    "Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it.\n")
 
   expect_equal(
     safe_check_order(data2, tfrmt2)$messages[1],
-    "Note: Some row labels have values printed over more than 1 line. \n")
-  expect_equal(
-    safe_check_order(data2, tfrmt2)$messages[2],
-    "This could be due to incorrect order variables. Each row in your output table should have only one order var combination assigned to it.\n")
+    "Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it.\n")
 
   expect_equal(
     safe_check_order(data3, tfrmt)$messages,

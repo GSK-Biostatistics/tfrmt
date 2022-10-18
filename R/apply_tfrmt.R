@@ -5,7 +5,6 @@
 #' @param mock Logical value is this is for a mock or not. By default `FALSE`
 #'
 #' @return formatted tibble
-#' @importFrom dplyr n_distinct
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 
@@ -374,9 +373,7 @@ frmt_struct_string <- function(grp, lbl, param_vals){
 #'
 #' @return warning if order variables are causing formatting issues
 #'
-#'
-#' @examples
-#'
+#' @importFrom dplyr n_distinct
 check_order_vars <- function(.data,tfrmt){
 
   if(is_empty(tfrmt$sorting_cols)==FALSE){
@@ -395,8 +392,7 @@ check_order_vars <- function(.data,tfrmt){
 
     # print warning if the number of lines printed over is greater than 1
     if(sum(order_check$n1)>nrow(order_check) & all(order_check$n1 == order_check$n2)==FALSE){
-      message("Note: Some row labels have values printed over more than 1 line. ")
-      message("This could be due to incorrect order variables. Each row in your output table should have only one order var combination assigned to it.")
+      message("Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it.")
 
     }}
 }
