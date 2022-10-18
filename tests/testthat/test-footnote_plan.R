@@ -142,7 +142,7 @@ test_that("footnote structure",{
       marks="letters"
 
     )
-  ),  "when group_val is a list, must be a named list")
+  ),  "when tfrmt contains multiple groups, group_val must be a named list")
 
 
   expect_error(tfrmt(

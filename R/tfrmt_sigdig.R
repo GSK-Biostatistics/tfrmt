@@ -85,7 +85,7 @@ param_set <- function(...){
     map_dfr(~tibble(param_display = names(param_list)[.x],
                     params = str_extract_all(.data$param_display, "(?<=\\{)[^\\}]+(?=\\})"))) %>%
     mutate(idx = row_number()) %>%
-    unnest(.data$params, keep_empty = TRUE) %>%
+    unnest("params", keep_empty = TRUE) %>%
     mutate(drop = map2_lgl(.data$param_display, .data$params, ~  (.x %in% args_params || .y %in% args_params))) %>%
     filter(drop == TRUE) %>%
     pull(.data$idx) %>%
@@ -180,7 +180,7 @@ param_set <- function(...){
 #'
 #' @export
 #'
-#' @importFrom dplyr rowwise group_split desc vars
+#' @importFrom dplyr rowwise group_split desc vars all_of
 #' @importFrom tidyr unite
 #' @importFrom purrr map
 #' @importFrom rlang quo_is_missing syms as_name as_label
@@ -210,7 +210,7 @@ tfrmt_sigdig <- function(sigdig_df,
   }
 
   # error if no group/label columns available
-  data_names <- sigdig_df %>% select(-.data$sigdig) %>% names()
+  data_names <- sigdig_df %>% select(-"sigdig") %>% names()
   if (length(data_names)==0){
     stop("`sigdig_df` input must contain group and/or label value columns.")
   }
@@ -223,7 +223,7 @@ tfrmt_sigdig <- function(sigdig_df,
     sigdig_df <- sigdig_df %>% select(any_of(c(group_names, label_name, "sigdig")))
 
     # error if mismatch between provided group (and label, if it exists) & data columns
-    data_names <- sigdig_df %>% select(-.data$sigdig) %>% names()
+    data_names <- sigdig_df %>% select(-"sigdig") %>% names()
     if (length(data_names)==0){
       group_msg <- if(length(group_names)>0) paste0("group: ", paste(group_names, collapse = ", "), "\n") else ""
       label_msg <- if(length(label_name)>0) paste0("label: ", paste(label_name, collapse = ", ")) else ""
@@ -255,7 +255,7 @@ tfrmt_sigdig <- function(sigdig_df,
 
   if (length(groups_in_data)>0){
     data_ord <- sigdig_df %>%
-      unite("def_ord", groups_in_data, remove = FALSE) %>%
+      unite("def_ord", all_of(groups_in_data), remove = FALSE) %>%
       mutate(def_ord = str_count(.data$def_ord, ".default"))
   } else {
     data_ord <- sigdig_df %>%
@@ -266,7 +266,7 @@ tfrmt_sigdig <- function(sigdig_df,
   frmt_structure_list <- data_ord %>%
     group_by(def_ord = desc(.data$def_ord), .data$sigdig) %>%
     group_split() %>%
-    map(select, -.data$def_ord) %>%
+    map(select, -"def_ord") %>%
     map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = NULL)
 
   bp <- frmt_structure_list %>%

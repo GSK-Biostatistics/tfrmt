@@ -39,7 +39,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
       is.na(TEMP_block_rank) ~ map(.data$data, list),
       TRUE ~ map(.data$data, ~ .x %>%  group_by(!!!group) %>% group_map(~as_tibble(.x), .keep = TRUE))
     )) %>%
-    unnest(.data$data)
+    unnest("data")
 
   # get max character width for each column in the full data
   dat_max_widths <- .data %>%
@@ -67,7 +67,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
                           }
                         }) %>%
     arrange(.data$TEMP_row) %>%
-    select(-.data$TEMP_row)
+    select(-"TEMP_row")
 
   add_ln_df
 }
@@ -273,7 +273,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
           mutate(!!label := ifelse(.data$..tfrmt_summary_row==TRUE,
                                    !!label,
                                    str_c(indent, !!label))) %>%
-          select(-.data$..tfrmt_summary_row) %>%
+          select(-"..tfrmt_summary_row") %>%
           bind_rows(new_row, .)
       })
     group = group[-length(group)]
