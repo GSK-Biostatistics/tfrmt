@@ -62,14 +62,14 @@ footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")
 #' footnote_structure <- footnote_structure("Text", label_val = "Adverse Event")
 footnote_structure <- function(footnote_text, column_val = NULL, group_val = NULL, label_val = NULL){
 
-  # force column_val and group_val to list
-  if(length(column_val)>1 && is.list(column_val)==FALSE){
+  # force column_val and group_val into a list if a named vector
+  if(length(column_val)>1 && is.list(column_val)==FALSE && !is.null(names(column_val))){
     column_val <- as.list(column_val)
   }else if(length(column_val)==1 && !is.null(names(column_val))){
     column_val<-as.list(column_val)
   }
 
-  if(length(group_val)>1 && is.list(group_val)==FALSE){
+  if(length(group_val)>1 && is.list(group_val)==FALSE && !is.null(names(group_val))){
     group_val <- as.list(group_val)
   }else if(length(group_val)==1 && !is.null(names(group_val))){
     group_val<-as.list(group_val)

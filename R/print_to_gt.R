@@ -92,7 +92,6 @@ print_mock_gt <- function(tfrmt, .data = NULL, .default = 1:3, n_cols = 3) {
     }
   }
 
-
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     cleaned_data_to_gt(tfrmt)
 
@@ -195,7 +194,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       rows = .data$..tfrmt_row_grp_lbl==TRUE,
       missing_text = ""
     ) %>%
-    cols_hide(columns = .data$..tfrmt_row_grp_lbl) %>%
+    cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
     format_gt_column_labels(.data) %>%
     apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
@@ -306,7 +305,7 @@ format_gt_column_labels <- function(gt_table, .data){
       str_split(.tlang_delim, simplify = TRUE) %>%
       as_tibble( .name_repair = ~paste0("V", 1:length(.))) %>%
       mutate(cols = spanning) %>%
-      pivot_longer(-.data$cols)
+      pivot_longer(-"cols")
 
     lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
 
@@ -322,7 +321,7 @@ format_gt_column_labels <- function(gt_table, .data){
 
       # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
-        tab_spanner(md(spans_to_apply$value[i]), columns = spans_to_apply$set[[i]])
+        tab_spanner(md(spans_to_apply$value[i]), columns = all_of(spans_to_apply$set[[i]]))
     }
 
     # ensure all columns are represented

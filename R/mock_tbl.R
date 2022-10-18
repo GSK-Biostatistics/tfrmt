@@ -43,7 +43,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
                              map(cols_to_add, function(x) tibble(!!x := NA_character_))) %>%
     mutate(..grp = replace_na(.data$..grp, ".default"),
            across(all_of(grp_vars), ~ coalesce(.x, .data$..grp))) %>%
-    select(-.data$..grp)  %>%
+    select(-"..grp")  %>%
     rowwise()  %>%
     mutate(across(!!tfrmt$param, ~ process_for_mock(.x, cur_column(), 1)),
            across(all_of(grp_vars), ~ process_for_mock(.x, cur_column(), .default)))
@@ -80,7 +80,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
       mutate(
         `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
       ) %>%
-      unnest(.data$`__tfrmt__mock__sorting_col`)
+      unnest("__tfrmt__mock__sorting_col")
   }
 
 
@@ -101,11 +101,11 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     mutate(
       `__tfrmt__mock__columns` = list(col_def)
     ) %>%
-    unnest(.data$`__tfrmt__mock__columns`)
+    unnest("__tfrmt__mock__columns")
 
   # remove the frmt_num field
   output_dat %>%
-    select(-.data$frmt_num)
+    select(-"frmt_num")
 
 }
 

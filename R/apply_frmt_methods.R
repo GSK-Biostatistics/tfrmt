@@ -249,7 +249,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, value, mock = FALSE, param,
         TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
       )
     ) %>%
-    select(-all_of(fmt_param_vals_uq), -.data$.is_all_missing)
+    select(-all_of(fmt_param_vals_uq), -".is_all_missing")
 
   ## if not mock remove
   if(!mock){

@@ -49,7 +49,7 @@ apply_col_alignment <- function(col, align, column_name = NULL){
 
     tbl_dat <-  tibble(col = trimws(col)) %>%
       separate(col, c("add_left","add_right"), sep = align, extra = "merge", fill = "right", remove = FALSE) %>%
-      mutate(across(c(.data$add_left, .data$add_right), function(x) {
+      mutate(across(c("add_left", "add_right"), function(x) {
                replace_na(x, "") %>%
                  nchar() %>%
                  {max(.)-.} %>%
@@ -160,11 +160,11 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
   # keep the last col align for each col
   align_spec <- selections %>%
     map_dfr(~tibble(align = list(.x$align), column = list(.x$col_eval))) %>%
-    unnest(.data$column) %>%
+    unnest("column") %>%
     ungroup() %>%
     group_by(.data$column) %>%
     slice(n()) %>%
-    rename(!!last_col := .data$column)
+    rename(!!last_col := "column")
 
   .data %>%
     left_join(align_spec, by = as_label(last_col)) %>%
@@ -182,7 +182,7 @@ apply_col_style_plan_alignment_values <- function(.data, tfrmt_obj){
       }
       x
     }) %>%
-    select(-.data$align) %>%
+    select(-"align") %>%
     mutate(across(c(!!!column), as.character))
 }
 
@@ -256,7 +256,7 @@ apply_col_style_plan_alignment_non_values <- function(.data, tfrmt_obj, non_data
     # keep the last col align for each col
     align_spec <- selections %>%
       map_dfr(~tibble(align = list(.x$align), column = list(.x$col_eval))) %>%
-      unnest(.data$column) %>%
+      unnest("column") %>%
       ungroup() %>%
       group_by(.data$column) %>%
       slice(n())
