@@ -199,7 +199,7 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
   split_data_names %>%
     left_join(ords, by = names(col_selections)) %>%
     arrange(.data$ord_col) %>%
-    select(-.data$ord_col) %>%
+    select(-"ord_col") %>%
     unite_df_to_data_names(preselected_cols, column_names)
 
 }
@@ -324,12 +324,12 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names){
 
   new_preselected_cols_full <- split_data_names %>%
-    unite("original",-c(starts_with("__tfrmt_new_name__"),.data$subtraction_status),
+    unite("original",-c(starts_with("__tfrmt_new_name__"), "subtraction_status"),
           sep = .tlang_delim) %>%
     unite("new_name",
           starts_with("__tfrmt_new_name__"),
           sep = .tlang_delim) %>%
-    mutate(across(c(.data$original, .data$new_name), remove_empty_layers, length(column_names) -1))
+    mutate(across(c("original", "new_name"), remove_empty_layers, length(column_names) -1))
 
   selected <- new_preselected_cols_full %>%
     mutate(
