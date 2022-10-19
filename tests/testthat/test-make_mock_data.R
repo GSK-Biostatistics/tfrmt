@@ -162,7 +162,7 @@ test_that("Mock data contains all levels", {
 })
 
 
-test_that("Check mock when value it missing", {
+test_that("Check mock when value is missing", {
   data <- crossing(
     label = c("Intent-To-Treat (ITT)",
               "Safety",

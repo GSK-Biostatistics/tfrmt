@@ -252,7 +252,7 @@ remove_empty_layers <- function(x, nlayers = 1){
 #'
 #' @importFrom purrr quietly
 #' @importFrom tidyselect starts_with everything
-#' @importFrom dplyr group_by across summarise n tally pull
+#' @importFrom dplyr group_by across summarise n tally pull na_if all_of
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock){
@@ -303,9 +303,11 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     val_fill <- ""
   }
 
-
+  column_cols <- tfrmt$column %>%
+    map_chr(as_name)
   tbl_dat_wide <- data %>%
     select(-!!tfrmt$param) %>%
+    mutate(across(all_of(column_cols), na_if, "")) %>%
     quietly(pivot_wider)(
       names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
       names_sep = .tlang_delim,
