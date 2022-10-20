@@ -803,7 +803,9 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
       span_structure(test1 = `span 1`, test2 = c(col1, col2)),
       col3,
       -col5
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
   basic_example_dataset <- tibble::tribble(
@@ -859,7 +861,9 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     column = c(test1,test2),
     col_plan = col_plan(
       new_col_4 = col4, new_col_1 = col1, col2, col3, -col5
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
 
@@ -921,7 +925,9 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         test2 = c(new_col_1 = col1, col2)
       ),
       col2, col3, -col5
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
 
@@ -1006,7 +1012,9 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
       ),
       renamed_BB = BB,
       renamed_CC = CC
-      )
+      ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
     )
 
   suppressMessages({
@@ -1106,7 +1114,9 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         top_span = "my cols",
         my_col = c(new_col_3 = mycol3, mycol5)
       )
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
 
@@ -1195,7 +1205,9 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         top_span = "my cols",
         my_col = c(new_col_3 = mycol3, -mycol5)
       )
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
 

@@ -331,10 +331,9 @@ test_that("applying footnote meta group val",{
                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
 
     # Specify row group plan
-    # Indent the rowlbl2
-    # row_grp_plan = row_grp_plan(
-    #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    #   label_loc = element_row_grp_loc(location = "indented")),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+      label_loc = element_row_grp_loc(location = "spanning")),
     footnote_plan = footnote_plan(
       footnote_structure("Test footnote",group_val=list(rowlbl0="Test group",rowlbl1="Completion Status"),
                          # label_val=list(rowlbl2="Adverse Event")
@@ -425,7 +424,9 @@ test_that("If 1 group/column var, can pass an unnamed vector",{
       footnote_structure("Test footnote 1",group_val = c("Completion Status", "Primary reason for withdrawal")),
       marks="letters"
 
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
   expect_equal(

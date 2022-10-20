@@ -211,7 +211,9 @@ test_that("Test when no body_style or values is present", {
       col1, col2,
       span_structure(spanner = "test label", columns= col3),
       vars(col4:col10)
-      ))
+      ),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
+    )
 
   input_data <- tibble(
     group = "groupvar",
