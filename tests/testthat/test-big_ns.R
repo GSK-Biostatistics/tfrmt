@@ -419,7 +419,8 @@ test_that("Test big n with footnotes", {
       param = "big_n",
       span = NA
     )
-  ) %>% mutate(value)
+  )
+
 
   # Add specification
   big_n_footnote_plan_gt <- tfrmt(
