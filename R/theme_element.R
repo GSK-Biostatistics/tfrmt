@@ -97,7 +97,7 @@ is_element_block <- function(x){
   inherits(x, "element_block")
 }
 
-#' Element Style
+#' Element Column
 #'
 #' @param col Column value to align on from `column` variable.
 #' @param align Alignment to be applied to column. Acceptable values: "left" for
