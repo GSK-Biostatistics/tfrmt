@@ -122,6 +122,7 @@ process_for_mock <-function(x, column, .default = 1:3){
 #' @noRd
 clean_col_names <- function(names, dont_inc){
   names %>%
+    map_chr(as_label) %>%
     str_remove_all('^.*\\(\\"') %>%
     str_remove_all('^-') %>%
     str_remove_all('\\"\\)') %>%
@@ -160,14 +161,12 @@ make_col_df <- function(column, group, label, col_plan, n_cols){
   # Use provided column names if there is no spanning
   if(!is.null(col_plan) & n_spans == 1 & is.null(n_cols)){
     cols_to_use <- col_plan$dots %>%
-      map_chr(as_label) %>%
       clean_col_names(dont_inc = grp_lb_vars)
     col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
   } else if(!is.null(col_plan) & is.null(n_cols)){
     # Gets the lowest level columns only
     low_lvl_vars <- col_plan$dots %>%
       discard(is.list) %>%
-      map_chr(as_label) %>%
       clean_col_names(dont_inc = grp_lb_vars)
 
     low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
@@ -177,10 +176,9 @@ make_col_df <- function(column, group, label, col_plan, n_cols){
       keep(is.list) %>%
       map_dfr(function(x){
         span_df <- x %>%
-          map(~map(., as_label)) %>%
+          map(~clean_col_names(., c())) %>%
           reduce(crossing) %>%
-          unnest(cols = everything()) %>%
-          mutate(across(everything(), clean_col_names, c()))
+          unnest(cols = everything())
         names(span_df) <- names(x)
         span_df
       })

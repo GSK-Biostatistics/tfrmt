@@ -545,6 +545,45 @@ test_that("Using col_plan to get column names", {
                        test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)))
   expect_equal(auto_col_df, man_col_df)
 
+
+# When you do crossing in the span structure
+  auto_col_crossing <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    column = c(visit,trt),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    ),
+  col_plan = col_plan(
+    model_results_category,
+    measure,
+    span_structure(
+      visit = c(`Week 4`,`Week 8`, `Week 12`),
+      trt = c(`Placebo`,`GSK123456 100 mg`)
+    ),
+    -starts_with("ord")
+  )) %>%
+    make_mock_data() %>%
+    distinct(trt, visit)
+
+  man_col_crossing <- tibble::tribble(
+    ~trt ,                   ~visit ,
+    "model_results_category", NA_character_,
+    "measure",                NA_character_,
+    "ord",                    NA_character_,
+    "GSK123456 100 mg",       "Week 12",
+    "Placebo",                "Week 12",
+    "GSK123456 100 mg",       "Week 4",
+    "Placebo",                "Week 4",
+    "GSK123456 100 mg",       "Week 8",
+    "Placebo",                "Week 8",
+  )
+
+  expect_equal(auto_col_crossing, man_col_crossing)
+
+
+
 })
 
 test_that("Will add big N avaliable", {
