@@ -80,7 +80,13 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
     mutate(
       `__tfrmt__mock__columns` = list(col_def)
     ) %>%
-    unnest("__tfrmt__mock__columns")
+    unnest("__tfrmt__mock__columns") %>%
+  #Add big N's
+    add_mock_big_ns(column = tfrmt$column,
+                    param = tfrmt$param,
+                    big_n_struct = tfrmt$big_n)
+
+
 
   # remove the frmt_num field
   output_dat %>%
@@ -191,4 +197,18 @@ make_col_df <- function(column, group, label, col_plan, n_cols){
     }
   }
   col_def
+}
+
+add_mock_big_ns <- function(data, column, param, big_n_struct){
+  if(!is.null(big_n_struct)){
+    col <- column %>% last()
+    col_vals <- data %>%
+      pull(!!col) %>%
+      unique()
+
+    data <- tibble(!!col := col_vals,
+           !!param := big_n_struct$param_val) %>%
+      bind_rows(data, .)
+  }
+  data
 }

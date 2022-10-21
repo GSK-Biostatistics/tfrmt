@@ -544,3 +544,37 @@ test_that("Using col_plan to get column names", {
   expect_equal(auto_col_df, man_col_df)
 
 })
+
+test_that("Will add big N avaliable", {
+  pop_tbl_tfrmt <- tfrmt(
+    column = TRT01A,
+    label = name,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default",
+                     frmt_combine("{n} ({pct}%)",
+                                  n = frmt("xx"),
+                                  pct = frmt("xx")))
+    ),
+    big_n = big_n_structure(param_val = "big_n"),
+    col_plan = col_plan(
+      starts_with("Xanomeline"),
+      "Placebo",
+      "Total"
+    )
+  )
+
+  auto_big_n_df <- make_mock_data(pop_tbl_tfrmt) %>%
+    filter(param == "big_n")
+
+  man_big_n_df <- tibble::tribble(
+    ~name,  ~param,  ~TRT01A,
+    NA_character_,    "big_n", "Xanomeline",
+    NA_character_,    "big_n", "Placebo"   ,
+    NA_character_,    "big_n", "Totals"
+  )
+
+  expect_equal(auto_big_n_df, man_big_n_df)
+
+})
