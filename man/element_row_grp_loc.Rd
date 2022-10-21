@@ -5,7 +5,7 @@
 \title{Element Row Group Location}
 \usage{
 element_row_grp_loc(
-  location = c("indented", "spanning", "column", "noprint"),
+  location = c("indented", "spanning", "column", "noprint", "gtdefault"),
   indent = "  "
 )
 }
@@ -16,8 +16,9 @@ sub-group indented under its parent. 'spanning' and 'column' retain the
 highest level group variable in its own column and combine all remaining
 group and label variables into a single column with sub-groups indented. The
 highest level group column will either be printed as a spanning header or in
-its own column in the gt. Finally, the 'noprint' option allows the user to
-suppress group values from being printed.}
+its own column in the gt. The 'noprint' option allows the user to suppress
+group values from being printed. Finally, the 'gtdefault' option allows
+users to use the {gt} defaults for styling multiple group columns.}
 
 \item{indent}{A string of the number of spaces you want to indent}
 }
@@ -25,12 +26,9 @@ suppress group values from being printed.}
 Element Row Group Location
 }
 \section{Images}{
+ Here are some example outputs:
 
-Here are some example outputs:
-
-\if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg" style="width:100\%;">
-}}
+\if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg" style="width:100\%;"> }}
 }
 
 \examples{
@@ -50,9 +48,10 @@ tfrmt_spec <- tfrmt(
 }
 \seealso{
 \code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group
-structures, \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group
-structures, \code{\link[=element_block]{element_block()}} for more details on how to specify spacing
-between each group.
+structures, \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row
+group structures, \code{\link[=element_block]{element_block()}} for more details on how to specify
+spacing between each group.
 
-\href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
+\href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link
+to related article}
 }

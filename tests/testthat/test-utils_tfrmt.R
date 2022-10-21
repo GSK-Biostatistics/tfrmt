@@ -55,7 +55,8 @@ plan  <- tfrmt(
     frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
   ),
   # These are the variables to keep
-  col_plan= col_plan(everything(), -starts_with("ord"))
+  col_plan= col_plan(everything(), -starts_with("ord")),
+  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("spanning"))
 )
 
 test_that("Check apply_tfrmt", {
@@ -71,14 +72,14 @@ test_that("Check apply_tfrmt", {
     "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
     "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
     "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      "
-  )
-
+  ) %>%
+    mutate(..tfrmt_row_grp_lbl = FALSE)
 
   expect_equal(
-    apply_tfrmt(raw_dat, plan) %>% arrange(group, label),
+    apply_tfrmt(raw_dat, plan) %>% ungroup() %>% arrange(group, label) ,
     man_df %>% arrange(group, label),
     ignore_attr = c("class",".col_plan_vars",".footnote_locs")
-    )
+  )
 
   plan$sorting_cols <- NULL
 
@@ -90,21 +91,21 @@ test_that("Check apply_tfrmt", {
     arrange(group, foo, label) %>%
     select(-foo)
 
-  expect_equal(apply_tfrmt(raw_dat, plan),
+  expect_equal(apply_tfrmt(raw_dat, plan) %>% ungroup(),
                man_df_ord,
                ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
 
   expect_error(
     apply_tfrmt(raw_dat, tfrmt(
       label = "label2")),
-      "Variable Specified in 'label' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
+    "Variable Specified in 'label' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
   )
 
   expect_error(
     apply_tfrmt(raw_dat, tfrmt(
       group = "label2")),
-      "Variable Specified in 'group' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
-    )
+    "Variable Specified in 'group' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
+  )
 
 })
 
@@ -124,9 +125,11 @@ test_that("Check apply_tfrmt for mock data",{
     "B",     "j",     " xx.xx      ", " xx.xx      " ," xx.xx      " ," xx.xx      ",
     "B",     "k",     " xx.x       ", " xx.x       " ," xx.x       " ," xx.x       ",
     "B",     "w",     "XXX         ", "XXX         " ,"XXX         " ,"XXX         ",
-  )
+  ) %>%
+    mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
+    arrange(group, label)
 
-  expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE),
+  expect_equal(apply_tfrmt(mock_dat, plan, mock = TRUE) %>% ungroup() %>% arrange(group, label) ,
                mock_man_df,
                ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
 
@@ -153,6 +156,7 @@ test_that("Check apply_tfrmt for mock data",{
       frmt_structure(group_val = "B", label_val = c("i", "k"), frmt("xx.x")),
       frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
     ),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("spanning")),
     # These are the variables to keep
     col_plan = col_plan(everything(), -starts_with("ord"))
   )
@@ -169,13 +173,15 @@ test_that("Check apply_tfrmt for mock data",{
     "B"      , "i",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
     "B"      , "k",     "xx.x"         , "xx.x"         ,"xx.x"         ,"xx.x",
     "B"      , "j",     "xx.xx"        , "xx.xx"        ,"xx.xx"        ,"xx.xx"
-  )
+  ) %>%
+    mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
+    arrange(group, label)
 
   expect_equal(
-    apply_tfrmt(mock_dat, plan, mock = TRUE),
+    apply_tfrmt(mock_dat, plan, mock = TRUE) %>% ungroup() %>% arrange(group, label) ,
     mock_man_df,
-    ignore_attr = c("class",".col_plan_vars",".footnote_locs")
-    )
+    ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
+
 
 
   # plan with multiple group variables
@@ -190,25 +196,27 @@ test_that("Check apply_tfrmt for mock data",{
       frmt_structure(group_val = list(grp1 = "B", grp2 = c("a","b"), grp3 = ".default", grp4 = ".default"), label_val = ".default", frmt("xx.x")),
       frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "C", grp4 = c("a","b")), label_val = ".default", frmt("xx.x")),
       frmt_structure(group_val = list(grp1 = ".default", grp2 = ".default", grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
-    )
+    ),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
   )
   mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>%
     apply_tfrmt(plan, mock =TRUE)
 
+  expected_dat <-  tibble::tribble(
+    ~grp1,   ~grp2,     ~grp3,     ~grp4,   ~my_label,   ~col1,
+    "A"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+    "A"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+    "B"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+    "B"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
+    "grp1_1" ,"grp2_1" ,"C"      ,"a"      ,"my_label_1" ,"xx.x" ,
+    "grp1_1" ,"grp2_1" ,"C"      ,"b"      ,"my_label_1" ,"xx.x" ,
+    "grp1_1" ,"grp2_1" ,"D"      ,"a"      ,"my_label_1" ,"xx.x" ,
+    "grp1_1" ,"grp2_1" ,"D"      ,"b"      ,"my_label_1" ,"xx.x"
+  )
+
   expect_equal(
     mock_dat,
-    tibble::tribble(
-      ~grp1,   ~grp2,   ~grp3,      ~grp4,   ~my_label,   ~col1,
-      "A"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
-      "A"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
-      "B"      ,"a"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
-      "B"      ,"b"      ,"grp3_1" ,"grp4_1" ,"my_label_1" ,"xx.x" ,
-      "grp1_1" ,"grp2_1" ,"C"      ,"a"      ,"my_label_1" ,"xx.x" ,
-      "grp1_1" ,"grp2_1" ,"C"      ,"b"      ,"my_label_1" ,"xx.x" ,
-      "grp1_1" ,"grp2_1" ,"D"      ,"a"      ,"my_label_1" ,"xx.x" ,
-      "grp1_1" ,"grp2_1" ,"D"      ,"b"      ,"my_label_1" ,"xx.x"
-    ),
-
+    expected_dat,
     ignore_attr = c("class",".col_plan_vars",".footnote_locs")
   )
 
@@ -222,7 +230,8 @@ test_that("Check apply_tfrmt for mock data",{
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xxx")),
       frmt_structure(group_val = ".default", label_val = ".default", mean = frmt("xx.x"))
-    )
+    ),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
   )
   mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
 
@@ -234,7 +243,7 @@ test_that("Check apply_tfrmt for mock data",{
   expect_equal(
     make_mock_dat_message,
     "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
-    )
+  )
 
   test_dat <- mock_dat %>%
     quietly(apply_tfrmt)(plan, mock =TRUE) %>%
@@ -243,14 +252,14 @@ test_that("Check apply_tfrmt for mock data",{
   expect_equal(test_dat,
                tibble::tribble(
                  ~grp1,   ~my_label,   ~col1,  ~col2,
-                  "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
-                  "grp1_1", "my_label_1", "xx.x",  "xx.x" ,
-                  "grp1_1", "my_label_2", "xxx" ,  "xxx"  ,
-                  "grp1_1", "my_label_2", "xx.x",  "xx.x" ,
-                  "grp1_2", "my_label_1", "xxx" ,  "xxx"  ,
-                  "grp1_2", "my_label_1", "xx.x",  "xx.x" ,
-                  "grp1_2", "my_label_2", "xxx" ,  "xxx"  ,
-                  "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
+                 "grp1_1", "my_label_1", "xxx" ,  "xxx"  ,
+                 "grp1_1", "my_label_1", "xx.x",  "xx.x" ,
+                 "grp1_1", "my_label_2", "xxx" ,  "xxx"  ,
+                 "grp1_1", "my_label_2", "xx.x",  "xx.x" ,
+                 "grp1_2", "my_label_1", "xxx" ,  "xxx"  ,
+                 "grp1_2", "my_label_1", "xx.x",  "xx.x" ,
+                 "grp1_2", "my_label_2", "xxx" ,  "xxx"  ,
+                 "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
                ),
                ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
 
@@ -270,7 +279,8 @@ test_that("Test body_plan missing", {
     label = label,
     param = param,
     column = column,
-    value = val
+    value = val,
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
   ) %>%
     apply_tfrmt(input_data, .)
 
@@ -316,22 +326,22 @@ test_that("incomplete body_plan where params share label",{
 
   man_tfrmt <- tibble::tribble(
     ~rowlbl1,  ~rowlbl2,    ~ A   ,       ~..tfrmt_row_grp_lbl,
-      "topgrp", "lowergrp1", NA_character_, TRUE,
-      "topgrp", "  mean"   , " 2.0",        FALSE,
-      "topgrp", "  n pct"   ,c("1","50"),   FALSE,
-      "topgrp", "lowergrp2", NA_character_, TRUE,
-      "topgrp", "  mean"   , " 5.0",        FALSE,
-      "topgrp", "  n pct"  , c("2","40"),   FALSE
+    "topgrp", "lowergrp1", NA_character_, TRUE,
+    "topgrp", "  mean"   , " 2.0",        FALSE,
+    "topgrp", "  n pct"   ,c("1","50"),   FALSE,
+    "topgrp", "lowergrp2", NA_character_, TRUE,
+    "topgrp", "  mean"   , " 5.0",        FALSE,
+    "topgrp", "  n pct"  , c("2","40"),   FALSE
   ) %>% group_by(rowlbl1)
 
- expect_equal(auto_tfrmt, man_tfrmt,
-              ignore_attr = c("class",".col_plan_vars"))
-  })
+  expect_equal(auto_tfrmt, man_tfrmt,
+               ignore_attr = c("class",".col_plan_vars"))
+})
 
 
 
 test_that("incorrect footnote plan formats",{
- expect_error( tfrmt(
+  expect_error( tfrmt(
     # specify columns in the data
     group = c(rowlbl0,rowlbl1),
     label = rowlbl2,
