@@ -400,3 +400,147 @@ test_that("using 'value' for values column where there may be conflict in big_n"
   expect_equal(auto, man)
 
 })
+
+test_that("Test big n with footnotes", {
+
+  # Create mock data
+  df <- tidyr::crossing(
+    group = c("group 1", "group 2"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2", "T1&T2"),
+    param = c("count", "percent")
+  )
+
+  # This one is used for examples 5 and 6
+  span_df <- df %>% dplyr::mutate(span = dplyr::case_when(column == "PL" ~ "Placebo",
+                                            column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"))
+
+
+  span_df_big_n <- dplyr::bind_rows(
+    span_df,
+    tibble::tibble(
+      group = NA,
+      label = NA,
+      column = c("T1","T2","T1&T2"),
+      param = "big_n",
+      span = NA
+    )
+  )
+
+
+  # Add specification
+  big_n_footnote_plan_gt <- tfrmt(
+    value = fake_value,
+    group = group,
+    label = label,
+    column = c("span", "column"),
+    param = param,
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default",
+                        element_block(post_space = "   ")) ),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default",
+                     frmt_combine("{count} ({percent})",
+                                  count = frmt("xx"),
+                                  percent = frmt("xx.x")))
+    ),
+    col_plan = col_plan(
+      group, label,
+      span_structure(span = c("Placebo"),
+                     column = c("PL")),
+      span_structure(span = c("Treatment"),
+                     column = c("T1", "T2", "T1&T2"))
+    ),
+
+    # Add footnote here
+    footnote_plan = footnote_plan(
+      footnote_structure(
+        footnote_text = "Footnote goes here",
+        column_val = list(span = "Treatment", column = "T1&T2")
+      ),
+      footnote_structure(
+        footnote_text = "Footnote goes here 2",
+        group_val = list(group = "group 1"),
+        label_val = list(label = "label 1"),
+        column_val = list(span = "Treatment", column = "T1")
+      ),
+      footnote_structure(
+        footnote_text = "Footnote goes here 3",
+        label_val = list(label = "label 1"),
+        column_val = list(span = "Treatment", column = "T1")
+      ),
+      footnote_structure(
+        footnote_text = "Footnote goes here 4",
+        label_val = list(label = "label 1"),
+      ),
+      footnote_structure(
+        footnote_text = "Footnote goes here 5",
+        group_val = list(group = "group 1")
+      ),
+      footnote_structure(
+        footnote_text = "Footnote goes here 6",
+        label_val = list(label = "label 1"),
+        column_val = list(span = "Treatment", column = c("T2"))
+      )
+    ),
+
+    big_n = big_n_structure(
+      param_val = "big_n"
+    )
+  ) %>%
+    print_mock_gt(span_df_big_n)
+
+
+  ## ensure big_n got applied
+  expect_equal(
+    names(big_n_footnote_plan_gt$`_data`),
+    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1\nN = xx",
+      "Treatment___tlang_delim___T2\nN = xx", "Treatment___tlang_delim___T1&T2\nN = xx",
+      "..tfrmt_row_grp_lbl")
+    )
+
+  ## confirm location of footnotes gets recorded correctly
+  expect_equal(
+    big_n_footnote_plan_gt$`_footnotes` %>%
+      select(locname, colname, locnum, rownum, footnotes),
+    tibble(
+      locname = c(
+        "columns_columns",
+        "data",
+        "data",
+        "data",
+        "stub",
+        "stub",
+        "stub",
+        "data",
+        "data"
+      ),
+      colname = c(
+        "Treatment___tlang_delim___T1&T2\nN = xx",
+        "Treatment___tlang_delim___T1\nN = xx",
+        "Treatment___tlang_delim___T1\nN = xx",
+        "Treatment___tlang_delim___T1\nN = xx",
+        NA,
+        NA,
+        NA,
+        "Treatment___tlang_delim___T2\nN = xx",
+        "Treatment___tlang_delim___T2\nN = xx"
+      ),
+      locnum = c(4, 5, 5, 5, 5, 5, 5, 5, 5),
+      rownum = c(NA, 2L, 2L, 6L, 2L, 6L, 1L, 2L, 6L),
+      footnotes = list(
+        "Footnote goes here",
+        "Footnote goes here 2",
+        "Footnote goes here 3",
+        "Footnote goes here 3",
+        "Footnote goes here 4",
+        "Footnote goes here 4",
+        "Footnote goes here 5",
+        "Footnote goes here 6",
+        "Footnote goes here 6"
+      )
+    )
+  )
+
+
+})
