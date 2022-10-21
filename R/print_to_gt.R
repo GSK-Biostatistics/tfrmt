@@ -6,7 +6,7 @@
 #'   and parameter values will be estimated based on the tfrmt
 #' @param .default sequence to replace the default values if a dataset isn't
 #'   provided
-#' @param n_cols the number of columns this will only be used if mock data isn't
+#' @param n_cols the number of columns. This will only be used if mock data isn't
 #'   provided. If not supplied, it will default to using the `col_plan` from the
 #'   `tfrmt`. If neither are available it will use 3.
 #'
