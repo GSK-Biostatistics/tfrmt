@@ -64,6 +64,7 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
 #' @return list with column locations (col) and if they are spanning or not (spanning)
 #' @noRd
 get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
+
   loc_info <- footnote_structure %>%
     discard(is.null) %>%
     .[names(.) != "footnote_text"]
@@ -85,23 +86,48 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
                                            map_chr(as_label), col_str) %>%
       inner_join(loc_col_df, by = col_val_nm)
 
-    # if not a column return the spanning column name
-    span_lvl <- col_str %in% col_val_nm %>%
-      which() %>%
-      max() %>%
-      col_str[.]
+    if(nrow(col_loc_df) == 0){
 
-    if(last(col_str) == span_lvl){
-      col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
-      if(!is.null(names(col_loc))){
-        col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
+      message_text <- c(
+       paste0(
+        "The provided column location does not exist in the provided data for the footnote",
+        "\"",
+        footnote_structure$footnote_text,
+        "\""
+        ),
+        "Provided column location:"
+        )
+
+      for(col_var in col_val_nm){
+        message_text <- c(
+          message_text,
+          paste0(col_var,": ",paste0("`",loc_info$column_val[[col_var]],"`", collapse = ","))
+        )
       }
-      out <- list(col = col_loc, spanning = FALSE)
-    } else {
-      col_loc <- col_loc_df %>%
-        pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
-        unique()
-      out <- list(col = col_loc, spanning = TRUE)
+
+      message(paste0(message_text, collapse = "\n"))
+
+      out <- list(col = NULL, spanning = FALSE)
+
+    }else{
+      # if not a column return the spanning column name
+      span_lvl <- col_str %in% col_val_nm %>%
+        which() %>%
+        max() %>%
+        col_str[.]
+
+      if(last(col_str) == span_lvl){
+        col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
+        if(!is.null(names(col_loc))){
+          col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
+        }
+        out <- list(col = col_loc, spanning = FALSE)
+      } else {
+        col_loc <- col_loc_df %>%
+          pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
+          unique()
+        out <- list(col = col_loc, spanning = TRUE)
+      }
     }
   } else {
     out <- list(col = NULL, spanning = FALSE)
@@ -122,6 +148,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
 #' @noRd
 get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
                         group, label, col_info){
+
 
   loc_info <- footnote_structure %>%
     discard(is.null) %>%
