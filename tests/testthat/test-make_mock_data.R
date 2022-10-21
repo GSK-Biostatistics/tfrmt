@@ -572,7 +572,7 @@ test_that("Will add big N avaliable", {
     ~name,  ~param,  ~TRT01A,
     NA_character_,    "big_n", "Xanomeline",
     NA_character_,    "big_n", "Placebo"   ,
-    NA_character_,    "big_n", "Totals"
+    NA_character_,    "big_n", "Total"
   )
 
   expect_equal(auto_big_n_df, man_big_n_df)
