@@ -68,73 +68,14 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
     unnest(everything()) %>%
     group_by(.data$frmt_num) %>%
     expand(!!!expand_cols) %>%
-    ungroup
-
-  ## add sorting_cols. Not functional, will not impact actual output
-  if(!is.null(tfrmt$sorting_cols)){
-
-    sorting_cols_vars <- tfrmt$sorting_cols %>% map_chr(as_name)
-    n_sorting_cols <- length(sorting_cols_vars)
-
-    sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x){
-      tibble(!!sorting_cols_vars[x] := 1)
-    })
-
-    output_dat <- output_dat %>%
-      mutate(
-        `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
-      ) %>%
-      unnest("__tfrmt__mock__sorting_col")
-  }
+    ungroup() %>%
+    add_sorting_cols(tfrmt$sorting_cols)
 
 
   ## add `column` columns
-  column_vars <- tfrmt$column %>% map_chr(as_label)
-  if(identical(column_vars, "__tfrmt__column")){
-    column_vars <- "col"
-  }
+  col_def <- make_col_df(column = tfrmt$column, group = tfrmt$group,
+                         label = tfrmt$label, col_plan = tfrmt$col_plan, n_cols)
 
-  n_spans <- length(column_vars)
-
-  # Use provided column names if there is no spanning
-  if(!is.null(tfrmt$col_plan) & n_spans == 1 & is.null(n_cols)){
-    cols_to_use <- tfrmt$col_plan$dots %>%
-      map_chr(as_label) %>%
-      clean_col_names(dont_inc = c(grp_vars, as_name(tfrmt$label)))
-    col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
-  } else if(!is.null(tfrmt$col_plan) & is.null(n_cols)){
-    # Gets the lowest level columns only
-    low_lvl_vars <- tfrmt$col_plan$dots %>%
-      discard(is.list) %>%
-      map_chr(as_label) %>%
-      clean_col_names(dont_inc = c(grp_vars, as_name(tfrmt$label)))
-
-    low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
-
-    # creates a df for each span structure
-    span_df <- tfrmt$col_plan$dots %>%
-      keep(is.list) %>%
-      map_dfr(function(x){
-        span_df <- x %>%
-          map(~map(., as_label)) %>%
-          reduce(crossing) %>%
-          unnest(cols = everything()) %>%
-          mutate(across(everything(), clean_col_names, c()))
-        names(span_df) <- names(x)
-        span_df
-      })
-    col_def <- bind_rows(low_lvl_def, span_df)
-
-  } else {
-    n_cols <- ifelse(is.null(n_cols), 3, n_cols)
-    col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
-    if(n_spans > 1){
-      col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
-        tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
-      })
-      col_def <- bind_cols(col_spans_df, col_def)
-    }
-  }
   output_dat <- output_dat %>%
     mutate(
       `__tfrmt__mock__columns` = list(col_def)
@@ -179,5 +120,75 @@ clean_col_names <- function(names, dont_inc){
     str_remove_all('^-') %>%
     str_remove_all('\\"\\)') %>%
     setdiff(dont_inc)
+}
 
+# Adds the sorting columns if relevant otherwise just returns data
+add_sorting_cols <- function(data, sorting_cols){
+  if(!is.null(sorting_cols)){
+
+    sorting_cols_vars <- sorting_cols %>% map_chr(as_name)
+    n_sorting_cols <- length(sorting_cols_vars)
+
+    sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x){
+      tibble(!!sorting_cols_vars[x] := 1)
+    })
+
+    data <- data %>%
+      mutate(
+        `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
+      ) %>%
+      unnest("__tfrmt__mock__sorting_col")
+  }
+  data
+}
+
+make_col_df <- function(column, group, label, col_plan, n_cols){
+  column_vars <- column %>% map_chr(as_label)
+  grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label))
+  if(identical(column_vars, "__tfrmt__column")){
+    column_vars <- "col"
+  }
+
+  n_spans <- length(column_vars)
+
+  # Use provided column names if there is no spanning
+  if(!is.null(col_plan) & n_spans == 1 & is.null(n_cols)){
+    cols_to_use <- col_plan$dots %>%
+      map_chr(as_label) %>%
+      clean_col_names(dont_inc = grp_lb_vars)
+    col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
+  } else if(!is.null(col_plan) & is.null(n_cols)){
+    # Gets the lowest level columns only
+    low_lvl_vars <- col_plan$dots %>%
+      discard(is.list) %>%
+      map_chr(as_label) %>%
+      clean_col_names(dont_inc = grp_lb_vars)
+
+    low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
+
+    # creates a df for each span structure
+    span_df <- col_plan$dots %>%
+      keep(is.list) %>%
+      map_dfr(function(x){
+        span_df <- x %>%
+          map(~map(., as_label)) %>%
+          reduce(crossing) %>%
+          unnest(cols = everything()) %>%
+          mutate(across(everything(), clean_col_names, c()))
+        names(span_df) <- names(x)
+        span_df
+      })
+    col_def <- bind_rows(low_lvl_def, span_df)
+
+  } else {
+    n_cols <- ifelse(is.null(n_cols), 3, n_cols)
+    col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
+    if(n_spans > 1){
+      col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
+        tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
+      })
+      col_def <- bind_cols(col_spans_df, col_def)
+    }
+  }
+  col_def
 }
