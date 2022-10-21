@@ -42,6 +42,7 @@ apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row
 #' @importFrom dplyr inner_join first last cur_group_id
 locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_loc,
                             group, label, columns){
+
   col_info <- get_col_loc(footnote_structure, .data, col_plan_vars, columns)
 
   loc_info <- get_row_loc(footnote_structure, .data, element_row_grp_loc,
@@ -145,7 +146,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
        #Will the footnote be in the label column
        lb_col_test <- !is.null(loc_info$label_val) | #label level so in label col
          row_grp == "indented" | #indented so in label column
-         (!highest_grp & row_grp != "") #there is a row_grp_plan and this isn't the highest group so indented
+         (!highest_grp & !row_grp %in% c("", "gtdefault")) #there is a row_grp_plan and this isn't the highest group so indented
 
        if(lb_col_test){
          grp_expr <- expr_to_filter(group, loc_info$group_val)
@@ -180,7 +181,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
            unique()
          col_info$col <- ifelse(is.null(col_info$col), first(group_str),
                                      col_info$col)
-       } else if(row_grp == ""){
+       } else if(row_grp %in% c("", "gtdefault")){
          filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
            parse_expr()
          col_info$row<-.data %>%

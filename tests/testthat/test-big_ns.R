@@ -156,6 +156,8 @@ test_that("Test with spanning headers", {
       new_col_3 = mycol3,
       -mycol5
     ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning")),
     big_n = big_n_structure(param_val = "bigN")
   )
 
@@ -164,7 +166,8 @@ test_that("Test with spanning headers", {
 
   man <- c("group"                                                                    , "label",
            "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1", "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
-           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6")
+           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6",
+           "..tfrmt_row_grp_lbl")
 
   expect_equal(auto, man)
 
@@ -382,14 +385,17 @@ test_that("using 'value' for values column where there may be conflict in big_n"
       new_col_3 = mycol3,
       -mycol5
     ),
-    big_n = big_n_structure(param_val = "bigN")
+    big_n = big_n_structure(param_val = "bigN"),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   ) %>%
     apply_tfrmt(.data = dat, tfrmt = .) %>%
     names()
 
   man <- c("group"                                                                    , "label",
            "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1", "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
-           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6")
+           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6",
+           "..tfrmt_row_grp_lbl" )
 
   expect_equal(auto, man)
 

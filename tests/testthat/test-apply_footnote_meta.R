@@ -311,8 +311,7 @@ test_that("applying footnote meta group val",{
   # no row group plan
 
   es_data3<- es_data %>%
-    mutate(rowlbl0="Test group",
-           rowlbl_1="Test group 2")
+    mutate(rowlbl0="Test group")
 
 
   tfrmt5<-tfrmt(
@@ -331,10 +330,9 @@ test_that("applying footnote meta group val",{
                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
 
     # Specify row group plan
-    # Indent the rowlbl2
-    # row_grp_plan = row_grp_plan(
-    #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    #   label_loc = element_row_grp_loc(location = "indented")),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+      label_loc = element_row_grp_loc(location = "gtdefault")),
     footnote_plan = footnote_plan(
       footnote_structure("Test footnote",group_val=list(rowlbl0="Test group",rowlbl1="Completion Status"),
                          # label_val=list(rowlbl2="Adverse Event")
@@ -343,14 +341,11 @@ test_that("applying footnote meta group val",{
     )
   )
 
+
   expect_equal(
     attr(apply_tfrmt(es_data3,tfrmt5),".footnote_locs"),
     list(list("col"="rowlbl1","spanning"=FALSE,"row" =1,"note"="Test footnote"))
-
   )
-
-
-
 
 })
 
@@ -425,7 +420,9 @@ test_that("If 1 group/column var, can pass an unnamed vector",{
       footnote_structure("Test footnote 1",group_val = c("Completion Status", "Primary reason for withdrawal")),
       marks="letters"
 
-    )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "spanning"))
   )
 
   expect_equal(

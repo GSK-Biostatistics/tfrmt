@@ -75,6 +75,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Unable to add big N's"
     )
 
+  if(is.null(tfrmt$row_grp_plan$label_loc)){
+    tfrmt$row_grp_plan$label_loc <-  element_row_grp_loc(location = "indented")
+  }
+
   tbl_dat_wide_processed <- tbl_dat_wide %>%
     #Apply row group structures defined in row_grp_plan
     tentative_process(
@@ -382,6 +386,7 @@ frmt_struct_string <- function(grp, lbl, param_vals){
 #' @return warning if order variables are causing formatting issues
 #'
 #' @importFrom dplyr n_distinct
+#' @noRd
 check_order_vars <- function(.data,tfrmt){
 
   if(is_empty(tfrmt$sorting_cols)==FALSE){

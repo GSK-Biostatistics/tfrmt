@@ -104,6 +104,7 @@ print_to_ggplot <- function(tfrmt, .data, ...){
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
+
   # apply grouping if any
   # create y variable to preserve ordering and levels
   .data<-apply_grp_ggplot(.data,tfrmt) %>%
@@ -181,8 +182,8 @@ cleaned_data_to_ggplot <- function(.data,tfrmt,column_data, ...){
 #' @importFrom dplyr all_of select
 apply_grp_ggplot<-function(.data,tfrmt){
 
-
-  if(is.null(tfrmt$row_grp_plan) && is_empty(tfrmt$group)==FALSE ){
+  if(!is.null(tfrmt$row_grp_plan) && is_empty(tfrmt$group)==FALSE &&
+     tfrmt$row_grp_plan$label_loc$location == "gtdefault"){
     group_name <- quo_name(tfrmt$group[[1]])
 
     element<-element_row_grp_loc(location="indented", indent = "    ")

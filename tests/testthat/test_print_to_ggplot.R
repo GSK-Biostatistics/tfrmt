@@ -72,7 +72,8 @@ test_that("group columns are created correctly",{
     label = label ,
     column = time,
     param = param,
-    value = value)
+    value = value,
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault")))
 
   test_data<-tibble(time=c(rep(c(0,1000,2000,3000),3)),
                     label=c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),

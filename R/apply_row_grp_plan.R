@@ -90,7 +90,7 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
 
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location=="noprint"){
+  if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint")){
     add_ln_df <- .data
   } else{
       #  combine any grouping columns that need combining into label
@@ -298,7 +298,7 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
   # check which group/label columns are available
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if(length(grps_avail)==0){
+  if(length(grps_avail)==0 || element_row_grp_loc$location=="gtdefault"){
     add_ln_df <- .data
   } else{
 
@@ -310,7 +310,7 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
 
       add_ln_df <- .data %>% select(-c(!!!group))
 
-    } else if(is.null(element_row_grp_loc) || element_row_grp_loc$location == "indented"){
+    } else if(element_row_grp_loc$location == "indented"){
       add_ln_df <- .data %>%
         select(-c(!!!group))
     } else if(length(group) == 1){ #Using the grouping in gt + a single grouping
