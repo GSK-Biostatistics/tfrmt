@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_element.R
 \name{element_col}
 \alias{element_col}
-\title{Element Style}
+\title{Element Column}
 \usage{
 element_col(col = vars(), align = NULL, width = NULL)
 }
@@ -22,7 +22,7 @@ numeric value, or a character string of numbers ending with either "px" or
 total table width}
 }
 \description{
-Element Style
+Element Column
 }
 \details{
 Supports alignment and width setting of data value columns (values found in the \code{column} column). Row group and label
