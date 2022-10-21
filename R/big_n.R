@@ -52,6 +52,7 @@ apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
       split_data_names_to_df(data_names= c(), preselected_cols = .,
                              column_names = col_lab)
 
+
     for(i in seq(nrow(big_n_df))){
       big_n_i <- big_n_df %>%
         slice(i)
@@ -131,7 +132,7 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
       ) %>%
-      filter(!is.na(.data$`__tfrmt_big_n_values__`)) %>%
+      filter(!is.na(.data$`__tfrmt_big_n_values__`) & .data$`__tfrmt_big_n_values__` != "") %>%
       group_by(.data$`_tfrmt______id`) %>%
       mutate(exp = paste0(.data$`__tfrmt_big_n_names__`, "=='", .data$`__tfrmt_big_n_values__`, "'",  collapse = "&"),
              `__tfrmt_big_n_names__` = paste0("__tfrmt_new_name__", .data$`__tfrmt_big_n_names__`)) %>%
