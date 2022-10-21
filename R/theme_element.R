@@ -157,7 +157,7 @@ element_col <- function( col = vars(),
 }
 
 
-#' Check if input is an element_align object
+#' Check if input is an element_col object
 #'
 #' @param x Object to check
 #'
