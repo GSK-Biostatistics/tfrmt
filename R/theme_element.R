@@ -38,9 +38,7 @@
 #'
 #'@section Images: Here are some example outputs:
 #'
-#'  \if{html}{\out{ `r "<img
-#'  src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg\"
-#'  style=\"width:100\\%;\">"` }}
+#'  \if{html}{\out{ `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg\" style=\"width:100\\%;\">"` }}
 #'
 element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint", "gtdefault"),
                                 indent = "  "){
