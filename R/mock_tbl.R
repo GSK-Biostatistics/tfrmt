@@ -1,13 +1,17 @@
 #' Make mock data for display shells
 #'
 #' @param tfrmt tfrmt object
-#' @param .default Number of unique levels to create for group/label values set to ".default"
-#' @param n_cols Number of columns in the output table (not including group/label variables)
+#' @param .default Number of unique levels to create for group/label values set
+#'   to ".default"
+#' @param n_cols Number of columns in the output table (not including
+#'   group/label variables). If not supplied it will default to using the
+#'   `col_plan` from the `tfrmt`. If neither are available it will use 3.
 #'
 #' @return tibble containing mock data
 #'
 #' @importFrom tidyr crossing unnest expand
-#' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble across cur_column
+#' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble
+#'   across cur_column
 #' @importFrom purrr map map_dfr map_chr map_dfc reduce
 #' @importFrom rlang as_name is_empty
 #' @importFrom tidyselect everything all_of
