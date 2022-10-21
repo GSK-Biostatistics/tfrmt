@@ -8,12 +8,12 @@
 #'
 #' @importFrom tidyr crossing unnest expand
 #' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble across cur_column
-#' @importFrom purrr map map_dfr map_chr map_dfc
+#' @importFrom purrr map map_dfr map_chr map_dfc reduce
 #' @importFrom rlang as_name is_empty
 #' @importFrom tidyselect everything all_of
 #'
 #' @noRd
-make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
+make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
 
   body_plan <- tfrmt$body_plan
   grp_vars <- tfrmt$group %>% map_chr(as_name)
@@ -24,14 +24,14 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     map_dfr(
       function(x){
         crossing(
-            # if group_val is a named list, return as a tibble with list names as colnames
-            # otherwise (group_val = ".default") convert to tibble with colname "grp"
-            if(is.list(x$group_val)) as_tibble(x$group_val) else tibble(..grp = x$group_val[[1]]),
-            !!tfrmt$label := x$label_val,
-            !!tfrmt$param := x$param_val
-          )
-    },
-    .id = "frmt_num")
+          # if group_val is a named list, return as a tibble with list names as colnames
+          # otherwise (group_val = ".default") convert to tibble with colname "grp"
+          if(is.list(x$group_val)) as_tibble(x$group_val) else tibble(..grp = x$group_val[[1]]),
+          !!tfrmt$label := x$label_val,
+          !!tfrmt$param := x$param_val
+        )
+      },
+      .id = "frmt_num")
 
 
   # find out which group variables are not present
@@ -89,13 +89,47 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
   if(identical(column_vars, "__tfrmt__column")){
     column_vars <- "col"
   }
+
   n_spans <- length(column_vars)
-  col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
-  if(n_spans > 1){
-    col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
-      tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
-    })
-    col_def <- bind_cols(col_spans_df, col_def)
+
+  # Use provided column names if there is no spanning
+  if(!is.null(tfrmt$col_plan) & n_spans == 1 & is.null(n_cols)){
+    cols_to_use <- tfrmt$col_plan$dots %>%
+      map_chr(as_label) %>%
+      clean_col_names(dont_inc = c(grp_vars, as_name(tfrmt$label)))
+    col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
+  } else if(!is.null(tfrmt$col_plan) & is.null(n_cols)){
+    # Gets the lowest level columns only
+    low_lvl_vars <- tfrmt$col_plan$dots %>%
+      discard(is.list) %>%
+      map_chr(as_label) %>%
+      clean_col_names(dont_inc = c(grp_vars, as_name(tfrmt$label)))
+
+    low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
+
+    # creates a df for each span structure
+    span_df <- tfrmt$col_plan$dots %>%
+      keep(is.list) %>%
+      map_dfr(function(x){
+        span_df <- x %>%
+          map(~map(., as_label)) %>%
+          reduce(crossing) %>%
+          unnest(cols = everything()) %>%
+          mutate(across(everything(), clean_col_names, c()))
+        names(span_df) <- names(x)
+        span_df
+      })
+    col_def <- bind_rows(low_lvl_def, span_df)
+
+  } else {
+    n_cols <- ifelse(is.null(n_cols), 3, n_cols)
+    col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
+    if(n_spans > 1){
+      col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
+        tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
+      })
+      col_def <- bind_cols(col_spans_df, col_def)
+    }
   }
   output_dat <- output_dat %>%
     mutate(
@@ -120,9 +154,26 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
 #' @noRd
 process_for_mock <-function(x, column, .default = 1:3){
 
-      if(x == ".default"){
-        str_c(column, "_", .default) %>% list
-      } else {
-        list(x)
-      }
+  if(x == ".default"){
+    str_c(column, "_", .default) %>% list
+  } else {
+    list(x)
+  }
+}
+
+
+#' Regex to remove things like contains, and - etc.
+#'
+#' @param names string vec
+#' @param dont_inc values to remove
+#'
+#' @return cleaned up string vec
+#' @noRd
+clean_col_names <- function(names, dont_inc){
+  names %>%
+    str_remove_all('^.*\\(\\"') %>%
+    str_remove_all('^-') %>%
+    str_remove_all('\\"\\)') %>%
+    setdiff(dont_inc)
+
 }

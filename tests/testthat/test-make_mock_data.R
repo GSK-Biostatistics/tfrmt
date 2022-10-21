@@ -492,3 +492,55 @@ test_that("Mock data can be printed from a tfrmt without a body plan",{
 
 
 })
+
+test_that("Using col_plan to get column names", {
+  # Without any spanning
+  basic_cols <- tfrmt(
+    group = "group",
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value",
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    ),
+    col_plan = col_plan(
+      group, label,
+      "Placebo",
+      new_name = "Low",
+      contains("High")
+    ))
+
+  col_names <- make_mock_data(basic_cols) %>%
+    pull(column) %>%
+    unique()
+  expect_equal(col_names, c("Placebo", "Low", "High"))
+
+  #With spanning
+  auto_col_df <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    column = c(test1,test2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    ),
+    col_plan = col_plan(
+      group,
+      label,
+      col4,
+      span_structure(test1 = `span 1`, test2 = c(col1, contains("col2"))),
+      span_structure(test1 = `span 2`, test2 = c(col7, col8)),
+      col3,
+      -col5
+    )
+  ) %>%
+    make_mock_data() %>%
+    distinct(test1, test2)
+
+  man_col_df <- tibble(test2 = c("col4","col3", "col5", "col1", "col2", "col7","col8"),
+                       test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)))
+  expect_equal(auto_col_df, man_col_df)
+
+})
