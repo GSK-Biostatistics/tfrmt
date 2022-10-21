@@ -64,7 +64,10 @@ apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
         ))
     }
 
-    out <- unite_df_to_data_names(data_names, preselected_cols = c(), column_names = col_lab)
+    out <- unite_df_to_data_names(data_names, preselected_cols = c(), column_names = col_lab) %>%
+      map(~char_as_quo(.x)) %>%
+      do.call("vars",.)
+
   } else {
     out <- col_plan_vars
   }
