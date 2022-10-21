@@ -3,7 +3,7 @@
 #' Define how the columns of the table body should be aligned, whether left,
 #' right or on a specific character(s).
 #'
-#' @param ... series of element_align objects
+#' @param ... series of element_col objects
 #'
 #' @return col_style_plan  object
 #'

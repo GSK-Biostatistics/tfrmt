@@ -7,7 +7,7 @@
 col_style_plan(...)
 }
 \arguments{
-\item{...}{series of element_align objects}
+\item{...}{series of element_col objects}
 }
 \value{
 col_style_plan  object

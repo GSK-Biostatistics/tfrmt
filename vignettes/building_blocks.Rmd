@@ -46,5 +46,5 @@ The following structures are available:
 
 **4. Elements:** `element_*()`
 
-The element objects are for defining the *aesthetics* of the table (i.e., non-text styling). Inspired by ggplot2, elements provide a mechanism for performing aesthetic modifications such as column alignment (`element_align`) or the positioning of group labels (`element_row_grp_loc`). These are passed through plan or structure objects. 
+The element objects are for defining the *aesthetics* of the table (i.e., non-text styling). Inspired by ggplot2, elements provide a mechanism for performing aesthetic modifications such as column alignment and width (`element_col`) or the positioning of group labels (`element_row_grp_loc`). These are passed through plan or structure objects. 
 

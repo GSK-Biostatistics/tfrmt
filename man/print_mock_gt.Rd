@@ -4,7 +4,7 @@
 \alias{print_mock_gt}
 \title{Print mock table to GT}
 \usage{
-print_mock_gt(tfrmt, .data = NULL, .default = 1:3, n_cols = 3)
+print_mock_gt(tfrmt, .data = NULL, .default = 1:3, n_cols = NULL)
 }
 \arguments{
 \item{tfrmt}{tfrmt the mock table will be based off of}
@@ -15,8 +15,9 @@ and parameter values will be estimated based on the tfrmt}
 \item{.default}{sequence to replace the default values if a dataset isn't
 provided}
 
-\item{n_cols}{the number of columns this will only be used if mock data isn't
-provided}
+\item{n_cols}{the number of columns. This will only be used if mock data isn't
+provided. If not supplied, it will default to using the \code{col_plan} from the
+\code{tfrmt}. If neither are available it will use 3.}
 }
 \value{
 a stylized gt object
@@ -26,42 +27,29 @@ Print mock table to GT
 }
 \section{Examples}{
 
+Hello world
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{
-# Create tfrmt specification
-tfrmt_spec <- tfrmt(
-  label = label,
-  column = column,
-  param = param,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine(
-                     "\{count\} \{percent\}",
-                     count = frmt("xxx"),
-                     percent = frmt_when("==100"~ frmt(""),
-                                         "==0"~ "",
-                                         "TRUE" ~ frmt("(xx.x\%)"))))
-  ))
+  # Create tfrmt specification tfrmt_spec <- tfrmt( label = label, column =
+  column, param = param, body_plan = body_plan( frmt_structure(group_val =
+  ".default", label_val = ".default", frmt_combine( "\{count\} \{percent\}",
+  count = frmt("xxx"), percent = frmt_when("==100"~ frmt(""), "==0"~ "",
+  "TRUE" ~ frmt("(xx.x\%)")))) ))
 
-# Print mock table using default
-print_mock_gt(tfrmt = tfrmt_spec)
+  # Print mock table using default print_mock_gt(tfrmt = tfrmt_spec)
+
 }\if{html}{\out{</div>}}
 
-\if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png" style="width:50\%;">
-}}
+\if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png" style="width:50\%;"> }}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create mock data
-df <- crossing(label = c("label 1", "label 2", "label 3"),
-               column = c("placebo", "trt1", "trt2"),
-               param = c("count", "percent"))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  # Create mock data df <- crossing(label = c("label 1", "label 2",
+  "label 3"), column = c("placebo", "trt1", "trt2"), param = c("count",
+  "percent"))
 
-# Print mock table using mock data
-print_mock_gt(tfrmt_spec, df)
+  # Print mock table using mock data print_mock_gt(tfrmt_spec, df)
+
 }\if{html}{\out{</div>}}
 
-\if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png" style="width:50\%;">
-}}
+\if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png" style="width:50\%;"> }}
 }
 

@@ -1,19 +1,23 @@
 #' Make mock data for display shells
 #'
 #' @param tfrmt tfrmt object
-#' @param .default Number of unique levels to create for group/label values set to ".default"
-#' @param n_cols Number of columns in the output table (not including group/label variables)
+#' @param .default Number of unique levels to create for group/label values set
+#'   to ".default"
+#' @param n_cols Number of columns in the output table (not including
+#'   group/label variables). If not supplied it will default to using the
+#'   `col_plan` from the `tfrmt`. If neither are available it will use 3.
 #'
 #' @return tibble containing mock data
 #'
 #' @importFrom tidyr crossing unnest expand
-#' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble across cur_column
-#' @importFrom purrr map map_dfr map_chr map_dfc
+#' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble
+#'   across cur_column
+#' @importFrom purrr map map_dfr map_chr map_dfc reduce
 #' @importFrom rlang as_name is_empty
 #' @importFrom tidyselect everything all_of
 #'
 #' @noRd
-make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
+make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
 
   body_plan <- tfrmt$body_plan
   grp_vars <- tfrmt$group %>% map_chr(as_name)
@@ -24,14 +28,14 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     map_dfr(
       function(x){
         crossing(
-            # if group_val is a named list, return as a tibble with list names as colnames
-            # otherwise (group_val = ".default") convert to tibble with colname "grp"
-            if(is.list(x$group_val)) as_tibble(x$group_val) else tibble(..grp = x$group_val[[1]]),
-            !!tfrmt$label := x$label_val,
-            !!tfrmt$param := x$param_val
-          )
-    },
-    .id = "frmt_num")
+          # if group_val is a named list, return as a tibble with list names as colnames
+          # otherwise (group_val = ".default") convert to tibble with colname "grp"
+          if(is.list(x$group_val)) as_tibble(x$group_val) else tibble(..grp = x$group_val[[1]]),
+          !!tfrmt$label := x$label_val,
+          !!tfrmt$param := x$param_val
+        )
+      },
+      .id = "frmt_num")
 
 
   # find out which group variables are not present
@@ -64,44 +68,25 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
     unnest(everything()) %>%
     group_by(.data$frmt_num) %>%
     expand(!!!expand_cols) %>%
-    ungroup
-
-  ## add sorting_cols. Not functional, will not impact actual output
-  if(!is.null(tfrmt$sorting_cols)){
-
-    sorting_cols_vars <- tfrmt$sorting_cols %>% map_chr(as_name)
-    n_sorting_cols <- length(sorting_cols_vars)
-
-    sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x){
-      tibble(!!sorting_cols_vars[x] := 1)
-    })
-
-    output_dat <- output_dat %>%
-      mutate(
-        `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
-      ) %>%
-      unnest("__tfrmt__mock__sorting_col")
-  }
+    ungroup() %>%
+    add_sorting_cols(tfrmt$sorting_cols)
 
 
   ## add `column` columns
-  column_vars <- tfrmt$column %>% map_chr(as_label)
-  if(identical(column_vars, "__tfrmt__column")){
-    column_vars <- "col"
-  }
-  n_spans <- length(column_vars)
-  col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
-  if(n_spans > 1){
-    col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
-      tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
-    })
-    col_def <- bind_cols(col_spans_df, col_def)
-  }
+  col_def <- make_col_df(column = tfrmt$column, group = tfrmt$group,
+                         label = tfrmt$label, col_plan = tfrmt$col_plan, n_cols)
+
   output_dat <- output_dat %>%
     mutate(
       `__tfrmt__mock__columns` = list(col_def)
     ) %>%
-    unnest("__tfrmt__mock__columns")
+    unnest("__tfrmt__mock__columns") %>%
+  #Add big N's
+    add_mock_big_ns(column = tfrmt$column,
+                    param = tfrmt$param,
+                    big_n_struct = tfrmt$big_n)
+
+
 
   # remove the frmt_num field
   output_dat %>%
@@ -120,9 +105,108 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = 3){
 #' @noRd
 process_for_mock <-function(x, column, .default = 1:3){
 
-      if(x == ".default"){
-        str_c(column, "_", .default) %>% list
-      } else {
-        list(x)
-      }
+  if(x == ".default"){
+    str_c(column, "_", .default) %>% list
+  } else {
+    list(x)
+  }
+}
+
+
+#' Regex to remove things like contains, and - etc.
+#'
+#' @param names string vec
+#' @param dont_inc values to remove
+#'
+#' @return cleaned up string vec
+#' @noRd
+clean_col_names <- function(names, dont_inc){
+  names %>%
+    map_chr(as_label) %>%
+    str_remove_all('^.*\\(\\"') %>%
+    str_remove_all('^-') %>%
+    str_remove_all('\\"\\)') %>%
+    setdiff(dont_inc)
+}
+
+# Adds the sorting columns if relevant otherwise just returns data
+add_sorting_cols <- function(data, sorting_cols){
+  if(!is.null(sorting_cols)){
+
+    sorting_cols_vars <- sorting_cols %>% map_chr(as_name)
+    n_sorting_cols <- length(sorting_cols_vars)
+
+    sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x){
+      tibble(!!sorting_cols_vars[x] := 1)
+    })
+
+    data <- data %>%
+      mutate(
+        `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
+      ) %>%
+      unnest("__tfrmt__mock__sorting_col")
+  }
+  data
+}
+
+make_col_df <- function(column, group, label, col_plan, n_cols){
+  column_vars <- column %>% map_chr(as_label)
+  grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label))
+  if(identical(column_vars, "__tfrmt__column")){
+    column_vars <- "col"
+  }
+
+  n_spans <- length(column_vars)
+
+  # Use provided column names if there is no spanning
+  if(!is.null(col_plan) & n_spans == 1 & is.null(n_cols)){
+    cols_to_use <- col_plan$dots %>%
+      clean_col_names(dont_inc = grp_lb_vars)
+    col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
+  } else if(!is.null(col_plan) & is.null(n_cols)){
+    # Gets the lowest level columns only
+    low_lvl_vars <- col_plan$dots %>%
+      discard(is.list) %>%
+      clean_col_names(dont_inc = grp_lb_vars)
+
+    low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
+
+    # creates a df for each span structure
+    span_df <- col_plan$dots %>%
+      keep(is.list) %>%
+      map_dfr(function(x){
+        span_df <- x %>%
+          map(~clean_col_names(., c())) %>%
+          reduce(crossing) %>%
+          unnest(cols = everything())
+        names(span_df) <- names(x)
+        span_df
+      })
+    col_def <- bind_rows(low_lvl_def, span_df)
+
+  } else {
+    n_cols <- ifelse(is.null(n_cols), 3, n_cols)
+    col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
+    if(n_spans > 1){
+      col_spans_df <- map_dfc(seq_len(n_spans-1), function(x){
+        tibble(!!column_vars[x] := rep(paste0("span_", column_vars[x]), n_cols))
+      })
+      col_def <- bind_cols(col_spans_df, col_def)
+    }
+  }
+  col_def
+}
+
+add_mock_big_ns <- function(data, column, param, big_n_struct){
+  if(!is.null(big_n_struct)){
+    col <- column %>% last()
+    col_vals <- data %>%
+      pull(!!col) %>%
+      unique()
+
+    data <- tibble(!!col := col_vals,
+           !!param := big_n_struct$param_val) %>%
+      bind_rows(data, .)
+  }
+  data
 }
