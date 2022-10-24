@@ -58,7 +58,6 @@ Imports:
     tibble,
     ggplot2
 Config/testthat/edition: 3
-VignetteBuilder: knitr
 URL: https://GSK-Biostatistics.github.io/tfrmt/,
     https://gsk-biostatistics.github.io/tfrmt/
 BugReports: https://github.com/GSK-Biostatistics/tfrmt/issues
