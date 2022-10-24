@@ -184,7 +184,6 @@ cleaned_data_to_gt <- function(.data, tfrmt){
     ) %>%
     cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
     format_gt_column_labels(.data) %>%
-    apply_gt_col_style_plan_widths(tfrmt$col_style_plan) %>%
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = align),
       locations = cells_body(columns = everything())
