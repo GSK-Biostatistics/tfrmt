@@ -35,15 +35,45 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param){
 
 #' Display formatting applied to each row
 #'
+#' Used when debugging formatting, it is an easy way to allow you to see which
+#' formats are applied to each row in your dataset.
+#'
 #' @param tfrmt tfrmt object to apply to the data
 #' @param .data Data to apply the tfrmt to
-#' @param convert_to_txt Logical value converting formatting to text, by default `TRUE`
+#' @param convert_to_txt Logical value converting formatting to text, by default
+#'   `TRUE`
 #'
 #' @importFrom dplyr mutate rename select case_when
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_remove str_remove_all str_sub str_trim
 #' @return formatted tibble
 #' @export
+#' @examples
+#'  library(dplyr)
+#'  library(tidyr)
+#'
+#'  tfrmt_spec <- tfrmt(
+#'  label = label,
+#'  column = column,
+#'  param = param,
+#'  value=value,
+#'  body_plan = body_plan(
+#'    frmt_structure(group_val = ".default", label_val = ".default",
+#'                   frmt_combine(
+#'                     "{count} {percent}",
+#'                     count = frmt("xxx"),
+#'                     percent = frmt_when("==100"~ frmt(""),
+#'                                         "==0"~ "",
+#'                                         "TRUE" ~ frmt("(xx.x%)"))))
+#'  ))
+#'
+#'  # Create data
+#'  df <- crossing(label = c("label 1", "label 2"),
+#'                 column = c("placebo", "trt1"),
+#'                 param = c("count", "percent")) %>%
+#'    mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'
+#'  display_row_frmts(tfrmt_spec,df)
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
   if (convert_to_txt == FALSE){
     output <- match_frmt_to_rows(.data ,
