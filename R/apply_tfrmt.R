@@ -1,4 +1,4 @@
-#' Title
+#' Apply formatting to dataset
 #'
 #' @param .data Data to apply the tfrmt to
 #' @param tfrmt tfrmt object to apply to the data

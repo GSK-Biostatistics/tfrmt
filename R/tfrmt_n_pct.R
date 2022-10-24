@@ -19,7 +19,7 @@
 #' ```
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_n_percent.png\" style=\"width:50\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_n_percent.png\" alt = \"3 by 3 table with XXX (XX.X)% for all values\" style=\"width:50\\%;\">"`
 #' }}
 #'
 #' @importFrom rlang parse_expr

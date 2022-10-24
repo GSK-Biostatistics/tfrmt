@@ -20,7 +20,7 @@ Print to gt
 \section{Examples}{
 
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(dplyr)
 # Create tfrmt specification
 tfrmt_spec <- tfrmt(
   label = label,
@@ -48,7 +48,7 @@ print_to_gt(tfrmt_spec,df)
 }\if{html}{\out{</div>}}
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png" style="width:50\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png" alt = "2 by 2 table with labels down the side and placebo and trt1 across the top" style="width:50\%;">
 }}
 }
 
