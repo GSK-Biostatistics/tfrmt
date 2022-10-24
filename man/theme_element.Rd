@@ -4,7 +4,7 @@
 \alias{element_col}
 \title{Element Column}
 \usage{
-element_col(col = vars(), align = NULL, width = NULL)
+element_col(col, align = NULL, width = NULL, ...)
 }
 \arguments{
 \item{col}{Column value to align on from \code{column} variable.}
@@ -16,10 +16,9 @@ one character is provided, alignment will be based on the first occurrence
 of any of the characters. For alignment based on white space, leading white
 spaces will be ignored.}
 
-\item{width}{Width to apply to the column. Acceptable values include a
-numeric value, or a character string of numbers ending with either "px" or
-"\%", indicating the column width is either n pixels across or \% of the
-total table width}
+\item{width}{Width to apply to the column in number of characters.. Acceptable values include a
+numeric value, or a character string of a number.
+@param ... These dots are for future extensions and must be empty}
 }
 \description{
 Element Column
@@ -32,9 +31,11 @@ columns are left-aligned by default.
 
  plan <- col_style_plan(
     element_col(align = "left", width = 100, col = "my_var"),
-    element_col(align = "right", width = "200px", col = vars(four)),
+    element_col(align = "right", width = 200, col = vars(four)),
     element_col(align = c(".", ",", " "), col = vars(two, three)),
-    element_col(width = "25\%", col = c(two, three))
+    element_col(width = 25, col = c(two, three)),
+    element_col(width = 25, col = two),
+    element_col(width = 25, col = span_structure(span = value, col = val2))
    )
 
 }
