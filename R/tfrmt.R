@@ -55,7 +55,7 @@
 #' @section Images:
 #' Here are some example outputs:
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-groups-three-cols-cropped.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-groups-three-cols-cropped.jpg\" alt =\"Example showing no groups, one group and two groups\" style=\"width:100\\%;\">"`
 #' }}
 #'
 #' @rdname tfrmt

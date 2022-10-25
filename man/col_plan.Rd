@@ -51,7 +51,7 @@ Alternatively, once the gt table is produced, use the
 Here are some example outputs:
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg" alt ="Example of a dataset being turned into a table with spanning columns" style="width:100\%;">
 }}
 }
 

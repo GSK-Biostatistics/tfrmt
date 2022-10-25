@@ -19,7 +19,7 @@
 #' @section Images:
 #' Here are some example outputs:
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" alt = \"Example comparing fmt, frmt_combine, and frmt_when\" style=\"width:100\\%;\">"`
 #' }}
 #'
 #' @examples
