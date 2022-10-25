@@ -37,6 +37,7 @@
 #'         )
 #'
 #' @importFrom tidyr expand_grid
+#' @returns frmt_structure object
 #' @export
 frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
   param_frmt <- list(...)

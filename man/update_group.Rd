@@ -13,6 +13,8 @@ update_group(tfrmt, ...)
 }
 \value{
 A \code{tfrmt} with the \code{group} variables updated in all places
+
+tfrmt object with updated groups#'
 }
 \description{
 Remap group values in a tfrmt

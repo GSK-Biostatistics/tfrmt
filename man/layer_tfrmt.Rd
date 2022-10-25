@@ -13,6 +13,9 @@ layer_tfrmt(x, y, ..., join_body_plans = TRUE)
 
 \item{join_body_plans}{should the \code{body_plans} be combined, or just keep styling in y. See details: join_body_plans for more details.}
 }
+\value{
+tfrmt object
+}
 \description{
 Provide utility for layering tfrmt objects together. If both tfrmt's have
 values, it will preferentially choose the second tfrmt by default. This is an

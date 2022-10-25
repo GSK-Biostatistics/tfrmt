@@ -293,6 +293,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 #' @param group symbolic list of grouping
 #' @param label symbolic label column
 #'
+#' @noRd
 remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
 
   # check which group/label columns are available

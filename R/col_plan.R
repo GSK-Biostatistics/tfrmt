@@ -40,6 +40,7 @@
 #'
 #' @seealso \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html}{Link to related article}
 #'
+#' @return col_plan object
 #' @export
 #' @examples
 #'
@@ -116,6 +117,8 @@ col_plan <- function(..., .drop = FALSE){
 
 #' @rdname col_plan
 #'
+#' @return span_structure object
+#'
 #' @export
 span_structure <- function(...){
 
@@ -133,6 +136,7 @@ is_span_structure <- function(x){
 }
 
 #' @importFrom rlang eval_tidy
+#' @noRd
 check_span_structure_dots <- function(x){
 
   x_names <- names(x)

@@ -20,6 +20,7 @@
 #' Consider setting `join_body_plan` to `FALSE`. Only the y `body_plan` will be
 #' preserved.
 #'
+#' @returns tfrmt object
 #' @export
 #' @examples
 #'
@@ -147,8 +148,8 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #'
 #' @importFrom rlang as_label is_empty
 #'
+#' @returns tfrmt object with updated groups#'
 #' @export
-#'
 #' @examples
 #'
 #' tfrmt_spec <- tfrmt(

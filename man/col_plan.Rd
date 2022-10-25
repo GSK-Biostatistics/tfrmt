@@ -18,6 +18,11 @@ arguments named to match the name the column in the input data has to identify t
 \item{.drop}{Boolean. Should un-listed columns be dropped from the data.
 Defaults to FALSE.}
 }
+\value{
+col_plan object
+
+span_structure object
+}
 \description{
 Using <\code{\link[=dplyr_tidy_select]{tidy-select}}> expressions and a series
 span_structures, define the order of the columns. The selection follows "last

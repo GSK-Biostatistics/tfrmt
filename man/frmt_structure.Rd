@@ -16,6 +16,9 @@ the given frmt is implemented}
 \item{...}{either a \code{\link[=frmt]{frmt()}}, \code{\link[=frmt_combine]{frmt_combine()}}, or a \code{\link[=frmt_when]{frmt_when()}} object.
 This can be named to also specify the parameter value}
 }
+\value{
+frmt_structure object
+}
 \description{
 Function needed to create a frmt_structure object, which is a building block
 of \code{\link[=body_plan]{body_plan()}}. This specifies the rows the format will be applied to.

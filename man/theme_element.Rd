@@ -21,6 +21,9 @@ numeric value, or a character string of numbers ending with either "px" or
 "\%", indicating the column width is either n pixels across or \% of the
 total table width}
 }
+\value{
+element_col object
+}
 \description{
 Element Column
 }

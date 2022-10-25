@@ -11,6 +11,7 @@
 #' @param pct_frmt_when formatting to be used on the the percent values
 #' @param tfrmt_obj an optional tfrmt object to layer
 #'
+#' @returns tfrmt object
 #' @export
 #' @section Examples:
 #'
