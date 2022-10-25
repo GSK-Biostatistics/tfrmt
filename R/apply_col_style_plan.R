@@ -36,30 +36,38 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars){
   for(el_idx in seq_along(style_plan)){
 
     style_el <- style_plan[[el_idx]]
-    selection <- style_el$cols[[1]]
 
-    if(!is_span_structure(selection)){
-      col_selection <- col_plan_quo_to_vars(
-        x = style_el$cols,
-        column_names = column_names,
-        data_names = names(.data),
-        preselected_cols = vars()
-      )
-    }else{
-      col_selection <- col_plan_span_structure_to_vars(
-        x = style_el$cols,
-        column_names = column_names,
-        data_names = names(.data),
-        preselected_cols = vars()
-      )
+    col_selections <- list()
+
+    for( sel_id in seq_along(style_el$cols)){
+
+      selection <- style_el$cols[sel_id]
+
+      if(!is_span_structure(selection[[1]])){
+        col_selection <- col_plan_quo_to_vars(
+          x = selection,
+          column_names = column_names,
+          data_names = names(.data),
+          preselected_cols = vars()
+        )
+      }else{
+        col_selection <- col_plan_span_structure_to_vars(
+          x = selection,
+          column_names = column_names,
+          data_names = names(.data),
+          preselected_cols = vars()
+        )
+      }
+
+      col_selections <- c(col_selections, col_selection)
     }
 
-    if(length(col_selection) > 0){
+    if(length(col_selections) > 0){
       col_style_selection <- style_el[setdiff(names(style_el),"cols")] %>%
         map(list) %>%
         as_tibble() %>%
         bind_cols(
-          tibble( col = unlist(col_selection) )
+          tibble( col = unlist(col_selections) )
         )
       total_col_style_selection <- c(
         total_col_style_selection,

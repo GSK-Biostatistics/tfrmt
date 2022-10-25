@@ -147,7 +147,7 @@ element_col <- function(col, align = NULL, width = NULL, ...){
 
   cols <- as.list(substitute(substitute(col)))[-1] %>%
     map(trim_vars_quo_c) %>%
-    unlist() %>%
+    do.call('c',.) %>%
     check_col_plan_dots()
 
   if(is.null(width) & is.null(align)){

@@ -46,6 +46,20 @@ test_that("element_col - errors", {
 
 })
 
+test_that("element_col - advanced", {
+
+  element_1 <- element_col(align = "left", col = c(n_tot,p,test))
+  element_2 <- element_col(align = "left", col = c(n_tot,p,"test"))
+  element_3 <- element_col(align = "right", col = span_structure(col = test, col2 = value))
+  element_4 <- element_col(align = ".", col = c(trt1, span_structure(col = test, col2 = value)))
+
+  expect_equal(element_1$col, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
+  expect_equal(element_2$col, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
+  expect_equal(element_3$col, list(list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
+  expect_equal(element_4$col, list(quo(trt1),list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
+
+})
+
 test_that("col_style_plan - basic", {
 
   csp <- col_style_plan(
@@ -75,7 +89,6 @@ test_that("col_style_plan - error non-element_col", {
   )
 
 })
-
 
 test_that("left & right align works", {
 
@@ -139,10 +152,10 @@ test_that("alignment of multiple columns works", {
     "median  ","two"    ," 14      ",
     "(q1, q3)","two"    ,"(10, 20) ",
     "n (%)   ","three"  ," 24 (58%)",
-    "mean    ","three"  ," 15.4",
-    "sd      ","three"  ,"  8.25",
-    "median  ","three"  ," 16",
-    "(q1, q3)","three"  ,"(11, 22)",
+    "mean    ","three"  ," 15.4    ",
+    "sd      ","three"  ,"  8.25   ",
+    "median  ","three"  ," 16      ",
+    "(q1, q3)","three"  ,"(11, 22) ",
     "n (%)   ","four"   ,"      ",
     "mean    ","four"   ,"<0.001",
     "sd      ","four"   ,"      ",
@@ -183,15 +196,15 @@ test_that("alignment of multiple columns works", {
     "median  "  ,"two"    ,"       14",
     "(q1, q3)"  ,"two"    ," (10, 20)",
     "n (%)   "  ,"three"  ," 24 (58%)",
-    "mean    "  ,"three"  ," 15.4",
-    "sd      "  ,"three"  ,"  8.25",
-    "median  "  ,"three"  ," 16",
-    "(q1, q3)"  ,"three"  ,"(11, 22)",
-    "n (%)   "  ,"four"   ,""   ,
+    "mean    "  ,"three"  ,"     15.4",
+    "sd      "  ,"three"  ,"     8.25",
+    "median  "  ,"three"  ,"       16",
+    "(q1, q3)"  ,"three"  ," (11, 22)",
+    "n (%)   "  ,"four"   ,"      "   ,
     "mean    "  ,"four"   ,"<0.001"   ,
-    "sd      "  ,"four"   ,""   ,
-    "median  "  ,"four"   ,"0.05"   ,
-    "(q1, q3)"  ,"four"   ,""
+    "sd      "  ,"four"   ,"      "   ,
+    "median  "  ,"four"   ,"  0.05"   ,
+    "(q1, q3)"  ,"four"   ,"      "
   )
 
   dat_aligned <- dat  %>%
@@ -299,6 +312,58 @@ test_that("tidyselect works", {
     apply_col_style_plan( plan)
 
   expect_equal(dat_aligned, dat_aligned_man)
+
+})
+
+test_that("span_structure works", {
+
+  dat <- tibble::tribble(
+    ~one       ,  ~ span_col, ~column ,  ~ value,
+    "n (%)"    , "Test Span1",  "trt1" , " 12 (34%)",
+    "n (%)"    , "Test Span2",  "trt2" , " 24 (58%)",
+    "n (%)"    ,          NA,  "four" , ""         ,
+    "mean"     , "Test Span1",  "trt1" , " 12.3"    ,
+    "mean"     , "Test Span2",  "trt2" , " 15.4"    ,
+    "mean"     ,          NA,  "four" , "<0.001"   ,
+    "sd"       , "Test Span1",  "trt1" , "  4.34"   ,
+    "sd"       , "Test Span2",  "trt2" , "  8.25"   ,
+    "sd"       ,          NA,  "four" , ""         ,
+    "median"   , "Test Span1",  "trt1" , " 14"      ,
+    "median"   , "Test Span2",  "trt2" , " 16"      ,
+    "median"   ,          NA,  "four" , "0.05"     ,
+    "(q1, q3)" , "Test Span1",  "trt1" , "(10, 20)" ,
+    "(q1, q3)" , "Test Span2",  "trt2" , "(11, 22)" ,
+    "(q1, q3)" ,          NA,  "four" , ""         )
+
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(span_col, column),
+    value = value,
+    col_style_plan = col_style_plan(
+      element_col(align = c(".", ",", " "), col = span_structure(span_col = "Test Span1")),
+      element_col(align = "right", col = vars(four)))
+  )
+
+  dat_aligned_man <- tibble(
+    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
+    `Test Span1___tlang_delim___trt1` = c(" 12 (34%)", " 12.3    ", "  4.34   ", " 14      ", "(10, 20) "),
+    `Test Span2___tlang_delim___trt2` = c(" 24 (58%)", " 15.4", "  8.25", " 16", "(11, 22)"),
+    four = c("      ", "<0.001", "      ", "  0.05", "      ")
+  )
+
+  dat_aligned <- dat %>%
+    pivot_wider(
+      names_from = c(span_col,column),
+      names_sep = .tlang_delim,
+      values_from = value,
+    ) %>%
+    clean_spanning_col_names() %>%
+    apply_col_style_plan( plan)
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+
 
 })
 
