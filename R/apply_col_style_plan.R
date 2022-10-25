@@ -16,11 +16,7 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars){
 
   style_plan <- tfrmt_obj$col_style_plan
 
-  if(is.null(style_plan)){
-    return(.data)
-  }
-
-  if(length(style_plan) == 0){
+  if(is.null(style_plan) || length(style_plan) == 0){
     return(.data)
   }
 
