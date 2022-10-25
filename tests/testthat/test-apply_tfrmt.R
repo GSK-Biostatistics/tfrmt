@@ -192,7 +192,7 @@ test_that("test tentative_process",{
   expect_true(!is_empty(rlang_abort_func_messages))
   expect_equal(
     rlang_abort_func_messages,
-    "Unable to to apply failing_func.\nReason: this function failed2\n"
+    "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"
   )
   
 })
