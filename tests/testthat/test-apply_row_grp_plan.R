@@ -722,9 +722,9 @@ test_that("Row group plans with col style plan",{
     col_style_plan =  col_style_plan(
       element_col(align = "right", col = g1), # col must be the top lebel group
       element_col(align = "right", col = one), # always bueno
-      element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
-      element_col(align = c(" "), col = trt1),
-      element_col(width = 100, col = four)
+      element_col(align = "right", width = 4, col = vars(starts_with("trt"))),
+      element_col(align = "left", col = trt1),
+      element_col(width = 10, col = four)
     )
   )
 
@@ -734,11 +734,16 @@ test_that("Row group plans with col style plan",{
   })
 
   expect_equal(
-    tfrmt_gt$`_boxhead`[,c("var","column_width")] %>% filter(!var=="..tfrmt_row_grp_lbl"),
-    tibble(
-      var = c("g1","one","trt1","trt2","four"),
-      column_width = list(list(""),list(""),list("200px"),list("200px"),list("100px"))
-    )
+    tfrmt_gt$`_data` %>%
+      select(-`..tfrmt_row_grp_lbl`) %>%
+      as.list(),
+    list(
+      g1 = c("G2_", "G2_", "G2_", "G2_", "G2_", " G1", " G1", " G1", " G1", " G3", " G3"),
+      one = c("        g3", "      mean", "        sd", "    median", "  --------", "        g3", "     n (%)", "      mean", "  --------", "        g3", "  (q1, q3)"),
+      trt1 = c(NA, "12.30     ", " 4.34     ", "14.00     ", "----------", NA, "12 (34.0%)", "          ", "----------", NA, "(10, 20)  "),
+      trt2 = c(NA, "     15.40", "      8.25", "     16.00", "----------", NA, "24\n(58.0%)", "          ", "----------", NA, "  (22,\n  22)"),
+      four = c(NA, "", "", "", "-----", NA, "", "<.001", "-----", NA, "")
+      )
   )
 
 
