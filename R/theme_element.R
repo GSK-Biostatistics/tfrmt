@@ -138,6 +138,13 @@ element_col <- function(col, align = NULL, width = NULL, ...){
 
   rlang::check_dots_empty0(...)
 
+  if(missing(col)){
+    abort(
+      "Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself",
+      class = "missing_element_col_value"
+    )
+  }
+
   cols <- as.list(substitute(substitute(col)))[-1] %>%
     map(trim_vars_quo_c) %>%
     unlist() %>%
