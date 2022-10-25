@@ -276,8 +276,6 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
-  browser()
-
   if(is.null(names(data_names))){
     names(data_names) <- data_names
   }else{
@@ -291,7 +289,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
     new_name = names(data_names)
    ) %>%
     mutate(
-      subtraction_status = str_detect(.data$original,"^-"),
+      subtraction_status = str_detect(.data$original ,"^-"),
       original = str_remove(.data$original,"^-")
     ) %>%
     separate(
