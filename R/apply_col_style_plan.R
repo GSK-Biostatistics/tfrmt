@@ -12,7 +12,7 @@
 #' @importFrom forcats fct_inorder
 #'
 #' @noRd
-apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars){
+apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = vars()){
 
   style_plan <- tfrmt_obj$col_style_plan
 
@@ -44,18 +44,26 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars){
           x = selection,
           column_names = column_names,
           data_names = names(.data),
-          preselected_cols = col_plan_vars,
+          preselected_cols = col_plan_vars %>% map_chr(as_label),
           return_only_selected = TRUE
-        ) %>% names()
-
+        )
       }else{
         col_selection <- col_plan_span_structure_to_vars(
           x = selection,
           column_names = column_names,
           data_names = names(.data),
-          preselected_cols = vars(),
+          preselected_cols = col_plan_vars %>% map_chr(as_label),
           return_only_selected = TRUE
-        ) %>% names()
+        )
+      }
+
+      ## use names if they exist, else use content
+      if(!is.null(names(col_selection))){
+        col_sel_names <- names(col_selection)
+        if(any(col_sel_names == "")){
+          col_sel_names[col_sel_names == ""] <- col_selection[col_sel_names == ""]
+        }
+        col_selection <- col_sel_names
       }
 
       col_selections <- c(col_selections, col_selection)
