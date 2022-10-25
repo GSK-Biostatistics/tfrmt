@@ -105,7 +105,7 @@ is_element_block <- function(x){
 #'   one character is provided, alignment will be based on the first occurrence
 #'   of any of the characters. For alignment based on white space, leading white
 #'   spaces will be ignored.
-#' @param width Width to apply to the column in number of characters.. Acceptable values include a
+#' @param width Width to apply to the column in number of characters. Acceptable values include a
 #'   numeric value, or a character string of a number.
 #' @param ... These dots are for future extensions and must be empty
 #'
