@@ -236,16 +236,14 @@ char_as_quo <- function(x) {
   eval(parse(text = expr_to_eval)[[1]])
 }
 
-#' @importFrom rlang quo_get_expr as_label
+#' @importFrom rlang quo_get_expr as_label is_empty
 eval_col_plan_quo <- function(x, data_names, preselected_vals){
-
-
 
   if(identical(as_label(x), "everything()")){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
 
-    if(!is.null(preselected_vals)){
+    if(!is_empty(preselected_vals)){
       data_names <- data_names[-seq_along(preselected_vals)]
     }
   }
