@@ -7,7 +7,8 @@
 element_col(col, align = NULL, width = NULL, ...)
 }
 \arguments{
-\item{col}{Column value to align on from \code{column} variable.}
+\item{col}{Column value to align on from \code{column} variable. May be a quoted
+or unquoted column name, a tidyselect semantic, or a span_structure.}
 
 \item{align}{Alignment to be applied to column. Acceptable values: "left" for
 left alignment, "right" for right alignment", or supply a vector of
@@ -17,8 +18,9 @@ of any of the characters. For alignment based on white space, leading white
 spaces will be ignored.}
 
 \item{width}{Width to apply to the column in number of characters.. Acceptable values include a
-numeric value, or a character string of a number.
-@param ... These dots are for future extensions and must be empty}
+numeric value, or a character string of a number.}
+
+\item{...}{These dots are for future extensions and must be empty}
 }
 \description{
 Element Column

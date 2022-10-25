@@ -107,7 +107,7 @@ is_element_block <- function(x){
 #'   spaces will be ignored.
 #' @param width Width to apply to the column in number of characters.. Acceptable values include a
 #'   numeric value, or a character string of a number.
-#'  @param ... These dots are for future extensions and must be empty
+#' @param ... These dots are for future extensions and must be empty
 #'
 #'
 #' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label
