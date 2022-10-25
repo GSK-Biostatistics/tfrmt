@@ -17,7 +17,7 @@ one character is provided, alignment will be based on the first occurrence
 of any of the characters. For alignment based on white space, leading white
 spaces will be ignored.}
 
-\item{width}{Width to apply to the column in number of characters.. Acceptable values include a
+\item{width}{Width to apply to the column in number of characters. Acceptable values include a
 numeric value, or a character string of a number.}
 
 \item{...}{These dots are for future extensions and must be empty}
