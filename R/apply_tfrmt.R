@@ -131,12 +131,13 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
       safely(fx)(...)
     if(!is.null(out[["error"]])){
       if(is.null(fail_desc)){
-        fail_desc <- paste0("Unable to to apply ",format(substitute(fx)),".")
+       fx_char <- as.character(substitute(fx))
+       fail_desc <- paste0("Unable to to apply ",fx_char,".")
       }
       error_message <- out[["error"]]$message
 
       if(error_message == ""){
-        error_message <- format(out[["error"]])
+        error_message <- format(out[["error"]],backtrace = FALSE)
       }
 
       fail_desc <-paste0(
