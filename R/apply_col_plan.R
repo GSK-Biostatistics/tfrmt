@@ -71,7 +71,8 @@ create_col_order <- function(data_names, columns, cp){
 
 }
 
-col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
+col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols,
+                                 return_only_selected = FALSE){
 
   ## ensure data_names order matches preselected_cols
   split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
@@ -111,13 +112,15 @@ col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols){
 
   }
 
-  unite_df_to_data_names(split_data_names, preselected_cols, column_names)
+  unite_df_to_data_names(split_data_names, preselected_cols, column_names,
+                         return_only_selected  = return_only_selected )
 }
 
 #' @importFrom rlang quo_get_expr quo
 #' @importFrom tidyr separate unite
 #' @importFrom dplyr filter pull mutate arrange left_join select
-col_plan_span_structure_to_vars <- function(x, column_names, data_names, preselected_cols){
+col_plan_span_structure_to_vars <- function(x, column_names, data_names, preselected_cols,
+                                            return_only_selected = FALSE){
 
   split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
 
@@ -200,7 +203,8 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
     left_join(ords, by = names(col_selections)) %>%
     arrange(.data$ord_col) %>%
     select(-"ord_col") %>%
-    unite_df_to_data_names(preselected_cols, column_names)
+    unite_df_to_data_names(preselected_cols, column_names,
+                           return_only_selected = return_only_selected)
 
 }
 
@@ -272,6 +276,8 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
+  browser()
+
   if(is.null(names(data_names))){
     names(data_names) <- data_names
   }else{
@@ -319,7 +325,8 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
 #' @importFrom dplyr case_when mutate pull
 #' @importFrom tidyr unite
 #' @importFrom tibble tibble
-unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names){
+unite_df_to_data_names <- function(split_data_names, preselected_cols, column_names,
+                                   return_only_selected = FALSE){
 
   new_preselected_cols_full <- split_data_names %>%
     unite("original",-c(starts_with("__tfrmt_new_name__"), "subtraction_status"),
@@ -343,5 +350,9 @@ unite_df_to_data_names <- function(split_data_names, preselected_cols, column_na
 
   names(selected) <- new_names
 
-  c(preselected_cols,selected)
+  if(return_only_selected){
+    selected
+  }else{
+    c(preselected_cols,selected)
+  }
 }

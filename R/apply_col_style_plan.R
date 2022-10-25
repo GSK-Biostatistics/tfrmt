@@ -44,15 +44,18 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars){
           x = selection,
           column_names = column_names,
           data_names = names(.data),
-          preselected_cols = vars()
-        )
+          preselected_cols = col_plan_vars,
+          return_only_selected = TRUE
+        ) %>% names()
+
       }else{
         col_selection <- col_plan_span_structure_to_vars(
           x = selection,
           column_names = column_names,
           data_names = names(.data),
-          preselected_cols = vars()
-        )
+          preselected_cols = vars(),
+          return_only_selected = TRUE
+        ) %>% names()
       }
 
       col_selections <- c(col_selections, col_selection)
