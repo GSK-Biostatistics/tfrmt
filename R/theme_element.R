@@ -169,8 +169,11 @@ element_col <- function(col, align = NULL, width = NULL, ...){
   if(!is.null(width)){
     if(is.character(width)){
       suppressWarnings(width <- as.numeric(width))
+      if(is.na(width)){
+        abort("`width` must be a value that can be converted into a number greater than 0", class = "invalid_element_col_value")
+      }
     }
-    if(!is.numeric(width) | width < 1 | length(width) > 1){
+    if(any(!is.numeric(width),width < 1, length(width) > 1)){
       abort("`width` must be a valid number greater than 0", class = "invalid_element_col_value")
     }
   }

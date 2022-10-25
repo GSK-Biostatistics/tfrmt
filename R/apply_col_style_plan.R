@@ -38,8 +38,6 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars){
     style_el <- style_plan[[el_idx]]
     selection <- style_el$cols[[1]]
 
-    browser()
-
     if(!is_span_structure(selection)){
       col_selection <- col_plan_quo_to_vars(
         x = style_el$cols,
