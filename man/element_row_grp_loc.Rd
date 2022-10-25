@@ -28,7 +28,7 @@ Element Row Group Location
 \section{Images}{
  Here are some example outputs:
 
-\if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg" style="width:100\%;"> }}
+\if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg" alt="Examples showing the difference between the row group locations" style="width:100\%;"> }}
 }
 
 \examples{

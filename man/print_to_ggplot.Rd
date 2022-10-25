@@ -41,7 +41,7 @@ table
 }\if{html}{\out{</div>}}
 
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png" style="width:50\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png" alt="Simple table to stack with a KM-plot" style="width:50\%;">
 }}
 }
 
