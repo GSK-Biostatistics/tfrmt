@@ -243,7 +243,7 @@ apply_col_width <- function(col, width, alignment){
 
 #' @importFrom stringi stri_wrap
 wrap_string <- function(x, width, pad_left, pad_right){
-    word_list <- stringi::stri_wrap(x, width = width, normalize = FALSE)
+    word_list <- stri_wrap(x, width = width, normalize = FALSE)
     do.call("paste0", list(pad_left, word_list, pad_right, collapse ="\n"))
 }
 

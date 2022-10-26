@@ -136,7 +136,7 @@ is_element_block <- function(x){
 #' @rdname theme_element
 element_col <- function(col, align = NULL, width = NULL, ...){
 
-  rlang::check_dots_empty0(...)
+  check_dots_empty0(...)
 
   if(missing(col)){
     abort(
