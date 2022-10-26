@@ -24,6 +24,8 @@ right or on a specific character(s).
     element_col(align = c(".", ",", " "), col = vars(two, three))
    )
 
+
+
 }
 \seealso{
 \code{\link[=element_col]{element_col()}} for more information on how to specify how to and which columns to align.

@@ -1,7 +1,7 @@
 test_that("Testing error messages for missing argument element_col",{
 
-  safe_tfrmt<-purrr::safely(tfrmt)
-  tfrmt<-safe_tfrmt(
+  expect_error(
+    tfrmt(
     # specify columns in the data
     group = c(rowlbl1,grp),
     label = rowlbl2,
@@ -37,8 +37,6 @@ test_that("Testing error messages for missing argument element_col",{
       row_grp_structure(group_val = ".default", element_block(post_space = " ")),
       label_loc = element_row_grp_loc(location = "column")
     )
-
-  )
-
-  expect_equal(tfrmt$error$message,"Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
+    ),
+    "Column element is missing from element_col[.] Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
 })

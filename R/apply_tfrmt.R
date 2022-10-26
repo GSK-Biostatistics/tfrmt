@@ -26,11 +26,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       value = tfrmt$value,
       column = tfrmt$column,
       mock = mock
-    ) %>%
-    tentative_process(
-      apply_col_style_plan_alignment_values,
-      tfrmt,
-      fail_desc = "Failure while aligning data values"
     )
 
   # check if order vars are causing rows to print over 2 lines
@@ -47,16 +42,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   tbl_dat_wide <- tbl_dat %>%
     pivot_wider_tfrmt(tfrmt, mock) %>%
     # arrange if sorting cols are applied
-    tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset") %>%
-
-    # Apply alignment to non-data columns
-    tentative_process(
-      apply_col_style_plan_alignment_non_values,
-      tfrmt,
-      non_data_cols,
-      data_col_values,
-      fail_desc = "Failure while aligning non-data values"
-    )
+    tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset")
 
   col_plan_vars <- tentative_process(
     names(tbl_dat_wide),
@@ -103,6 +89,11 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
                       tfrmt$label,
                       columns = tfrmt$column
                       ) %>%
+    tentative_process(
+      apply_col_style_plan,
+      tfrmt,
+      col_plan_vars = col_plan_vars
+    ) %>%
     tentative_process(remove_grp_cols,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
@@ -140,12 +131,13 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
       safely(fx)(...)
     if(!is.null(out[["error"]])){
       if(is.null(fail_desc)){
-        fail_desc <- paste0("Unable to to apply ",format(substitute(fx)),".")
+       fx_char <- as.character(substitute(fx))
+       fail_desc <- paste0("Unable to to apply ",fx_char,".")
       }
       error_message <- out[["error"]]$message
 
       if(error_message == ""){
-        error_message <- format(out[["error"]])
+        error_message <- format(out[["error"]],backtrace = FALSE)
       }
 
       fail_desc <-paste0(

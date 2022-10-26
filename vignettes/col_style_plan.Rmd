@@ -203,7 +203,8 @@ tfrmt(
   ), 
   col_style_plan =  col_style_plan(
     element_col(align = c("."), col = `p-value`),
-    element_col(align = c(".", ",", " "), col = vars(starts_with("trt"))))
+    element_col(align = c(".", ",", " "), col = starts_with("trt"))
+    )
   ) %>% 
   print_to_gt(dat)
 ```
@@ -255,7 +256,7 @@ It should be noted that in simple cases, the user can achieve desired alignment 
 
 ## Width
 
-Width is either set to a specific value in number of pixels or a percentage of the total table width. These values are specified by passing a character value to the "width" argument of `element_col`, taking the format of "##px" or "##%", where "##" is the number of pixels or percent. "px" indicates the width in pixels, and "%" indicates the width is a percent of the total table width. 
+Width is set as specific value in number of characters wide the column is allowed to be at most. This value is specified by passing a character or numeric value to the "width" argument of `element_col`, taking the format of "##" or ##, where "##" is the number of characters.
 
 Width can be applied to any of the columns in the table.
 
@@ -292,10 +293,10 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
   col_style_plan =  col_style_plan(
-    element_col(width = "300px", col = label),
-    element_col(align = c("."), width = "100px", col = `p-value`),
-    element_col(align = "left", width = "250px", col = trt1),
-    element_col(align = "right", width = "250px", col = trt2))
+    element_col(width = "10", col = label),
+    element_col(align = c("."), width = "10", col = `p-value`),
+    element_col(align = "left", width = "5", col = trt1),
+    element_col(align = "right", width = "5", col = trt2))
   ) %>% 
   print_to_gt(dat)
 
