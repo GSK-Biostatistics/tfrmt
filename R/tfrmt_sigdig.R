@@ -174,7 +174,7 @@ param_set <- function(...){
 #'   print_to_gt(.data = data)
 #' ```
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png\" alt=\"Table of Hematology, which are rounded for visits baseline to week 26\" style=\"width:100\\%;\">"`
 #' }}
 #'
 #'

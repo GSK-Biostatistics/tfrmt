@@ -12,3 +12,5 @@
 ^images$
 ^man/figures/$
 ^doc$
+vignettes
+man/figures/

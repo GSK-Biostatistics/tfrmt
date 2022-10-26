@@ -24,7 +24,7 @@ of \code{\link[=body_plan]{body_plan()}}. This specifies the rows the format wil
 
 Here are some example outputs:
 \if{html}{\out{
-<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg" style="width:100\%;">
+<img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg" alt = "Example comparing fmt, frmt_combine, and frmt_when" style="width:100\%;">
 }}
 }
 

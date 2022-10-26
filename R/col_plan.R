@@ -95,7 +95,7 @@
 #' Here are some example outputs:
 #'
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg\" style=\"width:100\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg\" alt =\"Example of a dataset being turned into a table with spanning columns\" style=\"width:100\\%;\">"`
 #' }}
 #'
 col_plan <- function(..., .drop = FALSE){
