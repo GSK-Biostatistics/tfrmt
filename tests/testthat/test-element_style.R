@@ -246,7 +246,7 @@ test_that("tidyselect works", {
     "(q1, q3)" ,"four" , ""         )
 
 
-  plan <- tfrmt(
+  starts_with_align_dot_plan <- tfrmt(
     label = one,
     column = vars(column),
     value = value,
@@ -268,11 +268,11 @@ test_that("tidyselect works", {
       names_from = column,
       values_from = value
       ) %>%
-    apply_col_style_plan( plan)
+    apply_col_style_plan( starts_with_align_dot_plan)
 
   expect_equal(dat_aligned, dat_aligned_man)
 
-  plan <- tfrmt(
+  vars_starts_with_plan <- tfrmt(
     label = one,
     column = vars(column),
     value = value,
@@ -292,11 +292,11 @@ test_that("tidyselect works", {
       names_from = column,
       values_from = value
     ) %>%
-    apply_col_style_plan( plan)
+    apply_col_style_plan( vars_starts_with_plan)
 
   expect_equal(dat_aligned, dat_aligned_man)
 
-  plan <- tfrmt(
+  starts_with_plan <- tfrmt(
     label = one,
     column = vars(column),
     value = value,
@@ -309,7 +309,31 @@ test_that("tidyselect works", {
       names_from = column,
       values_from = value
     ) %>%
-    apply_col_style_plan( plan)
+    apply_col_style_plan( starts_with_plan)
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+  plan_everything <- tfrmt(
+    label = one,
+    column = vars(column),
+    value = value,
+    col_style_plan = col_style_plan(
+      element_col(align = "right", col = everything())
+    ))
+
+  dat_aligned_man <- tibble(
+    one = c("   n (%)", "    mean", "      sd", "  median", "(q1, q3)"),
+    trt1 = c(" 12 (34%)", "     12.3", "     4.34", "       14", " (10, 20)"),
+    trt2 = c(" 24 (58%)", "     15.4", "     8.25", "       16", " (11, 22)"),
+    four = c("      ", "<0.001", "      ", "  0.05", "      ")
+  )
+
+  dat_aligned <-  dat %>%
+    pivot_wider(
+      names_from = column,
+      values_from = value
+    ) %>%
+    apply_col_style_plan( plan_everything, col_plan_vars = vars(one, trt1, trt2, four))
 
   expect_equal(dat_aligned, dat_aligned_man)
 

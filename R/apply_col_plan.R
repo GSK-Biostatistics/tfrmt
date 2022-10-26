@@ -72,7 +72,7 @@ create_col_order <- function(data_names, columns, cp){
 }
 
 col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols,
-                                 return_only_selected = FALSE){
+                                 return_only_selected = FALSE, default_everything_behavior = FALSE){
 
   ## ensure data_names order matches preselected_cols
   split_data_names <- split_data_names_to_df(data_names, preselected_cols, column_names)
@@ -84,7 +84,7 @@ col_plan_quo_to_vars <- function(x, column_names, data_names, preselected_cols,
   ## only apply tidyselect to _bottom_ column
   data_names_tmp <- split_data_names[[col_id]]
 
-  selected <- eval_col_plan_quo(x[[1]], data_names_tmp, preselected_cols)
+  selected <- eval_col_plan_quo(x[[1]], data_names_tmp, preselected_cols, default_everything_behavior = default_everything_behavior)
 
   ## if is subtraction, inverse selection to get subtracted columns and prepend with -
   if(grepl("^-",as_label(x[[1]]))){
@@ -241,9 +241,9 @@ char_as_quo <- function(x) {
 }
 
 #' @importFrom rlang quo_get_expr as_label is_empty
-eval_col_plan_quo <- function(x, data_names, preselected_vals){
+eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
-  if(identical(as_label(x), "everything()")){
+  if(identical(as_label(x), "everything()") & !default_everything_behavior){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
 

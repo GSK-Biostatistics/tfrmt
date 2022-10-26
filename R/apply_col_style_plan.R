@@ -12,7 +12,7 @@
 #' @importFrom forcats fct_inorder
 #'
 #' @noRd
-apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = vars()){
+apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.character(colnames(.data))){
 
   style_plan <- tfrmt_obj$col_style_plan
 
@@ -45,7 +45,8 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = vars()){
           column_names = column_names,
           data_names = names(.data),
           preselected_cols = col_plan_vars %>% map_chr(as_label),
-          return_only_selected = TRUE
+          return_only_selected = TRUE,
+          default_everything_behavior = TRUE
         )
       }else{
         col_selection <- col_plan_span_structure_to_vars(
@@ -56,6 +57,9 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = vars()){
           return_only_selected = TRUE
         )
       }
+
+      col_selection <- col_selection[!grepl("^-",col_selection)]
+      col_selection <- setdiff(col_selection, "..tfrmt_row_grp_lbl")
 
       ## use names if they exist, else use content
       if(!is.null(names(col_selection))){
@@ -101,7 +105,11 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = vars()){
       .data <-  .data %>%
         mutate(!!col_to_modify := apply_style_to_col(!!col_to_modify, col_style_to_apply[setdiff(names(col_style_to_apply),"col")]))
     }
+
+    force(.data)
   }
+
+  force(.data)
 
   return(.data)
 
@@ -218,7 +226,7 @@ apply_col_alignment <- function(col, align){
 #' @importFrom stringr str_dup str_c str_trim str_pad
 #' @importFrom rlang warn
 #' @noRd
-apply_col_width <- function(col, width, alignment){
+apply_col_width <- function(col, width){
 
   col_na_idx <- which(is.na(col))
   col_empty_strings_idx <- which(grepl("^\\s+$",col))
@@ -244,7 +252,7 @@ apply_col_width <- function(col, width, alignment){
 #' @importFrom stringi stri_wrap
 wrap_string <- function(x, width, pad_left, pad_right){
     word_list <- stri_wrap(x, width = width, normalize = FALSE)
-    do.call("paste0", list(pad_left, word_list, pad_right, collapse ="\n"))
+    paste0(pad_left, word_list, pad_right,collapse = "\n")
 }
 
 
