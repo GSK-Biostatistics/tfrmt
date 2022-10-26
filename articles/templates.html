@@ -103,35 +103,61 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/" class="external-link">gt</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span></code></pre></div>
-<p>A core design element of <code>tfrmt</code> is to offer the ability to layer tfrmts together. This ability provides an opportunity for organizations to build template table formats that can be shared, improved, and reused across multiple projects. Through layering, the users can customize the templates to create a specific table.</p>
-<p>A template is a function that, given a set of inputs (or none), creates a standard <code>tfrmt</code>. We will go through their applications below.<br>
-We will create an Adverse Events table template in this vignette to demonstrate the ideas behind developing a template tfrmt.</p>
+<p>A core design element of <code>tfrmt</code> is to offer the ability
+to layer tfrmts together. This ability provides an opportunity for
+organizations to build template table formats that can be shared,
+improved, and reused across multiple projects. Through layering, the
+users can customize the templates to create a specific table.</p>
+<p>A template is a function that, given a set of inputs (or none),
+creates a standard <code>tfrmt</code>. We will go through their
+applications below.<br>
+We will create an Adverse Events table template in this vignette to
+demonstrate the ideas behind developing a template tfrmt.</p>
 <div class="section level2">
 <h2 id="creating-a-standard-tfrmt">Creating a Standard tfrmt<a class="anchor" aria-label="anchor" href="#creating-a-standard-tfrmt"></a>
 </h2>
-<p>The first step to creating an Adverse Events table template is to determine the constants in the format. This requires there to be some standards that can be expected that allows the construction of the basic <code>tfrmt</code>:</p>
-<p>First, we can provide instructions on cell formatting via the <code>body_plan</code>. We know that the cells should be consistently formatted as follows:</p>
+<p>The first step to creating an Adverse Events table template is to
+determine the constants in the format. This requires there to be some
+standards that can be expected that allows the construction of the basic
+<code>tfrmt</code>:</p>
+<p>First, we can provide instructions on cell formatting via the
+<code>body_plan</code>. We know that the cells should be consistently
+formatted as follows:</p>
 <ul>
 <li>Total counts should be whole numbers</li>
-<li>Cells within each treatment group column should be a combination of a count and percent of that population. When percent is 100 or zero, value should be blank.</li>
-<li>p-values should be formatted where: &gt;.99 is displayed as “&gt;0.99”, &lt;0.001 is displayed as “&lt;0.001”, and any values between should be displayed to three decimal places. Missing p-values should be replaced with “–”.</li>
+<li>Cells within each treatment group column should be a combination of
+a count and percent of that population. When percent is 100 or zero,
+value should be blank.</li>
+<li>p-values should be formatted where: &gt;.99 is displayed as
+“&gt;0.99”, &lt;0.001 is displayed as “&lt;0.001”, and any values
+between should be displayed to three decimal places. Missing p-values
+should be replaced with “–”.</li>
 </ul>
-<p>Next, because our data is standardized as an analysis results dataset, we can pre-fill the expected column names. This also ensures that the data abides to the standard and names are set consistently:</p>
+<p>Next, because our data is standardized as an analysis results
+dataset, we can pre-fill the expected column names. This also ensures
+that the data abides to the standard and names are set consistently:</p>
 <ul>
 <li>
-<code>AEBODYSYS</code> defines the body systems and overall grouping of the data.</li>
+<code>AEBODYSYS</code> defines the body systems and overall grouping
+of the data.</li>
 <li>
 <code>AETERM</code> defines the labels to display in the table.</li>
 <li>
 <code>value</code> defines the values to present in the table.</li>
 <li>
-<code>treatment</code> defines the treatment for each value. This defines the column span.</li>
+<code>treatment</code> defines the treatment for each value. This
+defines the column span.</li>
 <li>
 <code>col</code> defines the column for each value.</li>
 <li>
-<code>param</code> is the column that describes the params of the <code>value</code> column. “AEs” indicates that the number in <code>value</code> represents the total counts, “n” represents the count for the specific AE, “pct” is the percent of the treatment population, and finally “pval” is the p-value.</li>
+<code>param</code> is the column that describes the params of the
+<code>value</code> column. “AEs” indicates that the number in
+<code>value</code> represents the total counts, “n” represents the count
+for the specific AE, “pct” is the percent of the treatment population,
+and finally “pval” is the p-value.</li>
 </ul>
-<p>With this information we can construct a template AE <code>tfrmt</code>:</p>
+<p>With this information we can construct a template AE
+<code>tfrmt</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">ae_tfrmt_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
@@ -181,9 +207,22 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <div class="section level2">
 <h2 id="functionalising-the-template">Functionalising the Template<a class="anchor" aria-label="anchor" href="#functionalising-the-template"></a>
 </h2>
-<p>Now that we have our tfrmt, we can wrap it into a function to form a template. This allows us to have as many layers as we’d like. For example, we can have an organization-level template to be used across all tables, a domain-level template to be used across all tables in a given domain, and a project-level template to be used for study-specific tables.</p>
-<p><code>tfrmt</code> offers the function <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code>, which provides the ability for layering <code>tfrmt</code> together. The first two arguments are the <code>tfrmt</code> objects to be layered. By default the body_plans of the tfrmt are joined together. We will leverage this function in the creation of our template.</p>
-<p>See below for an example of creating a template based on a function for layering <code>tfrmt</code> together. In this scenario the base AE template only has body_plan values for handling total counts, case counts, and percents, but not pvalues. We create another template for pvalues, and then finally layer it with the study specific tfrmt.</p>
+<p>Now that we have our tfrmt, we can wrap it into a function to form a
+template. This allows us to have as many layers as we’d like. For
+example, we can have an organization-level template to be used across
+all tables, a domain-level template to be used across all tables in a
+given domain, and a project-level template to be used for study-specific
+tables.</p>
+<p><code>tfrmt</code> offers the function <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code>,
+which provides the ability for layering <code>tfrmt</code> together. The
+first two arguments are the <code>tfrmt</code> objects to be layered. By
+default the body_plans of the tfrmt are joined together. We will
+leverage this function in the creation of our template.</p>
+<p>See below for an example of creating a template based on a function
+for layering <code>tfrmt</code> together. In this scenario the base AE
+template only has body_plan values for handling total counts, case
+counts, and percents, but not pvalues. We create another template for
+pvalues, and then finally layer it with the study specific tfrmt.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">ae_base_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span></span>
@@ -245,7 +284,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <span>  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span><span class="va">tfrmt_obj</span>, <span class="va">ae_pval_template</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Using these templates and what we learned from the layering vignette, we can apply multiple templates cleanly within a pipe:</p>
+<p>Using these templates and what we learned from the layering vignette,
+we can apply multiple templates cleanly within a pipe:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op">&lt;-</span> <span class="fu">ae_base_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -309,13 +349,25 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_ae2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<div id="giwcbjulza" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Unable to to apply apply_col_alignment.</span></span>
+<span><span class="co">#&gt; Reason: object 'fisher_pval___tlang_delim___p_high' not found</span></span>
+<span><span class="co">#&gt; Warning in tentative_process(., apply_col_alignment, styling_list$align[[1]]):</span></span>
+<span><span class="co">#&gt; restarting interrupted promise evaluation</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in tentative_process(., apply_col_alignment, styling_list$align[[1]]):</span></span>
+<span><span class="co">#&gt; restarting interrupted promise evaluation</span></span>
+<span></span>
+<span><span class="co">#&gt; Warning in tentative_process(., apply_col_alignment, styling_list$align[[1]]):</span></span>
+<span><span class="co">#&gt; restarting interrupted promise evaluation</span></span>
+<span><span class="co">#&gt; Unable to to apply apply_col_style_plan.</span></span>
+<span><span class="co">#&gt; Reason: Problem while computing `fisher_pval___tlang_delim___p_high = apply_style_to_col(...)`.</span></span></code></pre></div>
+<div id="naljjbpmcw" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#giwcbjulza .gt_table {
+#naljjbpmcw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -340,7 +392,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-left-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_heading {
+#naljjbpmcw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -352,7 +404,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_title {
+#naljjbpmcw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -364,7 +416,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-width: 0;
 }
 
-#giwcbjulza .gt_subtitle {
+#naljjbpmcw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -376,13 +428,13 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-width: 0;
 }
 
-#giwcbjulza .gt_bottom_border {
+#naljjbpmcw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_col_headings {
+#naljjbpmcw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -397,7 +449,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_col_heading {
+#naljjbpmcw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -417,7 +469,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#giwcbjulza .gt_column_spanner_outer {
+#naljjbpmcw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -429,15 +481,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 4px;
 }
 
-#giwcbjulza .gt_column_spanner_outer:first-child {
+#naljjbpmcw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#giwcbjulza .gt_column_spanner_outer:last-child {
+#naljjbpmcw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#giwcbjulza .gt_column_spanner {
+#naljjbpmcw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -449,7 +501,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   width: 100%;
 }
 
-#giwcbjulza .gt_group_heading {
+#naljjbpmcw .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -474,7 +526,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#giwcbjulza .gt_empty_group_heading {
+#naljjbpmcw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -489,15 +541,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#giwcbjulza .gt_from_md > :first-child {
+#naljjbpmcw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#giwcbjulza .gt_from_md > :last-child {
+#naljjbpmcw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#giwcbjulza .gt_row {
+#naljjbpmcw .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -516,7 +568,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#giwcbjulza .gt_stub {
+#naljjbpmcw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -529,7 +581,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#giwcbjulza .gt_stub_row_group {
+#naljjbpmcw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -543,11 +595,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: top;
 }
 
-#giwcbjulza .gt_row_group_first td {
+#naljjbpmcw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#giwcbjulza .gt_summary_row {
+#naljjbpmcw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -557,16 +609,16 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#giwcbjulza .gt_first_summary_row {
+#naljjbpmcw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_first_summary_row.thick {
+#naljjbpmcw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#giwcbjulza .gt_last_summary_row {
+#naljjbpmcw .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -576,7 +628,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_grand_summary_row {
+#naljjbpmcw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -586,7 +638,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#giwcbjulza .gt_first_grand_summary_row {
+#naljjbpmcw .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -596,11 +648,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_striped {
+#naljjbpmcw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#giwcbjulza .gt_table_body {
+#naljjbpmcw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -609,7 +661,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_footnotes {
+#naljjbpmcw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -623,7 +675,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_footnote {
+#naljjbpmcw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -632,7 +684,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#giwcbjulza .gt_sourcenotes {
+#naljjbpmcw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -646,7 +698,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#giwcbjulza .gt_sourcenote {
+#naljjbpmcw .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -654,64 +706,64 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#giwcbjulza .gt_left {
+#naljjbpmcw .gt_left {
   text-align: left;
 }
 
-#giwcbjulza .gt_center {
+#naljjbpmcw .gt_center {
   text-align: center;
 }
 
-#giwcbjulza .gt_right {
+#naljjbpmcw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#giwcbjulza .gt_font_normal {
+#naljjbpmcw .gt_font_normal {
   font-weight: normal;
 }
 
-#giwcbjulza .gt_font_bold {
+#naljjbpmcw .gt_font_bold {
   font-weight: bold;
 }
 
-#giwcbjulza .gt_font_italic {
+#naljjbpmcw .gt_font_italic {
   font-style: italic;
 }
 
-#giwcbjulza .gt_super {
+#naljjbpmcw .gt_super {
   font-size: 65%;
 }
 
-#giwcbjulza .gt_footnote_marks {
+#naljjbpmcw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#giwcbjulza .gt_asterisk {
+#naljjbpmcw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#giwcbjulza .gt_indent_1 {
+#naljjbpmcw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#giwcbjulza .gt_indent_2 {
+#naljjbpmcw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#giwcbjulza .gt_indent_3 {
+#naljjbpmcw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#giwcbjulza .gt_indent_4 {
+#naljjbpmcw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#giwcbjulza .gt_indent_5 {
+#naljjbpmcw .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -760,8 +812,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[412]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 65 (75.6 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[281]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.007</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.014</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.007</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.014</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">CARDIAC DISORDERS</th>
@@ -771,8 +823,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 30]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 12 (14.0 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 26]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.831</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.534</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.831</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.534</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">GASTROINTESTINAL DISORDERS</th>
@@ -782,8 +834,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 22]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 17 (19.8 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 26]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.692</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.580</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.692</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.580</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS</th>
@@ -794,7 +846,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 21 (24.4 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 46]</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.002</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.002</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  APPLICATION SITE PRURITUS</th>
@@ -815,8 +867,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 20]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  3 ( 3.5 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[  3]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.015</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.002</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.015</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.002</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  APPLICATION SITE IRRITATION</th>
@@ -826,8 +878,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 18]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  3 ( 3.5 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[  7]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.078</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.078</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.078</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.078</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">INFECTIONS AND INFESTATIONS</th>
@@ -837,8 +889,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 16]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 16 (18.6 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 35]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.194</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.685</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.194</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.685</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">NERVOUS SYSTEM DISORDERS</th>
@@ -848,7 +900,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 40]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  8 ( 9.3 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 11]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.013</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.013</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
@@ -859,8 +911,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 13]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  2 ( 2.3 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[  3]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.056</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.009</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.056</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.009</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS</th>
@@ -870,8 +922,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 14]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  8 ( 9.3 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 12]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.803</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.626</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.803</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.626</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">SKIN AND SUBCUTANEOUS TISSUE DISORDERS</th>
@@ -881,8 +933,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[111]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 20 (23.3 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 45]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.002</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.001</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.002</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.001</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  PRURITUS</th>
@@ -892,7 +944,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 31]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  8 ( 9.3 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 11]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.008</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.008</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
@@ -903,8 +955,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 22]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  8 ( 9.3 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 12]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.175</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.175</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.175</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.175</td>
 </tr>
 <tr>
 <th scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  RASH</th>
@@ -914,8 +966,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[ 18]</td>
 <td class="gt_row gt_right" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  5 ( 5.8 %)</td>
 <td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[  9]</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.048</td>
-<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.277</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.048</td>
+<td class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.277</td>
 </tr>
 </tbody>
 </table>
@@ -924,8 +976,12 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <div class="section level2">
 <h2 id="alternatives-to-full-templates">Alternatives to Full Templates<a class="anchor" aria-label="anchor" href="#alternatives-to-full-templates"></a>
 </h2>
-<p>In addition to defining full tfrmt templates, users can also create reusable frmt templates. The benefit of this is that teams can use these frmts in their tfrmt directly and can be sure their table will comply with the value presentation expected of their organization.</p>
-<p>Some common pre-defined frmts may include p-value displays, integers, <code>n (%)</code>, among other things.</p>
+<p>In addition to defining full tfrmt templates, users can also create
+reusable frmt templates. The benefit of this is that teams can use these
+frmts in their tfrmt directly and can be sure their table will comply
+with the value presentation expected of their organization.</p>
+<p>Some common pre-defined frmts may include p-value displays, integers,
+<code>n (%)</code>, among other things.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># defined frmts</span></span>
@@ -954,7 +1010,8 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <span>  <span class="va">str_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"["</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="va">ints</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, <span class="st">"]"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="va">str_exp</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Now that there are defined frmts, we can use them in our tfrmt to generate our table too.</p>
+<p>Now that there are defined frmts, we can use them in our tfrmt to
+generate our table too.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
@@ -1018,12 +1075,12 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="lkqoctywne" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<div id="gqvcugqlhz" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lkqoctywne .gt_table {
+#gqvcugqlhz .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1048,7 +1105,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-left-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_heading {
+#gqvcugqlhz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1060,7 +1117,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_title {
+#gqvcugqlhz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1072,7 +1129,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-width: 0;
 }
 
-#lkqoctywne .gt_subtitle {
+#gqvcugqlhz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1084,13 +1141,13 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-width: 0;
 }
 
-#lkqoctywne .gt_bottom_border {
+#gqvcugqlhz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_col_headings {
+#gqvcugqlhz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1105,7 +1162,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_col_heading {
+#gqvcugqlhz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1125,7 +1182,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#lkqoctywne .gt_column_spanner_outer {
+#gqvcugqlhz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1137,15 +1194,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 4px;
 }
 
-#lkqoctywne .gt_column_spanner_outer:first-child {
+#gqvcugqlhz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lkqoctywne .gt_column_spanner_outer:last-child {
+#gqvcugqlhz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lkqoctywne .gt_column_spanner {
+#gqvcugqlhz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1157,7 +1214,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   width: 100%;
 }
 
-#lkqoctywne .gt_group_heading {
+#gqvcugqlhz .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1182,7 +1239,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#lkqoctywne .gt_empty_group_heading {
+#gqvcugqlhz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1197,15 +1254,15 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: middle;
 }
 
-#lkqoctywne .gt_from_md > :first-child {
+#gqvcugqlhz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lkqoctywne .gt_from_md > :last-child {
+#gqvcugqlhz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lkqoctywne .gt_row {
+#gqvcugqlhz .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1224,7 +1281,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   overflow-x: hidden;
 }
 
-#lkqoctywne .gt_stub {
+#gqvcugqlhz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1237,7 +1294,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#lkqoctywne .gt_stub_row_group {
+#gqvcugqlhz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1251,11 +1308,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   vertical-align: top;
 }
 
-#lkqoctywne .gt_row_group_first td {
+#gqvcugqlhz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lkqoctywne .gt_summary_row {
+#gqvcugqlhz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1265,16 +1322,16 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#lkqoctywne .gt_first_summary_row {
+#gqvcugqlhz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_first_summary_row.thick {
+#gqvcugqlhz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lkqoctywne .gt_last_summary_row {
+#gqvcugqlhz .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1284,7 +1341,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_grand_summary_row {
+#gqvcugqlhz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1294,7 +1351,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#lkqoctywne .gt_first_grand_summary_row {
+#gqvcugqlhz .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1304,11 +1361,11 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-top-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_striped {
+#gqvcugqlhz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lkqoctywne .gt_table_body {
+#gqvcugqlhz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1317,7 +1374,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-bottom-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_footnotes {
+#gqvcugqlhz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1331,7 +1388,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_footnote {
+#gqvcugqlhz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1340,7 +1397,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#lkqoctywne .gt_sourcenotes {
+#gqvcugqlhz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1354,7 +1411,7 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   border-right-color: #D3D3D3;
 }
 
-#lkqoctywne .gt_sourcenote {
+#gqvcugqlhz .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1362,64 +1419,64 @@ We will create an Adverse Events table template in this vignette to demonstrate 
   padding-right: 5px;
 }
 
-#lkqoctywne .gt_left {
+#gqvcugqlhz .gt_left {
   text-align: left;
 }
 
-#lkqoctywne .gt_center {
+#gqvcugqlhz .gt_center {
   text-align: center;
 }
 
-#lkqoctywne .gt_right {
+#gqvcugqlhz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lkqoctywne .gt_font_normal {
+#gqvcugqlhz .gt_font_normal {
   font-weight: normal;
 }
 
-#lkqoctywne .gt_font_bold {
+#gqvcugqlhz .gt_font_bold {
   font-weight: bold;
 }
 
-#lkqoctywne .gt_font_italic {
+#gqvcugqlhz .gt_font_italic {
   font-style: italic;
 }
 
-#lkqoctywne .gt_super {
+#gqvcugqlhz .gt_super {
   font-size: 65%;
 }
 
-#lkqoctywne .gt_footnote_marks {
+#gqvcugqlhz .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#lkqoctywne .gt_asterisk {
+#gqvcugqlhz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lkqoctywne .gt_indent_1 {
+#gqvcugqlhz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lkqoctywne .gt_indent_2 {
+#gqvcugqlhz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lkqoctywne .gt_indent_3 {
+#gqvcugqlhz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lkqoctywne .gt_indent_4 {
+#gqvcugqlhz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lkqoctywne .gt_indent_5 {
+#gqvcugqlhz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1624,10 +1681,31 @@ We will create an Adverse Events table template in this vignette to demonstrate 
 <div class="section level2">
 <h2 id="best-practices">Best Practices<a class="anchor" aria-label="anchor" href="#best-practices"></a>
 </h2>
-<p>Here we list some of the ideas about best practices when it comes to defining tfrmt templates for use across organization. This comes from experience writing and using <code>tfrmt</code> and has the potential to change.</p>
-<p>A template tfrmt is intended to provide an interface for creating complex tfrmts more easily. When creating the function, it is helpful to differentiate the aspects of the display that will remain constant from those which are likely to change across tables or studies. These changes can be captured as arguments in the function. These functions should serve to provide a way to interact with and create tfrmts for standard tables in such a way that customization for a specific table’s <code>tfrmt</code> is simplified.</p>
-<p>However, as with normal function development, this should be balanced with limiting the number of arguments necessary to pass and get a functional tfrmt. For example, <code>tfrmt_sigdig</code> accepts a minimal set of arguments, including a data.frame or tibble, to define a complex body_plan. Simplifying the way users may enter this complex set of instructions without having to manually type it is part of its strength.</p>
-<p>In addition to minimizing the arguments to a tfrmt template, it is generally simpler to define and enforce standards around things people can see in a table. For example, the grouping, labels, and value formats are easy to see and understand. Standardizing around meta information that impacts a table but may not as easily be seen, such as value context (params), is more difficult.</p>
+<p>Here we list some of the ideas about best practices when it comes to
+defining tfrmt templates for use across organization. This comes from
+experience writing and using <code>tfrmt</code> and has the potential to
+change.</p>
+<p>A template tfrmt is intended to provide an interface for creating
+complex tfrmts more easily. When creating the function, it is helpful to
+differentiate the aspects of the display that will remain constant from
+those which are likely to change across tables or studies. These changes
+can be captured as arguments in the function. These functions should
+serve to provide a way to interact with and create tfrmts for standard
+tables in such a way that customization for a specific table’s
+<code>tfrmt</code> is simplified.</p>
+<p>However, as with normal function development, this should be balanced
+with limiting the number of arguments necessary to pass and get a
+functional tfrmt. For example, <code>tfrmt_sigdig</code> accepts a
+minimal set of arguments, including a data.frame or tibble, to define a
+complex body_plan. Simplifying the way users may enter this complex set
+of instructions without having to manually type it is part of its
+strength.</p>
+<p>In addition to minimizing the arguments to a tfrmt template, it is
+generally simpler to define and enforce standards around things people
+can see in a table. For example, the grouping, labels, and value formats
+are easy to see and understand. Standardizing around meta information
+that impacts a table but may not as easily be seen, such as value
+context (params), is more difficult.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

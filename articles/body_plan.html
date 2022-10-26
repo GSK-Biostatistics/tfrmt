@@ -98,51 +98,89 @@
 
     
     
-<p>The body plan covers the formatting of numeric cell values. Within the body plan, format structures (<code>frmt_structure</code>) may be layered to specify formatting for different parameters. Formatting can be applied to specific group and/or label values, which we will cover in a bit. First, we will apply formats to all relevant values in the table, regardless of group or label value.</p>
+<p>The body plan covers the formatting of numeric cell values. Within
+the body plan, format structures (<code>frmt_structure</code>) may be
+layered to specify formatting for different parameters. Formatting can
+be applied to specific group and/or label values, which we will cover in
+a bit. First, we will apply formats to all relevant values in the table,
+regardless of group or label value.</p>
 <div class="section level2">
 <h2 id="formatting-functions">Formatting functions<a class="anchor" aria-label="anchor" href="#formatting-functions"></a>
 </h2>
-<p>The following formatting functions may be passed to <code>frmt_structure</code>:</p>
+<p>The following formatting functions may be passed to
+<code>frmt_structure</code>:</p>
 <div class="section level3">
 <h3 id="format-frmt">Format (<code>frmt</code>)<a class="anchor" aria-label="anchor" href="#format-frmt"></a>
 </h3>
-<p>The <code>frmt</code> object is used to specify how a value should appear in a table: its number of digits, any white space padding, or extra characters, such as percentages or parentheses. In pharma, it is a common convention to use x’s to represent data values in mock tables. As such, the <code>frmt</code> complies with this familiar convention. For example:</p>
+<p>The <code>frmt</code> object is used to specify how a value should
+appear in a table: its number of digits, any white space padding, or
+extra characters, such as percentages or parentheses. In pharma, it is a
+common convention to use x’s to represent data values in mock tables. As
+such, the <code>frmt</code> complies with this familiar convention. For
+example:</p>
 <ul>
 <li>
-<code>frmt(expression = "xxx.x%")</code> displays 3.829765 as ” 3.8%” (note the leading whitespace!)</li>
+<code>frmt(expression = "xxx.x%")</code> displays 3.829765 as ”
+3.8%” (note the leading whitespace!)</li>
 <li>
-<code>frmt(expression = "xxx.x%", missing = "Missing")</code> displays NA as “Missing”</li>
+<code>frmt(expression = "xxx.x%", missing = "Missing")</code>
+displays NA as “Missing”</li>
 <li>
-<code>frmt(expression = "xxx.x", scientific = " x10^x")</code> displays 1234.5678 as ” 1.2 x10^ 3”</li>
+<code>frmt(expression = "xxx.x", scientific = " x10^x")</code>
+displays 1234.5678 as ” 1.2 x10^ 3”</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="format-when-frmt_when">Format when (<code>frmt_when</code>)<a class="anchor" aria-label="anchor" href="#format-when-frmt_when"></a>
 </h3>
-<p><code>frmt_when</code> is a way to format cells conditional on their values. <code>frmt_when</code> is similar to dplyr::case_when or if/else statements. For each condition, the left hand side is an expression as a string and the right hand side is the formatting to be applied. For example, the following code allows users to conditionally format the upper and lower bounds for p-values:</p>
+<p><code>frmt_when</code> is a way to format cells conditional on their
+values. <code>frmt_when</code> is similar to dplyr::case_when or if/else
+statements. For each condition, the left hand side is an expression as a
+string and the right hand side is the formatting to be applied. For
+example, the following code allows users to conditionally format the
+upper and lower bounds for p-values:</p>
 <pre><code><span><span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>    <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
 <span>    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
-<p>This will cause the values 0.0347, 1.00, and 0.000001 to appear as “0.035”, “&gt;0.99”, and “&lt;0.001”.</p>
+<p>This will cause the values 0.0347, 1.00, and 0.000001 to appear as
+“0.035”, “&gt;0.99”, and “&lt;0.001”.</p>
 </div>
 <div class="section level3">
 <h3 id="format-combine-frmt_combine">Format combine (<code>frmt_combine</code>)<a class="anchor" aria-label="anchor" href="#format-combine-frmt_combine"></a>
 </h3>
-<p><code>frmt_combine</code> is used to combine multiple values into a single cell. Within a <code>frmt_combine</code>, the values are referenced according to the values of the <code>param</code> variable. Glue package syntax is leveraged to help the user easily define how they want the combined values to appear. Further, the individual data values may be formatted using <code>frmt</code> or <code>frmt_when</code>. Some examples:</p>
+<p><code>frmt_combine</code> is used to combine multiple values into a
+single cell. Within a <code>frmt_combine</code>, the values are
+referenced according to the values of the <code>param</code> variable.
+Glue package syntax is leveraged to help the user easily define how they
+want the combined values to appear. Further, the individual data values
+may be formatted using <code>frmt</code> or <code>frmt_when</code>. Some
+examples:</p>
 <ul>
-<li><p><code>frmt_combine("({lower}, {upper})", lower = frmt("xx.x"), upper = frmt("xx.x"))</code> will combine lower and upper bounds of a confidence interval into: “(xx.x, xx.x)”.</p></li>
-<li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""))</code> will print “n (%)” if the percentage is non-missing, but just “n” otherwise.</p></li>
-<li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""), missing = "")</code> will print “n (%)” if the percentage is non-missing, “n” if the percentage is missing but n is non-missing, and “” if both n and pct are missing.</p></li>
+<li><p><code>frmt_combine("({lower}, {upper})", lower = frmt("xx.x"), upper = frmt("xx.x"))</code>
+will combine lower and upper bounds of a confidence interval into:
+“(xx.x, xx.x)”.</p></li>
+<li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""))</code>
+will print “n (%)” if the percentage is non-missing, but just “n”
+otherwise.</p></li>
+<li><p><code>frmt_combine("{n} ({pct})", n = frmt("xxx"), pct = frmt("xx.x", missing = ""), missing = "")</code>
+will print “n (%)” if the percentage is non-missing, “n” if the
+percentage is missing but n is non-missing, and “” if both n and pct are
+missing.</p></li>
 </ul>
 </div>
 </div>
 <div class="section level2">
 <h2 id="location-options">Location options<a class="anchor" aria-label="anchor" href="#location-options"></a>
 </h2>
-<p>There are a variety of ways for the user to specify formatting locations: group variable values and/or label values, or by param value. Let’s take a look at the various methods below, ranging from least specific to most specific.</p>
-<p>An important detail is that passing a value of “.default” to group or label means that the format will be applied to ALL values within the group(s) or label variables.</p>
+<p>There are a variety of ways for the user to specify formatting
+locations: group variable values and/or label values, or by param value.
+Let’s take a look at the various methods below, ranging from least
+specific to most specific.</p>
+<p>An important detail is that passing a value of “.default” to group or
+label means that the format will be applied to ALL values within the
+group(s) or label variables.</p>
 <div class="section level3">
 <h3 id="table-wide">Table-wide<a class="anchor" aria-label="anchor" href="#table-wide"></a>
 </h3>
@@ -152,39 +190,69 @@
 <div class="section level3">
 <h3 id="param-specific">Param-specific<a class="anchor" aria-label="anchor" href="#param-specific"></a>
 </h3>
-<p>For formatting specific values of the param variable, <code>frmt</code> objects must be named according to the param. The following code will format all values where the param value equals “pval”, regardless of group, label, or column value.</p>
+<p>For formatting specific values of the param variable,
+<code>frmt</code> objects must be named according to the param. The
+following code will format all values where the param value equals
+“pval”, regardless of group, label, or column value.</p>
 <p><code>frmt(group = ".default", label = ".default", pval = frmt("x.xxx"))</code></p>
-<p>Again, param names are required for using <code>frmt_combine</code>.</p>
+<p>Again, param names are required for using
+<code>frmt_combine</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="label-specific">Label-specific<a class="anchor" aria-label="anchor" href="#label-specific"></a>
 </h3>
-<p>For formatting specific values of the label variable, these values are passed to the <code>label</code> argument. The following code will format all values where the label variable equals “mylab1” or “mylab2”, regardless of group, param, or column value.</p>
+<p>For formatting specific values of the label variable, these values
+are passed to the <code>label</code> argument. The following code will
+format all values where the label variable equals “mylab1” or “mylab2”,
+regardless of group, param, or column value.</p>
 <p><code>frmt(group = ".default", label = c("mylab1","mylab2"), frmt("x.xxx"))</code></p>
 </div>
 <div class="section level3">
 <h3 id="group-specific">Group-specific<a class="anchor" aria-label="anchor" href="#group-specific"></a>
 </h3>
-<p>For formatting specific values of the group variable, these values are passed to the <code>group</code> argument. Note that the user may have multiple group variables. In the case of multiple group variables, the specifications are to be passed as a named list (named according to the group variables). The following code will format all values where group1=“A” and group2=“B”, regardless of label, param, or column value:</p>
+<p>For formatting specific values of the group variable, these values
+are passed to the <code>group</code> argument. Note that the user may
+have multiple group variables. In the case of multiple group variables,
+the specifications are to be passed as a named list (named according to
+the group variables). The following code will format all values where
+group1=“A” and group2=“B”, regardless of label, param, or column
+value:</p>
 <p><code>frmt(group = list(group1 = "A", group2 = "B"), label = ".default", frmt("x.xxx"))</code></p>
 </div>
 <div class="section level3">
 <h3 id="column-specific">Column-specific<a class="anchor" aria-label="anchor" href="#column-specific"></a>
 </h3>
-<p>In the case where formatting needs to differ between columns within a given group/label/param level, the user will need to incorporate column-level information into the <code>param</code> value. For example, if we have two columns, <code>col1</code> and <code>col2</code>, but we want the mean for <code>col1</code> to be rounded differently than <code>col2</code>, creating our <code>param</code> column as such will allow us to differentiate the mean values in the formatting: <code>param = c("col1_mean", "col2_mean")</code>.</p>
+<p>In the case where formatting needs to differ between columns within a
+given group/label/param level, the user will need to incorporate
+column-level information into the <code>param</code> value. For example,
+if we have two columns, <code>col1</code> and <code>col2</code>, but we
+want the mean for <code>col1</code> to be rounded differently than
+<code>col2</code>, creating our <code>param</code> column as such will
+allow us to differentiate the mean values in the formatting:
+<code>param = c("col1_mean", "col2_mean")</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="multiple-specifications">Multiple specifications<a class="anchor" aria-label="anchor" href="#multiple-specifications"></a>
 </h3>
-<p>A user can be as specific as they’d like, by providing any of these in combination. For example, the following code will format values where group1=“A”, group2=“B”, the label variable equals “mylab” and the param variable equals “mean”:</p>
+<p>A user can be as specific as they’d like, by providing any of these
+in combination. For example, the following code will format values where
+group1=“A”, group2=“B”, the label variable equals “mylab” and the param
+variable equals “mean”:</p>
 <p><code>frmt(group = list(group1 = "A", group2 = "B"), label = "mylab", mean = frmt("x.xxx"))</code></p>
-<p><strong>NOTE:</strong> the <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> function provides the ability to create a <code>tfrmt</code> with auto-precision based on the significance of the group/label value.</p>
+<p><strong>NOTE:</strong> the <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> function
+provides the ability to create a <code>tfrmt</code> with auto-precision
+based on the significance of the group/label value.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="layering-format-structures">Layering format structures<a class="anchor" aria-label="anchor" href="#layering-format-structures"></a>
 </h2>
-<p>The user may provide as many <code>frmt_structure</code> objects as needed. It is important to note that if there are overlapping <code>frmt_structure</code> objects, the last one specified will supersede the previous. In our CDISC demographics table example, the following <code>frmt_structures</code> are needed to cover all values:</p>
+<p>The user may provide as many <code>frmt_structure</code> objects as
+needed. It is important to note that if there are overlapping
+<code>frmt_structure</code> objects, the last one specified will
+supersede the previous. In our CDISC demographics table example, the
+following <code>frmt_structures</code> are needed to cover all
+values:</p>
 <pre><code><span><span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{n} {pct}"</span>,</span>

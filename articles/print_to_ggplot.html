@@ -105,11 +105,15 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sinhrks/ggfortify" class="external-link">ggfortify</a></span><span class="op">)</span></span></code></pre></div>
-<p>Print to ggplot outputs a ggplot table. This table can then be added to an existing plot to provide additional information. For this we recommend the use of the patchwork package.</p>
+<p>Print to ggplot outputs a ggplot table. This table can then be added
+to an existing plot to provide additional information. For this we
+recommend the use of the patchwork package.</p>
 <div class="section level2">
 <h2 id="surival-analysis-example">Surival analysis example<a class="anchor" aria-label="anchor" href="#surival-analysis-example"></a>
 </h2>
-<p>A common use case of this function could be in the production of survival plots. The following code sets up a Kaplan Meier plot using the colon data from the survival package.</p>
+<p>A common use case of this function could be in the production of
+survival plots. The following code sets up a Kaplan Meier plot using the
+colon data from the survival package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set up survival data</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">rx</span>, data<span class="op">=</span><span class="va">colon</span><span class="op">)</span></span>
@@ -117,13 +121,18 @@
 <span><span class="co"># Plot kaplan meier between times 0-3000</span></span>
 <span><span class="va">km_plot</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>As with <code>print_to_gt</code>, <code>print_to_ggplot</code> requires an input table with <code>label</code>, <code>value</code>,<code>param</code> and <code>column</code> variables. The following code sets up our mock input table.</p>
+<p>As with <code>print_to_gt</code>, <code>print_to_ggplot</code>
+requires an input table with <code>label</code>,
+<code>value</code>,<code>param</code> and <code>column</code> variables.
+The following code sets up our mock input table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">risk</span><span class="op">&lt;-</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">3000</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>             label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Obs"</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Lev"</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Lev+5FU"</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>             value<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">630</span>,<span class="fl">372</span>,<span class="fl">256</span>,<span class="fl">11</span>,<span class="fl">620</span>,<span class="fl">360</span>,<span class="fl">266</span>,<span class="fl">8</span>,<span class="fl">608</span>,<span class="fl">425</span>,<span class="fl">328</span>,<span class="fl">14</span><span class="op">)</span>,</span>
 <span>             param<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"n"</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>A tfrmt object is required to specify the formatting of the ggplot table. This can then be piped out to <code>print_to_ggplot</code> as seen below.</p>
+<p>A tfrmt object is required to specify the formatting of the ggplot
+table. This can then be piped out to <code>print_to_ggplot</code> as
+seen below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  <span class="co"># specify columns in the data</span></span>
@@ -138,11 +147,15 @@
 <span>  <span class="fu"><a href="../reference/print_to_ggplot.html">print_to_ggplot</a></span><span class="op">(</span><span class="va">risk</span><span class="op">)</span></span>
 <span><span class="va">table</span></span></code></pre></div>
 <p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<p>Now using the patchwork package we can combine the original plot, and our ggplot table. Since we want the table below the plot, we use <code>/</code>. For more information on using patchwork, refer to the documentation <a href="https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html" class="external-link">here</a></p>
+<p>Now using the patchwork package we can combine the original plot, and
+our ggplot table. Since we want the table below the plot, we use
+<code>/</code>. For more information on using patchwork, refer to the
+documentation <a href="https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html" class="external-link">here</a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">km_plot</span><span class="op">/</span><span class="va">table</span></span></code></pre></div>
 <p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
-<p>Because we don’t have to duplicate the time points, we can just remove the x-axis labels using the theme</p>
+<p>Because we don’t have to duplicate the time points, we can just
+remove the x-axis labels using the theme</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table2</span> <span class="op">&lt;-</span> <span class="va">table</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
@@ -153,7 +166,8 @@
 <div class="section level3">
 <h3 id="using-grouping">Using grouping<a class="anchor" aria-label="anchor" href="#using-grouping"></a>
 </h3>
-<p>You can also apply groups to your ggplot table. The code below adds groupings to the risk table above for a mock example.</p>
+<p>You can also apply groups to your ggplot table. The code below adds
+groupings to the risk table above for a mock example.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">riska</span><span class="op">&lt;-</span> <span class="va">risk</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group<span class="op">=</span><span class="st">"A"</span><span class="op">)</span></span>
@@ -164,7 +178,8 @@
 <span></span>
 <span><span class="va">risk_group</span><span class="op">&lt;-</span><span class="va">riska</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">riskb</span><span class="op">)</span></span></code></pre></div>
-<p>Now we need to add group to our tfrmt specification and patch together:</p>
+<p>Now we need to add group to our tfrmt specification and patch
+together:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">group_table</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
@@ -182,8 +197,12 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">km_plot</span><span class="op">/</span><span class="va">group_table</span></span></code></pre></div>
-<p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-8-1.png" width="672"> ## Forest Plots</p>
-<p>The same logic used in the survival plots can also be used to create forest plots, but instead of stacking the plots we will just put them side by side. First we can make the table using <code>print_to_ggplot</code>.</p>
+<p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-8-1.png" width="672">
+## Forest Plots</p>
+<p>The same logic used in the survival plots can also be used to create
+forest plots, but instead of stacking the plots we will just put them
+side by side. First we can make the table using
+<code>print_to_ggplot</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fever"</span>, <span class="st">"Malaise"</span>, <span class="st">"Local Allergic Reaction"</span><span class="op">)</span>,</span>
 <span>              levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fever"</span>, <span class="st">"Malaise"</span>, <span class="st">"Local Allergic Reaction"</span><span class="op">)</span><span class="op">)</span></span>
@@ -205,7 +224,10 @@
 <span>  <span class="fu"><a href="../reference/print_to_ggplot.html">print_to_ggplot</a></span><span class="op">(</span><span class="va">tbl_dat</span><span class="op">)</span></span>
 <span><span class="va">tbl_p</span></span></code></pre></div>
 <p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
-<p>Next we need to plot the rate ratios. This plot requires a bit more finessing because we need to remove the y-axis label so it can be combined with the table plot. Also we need to add a row in the data for the group value to make the plots match up correctly.</p>
+<p>Next we need to plot the rate ratios. This plot requires a bit more
+finessing because we need to remove the y-axis label so it can be
+combined with the table plot. Also we need to add a row in the data for
+the group value to make the plots match up correctly.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -229,7 +251,8 @@
 <span>        axis.ticks.y<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">plot_p</span></span></code></pre></div>
 <p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<p>Now thanks to patchwork combining the two plots is relatively easy.</p>
+<p>Now thanks to patchwork combining the two plots is relatively
+easy.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl_p</span> <span class="op">+</span> <span class="va">plot_p</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_pointrange).</span></span></code></pre></div>
@@ -239,7 +262,12 @@
 <div class="section level2">
 <h2 id="table-styling">Table Styling<a class="anchor" aria-label="anchor" href="#table-styling"></a>
 </h2>
-<p>A final note about the ggplot tables. Most styling can be adjusted with <code>theme</code> once the table is create. But, the table body needs to be adjusted in the <code>print_to_ggplot</code> call, by supplying the requirements to the <code>...</code>. So if you need to change the size table boy you just add that to the <code>print_to_ggplot</code>.</p>
+<p>A final note about the ggplot tables. Most styling can be adjusted
+with <code>theme</code> once the table is create. But, the table body
+needs to be adjusted in the <code>print_to_ggplot</code> call, by
+supplying the requirements to the <code>...</code>. So if you need to
+change the size table boy you just add that to the
+<code>print_to_ggplot</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt_n_pct.html">tfrmt_n_pct</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">ae</span>,</span>

@@ -99,30 +99,56 @@
     
     
 <p><strong>1. Table format:</strong> <code><a href="../reference/tfrmt.html">tfrmt()</a></code></p>
-<p>The table format (“tfrmt”) object is the most fundamental building block in tfrmt. tfrmt is a way to predefine the non-data components of your tables and how the data will be handled once added. tfrmt allows you to specify cell formats and labelling such as column headers, footnotes, etc. In addition, tfrmts can be layered.</p>
+<p>The table format (“tfrmt”) object is the most fundamental building
+block in tfrmt. tfrmt is a way to predefine the non-data components of
+your tables and how the data will be handled once added. tfrmt allows
+you to specify cell formats and labelling such as column headers,
+footnotes, etc. In addition, tfrmts can be layered.</p>
 <p><strong>2. Plans:</strong> <code>*_plan()</code></p>
-<p>Much of the tfrmt is divided into “plans” which provide the blueprint for how the table will look. These plans are as follows:</p>
+<p>Much of the tfrmt is divided into “plans” which provide the blueprint
+for how the table will look. These plans are as follows:</p>
 <ul>
-<li>Body plan (<code>body_plan</code>): define how cells will be formatted</li>
-<li>Column plan (<code>col_plan</code>): define column and spanning headers, order columns, and drop unnecessary columns</li>
-<li>Row group plan (<code>row_grp_plan</code>): define labelling for groups of rows and add styling to groups of rows</li>
-<li>Column styling plan (<code>col_style_plan</code>): define how column values will be aligned and set their widths</li>
+<li>Body plan (<code>body_plan</code>): define how cells will be
+formatted</li>
+<li>Column plan (<code>col_plan</code>): define column and spanning
+headers, order columns, and drop unnecessary columns</li>
+<li>Row group plan (<code>row_grp_plan</code>): define labelling for
+groups of rows and add styling to groups of rows</li>
+<li>Column styling plan (<code>col_style_plan</code>): define how column
+values will be aligned and set their widths</li>
 </ul>
 <p align="center">
 <img src="../reference/figures/table_plans.png" width="900px"></p>
 <p><strong>3. Structures:</strong> <code>*_structure()</code></p>
-<p>The structure objects are for defining how the <em>contents</em> of the table (i.e., text) should be displayed. Within a plan, one or more structures may be provided. Each structure specifies the layers within a plan. For example, in the body plan, each “frmt_structure” object defines how a set of values (e.g., all “p-values”) should be formatted. Structures are inherently row-oriented, and can range from broad (e.g., apply to all relevant rows in the data) to specific (e.g., apply to all relevant rows within a specific grouping value).</p>
-<p>In the figure below, each colour represents a different format structure (<code>frmt_structure</code>) to be passed in the table body plan (<code>body_plan</code>).</p>
+<p>The structure objects are for defining how the <em>contents</em> of
+the table (i.e., text) should be displayed. Within a plan, one or more
+structures may be provided. Each structure specifies the layers within a
+plan. For example, in the body plan, each “frmt_structure” object
+defines how a set of values (e.g., all “p-values”) should be formatted.
+Structures are inherently row-oriented, and can range from broad (e.g.,
+apply to all relevant rows in the data) to specific (e.g., apply to all
+relevant rows within a specific grouping value).</p>
+<p>In the figure below, each colour represents a different format
+structure (<code>frmt_structure</code>) to be passed in the table body
+plan (<code>body_plan</code>).</p>
 <p align="center">
 <img src="../reference/figures/structure_objects.png" width="700px"></p>
 <p>The following structures are available:</p>
 <ul>
-<li>Format structure (<code>frmt_structure</code>) inside of body plan (<code>body_plan</code>)</li>
-<li>Column label spanning structure (<code>span_structure</code>) inside of column plan (<code>col_plan</code>)</li>
-<li>Row group structure (<code>row_grp_structure</code>) inside of row group plan (<code>row_grp_plan</code>)</li>
+<li>Format structure (<code>frmt_structure</code>) inside of body plan
+(<code>body_plan</code>)</li>
+<li>Column label spanning structure (<code>span_structure</code>) inside
+of column plan (<code>col_plan</code>)</li>
+<li>Row group structure (<code>row_grp_structure</code>) inside of row
+group plan (<code>row_grp_plan</code>)</li>
 </ul>
 <p><strong>4. Elements:</strong> <code>element_*()</code></p>
-<p>The element objects are for defining the <em>aesthetics</em> of the table (i.e., non-text styling). Inspired by ggplot2, elements provide a mechanism for performing aesthetic modifications such as column alignment and width (<code>element_col</code>) or the positioning of group labels (<code>element_row_grp_loc</code>). These are passed through plan or structure objects.</p>
+<p>The element objects are for defining the <em>aesthetics</em> of the
+table (i.e., non-text styling). Inspired by ggplot2, elements provide a
+mechanism for performing aesthetic modifications such as column
+alignment and width (<code>element_col</code>) or the positioning of
+group labels (<code>element_row_grp_loc</code>). These are passed
+through plan or structure objects.</p>
   </main>
 </div>
 

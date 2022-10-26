@@ -73,13 +73,14 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">element_col</span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="op">)</span>, align <span class="op">=</span> <span class="cn">NULL</span>, width <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">element_col</span><span class="op">(</span><span class="va">col</span>, align <span class="op">=</span> <span class="cn">NULL</span>, width <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>col</dt>
-<dd><p>Column value to align on from <code>column</code> variable.</p></dd>
+<dd><p>Column value to align on from <code>column</code> variable. May be a quoted
+or unquoted column name, a tidyselect semantic, or a span_structure.</p></dd>
 
 
 <dt>align</dt>
@@ -92,10 +93,12 @@ spaces will be ignored.</p></dd>
 
 
 <dt>width</dt>
-<dd><p>Width to apply to the column. Acceptable values include a
-numeric value, or a character string of numbers ending with either "px" or
-"%", indicating the column width is either n pixels across or % of the
-total table width</p></dd>
+<dd><p>Width to apply to the column in number of characters. Acceptable values include a
+numeric value, or a character string of a number.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>These dots are for future extensions and must be empty</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -115,9 +118,11 @@ element_col()'s together to form a plan.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, width <span class="op">=</span> <span class="fl">100</span>, col <span class="op">=</span> <span class="st">"my_var"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="st">"200px"</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">four</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="fl">200</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">four</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">","</span>, <span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">two</span>, <span class="va">three</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"25%"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">two</span>, <span class="va">three</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">25</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">two</span>, <span class="va">three</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">25</span>, col <span class="op">=</span> <span class="va">two</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">element_col</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">25</span>, col <span class="op">=</span> <span class="fu"><a href="col_plan.html">span_structure</a></span><span class="op">(</span>span <span class="op">=</span> <span class="va">value</span>, col <span class="op">=</span> <span class="va">val2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

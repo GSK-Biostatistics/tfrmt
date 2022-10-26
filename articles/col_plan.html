@@ -102,8 +102,22 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<p>The purpose of the column plan (<code>col_plan</code>) is to allow the user to specify how columns in the final table should appear in regards to their labelles and ordering. Similar to the column styling plan (<code>col_style_plan</code>), <code>col_plan</code> refers to the final columns of the table, i.e., the values found in the <code>column</code> variable(s) from the input dataset. The <code>col_plan</code> is like an advanced version of dplyr’s <code>select</code> function; just like <code>select</code>, the user can add, drop, order, and/or rename columns all in one step. What sets the <code>col_plan</code> apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion, as well as preferentially selecting the <em>last</em> instance a column is selected. For column spanning, multiple column columns need to exist in the input dataset.</p>
-<p>Let’s look at the workflow in more detail with the following dataset which includes a single <code>column</code> variable:</p>
+<p>The purpose of the column plan (<code>col_plan</code>) is to allow
+the user to specify how columns in the final table should appear in
+regards to their labelles and ordering. Similar to the column styling
+plan (<code>col_style_plan</code>), <code>col_plan</code> refers to the
+final columns of the table, i.e., the values found in the
+<code>column</code> variable(s) from the input dataset. The
+<code>col_plan</code> is like an advanced version of dplyr’s
+<code>select</code> function; just like <code>select</code>, the user
+can add, drop, order, and/or rename columns all in one step. What sets
+the <code>col_plan</code> apart, however, is the ability to also specify
+column spanners and labels in a hierarchical fashion, as well as
+preferentially selecting the <em>last</em> instance a column is
+selected. For column spanning, multiple column columns need to exist in
+the input dataset.</p>
+<p>Let’s look at the workflow in more detail with the following dataset
+which includes a single <code>column</code> variable:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,  <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>, <span class="op">~</span><span class="va">val</span>,</span>
@@ -125,7 +139,9 @@
 <div class="section level2">
 <h2 id="simple-column-selection">Simple Column Selection<a class="anchor" aria-label="anchor" href="#simple-column-selection"></a>
 </h2>
-<p>In the case of a single column variable with no column spanners, <code>col_plan</code> behaves similarly to <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code>.</p>
+<p>In the case of a single column variable with no column spanners,
+<code>col_plan</code> behaves similarly to
+<code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code>.</p>
 <p>Let’s say we want to remove one of the columns:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
@@ -146,12 +162,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="jmabjvzphs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="psczwezipr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#jmabjvzphs .gt_table {
+#psczwezipr .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -176,7 +192,7 @@
   border-left-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_heading {
+#psczwezipr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -188,7 +204,7 @@
   border-right-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_title {
+#psczwezipr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -200,7 +216,7 @@
   border-bottom-width: 0;
 }
 
-#jmabjvzphs .gt_subtitle {
+#psczwezipr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -212,13 +228,13 @@
   border-top-width: 0;
 }
 
-#jmabjvzphs .gt_bottom_border {
+#psczwezipr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_col_headings {
+#psczwezipr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -233,7 +249,7 @@
   border-right-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_col_heading {
+#psczwezipr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -253,7 +269,7 @@
   overflow-x: hidden;
 }
 
-#jmabjvzphs .gt_column_spanner_outer {
+#psczwezipr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -265,15 +281,15 @@
   padding-right: 4px;
 }
 
-#jmabjvzphs .gt_column_spanner_outer:first-child {
+#psczwezipr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jmabjvzphs .gt_column_spanner_outer:last-child {
+#psczwezipr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jmabjvzphs .gt_column_spanner {
+#psczwezipr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -285,7 +301,7 @@
   width: 100%;
 }
 
-#jmabjvzphs .gt_group_heading {
+#psczwezipr .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -310,7 +326,7 @@
   vertical-align: middle;
 }
 
-#jmabjvzphs .gt_empty_group_heading {
+#psczwezipr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -325,15 +341,15 @@
   vertical-align: middle;
 }
 
-#jmabjvzphs .gt_from_md > :first-child {
+#psczwezipr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jmabjvzphs .gt_from_md > :last-child {
+#psczwezipr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jmabjvzphs .gt_row {
+#psczwezipr .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -352,7 +368,7 @@
   overflow-x: hidden;
 }
 
-#jmabjvzphs .gt_stub {
+#psczwezipr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -365,7 +381,7 @@
   padding-right: 5px;
 }
 
-#jmabjvzphs .gt_stub_row_group {
+#psczwezipr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -379,11 +395,11 @@
   vertical-align: top;
 }
 
-#jmabjvzphs .gt_row_group_first td {
+#psczwezipr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jmabjvzphs .gt_summary_row {
+#psczwezipr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -393,16 +409,16 @@
   padding-right: 5px;
 }
 
-#jmabjvzphs .gt_first_summary_row {
+#psczwezipr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_first_summary_row.thick {
+#psczwezipr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jmabjvzphs .gt_last_summary_row {
+#psczwezipr .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -412,7 +428,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_grand_summary_row {
+#psczwezipr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -422,7 +438,7 @@
   padding-right: 5px;
 }
 
-#jmabjvzphs .gt_first_grand_summary_row {
+#psczwezipr .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -432,11 +448,11 @@
   border-top-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_striped {
+#psczwezipr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jmabjvzphs .gt_table_body {
+#psczwezipr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -445,7 +461,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_footnotes {
+#psczwezipr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -459,7 +475,7 @@
   border-right-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_footnote {
+#psczwezipr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -468,7 +484,7 @@
   padding-right: 5px;
 }
 
-#jmabjvzphs .gt_sourcenotes {
+#psczwezipr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -482,7 +498,7 @@
   border-right-color: #D3D3D3;
 }
 
-#jmabjvzphs .gt_sourcenote {
+#psczwezipr .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -490,64 +506,64 @@
   padding-right: 5px;
 }
 
-#jmabjvzphs .gt_left {
+#psczwezipr .gt_left {
   text-align: left;
 }
 
-#jmabjvzphs .gt_center {
+#psczwezipr .gt_center {
   text-align: center;
 }
 
-#jmabjvzphs .gt_right {
+#psczwezipr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jmabjvzphs .gt_font_normal {
+#psczwezipr .gt_font_normal {
   font-weight: normal;
 }
 
-#jmabjvzphs .gt_font_bold {
+#psczwezipr .gt_font_bold {
   font-weight: bold;
 }
 
-#jmabjvzphs .gt_font_italic {
+#psczwezipr .gt_font_italic {
   font-style: italic;
 }
 
-#jmabjvzphs .gt_super {
+#psczwezipr .gt_super {
   font-size: 65%;
 }
 
-#jmabjvzphs .gt_footnote_marks {
+#psczwezipr .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#jmabjvzphs .gt_asterisk {
+#psczwezipr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jmabjvzphs .gt_indent_1 {
+#psczwezipr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jmabjvzphs .gt_indent_2 {
+#psczwezipr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jmabjvzphs .gt_indent_3 {
+#psczwezipr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jmabjvzphs .gt_indent_4 {
+#psczwezipr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jmabjvzphs .gt_indent_5 {
+#psczwezipr .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -598,7 +614,9 @@
 </tbody>
 </table>
 </div>
-<p>Just like <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code>, we can also reorder, rename, and remove columns, using <code>tidyselect</code> syntax if we’d like:</p>
+<p>Just like <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code>, we can also reorder, rename,
+and remove columns, using <code>tidyselect</code> syntax if we’d
+like:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  group <span class="op">=</span> <span class="va">group</span>,</span>
@@ -622,12 +640,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="lzryzpdjil" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="oxiimfncxj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lzryzpdjil .gt_table {
+#oxiimfncxj .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -652,7 +670,7 @@
   border-left-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_heading {
+#oxiimfncxj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -664,7 +682,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_title {
+#oxiimfncxj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -676,7 +694,7 @@
   border-bottom-width: 0;
 }
 
-#lzryzpdjil .gt_subtitle {
+#oxiimfncxj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -688,13 +706,13 @@
   border-top-width: 0;
 }
 
-#lzryzpdjil .gt_bottom_border {
+#oxiimfncxj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_col_headings {
+#oxiimfncxj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -709,7 +727,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_col_heading {
+#oxiimfncxj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -729,7 +747,7 @@
   overflow-x: hidden;
 }
 
-#lzryzpdjil .gt_column_spanner_outer {
+#oxiimfncxj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -741,15 +759,15 @@
   padding-right: 4px;
 }
 
-#lzryzpdjil .gt_column_spanner_outer:first-child {
+#oxiimfncxj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lzryzpdjil .gt_column_spanner_outer:last-child {
+#oxiimfncxj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lzryzpdjil .gt_column_spanner {
+#oxiimfncxj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -761,7 +779,7 @@
   width: 100%;
 }
 
-#lzryzpdjil .gt_group_heading {
+#oxiimfncxj .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -786,7 +804,7 @@
   vertical-align: middle;
 }
 
-#lzryzpdjil .gt_empty_group_heading {
+#oxiimfncxj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -801,15 +819,15 @@
   vertical-align: middle;
 }
 
-#lzryzpdjil .gt_from_md > :first-child {
+#oxiimfncxj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lzryzpdjil .gt_from_md > :last-child {
+#oxiimfncxj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lzryzpdjil .gt_row {
+#oxiimfncxj .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -828,7 +846,7 @@
   overflow-x: hidden;
 }
 
-#lzryzpdjil .gt_stub {
+#oxiimfncxj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -841,7 +859,7 @@
   padding-right: 5px;
 }
 
-#lzryzpdjil .gt_stub_row_group {
+#oxiimfncxj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -855,11 +873,11 @@
   vertical-align: top;
 }
 
-#lzryzpdjil .gt_row_group_first td {
+#oxiimfncxj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lzryzpdjil .gt_summary_row {
+#oxiimfncxj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -869,16 +887,16 @@
   padding-right: 5px;
 }
 
-#lzryzpdjil .gt_first_summary_row {
+#oxiimfncxj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_first_summary_row.thick {
+#oxiimfncxj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lzryzpdjil .gt_last_summary_row {
+#oxiimfncxj .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -888,7 +906,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_grand_summary_row {
+#oxiimfncxj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -898,7 +916,7 @@
   padding-right: 5px;
 }
 
-#lzryzpdjil .gt_first_grand_summary_row {
+#oxiimfncxj .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -908,11 +926,11 @@
   border-top-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_striped {
+#oxiimfncxj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lzryzpdjil .gt_table_body {
+#oxiimfncxj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -921,7 +939,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_footnotes {
+#oxiimfncxj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -935,7 +953,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_footnote {
+#oxiimfncxj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -944,7 +962,7 @@
   padding-right: 5px;
 }
 
-#lzryzpdjil .gt_sourcenotes {
+#oxiimfncxj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -958,7 +976,7 @@
   border-right-color: #D3D3D3;
 }
 
-#lzryzpdjil .gt_sourcenote {
+#oxiimfncxj .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -966,64 +984,64 @@
   padding-right: 5px;
 }
 
-#lzryzpdjil .gt_left {
+#oxiimfncxj .gt_left {
   text-align: left;
 }
 
-#lzryzpdjil .gt_center {
+#oxiimfncxj .gt_center {
   text-align: center;
 }
 
-#lzryzpdjil .gt_right {
+#oxiimfncxj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lzryzpdjil .gt_font_normal {
+#oxiimfncxj .gt_font_normal {
   font-weight: normal;
 }
 
-#lzryzpdjil .gt_font_bold {
+#oxiimfncxj .gt_font_bold {
   font-weight: bold;
 }
 
-#lzryzpdjil .gt_font_italic {
+#oxiimfncxj .gt_font_italic {
   font-style: italic;
 }
 
-#lzryzpdjil .gt_super {
+#oxiimfncxj .gt_super {
   font-size: 65%;
 }
 
-#lzryzpdjil .gt_footnote_marks {
+#oxiimfncxj .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#lzryzpdjil .gt_asterisk {
+#oxiimfncxj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lzryzpdjil .gt_indent_1 {
+#oxiimfncxj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lzryzpdjil .gt_indent_2 {
+#oxiimfncxj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lzryzpdjil .gt_indent_3 {
+#oxiimfncxj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lzryzpdjil .gt_indent_4 {
+#oxiimfncxj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lzryzpdjil .gt_indent_5 {
+#oxiimfncxj .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1074,7 +1092,9 @@
 </tbody>
 </table>
 </div>
-<p>Unlike <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code> though, col_plan respects the <em>last</em> time a column is defined in the plan. This allows for reordering/moving a column to the end very easily.</p>
+<p>Unlike <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code> though, col_plan respects the
+<em>last</em> time a column is defined in the plan. This allows for
+reordering/moving a column to the end very easily.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  group <span class="op">=</span> <span class="va">group</span>,</span>
@@ -1098,12 +1118,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="xuvaytpflk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="uubxumsmvc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#xuvaytpflk .gt_table {
+#uubxumsmvc .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1128,7 +1148,7 @@
   border-left-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_heading {
+#uubxumsmvc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1140,7 +1160,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_title {
+#uubxumsmvc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1152,7 +1172,7 @@
   border-bottom-width: 0;
 }
 
-#xuvaytpflk .gt_subtitle {
+#uubxumsmvc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1164,13 +1184,13 @@
   border-top-width: 0;
 }
 
-#xuvaytpflk .gt_bottom_border {
+#uubxumsmvc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_col_headings {
+#uubxumsmvc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1185,7 +1205,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_col_heading {
+#uubxumsmvc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1205,7 +1225,7 @@
   overflow-x: hidden;
 }
 
-#xuvaytpflk .gt_column_spanner_outer {
+#uubxumsmvc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1217,15 +1237,15 @@
   padding-right: 4px;
 }
 
-#xuvaytpflk .gt_column_spanner_outer:first-child {
+#uubxumsmvc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xuvaytpflk .gt_column_spanner_outer:last-child {
+#uubxumsmvc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xuvaytpflk .gt_column_spanner {
+#uubxumsmvc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1237,7 +1257,7 @@
   width: 100%;
 }
 
-#xuvaytpflk .gt_group_heading {
+#uubxumsmvc .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1262,7 +1282,7 @@
   vertical-align: middle;
 }
 
-#xuvaytpflk .gt_empty_group_heading {
+#uubxumsmvc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1277,15 +1297,15 @@
   vertical-align: middle;
 }
 
-#xuvaytpflk .gt_from_md > :first-child {
+#uubxumsmvc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xuvaytpflk .gt_from_md > :last-child {
+#uubxumsmvc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xuvaytpflk .gt_row {
+#uubxumsmvc .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1304,7 +1324,7 @@
   overflow-x: hidden;
 }
 
-#xuvaytpflk .gt_stub {
+#uubxumsmvc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1317,7 +1337,7 @@
   padding-right: 5px;
 }
 
-#xuvaytpflk .gt_stub_row_group {
+#uubxumsmvc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1331,11 +1351,11 @@
   vertical-align: top;
 }
 
-#xuvaytpflk .gt_row_group_first td {
+#uubxumsmvc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xuvaytpflk .gt_summary_row {
+#uubxumsmvc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1345,16 +1365,16 @@
   padding-right: 5px;
 }
 
-#xuvaytpflk .gt_first_summary_row {
+#uubxumsmvc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_first_summary_row.thick {
+#uubxumsmvc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xuvaytpflk .gt_last_summary_row {
+#uubxumsmvc .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1364,7 +1384,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_grand_summary_row {
+#uubxumsmvc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1374,7 +1394,7 @@
   padding-right: 5px;
 }
 
-#xuvaytpflk .gt_first_grand_summary_row {
+#uubxumsmvc .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1384,11 +1404,11 @@
   border-top-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_striped {
+#uubxumsmvc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xuvaytpflk .gt_table_body {
+#uubxumsmvc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1397,7 +1417,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_footnotes {
+#uubxumsmvc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1411,7 +1431,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_footnote {
+#uubxumsmvc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1420,7 +1440,7 @@
   padding-right: 5px;
 }
 
-#xuvaytpflk .gt_sourcenotes {
+#uubxumsmvc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1434,7 +1454,7 @@
   border-right-color: #D3D3D3;
 }
 
-#xuvaytpflk .gt_sourcenote {
+#uubxumsmvc .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1442,64 +1462,64 @@
   padding-right: 5px;
 }
 
-#xuvaytpflk .gt_left {
+#uubxumsmvc .gt_left {
   text-align: left;
 }
 
-#xuvaytpflk .gt_center {
+#uubxumsmvc .gt_center {
   text-align: center;
 }
 
-#xuvaytpflk .gt_right {
+#uubxumsmvc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xuvaytpflk .gt_font_normal {
+#uubxumsmvc .gt_font_normal {
   font-weight: normal;
 }
 
-#xuvaytpflk .gt_font_bold {
+#uubxumsmvc .gt_font_bold {
   font-weight: bold;
 }
 
-#xuvaytpflk .gt_font_italic {
+#uubxumsmvc .gt_font_italic {
   font-style: italic;
 }
 
-#xuvaytpflk .gt_super {
+#uubxumsmvc .gt_super {
   font-size: 65%;
 }
 
-#xuvaytpflk .gt_footnote_marks {
+#uubxumsmvc .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#xuvaytpflk .gt_asterisk {
+#uubxumsmvc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xuvaytpflk .gt_indent_1 {
+#uubxumsmvc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xuvaytpflk .gt_indent_2 {
+#uubxumsmvc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xuvaytpflk .gt_indent_3 {
+#uubxumsmvc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xuvaytpflk .gt_indent_4 {
+#uubxumsmvc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xuvaytpflk .gt_indent_5 {
+#uubxumsmvc .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1560,8 +1580,16 @@
 <div class="section level2">
 <h2 id="editing-and-moving-column-spanners">Editing and Moving Column Spanners<a class="anchor" aria-label="anchor" href="#editing-and-moving-column-spanners"></a>
 </h2>
-<p>Multiple <code>column</code> variables are used to form the hierarchy of column spanners and column labels, which is driven by the order of the <code>column</code> variables. The first variable specified represents the highest level spanner, while the last variable specified represents the lowest level column label.</p>
-<p>Let’s consider an example dataset with multiple <code>column</code> variables. This dataset has three tiers, <code>span2</code> with one unique value, <code>span1</code> with two unique values and <code>my_col</code> which has 4 unique values. The <code>NA</code>’s indicate there should be no spanning over those values.</p>
+<p>Multiple <code>column</code> variables are used to form the hierarchy
+of column spanners and column labels, which is driven by the order of
+the <code>column</code> variables. The first variable specified
+represents the highest level spanner, while the last variable specified
+represents the lowest level column label.</p>
+<p>Let’s consider an example dataset with multiple <code>column</code>
+variables. This dataset has three tiers, <code>span2</code> with one
+unique value, <code>span1</code> with two unique values and
+<code>my_col</code> which has 4 unique values. The <code>NA</code>’s
+indicate there should be no spanning over those values.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,        <span class="op">~</span><span class="va">span2</span>,  <span class="op">~</span><span class="va">span1</span>,     <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>,   <span class="op">~</span><span class="va">val</span>,</span>
@@ -1581,7 +1609,12 @@
 <span>  <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,  <span class="st">"column cols"</span>, <span class="st">"col 4"</span>   , <span class="st">"col4"</span>  ,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
 <span>  <span class="st">"g2"</span>, <span class="st">"rowlabel3"</span>,             <span class="cn">NA</span>,         <span class="cn">NA</span>, <span class="st">"mycol5"</span>,  <span class="st">"value"</span>,    <span class="fl">3</span>,</span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Similar to the case of 1 <code>column</code> variable, the user may remove and rename values for the lowest level <code>column</code> variable within col_plan. To edit or move the columns based on the the column spanners, span_structure must be used. Here we want to bring all the columns that start with “col” together, as well as rename <code>mycol3</code> and drop <code>mycol5</code>.</p>
+<p>Similar to the case of 1 <code>column</code> variable, the user may
+remove and rename values for the lowest level <code>column</code>
+variable within col_plan. To edit or move the columns based on the the
+column spanners, span_structure must be used. Here we want to bring all
+the columns that start with “col” together, as well as rename
+<code>mycol3</code> and drop <code>mycol5</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  group <span class="op">=</span> <span class="va">group</span>,</span>
@@ -1605,12 +1638,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="pkmrheylwq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="lqswnrpeov" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#pkmrheylwq .gt_table {
+#lqswnrpeov .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1635,7 +1668,7 @@
   border-left-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_heading {
+#lqswnrpeov .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1647,7 +1680,7 @@
   border-right-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_title {
+#lqswnrpeov .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1659,7 +1692,7 @@
   border-bottom-width: 0;
 }
 
-#pkmrheylwq .gt_subtitle {
+#lqswnrpeov .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1671,13 +1704,13 @@
   border-top-width: 0;
 }
 
-#pkmrheylwq .gt_bottom_border {
+#lqswnrpeov .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_col_headings {
+#lqswnrpeov .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1692,7 +1725,7 @@
   border-right-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_col_heading {
+#lqswnrpeov .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1712,7 +1745,7 @@
   overflow-x: hidden;
 }
 
-#pkmrheylwq .gt_column_spanner_outer {
+#lqswnrpeov .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1724,15 +1757,15 @@
   padding-right: 4px;
 }
 
-#pkmrheylwq .gt_column_spanner_outer:first-child {
+#lqswnrpeov .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pkmrheylwq .gt_column_spanner_outer:last-child {
+#lqswnrpeov .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pkmrheylwq .gt_column_spanner {
+#lqswnrpeov .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1744,7 +1777,7 @@
   width: 100%;
 }
 
-#pkmrheylwq .gt_group_heading {
+#lqswnrpeov .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1769,7 +1802,7 @@
   vertical-align: middle;
 }
 
-#pkmrheylwq .gt_empty_group_heading {
+#lqswnrpeov .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1784,15 +1817,15 @@
   vertical-align: middle;
 }
 
-#pkmrheylwq .gt_from_md > :first-child {
+#lqswnrpeov .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pkmrheylwq .gt_from_md > :last-child {
+#lqswnrpeov .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pkmrheylwq .gt_row {
+#lqswnrpeov .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1811,7 +1844,7 @@
   overflow-x: hidden;
 }
 
-#pkmrheylwq .gt_stub {
+#lqswnrpeov .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1824,7 +1857,7 @@
   padding-right: 5px;
 }
 
-#pkmrheylwq .gt_stub_row_group {
+#lqswnrpeov .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1838,11 +1871,11 @@
   vertical-align: top;
 }
 
-#pkmrheylwq .gt_row_group_first td {
+#lqswnrpeov .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#pkmrheylwq .gt_summary_row {
+#lqswnrpeov .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1852,16 +1885,16 @@
   padding-right: 5px;
 }
 
-#pkmrheylwq .gt_first_summary_row {
+#lqswnrpeov .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_first_summary_row.thick {
+#lqswnrpeov .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#pkmrheylwq .gt_last_summary_row {
+#lqswnrpeov .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1871,7 +1904,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_grand_summary_row {
+#lqswnrpeov .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1881,7 +1914,7 @@
   padding-right: 5px;
 }
 
-#pkmrheylwq .gt_first_grand_summary_row {
+#lqswnrpeov .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1891,11 +1924,11 @@
   border-top-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_striped {
+#lqswnrpeov .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pkmrheylwq .gt_table_body {
+#lqswnrpeov .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1904,7 +1937,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_footnotes {
+#lqswnrpeov .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1918,7 +1951,7 @@
   border-right-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_footnote {
+#lqswnrpeov .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1927,7 +1960,7 @@
   padding-right: 5px;
 }
 
-#pkmrheylwq .gt_sourcenotes {
+#lqswnrpeov .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1941,7 +1974,7 @@
   border-right-color: #D3D3D3;
 }
 
-#pkmrheylwq .gt_sourcenote {
+#lqswnrpeov .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1949,64 +1982,64 @@
   padding-right: 5px;
 }
 
-#pkmrheylwq .gt_left {
+#lqswnrpeov .gt_left {
   text-align: left;
 }
 
-#pkmrheylwq .gt_center {
+#lqswnrpeov .gt_center {
   text-align: center;
 }
 
-#pkmrheylwq .gt_right {
+#lqswnrpeov .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pkmrheylwq .gt_font_normal {
+#lqswnrpeov .gt_font_normal {
   font-weight: normal;
 }
 
-#pkmrheylwq .gt_font_bold {
+#lqswnrpeov .gt_font_bold {
   font-weight: bold;
 }
 
-#pkmrheylwq .gt_font_italic {
+#lqswnrpeov .gt_font_italic {
   font-style: italic;
 }
 
-#pkmrheylwq .gt_super {
+#lqswnrpeov .gt_super {
   font-size: 65%;
 }
 
-#pkmrheylwq .gt_footnote_marks {
+#lqswnrpeov .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#pkmrheylwq .gt_asterisk {
+#lqswnrpeov .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#pkmrheylwq .gt_indent_1 {
+#lqswnrpeov .gt_indent_1 {
   text-indent: 5px;
 }
 
-#pkmrheylwq .gt_indent_2 {
+#lqswnrpeov .gt_indent_2 {
   text-indent: 10px;
 }
 
-#pkmrheylwq .gt_indent_3 {
+#lqswnrpeov .gt_indent_3 {
   text-indent: 15px;
 }
 
-#pkmrheylwq .gt_indent_4 {
+#lqswnrpeov .gt_indent_4 {
   text-indent: 20px;
 }
 
-#pkmrheylwq .gt_indent_5 {
+#lqswnrpeov .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2074,7 +2107,14 @@
 </tbody>
 </table>
 </div>
-<p>Let’s suppose we want to move the “col 4” column to the beginning and also reorder “col1” and “col2”. To achieve this, we can use <code>span_structure</code>. <code>span_structure</code> allows you to specify value(s) for a given column column, to specify the order. So can select <code>"col 4"</code> from <code>span1</code>. Then use another <code>span_strcture</code> to select <code>"col2"</code> and then <code>"col1"</code> from <code>my_col</code> when <code>span1</code> equals <code>"col 1,2"</code>,and finally all the other columns.</p>
+<p>Let’s suppose we want to move the “col 4” column to the beginning and
+also reorder “col1” and “col2”. To achieve this, we can use
+<code>span_structure</code>. <code>span_structure</code> allows you to
+specify value(s) for a given column column, to specify the order. So can
+select <code>"col 4"</code> from <code>span1</code>. Then use another
+<code>span_strcture</code> to select <code>"col2"</code> and then
+<code>"col1"</code> from <code>my_col</code> when <code>span1</code>
+equals <code>"col 1,2"</code>,and finally all the other columns.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  group <span class="op">=</span> <span class="va">group</span>,</span>
@@ -2100,12 +2140,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="evyzttccpc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="brhtqlfbbj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#evyzttccpc .gt_table {
+#brhtqlfbbj .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2130,7 +2170,7 @@
   border-left-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_heading {
+#brhtqlfbbj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2142,7 +2182,7 @@
   border-right-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_title {
+#brhtqlfbbj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2154,7 +2194,7 @@
   border-bottom-width: 0;
 }
 
-#evyzttccpc .gt_subtitle {
+#brhtqlfbbj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2166,13 +2206,13 @@
   border-top-width: 0;
 }
 
-#evyzttccpc .gt_bottom_border {
+#brhtqlfbbj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_col_headings {
+#brhtqlfbbj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2187,7 +2227,7 @@
   border-right-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_col_heading {
+#brhtqlfbbj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2207,7 +2247,7 @@
   overflow-x: hidden;
 }
 
-#evyzttccpc .gt_column_spanner_outer {
+#brhtqlfbbj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2219,15 +2259,15 @@
   padding-right: 4px;
 }
 
-#evyzttccpc .gt_column_spanner_outer:first-child {
+#brhtqlfbbj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#evyzttccpc .gt_column_spanner_outer:last-child {
+#brhtqlfbbj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#evyzttccpc .gt_column_spanner {
+#brhtqlfbbj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2239,7 +2279,7 @@
   width: 100%;
 }
 
-#evyzttccpc .gt_group_heading {
+#brhtqlfbbj .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2264,7 +2304,7 @@
   vertical-align: middle;
 }
 
-#evyzttccpc .gt_empty_group_heading {
+#brhtqlfbbj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2279,15 +2319,15 @@
   vertical-align: middle;
 }
 
-#evyzttccpc .gt_from_md > :first-child {
+#brhtqlfbbj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#evyzttccpc .gt_from_md > :last-child {
+#brhtqlfbbj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#evyzttccpc .gt_row {
+#brhtqlfbbj .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2306,7 +2346,7 @@
   overflow-x: hidden;
 }
 
-#evyzttccpc .gt_stub {
+#brhtqlfbbj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2319,7 +2359,7 @@
   padding-right: 5px;
 }
 
-#evyzttccpc .gt_stub_row_group {
+#brhtqlfbbj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2333,11 +2373,11 @@
   vertical-align: top;
 }
 
-#evyzttccpc .gt_row_group_first td {
+#brhtqlfbbj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#evyzttccpc .gt_summary_row {
+#brhtqlfbbj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2347,16 +2387,16 @@
   padding-right: 5px;
 }
 
-#evyzttccpc .gt_first_summary_row {
+#brhtqlfbbj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_first_summary_row.thick {
+#brhtqlfbbj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#evyzttccpc .gt_last_summary_row {
+#brhtqlfbbj .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2366,7 +2406,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_grand_summary_row {
+#brhtqlfbbj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2376,7 +2416,7 @@
   padding-right: 5px;
 }
 
-#evyzttccpc .gt_first_grand_summary_row {
+#brhtqlfbbj .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2386,11 +2426,11 @@
   border-top-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_striped {
+#brhtqlfbbj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#evyzttccpc .gt_table_body {
+#brhtqlfbbj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2399,7 +2439,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_footnotes {
+#brhtqlfbbj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2413,7 +2453,7 @@
   border-right-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_footnote {
+#brhtqlfbbj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2422,7 +2462,7 @@
   padding-right: 5px;
 }
 
-#evyzttccpc .gt_sourcenotes {
+#brhtqlfbbj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2436,7 +2476,7 @@
   border-right-color: #D3D3D3;
 }
 
-#evyzttccpc .gt_sourcenote {
+#brhtqlfbbj .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2444,64 +2484,64 @@
   padding-right: 5px;
 }
 
-#evyzttccpc .gt_left {
+#brhtqlfbbj .gt_left {
   text-align: left;
 }
 
-#evyzttccpc .gt_center {
+#brhtqlfbbj .gt_center {
   text-align: center;
 }
 
-#evyzttccpc .gt_right {
+#brhtqlfbbj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#evyzttccpc .gt_font_normal {
+#brhtqlfbbj .gt_font_normal {
   font-weight: normal;
 }
 
-#evyzttccpc .gt_font_bold {
+#brhtqlfbbj .gt_font_bold {
   font-weight: bold;
 }
 
-#evyzttccpc .gt_font_italic {
+#brhtqlfbbj .gt_font_italic {
   font-style: italic;
 }
 
-#evyzttccpc .gt_super {
+#brhtqlfbbj .gt_super {
   font-size: 65%;
 }
 
-#evyzttccpc .gt_footnote_marks {
+#brhtqlfbbj .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#evyzttccpc .gt_asterisk {
+#brhtqlfbbj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#evyzttccpc .gt_indent_1 {
+#brhtqlfbbj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#evyzttccpc .gt_indent_2 {
+#brhtqlfbbj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#evyzttccpc .gt_indent_3 {
+#brhtqlfbbj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#evyzttccpc .gt_indent_4 {
+#brhtqlfbbj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#evyzttccpc .gt_indent_5 {
+#brhtqlfbbj .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2569,7 +2609,10 @@
 </tbody>
 </table>
 </div>
-<p>Reordering with multiple <code>column</code> variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. But, that isn’t always the case take the following example:</p>
+<p>Reordering with multiple <code>column</code> variables is simplest
+when the lowest level column variable contains unique values (i.e.,
+there is 1 value per column in the final table), like in the example
+above. But, that isn’t always the case take the following example:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group</span>,     <span class="op">~</span><span class="va">label</span>,     <span class="op">~</span><span class="va">span</span> ,  <span class="op">~</span><span class="va">my_col</span>,    <span class="op">~</span><span class="va">parm</span>,   <span class="op">~</span><span class="va">val</span>,</span>
@@ -2578,7 +2621,12 @@
 <span>  <span class="st">"g1"</span>,      <span class="st">"stats"</span>,  <span class="st">"Treatment"</span>, <span class="st">"mean"</span>   ,  <span class="st">"mean"</span>,    <span class="fl">1.234</span>,</span>
 <span>  <span class="st">"g1"</span>,      <span class="st">"stats"</span>,  <span class="st">"Treatment"</span>, <span class="st">"sd"</span>     ,  <span class="st">"sd"</span>  ,    <span class="fl">2.123</span>,</span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>For this table we want to ensure <code>"Treatment"</code> is always before <code>"Placebo"</code> and that <code>"mean"</code> comes before <code>"sd"</code>. To do that we can make one <code>span_structure</code> that specifies both the order of the <code>span</code> level and the order of the <code>my_col</code> level.</p>
+<p>For this table we want to ensure <code>"Treatment"</code> is always
+before <code>"Placebo"</code> and that <code>"mean"</code> comes before
+<code>"sd"</code>. To do that we can make one
+<code>span_structure</code> that specifies both the order of the
+<code>span</code> level and the order of the <code>my_col</code>
+level.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  group <span class="op">=</span> <span class="va">group</span>,</span>
@@ -2601,12 +2649,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="nmjxrakfdn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="eumnfzvlsp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#nmjxrakfdn .gt_table {
+#eumnfzvlsp .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2631,7 +2679,7 @@
   border-left-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_heading {
+#eumnfzvlsp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2643,7 +2691,7 @@
   border-right-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_title {
+#eumnfzvlsp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2655,7 +2703,7 @@
   border-bottom-width: 0;
 }
 
-#nmjxrakfdn .gt_subtitle {
+#eumnfzvlsp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2667,13 +2715,13 @@
   border-top-width: 0;
 }
 
-#nmjxrakfdn .gt_bottom_border {
+#eumnfzvlsp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_col_headings {
+#eumnfzvlsp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2688,7 +2736,7 @@
   border-right-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_col_heading {
+#eumnfzvlsp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2708,7 +2756,7 @@
   overflow-x: hidden;
 }
 
-#nmjxrakfdn .gt_column_spanner_outer {
+#eumnfzvlsp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2720,15 +2768,15 @@
   padding-right: 4px;
 }
 
-#nmjxrakfdn .gt_column_spanner_outer:first-child {
+#eumnfzvlsp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nmjxrakfdn .gt_column_spanner_outer:last-child {
+#eumnfzvlsp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nmjxrakfdn .gt_column_spanner {
+#eumnfzvlsp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2740,7 +2788,7 @@
   width: 100%;
 }
 
-#nmjxrakfdn .gt_group_heading {
+#eumnfzvlsp .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2765,7 +2813,7 @@
   vertical-align: middle;
 }
 
-#nmjxrakfdn .gt_empty_group_heading {
+#eumnfzvlsp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2780,15 +2828,15 @@
   vertical-align: middle;
 }
 
-#nmjxrakfdn .gt_from_md > :first-child {
+#eumnfzvlsp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nmjxrakfdn .gt_from_md > :last-child {
+#eumnfzvlsp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nmjxrakfdn .gt_row {
+#eumnfzvlsp .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2807,7 +2855,7 @@
   overflow-x: hidden;
 }
 
-#nmjxrakfdn .gt_stub {
+#eumnfzvlsp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2820,7 +2868,7 @@
   padding-right: 5px;
 }
 
-#nmjxrakfdn .gt_stub_row_group {
+#eumnfzvlsp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2834,11 +2882,11 @@
   vertical-align: top;
 }
 
-#nmjxrakfdn .gt_row_group_first td {
+#eumnfzvlsp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nmjxrakfdn .gt_summary_row {
+#eumnfzvlsp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2848,16 +2896,16 @@
   padding-right: 5px;
 }
 
-#nmjxrakfdn .gt_first_summary_row {
+#eumnfzvlsp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_first_summary_row.thick {
+#eumnfzvlsp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nmjxrakfdn .gt_last_summary_row {
+#eumnfzvlsp .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2867,7 +2915,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_grand_summary_row {
+#eumnfzvlsp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2877,7 +2925,7 @@
   padding-right: 5px;
 }
 
-#nmjxrakfdn .gt_first_grand_summary_row {
+#eumnfzvlsp .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2887,11 +2935,11 @@
   border-top-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_striped {
+#eumnfzvlsp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nmjxrakfdn .gt_table_body {
+#eumnfzvlsp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2900,7 +2948,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_footnotes {
+#eumnfzvlsp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2914,7 +2962,7 @@
   border-right-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_footnote {
+#eumnfzvlsp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2923,7 +2971,7 @@
   padding-right: 5px;
 }
 
-#nmjxrakfdn .gt_sourcenotes {
+#eumnfzvlsp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2937,7 +2985,7 @@
   border-right-color: #D3D3D3;
 }
 
-#nmjxrakfdn .gt_sourcenote {
+#eumnfzvlsp .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2945,64 +2993,64 @@
   padding-right: 5px;
 }
 
-#nmjxrakfdn .gt_left {
+#eumnfzvlsp .gt_left {
   text-align: left;
 }
 
-#nmjxrakfdn .gt_center {
+#eumnfzvlsp .gt_center {
   text-align: center;
 }
 
-#nmjxrakfdn .gt_right {
+#eumnfzvlsp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nmjxrakfdn .gt_font_normal {
+#eumnfzvlsp .gt_font_normal {
   font-weight: normal;
 }
 
-#nmjxrakfdn .gt_font_bold {
+#eumnfzvlsp .gt_font_bold {
   font-weight: bold;
 }
 
-#nmjxrakfdn .gt_font_italic {
+#eumnfzvlsp .gt_font_italic {
   font-style: italic;
 }
 
-#nmjxrakfdn .gt_super {
+#eumnfzvlsp .gt_super {
   font-size: 65%;
 }
 
-#nmjxrakfdn .gt_footnote_marks {
+#eumnfzvlsp .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#nmjxrakfdn .gt_asterisk {
+#eumnfzvlsp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nmjxrakfdn .gt_indent_1 {
+#eumnfzvlsp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nmjxrakfdn .gt_indent_2 {
+#eumnfzvlsp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nmjxrakfdn .gt_indent_3 {
+#eumnfzvlsp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nmjxrakfdn .gt_indent_4 {
+#eumnfzvlsp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nmjxrakfdn .gt_indent_5 {
+#eumnfzvlsp .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3042,7 +3090,8 @@
 </tbody>
 </table>
 </div>
-<p>For more examples of <code>col_plan</code>s see the examples or unusual table vignettes.</p>
+<p>For more examples of <code>col_plan</code>s see the examples or
+unusual table vignettes.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -103,16 +103,35 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/" class="external-link">gt</a></span><span class="op">)</span></span></code></pre></div>
-<p>A core design element of <code>tfrmt</code> is to offer the ability to layer tfrmts together. This ability provides an opportunity to build template table formats that can be shared, improved, and reused across multiple projects. <code>tfrmt</code> provides a few tfrmt templates to facilitate the creation of basic tfrmts, but they require customization. This can be done through layering.</p>
-<p>To layer tfrmts, you can pipe or use the <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code> function. Piping is the preferred method for readability.</p>
-<p>When a tfrmt gets layered, the values in the first tfrmt are coalesced with values in the second tfrmt. If the second tfrmt has any of the same parameters specified as the first tfrmt, the values from the second tfrmt are prioritized. The exception to this rule is the “body_plan”, which will stack the plans together. To change this behavior see the <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code> documentation.</p>
+<p>A core design element of <code>tfrmt</code> is to offer the ability
+to layer tfrmts together. This ability provides an opportunity to build
+template table formats that can be shared, improved, and reused across
+multiple projects. <code>tfrmt</code> provides a few tfrmt templates to
+facilitate the creation of basic tfrmts, but they require customization.
+This can be done through layering.</p>
+<p>To layer tfrmts, you can pipe or use the <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code>
+function. Piping is the preferred method for readability.</p>
+<p>When a tfrmt gets layered, the values in the first tfrmt are
+coalesced with values in the second tfrmt. If the second tfrmt has any
+of the same parameters specified as the first tfrmt, the values from the
+second tfrmt are prioritized. The exception to this rule is the
+“body_plan”, which will stack the plans together. To change this
+behavior see the <code><a href="../reference/layer_tfrmt.html">layer_tfrmt()</a></code> documentation.</p>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>Here is an example of layering through piping. We create a template from <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> and pipe it into a separate <code>tfrmt</code>.</p>
-<p>We provide <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> with a data.frame detailing the groups and the significant digits the values are to be rounded to and it creates a <code>tfrmt</code> with a body_plan that supports this.</p>
-<p>The second tfrmt defines the table specific information, including title, specific columns to use for row labels and output columns, as well as the col_plan.</p>
-<p>The output tfrmt generates a table with the subset <code>data_labs</code>.</p>
+<p>Here is an example of layering through piping. We create a template
+from <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> and pipe it into a separate
+<code>tfrmt</code>.</p>
+<p>We provide <code><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig()</a></code> with a data.frame detailing
+the groups and the significant digits the values are to be rounded to
+and it creates a <code>tfrmt</code> with a body_plan that supports
+this.</p>
+<p>The second tfrmt defines the table specific information, including
+title, specific columns to use for row labels and output columns, as
+well as the col_plan.</p>
+<p>The output tfrmt generates a table with the subset
+<code>data_labs</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">data_labs_subset</span> <span class="op">&lt;-</span> <span class="va">data_labs</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -165,12 +184,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="iwtkckrtdl" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<div id="xmiqrbqkqe" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#iwtkckrtdl .gt_table {
+#xmiqrbqkqe .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -195,7 +214,7 @@
   border-left-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_heading {
+#xmiqrbqkqe .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -207,7 +226,7 @@
   border-right-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_title {
+#xmiqrbqkqe .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -219,7 +238,7 @@
   border-bottom-width: 0;
 }
 
-#iwtkckrtdl .gt_subtitle {
+#xmiqrbqkqe .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -231,13 +250,13 @@
   border-top-width: 0;
 }
 
-#iwtkckrtdl .gt_bottom_border {
+#xmiqrbqkqe .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_col_headings {
+#xmiqrbqkqe .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -252,7 +271,7 @@
   border-right-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_col_heading {
+#xmiqrbqkqe .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -272,7 +291,7 @@
   overflow-x: hidden;
 }
 
-#iwtkckrtdl .gt_column_spanner_outer {
+#xmiqrbqkqe .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -284,15 +303,15 @@
   padding-right: 4px;
 }
 
-#iwtkckrtdl .gt_column_spanner_outer:first-child {
+#xmiqrbqkqe .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#iwtkckrtdl .gt_column_spanner_outer:last-child {
+#xmiqrbqkqe .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#iwtkckrtdl .gt_column_spanner {
+#xmiqrbqkqe .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -304,7 +323,7 @@
   width: 100%;
 }
 
-#iwtkckrtdl .gt_group_heading {
+#xmiqrbqkqe .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -329,7 +348,7 @@
   vertical-align: middle;
 }
 
-#iwtkckrtdl .gt_empty_group_heading {
+#xmiqrbqkqe .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -344,15 +363,15 @@
   vertical-align: middle;
 }
 
-#iwtkckrtdl .gt_from_md > :first-child {
+#xmiqrbqkqe .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#iwtkckrtdl .gt_from_md > :last-child {
+#xmiqrbqkqe .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#iwtkckrtdl .gt_row {
+#xmiqrbqkqe .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -371,7 +390,7 @@
   overflow-x: hidden;
 }
 
-#iwtkckrtdl .gt_stub {
+#xmiqrbqkqe .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -384,7 +403,7 @@
   padding-right: 5px;
 }
 
-#iwtkckrtdl .gt_stub_row_group {
+#xmiqrbqkqe .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -398,11 +417,11 @@
   vertical-align: top;
 }
 
-#iwtkckrtdl .gt_row_group_first td {
+#xmiqrbqkqe .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#iwtkckrtdl .gt_summary_row {
+#xmiqrbqkqe .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -412,16 +431,16 @@
   padding-right: 5px;
 }
 
-#iwtkckrtdl .gt_first_summary_row {
+#xmiqrbqkqe .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_first_summary_row.thick {
+#xmiqrbqkqe .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#iwtkckrtdl .gt_last_summary_row {
+#xmiqrbqkqe .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -431,7 +450,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_grand_summary_row {
+#xmiqrbqkqe .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -441,7 +460,7 @@
   padding-right: 5px;
 }
 
-#iwtkckrtdl .gt_first_grand_summary_row {
+#xmiqrbqkqe .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -451,11 +470,11 @@
   border-top-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_striped {
+#xmiqrbqkqe .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#iwtkckrtdl .gt_table_body {
+#xmiqrbqkqe .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -464,7 +483,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_footnotes {
+#xmiqrbqkqe .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -478,7 +497,7 @@
   border-right-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_footnote {
+#xmiqrbqkqe .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -487,7 +506,7 @@
   padding-right: 5px;
 }
 
-#iwtkckrtdl .gt_sourcenotes {
+#xmiqrbqkqe .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -501,7 +520,7 @@
   border-right-color: #D3D3D3;
 }
 
-#iwtkckrtdl .gt_sourcenote {
+#xmiqrbqkqe .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -509,64 +528,64 @@
   padding-right: 5px;
 }
 
-#iwtkckrtdl .gt_left {
+#xmiqrbqkqe .gt_left {
   text-align: left;
 }
 
-#iwtkckrtdl .gt_center {
+#xmiqrbqkqe .gt_center {
   text-align: center;
 }
 
-#iwtkckrtdl .gt_right {
+#xmiqrbqkqe .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#iwtkckrtdl .gt_font_normal {
+#xmiqrbqkqe .gt_font_normal {
   font-weight: normal;
 }
 
-#iwtkckrtdl .gt_font_bold {
+#xmiqrbqkqe .gt_font_bold {
   font-weight: bold;
 }
 
-#iwtkckrtdl .gt_font_italic {
+#xmiqrbqkqe .gt_font_italic {
   font-style: italic;
 }
 
-#iwtkckrtdl .gt_super {
+#xmiqrbqkqe .gt_super {
   font-size: 65%;
 }
 
-#iwtkckrtdl .gt_footnote_marks {
+#xmiqrbqkqe .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#iwtkckrtdl .gt_asterisk {
+#xmiqrbqkqe .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#iwtkckrtdl .gt_indent_1 {
+#xmiqrbqkqe .gt_indent_1 {
   text-indent: 5px;
 }
 
-#iwtkckrtdl .gt_indent_2 {
+#xmiqrbqkqe .gt_indent_2 {
   text-indent: 10px;
 }
 
-#iwtkckrtdl .gt_indent_3 {
+#xmiqrbqkqe .gt_indent_3 {
   text-indent: 15px;
 }
 
-#iwtkckrtdl .gt_indent_4 {
+#xmiqrbqkqe .gt_indent_4 {
   text-indent: 20px;
 }
 
-#iwtkckrtdl .gt_indent_5 {
+#xmiqrbqkqe .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -808,9 +827,18 @@
 <div class="section level2">
 <h2 id="conflicting-layers">Conflicting Layers<a class="anchor" aria-label="anchor" href="#conflicting-layers"></a>
 </h2>
-<p>As two tfrmt are layered, there may come a case where the groups value is not the same across the body plan. Additionally, data may be provided in a slightly different group names than was expected. Addressing this without having to re-write the entire body_plan is able to be done with the <code><a href="../reference/update_group.html">update_group()</a></code> function.</p>
-<p>Similar to the <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code> function, here we provide the new group name and which old group name needs to be updated. The function maps across the entire tfrmt and updates all references of the old group name to the new one.</p>
-<p>For example, this is useful when a template tfrmt needs references updated. This could happen when the input data set has a slightly different naming convention than expected.</p>
+<p>As two tfrmt are layered, there may come a case where the groups
+value is not the same across the body plan. Additionally, data may be
+provided in a slightly different group names than was expected.
+Addressing this without having to re-write the entire body_plan is able
+to be done with the <code><a href="../reference/update_group.html">update_group()</a></code> function.</p>
+<p>Similar to the <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code> function, here we provide the
+new group name and which old group name needs to be updated. The
+function maps across the entire tfrmt and updates all references of the
+old group name to the new one.</p>
+<p>For example, this is useful when a template tfrmt needs references
+updated. This could happen when the input data set has a slightly
+different naming convention than expected.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## provided data had different column names for groups</span></span>
@@ -843,12 +871,12 @@
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="hamoufmwvf" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
+<div id="cbewlduemt" style="overflow-x:auto;overflow-y:auto;width:1000px;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hamoufmwvf .gt_table {
+#cbewlduemt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -873,7 +901,7 @@
   border-left-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_heading {
+#cbewlduemt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -885,7 +913,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_title {
+#cbewlduemt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -897,7 +925,7 @@
   border-bottom-width: 0;
 }
 
-#hamoufmwvf .gt_subtitle {
+#cbewlduemt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -909,13 +937,13 @@
   border-top-width: 0;
 }
 
-#hamoufmwvf .gt_bottom_border {
+#cbewlduemt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_col_headings {
+#cbewlduemt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -930,7 +958,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_col_heading {
+#cbewlduemt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -950,7 +978,7 @@
   overflow-x: hidden;
 }
 
-#hamoufmwvf .gt_column_spanner_outer {
+#cbewlduemt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -962,15 +990,15 @@
   padding-right: 4px;
 }
 
-#hamoufmwvf .gt_column_spanner_outer:first-child {
+#cbewlduemt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hamoufmwvf .gt_column_spanner_outer:last-child {
+#cbewlduemt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hamoufmwvf .gt_column_spanner {
+#cbewlduemt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -982,7 +1010,7 @@
   width: 100%;
 }
 
-#hamoufmwvf .gt_group_heading {
+#cbewlduemt .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1007,7 +1035,7 @@
   vertical-align: middle;
 }
 
-#hamoufmwvf .gt_empty_group_heading {
+#cbewlduemt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1022,15 +1050,15 @@
   vertical-align: middle;
 }
 
-#hamoufmwvf .gt_from_md > :first-child {
+#cbewlduemt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hamoufmwvf .gt_from_md > :last-child {
+#cbewlduemt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hamoufmwvf .gt_row {
+#cbewlduemt .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1049,7 +1077,7 @@
   overflow-x: hidden;
 }
 
-#hamoufmwvf .gt_stub {
+#cbewlduemt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1062,7 +1090,7 @@
   padding-right: 5px;
 }
 
-#hamoufmwvf .gt_stub_row_group {
+#cbewlduemt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1076,11 +1104,11 @@
   vertical-align: top;
 }
 
-#hamoufmwvf .gt_row_group_first td {
+#cbewlduemt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hamoufmwvf .gt_summary_row {
+#cbewlduemt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1090,16 +1118,16 @@
   padding-right: 5px;
 }
 
-#hamoufmwvf .gt_first_summary_row {
+#cbewlduemt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_first_summary_row.thick {
+#cbewlduemt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hamoufmwvf .gt_last_summary_row {
+#cbewlduemt .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1109,7 +1137,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_grand_summary_row {
+#cbewlduemt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1119,7 +1147,7 @@
   padding-right: 5px;
 }
 
-#hamoufmwvf .gt_first_grand_summary_row {
+#cbewlduemt .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1129,11 +1157,11 @@
   border-top-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_striped {
+#cbewlduemt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hamoufmwvf .gt_table_body {
+#cbewlduemt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1142,7 +1170,7 @@
   border-bottom-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_footnotes {
+#cbewlduemt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1156,7 +1184,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_footnote {
+#cbewlduemt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1165,7 +1193,7 @@
   padding-right: 5px;
 }
 
-#hamoufmwvf .gt_sourcenotes {
+#cbewlduemt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1179,7 +1207,7 @@
   border-right-color: #D3D3D3;
 }
 
-#hamoufmwvf .gt_sourcenote {
+#cbewlduemt .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1187,64 +1215,64 @@
   padding-right: 5px;
 }
 
-#hamoufmwvf .gt_left {
+#cbewlduemt .gt_left {
   text-align: left;
 }
 
-#hamoufmwvf .gt_center {
+#cbewlduemt .gt_center {
   text-align: center;
 }
 
-#hamoufmwvf .gt_right {
+#cbewlduemt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hamoufmwvf .gt_font_normal {
+#cbewlduemt .gt_font_normal {
   font-weight: normal;
 }
 
-#hamoufmwvf .gt_font_bold {
+#cbewlduemt .gt_font_bold {
   font-weight: bold;
 }
 
-#hamoufmwvf .gt_font_italic {
+#cbewlduemt .gt_font_italic {
   font-style: italic;
 }
 
-#hamoufmwvf .gt_super {
+#cbewlduemt .gt_super {
   font-size: 65%;
 }
 
-#hamoufmwvf .gt_footnote_marks {
+#cbewlduemt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#hamoufmwvf .gt_asterisk {
+#cbewlduemt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hamoufmwvf .gt_indent_1 {
+#cbewlduemt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hamoufmwvf .gt_indent_2 {
+#cbewlduemt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hamoufmwvf .gt_indent_3 {
+#cbewlduemt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hamoufmwvf .gt_indent_4 {
+#cbewlduemt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hamoufmwvf .gt_indent_5 {
+#cbewlduemt .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
