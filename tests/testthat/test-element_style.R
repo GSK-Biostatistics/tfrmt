@@ -518,7 +518,8 @@ test_that("Alphanumeric align string supplied",{
     "median"   ,"four"  ,"0.05"   ,
     "(q1, q3)" ,"four"  ,""  )
 
-  element_col_warning <- capture_warnings({
+  element_col_message <- capture_messages({
+
   plan <- tfrmt(
     label = one,
     column = vars(column),
@@ -526,10 +527,11 @@ test_that("Alphanumeric align string supplied",{
     col_style_plan =  col_style_plan(
       element_col(align = "right", col = vars(starts_with("trt"))),
       element_col(align = c("2","4"), col = trt1)))
+
   })
 
   expect_true(
-    !is_empty(element_col_warning)
+    !is_empty(element_col_message)
   )
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
@@ -557,7 +559,7 @@ test_that("Alphanumeric align string supplied",{
     ) %>%
     apply_col_style_plan(plan)
 
-  expect_equal(dat_aligned, dat_aligned_man%>%
+  expect_equal(dat_aligned, dat_aligned_man %>%
                  pivot_wider(
                    names_from = column,
                    values_from = value

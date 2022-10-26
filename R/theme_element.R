@@ -161,13 +161,14 @@ element_col <- function(col, align = NULL, width = NULL, ...){
     }
 
     if(!all(align %in% c("left","right"))){
+
       if (!all(nchar(align)==1)){
         message( "Alignment specified contains strings with >1 characters. Only the first character will be used.")
         align <- str_sub(align, start=1, end=1)
       }
 
       if (any(str_detect(align, "[[:alnum:]]"))){
-        warn( "Alignment specified contains one or more alphanumeric characters. Results may not be as expected.")
+        message( "Alignment specified contains one or more alphanumeric characters. Results may not be as expected.")
       }
     }
 
