@@ -15,6 +15,8 @@
 #'     element_col(align = c(".", ",", " "), col = vars(two, three))
 #'    )
 #'
+#'
+#'
 #' @seealso [element_col()] for more information on how to specify how to and which columns to align.
 #'
 #'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html}{Link to related article}
@@ -37,27 +39,3 @@ col_style_plan <- function(...){
   )
 }
 
-
-#' @importFrom stringr str_remove
-#' @importFrom rlang abort
-validate_width_units <- function(width){
-
-  if(is.null(width)){
-    return(NULL)
-  }
-
-  if (is.numeric(width)) {
-    width <- paste0(as.character(width), "px")
-  }
-
-  width_units <- str_remove(width,"\\d+")
-  if(!width_units %in% c("px","%")){
-    abort(paste0(
-      "Invalid Units provided for column width: `",width_units,"`.\n",
-      "Only `px` (`px()`) or `%` (`pct()`) are accepted."
-    ))
-  }
-
-  return(width)
-
-}

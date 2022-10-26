@@ -496,7 +496,7 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    element_col(align = c(".",","," "), col = vars(p_low, p_high))
+    element_col(align = c(".",","," "), col = c(p_low, p_high))
   ),
   
   # columns
@@ -511,8 +511,7 @@ tfrmt(
       ),
       col1 = c(`n (%)` = `n_pct` ,
                `[AEs]` = `AEs`)
-    )
-    ,
+    ),
     span_structure(
       col2 = c("Fisher's Exact p-values" = fisher_pval),
       col1 = c(
@@ -520,9 +519,7 @@ tfrmt(
         `Placebo vs.\n Low Dose` = `p_low` ,
        `Placebo vs.\n High Dose` = `p_high` 
       )
-    )
-    
-    )
+    ))
   ) %>% 
   print_to_gt(data_ae2)  %>% 
   tab_options(
