@@ -10,7 +10,7 @@ col_style_plan(...)
 \item{...}{series of element_col objects}
 }
 \value{
-col_style_plan  object
+col_style_plan object
 }
 \description{
 Define how the columns of the table body should be aligned, whether left,

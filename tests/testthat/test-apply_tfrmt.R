@@ -131,3 +131,68 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing",{
 
 })
 
+test_that("test tentative_process",{
+
+  passing_func <- function(x,y = "value"){
+    paste0(x,y)
+  }
+
+  failing_func <- function(x,y = "value"){
+    stop("this function failed")
+    paste0(x,y)
+  }
+  
+  rlang_abort_func <- function(x,y = "value"){
+    rlang::abort("this function failed2")
+    paste0(x,y)
+  }
+
+  ## function passing in tentative process
+  expect_equal(
+    tentative_process("x",passing_func),
+    "xvalue"
+  )
+
+  passing_func_messages <- capture_messages({
+    tentative_process("x",passing_func)
+  })
+  
+  expect_true(is_empty(passing_func_messages))
+  expect_equal(
+    passing_func_messages,
+    character()
+  )
+  
+  ## function failing in tentative process
+  expect_equal(
+    suppressMessages(tentative_process("x",failing_func)),
+    "x"
+  )
+  
+  failing_func_messages <- capture_messages({
+    tentative_process("x",failing_func)
+  })
+
+  expect_true(!is_empty(failing_func_messages))
+  expect_equal(
+    failing_func_messages,
+    "Unable to to apply failing_func.\nReason: this function failed\n"
+  )
+  
+  ## function failing in tentative process
+  expect_equal(
+    suppressMessages(tentative_process("x",rlang_abort_func)),
+    "x"
+  )
+  
+  rlang_abort_func_messages <- capture_messages({
+    tentative_process("x",rlang_abort_func)
+  })
+  
+  expect_true(!is_empty(rlang_abort_func_messages))
+  expect_equal(
+    rlang_abort_func_messages,
+    "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"
+  )
+  
+})

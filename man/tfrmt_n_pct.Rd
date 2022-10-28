@@ -21,6 +21,9 @@ tfrmt_n_pct(
 
 \item{tfrmt_obj}{an optional tfrmt object to layer}
 }
+\value{
+tfrmt object
+}
 \description{
 This function creates an tfrmt for an n \% table, so count based table. The
 parameter values for n and percent can be provided (by default it will assume

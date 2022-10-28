@@ -5,7 +5,7 @@
 #'
 #' @param ... series of element_col objects
 #'
-#' @return col_style_plan  object
+#' @return col_style_plan object
 #'
 #' @examples
 #'

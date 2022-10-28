@@ -12,6 +12,9 @@ value of group should be when the given frmt is implemented}
 
 \item{element_block}{element_block() object to define the block styling}
 }
+\value{
+row_grp_structure object
+}
 \description{
 Function needed to create a row_grp_structure object, which is a building block
 of \code{\link[=row_grp_plan]{row_grp_plan()}}

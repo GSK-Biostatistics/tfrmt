@@ -22,6 +22,9 @@ numeric value, or a character string of a number.}
 
 \item{...}{These dots are for future extensions and must be empty}
 }
+\value{
+element_col object
+}
 \description{
 Element Column
 }

@@ -22,6 +22,9 @@ users to use the {gt} defaults for styling multiple group columns.}
 
 \item{indent}{A string of the number of spaces you want to indent}
 }
+\value{
+element_row_grp_loc object
+}
 \description{
 Element Row Group Location
 }
