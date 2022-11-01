@@ -79,7 +79,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
 
       out
     }) %>%
-    arrange(`TEMP_row`) %>%
+    arrange(.data$TEMP_row) %>%
     select(-starts_with("TEMP_")) ## drop TEMP_row values
 
 }

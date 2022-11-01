@@ -269,18 +269,18 @@ test_that("Test body_plan missing", {
     val = 1:10
   )
 
-  empty_body_plan <- tfrmt(
-    group = group,
-    label = label,
-    param = param,
-    column = column,
-    value = val,
-    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
-  ) %>%
-    apply_tfrmt(input_data, .) %>%
-    expect_message(
-      "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
-    )
+  expect_message(
+    empty_body_plan <- tfrmt(
+      group = group,
+      label = label,
+      param = param,
+      column = column,
+      value = val,
+      row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
+    ) %>%
+      apply_tfrmt(input_data, .),
+    "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+  )
 
   expect_equal(empty_body_plan,
                input_data %>%
