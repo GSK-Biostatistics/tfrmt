@@ -68,10 +68,10 @@ test_that("Check apply_tfrmt", {
     "A",     "x",     "129 ( 76.0%)", "139 ( 31.2%)", "153 ( 24.4%)", "158 ( 15.3%)",
     "A",     "y",     "150 (  4.2%)", "144 ( 56.5%)", "165 ( 66.8%)", "167 ( 89.9%)",
     "A",     "z",     "146 ( 13.2%)", "134 ( 56.5%)", "142 (  3.9%)", "156 ( 94.6%)",
-    "B",     "w",     "147         ", "149         ", "143         ", "159         ",
     "B",     "i",     " 83.5       ", " 68.9       ", " 78.2       ", " 79.2       ",
+    "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      ",
     "B",     "k",     " 80.3       ", " 72.5       ", " 87.3       ", " 71.6       ",
-    "B",     "j",     " 10.77      ", " 11.05      ", "  8.79      ", "  5.70      "
+    "B",     "w",     "147         ", "149         ", "143         ", "159         "
   ) %>%
     mutate(..tfrmt_row_grp_lbl = FALSE)
 
@@ -84,12 +84,7 @@ test_that("Check apply_tfrmt", {
   plan$sorting_cols <- NULL
 
   man_df_ord <- man_df %>%
-    mutate(foo = case_when(label == "w" ~ 1,
-                           label == "i" ~ 2,
-                           label == "k" ~ 3,
-                           TRUE ~ 4)) %>%
-    arrange(group, foo, label) %>%
-    select(-foo)
+    arrange(group, label)
 
   expect_equal(apply_tfrmt(raw_dat, plan) %>% ungroup(),
                man_df_ord,
@@ -282,7 +277,10 @@ test_that("Test body_plan missing", {
     value = val,
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
   ) %>%
-    apply_tfrmt(input_data, .)
+    apply_tfrmt(input_data, .) %>%
+    expect_message(
+      "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+    )
 
   expect_equal(empty_body_plan,
                input_data %>%
@@ -319,19 +317,23 @@ test_that("incomplete body_plan where params share label",{
     )
   )
 
-  expect_message(
-    auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec),
-    "The following rows of the given dataset have no format applied to them 1, 2, 4, 5"
-  )
+
+    expect_message(
+      auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec),
+      "The following rows of the given dataset have no format applied to them 1, 2, 4, 5"
+    ) %>%
+      expect_message(
+        "Multiple param listed for the same group/label values"
+      )
 
   man_tfrmt <- tibble::tribble(
     ~rowlbl1,  ~rowlbl2,    ~ A   ,       ~..tfrmt_row_grp_lbl,
     "topgrp", "lowergrp1", NA_character_, TRUE,
+    "topgrp", "  n pct"  ,c("1","50"),   FALSE,
     "topgrp", "  mean"   , " 2.0",        FALSE,
-    "topgrp", "  n pct"   ,c("1","50"),   FALSE,
     "topgrp", "lowergrp2", NA_character_, TRUE,
-    "topgrp", "  mean"   , " 5.0",        FALSE,
-    "topgrp", "  n pct"  , c("2","40"),   FALSE
+    "topgrp", "  n pct"  , c("2","40"),   FALSE,
+    "topgrp", "  mean"   , " 5.0",        FALSE
   ) %>% group_by(rowlbl1)
 
   expect_equal(auto_tfrmt, man_tfrmt,
