@@ -123,12 +123,16 @@ tfrmt <- tfrmt(
   ),
   
   # remove extra cols
-  col_plan = col_plan(-grp, 
-                      -starts_with("ord") )
+  col_plan = col_plan(Placebo,
+                      starts_with("Xanom"),
+                      Total,
+                      -grp, 
+                      -starts_with("ord")
+                      )
 ) 
 
 gt_out <- print_mock_gt(tfrmt, data_demog)
-invisible(gtsave(gt_out, "man/figures/gt_readme.png"))
+invisible(gtsave(gt_out, "man/figures/gt_readme.png", vwidth = 999))
 ```
 
 ![Example GT Demography Table](man/figures/gt_readme.png)
