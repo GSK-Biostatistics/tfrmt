@@ -391,6 +391,70 @@ test_that("span_structure works", {
 
 })
 
+test_that("span_structure works on a renamed column", {
+
+  dat <- tibble::tribble(
+    ~one       ,   ~ span_col,  ~column,  ~ value,    ~param,
+    "n (%)"    , "Test Span1",   "trt1", " 12 (34%)", "param",
+    "n (%)"    , "Test Span2",   "trt2", " 24 (58%)", "param",
+    "n (%)"    ,           NA,   "four", ""         , "param",
+    "mean"     , "Test Span1",   "trt1", " 12.3"    , "param",
+    "mean"     , "Test Span2",   "trt2", " 15.4"    , "param",
+    "mean"     ,           NA,   "four", "<0.001"   , "param",
+    "sd"       , "Test Span1",   "trt1", "  4.34"   , "param",
+    "sd"       , "Test Span2",   "trt2", "  8.25"   , "param",
+    "sd"       ,           NA,   "four", ""         , "param",
+    "median"   , "Test Span1",   "trt1", " 14"      , "param",
+    "median"   , "Test Span2",   "trt2", " 16"      , "param",
+    "median"   ,           NA,   "four", "0.05"     , "param",
+    "(q1, q3)" , "Test Span1",   "trt1", "(10, 20)" , "param",
+    "(q1, q3)" , "Test Span2",   "trt2", "(11, 22)" , "param",
+    "(q1, q3)" ,           NA,   "four", "",  "param"
+    )
+
+
+  plan <- tfrmt(
+    label = one,
+    column = vars(span_col, column),
+    value = value,
+    param = param,
+    col_plan = col_plan(
+      one,
+      span_structure(
+        span_col = `Test Span1`,
+        column = trt1
+      ),
+      span_structure(
+        span_col = c("New Test Span2" = "Test Span2"),
+        column = trt2
+      ),
+      four
+    ),
+    col_style_plan = col_style_plan(
+      element_col(align = c(".", ",", " "), col = span_structure(span_col = "Test Span2")),
+      element_col(align = "right", col = vars(four))
+    )
+  )
+
+  dat_aligned_man <- tibble(
+    one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
+    `Test Span1___tlang_delim___trt1` = c(" 12 (34%)", " 12.3", "  4.34", " 14", "(10, 20)"),
+    `New Test Span2___tlang_delim___trt2` = c(" 24 (58%)", " 15.4    ", "  8.25   ", " 16      ", "(11, 22) "),
+    four = c("      ", "<0.001", "      ", "  0.05", "      ")
+  )
+
+  suppressMessages({
+  dat_aligned <- apply_tfrmt(dat, plan, mock = FALSE) %>%
+    tibble::as_tibble()
+  })
+
+  attr(dat_aligned, ".footnote_locs") <- NULL
+  attr(dat_aligned, ".col_plan_vars") <- NULL
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+})
+
 test_that("Overlapping element_cols favors last one",{
 
   dat <- tibble::tribble(
