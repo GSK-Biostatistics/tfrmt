@@ -80,8 +80,8 @@ test_that("Simple Case big_n", {
       "ord1",
       "ord2",
       "Placebo\nN = 30",
-      "Total\nN = 60",
       "Treatment\nN = 30",
+      "Total\nN = 60",
       "..tfrmt_row_grp_lbl"
     )
   )

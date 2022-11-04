@@ -14,6 +14,7 @@
 #' @importFrom tidyr unnest
 #' @importFrom rlang !! :=
 apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, value, column, mock = FALSE,...){
+
   ## identify which formatting needs to be applied where
   .data <- .data %>%
     ungroup() %>%
@@ -38,7 +39,6 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
     group_by(.data$TEMP_fmt_rank) %>%
     group_split()
 
-
   ## apply formatting
   dat_plus_fmt %>%
     map_dfr(function(x){
@@ -48,16 +48,12 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
         .[1] %>%
         .[[1]]
 
-      # Remove all the temporary variables
-      data_only <- x %>%
-        select(-starts_with("TEMP_"))
-
       if(is.null(cur_fmt)){
         if(!mock){
-          out <- data_only %>%
+          out <- x %>%
             mutate(!!value := as.character(!!value))
         } else {
-          out <- data_only
+          out <- x
         }
 
         # Add message
@@ -71,7 +67,7 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
         ## apply the formatting based on method of cur_fmt
         out <- apply_frmt(
           frmt_def = cur_fmt,
-          .data = data_only,
+          .data = x,
           value = value,
           param = param,
           column = column,
@@ -82,7 +78,10 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
       }
 
       out
-    })
+    }) %>%
+    arrange(.data$TEMP_row) %>%
+    select(-starts_with("TEMP_")) ## drop TEMP_row values
+
 }
 
 #' Test of the frmt of the data

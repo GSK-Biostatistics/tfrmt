@@ -31,8 +31,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   # check if order vars are causing rows to print over 2 lines
   check_order_vars(tbl_dat,tfrmt)
 
-  non_data_cols <- setdiff(names(tbl_dat),c(tfrmt$column, tfrmt$param, tfrmt$value) %>% map_chr(as_label))
-  data_col_values <- tbl_dat %>% pull(!!tfrmt$column[[length(tfrmt$column)]]) %>% unique()
   big_n_df <- get_big_ns(.data, param = tfrmt$param,
                          value = tfrmt$value,
                          columns =tfrmt$column,
