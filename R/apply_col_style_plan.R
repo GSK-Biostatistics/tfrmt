@@ -43,7 +43,7 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.chara
         col_selection <- col_plan_quo_to_vars(
           x = selection,
           column_names = column_names,
-          data_names = names(.data),
+          data_names = c(),
           preselected_cols = col_plan_vars %>% map_chr(as_label),
           return_only_selected = TRUE,
           default_everything_behavior = TRUE
@@ -52,14 +52,13 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.chara
         col_selection <- col_plan_span_structure_to_vars(
           x = selection,
           column_names = column_names,
-          data_names = names(.data),
+          data_names = c(),
           preselected_cols = col_plan_vars %>% map_chr(as_label),
           return_only_selected = TRUE
         )
       }
 
       col_selection <- col_selection[!grepl("^-",col_selection)]
-      col_selection <- setdiff(col_selection, "..tfrmt_row_grp_lbl")
 
       ## use names if they exist, else use content
       if(!is.null(names(col_selection))){
@@ -70,8 +69,12 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.chara
         col_selection <- col_sel_names
       }
 
+      col_selection <- setdiff(col_selection, "..tfrmt_row_grp_lbl")
+
       col_selections <- c(col_selections, col_selection)
     }
+
+
 
     if(length(col_selections) > 0){
       col_style_selection <- style_el[setdiff(names(style_el),"cols")] %>%
