@@ -102,7 +102,7 @@ Now that we have our tfrmt, we can wrap it into a function to form a template. T
 
 `tfrmt` offers the function `layer_tfrmt()`, which provides the ability for layering `tfrmt` together. The first two arguments are the `tfrmt` objects to be layered. By default the body_plans of the tfrmt are joined together. We will leverage this function in the creation of our template.
 
-See below for an example of creating a template based on a function for layering `tfrmt` together. In this scenario the base AE template only has body_plan values for handling total counts, case counts, and percents, but not pvalues. We create another template for pvalues, and then finally layer it with the study specific tfrmt.
+See below for an example of creating a template based on a function for layering `tfrmt` together. In this scenario the base AE template only has body_plan values for handling total counts, case counts, and percents, but not p-values. We create another template for p-values, and then finally layer it with the study specific tfrmt.
 
 ```{r tfrmt-template-functions}
 

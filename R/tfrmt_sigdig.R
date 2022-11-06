@@ -2,7 +2,7 @@
 #' Create frmt character string from significant digits spec
 #'
 #' @param sigdig Number of significant digits to add to default setting for that param
-#' @param single_glue_to_frmt optional glue syntax for standalone (non-combined) parameters. NA if not applicable
+#' @param single_glue_to_frmt optional glue syntax for stand-alone (non-combined) parameters. NA if not applicable
 #'
 #' @return formatted spec as character string
 #' @noRd

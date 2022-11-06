@@ -25,7 +25,7 @@ library(ggfortify)
 
 Print to ggplot outputs a ggplot table. This table can then be added to an existing plot to provide additional information. For this we recommend the use of the patchwork package.
 
-## Surival analysis example
+## Survival analysis example
 
 A common use case of this function could be in the production of survival plots. The following code sets up a Kaplan Meier plot using the colon data from the survival package. 
 

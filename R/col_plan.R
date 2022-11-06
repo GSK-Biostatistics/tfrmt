@@ -15,7 +15,7 @@
 #' is selected twice, the _last_ instance in which the column is selected will be
 #' the location it gets rendered.
 #'
-#' Avoid beginning the \code{col_plan()} column selection with a deselection (ie
+#' Avoid beginning the \code{col_plan()} column selection with a deselection (i.e.
 #' \code{col_plan(-col1)}, \code{col_plan(-starts_with("value")))}. This will
 #' result in the table preserving all columns not "de-selected" in the
 #' statement, and the order of the columns not changed. It is preferred when
