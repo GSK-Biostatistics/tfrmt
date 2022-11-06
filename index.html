@@ -89,11 +89,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="tfrmt-">tfrmt <a href="https://gsk-biostatistics.github.io/tfrmt/"><img src="reference/figures/tfrmt.png" align="right" style="height:139px;"></a>
+<div class="page-header"><h1 id="tfrmt-">tfrmt <a href="https://gsk-biostatistics.github.io/tfrmt/"><img src="reference/figures/tfrmt.png" align="right" alt="tfrmt logo" style="height:139px;"></a>
 <a class="anchor" aria-label="anchor" href="#tfrmt-"></a>
 </h1></div>
 <!-- badges: start -->
 
+<!-- badges: end -->
 <p>The tfrmt package provides a language for defining display-related metadata, which can then be used to automate and easily update output formats.</p>
 <p>In clinical trials, displays are generally quite standard, but frequent, highly specific formatting tweaks (e.g., rounding, footnotes, headers) are very common. Prior to data analysis, study teams often generate mock displays to represent the desired end product for sponsors to approve or programmers to replicate. This process is typically highly manual and separate from the programming itself. There is also a high importance placed on verifying the accuracy of the results via a QC (Quality Control) process such as double programming. Finally, there is a movement toward an industry standard data structure for Analysis Results Data “ARD”, which means analysis results datasets will have consistent structures and column names. Specifically, the ARD is long, with 1 record per computed value. For more information about ARDs click <a href="https://www.pharmasug.org/download/sde/rtp2021/PharmaSUG-NCSDE_2021-08.pdf" class="external-link">here</a>.</p>
 <p>tfrmt supports a vision where:</p>
@@ -132,7 +133,7 @@
 <li>1 or more <strong>column</strong> columns, containing column values</li>
 <li>A single <strong>param</strong> column, which provides a label for distinct types of values</li>
 <li>A single <strong>value</strong> column, containing the computed, raw data values</li>
-<li>[Optional] 1 or more <strong>sorting_cols</strong> columns, containing numeric vlaues to be used in the row ordering</li>
+<li>[Optional] 1 or more <strong>sorting_cols</strong> columns, containing numeric values to be used in the row ordering</li>
 </ul>
 </div>
 <div class="section level1">
@@ -140,8 +141,7 @@
 </h1>
 <p>Here is an overview of what is possible with tfrmt:</p>
 <ul>
-<li>Create a “tfrmt” metadata object containing all formatting and labeling for the display</li>
-<li>Layer tfrmt objects to combine standard formatting with user-specific formatting</li>
+<li>Create a “tfrmt” metadata object containing all formatting and labelling for the display</li>
 <li>Create mock displays based on existing sample data or no prior data</li>
 <li>ARD-standard compliant facilitates reuse and automation</li>
 </ul>
@@ -156,7 +156,7 @@
 </h1>
 <p>For more information about how to build your own tfrmt mocks/tables (like the one below!), please explore the <a href="https://gsk-biostatistics.github.io/tfrmt/articles/examples.html">vignettes</a>.</p>
 <div class="figure">
-<img src="reference/figures/gt_readme.png" alt=""><p class="caption">Example GT Demog table</p>
+<img src="reference/figures/gt_readme.png" alt=""><p class="caption">Example GT Demography Table</p>
 </div>
 </div>
 
