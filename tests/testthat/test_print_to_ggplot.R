@@ -52,7 +52,7 @@ test_that("inputs are as expected",{
     param = param,
     value = value,
     col_style_plan =  col_style_plan(
-      element_col(align = "right", col = `1000`))
+      col_style_structure(align = "right", col = `1000`))
   )
 
   expect_error(print_to_ggplot(tfrmt_1,"test"),"Requires data")

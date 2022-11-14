@@ -130,7 +130,7 @@ check_col_style_row_grp_consistency <- function(x){
     for(cap_vars_idx in seq_along(col_align_plan_as_char)){
       grp_in_cap <- group_as_char %in% col_align_plan_as_char[[cap_vars_idx]]
       if(length(x$col_style_plan[[cap_vars_idx]]$col) == 0){
-        stop("Column element is missing from element_col. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
+        stop("Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
       }
 
       if(r_grp_plan_col_loc == "column" & any(grp_in_cap[-1])){
@@ -139,7 +139,7 @@ check_col_style_row_grp_consistency <- function(x){
         is_invalid_plan_message <- c(
           is_invalid_plan_message,
           paste0(
-            paste0("Invalid element_col in row_grp_plan at position `",cap_vars_idx,"`:\n"),
+            paste0("Invalid col_style_structure in row_grp_plan at position `",cap_vars_idx,"`:\n"),
             paste0("  `col` value",ifelse(length(invalid_groups) > 1,"s",""),": ",paste0(invalid_groups, collapse = ", "),"\n"),
             paste0("  When row_grp_plan label location is `column`, only the only valid group col to style is `",group_as_char[1],"`\n")
           )
@@ -150,7 +150,7 @@ check_col_style_row_grp_consistency <- function(x){
         is_invalid_plan_message <- c(
           is_invalid_plan_message,
           paste0(
-            paste0("Invalid element_col in row_grp_plan at position `",cap_vars_idx,"`:\n"),
+            paste0("Invalid col_style_structure in row_grp_plan at position `",cap_vars_idx,"`:\n"),
             paste0("  `col` value",ifelse(length(invalid_groups) > 1,"s",""),": ",paste0(invalid_groups, collapse = ", "),"\n")
           )
         )

@@ -1,9 +1,9 @@
-test_that("element_col - quo/vars/bare", {
+test_that("col_style_structure - quo/vars/bare", {
 
-  element_l <- element_col(align = "left", col = n_tot)
-  element_r <- element_col(align = "right", col = vars(p))
-  element_c <- element_col(align = ".", col = c(trt1, trt2))
-  element_ts <- element_col(align = ".", col = starts_with("hello"))
+  element_l <- col_style_structure(align = "left", col = n_tot)
+  element_r <- col_style_structure(align = "right", col = vars(p))
+  element_c <- col_style_structure(align = ".", col = c(trt1, trt2))
+  element_ts <- col_style_structure(align = ".", col = starts_with("hello"))
 
   expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
   expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
@@ -12,11 +12,11 @@ test_that("element_col - quo/vars/bare", {
 
 })
 
-test_that("element_col - char", {
+test_that("col_style_structure - char", {
 
-  element_l <- element_col(align = "left", col = "n_tot")
-  element_r <- element_col(align = "right", col = "p")
-  element_c <- element_col(align = ".", col = c("trt1", "trt2"))
+  element_l <- col_style_structure(align = "left", col = "n_tot")
+  element_r <- col_style_structure(align = "right", col = "p")
+  element_c <- col_style_structure(align = ".", col = c("trt1", "trt2"))
 
   expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
   expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
@@ -24,34 +24,34 @@ test_that("element_col - char", {
 
 })
 
-test_that("element_col - errors", {
+test_that("col_style_structure - errors", {
 
   expect_error(
-    element_col(col = "n_tot"),
-    "`align` or `width` must be applied to create this element_col",
+    col_style_structure(col = "n_tot"),
+    "`align` or `width` must be applied to create this col_style_structure",
     fixed = TRUE
   )
 
   expect_error(
-    element_col(col = "n_tot", width = "INVALID"),
+    col_style_structure(col = "n_tot", width = "INVALID"),
     "`width` must be a value that can be converted into a number greater than 0",
     fixed = TRUE
   )
 
   expect_error(
-    element_col(col = "n_tot", width = "-12345"),
+    col_style_structure(col = "n_tot", width = "-12345"),
     "`width` must be a valid number greater than 0",
     fixed = TRUE
   )
 
 })
 
-test_that("element_col - advanced", {
+test_that("col_style_structure - advanced", {
 
-  element_1 <- element_col(align = "left", col = c(n_tot,p,test))
-  element_2 <- element_col(align = "left", col = c(n_tot,p,"test"))
-  element_3 <- element_col(align = "right", col = span_structure(col = test, col2 = value))
-  element_4 <- element_col(align = ".", col = c(trt1, span_structure(col = test, col2 = value)))
+  element_1 <- col_style_structure(align = "left", col = c(n_tot,p,test))
+  element_2 <- col_style_structure(align = "left", col = c(n_tot,p,"test"))
+  element_3 <- col_style_structure(align = "right", col = span_structure(col = test, col2 = value))
+  element_4 <- col_style_structure(align = ".", col = c(trt1, span_structure(col = test, col2 = value)))
 
   expect_equal(element_1$col, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
   expect_equal(element_2$col, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
@@ -63,9 +63,9 @@ test_that("element_col - advanced", {
 test_that("col_style_plan - basic", {
 
   csp <- col_style_plan(
-    element_col(align = "left", col = "n_tot"),
-    element_col(align = "right", col = "p"),
-    element_col(align = ".", col = c("trt1", "trt2"))
+    col_style_structure(align = "left", col = "n_tot"),
+    col_style_structure(align = "right", col = "p"),
+    col_style_structure(align = ".", col = c("trt1", "trt2"))
   )
 
   expect_equal(length(csp), 3)
@@ -80,11 +80,11 @@ test_that("col_style_plan - error non-element_col", {
   expect_error({
     col_style_plan(
       element_block(post_space = " "),
-      element_col(align = "right", col = "p"),
-      element_col(align = ".", col = c("trt1", "trt2"))
+      col_style_structure(align = "right", col = "p"),
+      col_style_structure(align = ".", col = c("trt1", "trt2"))
     )
   },
-  "Entry number 1 is not an object of class `element_col`.",
+  "Entry number 1 is not an object of class `col_style_structure`.",
   fixed = TRUE
   )
 
@@ -138,9 +138,9 @@ test_that("alignment of multiple columns works", {
     column = vars(column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = "left", col = vars(one)),
-      element_col(align = "right", col = vars(four)),
-      element_col(align = c(".", ",", " "), col = vars(two, three))
+      col_style_structure(align = "left", col = vars(one)),
+      col_style_structure(align = "right", col = vars(four)),
+      col_style_structure(align = c(".", ",", " "), col = vars(two, three))
     )
   )
 
@@ -183,8 +183,8 @@ test_that("alignment of multiple columns works", {
     column = vars(column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = "left", col = vars(one)),
-      element_col(align = "right", col = vars(two, three, four))
+      col_style_structure(align = "left", col = vars(one)),
+      col_style_structure(align = "right", col = vars(two, three, four))
     )
   )
 
@@ -251,8 +251,8 @@ test_that("tidyselect works", {
     column = vars(column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = c(".", ",", " "), col = vars(starts_with("trt"))),
-      element_col(align = "right", col = vars(four)))
+      col_style_structure(align = c(".", ",", " "), col = vars(starts_with("trt"))),
+      col_style_structure(align = "right", col = vars(four)))
 
   )
 
@@ -277,7 +277,7 @@ test_that("tidyselect works", {
     column = vars(column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = "right", col = vars(starts_with("trt")))
+      col_style_structure(align = "right", col = vars(starts_with("trt")))
     ))
 
   dat_aligned_man <- tibble(
@@ -301,7 +301,7 @@ test_that("tidyselect works", {
     column = vars(column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = "right", col = starts_with("trt"))
+      col_style_structure(align = "right", col = starts_with("trt"))
     ))
 
   dat_aligned <-  dat %>%
@@ -318,7 +318,7 @@ test_that("tidyselect works", {
     column = vars(column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = "right", col = everything())
+      col_style_structure(align = "right", col = everything())
     ))
 
   dat_aligned_man <- tibble(
@@ -365,8 +365,8 @@ test_that("span_structure works", {
     column = vars(span_col, column),
     value = value,
     col_style_plan = col_style_plan(
-      element_col(align = c(".", ",", " "), col = span_structure(span_col = "Test Span1")),
-      element_col(align = "right", col = vars(four)))
+      col_style_structure(align = c(".", ",", " "), col = span_structure(span_col = "Test Span1")),
+      col_style_structure(align = "right", col = vars(four)))
   )
 
   dat_aligned_man <- tibble(
@@ -431,8 +431,8 @@ test_that("span_structure works on a renamed column", {
       four
     ),
     col_style_plan = col_style_plan(
-      element_col(align = c(".", ",", " "), col = span_structure(span_col = "Test Span2")),
-      element_col(align = "right", col = vars(four))
+      col_style_structure(align = c(".", ",", " "), col = span_structure(span_col = "Test Span2")),
+      col_style_structure(align = "right", col = vars(four))
     )
   )
 
@@ -455,7 +455,7 @@ test_that("span_structure works on a renamed column", {
 
 })
 
-test_that("Overlapping element_cols favors last one",{
+test_that("Overlapping col_style_structure favors last one",{
 
   dat <- tibble::tribble(
     ~one      , ~column , ~ value,
@@ -480,8 +480,8 @@ test_that("Overlapping element_cols favors last one",{
     column = vars(column),
     value = value,
     col_style_plan =  col_style_plan(
-      element_col(align = "right", col = vars(starts_with("trt"))),
-      element_col(align = c(".",","," "), col = trt1)))
+      col_style_structure(align = "right", col = vars(starts_with("trt"))),
+      col_style_structure(align = c(".",","," "), col = trt1)))
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
                              "n (%)" ,"trt1"   ," 12 (34%)",
@@ -537,18 +537,18 @@ test_that("Align strings >1 in length",{
     "median"   ,"four"  ,"0.05"   ,
     "(q1, q3)" ,"four"  ,""  )
 
-  element_col_message <- capture_messages({
+  col_style_structure_message <- capture_messages({
    plan <- tfrmt(
     label = one,
     column = vars(column),
     value = value,
     col_style_plan =  col_style_plan(
-      element_col(align = "right", col = vars(starts_with("trt"))),
-      element_col(align = c("...",",,,,"," "), col = trt1)))
+      col_style_structure(align = "right", col = vars(starts_with("trt"))),
+      col_style_structure(align = c("...",",,,,"," "), col = trt1)))
   })
 
   expect_true(
-    !is_empty(element_col_message)
+    !is_empty(col_style_structure_message)
   )
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,
@@ -606,20 +606,20 @@ test_that("Alphanumeric align string supplied",{
     "median"   ,"four"  ,"0.05"   ,
     "(q1, q3)" ,"four"  ,""  )
 
-  element_col_message <- capture_messages({
+  col_style_structure_message <- capture_messages({
 
   plan <- tfrmt(
     label = one,
     column = vars(column),
     value = value,
     col_style_plan =  col_style_plan(
-      element_col(align = "right", col = vars(starts_with("trt"))),
-      element_col(align = c("2","4"), col = trt1)))
+      col_style_structure(align = "right", col = vars(starts_with("trt"))),
+      col_style_structure(align = c("2","4"), col = trt1)))
 
   })
 
   expect_true(
-    !is_empty(element_col_message)
+    !is_empty(col_style_structure_message)
   )
 
   dat_aligned_man <- tibble::tribble(~one      , ~column , ~value ,

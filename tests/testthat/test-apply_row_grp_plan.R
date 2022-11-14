@@ -720,11 +720,11 @@ test_that("Row group plans with col style plan",{
       label_loc = element_row_grp_loc(location = "column")
     ),
     col_style_plan =  col_style_plan(
-      element_col(align = "right", col = g1), # col must be the top lebel group
-      element_col(align = "right", col = one), # always bueno
-      element_col(align = "right", width = 4, col = vars(starts_with("trt"))),
-      element_col(align = "left", col = trt1),
-      element_col(width = 10, col = four)
+      col_style_structure(align = "right", col = g1), # col must be the top lebel group
+      col_style_structure(align = "right", col = one), # always bueno
+      col_style_structure(align = "right", width = 4, col = vars(starts_with("trt"))),
+      col_style_structure(align = "left", col = trt1),
+      col_style_structure(width = 10, col = four)
     )
   )
 
@@ -762,16 +762,16 @@ test_that("Row group plans with col style plan - error checks against group",{
           label_loc = element_row_grp_loc(location = "column")
         ),
         col_style_plan =  col_style_plan(
-          element_col(align = "right", col = g2), # col must be the top lebel group
-          element_col(align = "right", col = one), # always bueno
-          element_col(align = "right", width = 200, col = vars(starts_with("trt"))),
-          element_col(align = c(" "), col = trt1),
-          element_col(width = 100, col = four)
+          col_style_structure(align = "right", col = g2), # col must be the top lebel group
+          col_style_structure(align = "right", col = one), # always bueno
+          col_style_structure(align = "right", width = 200, col = vars(starts_with("trt"))),
+          col_style_structure(align = c(" "), col = trt1),
+          col_style_structure(width = 100, col = four)
         )
       )
     },
     paste(
-      "Invalid element_col in row_grp_plan at position `1`:",
+      "Invalid col_style_structure in row_grp_plan at position `1`:",
       "  `col` value: g2",
       "  When row_grp_plan label location is `column`, only the only valid group col to style is `g1`",
       sep = "\n"

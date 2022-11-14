@@ -29,9 +29,11 @@ Much of the tfrmt is divided into "plans" which provide the blueprint for how th
  
 <p align="center"><img src="../man/figures/table_plans.png" width="900px"></p>
 
+Note: Footnotes also use this systems and have a footnote plan (`footnote_plan`) to define what footnote contents and where they should be applied. 
+
 **3. Structures:** `*_structure()`
 
-The structure objects are for defining how the *contents* of the table (i.e., text) should be displayed. Within a plan, one or more structures may be provided. Each structure specifies the layers within a plan. For example, in the body plan, each "frmt_structure" object defines how a set of values (e.g., all "p-values") should be formatted. Structures are inherently row-oriented, and can range from broad (e.g., apply to all relevant rows in the data) to specific (e.g., apply to all relevant rows within a specific grouping value).
+The structure objects are for defining how the *location* of where a specific styling should be applied. Within a plan, one or more structures may be provided. Each structure specifies the layers within a plan. For example, in the body plan, each "frmt_structure" object defines how a set of values (e.g., all "p-values") should be formatted. Structures are primarily row-oriented, and can range from broad (e.g., apply to all relevant rows in the data) to specific (e.g., apply to all relevant rows within a specific grouping value). The one exception to this is `col_style_structure`, which specifies the colwise styling. 
 
 In the figure below, each colour represents a different format structure (`frmt_structure`) to be passed in the table body plan (`body_plan`).
 
@@ -42,9 +44,11 @@ The following structures are available:
 - Format structure (`frmt_structure`) inside of body plan (`body_plan`)
 - Column label spanning structure (`span_structure`) inside of column plan (`col_plan`)
 - Row group structure (`row_grp_structure`) inside of row group plan (`row_grp_plan`)
+- Column style structure (`col_style_structure`) inside of column style plan (`col_style_plan`)
+- Footnote structure (`footnote_structure`) inside of footnote plan (`footnote_plan`)
 
 
-**4. Elements:** `element_*()`
+**4. Elements** `element_*()` **and Formats:** `frmt_*()`
 
-The element objects are for defining the *aesthetics* of the table (i.e., non-text styling). Inspired by ggplot2, elements provide a mechanism for performing aesthetic modifications such as column alignment and width (`element_col`) or the positioning of group labels (`element_row_grp_loc`). These are passed through plan or structure objects. 
+The element and format objects are for defining the *aesthetics* of the table. Inspired by ggplot2, elements provide a mechanism for performing aesthetic modifications such as numeric rounding (`frmt()`) or the positioning of group labels (`element_row_grp_loc`). These are passed through structure objects. 
 

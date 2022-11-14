@@ -119,7 +119,7 @@ tfrmt <- tfrmt(
   
   # Specify column style plan
   col_style = col_style_plan(
-    element_col(align = c(".",","," "), col = vars(everything()))
+    col_style_structure(align = c(".",","," "), col = vars(everything()))
   ),
   
   # remove extra cols

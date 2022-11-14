@@ -771,8 +771,8 @@ test_that("Order is kept for multi-col columns",{
       frmt_structure(pam = frmt("x.xx"))
     ),
     col_style_plan = col_style_plan(
-      element_col(align = ".", col = delm),
-      element_col(align = "right", col = everything())
+      col_style_structure(align = ".", col = delm),
+      col_style_structure(align = "right", col = everything())
       )
   )
 

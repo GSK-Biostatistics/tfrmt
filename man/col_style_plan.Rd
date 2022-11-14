@@ -7,7 +7,7 @@
 col_style_plan(...)
 }
 \arguments{
-\item{...}{series of element_col objects}
+\item{...}{series of col_style_structure objects}
 }
 \value{
 col_style_plan object
@@ -19,16 +19,16 @@ right or on a specific character(s).
 \examples{
 
  plan <- col_style_plan(
-    element_col(align = "left", width = 100, col = "my_var"),
-    element_col(align = "right", col = vars(four)),
-    element_col(align = c(".", ",", " "), col = vars(two, three))
+    col_style_structure(align = "left", width = 100, col = "my_var"),
+    col_style_structure(align = "right", col = vars(four)),
+    col_style_structure(align = c(".", ",", " "), col = vars(two, three))
    )
 
 
 
 }
 \seealso{
-\code{\link[=element_col]{element_col()}} for more information on how to specify how to and which columns to align.
+\code{\link[=col_style_structure]{col_style_structure()}} for more information on how to specify how to and which columns to align.
 
 \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html}{Link to related article}
 }
