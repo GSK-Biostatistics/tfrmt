@@ -1,4 +1,4 @@
-test_that("Testing error messages for missing argument element_col",{
+test_that("Testing error messages for missing argument col_style_structure",{
 
   expect_error(
     tfrmt(
@@ -29,7 +29,7 @@ test_that("Testing error messages for missing argument element_col",{
                         -starts_with("ord") ),
     # Specify column styling plan
     col_style_plan = col_style_plan(
-      element_col(align = c(".",","," "))
+      col_style_structure(align = c(".",","," "))
     ),
 
     # Specify row group plan
@@ -38,5 +38,5 @@ test_that("Testing error messages for missing argument element_col",{
       label_loc = element_row_grp_loc(location = "column")
     )
     ),
-    "Column element is missing from element_col[.] Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
+    "Column element is missing from col_style_structure[.] Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
 })

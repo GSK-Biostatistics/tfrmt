@@ -28,18 +28,18 @@ tfrmt offers the ability to align value and set column widths. Columns can be al
 
 Column widths are set as either the number of pixels wide they are, or the percentage of the total table with.
 
-Alignment and width is specified via the `col_style_plan`, which accepts a series of `element_col`s as inputs. Note that the `col_style_plan` does not have any `*_structure` objects as inputs, as `*_structure`s are for modifying the *contents* (i.e., text) of the table, while `element_*`s are for modifying *aesthetics*. 
+Alignment and width is specified via the `col_style_plan`, which accepts a series of `col_style_structure`s as inputs.
 
 Alignment is achieved by padding the values with character spaces; this padding ensures that alignment is robust and agnostic to the output format. Width is done during post-processing and creation of the table output.
 
-## Element Style
+## Style Structure
 
-`element_col` has three arguments: the columns in the final table to be aligned,
+`col_style_structure` has three arguments: the columns in the final table to be aligned,
 the alignment desired, the widths to apply to those columns. In each element, only one of the who (alignment, width), must be applied. Optionally both can be assigned too.
 
 The column values that are specified are to match the contents of the `column` variable that is specified in the `tfrmt` object. When multiple values are provided to `column`, the last value is used as the reference column.
 
-When the `col_style_plan()` is applied to the data, the most recent alignment and width is applied to the data, so be careful when adding new `element_col`'s, as the output may change more than anticipated if the new element is not specific enough. 
+When the `col_style_plan()` is applied to the data, the most recent alignment and width is applied to the data, so be careful when adding new `col_style_structure`'s, as the output may change more than anticipated if the new element is not specific enough. 
 
 ## Alignment
 
@@ -131,7 +131,7 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
   col_style_plan =  col_style_plan(
-    element_col(align = "left", col = `p-value`))
+    col_style_structure(align = "left", col = `p-value`))
   ) %>% 
   print_to_gt(dat)
 ```
@@ -167,7 +167,7 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
   col_style_plan =  col_style_plan(
-    element_col(align = c("."), col = `p-value`))
+    col_style_structure(align = c("."), col = `p-value`))
   ) %>% 
   print_to_gt(dat)
 ```
@@ -202,8 +202,8 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
   col_style_plan =  col_style_plan(
-    element_col(align = c("."), col = `p-value`),
-    element_col(align = c(".", ",", " "), col = starts_with("trt"))
+    col_style_structure(align = c("."), col = `p-value`),
+    col_style_structure(align = c(".", ",", " "), col = starts_with("trt"))
     )
   ) %>% 
   print_to_gt(dat)
@@ -239,9 +239,9 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
   col_style_plan =  col_style_plan(
-    element_col(align = c("."), col = `p-value`),
-    element_col(align = "left", col = trt1),
-    element_col(align = "right", col = trt2))
+    col_style_structure(align = c("."), col = `p-value`),
+    col_style_structure(align = "left", col = trt1),
+    col_style_structure(align = "right", col = trt2))
   ) %>% 
   print_to_gt(dat)
 ```
@@ -256,7 +256,7 @@ It should be noted that in simple cases, the user can achieve desired alignment 
 
 ## Width
 
-Width is set as specific value in number of characters wide the column is allowed to be at most. This value is specified by passing a character or numeric value to the "width" argument of `element_col`, taking the format of "##" or ##, where "##" is the number of characters.
+Width is set as specific value in number of characters wide the column is allowed to be at most. This value is specified by passing a character or numeric value to the "width" argument of `col_style_structure`, taking the format of "##" or ##, where "##" is the number of characters.
 
 Width can be applied to any of the columns in the table.
 
@@ -293,10 +293,10 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "")))
   ), 
   col_style_plan =  col_style_plan(
-    element_col(width = "10", col = label),
-    element_col(align = c("."), width = "10", col = `p-value`),
-    element_col(align = "left", width = "5", col = trt1),
-    element_col(align = "right", width = "5", col = trt2))
+    col_style_structure(width = "10", col = label),
+    col_style_structure(align = c("."), width = "10", col = `p-value`),
+    col_style_structure(align = "left", width = "5", col = trt1),
+    col_style_structure(align = "right", width = "5", col = trt2))
   ) %>% 
   print_to_gt(dat)
 
