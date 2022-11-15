@@ -113,30 +113,28 @@ alignment)</li>
 <p>Column widths are set as either the number of pixels wide they are,
 or the percentage of the total table with.</p>
 <p>Alignment and width is specified via the <code>col_style_plan</code>,
-which accepts a series of <code>element_col</code>s as inputs. Note that
-the <code>col_style_plan</code> does not have any
-<code>*_structure</code> objects as inputs, as <code>*_structure</code>s
-are for modifying the <em>contents</em> (i.e., text) of the table, while
-<code>element_*</code>s are for modifying <em>aesthetics</em>.</p>
+which accepts a series of <code>col_style_structure</code>s as
+inputs.</p>
 <p>Alignment is achieved by padding the values with character spaces;
 this padding ensures that alignment is robust and agnostic to the output
 format. Width is done during post-processing and creation of the table
 output.</p>
 <div class="section level2">
-<h2 id="element-style">Element Style<a class="anchor" aria-label="anchor" href="#element-style"></a>
+<h2 id="style-structure">Style Structure<a class="anchor" aria-label="anchor" href="#style-structure"></a>
 </h2>
-<p><code>element_col</code> has three arguments: the columns in the
-final table to be aligned, the alignment desired, the widths to apply to
-those columns. In each element, only one of the who (alignment, width),
-must be applied. Optionally both can be assigned too.</p>
+<p><code>col_style_structure</code> has three arguments: the columns in
+the final table to be aligned, the alignment desired, the widths to
+apply to those columns. In each element, only one of the who (alignment,
+width), must be applied. Optionally both can be assigned too.</p>
 <p>The column values that are specified are to match the contents of the
 <code>column</code> variable that is specified in the <code>tfrmt</code>
 object. When multiple values are provided to <code>column</code>, the
 last value is used as the reference column.</p>
 <p>When the <code><a href="../reference/col_style_plan.html">col_style_plan()</a></code> is applied to the data, the
 most recent alignment and width is applied to the data, so be careful
-when adding new <code>element_col</code>’s, as the output may change
-more than anticipated if the new element is not specific enough.</p>
+when adding new <code>col_style_structure</code>’s, as the output may
+change more than anticipated if the new element is not specific
+enough.</p>
 </div>
 <div class="section level2">
 <h2 id="alignment">Alignment<a class="anchor" aria-label="anchor" href="#alignment"></a>
@@ -191,12 +189,12 @@ formatted differently.</p>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="dcboqcsasq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="irnqlzymkg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#dcboqcsasq .gt_table {
+#irnqlzymkg .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -221,7 +219,7 @@ formatted differently.</p>
   border-left-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_heading {
+#irnqlzymkg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -233,7 +231,7 @@ formatted differently.</p>
   border-right-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_title {
+#irnqlzymkg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -245,7 +243,7 @@ formatted differently.</p>
   border-bottom-width: 0;
 }
 
-#dcboqcsasq .gt_subtitle {
+#irnqlzymkg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -257,13 +255,13 @@ formatted differently.</p>
   border-top-width: 0;
 }
 
-#dcboqcsasq .gt_bottom_border {
+#irnqlzymkg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_col_headings {
+#irnqlzymkg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -278,7 +276,7 @@ formatted differently.</p>
   border-right-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_col_heading {
+#irnqlzymkg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -298,7 +296,7 @@ formatted differently.</p>
   overflow-x: hidden;
 }
 
-#dcboqcsasq .gt_column_spanner_outer {
+#irnqlzymkg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -310,15 +308,15 @@ formatted differently.</p>
   padding-right: 4px;
 }
 
-#dcboqcsasq .gt_column_spanner_outer:first-child {
+#irnqlzymkg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dcboqcsasq .gt_column_spanner_outer:last-child {
+#irnqlzymkg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dcboqcsasq .gt_column_spanner {
+#irnqlzymkg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -330,7 +328,7 @@ formatted differently.</p>
   width: 100%;
 }
 
-#dcboqcsasq .gt_group_heading {
+#irnqlzymkg .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -355,7 +353,7 @@ formatted differently.</p>
   vertical-align: middle;
 }
 
-#dcboqcsasq .gt_empty_group_heading {
+#irnqlzymkg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -370,15 +368,15 @@ formatted differently.</p>
   vertical-align: middle;
 }
 
-#dcboqcsasq .gt_from_md > :first-child {
+#irnqlzymkg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dcboqcsasq .gt_from_md > :last-child {
+#irnqlzymkg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dcboqcsasq .gt_row {
+#irnqlzymkg .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -397,7 +395,7 @@ formatted differently.</p>
   overflow-x: hidden;
 }
 
-#dcboqcsasq .gt_stub {
+#irnqlzymkg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -410,7 +408,7 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#dcboqcsasq .gt_stub_row_group {
+#irnqlzymkg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -424,11 +422,11 @@ formatted differently.</p>
   vertical-align: top;
 }
 
-#dcboqcsasq .gt_row_group_first td {
+#irnqlzymkg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dcboqcsasq .gt_summary_row {
+#irnqlzymkg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -438,16 +436,16 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#dcboqcsasq .gt_first_summary_row {
+#irnqlzymkg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_first_summary_row.thick {
+#irnqlzymkg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dcboqcsasq .gt_last_summary_row {
+#irnqlzymkg .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -457,7 +455,7 @@ formatted differently.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_grand_summary_row {
+#irnqlzymkg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -467,7 +465,7 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#dcboqcsasq .gt_first_grand_summary_row {
+#irnqlzymkg .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -477,11 +475,11 @@ formatted differently.</p>
   border-top-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_striped {
+#irnqlzymkg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dcboqcsasq .gt_table_body {
+#irnqlzymkg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -490,7 +488,7 @@ formatted differently.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_footnotes {
+#irnqlzymkg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -504,7 +502,7 @@ formatted differently.</p>
   border-right-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_footnote {
+#irnqlzymkg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -513,7 +511,7 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#dcboqcsasq .gt_sourcenotes {
+#irnqlzymkg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -527,7 +525,7 @@ formatted differently.</p>
   border-right-color: #D3D3D3;
 }
 
-#dcboqcsasq .gt_sourcenote {
+#irnqlzymkg .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -535,64 +533,64 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#dcboqcsasq .gt_left {
+#irnqlzymkg .gt_left {
   text-align: left;
 }
 
-#dcboqcsasq .gt_center {
+#irnqlzymkg .gt_center {
   text-align: center;
 }
 
-#dcboqcsasq .gt_right {
+#irnqlzymkg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dcboqcsasq .gt_font_normal {
+#irnqlzymkg .gt_font_normal {
   font-weight: normal;
 }
 
-#dcboqcsasq .gt_font_bold {
+#irnqlzymkg .gt_font_bold {
   font-weight: bold;
 }
 
-#dcboqcsasq .gt_font_italic {
+#irnqlzymkg .gt_font_italic {
   font-style: italic;
 }
 
-#dcboqcsasq .gt_super {
+#irnqlzymkg .gt_super {
   font-size: 65%;
 }
 
-#dcboqcsasq .gt_footnote_marks {
+#irnqlzymkg .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#dcboqcsasq .gt_asterisk {
+#irnqlzymkg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dcboqcsasq .gt_indent_1 {
+#irnqlzymkg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dcboqcsasq .gt_indent_2 {
+#irnqlzymkg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dcboqcsasq .gt_indent_3 {
+#irnqlzymkg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dcboqcsasq .gt_indent_4 {
+#irnqlzymkg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dcboqcsasq .gt_indent_5 {
+#irnqlzymkg .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -663,19 +661,19 @@ covered in the plan will be left-aligned by default.</p>
 <span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>, </span>
 <span>  col_style_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "title": longer object length is not a multiple</span></span>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="euoxykkqgi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dmkesnxueb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#euoxykkqgi .gt_table {
+#dmkesnxueb .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -700,7 +698,7 @@ covered in the plan will be left-aligned by default.</p>
   border-left-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_heading {
+#dmkesnxueb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -712,7 +710,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_title {
+#dmkesnxueb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -724,7 +722,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-width: 0;
 }
 
-#euoxykkqgi .gt_subtitle {
+#dmkesnxueb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -736,13 +734,13 @@ covered in the plan will be left-aligned by default.</p>
   border-top-width: 0;
 }
 
-#euoxykkqgi .gt_bottom_border {
+#dmkesnxueb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_col_headings {
+#dmkesnxueb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -757,7 +755,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_col_heading {
+#dmkesnxueb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -777,7 +775,7 @@ covered in the plan will be left-aligned by default.</p>
   overflow-x: hidden;
 }
 
-#euoxykkqgi .gt_column_spanner_outer {
+#dmkesnxueb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -789,15 +787,15 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 4px;
 }
 
-#euoxykkqgi .gt_column_spanner_outer:first-child {
+#dmkesnxueb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#euoxykkqgi .gt_column_spanner_outer:last-child {
+#dmkesnxueb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#euoxykkqgi .gt_column_spanner {
+#dmkesnxueb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -809,7 +807,7 @@ covered in the plan will be left-aligned by default.</p>
   width: 100%;
 }
 
-#euoxykkqgi .gt_group_heading {
+#dmkesnxueb .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -834,7 +832,7 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: middle;
 }
 
-#euoxykkqgi .gt_empty_group_heading {
+#dmkesnxueb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -849,15 +847,15 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: middle;
 }
 
-#euoxykkqgi .gt_from_md > :first-child {
+#dmkesnxueb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#euoxykkqgi .gt_from_md > :last-child {
+#dmkesnxueb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#euoxykkqgi .gt_row {
+#dmkesnxueb .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -876,7 +874,7 @@ covered in the plan will be left-aligned by default.</p>
   overflow-x: hidden;
 }
 
-#euoxykkqgi .gt_stub {
+#dmkesnxueb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -889,7 +887,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#euoxykkqgi .gt_stub_row_group {
+#dmkesnxueb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -903,11 +901,11 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: top;
 }
 
-#euoxykkqgi .gt_row_group_first td {
+#dmkesnxueb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#euoxykkqgi .gt_summary_row {
+#dmkesnxueb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -917,16 +915,16 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#euoxykkqgi .gt_first_summary_row {
+#dmkesnxueb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_first_summary_row.thick {
+#dmkesnxueb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#euoxykkqgi .gt_last_summary_row {
+#dmkesnxueb .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -936,7 +934,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_grand_summary_row {
+#dmkesnxueb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -946,7 +944,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#euoxykkqgi .gt_first_grand_summary_row {
+#dmkesnxueb .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -956,11 +954,11 @@ covered in the plan will be left-aligned by default.</p>
   border-top-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_striped {
+#dmkesnxueb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#euoxykkqgi .gt_table_body {
+#dmkesnxueb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -969,7 +967,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_footnotes {
+#dmkesnxueb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -983,7 +981,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_footnote {
+#dmkesnxueb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -992,7 +990,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#euoxykkqgi .gt_sourcenotes {
+#dmkesnxueb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1006,7 +1004,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#euoxykkqgi .gt_sourcenote {
+#dmkesnxueb .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1014,64 +1012,64 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#euoxykkqgi .gt_left {
+#dmkesnxueb .gt_left {
   text-align: left;
 }
 
-#euoxykkqgi .gt_center {
+#dmkesnxueb .gt_center {
   text-align: center;
 }
 
-#euoxykkqgi .gt_right {
+#dmkesnxueb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#euoxykkqgi .gt_font_normal {
+#dmkesnxueb .gt_font_normal {
   font-weight: normal;
 }
 
-#euoxykkqgi .gt_font_bold {
+#dmkesnxueb .gt_font_bold {
   font-weight: bold;
 }
 
-#euoxykkqgi .gt_font_italic {
+#dmkesnxueb .gt_font_italic {
   font-style: italic;
 }
 
-#euoxykkqgi .gt_super {
+#dmkesnxueb .gt_super {
   font-size: 65%;
 }
 
-#euoxykkqgi .gt_footnote_marks {
+#dmkesnxueb .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#euoxykkqgi .gt_asterisk {
+#dmkesnxueb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#euoxykkqgi .gt_indent_1 {
+#dmkesnxueb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#euoxykkqgi .gt_indent_2 {
+#dmkesnxueb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#euoxykkqgi .gt_indent_3 {
+#dmkesnxueb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#euoxykkqgi .gt_indent_4 {
+#dmkesnxueb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#euoxykkqgi .gt_indent_5 {
+#dmkesnxueb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1141,19 +1139,19 @@ better fit:</p>
 <span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>, </span>
 <span>  col_style_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "title": longer object length is not a multiple</span></span>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="pytjyjonth" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="vvjlrtdnaw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#pytjyjonth .gt_table {
+#vvjlrtdnaw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1178,7 +1176,7 @@ better fit:</p>
   border-left-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_heading {
+#vvjlrtdnaw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1190,7 +1188,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_title {
+#vvjlrtdnaw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1202,7 +1200,7 @@ better fit:</p>
   border-bottom-width: 0;
 }
 
-#pytjyjonth .gt_subtitle {
+#vvjlrtdnaw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1214,13 +1212,13 @@ better fit:</p>
   border-top-width: 0;
 }
 
-#pytjyjonth .gt_bottom_border {
+#vvjlrtdnaw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_col_headings {
+#vvjlrtdnaw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1235,7 +1233,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_col_heading {
+#vvjlrtdnaw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1255,7 +1253,7 @@ better fit:</p>
   overflow-x: hidden;
 }
 
-#pytjyjonth .gt_column_spanner_outer {
+#vvjlrtdnaw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1267,15 +1265,15 @@ better fit:</p>
   padding-right: 4px;
 }
 
-#pytjyjonth .gt_column_spanner_outer:first-child {
+#vvjlrtdnaw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pytjyjonth .gt_column_spanner_outer:last-child {
+#vvjlrtdnaw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pytjyjonth .gt_column_spanner {
+#vvjlrtdnaw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1287,7 +1285,7 @@ better fit:</p>
   width: 100%;
 }
 
-#pytjyjonth .gt_group_heading {
+#vvjlrtdnaw .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1312,7 +1310,7 @@ better fit:</p>
   vertical-align: middle;
 }
 
-#pytjyjonth .gt_empty_group_heading {
+#vvjlrtdnaw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1327,15 +1325,15 @@ better fit:</p>
   vertical-align: middle;
 }
 
-#pytjyjonth .gt_from_md > :first-child {
+#vvjlrtdnaw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pytjyjonth .gt_from_md > :last-child {
+#vvjlrtdnaw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pytjyjonth .gt_row {
+#vvjlrtdnaw .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1354,7 +1352,7 @@ better fit:</p>
   overflow-x: hidden;
 }
 
-#pytjyjonth .gt_stub {
+#vvjlrtdnaw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1367,7 +1365,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#pytjyjonth .gt_stub_row_group {
+#vvjlrtdnaw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1381,11 +1379,11 @@ better fit:</p>
   vertical-align: top;
 }
 
-#pytjyjonth .gt_row_group_first td {
+#vvjlrtdnaw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#pytjyjonth .gt_summary_row {
+#vvjlrtdnaw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1395,16 +1393,16 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#pytjyjonth .gt_first_summary_row {
+#vvjlrtdnaw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_first_summary_row.thick {
+#vvjlrtdnaw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#pytjyjonth .gt_last_summary_row {
+#vvjlrtdnaw .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1414,7 +1412,7 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_grand_summary_row {
+#vvjlrtdnaw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1424,7 +1422,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#pytjyjonth .gt_first_grand_summary_row {
+#vvjlrtdnaw .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1434,11 +1432,11 @@ better fit:</p>
   border-top-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_striped {
+#vvjlrtdnaw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pytjyjonth .gt_table_body {
+#vvjlrtdnaw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1447,7 +1445,7 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_footnotes {
+#vvjlrtdnaw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1461,7 +1459,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_footnote {
+#vvjlrtdnaw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1470,7 +1468,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#pytjyjonth .gt_sourcenotes {
+#vvjlrtdnaw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1484,7 +1482,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#pytjyjonth .gt_sourcenote {
+#vvjlrtdnaw .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1492,64 +1490,64 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#pytjyjonth .gt_left {
+#vvjlrtdnaw .gt_left {
   text-align: left;
 }
 
-#pytjyjonth .gt_center {
+#vvjlrtdnaw .gt_center {
   text-align: center;
 }
 
-#pytjyjonth .gt_right {
+#vvjlrtdnaw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pytjyjonth .gt_font_normal {
+#vvjlrtdnaw .gt_font_normal {
   font-weight: normal;
 }
 
-#pytjyjonth .gt_font_bold {
+#vvjlrtdnaw .gt_font_bold {
   font-weight: bold;
 }
 
-#pytjyjonth .gt_font_italic {
+#vvjlrtdnaw .gt_font_italic {
   font-style: italic;
 }
 
-#pytjyjonth .gt_super {
+#vvjlrtdnaw .gt_super {
   font-size: 65%;
 }
 
-#pytjyjonth .gt_footnote_marks {
+#vvjlrtdnaw .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#pytjyjonth .gt_asterisk {
+#vvjlrtdnaw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#pytjyjonth .gt_indent_1 {
+#vvjlrtdnaw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#pytjyjonth .gt_indent_2 {
+#vvjlrtdnaw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#pytjyjonth .gt_indent_3 {
+#vvjlrtdnaw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#pytjyjonth .gt_indent_4 {
+#vvjlrtdnaw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#pytjyjonth .gt_indent_5 {
+#vvjlrtdnaw .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1619,8 +1617,8 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>, </span>
 <span>  col_style_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">","</span>, <span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"trt"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">","</span>, <span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"trt"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
@@ -1628,12 +1626,12 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="vafonrsidi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="blpnietovf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#vafonrsidi .gt_table {
+#blpnietovf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1658,7 +1656,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-left-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_heading {
+#blpnietovf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1670,7 +1668,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_title {
+#blpnietovf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1682,7 +1680,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-width: 0;
 }
 
-#vafonrsidi .gt_subtitle {
+#blpnietovf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1694,13 +1692,13 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-top-width: 0;
 }
 
-#vafonrsidi .gt_bottom_border {
+#blpnietovf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_col_headings {
+#blpnietovf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1715,7 +1713,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_col_heading {
+#blpnietovf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1735,7 +1733,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   overflow-x: hidden;
 }
 
-#vafonrsidi .gt_column_spanner_outer {
+#blpnietovf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1747,15 +1745,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 4px;
 }
 
-#vafonrsidi .gt_column_spanner_outer:first-child {
+#blpnietovf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vafonrsidi .gt_column_spanner_outer:last-child {
+#blpnietovf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vafonrsidi .gt_column_spanner {
+#blpnietovf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1767,7 +1765,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   width: 100%;
 }
 
-#vafonrsidi .gt_group_heading {
+#blpnietovf .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1792,7 +1790,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: middle;
 }
 
-#vafonrsidi .gt_empty_group_heading {
+#blpnietovf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1807,15 +1805,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: middle;
 }
 
-#vafonrsidi .gt_from_md > :first-child {
+#blpnietovf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vafonrsidi .gt_from_md > :last-child {
+#blpnietovf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vafonrsidi .gt_row {
+#blpnietovf .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1834,7 +1832,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   overflow-x: hidden;
 }
 
-#vafonrsidi .gt_stub {
+#blpnietovf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1847,7 +1845,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#vafonrsidi .gt_stub_row_group {
+#blpnietovf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1861,11 +1859,11 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: top;
 }
 
-#vafonrsidi .gt_row_group_first td {
+#blpnietovf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vafonrsidi .gt_summary_row {
+#blpnietovf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1875,16 +1873,16 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#vafonrsidi .gt_first_summary_row {
+#blpnietovf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_first_summary_row.thick {
+#blpnietovf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vafonrsidi .gt_last_summary_row {
+#blpnietovf .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1894,7 +1892,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_grand_summary_row {
+#blpnietovf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1904,7 +1902,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#vafonrsidi .gt_first_grand_summary_row {
+#blpnietovf .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1914,11 +1912,11 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-top-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_striped {
+#blpnietovf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vafonrsidi .gt_table_body {
+#blpnietovf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1927,7 +1925,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_footnotes {
+#blpnietovf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1941,7 +1939,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_footnote {
+#blpnietovf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -1950,7 +1948,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#vafonrsidi .gt_sourcenotes {
+#blpnietovf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1964,7 +1962,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#vafonrsidi .gt_sourcenote {
+#blpnietovf .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1972,64 +1970,64 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#vafonrsidi .gt_left {
+#blpnietovf .gt_left {
   text-align: left;
 }
 
-#vafonrsidi .gt_center {
+#blpnietovf .gt_center {
   text-align: center;
 }
 
-#vafonrsidi .gt_right {
+#blpnietovf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vafonrsidi .gt_font_normal {
+#blpnietovf .gt_font_normal {
   font-weight: normal;
 }
 
-#vafonrsidi .gt_font_bold {
+#blpnietovf .gt_font_bold {
   font-weight: bold;
 }
 
-#vafonrsidi .gt_font_italic {
+#blpnietovf .gt_font_italic {
   font-style: italic;
 }
 
-#vafonrsidi .gt_super {
+#blpnietovf .gt_super {
   font-size: 65%;
 }
 
-#vafonrsidi .gt_footnote_marks {
+#blpnietovf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#vafonrsidi .gt_asterisk {
+#blpnietovf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vafonrsidi .gt_indent_1 {
+#blpnietovf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vafonrsidi .gt_indent_2 {
+#blpnietovf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vafonrsidi .gt_indent_3 {
+#blpnietovf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vafonrsidi .gt_indent_4 {
+#blpnietovf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vafonrsidi .gt_indent_5 {
+#blpnietovf .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2099,21 +2097,21 @@ respectively):</p>
 <span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>, </span>
 <span>  col_style_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">trt1</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">trt1</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "title": longer object length is not a multiple</span></span>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="nctdpfquyg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="wvnhhndvng" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#nctdpfquyg .gt_table {
+#wvnhhndvng .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2138,7 +2136,7 @@ respectively):</p>
   border-left-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_heading {
+#wvnhhndvng .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2150,7 +2148,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_title {
+#wvnhhndvng .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2162,7 +2160,7 @@ respectively):</p>
   border-bottom-width: 0;
 }
 
-#nctdpfquyg .gt_subtitle {
+#wvnhhndvng .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2174,13 +2172,13 @@ respectively):</p>
   border-top-width: 0;
 }
 
-#nctdpfquyg .gt_bottom_border {
+#wvnhhndvng .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_col_headings {
+#wvnhhndvng .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2195,7 +2193,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_col_heading {
+#wvnhhndvng .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2215,7 +2213,7 @@ respectively):</p>
   overflow-x: hidden;
 }
 
-#nctdpfquyg .gt_column_spanner_outer {
+#wvnhhndvng .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2227,15 +2225,15 @@ respectively):</p>
   padding-right: 4px;
 }
 
-#nctdpfquyg .gt_column_spanner_outer:first-child {
+#wvnhhndvng .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nctdpfquyg .gt_column_spanner_outer:last-child {
+#wvnhhndvng .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nctdpfquyg .gt_column_spanner {
+#wvnhhndvng .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2247,7 +2245,7 @@ respectively):</p>
   width: 100%;
 }
 
-#nctdpfquyg .gt_group_heading {
+#wvnhhndvng .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2272,7 +2270,7 @@ respectively):</p>
   vertical-align: middle;
 }
 
-#nctdpfquyg .gt_empty_group_heading {
+#wvnhhndvng .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2287,15 +2285,15 @@ respectively):</p>
   vertical-align: middle;
 }
 
-#nctdpfquyg .gt_from_md > :first-child {
+#wvnhhndvng .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nctdpfquyg .gt_from_md > :last-child {
+#wvnhhndvng .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nctdpfquyg .gt_row {
+#wvnhhndvng .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2314,7 +2312,7 @@ respectively):</p>
   overflow-x: hidden;
 }
 
-#nctdpfquyg .gt_stub {
+#wvnhhndvng .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2327,7 +2325,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#nctdpfquyg .gt_stub_row_group {
+#wvnhhndvng .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2341,11 +2339,11 @@ respectively):</p>
   vertical-align: top;
 }
 
-#nctdpfquyg .gt_row_group_first td {
+#wvnhhndvng .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nctdpfquyg .gt_summary_row {
+#wvnhhndvng .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2355,16 +2353,16 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#nctdpfquyg .gt_first_summary_row {
+#wvnhhndvng .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_first_summary_row.thick {
+#wvnhhndvng .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nctdpfquyg .gt_last_summary_row {
+#wvnhhndvng .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2374,7 +2372,7 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_grand_summary_row {
+#wvnhhndvng .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2384,7 +2382,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#nctdpfquyg .gt_first_grand_summary_row {
+#wvnhhndvng .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2394,11 +2392,11 @@ respectively):</p>
   border-top-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_striped {
+#wvnhhndvng .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nctdpfquyg .gt_table_body {
+#wvnhhndvng .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2407,7 +2405,7 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_footnotes {
+#wvnhhndvng .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2421,7 +2419,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_footnote {
+#wvnhhndvng .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2430,7 +2428,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#nctdpfquyg .gt_sourcenotes {
+#wvnhhndvng .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2444,7 +2442,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#nctdpfquyg .gt_sourcenote {
+#wvnhhndvng .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2452,64 +2450,64 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#nctdpfquyg .gt_left {
+#wvnhhndvng .gt_left {
   text-align: left;
 }
 
-#nctdpfquyg .gt_center {
+#wvnhhndvng .gt_center {
   text-align: center;
 }
 
-#nctdpfquyg .gt_right {
+#wvnhhndvng .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nctdpfquyg .gt_font_normal {
+#wvnhhndvng .gt_font_normal {
   font-weight: normal;
 }
 
-#nctdpfquyg .gt_font_bold {
+#wvnhhndvng .gt_font_bold {
   font-weight: bold;
 }
 
-#nctdpfquyg .gt_font_italic {
+#wvnhhndvng .gt_font_italic {
   font-style: italic;
 }
 
-#nctdpfquyg .gt_super {
+#wvnhhndvng .gt_super {
   font-size: 65%;
 }
 
-#nctdpfquyg .gt_footnote_marks {
+#wvnhhndvng .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#nctdpfquyg .gt_asterisk {
+#wvnhhndvng .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nctdpfquyg .gt_indent_1 {
+#wvnhhndvng .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nctdpfquyg .gt_indent_2 {
+#wvnhhndvng .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nctdpfquyg .gt_indent_3 {
+#wvnhhndvng .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nctdpfquyg .gt_indent_4 {
+#wvnhhndvng .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nctdpfquyg .gt_indent_5 {
+#wvnhhndvng .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2576,8 +2574,8 @@ may desire more control over alignment and the
 <p>Width is set as specific value in number of characters wide the
 column is allowed to be at most. This value is specified by passing a
 character or numeric value to the “width” argument of
-<code>element_col</code>, taking the format of “##” or ##, where “##” is
-the number of characters.</p>
+<code>col_style_structure</code>, taking the format of “##” or ##, where
+“##” is the number of characters.</p>
 <p>Width can be applied to any of the columns in the table.</p>
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -2613,22 +2611,22 @@ apply the widths to that column as well.</p>
 <span>                                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>, </span>
 <span>  col_style_plan <span class="op">=</span>  <span class="fu"><a href="../reference/col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"10"</span>, col <span class="op">=</span> <span class="va">label</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, width <span class="op">=</span> <span class="st">"10"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, width <span class="op">=</span> <span class="st">"5"</span>, col <span class="op">=</span> <span class="va">trt1</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/theme_element.html">element_col</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="st">"5"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"10"</span>, col <span class="op">=</span> <span class="va">label</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, width <span class="op">=</span> <span class="st">"10"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, width <span class="op">=</span> <span class="st">"5"</span>, col <span class="op">=</span> <span class="va">trt1</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="st">"5"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "title": longer object length is not a multiple</span></span>
 <span><span class="co">#&gt; of shorter object length</span></span>
 <span><span class="co">#&gt; Warning in cond &amp; tbl$locname != "subtitle": longer object length is not a</span></span>
 <span><span class="co">#&gt; multiple of shorter object length</span></span></code></pre></div>
-<div id="drleakisdr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dkwpbabggi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#drleakisdr .gt_table {
+#dkwpbabggi .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2653,7 +2651,7 @@ apply the widths to that column as well.</p>
   border-left-color: #D3D3D3;
 }
 
-#drleakisdr .gt_heading {
+#dkwpbabggi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2665,7 +2663,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#drleakisdr .gt_title {
+#dkwpbabggi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2677,7 +2675,7 @@ apply the widths to that column as well.</p>
   border-bottom-width: 0;
 }
 
-#drleakisdr .gt_subtitle {
+#dkwpbabggi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2689,13 +2687,13 @@ apply the widths to that column as well.</p>
   border-top-width: 0;
 }
 
-#drleakisdr .gt_bottom_border {
+#dkwpbabggi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#drleakisdr .gt_col_headings {
+#dkwpbabggi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2710,7 +2708,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#drleakisdr .gt_col_heading {
+#dkwpbabggi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2730,7 +2728,7 @@ apply the widths to that column as well.</p>
   overflow-x: hidden;
 }
 
-#drleakisdr .gt_column_spanner_outer {
+#dkwpbabggi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2742,15 +2740,15 @@ apply the widths to that column as well.</p>
   padding-right: 4px;
 }
 
-#drleakisdr .gt_column_spanner_outer:first-child {
+#dkwpbabggi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#drleakisdr .gt_column_spanner_outer:last-child {
+#dkwpbabggi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#drleakisdr .gt_column_spanner {
+#dkwpbabggi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2762,7 +2760,7 @@ apply the widths to that column as well.</p>
   width: 100%;
 }
 
-#drleakisdr .gt_group_heading {
+#dkwpbabggi .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2787,7 +2785,7 @@ apply the widths to that column as well.</p>
   vertical-align: middle;
 }
 
-#drleakisdr .gt_empty_group_heading {
+#dkwpbabggi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2802,15 +2800,15 @@ apply the widths to that column as well.</p>
   vertical-align: middle;
 }
 
-#drleakisdr .gt_from_md > :first-child {
+#dkwpbabggi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#drleakisdr .gt_from_md > :last-child {
+#dkwpbabggi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#drleakisdr .gt_row {
+#dkwpbabggi .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2829,7 +2827,7 @@ apply the widths to that column as well.</p>
   overflow-x: hidden;
 }
 
-#drleakisdr .gt_stub {
+#dkwpbabggi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2842,7 +2840,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#drleakisdr .gt_stub_row_group {
+#dkwpbabggi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2856,11 +2854,11 @@ apply the widths to that column as well.</p>
   vertical-align: top;
 }
 
-#drleakisdr .gt_row_group_first td {
+#dkwpbabggi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#drleakisdr .gt_summary_row {
+#dkwpbabggi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2870,16 +2868,16 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#drleakisdr .gt_first_summary_row {
+#dkwpbabggi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#drleakisdr .gt_first_summary_row.thick {
+#dkwpbabggi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#drleakisdr .gt_last_summary_row {
+#dkwpbabggi .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2889,7 +2887,7 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#drleakisdr .gt_grand_summary_row {
+#dkwpbabggi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2899,7 +2897,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#drleakisdr .gt_first_grand_summary_row {
+#dkwpbabggi .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2909,11 +2907,11 @@ apply the widths to that column as well.</p>
   border-top-color: #D3D3D3;
 }
 
-#drleakisdr .gt_striped {
+#dkwpbabggi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#drleakisdr .gt_table_body {
+#dkwpbabggi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2922,7 +2920,7 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#drleakisdr .gt_footnotes {
+#dkwpbabggi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2936,7 +2934,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#drleakisdr .gt_footnote {
+#dkwpbabggi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 1px;
@@ -2945,7 +2943,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#drleakisdr .gt_sourcenotes {
+#dkwpbabggi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2959,7 +2957,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#drleakisdr .gt_sourcenote {
+#dkwpbabggi .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2967,64 +2965,64 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#drleakisdr .gt_left {
+#dkwpbabggi .gt_left {
   text-align: left;
 }
 
-#drleakisdr .gt_center {
+#dkwpbabggi .gt_center {
   text-align: center;
 }
 
-#drleakisdr .gt_right {
+#dkwpbabggi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#drleakisdr .gt_font_normal {
+#dkwpbabggi .gt_font_normal {
   font-weight: normal;
 }
 
-#drleakisdr .gt_font_bold {
+#dkwpbabggi .gt_font_bold {
   font-weight: bold;
 }
 
-#drleakisdr .gt_font_italic {
+#dkwpbabggi .gt_font_italic {
   font-style: italic;
 }
 
-#drleakisdr .gt_super {
+#dkwpbabggi .gt_super {
   font-size: 65%;
 }
 
-#drleakisdr .gt_footnote_marks {
+#dkwpbabggi .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#drleakisdr .gt_asterisk {
+#dkwpbabggi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#drleakisdr .gt_indent_1 {
+#dkwpbabggi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#drleakisdr .gt_indent_2 {
+#dkwpbabggi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#drleakisdr .gt_indent_3 {
+#dkwpbabggi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#drleakisdr .gt_indent_4 {
+#dkwpbabggi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#drleakisdr .gt_indent_5 {
+#dkwpbabggi .gt_indent_5 {
   text-indent: 25px;
 }
 </style>

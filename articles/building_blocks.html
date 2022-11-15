@@ -119,15 +119,20 @@ values will be aligned and set their widths</li>
 </ul>
 <p align="center">
 <img src="../reference/figures/table_plans.png" width="900px"></p>
+<p>Note: Footnotes also use this systems and have a footnote plan
+(<code>footnote_plan</code>) to define what footnote contents and where
+they should be applied.</p>
 <p><strong>3. Structures:</strong> <code>*_structure()</code></p>
-<p>The structure objects are for defining how the <em>contents</em> of
-the table (i.e., text) should be displayed. Within a plan, one or more
+<p>The structure objects are for defining how the <em>location</em> of
+where a specific styling should be applied. Within a plan, one or more
 structures may be provided. Each structure specifies the layers within a
 plan. For example, in the body plan, each “frmt_structure” object
 defines how a set of values (e.g., all “p-values”) should be formatted.
-Structures are inherently row-oriented, and can range from broad (e.g.,
+Structures are primarily row-oriented, and can range from broad (e.g.,
 apply to all relevant rows in the data) to specific (e.g., apply to all
-relevant rows within a specific grouping value).</p>
+relevant rows within a specific grouping value). The one exception to
+this is <code>col_style_structure</code>, which specifies the colwise
+styling.</p>
 <p>In the figure below, each colour represents a different format
 structure (<code>frmt_structure</code>) to be passed in the table body
 plan (<code>body_plan</code>).</p>
@@ -141,14 +146,19 @@ plan (<code>body_plan</code>).</p>
 of column plan (<code>col_plan</code>)</li>
 <li>Row group structure (<code>row_grp_structure</code>) inside of row
 group plan (<code>row_grp_plan</code>)</li>
+<li>Column style structure (<code>col_style_structure</code>) inside of
+column style plan (<code>col_style_plan</code>)</li>
+<li>Footnote structure (<code>footnote_structure</code>) inside of
+footnote plan (<code>footnote_plan</code>)</li>
 </ul>
-<p><strong>4. Elements:</strong> <code>element_*()</code></p>
-<p>The element objects are for defining the <em>aesthetics</em> of the
-table (i.e., non-text styling). Inspired by ggplot2, elements provide a
-mechanism for performing aesthetic modifications such as column
-alignment and width (<code>element_col</code>) or the positioning of
-group labels (<code>element_row_grp_loc</code>). These are passed
-through plan or structure objects.</p>
+<p><strong>4. Elements</strong> <code>element_*()</code> <strong>and
+Formats:</strong> <code>frmt_*()</code></p>
+<p>The element and format objects are for defining the
+<em>aesthetics</em> of the table. Inspired by ggplot2, elements provide
+a mechanism for performing aesthetic modifications such as numeric
+rounding (<code><a href="../reference/frmt.html">frmt()</a></code>) or the positioning of group labels
+(<code>element_row_grp_loc</code>). These are passed through structure
+objects.</p>
   </main>
 </div>
 
