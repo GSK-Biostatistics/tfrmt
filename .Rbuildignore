@@ -14,3 +14,4 @@
 ^doc$
 vignettes
 man/figures/
+^cran-comments\.md$
