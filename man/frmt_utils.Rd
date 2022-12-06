@@ -18,6 +18,9 @@ is_row_grp_structure(x)
 \arguments{
 \item{x}{Object to check}
 }
+\value{
+'TRUE' if yes, 'FALSE' if no
+}
 \description{
 Check if input is a frmt
 

@@ -4,4 +4,4 @@
 
 * This is a new release.
 * Reviewed "misspellings" from last submission, they are in fact correct
-* Removed VignetteBuilder from description because no vignettes are being submitted 
+* Added return value to all exported functions

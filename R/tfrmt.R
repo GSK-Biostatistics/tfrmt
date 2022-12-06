@@ -24,6 +24,8 @@
 #' @param footnote_plan footnotes to be added to the table. Takes a [footnote_plan()]
 #' @param ... These dots are for future extensions and must be empty.
 #'
+#' @return tfrmt object
+#'
 #' @details
 #'
 #'  ## NSE and Argument Evaluation

@@ -21,6 +21,9 @@ frmt_when(..., missing = NULL)
 
 \item{...}{See details: \code{...} for a detailed description.}
 }
+\value{
+frmt object
+}
 \description{
 These functions provide an abstracted way to approach to define formatting of table
 contents. By defining in this way, the formats can be

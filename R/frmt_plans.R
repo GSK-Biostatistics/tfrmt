@@ -136,6 +136,7 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #'    side evaluates to `TRUE`.
 #'
 #' @export
+#' @return frmt object
 #' @examples
 #'
 #' frmt("XXX %")

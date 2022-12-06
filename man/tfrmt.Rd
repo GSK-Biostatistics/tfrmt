@@ -57,6 +57,9 @@ columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
+\value{
+tfrmt object
+}
 \description{
 tfrmt, or "table format" is a way to pre-define the non-data components of
 your tables, and how the data will be handled once added: i.e. title,

@@ -6,6 +6,8 @@
 #' x1 <- frmt("XXX.XX")
 #' is_frmt(x1)
 #'
+#' @return 'TRUE' if yes, 'FALSE' if no
+#'
 #' @rdname frmt_utils
 is_frmt <- function(x){
   inherits(x, "frmt")

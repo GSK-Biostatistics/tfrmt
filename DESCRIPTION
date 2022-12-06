@@ -29,7 +29,7 @@ Authors@R:
                     email = "shannon.l.haughton@gsk.com")
              )
 Description: Creates a framework to store and apply display metadata to Analysis
-    Results Datasets (ARDs). The use of tfrmt allows users to define table 
+    Results Datasets (ARDs). The use of 'tfrmt' allows users to define table 
     format and styling without the data, and later apply the format to the data.
 Language: en-GB
 License: Apache License (>= 2)
