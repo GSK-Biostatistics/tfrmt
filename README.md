@@ -8,7 +8,8 @@
 coverage](https://codecov.io/gh/GSK-Biostatistics/tfrmt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tfrmt?branch=main)
 [![status:
 experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
-
+[![CRAN
+status](https://www.r-pkg.org/badges/version/tfrmt)](https://CRAN.R-project.org/package=tfrmt)
 <!-- badges: end -->
 
 The tfrmt package provides a language for defining display-related
