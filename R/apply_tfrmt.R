@@ -309,6 +309,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     map_chr(as_name)
   tbl_dat_wide <- data %>%
     select(-!!tfrmt$param) %>%
+    mutate(across(all_of(column_cols), as.character)) %>%
     mutate(across(all_of(column_cols), na_if, "")) %>%
     quietly(pivot_wider)(
       names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
