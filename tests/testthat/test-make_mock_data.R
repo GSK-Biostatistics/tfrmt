@@ -194,8 +194,9 @@ test_that("Check mock when value is missing", {
   )
 
   #Make mock
-  quietly(print_mock_gt)(plan, data)$warnings %>%
-    expect_equal(character())
+  expect_snapshot(
+    out <- print_mock_gt(plan, data)
+  )
 })
 
 
