@@ -266,12 +266,15 @@ append_update_group_message <- function(e, x, y){
   x_grp <- map_chr(x$group, as_label)
   y_grp <- map_chr(y$group, as_label)
 
-  update_grp_message <- c(i = paste0(
-    "You might need to update group names using ",
-    "\"update_group(",
-    paste0("`",y_grp,"` = `", x_grp,"`", collapse = ","),
-    ")\""))
+  if(!is_empty(y_grp) && !is_empty(x_grp)){
+    update_grp_message <- c(i = paste0(
+      "You might need to update group names using ",
+      "\"update_group(",
+      paste0("`",y_grp,"` = `", x_grp,"`", collapse = ","),
+      ")\""))
 
-  e$message <- c(e$message, "", update_grp_message)
+    e$message <- c(e$message, "", update_grp_message)
+  }
+
   e
 }
