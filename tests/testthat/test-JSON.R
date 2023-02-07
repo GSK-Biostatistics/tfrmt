@@ -126,6 +126,19 @@ test_that("json body plan", {
             "<=3" ~ frmt("Undetectable")
           )
         )
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        foo = frmt("xx.x")
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_when(
+          ">3" ~ frmt("(X.X%)"),
+          "<=3" ~ frmt("Undetectable")
+        )
       )
     )
   ) %>%

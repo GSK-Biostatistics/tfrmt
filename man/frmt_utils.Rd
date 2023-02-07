@@ -3,6 +3,7 @@
 \name{is_frmt}
 \alias{is_frmt}
 \alias{is_frmt_combine}
+\alias{is_frmt_when}
 \alias{is_frmt_structure}
 \alias{is_row_grp_structure}
 \title{Check if input is a frmt}
@@ -10,6 +11,8 @@
 is_frmt(x)
 
 is_frmt_combine(x)
+
+is_frmt_when(x)
 
 is_frmt_structure(x)
 
@@ -26,6 +29,8 @@ Check if input is a frmt
 
 Check if input is a frmt_combine
 
+Check if input is a frmt_when
+
 Check if input is a frmt_structure
 
 Check if input is a row_grp_structure
@@ -36,6 +41,12 @@ is_frmt(x1)
 
 x2 <- frmt_combine("XXX \%","XX,XXX")
 is_frmt_combine(x2)
+
+x2 <- frmt_when(
+">3" ~ frmt("(X.X\%)"),
+"<=3" ~ frmt("Undetectable")
+)
+is_frmt_when(x2)
 
 x3 <- frmt_structure(
  group_val = c("group1"),

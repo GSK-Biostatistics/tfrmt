@@ -36,7 +36,7 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests: 
     covr,
     testthat (>= 3.0.0),
@@ -48,7 +48,7 @@ Suggests:
 Imports: 
     magrittr,
     dplyr,
-    purrr,
+    purrr (>= 1.0.0),
     rlang,
     stringr,
     stringi,

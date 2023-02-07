@@ -26,6 +26,21 @@ is_frmt_combine <- function(x){
   inherits(x, "frmt_combine")
 }
 
+#' Check if input is a frmt_when
+#'
+#' @param x Object to check
+#' @export
+#' @examples
+#' x2 <- frmt_when(
+#' ">3" ~ frmt("(X.X%)"),
+#' "<=3" ~ frmt("Undetectable")
+#' )
+#' is_frmt_when(x2)
+#'
+#' @rdname frmt_utils
+is_frmt_when <- function(x){
+  inherits(x, "frmt_when")
+}
 #' Check if input is a frmt_structure
 #'
 #' @param x Object to check
