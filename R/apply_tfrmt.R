@@ -309,6 +309,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     map_chr(as_name)
   tbl_dat_wide <- data %>%
     select(-!!tfrmt$param) %>%
+    mutate(across(all_of(column_cols), as.character)) %>%
     mutate(across(all_of(column_cols), na_if, "")) %>%
     quietly(pivot_wider)(
       names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
@@ -318,7 +319,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
       )
 
   if (mock == TRUE && length(tbl_dat_wide$warnings)>0 &&
-      str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$value), "` are not uniquely identified"))){
+      any(str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$value), "` are not uniquely identified")))){
     message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
     tbl_dat_wide <- tbl_dat_wide$result %>%
       unnest(cols = everything()) %>%

@@ -119,7 +119,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       if(last(col_str) == span_lvl){
         col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
         if(!is.null(names(col_loc))){
-          col_loc <- if_else(names(col_loc) != "", names(col_loc), col_loc)
+          col_loc <- if_else(names(col_loc) != "", names(col_loc), unname(col_loc))
         }
         out <- list(col = col_loc, spanning = FALSE)
       } else {
