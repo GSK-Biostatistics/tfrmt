@@ -7,38 +7,58 @@
 #' @export
 #'
 #' @importFrom jsonlite toJSON validate
-#' @importFrom stringr str_replace_all
 tfrmt_to_json <- function(tfrmt, path = NULL){
   if(!is_tfrmt(tfrmt)){
     stop("Needs tfrmt")
   }
-  tfrmt_nm <- names(tfrmt)
+   output <- as_json(tfrmt)
 
-  #Listed quosures
-  quosure_ls <- tfrmt[intersect(tfrmt_nm, c("group", "column", "sorting_cols"))] %>%
-    map(~map_chr(.,as_label))
-  #Single quosures
-  quosure <- tfrmt[intersect(tfrmt_nm,c("label","param", "value"))] %>%
-    map(as_label) %>%
-    map(function(x){
-      if(x != "<empty>") x
-    })
-  #Get body_plan
-  browser()
-  tfrmt$body_plan %>%
-    unpack_body_plan()
+   if(!is_null(path)){
+     message(paste0("Writing json file out to:\n", path))
+     write(output, path)
+   } else {
+     return(output)
+   }
 
-  # Get col_plan
-  col_plan_ls <- tfrmt$col_plan %>%
-    unpack_col_plan()
+}
 
-  other_nm <- setdiff(tfrmt_nm, c("group", "column", "sorting_cols","label","param", "value","col_plan"))
-  others <- tfrmt[other_nm]
 
-  # Convert to JSON
-  output_json <- c(quosure_ls, quosure, others, col_plan_ls) %>%
+#' Convert tfrmt elements
+#'
+#' This collection of functions is used to create a json or json ready objects.
+#' While primarily inteded for internal use these functions can be used externally
+#'
+#' @param x tfrmt or tfrmt element
+#'
+#' @return as_json.tfrmt() will return a json object all other methods will
+#'   return a list that is cleaned so it can be directly converted to a json
+#'   object
+#'
+#' @keywords internal
+#' @export
+as_json <- function(x){
+  UseMethod("as_json", x)
+}
+
+#' @export
+#' @importFrom jsonlite toJSON validate
+#' @importFrom stringr str_replace_all
+as_json.tfrmt <- function(x){
+  # Prepare each element to get converted to JSON
+  tfrmt_nm <- names(x)
+
+  out <- vector("list", length = length(x))
+  for(i in 1:length(x)){
+    out[[i]] <- x[[i]] %>%
+      as_json()
+  }
+  names(out) <- tfrmt_nm
+
+  # Converts list to a json object
+  output_json <- out %>%
     toJSON(pretty = TRUE, force = TRUE)
-  # Removing names added in my jsonlite
+
+  # Removing names added in by jsonlite
   json_clean <- output_json %>% str_replace_all('\"\\s(\\.\\d+)?\"',  '\"\"')
   if(validate(json_clean)){
     class(json_clean) <- "json"
@@ -48,82 +68,102 @@ tfrmt_to_json <- function(tfrmt, path = NULL){
   json_clean
 }
 
-unpack_col_plan <- function(col_plan) {
-  if(is.null(col_plan)){
+#' @export
+as_json.default <- function(x){
+  x
+}
+
+#' @export
+as_json.quosures <- function(x){
+  x %>%
+    map_chr(.,as_label)
+}
+
+
+#' @export
+as_json.quosure <- function(x){
+  out <- x %>%
+    as_label()
+  if(out != "<empty>") {
+    return(out)
+  }
+}
+
+#' @export
+as_json.body_plan <- function(x){
+  x %>%
+    map(as_json)
+}
+
+#' @export
+as_json.frmt_structure <- function(x){
+  x$frmt_to_apply <- x$frmt_to_apply %>%
+    map(as_json)
+
+  list(group_val = x$group_val,
+       label_val = x$label_val,
+       param_val = x$param_val) %>%
+    c(x$frmt_to_apply[[1]][1])
+}
+
+#' @export
+as_json.frmt <- function(x){
+  list(frmt = x)
+}
+
+#' @export
+as_json.frmt_when <- function(x){
+  lhs <- map_chr(x$frmt_ls, f_lhs)
+  rhs <- map(x$frmt_ls, f_rhs) %>% map(as_json)
+  names(rhs) <- lhs
+  list(frmt_when = list(frmt_ls = rhs, missing = x$missing))
+}
+
+#' @export
+as_json.frmt_combine <- function(x){
+  frmts <- x$frmt_ls %>%
+    map(as_json)
+  list(frmt_combine = list(expression = x$expression,
+                           frmt_ls = frmts, missing = x$missing))
+}
+
+#' @export
+as_json.col_plan <- function(x){
+  if(is.null(x)){
     c()
   } else {
-    dot_ls <- col_plan$dots %>%
-      map(function(x){
-        if(is_quosure(x)){
-          out <- as_label(x)
-        } else {
-          out <- x %>%
-            map(~map_chr(.,as_label))
-        }
-        out
-      })
+    dot_ls <- x$dots %>%
+      map(as_json)
+
     if(!is.null(names(dot_ls))){
-      names(dot_ls) <- names(col_plan$dots) %>% ifelse(.=="", " ", .)
+      names(dot_ls) <- names(x$dots) %>% ifelse(.=="", " ", .)
     }
-    list(col_plan = list(dots = dot_ls, .drop = col_plan$.drop))
+    list(col_plan = list(dots = dot_ls, .drop = x$.drop))
   }
 }
 
-unpack_col_style_plan <- function(){
+#' @export
+as_json.col_styel_plan <- function(x){
+  x %>%
+    map(as_json)
+}
 
+#' @export
+as_json.col_style_plan <- function(x){
+  x %>%
+    map(as_json)
+}
+
+#' @export
+as_json.col_style_structure <- function(x){
+  x$cols <- x$cols %>%
+    map(as_json)
+  x
 }
 
 
-unpack_body_plan <- function(body_plan){
-  obj1 <- list("a", list(1, elt = "foo"))
-  obj2 <- list("b", list(2, elt = "bar"))
-  x <- list(obj1, obj2)
-  # purrr::pluck(x, 1, 2, "elt")
-  browser()
-  x <- list(
-    list(),
-    list(list()),
-    list(list(list(1)))
-  )
-  pluck_depth(x, is_node = is_list)
-  x[[1]][[2]] |> map_int(pluck_depth)
-  depth(x)
 
 
-  depth <- function(this) ifelse(is.list(this), 1L + max(sapply(this, depth)), 0L)
-  depth <- function(this,thisdepth=0){
-    if(!is.list(this)){
-      return(thisdepth)
-    }else{
-      return(max(unlist(lapply(this,depth,thisdepth=thisdepth+1))))
-    }
-  }
-
-  for(fs in 1:length(body_plan)){
-    browser()
-    curr_frmt <- body_plan[[fs]] %>%
-      purrr::pluck("frmt_to_apply", 1)
-    if(is_frmt_combine(curr_frmt) | is_frmt_when(curr_frmt))
-      curr_frmt %>%
-      purrr::pluck("frmt_ls") %>%
-      purrr::map_int(purrr::pluck_depth, is_frmt_when)
-
-      purrr::map_int(curr_frmt %>%
-                       purrr::pluck("frmt_ls") , depth)
-  }
-
-browser()
-  get_fmt_ls <- function(x) x[["frmt_ls"]]
-body_plan %>%
-
-  map(function(x){
-    browser()
-    y <- x[["frmt_to_apply"]] %>%
-
-    purrr::pluck_depth(x["frmt_to_apply"], is_frmt)
-  })
-
-}
 
 
 json_to_tfrmt <- function(){

@@ -48,7 +48,7 @@ Suggests:
 Imports: 
     magrittr,
     dplyr,
-    purrr (>= 1.0.0),
+    purrr,
     rlang,
     stringr,
     stringi,
