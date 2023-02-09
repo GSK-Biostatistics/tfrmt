@@ -192,7 +192,7 @@ test_that("column spanners and labels are appropriately aligned", {
   chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev
 
   # combine spanner & lower labels and rename as per tfrmt spec
-  gt_cols <- dplyr::full_join(lower, spans, by = "var") %>%
+  gt_cols <- dplyr::full_join(lower, spans, by = "var", multiple = "all") %>%
     unique %>%
     dplyr::filter(!is.na(spanner_label)) %>%
     tidyr::pivot_wider(names_from = spanner_level,

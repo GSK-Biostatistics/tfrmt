@@ -337,7 +337,10 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
 frmt_struct_string <- function(grp, lbl, param_vals){
   length_lbl <- str_count(lbl,",")+1
-  group_names <- substitute(grp) %>% map_chr(as_label) %>% .[-1]
+
+  group_names <- substitute(grp) %>%
+    as.list() %>%
+    map_chr(as_label) %>% .[-1]
   if(length(group_names) > 1){
     group_val_char <- capture.output(dput(setNames(grp, group_names)))
   }else if(length(group_names) == 1){

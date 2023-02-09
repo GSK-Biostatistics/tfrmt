@@ -174,7 +174,7 @@ test_that("Test with spanning headers", {
 
   # try with empty strings rather than NA
   dat_blank <- dat %>%
-    mutate(across(where(is.character), tidyr::replace_na, ""))
+    mutate(across(where(is.character), ~replace_na(.x, "")))
 
   auto_blank <- apply_tfrmt(.data = dat_blank, tfrmt = auto_tfrmt) %>%
     names()
