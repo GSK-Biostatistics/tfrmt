@@ -64,6 +64,9 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/apply_frmt.html</loc>
   </url>
   <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/as_json.html</loc>
+  </url>
+  <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/big_n_structure.html</loc>
   </url>
   <url>
@@ -146,6 +149,9 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_sigdig.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_to_json.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/theme_element.html</loc>
