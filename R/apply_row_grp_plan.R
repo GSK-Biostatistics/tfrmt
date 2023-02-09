@@ -123,7 +123,7 @@ grp_row_test_data <- function(cur_block, .data, group){
     parse_expr()
 
   .data %>%
-    mutate(across(c(!!!group), str_trim)) %>%
+    mutate(across(c(!!!group), ~str_trim(.x))) %>%
     filter(!!filter_expr) %>%
     pull(.data$TEMP_row)
 }
@@ -154,7 +154,7 @@ apply_grp_block <- function(.data, group, element_block, widths){
     grp_row_add <- .data %>%
       slice(n()) %>%
       mutate(across(c(-map_chr(group, as_name), -vars_select_helpers$where(is.numeric)),
-                    ~ replace(.x, value = fill_post_space(post_space = element_block$post_space,
+                    ~replace(.x, value = fill_post_space(post_space = element_block$post_space,
                                                            width = widths[[cur_column()]]))),
              TEMP_row = .data$TEMP_row + 0.1)
 
@@ -216,12 +216,12 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   # to retain the order of the data when splitting by group
   .data <- .data %>%
-    mutate(across(c(!!!group), fct_inorder),
+    mutate(across(c(!!!group), ~fct_inorder(.x)),
            ..tfrmt_row_grp_lbl = FALSE)
 
   # ensure label is character
   .data <- .data %>%
-    mutate(across(!!label, as.character))
+    mutate(across(!!label, ~as.character(.x)))
 
   if(is.null(element_row_grp_loc)){
     indent = "  "
@@ -260,7 +260,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
             select(-c(any_of(names(new_row)))) %>%
             slice(0) %>%
             add_row()  %>%
-            mutate(across(vars_select_helpers$where(is.list), ~ map(.x, ~if (is.null(.)) NA_character_ else .)))  %>%  #convert NULL to NA in list-cols
+            mutate(across(vars_select_helpers$where(is.list), ~map(.x, ~if (is.null(.)) NA_character_ else .)))  %>%  #convert NULL to NA in list-cols
             bind_cols(new_row, .)%>%
             mutate(..tfrmt_row_grp_lbl = TRUE)
 
@@ -281,7 +281,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   }
 
   .data%>%
-    mutate(across(any_of(orig_group_names), as.character))
+    mutate(across(any_of(orig_group_names), ~as.character(.x)))
 
 
 }

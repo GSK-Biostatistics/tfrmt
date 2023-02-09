@@ -387,7 +387,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
    "    my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE,
    "    my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)", FALSE
   ) %>%
-    mutate(across(trtA:trtC, as.list))
+    mutate(across(trtA:trtC, ~as.list(.x)))
 
   expect_equal(auto_test_listcols, man_test_listcols)
 
@@ -409,7 +409,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
     "grp1_2", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "grp1_2", "grp2_2", " ", " ", " ", " "
   ) %>%
-    mutate(across(trtA:trtC, as.list))
+    mutate(across(trtA:trtC, ~as.list(.x)))
 
   expect_equal(auto_test_listcols, man_test_listcols)
 

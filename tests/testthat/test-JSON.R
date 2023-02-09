@@ -265,7 +265,8 @@ test_that("json col_plan",{
       col_style_structure(align = c(".", ",", " "), col = vars(two, three))
     )
   ) %>%
-    as_json()
+    as_json() %>%
+    expect_snapshot()
 })
 
 

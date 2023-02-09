@@ -466,7 +466,7 @@ test_that("Mock data can be made and printed without label",{
   )
 
   #Make mock
-  expect_no_message(
+  expect_silent(
     print_mock_gt(plan, .data = dat)
   )
 

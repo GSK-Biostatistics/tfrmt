@@ -38,7 +38,6 @@ apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row
 #'
 #' @return list with the row, column and footnote
 #' @noRd
-#' @importFrom purrr cross_df
 #' @importFrom dplyr inner_join first last cur_group_id
 locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_loc,
                             group, label, columns){
@@ -77,8 +76,9 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
+      class(loc_info$column_val)
       loc_col_df <- loc_info$column_val %>%
-        cross_df()
+        expand.grid(stringsAsFactors = FALSE)
       col_val_nm <- names(loc_info$column_val)
     }
 
@@ -187,7 +187,8 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
          col_info$row <- .data %>%
            ungroup() %>%
            mutate(
-             across(c(!!!group, !!label), str_remove, paste0("^", element_row_grp_loc$indent, "+")),
+             across(c(!!!group, !!label),
+                    ~str_remove(.x, paste0("^", element_row_grp_loc$indent, "+"))),
              `___tfrmt_test` = !!filter_expr,
              `___tfrmt_TEMP_rows` = row_number()) %>%
            filter(.data$`___tfrmt_test`) %>%

@@ -636,3 +636,40 @@
         }
       } 
 
+---
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "col_style_plan": [
+          {
+            "cols": [
+              ["my_var"]
+            ],
+            "align": ["left"],
+            "width": [100]
+          },
+          {
+            "cols": [
+              ["four"]
+            ],
+            "align": ["right"],
+            "width": {}
+          },
+          {
+            "cols": [
+              ["two"],
+              ["three"]
+            ],
+            "align": [".", ",", ""],
+            "width": {}
+          }
+        ]
+      } 
+
