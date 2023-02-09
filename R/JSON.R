@@ -13,7 +13,7 @@ tfrmt_to_json <- function(tfrmt, path = NULL){
   }
    output <- as_json(tfrmt)
 
-   if(!is_null(path)){
+   if(!is.null(path)){
      message(paste0("Writing json file out to:\n", path))
      write(output, path)
    } else {
