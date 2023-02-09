@@ -194,8 +194,9 @@ test_that("Check mock when value is missing", {
   )
 
   #Make mock
-  quietly(print_mock_gt)(plan, data)$warnings %>%
-    expect_equal(character())
+  expect_snapshot(
+    out <- print_mock_gt(plan, data)
+  )
 })
 
 
@@ -465,7 +466,7 @@ test_that("Mock data can be made and printed without label",{
   )
 
   #Make mock
-  expect_silent(
+  expect_no_message(
     print_mock_gt(plan, .data = dat)
   )
 
@@ -539,10 +540,11 @@ test_that("Using col_plan to get column names", {
     )
   ) %>%
     make_mock_data() %>%
+    select(test1, test2) %>%
     distinct(test1, test2)
 
-  man_col_df <- tibble(test2 = c("col4","col3", "col5", "col1", "col2", "col7","col8"),
-                       test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)))
+  man_col_df <- tibble(test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)),
+                       test2 = c("col4","col3", "col5", "col1", "col2", "col7","col8"))
   expect_equal(auto_col_df, man_col_df)
 
 
