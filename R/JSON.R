@@ -143,12 +143,6 @@ as_json.col_plan <- function(x){
 }
 
 #' @export
-as_json.col_styel_plan <- function(x){
-  x %>%
-    map(as_json)
-}
-
-#' @export
 as_json.col_style_plan <- function(x){
   x %>%
     map(as_json)
