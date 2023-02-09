@@ -73,7 +73,8 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       fail_desc = "Unable to apply row group structure"
     ) %>%
     #Select before grouping to not have to deal with if it indents or not
-    tentative_process(apply_col_plan, col_plan_vars, fail_desc = "Unable to subset dataset columns") %>%
+    tentative_process(apply_col_plan, col_plan_vars,
+                      fail_desc = "Unable to subset dataset columns") %>%
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
@@ -309,8 +310,8 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     map_chr(as_name)
   tbl_dat_wide <- data %>%
     select(-!!tfrmt$param) %>%
-    mutate(across(all_of(column_cols), as.character)) %>%
-    mutate(across(all_of(column_cols), na_if, "")) %>%
+    mutate(across(all_of(column_cols), ~as.character(.x))) %>%
+    mutate(across(all_of(column_cols), ~na_if(.x, ""))) %>%
     quietly(pivot_wider)(
       names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
       names_sep = .tlang_delim,
@@ -336,7 +337,10 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
 
 frmt_struct_string <- function(grp, lbl, param_vals){
   length_lbl <- str_count(lbl,",")+1
-  group_names <- substitute(grp) %>% map_chr(as_label) %>% .[-1]
+
+  group_names <- substitute(grp) %>%
+    as.list() %>%
+    map_chr(as_label) %>% .[-1]
   if(length(group_names) > 1){
     group_val_char <- capture.output(dput(setNames(grp, group_names)))
   }else if(length(group_names) == 1){

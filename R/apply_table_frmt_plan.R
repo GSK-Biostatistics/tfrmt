@@ -128,7 +128,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
       keep(~. != "<empty>")
 
     out <- complet_combo_grps %>%
-      left_join(out, by = join_by)
+      left_join(out, by = join_by, multiple = "all")
   }
   out %>%
     pull(.data$TEMP_row)

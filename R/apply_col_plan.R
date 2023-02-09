@@ -1,5 +1,5 @@
 #' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate last_col right_join
+#' @importFrom dplyr as_tibble relocate last_col
 #' @importFrom stringr str_remove str_detect
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
@@ -332,7 +332,7 @@ unite_df_to_data_names <- function(split_data_names, preselected_cols, column_na
     unite("new_name",
           starts_with("__tfrmt_new_name__"),
           sep = .tlang_delim) %>%
-    mutate(across(c("original", "new_name"), remove_empty_layers, length(column_names) -1))
+    mutate(across(c("original", "new_name"), ~remove_empty_layers(.x, length(column_names) -1)))
 
   selected <- new_preselected_cols_full %>%
     mutate(

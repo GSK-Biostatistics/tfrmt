@@ -67,7 +67,6 @@ row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indent
 #'   value of group should be when the given frmt is implemented
 #' @param element_block element_block() object to define the block styling
 #'
-#' @importFrom tidyr expand_grid
 #' @returns row_grp_structure object
 #' @export
 #' @examples

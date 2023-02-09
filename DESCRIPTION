@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata to Analysis Results Datasets
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: 
     c(person(given = "Christina",
              family = "Fillmore",
@@ -36,7 +36,7 @@ License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests: 
     covr,
     testthat (>= 3.0.0),
@@ -57,7 +57,8 @@ Imports:
     tidyselect,
     forcats,
     tibble,
-    ggplot2
+    ggplot2,
+    jsonlite
 Config/testthat/edition: 3
 URL: https://GSK-Biostatistics.github.io/tfrmt/,
     https://gsk-biostatistics.github.io/tfrmt/
