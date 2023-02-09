@@ -1,5 +1,5 @@
 #' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate last_col right_join
+#' @importFrom dplyr as_tibble relocate last_col
 #' @importFrom stringr str_remove str_detect
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
