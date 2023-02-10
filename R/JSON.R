@@ -59,7 +59,12 @@ as_json.tfrmt <- function(x){
     toJSON(pretty = TRUE, force = TRUE)
 
   # Removing names added in by jsonlite
-  json_clean <- output_json %>% str_replace_all('\"\\s(\\.\\d+)?\"',  '\"\"')
+  # only change spaces at the beginning of the row
+  json_clean <- output_json %>%
+    str_split("\\\n") %>%
+    unlist() %>%
+    str_replace_all('^\\s+\"\\s(\\.\\d+)?\"',  '\"\"') %>%
+    str_c(collapse = "\n")
   if(validate(json_clean)){
     class(json_clean) <- "json"
   } else {
@@ -191,13 +196,16 @@ json_to_tfrmt <- function(path = NULL, json = NULL){
   rgp <- ls_to_row_grp_plan(dirty_list$row_grp_plan)
   bp <- ls_to_body_plan(dirty_list$body_plan)
   # ls_to_col_style_plan(dirty_list$col_style_plan)
-  # ls_to_col_plan(dirty_list$col_plan)
-  # ls_to_big_n(dirty_list$big_n)
-  # ls_to_footnote_plan(dirty_list$footnote_plan)
+  cp = ls_to_col_plan(dirty_list$col_plan)
+  bn = ls_to_big_n(dirty_list$big_n)
+  fnp <- ls_to_footnote_plan(dirty_list$footnote_plan)
 
   all_params <- c(simple_params,
                   list(row_grp_plan = rgp),
-                  list(body_plan = bp)) %>%
+                  list(body_plan = bp),
+                  list(big_n = bn),
+                  list(footnote_plan = fnp),
+                  list(col_plan = cp)) %>%
     discard(is.null)
   do.call(tfrmt, all_params)
 }
@@ -270,8 +278,36 @@ ls_to_frmt_when <- function(x){
   formula_ls <- str_c("'", names(fmts), "' ~ ", fmts) %>%
     map(as.formula)
 
-  do.call(frmt_when, c(formula_ls, list(missing = x$missing)))
+  do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
 }
+
+ls_to_big_n <- function(ls){
+  if(!is.null(ls)){
+    n_frmt = do.call(ls_to_frmt, list(ls$n_frmt))
+    do.call(big_n_structure, list(param_val = unlist(ls$param_val),
+                                  n_frmt = n_frmt))
+  }
+}
+
+ls_to_footnote_plan <- function(ls){
+  if(!is.null(ls)){
+    struct_ls <- ls$struct_list %>%
+      map(function(struct){
+        group_val = simplify_group_val(struct$group_val)
+        column_val = simplify_group_val(struct$column_val)
+        unlisted <- struct%>%
+          map(unlist)
+        do.call(footnote_structure, list(footnote_text = unlisted$footnote_text,
+                                         group_val = group_val,
+                                         label_val = unlisted$label_val,
+                                         column_val = column_val))
+
+      })
+
+    do.call(footnote_plan, c(struct_ls, list(marks = unlist(ls$marks))))
+  }
+}
+
 
 ls_to_col_plan <- function(ls){
   browser()
@@ -285,7 +321,9 @@ ls_to_col_plan <- function(ls){
 }
 
 simplify_group_val <- function(group_ls){
-  if(!is.null(names(group_ls))){
+  if(length(group_ls) == 0){
+    group_val = NULL
+  } else if(!is.null(names(group_ls))){
     group_val = map(group_ls, unlist)
   } else {
     group_val = unlist(group_ls)

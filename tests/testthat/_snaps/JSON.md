@@ -62,7 +62,7 @@
             {
               "group_val": ["B"],
               "block_to_apply": {
-                "post_space": [""],
+                "post_space": [" "],
                 "border": ["outline", "bottom"]
               }
             }
@@ -93,7 +93,7 @@
                 "grp2": ["b"]
               },
               "block_to_apply": {
-                "post_space": [""],
+                "post_space": [" "],
                 "border": ["outline", "bottom"]
               }
             }
@@ -148,7 +148,7 @@
               "grp_col2": ["subgroup"]
             },
             "label_val": [".default"],
-            "param_val": [".default"],
+            "param_val": ["test"],
             "frmt": {
               "expression": ["XXX"],
               "missing": {},
@@ -531,8 +531,8 @@
           "col_plan": {
             "dots": {
               "foo": ["col1"],
-              "": ["col2"],
-              "": ["col3"]
+      "": ["col2"],
+      "": ["col3"]
             },
             ".drop": [false]
           }
@@ -611,14 +611,14 @@
         "col_plan": {
           "col_plan": {
             "dots": {
-              "": ["group"],
-              "": ["label"],
-              "": {
+      "": ["group"],
+      "": ["label"],
+      "": {
                 "span1": [
                   {}
                 ]
               },
-              "": {
+      "": {
                 "span1": [
                   {}
                 ],
@@ -627,16 +627,16 @@
                   {}
                 ]
               },
-              "": ["everything()"],
+      "": ["everything()"],
               "new_col_3": ["mycol3"],
-              "": ["-mycol5"]
+      "": ["-mycol5"]
             },
             ".drop": [false]
           }
         }
       } 
 
----
+# json col_style_plan
 
     Code
       .
@@ -667,7 +667,7 @@
               ["two"],
               ["three"]
             ],
-            "align": [".", ",", ""],
+            "align": [".", ",", " "],
             "width": {}
           }
         ]

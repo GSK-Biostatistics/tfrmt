@@ -9,7 +9,7 @@
       {
         "group_val": [".default"],
         "block_to_apply": {
-          "post_space": [""],
+          "post_space": [" "],
           "border": ["outline", "bottom"]
         }
       }
@@ -119,7 +119,7 @@
       "cols": [
         ["everything()"]
       ],
-      "align": [".", ",", ""],
+      "align": [".", ",", " "],
       "width": {}
     }
   ],
