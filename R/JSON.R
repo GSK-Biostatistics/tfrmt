@@ -11,14 +11,14 @@ tfrmt_to_json <- function(tfrmt, path = NULL){
   if(!is_tfrmt(tfrmt)){
     stop("Needs tfrmt")
   }
-   output <- as_json(tfrmt)
+  output <- as_json(tfrmt)
 
-   if(!is.null(path)){
-     message(paste0("Writing json file out to:\n", path))
-     write(output, path)
-   } else {
-     return(output)
-   }
+  if(!is.null(path)){
+    message(paste0("Writing json file out to:\n", path))
+    write(output, path)
+  } else {
+    return(output)
+  }
 
 }
 
@@ -165,11 +165,130 @@ as_json.col_style_structure <- function(x){
 
 
 
+#' json to tfrmt
+#'
+#' @param path
+#'
+#' @param json by default this is null, if
+#'
+#' @importFrom jsonlite read_json parse_json
+json_to_tfrmt <- function(path = NULL, json = NULL){
+  if(!is.null(json)){
+    dirty_list <- parse_json(json)
+  } else if(!is.null(path)){
+    dirty_list <- read_json(path)
+  } else {
+    stop("Path or json object needed")
+  }
 
-json_to_tfrmt <- function(){
-  # foo <- base_ts$col_plan$dots[1] %>%
-  #   rlang::parse_quo(env = rlang::current_env())
-  # tibble(col1 = letters[1:10], col2 = letters [11:20]) %>%
-  #   select(!!foo)
+  json_nm <- names(dirty_list)
+  simple_vars <- c("group", "label", "param", "value", "column",
+                   "title", "subtitle", "sorting_cols")
+
+  simple_params <- dirty_list[intersect(simple_vars, json_nm)] %>%
+    map(unlist)
+
+  rgp <- ls_to_row_grp_plan(dirty_list$row_grp_plan)
+  bp <- ls_to_body_plan(dirty_list$body_plan)
+  # ls_to_col_style_plan(dirty_list$col_style_plan)
+  # ls_to_col_plan(dirty_list$col_plan)
+  # ls_to_big_n(dirty_list$big_n)
+  # ls_to_footnote_plan(dirty_list$footnote_plan)
+
+  all_params <- c(simple_params,
+                  list(row_grp_plan = rgp),
+                  list(body_plan = bp)) %>%
+    discard(is.null)
+  do.call(tfrmt, all_params)
 }
 
+ls_to_row_grp_plan <- function(ls){
+  if(!is.null(ls)){
+    struct_ls <- ls$struct_ls %>%
+      map(function(struct){
+        el_block <- do.call(element_block, struct$block_to_apply %>% map(unlist))
+        if(!is.null(names(struct$group_val))){
+          group_val = map(struct$group_val, unlist)
+        } else {
+          group_val = unlist(struct$group_val)
+        }
+        do.call(row_grp_structure, list(group_val = group_val, element_block = el_block))
+      })
+
+    label_loc <- do.call(element_row_grp_loc, ls$label_loc %>% map(unlist))
+    ls <- do.call(row_grp_plan, c(struct_ls, list(label_loc = label_loc)))
+  }
+  ls
+}
+
+#' @importFrom stringr str_which
+ls_to_body_plan <- function(ls){
+  if(!is.null(ls)){
+    frmts_ls <- ls %>%
+      map(function(struct){
+        frmt_loc <- str_which(names(struct), "frmt*")
+        type <- names(struct)[frmt_loc]
+        frmt_val <- do.call(paste0("ls_to_", type), list(x = struct[[type]])) %>%
+          list()
+        group_val = simplify_group_val(struct$group_val)
+        arg_list <- c(list(group_val = group_val),
+                      list(label_val= unlist(struct$label_val)),
+                      frmt_val)
+        out_struct <- do.call(frmt_structure, arg_list)
+        out_struct$param_val <- unlist(struct$param_val)
+        out_struct
+      })
+
+    do.call(body_plan, frmts_ls)
+  }
+}
+
+ls_to_frmt <- function(x){
+  x <- x %>%
+    map(unlist)
+  do.call(frmt, list(expression = x$expression, missing = x$missing, scientific = x$scientific))
+}
+
+ls_to_frmt_combine <- function(x){
+  fmts <- x$frmt_ls %>%
+    map(function(a_frmt){
+      do.call(paste0("ls_to_", names(a_frmt)), list(x = a_frmt[[1]]))
+    })
+  x <- x %>%
+    map(unlist)
+  do.call(frmt_combine, c(list(expression = x$expression),
+                          fmts, list(missing = x$missing)))
+}
+
+ls_to_frmt_when <- function(x){
+  fmts <- x$frmt_ls %>%
+    map(function(a_frmt){
+      do.call(paste0("ls_to_", names(a_frmt)), list(x = a_frmt[[1]])) %>%
+        as.character()
+    })
+
+  formula_ls <- str_c("'", names(fmts), "' ~ ", fmts) %>%
+    map(as.formula)
+
+  do.call(frmt_when, c(formula_ls, list(missing = x$missing)))
+}
+
+ls_to_col_plan <- function(ls){
+  browser()
+  dots <- ls$col_plan$dots %>%
+    unlist() %>%
+    map(~rlang::parse_quo(.x, env = rlang::current_env())) %>%
+    unlist()
+  do.call(col_plan, as.list(dots))
+  # .drop = unlist(ls$col_plan$.drop))
+
+}
+
+simplify_group_val <- function(group_ls){
+  if(!is.null(names(group_ls))){
+    group_val = map(group_ls, unlist)
+  } else {
+    group_val = unlist(group_ls)
+  }
+  group_val
+}

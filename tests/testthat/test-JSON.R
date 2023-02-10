@@ -1,8 +1,14 @@
 test_that("json basic tfrmt",{
   #Empty tfrmt
+  #Writing
   tfrmt() %>%
     as_json() %>%
     expect_snapshot()
+  #Reading
+  tfrmt() %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(tfrmt())
 
   #Complete tfrmt
   basic_filled_in <- tfrmt(
@@ -10,45 +16,72 @@ test_that("json basic tfrmt",{
     label = label,
     param = parm,
     value = val,
-    column = c(span2, span1, my_col)) %>%
+    column = c(span2, span1, my_col))
+  # Writing
+  basic_filled_in %>%
     as_json() %>%
     expect_snapshot()
+  # Reading
+  basic_filled_in %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(basic_filled_in, ignore_attr = TRUE)
+
 })
 
 
 test_that("json Titles and subtitle", {
   # Titles and subtitle
-  tfrmt(
-        title = "Test Title",
-        subtitle = "Also a test"
-  ) %>%
+  titles <- tfrmt(
+    title = "Test Title",
+    subtitle = "Also a test"
+  )
+  titles %>%
     as_json() %>%
     expect_snapshot()
+
+  titles %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(titles, ignore_attr = TRUE)
 })
 
 test_that("json row group plans",{
-  tfrmt(
+  rgp <- tfrmt(
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = c("A","C"), element_block(post_space = "---")),
       row_grp_structure(group_val = c("B"), element_block(post_space = " ")),
       label_loc = element_row_grp_loc(location = "column")
     )
-  ) %>%
+  )
+
+  rgp %>%
     as_json() %>%
     expect_snapshot()
 
-  tfrmt(
+  rgp %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(rgp, ignore_attr = TRUE )
+
+  rgp_named <- tfrmt(
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " ")),
       label_loc = element_row_grp_loc(location = "spanning")
     )
-  ) %>%
+  )
+  rgp_named %>%
     as_json() %>%
     expect_snapshot()
+
+  rgp_named %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(rgp_named, ignore_attr = TRUE )
 })
 
 test_that("json body plan", {
-  tfrmt(
+  frmt1 <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
         group_val = "group1",
@@ -56,24 +89,37 @@ test_that("json body plan", {
         frmt("XXX")
       )
     )
-  ) %>%
+  )
+
+  frmt1 %>%
     as_json() %>%
     expect_snapshot()
+  frmt1 %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt1, ignore_attr = TRUE)
 
-  tfrmt(
+  frmt2 <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
         group_val = list(grp_col1 = "group1", grp_col2 = "subgroup"),
         label_val = ".default",
-        frmt("XXX")
+        test = frmt("XXX")
       )
     )
-  ) %>%
+  )
+
+  frmt2 %>%
     as_json() %>%
     expect_snapshot()
 
+  frmt2 %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt2, ignore_attr = TRUE)
+
   #Format when test
-  tfrmt(
+  frmt_when_simp <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",
@@ -81,15 +127,20 @@ test_that("json body plan", {
         frmt_when(
           ">3" ~ frmt("(X.X%)"),
           "<=3" ~ frmt("Undetectable")
-          )
+        )
       )
     )
-  ) %>%
+  )
+  frmt_when_simp %>%
     as_json() %>%
     expect_snapshot()
 
+  frmt_when_simp %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt_when_simp, ignore_attr = TRUE)
   #Format combine test
-  tfrmt(
+  frmt_comb_simp <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",
@@ -101,11 +152,16 @@ test_that("json body plan", {
         )
       )
     )
-  ) %>%
+  )
+  frmt_comb_simp %>%
     as_json() %>%
     expect_snapshot()
+  frmt_comb_simp %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt_comb_simp, ignore_attr = TRUE)
   #Scientific test
-  tfrmt(
+  sci <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
         group_val = "group1",
@@ -113,12 +169,19 @@ test_that("json body plan", {
         frmt("xx.xx", scientific = "x10^xx")
       )
     )
-  ) %>%
+  )
+
+  sci %>%
     as_json() %>%
     expect_snapshot()
 
+  sci %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(sci, ignore_attr = TRUE)
+
   #Everything test
-  tfrmt(
+  complex_frmt <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",
@@ -148,9 +211,16 @@ test_that("json body plan", {
         )
       )
     )
-  ) %>%
+  )
+
+  complex_frmt %>%
     as_json() %>%
     expect_snapshot()
+
+  complex_frmt %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(complex_frmt, ignore_attr = TRUE)
 })
 
 
@@ -230,7 +300,7 @@ test_that("json col_plan", {
     expect_snapshot()
 
 
-    # Span structure test
+  # Span structure test
   span_tfrmt <- tfrmt(
     group = group,
     label = label,
@@ -270,48 +340,55 @@ test_that("json col_plan",{
 })
 
 
-# test_that("json Writing out", {
-#   test_loc <- tempfile(fileext = ".json")
-#   tfrmt(
-#     # specify columns in the data
-#     group = c(rowlbl1,grp),
-#     label = rowlbl2,
-#     column = column,
-#     param = param,
-#     value = value,
-#     sorting_cols = c(ord1, ord2),
-#     # specify value formatting
-#     body_plan = body_plan(
-#       frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-#                                                                                   n = frmt("xxx"),
-#                                                                                   pct = frmt_when("==100" ~ "",
-#                                                                                                   "==0" ~ "",
-#                                                                                                   TRUE ~ frmt("(xx.x %)")))),
-#       frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-#       frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-#       frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-#       frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-#       frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-#                                                                                                             "<0.001" ~ "<0.001",
-#                                                                                                             TRUE ~ frmt("x.xxx", missing = "")))
-#     ),
-#     # remove extra cols
-#     col_plan = col_plan(-grp,
-#                         -starts_with("ord") ),
-#     # Specify column styling plan
-#     col_style_plan = col_style_plan(
-#       col_style_structure(align = c(".",","," "), col = vars(everything()))
-#     ),
-#
-#     # Specify row group plan
-#     row_grp_plan = row_grp_plan(
-#       row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-#       label_loc = element_row_grp_loc(location = "column")
-#     )
-#
-#   ) %>%
-#     tfrmt_to_json(path = test_loc)
-#
-# })
-#
-#
+test_that("json read/write", {
+  test_loc <- "test.json"
+  test_tfrmt <- tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1,grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    # specify value formatting
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)")))),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
+      frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+      frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
+      frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
+      frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
+                                                                                                            "<0.001" ~ "<0.001",
+                                                                                                            TRUE ~ frmt("x.xxx", missing = "")))
+    ),
+    # remove extra cols
+    col_plan = col_plan(-grp,
+                        -starts_with("ord") ),
+    # Specify column styling plan
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(".",","," "), col = vars(everything()))
+    ),
+
+    # Specify row group plan
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+      label_loc = element_row_grp_loc(location = "column")
+    )
+
+  )
+
+  #Write out to json file
+  tfrmt_to_json(test_tfrmt, path = test_loc)
+
+  expect_equal(tfrmt_to_json(test_tfrmt) %>%
+                 jsonlite::fromJSON(),
+               jsonlite::read_json(test_loc,  simplifyVector = TRUE))
+  json_to_tfrmt(test_loc)
+
+})
+
+
