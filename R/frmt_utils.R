@@ -290,3 +290,44 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 
 }
 
+#' @method as.character frmt
+#' @export
+as.character.frmt <- function(x, ...){
+  paste0("frmt('", x$expression, "'",
+         if_else(!is.null(x$missing), paste0(", missing = ", x$missing), ""),
+         if_else(!is.null(x$scientific), paste0(", scientific = ", x$scientific), ""),
+         ")"
+         )
+}
+
+#' @method as.character frmt_when
+#' @export
+as.character.frmt_when <- function(x, ...){
+  right <- x$frmt_ls %>%
+    map_chr(~f_rhs(.x) %>% as.character())
+  left <- x$frmt_ls %>%
+    map_chr(~f_lhs(.x)) %>%
+    str_c("'", ., "'")
+  params <- str_c(left, " ~ ", right) %>%
+    str_c(collapse = ", ")
+
+  paste0("frmt_when(",
+         params,
+         if_else(!is.null(x$missing), paste0(", missing = ", x$missing), ""),
+         ")"
+  )
+}
+
+#' @method as.character frmt_combine
+#' @export
+as.character.frmt_combine <- function(x, ...){
+  params <- x$frmt_ls %>%
+    map_chr(as.character) %>%
+    str_c(names(x$frmt_ls), " = ", .) %>%
+    str_c(collapse = ", ")
+  paste0("frmt_combine('", x$expression, "', ",
+         params,
+         if_else(!is.null(x$missing), paste0(", missing = ", x$missing), ""),
+         ")"
+  )
+}
