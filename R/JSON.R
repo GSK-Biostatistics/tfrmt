@@ -60,11 +60,14 @@ as_json.tfrmt <- function(x){
 
   # Removing names added in by jsonlite
   # only change spaces at the beginning of the row
-  json_clean <- output_json %>%
+  json_split <- output_json %>%
     str_split("\\\n") %>%
-    unlist() %>%
-    str_replace_all('^\\s+\"\\s(\\.\\d+)?\"',  '\"\"') %>%
-    str_c(collapse = "\n")
+    unlist()
+  # Needs updating
+  to_replace <- str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
+  json_split[to_replace] <- json_split[to_replace] %>%
+    str_replace_all('\"\\s(\\.\\d+)?\"',  '\"\"')
+  json_clean <- str_c(json_split, collapse = "\n")
   if(validate(json_clean)){
     class(json_clean) <- "json"
   } else {
@@ -147,11 +150,6 @@ as_json.col_plan <- function(x){
   }
 }
 
-#' @export
-as_json.col_styel_plan <- function(x){
-  x %>%
-    map(as_json)
-}
 
 #' @export
 as_json.col_style_plan <- function(x){
@@ -312,10 +310,10 @@ ls_to_footnote_plan <- function(ls){
 ls_to_col_plan <- function(ls){
   browser()
   dots <- ls$col_plan$dots %>%
-    unlist() %>%
-    map(~rlang::parse_quo(.x, env = rlang::current_env())) %>%
     unlist()
-  do.call(col_plan, as.list(dots))
+    # map(~rlang::parse_quo(.x, env = rlang::current_env())) %>%
+    # unlist()
+  do.call(col_plan, c(dots, list(.drop = unlist(ls$col_plan$.drop))))
   # .drop = unlist(ls$col_plan$.drop))
 
 }
