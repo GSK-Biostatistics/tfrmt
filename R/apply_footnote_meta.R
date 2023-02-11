@@ -76,7 +76,6 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
-      class(loc_info$column_val)
       loc_col_df <- loc_info$column_val %>%
         expand.grid(stringsAsFactors = FALSE)
       col_val_nm <- names(loc_info$column_val)
