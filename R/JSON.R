@@ -26,7 +26,7 @@ tfrmt_to_json <- function(tfrmt, path = NULL){
 #' Convert tfrmt elements
 #'
 #' This collection of functions is used to create a json or json ready objects.
-#' While primarily inteded for internal use these functions can be used externally
+#' While primarily intended for internal use these functions can be used externally
 #'
 #' @param x tfrmt or tfrmt element
 #'
