@@ -7,7 +7,7 @@
 json_to_tfrmt(path = NULL, json = NULL)
 }
 \arguments{
-\item{path}{}
+\item{path}{location of the json file to read in}
 
 \item{json}{by default this is null, if}
 }

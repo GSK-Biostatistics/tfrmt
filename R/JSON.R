@@ -180,7 +180,7 @@ as_json.col_style_structure <- function(x){
 
 #' json to tfrmt
 #'
-#' @param path
+#' @param path location of the json file to read in
 #'
 #' @param json by default this is null, if
 #'
@@ -278,6 +278,7 @@ ls_to_frmt_combine <- function(x){
                           fmts, list(missing = x$missing)))
 }
 
+#' @importFrom stats as.formula
 ls_to_frmt_when <- function(x){
   fmts <- x$frmt_ls %>%
     map(function(a_frmt){
