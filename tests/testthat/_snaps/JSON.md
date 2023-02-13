@@ -531,8 +531,8 @@
           "col_plan": {
             "dots": {
               "foo": ["col1"],
-      "": ["col2"],
-      "": ["col3"]
+              "": ["col2"],
+              "": ["col3"]
             },
             ".drop": [false]
           }
@@ -575,9 +575,9 @@
           "col_plan": {
             "dots": [
               {
-                "span1": [
-                  {}
-                ]
+                "span_structure": {
+                  "span1": ["col 4"]
+                }
               }
             ],
             ".drop": [false]
@@ -591,45 +591,56 @@
       .
     Output
       {
-        "group": ["group"],
-        "label": ["label"],
-        "param": ["parm"],
-        "value": ["val"],
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
         "column": ["span2", "span1", "my_col"],
-        "body_plan": [
-          {
-            "group_val": [".default"],
-            "label_val": [".default"],
-            "param_val": [".default"],
-            "frmt": {
-              "expression": ["x"],
-              "missing": {},
-              "scientific": {}
-            }
-          }
-        ],
         "col_plan": {
           "col_plan": {
             "dots": {
-      "": ["group"],
-      "": ["label"],
-      "": {
-                "span1": [
-                  {}
-                ]
+              "": ["group"],
+              "": ["label"],
+              "": {
+                "span_structure": {
+                  "span1": ["col 4"]
+                }
               },
-      "": {
-                "span1": [
-                  {}
-                ],
-                "my_col": [
-                  {},
-                  {}
-                ]
+              "": {
+                "span_structure": {
+                  "span1": ["cols 1,2"],
+                  "my_col": ["col2", "col1"]
+                }
               },
-      "": ["everything()"],
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 1"],
+                  "span1": ["Second Label Level 1.1"],
+                  "my_col": ["col_3", "col_4"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 1"],
+                  "span1": ["col2", "col1"],
+                  "my_col": ["starts_with(\"B\")"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 1"],
+                  "my_col": ["col_5"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 2"],
+                  "my_col": ["col_6", "col_7"]
+                }
+              },
+              "": ["everything()"],
               "new_col_3": ["mycol3"],
-      "": ["-mycol5"]
+              "": ["-mycol5"]
             },
             ".drop": [false]
           }
@@ -669,6 +680,18 @@
             ],
             "align": [".", ",", " "],
             "width": {}
+          },
+          {
+            "cols": [
+              {
+                "span_structure": {
+                  "span": ["value"],
+                  "col": ["val2"]
+                }
+              }
+            ],
+            "align": {},
+            "width": [25]
           }
         ]
       } 

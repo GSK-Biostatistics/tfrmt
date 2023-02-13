@@ -150,6 +150,16 @@ as_json.col_plan <- function(x){
   }
 }
 
+#' @export
+as_json.span_structure <- function(x){
+  x %>%
+    map(function(foo){
+      foo %>%
+        map_chr(as_json)
+    }) %>%
+    list(span_structure = .)
+}
+
 
 #' @export
 as_json.col_style_plan <- function(x){
@@ -193,9 +203,9 @@ json_to_tfrmt <- function(path = NULL, json = NULL){
 
   rgp <- ls_to_row_grp_plan(dirty_list$row_grp_plan)
   bp <- ls_to_body_plan(dirty_list$body_plan)
-  # ls_to_col_style_plan(dirty_list$col_style_plan)
-  cp = ls_to_col_plan(dirty_list$col_plan)
-  bn = ls_to_big_n(dirty_list$big_n)
+  csp <- ls_to_col_style_plan(dirty_list$col_style_plan)
+  cp <- ls_to_col_plan(dirty_list$col_plan)
+  bn <- ls_to_big_n(dirty_list$big_n)
   fnp <- ls_to_footnote_plan(dirty_list$footnote_plan)
 
   all_params <- c(simple_params,
@@ -203,7 +213,8 @@ json_to_tfrmt <- function(path = NULL, json = NULL){
                   list(body_plan = bp),
                   list(big_n = bn),
                   list(footnote_plan = fnp),
-                  list(col_plan = cp)) %>%
+                  list(col_plan = cp),
+                  list(col_style_plan = csp)) %>%
     discard(is.null)
   do.call(tfrmt, all_params)
 }
@@ -252,7 +263,8 @@ ls_to_body_plan <- function(ls){
 ls_to_frmt <- function(x){
   x <- x %>%
     map(unlist)
-  do.call(frmt, list(expression = x$expression, missing = x$missing, scientific = x$scientific))
+
+  do.call(frmt, list(expression = x$expression, missing = unlist(x$missing), scientific = x$scientific))
 }
 
 ls_to_frmt_combine <- function(x){
@@ -269,11 +281,18 @@ ls_to_frmt_combine <- function(x){
 ls_to_frmt_when <- function(x){
   fmts <- x$frmt_ls %>%
     map(function(a_frmt){
-      do.call(paste0("ls_to_", names(a_frmt)), list(x = a_frmt[[1]])) %>%
-        as.character()
+      if(!is.null(names(a_frmt)))
+      {
+        out <- do.call(paste0("ls_to_", names(a_frmt)), list(x = a_frmt[[1]])) %>%
+          as.character()
+      } else {
+        out <- str_c("'", a_frmt[[1]], "'")
+      }
+      out
     })
 
-  formula_ls <- str_c("'", names(fmts), "' ~ ", fmts) %>%
+  lhs <- if_else(names(fmts) == "TRUE", names(fmts), str_c("'", names(fmts), "'"))
+  formula_ls <- str_c(lhs, " ~ ", fmts) %>%
     map(as.formula)
 
   do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
@@ -306,18 +325,60 @@ ls_to_footnote_plan <- function(ls){
   }
 }
 
-
+#' @importFrom rlang parse_expr
 ls_to_col_plan <- function(ls){
-  browser()
-  dots <- ls$col_plan$dots %>%
-    unlist()
-    # map(~rlang::parse_quo(.x, env = rlang::current_env())) %>%
-    # unlist()
-  do.call(col_plan, c(dots, list(.drop = unlist(ls$col_plan$.drop))))
-  # .drop = unlist(ls$col_plan$.drop))
+  if(!is.null(ls)){
+    dots <- ls$col_plan$dots %>%
+      map(function(el){
+        if(!is.null(names(el)) && names(el) == "span_structure"){
+          el$span_structure %>%
+            ls_to_span_structure() %>%
+            as.character() %>%
+            parse_expr()
+        } else{
+          el[[1]] %>%
+            str_replace_all("\\\"", "'") %>%
+            str2lang()
+        }
+      })
+
+    do.call(col_plan, c(dots, list(.drop = unlist(ls$col_plan$.drop))))
+  }
 
 }
 
+ls_to_span_structure <- function(ls){
+  span_ls <- ls %>%
+    map(~unlist(.) %>%
+          str_c("'", . ,"'") %>%
+          str_c(collapse = ", ") %>%
+          str_c("c(", ., ")") %>%
+          parse_expr(.))
+
+  do.call(span_structure, span_ls)
+}
+
+ls_to_col_style_plan <- function(ls){
+  if(!is.null(ls)){
+     struct_ls <- ls %>% map(function(struct){
+       stuct_in <- struct %>% map(unlist)
+       names(stuct_in) <- names(stuct_in) %>% str_replace("cols", "col")
+       cols_val <- struct[["cols"]][[1]]
+       if(!is.null(names(cols_val)) && names(cols_val) == "span_structure"){
+         stuct_in[["col"]] <-  cols_val[[1]] %>%
+         ls_to_span_structure() %>%
+           as.character() %>%
+           parse_expr()
+       } else {
+         stuct_in[["col"]] <- parse_expr(
+           paste0("vars(", str_c(stuct_in[["col"]], collapse = ", "), ")"))
+       }
+       do.call(col_style_structure, stuct_in)
+       })
+
+     do.call(col_style_plan, struct_ls)
+  }
+}
 simplify_group_val <- function(group_ls){
   if(length(group_ls) == 0){
     group_val = NULL

@@ -290,11 +290,21 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 
 }
 
+
+missing_to_chr <- function(x){
+  if(!is.null(x) && x == ""){
+    "''"
+  } else {
+    x
+  }
+}
+
+
 #' @method as.character frmt
 #' @export
 as.character.frmt <- function(x, ...){
   paste0("frmt('", x$expression, "'",
-         if_else(!is.null(x$missing), paste0(", missing = ", x$missing), ""),
+         if_else(!is.null(x$missing), paste0(", missing = ", missing_to_chr(x$missing)), ""),
          if_else(!is.null(x$scientific), paste0(", scientific = ", x$scientific), ""),
          ")"
          )
@@ -313,7 +323,7 @@ as.character.frmt_when <- function(x, ...){
 
   paste0("frmt_when(",
          params,
-         if_else(!is.null(x$missing), paste0(", missing = ", x$missing), ""),
+         if_else(!is.null(x$missing), paste0(", missing = ", missing_to_chr(x$missing)), ""),
          ")"
   )
 }
@@ -327,7 +337,37 @@ as.character.frmt_combine <- function(x, ...){
     str_c(collapse = ", ")
   paste0("frmt_combine('", x$expression, "', ",
          params,
-         if_else(!is.null(x$missing), paste0(", missing = ", x$missing), ""),
+         if_else(!is.null(x$missing), paste0(", missing = ", missing_to_chr(x$missing)), ""),
+         ")"
+  )
+}
+
+
+#' @method as.character span_structure
+#' @export
+as.character.span_structure <- function(x, ...){
+  values <- x %>%
+    map(function(val){
+      elements <- map_chr(val, as_label) %>%
+        str_replace_all("\\\"", "'")
+
+      not_fxs <-elements %>%
+        str_which("\\(.+\\)", negate = TRUE)
+      elements[not_fxs] <- elements[not_fxs] %>%
+        str_c("'", ., "'")
+
+      if(rlang::is_named(val)){
+        elements = str_c("`", names(val), "`", " = ", elements)
+      }
+
+      elements %>%
+        str_c(collapse = ", ") %>%
+        str_c("c(", ., ")")
+      }
+      )
+
+  paste0("span_structure(",
+         str_c(names(values), " = ", values) %>% str_c(collapse = ", "),
          ")"
   )
 }
