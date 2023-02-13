@@ -62,7 +62,7 @@
             {
               "group_val": ["B"],
               "block_to_apply": {
-                "post_space": [""],
+                "post_space": [" "],
                 "border": ["outline", "bottom"]
               }
             }
@@ -93,7 +93,7 @@
                 "grp2": ["b"]
               },
               "block_to_apply": {
-                "post_space": [""],
+                "post_space": [" "],
                 "border": ["outline", "bottom"]
               }
             }
@@ -148,7 +148,7 @@
               "grp_col2": ["subgroup"]
             },
             "label_val": [".default"],
-            "param_val": [".default"],
+            "param_val": ["test"],
             "frmt": {
               "expression": ["XXX"],
               "missing": {},
@@ -575,9 +575,9 @@
           "col_plan": {
             "dots": [
               {
-                "span1": [
-                  {}
-                ]
+                "span_structure": {
+                  "span1": ["col 4"]
+                }
               }
             ],
             ".drop": [false]
@@ -591,41 +591,52 @@
       .
     Output
       {
-        "group": ["group"],
-        "label": ["label"],
-        "param": ["parm"],
-        "value": ["val"],
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
         "column": ["span2", "span1", "my_col"],
-        "body_plan": [
-          {
-            "group_val": [".default"],
-            "label_val": [".default"],
-            "param_val": [".default"],
-            "frmt": {
-              "expression": ["x"],
-              "missing": {},
-              "scientific": {}
-            }
-          }
-        ],
         "col_plan": {
           "col_plan": {
             "dots": {
               "": ["group"],
               "": ["label"],
               "": {
-                "span1": [
-                  {}
-                ]
+                "span_structure": {
+                  "span1": ["col 4"]
+                }
               },
               "": {
-                "span1": [
-                  {}
-                ],
-                "my_col": [
-                  {},
-                  {}
-                ]
+                "span_structure": {
+                  "span1": ["cols 1,2"],
+                  "my_col": ["col2", "col1"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 1"],
+                  "span1": ["Second Label Level 1.1"],
+                  "my_col": ["col_3", "col_4"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 1"],
+                  "span1": ["col2", "col1"],
+                  "my_col": ["starts_with(\"B\")"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 1"],
+                  "my_col": ["col_5"]
+                }
+              },
+              "": {
+                "span_structure": {
+                  "span2": ["Top Label Level 2"],
+                  "my_col": ["col_6", "col_7"]
+                }
               },
               "": ["everything()"],
               "new_col_3": ["mycol3"],
@@ -636,7 +647,7 @@
         }
       } 
 
----
+# json col_style_plan
 
     Code
       .
@@ -667,8 +678,20 @@
               ["two"],
               ["three"]
             ],
-            "align": [".", ",", ""],
+            "align": [".", ",", " "],
             "width": {}
+          },
+          {
+            "cols": [
+              {
+                "span_structure": {
+                  "span": ["value"],
+                  "col": ["val2"]
+                }
+              }
+            ],
+            "align": {},
+            "width": [25]
           }
         ]
       } 
