@@ -64,19 +64,42 @@ check_column_and_col_plan <- function(x){
 #' @importFrom purrr map_chr
 #'
 check_group_var_consistency <- function(x){
+  if(!is_empty(x$group)){
 
-  if(!is.null(x$body_plan) & !is_empty(x$group)){
+    group_var_consistency_message <- trimws(
+      paste0(c(
+        check_group_var_consistency_body_plan(x),
+        check_group_var_consistency_row_grp_plan(x),
+        check_group_var_consistency_footnote_plan(x)
+      ),
+      collapse = "\n"
+      )
+    )
+
+    if(!identical(group_var_consistency_message,"")){
+      abort(
+        group_var_consistency_message ,
+        class = "_tfrmt_mismatched_group_vals"
+      )
+    }
+
+  }
+
+}
+
+check_group_var_consistency_body_plan <- function(x){
+  if(!is.null(x$body_plan)){
 
     is_invalid_body_plan <- FALSE
     is_invalid_body_plan_message <- "Inconsistencies between group and body_plan"
     group_as_char <- map_chr(x$group, as_label)
 
     for(idx in seq_along(x$body_plan)){
-      frmt_struct <- x$body_plan[[idx]]
+      struct <- x$body_plan[[idx]]
       ## if the group_vars is a list, check that the names are matching group vars
-      if(is.list(frmt_struct$group_val)){
+      if(is.list(struct$group_val)){
 
-        struct_groups <- names(frmt_struct$group_val)
+        struct_groups <- names(struct$group_val)
         invalid_group_idx <- !struct_groups %in% group_as_char
 
         if(any(invalid_group_idx)){
@@ -86,9 +109,8 @@ check_group_var_consistency <- function(x){
             is_invalid_body_plan_message,
             paste0(
               paste0("Invalid Format Structure in body_plan at position `",idx,"`:\n"),
-              paste0("  Malformed Group: ",paste0(invalid_groups, collapse = ", "),"\n"),
-              paste0("  ", format(frmt_struct), collapse = "\n")
-              )
+              paste0("  Malformed Group: ",paste0(invalid_groups, collapse = ", "),"\n")
+            )
           )
         }
       }
@@ -96,15 +118,84 @@ check_group_var_consistency <- function(x){
 
 
     if(is_invalid_body_plan){
-      abort(
-        is_invalid_body_plan_message ,
-        class = "_tfrmt_invalid_body_plan"
-        )
+      is_invalid_body_plan_message
     }
   }
-
 }
 
+check_group_var_consistency_row_grp_plan <- function(x){
+
+  if(!is.null(x$row_grp_plan)){
+
+    is_invalid_row_grp_plan <- FALSE
+    is_invalid_row_grp_plan_message <- "Inconsistencies between group and row_grp_plan row_grp_structures"
+    group_as_char <- map_chr(x$group, as_label)
+
+    for(idx in seq_along(x$row_grp_plan$struct_ls)){
+      struct <- x$row_grp_plan$struct_ls[[idx]]
+      ## if the group_vars is a list, check that the names are matching group vars
+      if(is.list(struct$group_val)){
+
+        struct_groups <- names(struct$group_val)
+        invalid_group_idx <- !struct_groups %in% group_as_char
+
+        if(any(invalid_group_idx)){
+          is_invalid_row_grp_plan <- TRUE
+          invalid_groups <- struct_groups[invalid_group_idx]
+          is_invalid_row_grp_plan_message <- c(
+            is_invalid_row_grp_plan_message,
+            paste0(
+              paste0("Invalid Format Structure in row_grp_plan for row_grp_structure `",idx,"`:\n"),
+              paste0("  Malformed Group: ",paste0(invalid_groups, collapse = ", "),"\n")
+            )
+          )
+        }
+      }
+    }
+
+
+    if(is_invalid_row_grp_plan){
+        is_invalid_row_grp_plan_message
+    }
+  }
+}
+
+check_group_var_consistency_footnote_plan <- function(x){
+
+  if(!is.null(x$footnote_plan)){
+
+    is_invalid_footnote_plan <- FALSE
+    is_invalid_footnote_plan_message <- "Inconsistencies between group and footnote_plan footnote_structures"
+    group_as_char <- map_chr(x$group, as_label)
+
+    for(idx in seq_along(x$footnote_plan$struct_list)){
+      struct <- x$footnote_plan$struct_list[[idx]]
+      ## if the group_vars is a list, check that the names are matching group vars
+      if(is.list(struct$group_val)){
+
+        struct_groups <- names(struct$group_val)
+        invalid_group_idx <- !struct_groups %in% group_as_char
+
+        if(any(invalid_group_idx)){
+          is_invalid_footnote_plan <- TRUE
+          invalid_groups <- struct_groups[invalid_group_idx]
+          is_invalid_footnote_plan_message <- c(
+            is_invalid_footnote_plan_message,
+            paste0(
+              paste0("Invalid Format Structure in footnote_plan for footnote_structure `",idx,"`:\n"),
+              paste0("  Malformed Group: ",paste0(invalid_groups, collapse = ", "),"\n")
+            )
+          )
+        }
+      }
+    }
+
+
+    if(is_invalid_footnote_plan){
+      is_invalid_footnote_plan_message
+    }
+  }
+}
 
 #' check that in tfrmt that only the top level group gets styling if
 #' row_grp_plan has and body_plan is consistent

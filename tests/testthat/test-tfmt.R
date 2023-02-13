@@ -654,12 +654,175 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg",{
       )
      ),
     paste0(
+     "Inconsistencies between group and body_plan\n",
      "Invalid Format Structure in body_plan at position `1`:\n",
-     "  Malformed Group: invalid, invalid2\n",
-     "  Format Structure\n",
-     "    Group Values: `invalid` - \"value\"; `invalid2` - \"value\"\n",
-     "    Label Values: \".default\"\n",
-     "    Format: < frmt | Expression: `XXX` >"
+     "  Malformed Group: invalid, invalid2"
+    ),
+    fixed = TRUE
+  )
+
+})
+
+test_that("basic tfrmt - error when row_grp_plan groups does not match group arg",{
+
+  expect_silent(
+    tfrmt(
+      group = vars(group1, group2),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = "value",
+          element_block = element_block(" ")
+        ),
+        row_grp_structure(
+          group_val = list(group2 = "value"),
+          element_block = element_block(post_space = "-")
+        ),
+        row_grp_structure(
+          group_val = list(group1 = "value", group2 = "value"),
+          element_block = element_block(post_space = NULL)
+        )
+      )
+    )
+  )
+
+  expect_error(
+    tfrmt(
+      group = vars(group1, group2),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = list(invalid = "value", invalid2 = "value"),
+          element_block = element_block(post_space = NULL)
+        )
+      )
+    ),
+    paste0(
+      "Inconsistencies between group and row_grp_plan row_grp_structures\n",
+      "Invalid Format Structure in row_grp_plan for row_grp_structure `1`:\n",
+      "  Malformed Group: invalid, invalid2"
+    ),
+    fixed = TRUE
+  )
+
+})
+
+test_that("basic tfrmt - error when footnote_plan groups does not match group arg",{
+
+  expect_silent(
+    tfrmt(
+      group = vars(group1, group2),
+      footnote_plan = footnote_plan(
+        footnote_structure(
+          footnote_text = "footnote 2",
+          group_val = list(group2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        footnote_structure(
+          footnote_text = "footnote 3",
+          group_val = list(group1 = "value", group2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        marks = "standard"
+      )
+    )
+  )
+
+  expect_error(
+    tfrmt(
+      group = vars(group1, group2),
+      footnote_plan = footnote_plan(
+        footnote_structure(
+          footnote_text = "footnote 2",
+          group_val = list(group2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        footnote_structure(
+          footnote_text = "footnote 3",
+          group_val = list(invalid = "value", invalid2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        marks = "standard"
+      )
+    ),
+    paste0(
+      "Inconsistencies between group and footnote_plan footnote_structures\n",
+      "Invalid Format Structure in footnote_plan for footnote_structure `2`:\n",
+      "  Malformed Group: invalid, invalid2"
+    ),
+    fixed = TRUE
+  )
+
+})
+
+test_that("basic tfrmt - error when body_plan, row_grp_plan, or footnote_plan groups does not match group arg",{
+
+  expect_silent(
+    tfrmt(
+      group = vars(group1, group2),
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = list(group1 = "value", group2 = "value"),
+          label_val = ".default",
+          frmt("XXX")
+        )
+      ),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = list(group1 = "value", group2 = "value"),
+          element_block = element_block(post_space = NULL)
+        )
+      ),
+      footnote_plan = footnote_plan(
+        footnote_structure(
+          footnote_text = "footnote 3",
+          group_val = list(group1 = "value", group2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        marks = "standard"
+      )
+    )
+  )
+
+  expect_error(
+    tfrmt(
+      group = vars(group1, group2),
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = list(invalid = "value", invalid2 = "value"),
+          label_val = ".default",
+          frmt("XXX")
+        )
+      ),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = list(invalid = "value", invalid2 = "value"),
+          element_block = element_block(post_space = NULL)
+        )
+      ),
+      footnote_plan = footnote_plan(
+        footnote_structure(
+          footnote_text = "footnote 3",
+          group_val = list(invalid = "value", invalid2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        marks = "standard"
+      )
+    ),
+    paste0(
+      "Inconsistencies between group and body_plan\n",
+      "Invalid Format Structure in body_plan at position `1`:\n",
+      "  Malformed Group: invalid, invalid2\n\n",
+      "Inconsistencies between group and row_grp_plan row_grp_structures\n",
+      "Invalid Format Structure in row_grp_plan for row_grp_structure `1`:\n",
+      "  Malformed Group: invalid, invalid2\n\n",
+      "Inconsistencies between group and footnote_plan footnote_structures\n",
+      "Invalid Format Structure in footnote_plan for footnote_structure `1`:\n",
+      "  Malformed Group: invalid, invalid2"
     ),
     fixed = TRUE
   )
@@ -713,7 +876,54 @@ test_that("layering tfrmt - error when body_plan groups no longer match group ar
 
 })
 
-test_that("updating tfrmt - updating group vars",{
+test_that("layering tfrmt - error when plan groups no longer match group arg",{
+
+  basic_tfrmt <- tfrmt(
+    group = vars(group1, group2),
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = list(group1 = "value", group2 = "value"),
+        label_val = ".default",
+        frmt("XXX")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = list(group1 = "value", group2 = "value"),
+        element_block = element_block(post_space = NULL)
+      )
+    ),
+    footnote_plan = footnote_plan(
+      footnote_structure(
+        footnote_text = "footnote 3",
+        group_val = list(group1 = "value", group2 = "value"),
+        column_val = "column value",
+        label_val = "label value"
+      ),
+      marks = "standard"
+    )
+  )
+
+
+  expect_silent(
+    basic_tfrmt %>%
+      tfrmt(
+        group = vars(group2, group1)
+      )
+  )
+
+  expect_error(
+    basic_tfrmt %>%
+      tfrmt(
+        group = vars(new_group1, new_group2)
+      ),
+    "You might need to update group names using \"update_group(`new_group1` = `group1`,`new_group2` = `group2`)\"",
+    fixed = TRUE
+  )
+
+})
+
+test_that("updating tfrmt - updating group vars - body_plan",{
 
   tfrmt1 <- tfrmt(
       group = c(group1, group2),
@@ -761,7 +971,8 @@ test_that("updating tfrmt - updating group vars",{
         )
       )
     ),
-    ignore_attr = TRUE
+    ignore_function_env = TRUE,
+    ignore_formula_env = TRUE
   )
 
   tfrmt3 <- tfrmt1 %>%
@@ -792,8 +1003,165 @@ test_that("updating tfrmt - updating group vars",{
         )
       )
     ),
-    ignore_attr = TRUE
+    ignore_function_env = TRUE,
+    ignore_formula_env = TRUE
   )
 
 })
 
+test_that("updating tfrmt - updating group vars - row_grp_plan",{
+
+  tfrmt1 <- tfrmt(
+    group = c(group1, group2),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = "value",
+        element_block = element_block(" ")
+      ),
+      row_grp_structure(
+        group_val = list(group2 = "value"),
+        element_block = element_block(post_space = "-")
+      ),
+      row_grp_structure(
+        group_val = list(group1 = "value", group2 = "value"),
+        element_block = element_block(post_space = NULL)
+      )
+    )
+  )
+
+  tfrmt2 <- tfrmt1 %>%
+    update_group(New_Group = group1)
+
+  expect_equal(
+    tfrmt2,
+    tfrmt(
+      group = c(New_Group, group2),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = "value",
+          element_block = element_block(" ")
+        ),
+        row_grp_structure(
+          group_val = list(group2 = "value"),
+          element_block = element_block(post_space = "-")
+        ),
+        row_grp_structure(
+          group_val = list(New_Group = "value", group2 = "value"),
+          element_block = element_block(post_space = NULL)
+        )
+      )
+    ),
+    ignore_function_env = TRUE,
+    ignore_formula_env = TRUE
+  )
+
+  tfrmt3 <- tfrmt1 %>%
+    update_group(
+      New_Group = group1,
+      `best group` = group2
+    )
+
+  expect_equal(
+    tfrmt3,
+    tfrmt(
+      group = c("New_Group", "best group"),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = "value",
+          element_block = element_block(" ")
+        ),
+        row_grp_structure(
+          group_val = list(`best group` = "value"),
+          element_block = element_block(post_space = "-")
+        ),
+        row_grp_structure(
+          group_val = list(New_Group = "value", `best group` = "value"),
+          element_block = element_block(post_space = NULL)
+        )
+      )
+    ),
+    ignore_function_env = TRUE,
+    ignore_formula_env = TRUE
+  )
+
+})
+
+test_that("updating tfrmt - updating group vars - footnote_plan",{
+
+  tfrmt1 <- tfrmt(
+    group = c(group1, group2),
+    footnote_plan = footnote_plan(
+      footnote_structure(
+        footnote_text = "footnote 2",
+        group_val = list(group2 = "value"),
+        column_val = "column value",
+        label_val = "label value"
+      ),
+      footnote_structure(
+        footnote_text = "footnote 3",
+        group_val = list(group1 = "value", group2 = "value"),
+        column_val = "column value",
+        label_val = "label value"
+      ),
+      marks = "standard"
+    )
+  )
+
+  tfrmt2 <- tfrmt1 %>%
+    update_group(New_Group = group1)
+
+  expect_equal(
+    tfrmt2,
+    tfrmt(
+      group = c(New_Group, group2),
+      footnote_plan = footnote_plan(
+        footnote_structure(
+          footnote_text = "footnote 2",
+          group_val = list(group2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        footnote_structure(
+          footnote_text = "footnote 3",
+          group_val = list(New_Group = "value", group2 = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        marks = "standard"
+      )
+    ),
+    ignore_function_env = TRUE,
+    ignore_formula_env = TRUE
+  )
+
+  tfrmt3 <- tfrmt1 %>%
+    update_group(
+      New_Group = group1,
+      `best group` = group2
+    )
+
+  expect_equal(
+    tfrmt3,
+    tfrmt(
+      group = c("New_Group", "best group"),
+      footnote_plan = footnote_plan(
+        footnote_structure(
+          footnote_text = "footnote 2",
+          group_val = list(`best group` = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        footnote_structure(
+          footnote_text = "footnote 3",
+          group_val = list(New_Group = "value", `best group` = "value"),
+          column_val = "column value",
+          label_val = "label value"
+        ),
+        marks = "standard"
+      )
+    ),
+    ignore_function_env = TRUE,
+    ignore_formula_env = TRUE
+  )
+
+})

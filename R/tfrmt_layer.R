@@ -60,7 +60,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
   tryCatch(
     eval(tfrmt_call),
     error = function(e){
-      if(inherits(e, "_tfrmt_invalid_body_plan")){
+      if(inherits(e, "_tfrmt_mismatched_group_vals")){
         e <- append_update_group_message(e, x, y)
       }
       abort(
@@ -177,6 +177,7 @@ update_group <- function(tfrmt, ...){
   old_groups <- do.call(vars, unname(dots))
   new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
 
+
   if(!is_empty(tfrmt$group)){
 
     var_list <- sapply(tfrmt$group, function(x){
@@ -194,21 +195,19 @@ update_group <- function(tfrmt, ...){
     stop("No group values defined in input tfrmt.")
   }
 
+  ## Update body_plan
   if(!is.null(tfrmt$body_plan)){
-    bp_list <- lapply(tfrmt$body_plan, function(frmt_struct){
-      if(is.list(frmt_struct$group_val)){
-        struct_groups <- names(frmt_struct$group_val)
-        for(struct_group_idx in seq_along(struct_groups)){
-          if(struct_groups[struct_group_idx] %in% names(new_group_map)){
-            names(frmt_struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
-          }
-        }
-      }
-      frmt_struct
-    })
+    tfrmt$body_plan <- update_groups_body_plan(tfrmt$body_plan, new_group_map)
+  }
 
-    tfrmt$body_plan <- do.call("body_plan", bp_list)
+  ## Update row_grp_plan
+  if(!is.null(tfrmt$row_grp_plan)){
+    tfrmt$row_grp_plan <- update_groups_row_grp_plan(tfrmt$row_grp_plan, new_group_map)
+  }
 
+  ## update footnote_plan
+  if(!is.null(tfrmt$footnote_plan)){
+    tfrmt$footnote_plan <- update_groups_footnote_plan(tfrmt$footnote_plan, new_group_map)
   }
 
   check_group_var_consistency(tfrmt)
@@ -217,18 +216,65 @@ update_group <- function(tfrmt, ...){
 
 }
 
+update_groups_body_plan <- function(tfrmt_body_plan, new_group_map){
+    bp_list <- lapply(tfrmt_body_plan, function(struct){
+      if(is.list(struct$group_val)){
+        struct_groups <- names(struct$group_val)
+        for(struct_group_idx in seq_along(struct_groups)){
+          if(struct_groups[struct_group_idx] %in% names(new_group_map)){
+            names(struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
+          }
+        }
+      }
+      struct
+    })
+    do.call("body_plan", bp_list)
+}
+
+update_groups_row_grp_plan <- function(tfrmt_row_grp_plan, new_group_map){
+    row_grp_structs <- lapply(tfrmt_row_grp_plan$struct_ls, function(struct){
+      if(is.list(struct$group_val)){
+        struct_groups <- names(struct$group_val)
+        for(struct_group_idx in seq_along(struct_groups)){
+          if(struct_groups[struct_group_idx] %in% names(new_group_map)){
+            names(struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
+          }
+        }
+      }
+      struct
+    })
+    do.call("row_grp_plan", c(row_grp_structs, tfrmt_row_grp_plan["label_loc"]))
+}
+
+update_groups_footnote_plan <- function(tfrmt_footnote_plan, new_group_map){
+  footnote_structs <- lapply(tfrmt_footnote_plan$struct_list, function(struct){
+    if(is.list(struct$group_val)){
+      struct_groups <- names(struct$group_val)
+      for(struct_group_idx in seq_along(struct_groups)){
+        if(struct_groups[struct_group_idx] %in% names(new_group_map)){
+          names(struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
+        }
+      }
+    }
+    struct
+  })
+  do.call("footnote_plan", c(footnote_structs, tfrmt_footnote_plan["marks"]))
+}
 
 append_update_group_message <- function(e, x, y){
 
   x_grp <- map_chr(x$group, as_label)
   y_grp <- map_chr(y$group, as_label)
 
-  update_grp_message <- c(i = paste0(
-    "You might need to update group names using ",
-    "\"update_group(",
-    paste0("`",y_grp,"` = `", x_grp,"`", collapse = ","),
-    ")\""))
+  if(!is_empty(y_grp) && !is_empty(x_grp)){
+    update_grp_message <- c(i = paste0(
+      "You might need to update group names using ",
+      "\"update_group(",
+      paste0("`",y_grp,"` = `", x_grp,"`", collapse = ","),
+      ")\""))
 
-  e$message <- c(e$message, "", update_grp_message)
+    e$message <- c(e$message, "", update_grp_message)
+  }
+
   e
 }
