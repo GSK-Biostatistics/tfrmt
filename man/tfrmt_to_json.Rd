@@ -22,7 +22,7 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  value=value) |>
+  value=value) \%>\%
   tfrmt_to_json()
 
 }
