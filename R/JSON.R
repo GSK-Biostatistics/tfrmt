@@ -5,6 +5,13 @@
 #'
 #' @return JSON
 #' @export
+#' @examples
+#' tfrmt(
+#'   label = label,
+#'   column = column,
+#'   param = param,
+#'   value=value) %>%
+#'   tfrmt_to_json()
 #'
 #' @importFrom jsonlite toJSON validate
 tfrmt_to_json <- function(tfrmt, path = NULL){

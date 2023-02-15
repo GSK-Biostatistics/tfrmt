@@ -17,3 +17,12 @@ JSON
 \description{
 Print to JSON
 }
+\examples{
+tfrmt(
+  label = label,
+  column = column,
+  param = param,
+  value=value) \%>\%
+  tfrmt_to_json()
+
+}
