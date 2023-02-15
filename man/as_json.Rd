@@ -16,6 +16,6 @@ object
 }
 \description{
 This collection of functions is used to create a json or json ready objects.
-While primarily inteded for internal use these functions can be used externally
+While primarily intended for internal use these functions can be used externally
 }
 \keyword{internal}
