@@ -334,7 +334,7 @@ as.character.frmt_when <- function(x, ...){
 #' @export
 as.character.frmt_combine <- function(x, ...){
   params <- x$frmt_ls %>%
-    map_chr(as.character) %>%
+    map_chr(~as.character(.x) %>% missing_to_chr()) %>%
     str_c(names(x$frmt_ls), " = ", .) %>%
     str_c(collapse = ", ")
   paste0("frmt_combine('", x$expression, "', ",
