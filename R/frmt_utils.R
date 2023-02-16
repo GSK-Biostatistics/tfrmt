@@ -314,7 +314,9 @@ as.character.frmt <- function(x, ...){
 #' @export
 as.character.frmt_when <- function(x, ...){
   right <- x$frmt_ls %>%
-    map_chr(~f_rhs(.x) %>% as.character())
+    map_chr(~f_rhs(.x) %>%
+              as.character() %>%
+              missing_to_chr())
   left <- x$frmt_ls %>%
     map_chr(~f_lhs(.x)) %>%
     str_c("'", ., "'")
