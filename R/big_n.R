@@ -19,7 +19,7 @@
 #'
 big_n_structure <- function(param_val, n_frmt = frmt("\nN = xx")){
 
-  if(!is_frmt(n_frmt)){
+  if(!is_frmt(n_frmt) | is_frmt_combine(n_frmt) | is_frmt_when(n_frmt)){
     stop("`n_frmt` must be given a frmt object")
   }
 
