@@ -643,5 +643,8 @@ test_that("Mock data for col_plan with only drops", {
                         -starts_with("ord") )
   )
 
-  make_mock_data(drop_tfrmt)
+  make_mock_data(drop_tfrmt) %>%
+    pull(column) %>%
+    unique() %>%
+    expect_equal(c("column1", "column2", "column3"))
 })
