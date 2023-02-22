@@ -103,7 +103,7 @@ The left hand side of the equation is a <code>"TRUE"</code>for the default case 
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">frmt</span><span class="op">(</span><span class="va">expression</span>, missing <span class="op">=</span> <span class="cn">NULL</span>, scientific <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">frmt</span><span class="op">(</span><span class="va">expression</span>, missing <span class="op">=</span> <span class="cn">NULL</span>, scientific <span class="op">=</span> <span class="cn">NULL</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">frmt_combine</span><span class="op">(</span><span class="va">expression</span>, <span class="va">...</span>, missing <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -122,6 +122,12 @@ The left hand side of the equation is a <code>"TRUE"</code>for the default case 
 
 <dt>scientific</dt>
 <dd><p>a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".</p></dd>
+
+
+<dt>transform</dt>
+<dd><p>this is what should happen to the value prior to formatting,
+It should be a formula or function. Ex. <code>~.*100</code>if you want to convert a
+percent from a decimal prior to rounding</p></dd>
 
 
 <dt>...</dt>
