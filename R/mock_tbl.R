@@ -159,11 +159,11 @@ make_col_df <- function(column, group, label, col_plan, n_cols){
   n_spans <- length(column_vars)
 
   # Use provided column names if there is no spanning
-  if(!is.null(col_plan) & n_spans == 1 & is.null(n_cols)){
+  if(col_plan_test(col_plan) & n_spans == 1 & is.null(n_cols)){
     cols_to_use <- col_plan$dots %>%
       clean_col_names(dont_inc = grp_lb_vars)
     col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
-  } else if(!is.null(col_plan) & is.null(n_cols)){
+  } else if(col_plan_test(col_plan) & is.null(n_cols)){
     # Gets the lowest level columns only
     low_lvl_vars <- col_plan$dots %>%
       discard(is.list) %>%
@@ -209,4 +209,17 @@ add_mock_big_ns <- function(data, column, param, big_n_struct){
       bind_rows(data, .)
   }
   data
+}
+
+# Check the col plan contain positive information and isn't null
+col_plan_test <- function(col_plan){
+  if(is.null(col_plan)){
+    out <- FALSE
+  } else {
+    first_chr <- col_plan$dots %>%
+      map_chr(as_label) %>%
+      str_sub(end = 1)
+    out <- !all(first_chr == "-")
+  }
+  out
 }

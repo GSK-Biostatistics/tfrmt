@@ -11,6 +11,11 @@ test_that("Defining the big Ns", {
   expect_equal(bn2[["n_frmt"]], frmt("\nN = xx"), ignore_attr = c(".Environment"))
 
   expect_error(big_n_structure(param_val = "bigN", n_frmt = "Hello World"))
+
+  expect_error(big_n_structure(param_val = "bigN", n_frmt = frmt_when(
+    ">3" ~ frmt("(X.X%)"),
+    "<=3" ~ frmt("Undetectable")
+  )))
 })
 
 test_that("Simple Case big_n", {

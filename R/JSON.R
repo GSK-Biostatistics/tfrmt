@@ -187,11 +187,15 @@ as_json.col_style_structure <- function(x){
 
 #' json to tfrmt
 #'
+#' Reader to read JSON files/objects into tfrmt objects
 #' @param path location of the json file to read in
 #'
-#' @param json by default this is null, if
+#' @param json json object to read in. By default this is null. This function
+#'   will read in json object preferentially. So if both a path and a json
+#'   object are supplied the json object will be read in.
 #'
 #' @importFrom jsonlite read_json parse_json
+#' @export
 json_to_tfrmt <- function(path = NULL, json = NULL){
   if(!is.null(json)){
     dirty_list <- parse_json(json)

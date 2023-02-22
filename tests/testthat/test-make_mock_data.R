@@ -621,3 +621,30 @@ test_that("Will add big N avaliable", {
   expect_equal(auto_big_n_df, man_big_n_df)
 
 })
+
+test_that("Mock data for col_plan with only drops", {
+
+  drop_tfrmt <- tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1,grp),
+    label = rowlbl2,
+    column = column,
+    param = "param",
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default",
+                     frmt_combine("{n} ({pct}%)",
+                                  n = frmt("xx"),
+                                  pct = frmt("xx")))
+    ),
+    # remove extra cols
+    col_plan = col_plan(-grp,
+                        -starts_with("ord") )
+  )
+
+  make_mock_data(drop_tfrmt) %>%
+    pull(column) %>%
+    unique() %>%
+    expect_equal(c("column1", "column2", "column3"))
+})
