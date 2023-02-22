@@ -31,7 +31,8 @@
             "frmt": {
               "expression": ["xxx"],
               "missing": {},
-              "scientific": {}
+              "scientific": {},
+              "transform": {}
             }
           },
           "pct": {
@@ -43,7 +44,8 @@
                   "frmt": {
                     "expression": ["(xx.x %)"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 }
               },
@@ -61,7 +63,8 @@
       "frmt": {
         "expression": ["xxx"],
         "missing": {},
-        "scientific": {}
+        "scientific": {},
+        "transform": {}
       }
     },
     {
@@ -71,7 +74,8 @@
       "frmt": {
         "expression": ["xxx.x"],
         "missing": {},
-        "scientific": {}
+        "scientific": {},
+        "transform": {}
       }
     },
     {
@@ -81,7 +85,8 @@
       "frmt": {
         "expression": ["xxx.xx"],
         "missing": {},
-        "scientific": {}
+        "scientific": {},
+        "transform": {}
       }
     },
     {
@@ -91,7 +96,8 @@
       "frmt": {
         "expression": [""],
         "missing": {},
-        "scientific": {}
+        "scientific": {},
+        "transform": {}
       }
     },
     {
@@ -106,7 +112,8 @@
             "frmt": {
               "expression": ["x.xxx"],
               "missing": [""],
-              "scientific": {}
+              "scientific": {},
+              "transform": {}
             }
           }
         },

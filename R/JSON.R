@@ -123,6 +123,10 @@ as_json.frmt_structure <- function(x){
 
 #' @export
 as_json.frmt <- function(x){
+  if(!is.null(x$transform)){
+    x$transform <- deparse(x$transform) %>%
+      str_c(collapse = "")
+  }
   list(frmt = x)
 }
 
@@ -275,7 +279,12 @@ ls_to_frmt <- function(x){
   x <- x %>%
     map(unlist)
 
-  do.call(frmt, list(expression = x$expression, missing = unlist(x$missing), scientific = x$scientific))
+  if(!is.null(x$transform)){
+    x$transform <- str2lang(x$transform)
+  }
+  do.call(frmt, list(expression = x$expression, missing = unlist(x$missing),
+                     scientific = x$scientific,
+                     transform = x$transform))
 }
 
 ls_to_frmt_combine <- function(x){
@@ -372,23 +381,23 @@ ls_to_span_structure <- function(ls){
 
 ls_to_col_style_plan <- function(ls){
   if(!is.null(ls)){
-     struct_ls <- ls %>% map(function(struct){
-       stuct_in <- struct %>% map(unlist)
-       names(stuct_in) <- names(stuct_in) %>% str_replace("cols", "col")
-       cols_val <- struct[["cols"]][[1]]
-       if(!is.null(names(cols_val)) && names(cols_val) == "span_structure"){
-         stuct_in[["col"]] <-  cols_val[[1]] %>%
-         ls_to_span_structure() %>%
-           as.character() %>%
-           parse_expr()
-       } else {
-         stuct_in[["col"]] <- parse_expr(
-           paste0("vars(", str_c(stuct_in[["col"]], collapse = ", "), ")"))
-       }
-       do.call(col_style_structure, stuct_in)
-       })
+    struct_ls <- ls %>% map(function(struct){
+      stuct_in <- struct %>% map(unlist)
+      names(stuct_in) <- names(stuct_in) %>% str_replace("cols", "col")
+      cols_val <- struct[["cols"]][[1]]
+      if(!is.null(names(cols_val)) && names(cols_val) == "span_structure"){
+        stuct_in[["col"]] <-  cols_val[[1]] %>%
+          ls_to_span_structure() %>%
+          as.character() %>%
+          parse_expr()
+      } else {
+        stuct_in[["col"]] <- parse_expr(
+          paste0("vars(", str_c(stuct_in[["col"]], collapse = ", "), ")"))
+      }
+      do.call(col_style_structure, stuct_in)
+    })
 
-     do.call(col_style_plan, struct_ls)
+    do.call(col_style_plan, struct_ls)
   }
 }
 simplify_group_val <- function(group_ls){

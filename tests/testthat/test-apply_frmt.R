@@ -116,9 +116,42 @@ test_that("applying frmt - scientific", {
       "  8.9e^   0",
       "  6.8e^  -2")
   )
-
-
 })
+
+
+test_that("applying frmt - transform", {
+
+  sample_df <- data.frame(
+    x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101)
+  )
+
+  formula_transform <- frmt("xxx", transform = ~.*100)
+  fx_transform <- frmt("xxx.x", transform = function(x){x^2})
+
+  formula_result<- apply_frmt.frmt(
+    frmt_def = formula_transform,
+    .data = sample_df,
+    value = quo(x)
+  ) %>%
+    pull(x)
+
+  expect_equal(formula_result,
+               c("123457", "34568",  "5679" ,  "456789", "891"))
+
+  fx_result <- apply_frmt.frmt(
+    frmt_def = fx_transform,
+    .data = sample_df,
+    value = quo(x)
+  ) %>%
+    pull(x)
+
+  expect_equal(fx_result,
+               c("1524157.7", "119493.9",   "3225.0",     "20865628.2", " 79.4"  ))
+
+
+
+  })
+
 
 test_that("applying frmt - preserves decimal places after rounding", {
 

@@ -99,6 +99,8 @@ test_that("json body plan", {
     json_to_tfrmt(json = .) %>%
     expect_equal(frmt1, ignore_attr = TRUE)
 
+
+
   frmt2 <- tfrmt(
     body_plan = body_plan(
       frmt_structure(
@@ -117,6 +119,38 @@ test_that("json body plan", {
     as_json() %>%
     json_to_tfrmt(json = .) %>%
     expect_equal(frmt2, ignore_attr = TRUE)
+
+  frmt3 <- tfrmt(
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = "group1",
+        label_val = ".default",
+        frmt("XXX", transform = ~.*100)
+      )
+    )
+  )
+
+  frmt3 %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt3, ignore_attr = TRUE)
+
+  frmt4 <- tfrmt(
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = "group1",
+        label_val = ".default",
+        frmt("XXX", transform = function(x){x*4})
+      )
+    )
+  )
+  new_frmt <- frmt4 %>%
+    as_json() %>%
+    json_to_tfrmt(json = .)
+  # Get out the function to see if it runs the same
+  fx1 <- frmt4[[6]][[1]][[4]][[1]][[4]]
+  fx2 <- new_frmt[[6]][[1]][[4]][[1]][[4]]
+  expect_equal(fx1(1:5), fx2(1:5))
 
   #Format when test
   frmt_when_simp <- tfrmt(

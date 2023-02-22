@@ -36,7 +36,7 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...){
 
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
 #' @importFrom dplyr case_when tibble pull mutate
-#' @importFrom rlang :=
+#' @importFrom rlang := as_function
 #' @export
 #'
 #' @rdname apply_frmt
@@ -45,12 +45,13 @@ apply_frmt.frmt <- function( frmt_def, .data, value, mock = FALSE, ...){
     out <- .data %>%
       mutate(!!value := frmt_def$expression)
   } else {
-
     vals <- .data %>%
       pull(!!value)
 
     if(length(vals) == 0){
       return(.data)
+    } else if(!is.null(frmt_def$transform)){
+      vals <- as_function(frmt_def$transform)(vals)
     }
 
     if(str_detect(frmt_def$expression, "[x|X]")){

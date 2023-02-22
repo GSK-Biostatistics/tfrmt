@@ -6,7 +6,7 @@
 \alias{frmt_when}
 \title{Table Value Formatting}
 \usage{
-frmt(expression, missing = NULL, scientific = NULL, ...)
+frmt(expression, missing = NULL, scientific = NULL, transform = NULL, ...)
 
 frmt_combine(expression, ..., missing = NULL)
 
@@ -18,6 +18,10 @@ frmt_when(..., missing = NULL)
 \item{missing}{when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.}
 
 \item{scientific}{a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".}
+
+\item{transform}{this is what should happen to the value prior to formatting,
+It should be a formula or function. Ex. \code{~.*100}if you want to convert a
+percent from a decimal prior to rounding}
 
 \item{...}{See details: \code{...} for a detailed description.}
 }

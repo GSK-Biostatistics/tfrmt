@@ -104,6 +104,9 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #' @param expression this is the string representing the intended format. See details: expression for more a detailed description.
 #' @param missing when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.
 #' @param scientific a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".
+#' @param transform this is what should happen to the value prior to formatting,
+#'   It should be a formula or function. Ex. `~.*100`if you want to convert a
+#'   percent from a decimal prior to rounding
 #' @param ...  See details: `...` for a detailed description.
 #'
 #'
@@ -163,9 +166,10 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #'
 #' @rdname frmt
 #'
-frmt <- function(expression, missing = NULL, scientific = NULL, ...){
+frmt <- function(expression, missing = NULL, scientific = NULL, transform = NULL, ...){
   structure(
-    list(expression = expression, missing = missing, scientific = scientific),
+    list(expression = expression, missing = missing, scientific = scientific,
+         transform = transform),
     class = c("frmt")
   )
 }
