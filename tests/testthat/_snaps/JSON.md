@@ -124,7 +124,8 @@
             "frmt": {
               "expression": ["XXX"],
               "missing": {},
-              "scientific": {}
+              "scientific": {},
+              "transform": {}
             }
           }
         ]
@@ -152,7 +153,8 @@
             "frmt": {
               "expression": ["XXX"],
               "missing": {},
-              "scientific": {}
+              "scientific": {},
+              "transform": {}
             }
           }
         ]
@@ -180,14 +182,16 @@
                   "frmt": {
                     "expression": ["(X.X%)"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 },
                 "<=3": {
                   "frmt": {
                     "expression": ["Undetectable"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 }
               },
@@ -220,14 +224,16 @@
                   "frmt": {
                     "expression": ["XXX %"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 },
                 "param2": {
                   "frmt": {
                     "expression": ["XX.XXX"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 }
               },
@@ -256,7 +262,8 @@
             "frmt": {
               "expression": ["xx.xx"],
               "missing": {},
-              "scientific": ["x10^xx"]
+              "scientific": ["x10^xx"],
+              "transform": {}
             }
           }
         ]
@@ -285,7 +292,8 @@
                   "frmt": {
                     "expression": ["XXX %"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 },
                 "param2": {
@@ -295,14 +303,16 @@
                         "frmt": {
                           "expression": ["(X.X%)"],
                           "missing": {},
-                          "scientific": {}
+                          "scientific": {},
+                          "transform": {}
                         }
                       },
                       "<=3": {
                         "frmt": {
                           "expression": ["Undetectable"],
                           "missing": {},
-                          "scientific": {}
+                          "scientific": {},
+                          "transform": {}
                         }
                       }
                     },
@@ -320,7 +330,8 @@
             "frmt": {
               "expression": ["xx.x"],
               "missing": {},
-              "scientific": {}
+              "scientific": {},
+              "transform": {}
             }
           },
           {
@@ -333,7 +344,8 @@
                   "frmt": {
                     "expression": ["(X.X%)"],
                     "missing": {},
-                    "scientific": {}
+                    "scientific": {},
+                    "transform": {}
                   }
                 },
                 "<=0.4": {
@@ -344,14 +356,16 @@
                         "frmt": {
                           "expression": ["XXX"],
                           "missing": {},
-                          "scientific": {}
+                          "scientific": {},
+                          "transform": {}
                         }
                       },
                       "param2": {
                         "frmt": {
                           "expression": ["XXX"],
                           "missing": {},
-                          "scientific": {}
+                          "scientific": {},
+                          "transform": {}
                         }
                       }
                     },
@@ -381,7 +395,8 @@
           "n_frmt": {
             "expression": ["\nN = xx"],
             "missing": {},
-            "scientific": {}
+            "scientific": {},
+            "transform": {}
           }
         }
       } 
