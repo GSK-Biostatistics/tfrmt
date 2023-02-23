@@ -306,6 +306,7 @@ as.character.frmt <- function(x, ...){
   paste0("frmt('", x$expression, "'",
          if_else(!is.null(x$missing), paste0(", missing = ", missing_to_chr(x$missing)), ""),
          if_else(!is.null(x$scientific), paste0(", scientific = ", x$scientific), ""),
+         if_else(!is.null(x$transform), paste0(", transform = ", deparse(x$transform) %>% str_c(collapse = "")), ""),
          ")"
          )
 }
