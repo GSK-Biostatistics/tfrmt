@@ -371,7 +371,7 @@ test_that("json col_plan", {
   base_ts %>%
     as_json() %>%
     json_to_tfrmt(json = .) %>%
-    expect_equal(base_ts)
+    expect_equal(base_ts, ignore_attr = c(".Environment"))
 
   #Basic span structure
   span <- tfrmt(
