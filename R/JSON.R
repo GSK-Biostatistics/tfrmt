@@ -346,7 +346,7 @@ ls_to_footnote_plan <- function(ls){
   }
 }
 
-#' @importFrom rlang parse_expr
+#' @importFrom rlang parse_expr quo_get_expr
 ls_to_col_plan <- function(ls){
   if(!is.null(ls)){
     dots <- ls$col_plan$dots %>%
@@ -357,9 +357,12 @@ ls_to_col_plan <- function(ls){
             as.character() %>%
             parse_expr()
         } else{
+
           el[[1]] %>%
             str_replace_all("\\\"", "'") %>%
-            str2lang()
+            char_as_quo() %>%
+            quo_get_expr()
+
         }
       })
 
