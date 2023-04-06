@@ -255,11 +255,11 @@ At this time, group and label columns will be left aligned by default. The user 
 
 ### Alignment via `body_plan`
 
-It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become " 9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_style_plan` is the preferred method.
+It should be noted that in simple cases, the user can achieve desired alignment via the `frmt`s in the `body_plan`. These `frmt` specifications  allow us to pad values to a desired length. For example, `frmt(xxx)` will ensure values with fewer than 3 digits will be padded accordingly: 23 will become " 23" and 9 will become "  9". In a straightforward table of values with similar scales, this may be sufficient. However in many cases the user may desire more control over alignment and the `col_style_plan` is the preferred method. 
 
 ## Width
 
-Width is set as specific value in number of characters wide the column is allowed to be at most. This value is specified by passing a character or numeric value to the "width" argument of `col_style_structure`, taking the format of "\##" or ##, where "\##" is the number of characters.
+Width is set as specific value in number of characters wide the column is allowed to be at most. This value is specified by passing a character or numeric value to the "width" argument of `col_style_structure`, taking the format of "##" or ##, where "##" is the number of characters.
 
 Width can be applied to any of the columns in the table.
 
