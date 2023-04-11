@@ -148,7 +148,28 @@ enough.</p>
 <p>Let’s take a look at how alignment can be applied to the example
 below, which contains a variety of different parameters which are
 formatted differently.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<details><summary>
+Expand for the code used to produce the example data
+</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">label</span>     , <span class="op">~</span><span class="va">param</span>, <span class="op">~</span><span class="va">column</span>    , <span class="op">~</span> <span class="va">value</span>,   <span class="op">~</span><span class="va">ord</span>, </span>
+<span>  <span class="st">"n"</span>        ,<span class="st">"n"</span>     , <span class="st">"trt1"</span>     ,<span class="fl">12</span>,        <span class="fl">1</span>, </span>
+<span>  <span class="st">"mean (sd)"</span>,<span class="st">"mean"</span>  , <span class="st">"trt1"</span>     ,<span class="fl">12.332837</span>, <span class="fl">2</span>,</span>
+<span>  <span class="st">"mean (sd)"</span>,<span class="st">"sd"</span>    , <span class="st">"trt1"</span>     ,<span class="fl">4.3454547</span>, <span class="fl">2</span>,</span>
+<span>  <span class="st">"median"</span>   ,<span class="st">"median"</span>, <span class="st">"trt1"</span>     ,<span class="fl">14</span>,        <span class="fl">3</span>, </span>
+<span>  <span class="st">"[q1, q3]"</span> ,<span class="st">"q1"</span>    , <span class="st">"trt1"</span>     ,<span class="fl">10</span>,        <span class="fl">4</span>,</span>
+<span>  <span class="st">"[q1, q3]"</span> ,<span class="st">"q3"</span>    , <span class="st">"trt1"</span>     ,<span class="fl">20</span>,        <span class="fl">4</span>,</span>
+<span>  <span class="st">"n"</span>        ,<span class="st">"n"</span>     , <span class="st">"trt2"</span>     ,<span class="fl">24</span>,        <span class="fl">1</span>,</span>
+<span>  <span class="st">"mean (sd)"</span>,<span class="st">"mean"</span>  , <span class="st">"trt2"</span>     ,<span class="fl">15.438737</span>, <span class="fl">2</span>,</span>
+<span>  <span class="st">"mean (sd)"</span>,<span class="st">"sd"</span>    , <span class="st">"trt2"</span>     ,<span class="fl">6.723827</span>,  <span class="fl">2</span>, </span>
+<span>  <span class="st">"median"</span>   ,<span class="st">"median"</span>, <span class="st">"trt2"</span>     ,<span class="fl">16</span>,        <span class="fl">3</span>, </span>
+<span>  <span class="st">"[q1, q3]"</span> ,<span class="st">"q1"</span>    , <span class="st">"trt2"</span>     ,<span class="fl">11</span>,        <span class="fl">4</span>, </span>
+<span>  <span class="st">"[q1, q3]"</span> ,<span class="st">"q3"</span>    , <span class="st">"trt2"</span>     ,<span class="fl">22</span>,        <span class="fl">4</span>,</span>
+<span>  <span class="st">"n"</span>        ,<span class="st">"pval"</span>  , <span class="st">"p-value"</span>  ,<span class="cn">NA</span>,        <span class="fl">1</span>, </span>
+<span>  <span class="st">"mean (sd)"</span>,<span class="st">"pval"</span>  , <span class="st">"p-value"</span>  ,<span class="fl">0.00002</span>,   <span class="fl">2</span>, </span>
+<span>  <span class="st">"median"</span>   ,<span class="st">"pval"</span>  , <span class="st">"p-value"</span>  ,<span class="fl">0.051211</span>,  <span class="fl">3</span>, </span>
+<span>  <span class="st">"[q1, q3]"</span> ,<span class="st">"pval"</span>  , <span class="st">"p-value"</span>  ,<span class="cn">NA</span>,        <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+</details><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   label     param  column value   ord</span></span>
@@ -188,14 +209,26 @@ formatted differently.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="akqbbevupk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+<div id="bvzrzquuep" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bvzrzquuep table {
+  font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#akqbbevupk .gt_table {
+#bvzrzquuep thead, #bvzrzquuep tbody, #bvzrzquuep tfoot, #bvzrzquuep tr, #bvzrzquuep td, #bvzrzquuep th {
+  border-style: none;
+}
+
+#bvzrzquuep p {
+  margin: 0;
+  padding: 0;
+}
+
+#bvzrzquuep .gt_table {
   display: table;
   border-collapse: collapse;
+  line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
@@ -218,24 +251,12 @@ formatted differently.</p>
   border-left-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#akqbbevupk .gt_caption {
+#bvzrzquuep .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#akqbbevupk .gt_title {
+#bvzrzquuep .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -247,25 +268,37 @@ formatted differently.</p>
   border-bottom-width: 0;
 }
 
-#akqbbevupk .gt_subtitle {
+#bvzrzquuep .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#akqbbevupk .gt_bottom_border {
+#bvzrzquuep .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bvzrzquuep .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_col_headings {
+#bvzrzquuep .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -280,7 +313,7 @@ formatted differently.</p>
   border-right-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_col_heading {
+#bvzrzquuep .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -300,7 +333,7 @@ formatted differently.</p>
   overflow-x: hidden;
 }
 
-#akqbbevupk .gt_column_spanner_outer {
+#bvzrzquuep .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -312,15 +345,15 @@ formatted differently.</p>
   padding-right: 4px;
 }
 
-#akqbbevupk .gt_column_spanner_outer:first-child {
+#bvzrzquuep .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#akqbbevupk .gt_column_spanner_outer:last-child {
+#bvzrzquuep .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#akqbbevupk .gt_column_spanner {
+#bvzrzquuep .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -332,7 +365,11 @@ formatted differently.</p>
   width: 100%;
 }
 
-#akqbbevupk .gt_group_heading {
+#bvzrzquuep .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#bvzrzquuep .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -358,7 +395,7 @@ formatted differently.</p>
   text-align: left;
 }
 
-#akqbbevupk .gt_empty_group_heading {
+#bvzrzquuep .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -373,15 +410,15 @@ formatted differently.</p>
   vertical-align: middle;
 }
 
-#akqbbevupk .gt_from_md > :first-child {
+#bvzrzquuep .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#akqbbevupk .gt_from_md > :last-child {
+#bvzrzquuep .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#akqbbevupk .gt_row {
+#bvzrzquuep .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -400,7 +437,7 @@ formatted differently.</p>
   overflow-x: hidden;
 }
 
-#akqbbevupk .gt_stub {
+#bvzrzquuep .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -413,7 +450,7 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#akqbbevupk .gt_stub_row_group {
+#bvzrzquuep .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -427,11 +464,15 @@ formatted differently.</p>
   vertical-align: top;
 }
 
-#akqbbevupk .gt_row_group_first td {
+#bvzrzquuep .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#akqbbevupk .gt_summary_row {
+#bvzrzquuep .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#bvzrzquuep .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -441,16 +482,16 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#akqbbevupk .gt_first_summary_row {
+#bvzrzquuep .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_first_summary_row.thick {
+#bvzrzquuep .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#akqbbevupk .gt_last_summary_row {
+#bvzrzquuep .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -460,7 +501,7 @@ formatted differently.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_grand_summary_row {
+#bvzrzquuep .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -470,7 +511,7 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#akqbbevupk .gt_first_grand_summary_row {
+#bvzrzquuep .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -480,11 +521,21 @@ formatted differently.</p>
   border-top-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_striped {
+#bvzrzquuep .gt_last_grand_summary_row_top {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bvzrzquuep .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#akqbbevupk .gt_table_body {
+#bvzrzquuep .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -493,7 +544,7 @@ formatted differently.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_footnotes {
+#bvzrzquuep .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -507,30 +558,8 @@ formatted differently.</p>
   border-right-color: #D3D3D3;
 }
 
-#akqbbevupk .gt_footnote {
+#bvzrzquuep .gt_footnote {
   margin: 0px;
-  font-size: 90%;
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#akqbbevupk .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#akqbbevupk .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -538,98 +567,119 @@ formatted differently.</p>
   padding-right: 5px;
 }
 
-#akqbbevupk .gt_left {
+#bvzrzquuep .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bvzrzquuep .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bvzrzquuep .gt_left {
   text-align: left;
 }
 
-#akqbbevupk .gt_center {
+#bvzrzquuep .gt_center {
   text-align: center;
 }
 
-#akqbbevupk .gt_right {
+#bvzrzquuep .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#akqbbevupk .gt_font_normal {
+#bvzrzquuep .gt_font_normal {
   font-weight: normal;
 }
 
-#akqbbevupk .gt_font_bold {
+#bvzrzquuep .gt_font_bold {
   font-weight: bold;
 }
 
-#akqbbevupk .gt_font_italic {
+#bvzrzquuep .gt_font_italic {
   font-style: italic;
 }
 
-#akqbbevupk .gt_super {
+#bvzrzquuep .gt_super {
   font-size: 65%;
 }
 
-#akqbbevupk .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
+#bvzrzquuep .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
+  position: initial;
 }
 
-#akqbbevupk .gt_asterisk {
+#bvzrzquuep .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#akqbbevupk .gt_indent_1 {
+#bvzrzquuep .gt_indent_1 {
   text-indent: 5px;
 }
 
-#akqbbevupk .gt_indent_2 {
+#bvzrzquuep .gt_indent_2 {
   text-indent: 10px;
 }
 
-#akqbbevupk .gt_indent_3 {
+#bvzrzquuep .gt_indent_3 {
   text-indent: 15px;
 }
 
-#akqbbevupk .gt_indent_4 {
+#bvzrzquuep .gt_indent_4 {
   text-indent: 20px;
 }
 
-#akqbbevupk .gt_indent_5 {
+#bvzrzquuep .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_col_headings"><tr>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
-<td headers="stub_1_1 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12</td>
-<td headers="stub_1_1 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">24</td>
-<td headers="stub_1_1 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
+<td headers="stub_1_1 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12</td>
+<td headers="stub_1_1 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">24</td>
+<td headers="stub_1_1 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
-<td headers="stub_1_2 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
-<td headers="stub_1_2 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
-<td headers="stub_1_2 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
+<td headers="stub_1_2 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
+<td headers="stub_1_2 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
+<td headers="stub_1_2 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
-<td headers="stub_1_3 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14</td>
-<td headers="stub_1_3 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16</td>
-<td headers="stub_1_3 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.051</td>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
+<td headers="stub_1_3 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14</td>
+<td headers="stub_1_3 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16</td>
+<td headers="stub_1_3 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.051</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
-<td headers="stub_1_4 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
-<td headers="stub_1_4 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
-<td headers="stub_1_4 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
+<td headers="stub_1_4 trt1" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
+<td headers="stub_1_4 trt2" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
+<td headers="stub_1_4 p-value" class="gt_row gt_left" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"></td>
 </tr>
 </tbody>
 </table>
@@ -638,7 +688,7 @@ formatted differently.</p>
 Let’s start by left-aligning our p-value column. Notice that by
 providing a <code>col_style_plan</code>, any variables that are not
 covered in the plan will be left-aligned by default.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
@@ -669,14 +719,26 @@ covered in the plan will be left-aligned by default.</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="qjxbpvczpp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+<div id="sxvdrozdhx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sxvdrozdhx table {
+  font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#qjxbpvczpp .gt_table {
+#sxvdrozdhx thead, #sxvdrozdhx tbody, #sxvdrozdhx tfoot, #sxvdrozdhx tr, #sxvdrozdhx td, #sxvdrozdhx th {
+  border-style: none;
+}
+
+#sxvdrozdhx p {
+  margin: 0;
+  padding: 0;
+}
+
+#sxvdrozdhx .gt_table {
   display: table;
   border-collapse: collapse;
+  line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
@@ -699,24 +761,12 @@ covered in the plan will be left-aligned by default.</p>
   border-left-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#qjxbpvczpp .gt_caption {
+#sxvdrozdhx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qjxbpvczpp .gt_title {
+#sxvdrozdhx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -728,25 +778,37 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-width: 0;
 }
 
-#qjxbpvczpp .gt_subtitle {
+#sxvdrozdhx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#qjxbpvczpp .gt_bottom_border {
+#sxvdrozdhx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sxvdrozdhx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_col_headings {
+#sxvdrozdhx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -761,7 +823,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_col_heading {
+#sxvdrozdhx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -781,7 +843,7 @@ covered in the plan will be left-aligned by default.</p>
   overflow-x: hidden;
 }
 
-#qjxbpvczpp .gt_column_spanner_outer {
+#sxvdrozdhx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -793,15 +855,15 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 4px;
 }
 
-#qjxbpvczpp .gt_column_spanner_outer:first-child {
+#sxvdrozdhx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qjxbpvczpp .gt_column_spanner_outer:last-child {
+#sxvdrozdhx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qjxbpvczpp .gt_column_spanner {
+#sxvdrozdhx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -813,7 +875,11 @@ covered in the plan will be left-aligned by default.</p>
   width: 100%;
 }
 
-#qjxbpvczpp .gt_group_heading {
+#sxvdrozdhx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#sxvdrozdhx .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -839,7 +905,7 @@ covered in the plan will be left-aligned by default.</p>
   text-align: left;
 }
 
-#qjxbpvczpp .gt_empty_group_heading {
+#sxvdrozdhx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -854,15 +920,15 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: middle;
 }
 
-#qjxbpvczpp .gt_from_md > :first-child {
+#sxvdrozdhx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qjxbpvczpp .gt_from_md > :last-child {
+#sxvdrozdhx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qjxbpvczpp .gt_row {
+#sxvdrozdhx .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -881,7 +947,7 @@ covered in the plan will be left-aligned by default.</p>
   overflow-x: hidden;
 }
 
-#qjxbpvczpp .gt_stub {
+#sxvdrozdhx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -894,7 +960,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#qjxbpvczpp .gt_stub_row_group {
+#sxvdrozdhx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -908,11 +974,15 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: top;
 }
 
-#qjxbpvczpp .gt_row_group_first td {
+#sxvdrozdhx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qjxbpvczpp .gt_summary_row {
+#sxvdrozdhx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#sxvdrozdhx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -922,16 +992,16 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#qjxbpvczpp .gt_first_summary_row {
+#sxvdrozdhx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_first_summary_row.thick {
+#sxvdrozdhx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qjxbpvczpp .gt_last_summary_row {
+#sxvdrozdhx .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -941,7 +1011,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_grand_summary_row {
+#sxvdrozdhx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -951,7 +1021,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#qjxbpvczpp .gt_first_grand_summary_row {
+#sxvdrozdhx .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -961,11 +1031,21 @@ covered in the plan will be left-aligned by default.</p>
   border-top-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_striped {
+#sxvdrozdhx .gt_last_grand_summary_row_top {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sxvdrozdhx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qjxbpvczpp .gt_table_body {
+#sxvdrozdhx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -974,7 +1054,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_footnotes {
+#sxvdrozdhx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -988,30 +1068,8 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#qjxbpvczpp .gt_footnote {
+#sxvdrozdhx .gt_footnote {
   margin: 0px;
-  font-size: 90%;
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qjxbpvczpp .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#qjxbpvczpp .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1019,98 +1077,119 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#qjxbpvczpp .gt_left {
+#sxvdrozdhx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sxvdrozdhx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sxvdrozdhx .gt_left {
   text-align: left;
 }
 
-#qjxbpvczpp .gt_center {
+#sxvdrozdhx .gt_center {
   text-align: center;
 }
 
-#qjxbpvczpp .gt_right {
+#sxvdrozdhx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qjxbpvczpp .gt_font_normal {
+#sxvdrozdhx .gt_font_normal {
   font-weight: normal;
 }
 
-#qjxbpvczpp .gt_font_bold {
+#sxvdrozdhx .gt_font_bold {
   font-weight: bold;
 }
 
-#qjxbpvczpp .gt_font_italic {
+#sxvdrozdhx .gt_font_italic {
   font-style: italic;
 }
 
-#qjxbpvczpp .gt_super {
+#sxvdrozdhx .gt_super {
   font-size: 65%;
 }
 
-#qjxbpvczpp .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
+#sxvdrozdhx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
+  position: initial;
 }
 
-#qjxbpvczpp .gt_asterisk {
+#sxvdrozdhx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qjxbpvczpp .gt_indent_1 {
+#sxvdrozdhx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qjxbpvczpp .gt_indent_2 {
+#sxvdrozdhx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qjxbpvczpp .gt_indent_3 {
+#sxvdrozdhx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qjxbpvczpp .gt_indent_4 {
+#sxvdrozdhx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qjxbpvczpp .gt_indent_5 {
+#sxvdrozdhx .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_col_headings"><tr>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
-<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12</td>
-<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">24</td>
-<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
+<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12</td>
+<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">24</td>
+<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
-<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
-<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
-<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
+<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
+<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
+<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
-<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14</td>
-<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16</td>
-<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.051 </td>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
+<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14</td>
+<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16</td>
+<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">0.051 </td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
-<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
-<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
-<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
+<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
+<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
+<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 </tbody>
 </table>
@@ -1118,7 +1197,7 @@ covered in the plan will be left-aligned by default.</p>
 <p>This alignment isn’t quite right as we have the <code>&lt;</code> in
 one value but not the other. Applying a decimal alignment would be a
 better fit:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
@@ -1149,14 +1228,26 @@ better fit:</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">`p-value`</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="njmzdqmpvv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+<div id="iyefumsuhr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#iyefumsuhr table {
+  font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#njmzdqmpvv .gt_table {
+#iyefumsuhr thead, #iyefumsuhr tbody, #iyefumsuhr tfoot, #iyefumsuhr tr, #iyefumsuhr td, #iyefumsuhr th {
+  border-style: none;
+}
+
+#iyefumsuhr p {
+  margin: 0;
+  padding: 0;
+}
+
+#iyefumsuhr .gt_table {
   display: table;
   border-collapse: collapse;
+  line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
@@ -1179,24 +1270,12 @@ better fit:</p>
   border-left-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#njmzdqmpvv .gt_caption {
+#iyefumsuhr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#njmzdqmpvv .gt_title {
+#iyefumsuhr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1208,25 +1287,37 @@ better fit:</p>
   border-bottom-width: 0;
 }
 
-#njmzdqmpvv .gt_subtitle {
+#iyefumsuhr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#njmzdqmpvv .gt_bottom_border {
+#iyefumsuhr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#iyefumsuhr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_col_headings {
+#iyefumsuhr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1241,7 +1332,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_col_heading {
+#iyefumsuhr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1261,7 +1352,7 @@ better fit:</p>
   overflow-x: hidden;
 }
 
-#njmzdqmpvv .gt_column_spanner_outer {
+#iyefumsuhr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1273,15 +1364,15 @@ better fit:</p>
   padding-right: 4px;
 }
 
-#njmzdqmpvv .gt_column_spanner_outer:first-child {
+#iyefumsuhr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#njmzdqmpvv .gt_column_spanner_outer:last-child {
+#iyefumsuhr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#njmzdqmpvv .gt_column_spanner {
+#iyefumsuhr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1293,7 +1384,11 @@ better fit:</p>
   width: 100%;
 }
 
-#njmzdqmpvv .gt_group_heading {
+#iyefumsuhr .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#iyefumsuhr .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1319,7 +1414,7 @@ better fit:</p>
   text-align: left;
 }
 
-#njmzdqmpvv .gt_empty_group_heading {
+#iyefumsuhr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1334,15 +1429,15 @@ better fit:</p>
   vertical-align: middle;
 }
 
-#njmzdqmpvv .gt_from_md > :first-child {
+#iyefumsuhr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#njmzdqmpvv .gt_from_md > :last-child {
+#iyefumsuhr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#njmzdqmpvv .gt_row {
+#iyefumsuhr .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1361,7 +1456,7 @@ better fit:</p>
   overflow-x: hidden;
 }
 
-#njmzdqmpvv .gt_stub {
+#iyefumsuhr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1374,7 +1469,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#njmzdqmpvv .gt_stub_row_group {
+#iyefumsuhr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1388,11 +1483,15 @@ better fit:</p>
   vertical-align: top;
 }
 
-#njmzdqmpvv .gt_row_group_first td {
+#iyefumsuhr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#njmzdqmpvv .gt_summary_row {
+#iyefumsuhr .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#iyefumsuhr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1402,16 +1501,16 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#njmzdqmpvv .gt_first_summary_row {
+#iyefumsuhr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_first_summary_row.thick {
+#iyefumsuhr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#njmzdqmpvv .gt_last_summary_row {
+#iyefumsuhr .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1421,7 +1520,7 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_grand_summary_row {
+#iyefumsuhr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1431,7 +1530,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#njmzdqmpvv .gt_first_grand_summary_row {
+#iyefumsuhr .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1441,11 +1540,21 @@ better fit:</p>
   border-top-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_striped {
+#iyefumsuhr .gt_last_grand_summary_row_top {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#iyefumsuhr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#njmzdqmpvv .gt_table_body {
+#iyefumsuhr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1454,7 +1563,7 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_footnotes {
+#iyefumsuhr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1468,30 +1577,8 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#njmzdqmpvv .gt_footnote {
+#iyefumsuhr .gt_footnote {
   margin: 0px;
-  font-size: 90%;
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#njmzdqmpvv .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#njmzdqmpvv .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1499,98 +1586,119 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#njmzdqmpvv .gt_left {
+#iyefumsuhr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#iyefumsuhr .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#iyefumsuhr .gt_left {
   text-align: left;
 }
 
-#njmzdqmpvv .gt_center {
+#iyefumsuhr .gt_center {
   text-align: center;
 }
 
-#njmzdqmpvv .gt_right {
+#iyefumsuhr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#njmzdqmpvv .gt_font_normal {
+#iyefumsuhr .gt_font_normal {
   font-weight: normal;
 }
 
-#njmzdqmpvv .gt_font_bold {
+#iyefumsuhr .gt_font_bold {
   font-weight: bold;
 }
 
-#njmzdqmpvv .gt_font_italic {
+#iyefumsuhr .gt_font_italic {
   font-style: italic;
 }
 
-#njmzdqmpvv .gt_super {
+#iyefumsuhr .gt_super {
   font-size: 65%;
 }
 
-#njmzdqmpvv .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
+#iyefumsuhr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
+  position: initial;
 }
 
-#njmzdqmpvv .gt_asterisk {
+#iyefumsuhr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#njmzdqmpvv .gt_indent_1 {
+#iyefumsuhr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#njmzdqmpvv .gt_indent_2 {
+#iyefumsuhr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#njmzdqmpvv .gt_indent_3 {
+#iyefumsuhr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#njmzdqmpvv .gt_indent_4 {
+#iyefumsuhr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#njmzdqmpvv .gt_indent_5 {
+#iyefumsuhr .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_col_headings"><tr>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
-<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12</td>
-<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">24</td>
-<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
+<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12</td>
+<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">24</td>
+<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
-<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
-<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
-<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
+<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
+<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
+<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
-<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14</td>
-<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16</td>
-<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
+<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14</td>
+<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16</td>
+<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
-<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
-<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
-<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
+<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
+<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
+<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 </tbody>
 </table>
@@ -1598,7 +1706,7 @@ better fit:</p>
 <p>For our other two columns, we have a mix of values represented. In
 this case, we want to align on the first set of digits. In other words,
 we will align on the first instance of a decimal, comma, or space:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
@@ -1631,14 +1739,26 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="zqkqmpmkud" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+<div id="fnmcfdhrcq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fnmcfdhrcq table {
+  font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#zqkqmpmkud .gt_table {
+#fnmcfdhrcq thead, #fnmcfdhrcq tbody, #fnmcfdhrcq tfoot, #fnmcfdhrcq tr, #fnmcfdhrcq td, #fnmcfdhrcq th {
+  border-style: none;
+}
+
+#fnmcfdhrcq p {
+  margin: 0;
+  padding: 0;
+}
+
+#fnmcfdhrcq .gt_table {
   display: table;
   border-collapse: collapse;
+  line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
@@ -1661,24 +1781,12 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-left-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#zqkqmpmkud .gt_caption {
+#fnmcfdhrcq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zqkqmpmkud .gt_title {
+#fnmcfdhrcq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1690,25 +1798,37 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-width: 0;
 }
 
-#zqkqmpmkud .gt_subtitle {
+#fnmcfdhrcq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#zqkqmpmkud .gt_bottom_border {
+#fnmcfdhrcq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fnmcfdhrcq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_col_headings {
+#fnmcfdhrcq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1723,7 +1843,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_col_heading {
+#fnmcfdhrcq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1743,7 +1863,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   overflow-x: hidden;
 }
 
-#zqkqmpmkud .gt_column_spanner_outer {
+#fnmcfdhrcq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1755,15 +1875,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 4px;
 }
 
-#zqkqmpmkud .gt_column_spanner_outer:first-child {
+#fnmcfdhrcq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zqkqmpmkud .gt_column_spanner_outer:last-child {
+#fnmcfdhrcq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zqkqmpmkud .gt_column_spanner {
+#fnmcfdhrcq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1775,7 +1895,11 @@ we will align on the first instance of a decimal, comma, or space:</p>
   width: 100%;
 }
 
-#zqkqmpmkud .gt_group_heading {
+#fnmcfdhrcq .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#fnmcfdhrcq .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1801,7 +1925,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   text-align: left;
 }
 
-#zqkqmpmkud .gt_empty_group_heading {
+#fnmcfdhrcq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1816,15 +1940,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: middle;
 }
 
-#zqkqmpmkud .gt_from_md > :first-child {
+#fnmcfdhrcq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zqkqmpmkud .gt_from_md > :last-child {
+#fnmcfdhrcq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zqkqmpmkud .gt_row {
+#fnmcfdhrcq .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1843,7 +1967,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   overflow-x: hidden;
 }
 
-#zqkqmpmkud .gt_stub {
+#fnmcfdhrcq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1856,7 +1980,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#zqkqmpmkud .gt_stub_row_group {
+#fnmcfdhrcq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1870,11 +1994,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: top;
 }
 
-#zqkqmpmkud .gt_row_group_first td {
+#fnmcfdhrcq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zqkqmpmkud .gt_summary_row {
+#fnmcfdhrcq .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#fnmcfdhrcq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1884,16 +2012,16 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#zqkqmpmkud .gt_first_summary_row {
+#fnmcfdhrcq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_first_summary_row.thick {
+#fnmcfdhrcq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zqkqmpmkud .gt_last_summary_row {
+#fnmcfdhrcq .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1903,7 +2031,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_grand_summary_row {
+#fnmcfdhrcq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1913,7 +2041,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#zqkqmpmkud .gt_first_grand_summary_row {
+#fnmcfdhrcq .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1923,11 +2051,21 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-top-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_striped {
+#fnmcfdhrcq .gt_last_grand_summary_row_top {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fnmcfdhrcq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zqkqmpmkud .gt_table_body {
+#fnmcfdhrcq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1936,7 +2074,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_footnotes {
+#fnmcfdhrcq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1950,30 +2088,8 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#zqkqmpmkud .gt_footnote {
+#fnmcfdhrcq .gt_footnote {
   margin: 0px;
-  font-size: 90%;
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#zqkqmpmkud .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#zqkqmpmkud .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1981,98 +2097,119 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#zqkqmpmkud .gt_left {
+#fnmcfdhrcq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fnmcfdhrcq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fnmcfdhrcq .gt_left {
   text-align: left;
 }
 
-#zqkqmpmkud .gt_center {
+#fnmcfdhrcq .gt_center {
   text-align: center;
 }
 
-#zqkqmpmkud .gt_right {
+#fnmcfdhrcq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zqkqmpmkud .gt_font_normal {
+#fnmcfdhrcq .gt_font_normal {
   font-weight: normal;
 }
 
-#zqkqmpmkud .gt_font_bold {
+#fnmcfdhrcq .gt_font_bold {
   font-weight: bold;
 }
 
-#zqkqmpmkud .gt_font_italic {
+#fnmcfdhrcq .gt_font_italic {
   font-style: italic;
 }
 
-#zqkqmpmkud .gt_super {
+#fnmcfdhrcq .gt_super {
   font-size: 65%;
 }
 
-#zqkqmpmkud .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
+#fnmcfdhrcq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
+  position: initial;
 }
 
-#zqkqmpmkud .gt_asterisk {
+#fnmcfdhrcq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zqkqmpmkud .gt_indent_1 {
+#fnmcfdhrcq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zqkqmpmkud .gt_indent_2 {
+#fnmcfdhrcq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zqkqmpmkud .gt_indent_3 {
+#fnmcfdhrcq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zqkqmpmkud .gt_indent_4 {
+#fnmcfdhrcq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zqkqmpmkud .gt_indent_5 {
+#fnmcfdhrcq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_col_headings"><tr>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
-<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 12          </td>
-<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 24          </td>
-<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
+<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 12          </td>
+<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 24          </td>
+<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
-<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 12.3 ( 4.35)</td>
-<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 15.4 ( 6.72)</td>
-<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
+<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 12.3 ( 4.35)</td>
+<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 15.4 ( 6.72)</td>
+<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
-<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 14          </td>
-<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 16          </td>
-<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
+<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 14          </td>
+<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 16          </td>
+<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
-<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0] </td>
-<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0] </td>
-<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
+<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0] </td>
+<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0] </td>
+<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 </tbody>
 </table>
@@ -2080,7 +2217,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <p>Finally, for the purpose of demonstrating our options, we can align
 each column differently (left, right, character for the three columns
 respectively):</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
@@ -2113,14 +2250,26 @@ respectively):</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="qtctrxlxre" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+<div id="tatftuqfed" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tatftuqfed table {
+  font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#qtctrxlxre .gt_table {
+#tatftuqfed thead, #tatftuqfed tbody, #tatftuqfed tfoot, #tatftuqfed tr, #tatftuqfed td, #tatftuqfed th {
+  border-style: none;
+}
+
+#tatftuqfed p {
+  margin: 0;
+  padding: 0;
+}
+
+#tatftuqfed .gt_table {
   display: table;
   border-collapse: collapse;
+  line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
@@ -2143,24 +2292,12 @@ respectively):</p>
   border-left-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#qtctrxlxre .gt_caption {
+#tatftuqfed .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qtctrxlxre .gt_title {
+#tatftuqfed .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2172,25 +2309,37 @@ respectively):</p>
   border-bottom-width: 0;
 }
 
-#qtctrxlxre .gt_subtitle {
+#tatftuqfed .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#qtctrxlxre .gt_bottom_border {
+#tatftuqfed .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tatftuqfed .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_col_headings {
+#tatftuqfed .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2205,7 +2354,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_col_heading {
+#tatftuqfed .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2225,7 +2374,7 @@ respectively):</p>
   overflow-x: hidden;
 }
 
-#qtctrxlxre .gt_column_spanner_outer {
+#tatftuqfed .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2237,15 +2386,15 @@ respectively):</p>
   padding-right: 4px;
 }
 
-#qtctrxlxre .gt_column_spanner_outer:first-child {
+#tatftuqfed .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qtctrxlxre .gt_column_spanner_outer:last-child {
+#tatftuqfed .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qtctrxlxre .gt_column_spanner {
+#tatftuqfed .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2257,7 +2406,11 @@ respectively):</p>
   width: 100%;
 }
 
-#qtctrxlxre .gt_group_heading {
+#tatftuqfed .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#tatftuqfed .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2283,7 +2436,7 @@ respectively):</p>
   text-align: left;
 }
 
-#qtctrxlxre .gt_empty_group_heading {
+#tatftuqfed .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2298,15 +2451,15 @@ respectively):</p>
   vertical-align: middle;
 }
 
-#qtctrxlxre .gt_from_md > :first-child {
+#tatftuqfed .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qtctrxlxre .gt_from_md > :last-child {
+#tatftuqfed .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qtctrxlxre .gt_row {
+#tatftuqfed .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2325,7 +2478,7 @@ respectively):</p>
   overflow-x: hidden;
 }
 
-#qtctrxlxre .gt_stub {
+#tatftuqfed .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2338,7 +2491,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#qtctrxlxre .gt_stub_row_group {
+#tatftuqfed .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2352,11 +2505,15 @@ respectively):</p>
   vertical-align: top;
 }
 
-#qtctrxlxre .gt_row_group_first td {
+#tatftuqfed .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qtctrxlxre .gt_summary_row {
+#tatftuqfed .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#tatftuqfed .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2366,16 +2523,16 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#qtctrxlxre .gt_first_summary_row {
+#tatftuqfed .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_first_summary_row.thick {
+#tatftuqfed .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qtctrxlxre .gt_last_summary_row {
+#tatftuqfed .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2385,7 +2542,7 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_grand_summary_row {
+#tatftuqfed .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2395,7 +2552,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#qtctrxlxre .gt_first_grand_summary_row {
+#tatftuqfed .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2405,11 +2562,21 @@ respectively):</p>
   border-top-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_striped {
+#tatftuqfed .gt_last_grand_summary_row_top {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tatftuqfed .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qtctrxlxre .gt_table_body {
+#tatftuqfed .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2418,7 +2585,7 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_footnotes {
+#tatftuqfed .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2432,30 +2599,8 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#qtctrxlxre .gt_footnote {
+#tatftuqfed .gt_footnote {
   margin: 0px;
-  font-size: 90%;
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qtctrxlxre .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#qtctrxlxre .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2463,98 +2608,119 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#qtctrxlxre .gt_left {
+#tatftuqfed .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tatftuqfed .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tatftuqfed .gt_left {
   text-align: left;
 }
 
-#qtctrxlxre .gt_center {
+#tatftuqfed .gt_center {
   text-align: center;
 }
 
-#qtctrxlxre .gt_right {
+#tatftuqfed .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qtctrxlxre .gt_font_normal {
+#tatftuqfed .gt_font_normal {
   font-weight: normal;
 }
 
-#qtctrxlxre .gt_font_bold {
+#tatftuqfed .gt_font_bold {
   font-weight: bold;
 }
 
-#qtctrxlxre .gt_font_italic {
+#tatftuqfed .gt_font_italic {
   font-style: italic;
 }
 
-#qtctrxlxre .gt_super {
+#tatftuqfed .gt_super {
   font-size: 65%;
 }
 
-#qtctrxlxre .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
+#tatftuqfed .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
+  position: initial;
 }
 
-#qtctrxlxre .gt_asterisk {
+#tatftuqfed .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qtctrxlxre .gt_indent_1 {
+#tatftuqfed .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qtctrxlxre .gt_indent_2 {
+#tatftuqfed .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qtctrxlxre .gt_indent_3 {
+#tatftuqfed .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qtctrxlxre .gt_indent_4 {
+#tatftuqfed .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qtctrxlxre .gt_indent_5 {
+#tatftuqfed .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_col_headings"><tr>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
-<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12          </td>
-<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          24</td>
-<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
+<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12          </td>
+<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          24</td>
+<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
-<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
-<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
-<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
+<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3 ( 4.35)</td>
+<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4 ( 6.72)</td>
+<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
-<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14          </td>
-<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          16</td>
-<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
+<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14          </td>
+<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          16</td>
+<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
-<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
-<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
-<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
+<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0, 20.0]</td>
+<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0, 22.0]</td>
+<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 </tbody>
 </table>
@@ -2596,7 +2762,7 @@ character or numeric value to the “width” argument of
 <p>Continuing the example from alignment, we set the widths of the
 columns in the table. Because “label” is output in the table, we can
 apply the widths to that column as well.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
@@ -2630,14 +2796,26 @@ apply the widths to that column as well.</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="st">"5"</span>, col <span class="op">=</span> <span class="va">trt2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="oynqtlgsfs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+<div id="otrcafyxua" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#otrcafyxua table {
+  font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#oynqtlgsfs .gt_table {
+#otrcafyxua thead, #otrcafyxua tbody, #otrcafyxua tfoot, #otrcafyxua tr, #otrcafyxua td, #otrcafyxua th {
+  border-style: none;
+}
+
+#otrcafyxua p {
+  margin: 0;
+  padding: 0;
+}
+
+#otrcafyxua .gt_table {
   display: table;
   border-collapse: collapse;
+  line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
@@ -2660,24 +2838,12 @@ apply the widths to that column as well.</p>
   border-left-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#oynqtlgsfs .gt_caption {
+#otrcafyxua .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#oynqtlgsfs .gt_title {
+#otrcafyxua .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2689,25 +2855,37 @@ apply the widths to that column as well.</p>
   border-bottom-width: 0;
 }
 
-#oynqtlgsfs .gt_subtitle {
+#otrcafyxua .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border-top-color: #FFFFFF;
   border-top-width: 0;
 }
 
-#oynqtlgsfs .gt_bottom_border {
+#otrcafyxua .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#otrcafyxua .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_col_headings {
+#otrcafyxua .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2722,7 +2900,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_col_heading {
+#otrcafyxua .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2742,7 +2920,7 @@ apply the widths to that column as well.</p>
   overflow-x: hidden;
 }
 
-#oynqtlgsfs .gt_column_spanner_outer {
+#otrcafyxua .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2754,15 +2932,15 @@ apply the widths to that column as well.</p>
   padding-right: 4px;
 }
 
-#oynqtlgsfs .gt_column_spanner_outer:first-child {
+#otrcafyxua .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#oynqtlgsfs .gt_column_spanner_outer:last-child {
+#otrcafyxua .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#oynqtlgsfs .gt_column_spanner {
+#otrcafyxua .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2774,7 +2952,11 @@ apply the widths to that column as well.</p>
   width: 100%;
 }
 
-#oynqtlgsfs .gt_group_heading {
+#otrcafyxua .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#otrcafyxua .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2800,7 +2982,7 @@ apply the widths to that column as well.</p>
   text-align: left;
 }
 
-#oynqtlgsfs .gt_empty_group_heading {
+#otrcafyxua .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2815,15 +2997,15 @@ apply the widths to that column as well.</p>
   vertical-align: middle;
 }
 
-#oynqtlgsfs .gt_from_md > :first-child {
+#otrcafyxua .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#oynqtlgsfs .gt_from_md > :last-child {
+#otrcafyxua .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#oynqtlgsfs .gt_row {
+#otrcafyxua .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2842,7 +3024,7 @@ apply the widths to that column as well.</p>
   overflow-x: hidden;
 }
 
-#oynqtlgsfs .gt_stub {
+#otrcafyxua .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2855,7 +3037,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#oynqtlgsfs .gt_stub_row_group {
+#otrcafyxua .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2869,11 +3051,15 @@ apply the widths to that column as well.</p>
   vertical-align: top;
 }
 
-#oynqtlgsfs .gt_row_group_first td {
+#otrcafyxua .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#oynqtlgsfs .gt_summary_row {
+#otrcafyxua .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#otrcafyxua .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2883,16 +3069,16 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#oynqtlgsfs .gt_first_summary_row {
+#otrcafyxua .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_first_summary_row.thick {
+#otrcafyxua .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#oynqtlgsfs .gt_last_summary_row {
+#otrcafyxua .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2902,7 +3088,7 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_grand_summary_row {
+#otrcafyxua .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2912,7 +3098,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#oynqtlgsfs .gt_first_grand_summary_row {
+#otrcafyxua .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2922,11 +3108,21 @@ apply the widths to that column as well.</p>
   border-top-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_striped {
+#otrcafyxua .gt_last_grand_summary_row_top {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#otrcafyxua .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#oynqtlgsfs .gt_table_body {
+#otrcafyxua .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2935,7 +3131,7 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_footnotes {
+#otrcafyxua .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2949,30 +3145,8 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#oynqtlgsfs .gt_footnote {
+#otrcafyxua .gt_footnote {
   margin: 0px;
-  font-size: 90%;
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#oynqtlgsfs .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#oynqtlgsfs .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2980,102 +3154,123 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#oynqtlgsfs .gt_left {
+#otrcafyxua .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#otrcafyxua .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#otrcafyxua .gt_left {
   text-align: left;
 }
 
-#oynqtlgsfs .gt_center {
+#otrcafyxua .gt_center {
   text-align: center;
 }
 
-#oynqtlgsfs .gt_right {
+#otrcafyxua .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#oynqtlgsfs .gt_font_normal {
+#otrcafyxua .gt_font_normal {
   font-weight: normal;
 }
 
-#oynqtlgsfs .gt_font_bold {
+#otrcafyxua .gt_font_bold {
   font-weight: bold;
 }
 
-#oynqtlgsfs .gt_font_italic {
+#otrcafyxua .gt_font_italic {
   font-style: italic;
 }
 
-#oynqtlgsfs .gt_super {
+#otrcafyxua .gt_super {
   font-size: 65%;
 }
 
-#oynqtlgsfs .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
+#otrcafyxua .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
+  position: initial;
 }
 
-#oynqtlgsfs .gt_asterisk {
+#otrcafyxua .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#oynqtlgsfs .gt_indent_1 {
+#otrcafyxua .gt_indent_1 {
   text-indent: 5px;
 }
 
-#oynqtlgsfs .gt_indent_2 {
+#otrcafyxua .gt_indent_2 {
   text-indent: 10px;
 }
 
-#oynqtlgsfs .gt_indent_3 {
+#otrcafyxua .gt_indent_3 {
   text-indent: 15px;
 }
 
-#oynqtlgsfs .gt_indent_4 {
+#otrcafyxua .gt_indent_4 {
   text-indent: 20px;
 }
 
-#oynqtlgsfs .gt_indent_5 {
+#otrcafyxua .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="table gt_table">
-<thead class="gt_col_headings"><tr>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
-<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12          </td>
-<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          24</td>
-<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">n</th>
+<td headers="stub_1_1 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12          </td>
+<td headers="stub_1_1 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          24</td>
+<td headers="stub_1_1 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
-<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">mean (sd)</th>
+<td headers="stub_1_2 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12.3
 ( 4.35)</td>
-<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4
+<td headers="stub_1_2 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15.4
 ( 6.72)</td>
-<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
+<td headers="stub_1_2 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">&lt;0.001</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
-<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14          </td>
-<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          16</td>
-<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">median</th>
+<td headers="stub_1_3 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">14          </td>
+<td headers="stub_1_3 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">          16</td>
+<td headers="stub_1_3 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0.051</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
-<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0,
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[q1, q3]</th>
+<td headers="stub_1_4 trt1" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[10.0,
 20.0]</td>
-<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0,
+<td headers="stub_1_4 trt2" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">[11.0,
 22.0]</td>
-<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
+<td headers="stub_1_4 p-value" class="gt_row gt_left" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">      </td>
 </tr>
 </tbody>
 </table>
