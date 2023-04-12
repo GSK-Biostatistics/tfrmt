@@ -5,6 +5,42 @@ template:
     image:
       src: man/figures/tfrmt.png
       alt: "tfrmt Hex Sticker"
+   
+reference:
+- title: All Functions
+  contents:
+  - apply_frmt
+  - big_n_structure
+  - body_plan
+  - col_plan, span_structure
+  - col_style_plan
+  - col_style_structure
+  - data_ae
+  - data_demog
+  - data_efficacy
+  - data_labs
+  - display_row_frmts
+  - element_block
+  - element_row_grp_loc
+  - footnote_plan
+  - footnote_structure
+  - frmt, frmt_combine, frmt_when
+  - frmt_structure
+  - is_frmt, is_frmt_combine, is_frmt_when, is_frmt_structure, is_row_grp_structure
+  - json_to_tfrmt
+  - layer_tfrmt
+  - param_set
+  - print_mock_gt
+  - print_to_ggplot
+  - print_to_gt
+  - row_grp_plan
+  - row_grp_structure
+  - tfrmt
+  - tfrmt_n_pct
+  - tfrmt_sigdig
+  - tfrmt_to_json
+  - update_group
+
 articles:
 - title: Table Components
   navbar: Table Components
