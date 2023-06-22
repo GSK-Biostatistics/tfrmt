@@ -24,6 +24,7 @@ library(tidyr)
 ```
 
 # Demography Table
+
 For this demography table we are going to use `data_demog`, an example analysis results dataset found in the package, which is based on the CDISC pilot data. This dataset has two different row label columns, `rowlbl1` and `rowlbl2` because we are building a table with group and row labels. There are also two order columns which will be used to set the row order of the output. There is a single column to define our table's columns (multiple column columns are used when there is column spanning). Finally there is a param column, a value column and an additional grouping column, `grp`, which we can use for more complex formatting.
 
 ```{r, echo = FALSE}
@@ -31,8 +32,8 @@ head(data_demog)
 ```
 
 The mock we are going to match looks like this:
- 
-```{r echo = FALSE} 
+
+```{r echo = FALSE}
 tfrmt(
   # specify columns in the data
   group = c(rowlbl1,grp),
@@ -79,9 +80,10 @@ tfrmt(
   )
 ```
 
-For this table, we have three columns for each of the treatment groups, a total column for all groups combined, and a p-value column. The table also contains a mix of categorical and continuous analysis. 
+For this table, we have three columns for each of the treatment groups, a total column for all groups combined, and a p-value column. The table also contains a mix of categorical and continuous analysis.
 
-The first thing we are going to do when building out the `tfrmt` is specify all our columns 
+The first thing we are going to do when building out the `tfrmt` is specify all our columns
+
 ```{r}
 tfrmt(
   # specify columns in the data
@@ -97,11 +99,12 @@ tfrmt(
   )
 ```
 
-While this makes a table, it isn't a very nice table and definitely doesn't match the mock. So let's start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`.  This will be a fairly quick explanation of `body_plan`s but if you would like more information see `vignettes("Body Plan")` 
+While this makes a table, it isn't a very nice table and definitely doesn't match the mock. So let's start with formatting all the numbers. To do this we are going to build a `body_plan` to add to our `tfrmt`. This will be a fairly quick explanation of `body_plan`s but if you would like more information see `vignettes("Body Plan")`
 
-Body plans are made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. The order of the `frmt_structure`s matter; they are always applied latest to oldest. This means the first `frmt_stucture` in the `body_plan` should be the most generic. You can use the groups, labels and parameters to specify which formatting applies to which values.  
+Body plans are made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. The order of the `frmt_structure`s matter; they are always applied latest to oldest. This means the first `frmt_stucture` in the `body_plan` should be the most generic. You can use the groups, labels and parameters to specify which formatting applies to which values.
 
-To start, we are going to use all the rows that are "n (%)" as the default. This way we don't need to list out every row that is an "n (%)" row. These rows are made up of two different values, so we will need to use `frmt_combine`. Next, we can format the continuous variables, which is just a straightforward one value per row so we can just use the label to filter and `frmt` to define the look. Finally, we want to format the p-values. This is a bit more complicated, since the p-value sits in the same row as other parameters; therefore the group and label value are not specific enough and we need something more granular. As such, we will need to specify the parameter in the `frmt_structure` like so: `frmt_structure(group_val = ".default", label_val = ".default", p = frmt("x.xx")`. Further, we also need to make sure it never displays a rounded p-value of 0 or 1. So we can use `frmt_when` to specify the formatting based on the value. 
+To start, we are going to use all the rows that are "n (%)" as the default. This way we don't need to list out every row that is an "n (%)" row. These rows are made up of two different values, so we will need to use `frmt_combine`. Next, we can format the continuous variables, which is just a straightforward one value per row so we can just use the label to filter and `frmt` to define the look. Finally, we want to format the p-values. This is a bit more complicated, since the p-value sits in the same row as other parameters; therefore the group and label value are not specific enough and we need something more granular. As such, we will need to specify the parameter in the `frmt_structure` like so: `frmt_structure(group_val = ".default", label_val = ".default", p = frmt("x.xx")`. Further, we also need to make sure it never displays a rounded p-value of 0 or 1. So we can use `frmt_when` to specify the formatting based on the value.
+
 ```{r}
 tfrmt(
   # specify columns in the data
@@ -128,7 +131,8 @@ tfrmt(
     container.width = 900
   )
 ```
-Now that all the numbers look correct, we can drop the order columns and the `grp` column (note that while we do not want to display the `grp` column, it plays a role behind the scenes, which will be addressed in the next step). To do this we use a `col_plan` which uses `tidy-select` nomenclature to drop/move columns. 
+
+Now that all the numbers look correct, we can drop the order columns and the `grp` column (note that while we do not want to display the `grp` column, it plays a role behind the scenes, which will be addressed in the next step). To do this we use a `col_plan` which uses `tidy-select` nomenclature to drop/move columns.
 
 ```{r}
 tfrmt(
@@ -163,14 +167,14 @@ tfrmt(
   )
 ```
 
-Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `col_style_structure`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `col_style_structure` looks like `col_style_structure(align = c(".",","," "), col = vars(everything()))`. 
-After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change. 
+Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `col_style_structure`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `col_style_structure` looks like `col_style_structure(align = c(".",","," "), col = vars(everything()))`. After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change.
+
 ```{r}
 data_demog %>% 
   distinct(rowlbl1,grp)
 ```
 
-This means that we can use a `row_grp_plan` with just a `".default"` as the group value and it should handle all of the spacing. In addition to the spacing, `row_grp_plan` will let us move the spanning group labels to a separate column by changing the `label_loc` to "column". 
+This means that we can use a `row_grp_plan` with just a `".default"` as the group value and it should handle all of the spacing. In addition to the spacing, `row_grp_plan` will let us move the spanning group labels to a separate column by changing the `label_loc` to "column".
 
 ```{r}
 tfrmt(
@@ -217,13 +221,14 @@ tfrmt(
   )
 ```
 
-
 # AE table
 
-For the adverse events (AE) table, we will use the `data_ae` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns. Finally, there is a param column and a value column. For brevity, we will subset to AEs with >10% prevalence in the High Dose group.
+For the adverse events (AE) table, we will use the `data_ae` analysis results data, which is also based on the CDISC pilot data. This dataset has two different row label columns, `AEBODSYS` and `AETERM`, for system organ class and preferred term, respectively. There are also two order columns which will be used to set the row order of the output. Because this table has column spanners, we have two column variables, `col2` and `col1` to define the hierarchy of columns. Finally, there is a param column and a value column. For brevity, we will subset to AEs with \>10% prevalence in the High Dose group.
 
 <details>
-  <summary>Expand for the code used to produce this subset</summary>
+
+<summary>Expand for the code used to produce this subset</summary>
+
 ```{r}
 data_ae2 <- data_ae %>% 
   group_by(AEBODSYS, AETERM) %>% 
@@ -232,9 +237,8 @@ data_ae2 <- data_ae %>%
   filter(pct_high >10) %>% 
   select(-pct_high)
 ```
+
 </details>
-
-
 
 ```{r, echo=FALSE}
 head(data_ae2)
@@ -277,10 +281,11 @@ data_ae2 %>%
   )
 
 ```
- 
-For this table we have three treatment group columns (Placebo, Low, and High Dose) which each have the following values reported: # of subjects with at least one AE (n), percent of subjects with at least one AE (pct), and # of AEs (AEs). We also have two p-value columns (Low Dose vs. Placebo, High Dose vs. Placebo). 
 
-Like the demography example, the first thing we are going to do when building out the `tfrmt` is specify all our columns. Note that `col2` contains our spanning labels and `col1` contains our lower level column headers: 
+For this table we have three treatment group columns (Placebo, Low, and High Dose) which each have the following values reported: \# of subjects with at least one AE (n), percent of subjects with at least one AE (pct), and \# of AEs (AEs). We also have two p-value columns (Low Dose vs. Placebo, High Dose vs. Placebo).
+
+Like the demography example, the first thing we are going to do when building out the `tfrmt` is specify all our columns. Note that `col2` contains our spanning labels and `col1` contains our lower level column headers:
+
 ```{r}
 tfrmt(
   # specify columns in the data
@@ -297,7 +302,8 @@ tfrmt(
 
 ```
 
-Next, we need to format the values using the `body_plan`. Recall that our body plan will be made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. Our AE table boils down to the following values: # of subjects with at least one AE (n), percent of subjects with at least one AE (pct), # of AEs (AEs), and p-value (pval). Because our n and pct will be combined using `frmt_combine`, we will have 3 `frmt_structure` objects. Note the use of `frmt_when` to format the p-values.
+Next, we need to format the values using the `body_plan`. Recall that our body plan will be made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. Our AE table boils down to the following values: \# of subjects with at least one AE (n), percent of subjects with at least one AE (pct), \# of AEs (AEs), and p-value (pval). Because our n and pct will be combined using `frmt_combine`, we will have 3 `frmt_structure` objects. Note the use of `frmt_when` to format the p-values.
+
 ```{r}
 tfrmt(
   # specify columns in the data
@@ -331,7 +337,7 @@ tfrmt(
 
 ```
 
-Almost there! Our AE table contains data for both Preferred Terms and System Organ Classes. Therefore, we do not want a typical group-level header. Instead, we want to display the System Organ Class label inline with its data, and nest the Preferred Term data underneath. Fortunately, we are able to achieve this formatting with a `row_grp_plan`: 
+Almost there! Our AE table contains data for both Preferred Terms and System Organ Classes. Therefore, we do not want a typical group-level header. Instead, we want to display the System Organ Class label inline with its data, and nest the Preferred Term data underneath. Fortunately, we are able to achieve this formatting with a `row_grp_plan`:
 
 ```{r}
 tfrmt(
@@ -461,7 +467,6 @@ tfrmt(
 
 ```
 
-
 For better control over our column labels, we can make use of `col_plan`'s `span_structure`s to define the column labels and spanners order and names:
 
 ```{r }
@@ -532,7 +537,7 @@ Our AE table is now complete!
 
 # Efficacy
 
-For this example, we will use the `data_efficacy` dataset, an example analysis results dataset found in the package, which is based on the CDISC pilot data for the ADAS-Cog(11) score. The goal is to recreate table 14-3.01 from the CDISC pilot. 
+For this example, we will use the `data_efficacy` dataset, an example analysis results dataset found in the package, which is based on the CDISC pilot data for the ADAS-Cog(11) score. The goal is to recreate table 14-3.01 from the CDISC pilot.
 
 This data is relatively simple in that it contains only 1 `group` column and `column` column, but it adds complexity in that multiple analyses are stacked together - summary statistics of different values at different time points, and the results of several different ANCOVA models. Multiple treatment groups as well as the contrasts between groups are included.
 
@@ -541,8 +546,8 @@ head(data_efficacy)
 ```
 
 The mock we are going to match looks like this:
- 
-```{r echo = FALSE} 
+
+```{r echo = FALSE}
 tfrmt(
   group = group,
   label = label,
@@ -589,6 +594,7 @@ tfrmt(
 ```
 
 Let's first see how the table looks without any special formatting.
+
 ```{r}
 tfrmt(
   group = group,
@@ -604,11 +610,11 @@ tfrmt(
   
 ```
 
-Through judicious use of `body_plan`'s `frmt`, `frmt_combine`, and `frmt_when`, we can conditionally format each of the different pieces of results. For the summary statistics, we have the number of observations (n), the mean and standard deviation (mean, sd), and the median and range (median, min, max). For the models, we have the p-value (p.value) and the least squares mean difference (diff) as well as its associated standard error (diff_se) and 95% confidence interval (diff_lcl, diff_ucl). 
+Through judicious use of `body_plan`'s `frmt`, `frmt_combine`, and `frmt_when`, we can conditionally format each of the different pieces of results. For the summary statistics, we have the number of observations (n), the mean and standard deviation (mean, sd), and the median and range (median, min, max). For the models, we have the p-value (p.value) and the least squares mean difference (diff) as well as its associated standard error (diff_se) and 95% confidence interval (diff_lcl, diff_ucl).
 
-The `label` column indicates which row the various measures belong on. First, let's format the stand-alone values: n and p-value. Notice that n always sits on a row labelled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`. 
+The `label` column indicates which row the various measures belong on. First, let's format the stand-alone values: n and p-value. Notice that n always sits on a row labelled "n"; therefore we can reference it by label_val or param name in the `frmt_structure`. Our p-values have several different label values so it is more convenient to format them according to their param name in the `frmt_structure`.
 
-```{r} 
+```{r}
 tfrmt(
   group = group,
   label = label,
@@ -633,8 +639,7 @@ tfrmt(
 
 Next, the remaining param values are combined in twos or threes. Therefore, we use the `frmt_combine` utility to achieve desired formatting:
 
-
-```{r} 
+```{r}
 tfrmt(
   group = group,
   label = label,
@@ -676,7 +681,7 @@ tfrmt(
 
 Now that our values are all formatted correctly, we can make sure the table is sorted appropriately by passing our order columns to `sorting_cols`. We can also drop these order columns from the final display using `col_plan`.
 
-```{r} 
+```{r}
 tfrmt(
   group = group,
   label = label,
@@ -768,7 +773,7 @@ tfrmt(
   )
 ```
 
-Almost done! Notice that the spec also contains empty rows after different groups of data. We can mimic this behavior by passing `row_grp_structure` objects in our `row_grp_plan`. These objects define "blocks" of rows and describe how to format them. In this case, we want to add a post space after specific blocks of data. We can reference the locations of each block based on the values of the `group` variable. 
+Almost done! Notice that the spec also contains empty rows after different groups of data. We can mimic this behavior by passing `row_grp_structure` objects in our `row_grp_plan`. These objects define "blocks" of rows and describe how to format them. In this case, we want to add a post space after specific blocks of data. We can reference the locations of each block based on the values of the `group` variable.
 
 ```{r}
 tfrmt(

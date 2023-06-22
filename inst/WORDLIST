@@ -7,6 +7,7 @@ ARDs
 CDISC
 CMD
 Codecov
+colwise
 Functionalising
 N's
 NSE
@@ -30,6 +31,7 @@ gt's
 gtdefault
 lcl
 loc
+json
 magrittr
 mylab
 n's
