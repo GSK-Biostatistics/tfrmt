@@ -711,3 +711,25 @@
         ]
       } 
 
+---
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "col_style_plan": [
+          {
+            "cols": [
+              ["my var"]
+            ],
+            "align": ["left"],
+            "width": [100]
+          }
+        ]
+      } 
+

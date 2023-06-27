@@ -448,6 +448,20 @@ test_that("json col_style_plan",{
     as_json() %>%
     json_to_tfrmt(json = . ) %>%
     expect_equal(csp, ignore_attr = TRUE)
+
+
+  csp_spaces <- tfrmt(
+    col_style_plan= col_style_plan(
+      col_style_structure(align = "left", width = 100, col = "my var")
+    )
+  )
+  csp_spaces %>%
+    as_json() %>%
+    expect_snapshot()
+  csp_spaces %>%
+    as_json() %>%
+    json_to_tfrmt(json = . ) %>%
+    expect_equal(csp_spaces, ignore_attr = TRUE)
 })
 
 
