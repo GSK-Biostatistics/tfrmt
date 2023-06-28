@@ -382,6 +382,7 @@ ls_to_span_structure <- function(ls){
   do.call(span_structure, span_ls)
 }
 
+#' @importFrom rlang expr_text
 ls_to_col_style_plan <- function(ls){
   if(!is.null(ls)){
     struct_ls <- ls %>% map(function(struct){
@@ -394,8 +395,12 @@ ls_to_col_style_plan <- function(ls){
           as.character() %>%
           parse_expr()
       } else {
-        stuct_in[["col"]] <- parse_expr(
-          paste0("vars(", str_c(stuct_in[["col"]], collapse = ", "), ")"))
+        stuct_in[["col"]] <- map_chr(stuct_in[["col"]], ~ char_as_quo(.x) %>%
+                                       quo_get_expr() %>%
+                                     expr_text()) %>%
+            str_c(., collapse = ", ") %>%
+            paste0("vars(",., ")") %>%
+          parse_expr()
       }
       do.call(col_style_structure, stuct_in)
     })
