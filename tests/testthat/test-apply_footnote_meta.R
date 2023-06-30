@@ -341,6 +341,32 @@ test_that("applying footnote meta group val",{
     list(list("col"="rowlbl1","spanning"=FALSE,"row" =1,"note"="Test footnote"))
   )
 
+  # 2 levels of grouping and row_grp_plan w/ spanning/column
+  tfrmt6<-tfrmt(
+    # specify columns in the data
+    group = c(rowlbl0,rowlbl1),
+    label = rowlbl2,
+    column = trt,
+    param = param,
+    value = value,
+    # set formatting for values
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
+
+    # Specify row group plan
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "spanning")),
+    footnote_plan = footnote_plan(
+      footnote_structure("Test footnote")
+    )
+  )
+  expect_equal(
+    attr(apply_tfrmt(es_data3,tfrmt6),".footnote_locs"),
+    list(list("col"=NULL,"spanning"=FALSE,"note"="Test footnote"))
+  )
 })
 
 
