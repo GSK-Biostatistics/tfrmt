@@ -214,15 +214,16 @@ add_mock_big_ns <- function(data, column, param, big_n_struct){
   data
 }
 
-# Check the col plan contain positive information and isn't null
+# Check the col plan contain positive information, isn't null, and doesn't contain `everything()`
 col_plan_test <- function(col_plan){
   if(is.null(col_plan)){
     out <- FALSE
   } else {
-    first_chr <- col_plan$dots %>%
-      map_chr(as_label) %>%
+    all_names <- col_plan$dots %>%
+      map_chr(as_label)
+    first_chr <- all_names %>%
       str_sub(end = 1)
-    out <- !all(first_chr == "-")
+    out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
   }
   out
 }
