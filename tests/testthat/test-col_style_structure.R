@@ -654,3 +654,150 @@ test_that("Alphanumeric align string supplied",{
                  ))
 })
 
+
+test_that("multi-character alignment", {
+
+  # align on 2 chars
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~ val,
+    "18-65"	, "trt", "15 (23.4 %)",
+    "18-65" , "placebo", "5 (3.8 %)",
+    "66-82" , "trt",	"34 (33.5 %)",
+    "66-82" , "placebo",	"48 (82.2%)"
+  )
+
+  tfrmt_obj <- tfrmt(
+    label = "lbl",
+    column = "col",
+    value = "val",
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c("xx| (xx|.x %)",
+                                    "xx| (xx|.x%)",
+                                    "x| (x|.x %)"),
+                          type = "multi",
+                          col = vars(trt, placebo))
+    )
+  )
+
+  dat_aligned <- dat %>%
+    pivot_wider(
+      names_from = col,
+      values_from = val
+    ) %>%
+    apply_col_style_plan(tfrmt_obj)
+
+  dat_aligned_man <- tibble::tribble(
+    ~ lbl    , ~trt    , ~placebo,
+    "18-65", "15 (23.4 %)", " 5  (3.8 %)",
+    "66-82", "34 (33.5 %)", "48 (82.2%) ",
+  )
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+  # align on 3 chars
+
+  dat <- tibble::tribble(
+    ~ one, ~ column, ~ value,
+    "lbl1", "two"    ," 12 (34%)",
+    "lbl1", "three"  ," 24 (58%)",
+    "lbl2", "two"    ," 12.3 (2.3 - 15.3)",
+    "lbl2", "three"  ," 15.4 (3.4 - 17.6)",
+    "lbl3", "two"    ,"  4.34"   ,
+    "lbl3", "three"  ,"  8.25"   ,
+    "lbl4", "two"    ,"(10, 20)" ,
+    "lbl4", "three"  ,"(11, 22)" )
+
+  tfrmt_obj <- tfrmt(
+    label = one,
+    column = vars(column),
+    value = value,
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(" xx| |(xx%)",
+                                    " xx|.x |(x.x - |xx.x)",
+                                    "||(xx, |xx)",
+                                    "x|.xx"),
+                          type = "multi",
+                          col = vars(two, three))
+    )
+  )
+
+  dat_aligned <- dat %>%
+    pivot_wider(
+      names_from = column,
+      values_from = value
+    ) %>%
+    apply_col_style_plan(tfrmt_obj)
+
+  dat_aligned_man <- tibble::tribble(
+    ~one    , ~two               ,~three           ,
+    "lbl1",  "12   (34%)       ", "24   (58%)       ",
+    "lbl2",  "12.3 (2.3 - 15.3)", "15.4 (3.4 - 17.6)",
+    "lbl3",  " 4.34            ", " 8.25            ",
+    "lbl4",  "     (10, 20)    ", "     (11, 22)    "
+  )
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+
+})
+
+test_that("multi-character alignment detects inadequate inputs", {
+
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~ val,
+    "lbl1", "two"    ," 12 (34%)",
+    "lbl1", "three"  ," 24 (58%)",
+    "lbl2", "two"    ," 12.3 (2.3)",
+    "lbl2", "three"  ," 15.4 (5.4)")
+
+  tfrmt_obj <- tfrmt(
+    label = lbl,
+    column = vars(col),
+    value = val,
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(" xx |(xx)"),
+                          type = "multi",
+                          col = vars(two, three))
+    )
+  )
+  dat_wide <- dat %>%
+    pivot_wider(
+      names_from = col,
+      values_from = val
+    )
+
+  msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
+
+  expect_equal(msgs, c("`align` input for `type=multi` in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
+                       "`align` input for `type=multi` in col_style_structure does not cover all possible values. Some cells may not be aligned.\n"))
+
+
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~ val,
+    "lbl1", "two"    ," 12(34%)",
+    "lbl1", "three"  ," 24(58%)",
+    "lbl2", "two"    ," 12.3(12.3%)",
+    "lbl2", "three"  ," 15.4(15.4%)")
+
+  tfrmt_obj <- tfrmt(
+    label = lbl,
+    column = vars(col),
+    value = val,
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(" xx|(xx|%)",
+                                    " xx|.x(xx|.x%)"),
+                          type = "multi",
+                          col = vars(two, three))
+    )
+  )
+  dat_wide <- dat %>%
+    pivot_wider(
+      names_from = col,
+      values_from = val
+    )
+
+  msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
+
+  expect_equal(msgs, c("Unable to complete multi-alignment in col_style_structure due to lack of whitespace available formatted value\n",
+                      "Unable to complete multi-alignment in col_style_structure due to lack of whitespace available formatted value\n"))
+})
