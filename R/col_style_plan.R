@@ -44,19 +44,25 @@ col_style_plan <- function(...){
 #'
 #' @param col Column value to align on from `column` variable. May be a quoted
 #'   or unquoted column name, a tidyselect semantic, or a span_structure.
-#' @param align Alignment to be applied to column. Acceptable values: "left" for
-#'   left alignment, "right" for right alignment", or supply a vector of
-#'   character(s) to align on. For the case of character alignment, if more than
-#'   one character is provided, alignment will be based on the first occurrence
-#'   of any of the characters. For alignment based on white space, leading white
-#'   spaces will be ignored.
+#' @param align Alignment to be applied to column. Defaults to `left` alignment. See details for acceptable values.
+#' @param type Type of alignment: "single" or "multi", for single-character alignment (default), and multiple-character alignment, respectively.
 #' @param width Width to apply to the column in number of characters. Acceptable values include a
 #'   numeric value, or a character string of a number.
 #' @param ... These dots are for future extensions and must be empty
 #'
 #'
-#' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label
-#'   columns are left-aligned by default.
+#' @details Supports alignment and width setting of data value columns (values found in the `column` column). Row group and label columns are left-aligned by default. Acceptable input values for `align` differ by type = "single" or "multi":
+#'
+#' ## Single-character alignment (type = "single"):
+#'   - "left" for left alignment
+#'   - "right" for right alignment"
+#'   - supply a vector of character(s) to align on. If more than
+#'   one character is provided, alignment will be based on the first occurrence
+#'   of any of the characters. For alignment based on white space, leading white
+#'   spaces will be ignored.
+#'
+#' ## Multi-character alignment (type = "multi"):
+#'  supply a vector of strings covering all formatted cell values, with numeric values represented as x's. These values can be created manually or obtained by applying the helper `<insert helper>` to the `tfrmt` object. Alignment positions will be represented by vertical bars. For example, with starting values: c("12.3", "(5%)", "2.35 (10.23)") we can align all of the first sets of decimals and parentheses by providing align = c("xx|.x", "||(x%)", "x|.xx |")
 #'
 #' @importFrom purrr map
 #' @importFrom rlang check_dots_empty0
@@ -71,7 +77,8 @@ col_style_plan <- function(...){
 #' @examples
 #'
 #'  plan <- col_style_plan(
-#'     col_style_structure(align = "left", width = 100, col = "my_var"),
+#'     col_style_structure(align = c("xx| |(xx%)",
+#'                                   "xx|.x |(xx.x - xx.x)"), type = "multi", width = 100, col = "my_var"),
 #'     col_style_structure(align = "right", width = 200, col = vars(four)),
 #'     col_style_structure(align = c(".", ",", " "), col = vars(two, three)),
 #'     col_style_structure(width = 25, col = c(two, three)),
@@ -80,9 +87,11 @@ col_style_plan <- function(...){
 #'    )
 #'
 #' @rdname theme_element
-col_style_structure <- function(col, align = NULL, width = NULL, ...){
+col_style_structure <- function(col, align = NULL, type = c("single", "multi"), width = NULL, ...){
 
   check_dots_empty0(...)
+
+  type <- match.arg(type)
 
   if(missing(col)){
     abort(
@@ -102,19 +111,22 @@ col_style_structure <- function(col, align = NULL, width = NULL, ...){
   }
 
   if(!is.null(align)){
-    if(!is.character(align) & length(align) > 0){
-      abort("`align` must be an character vector", class = "invalid_col_style_structure_value")
-    }
 
-    if(!all(align %in% c("left","right"))){
-
-      if (!all(nchar(align)==1)){
-        message( "Alignment specified contains strings with >1 characters. Only the first character will be used.")
-        align <- str_sub(align, start=1, end=1)
+    if (type=="single"){
+      if(!is.character(align) & length(align) > 0){
+        abort("`align` must be a character vector", class = "invalid_col_style_structure_value")
       }
 
-      if (any(str_detect(align, "[[:alnum:]]"))){
-        message( "Alignment specified contains one or more alphanumeric characters. Results may not be as expected.")
+      if(!all(align %in% c("left","right"))){
+
+        if (!all(nchar(align)==1)){
+          message( "Alignment specified contains strings with >1 characters. Only the first character will be used.")
+          align <- str_sub(align, start=1, end=1)
+        }
+
+        if (any(str_detect(align, "[[:alnum:]]"))){
+          message( "Alignment specified contains one or more alphanumeric characters. Results may not be as expected.")
+        }
       }
     }
 
@@ -137,6 +149,7 @@ col_style_structure <- function(col, align = NULL, width = NULL, ...){
     list(
       cols = cols,
       align = align,
+      type = type,
       width = width
     ),
     class = c("col_style_structure", "structure")
