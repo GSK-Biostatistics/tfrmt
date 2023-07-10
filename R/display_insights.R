@@ -123,10 +123,17 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
 #' A helper for creating positional-alignment specifications for the col_style_plan.
 #' Returns all unique formatted values to appear in the column(s) specified. Numeric values are represented by x's.
 #'
+#'
+#' @param tfrmt tfrmt object to apply to the data
+#' @param .data Data to apply the tfrmt to
+#' @param mock Mock table? TRUE or FALSE (default)
+#' @param col Column value to align on from `column` variable. May be a quoted
+#'   or unquoted column name, a tidyselect semantic, or a span_structure.
+#'
 #' @importFrom glue glue glue_collapse
 #' @importFrom dplyr select mutate across arrange pull
 #' @importFrom tidyselect everything any_of
-#' @importFrom rlang is_empty as_name
+#' @importFrom rlang is_empty as_name as_label
 #' @importFrom stringr str_replace_all
 #' @importFrom purrr map_chr map
 #' @importFrom tidyr pivot_longer
@@ -198,9 +205,9 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
   vec_prep <- tbl_dat_wide%>%
     select(any_of(col_selection)) %>%
     pivot_longer(everything()) %>%
-    arrange(nchar(value)) %>%
-    filter(!is.na(value)) %>%
-    pull(value) %>%
+    arrange(nchar(.data$value)) %>%
+    filter(!is.na(.data$value)) %>%
+    pull(.data$value) %>%
     unique %>%
     paste0("\"", ., "\"") %>%
     glue_collapse(., ",\n  ")

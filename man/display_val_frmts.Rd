@@ -6,6 +6,16 @@
 \usage{
 display_val_frmts(tfrmt, .data, mock = FALSE, col = NULL)
 }
+\arguments{
+\item{tfrmt}{tfrmt object to apply to the data}
+
+\item{.data}{Data to apply the tfrmt to}
+
+\item{mock}{Mock table? TRUE or FALSE (default)}
+
+\item{col}{Column value to align on from \code{column} variable. May be a quoted
+or unquoted column name, a tidyselect semantic, or a span_structure.}
+}
 \value{
 text representing character vector of formatted values to be copied and modified in the col_style_plan
 }
