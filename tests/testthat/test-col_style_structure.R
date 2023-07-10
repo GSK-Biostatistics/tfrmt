@@ -655,9 +655,55 @@ test_that("Alphanumeric align string supplied",{
 })
 
 
-test_that("multi-character alignment", {
+test_that("multi-positional alignment", {
 
-  # align on 2 chars
+  # 1 position align
+  vec <- c(" xx.x (xx.x)", " xx, xx", "xx (xx - xx)", " xx (xx %)")
+  vec_aligned <- apply_col_alignment(vec,
+                                     align = c(" xx.x |(xx.x)",
+                                               " xx, |xx",
+                                               "xx |(xx - xx)",
+                                               " xx |(xx %)"),
+                                     type = "pos")
+
+  expect_equal(vec_aligned,
+               c("xx.x (xx.x)   ",
+                 " xx, xx       ",
+                 "  xx (xx - xx)",
+                 "  xx (xx %)   "))
+
+  # 3 position align
+  vec <- c(" xx.x", " x, x", "xx (xx - xx)", " x (x.x, x.x)")
+  vec_aligned <- apply_col_alignment(vec,
+                                     align = c(" xx|.x",
+                                               " x|, |x",
+                                               "xx| |(xx - |xx)",
+                                               " x| |(x.x, |x.x)"),
+                                     type = "pos")
+
+  expect_equal(vec_aligned,
+               c("xx.x          ",
+                 " x, x         ",
+                 "xx  (xx - xx) ",
+                 " x  (x.x, x.x)"))
+
+  # positional alignment not covering all cases - will treat all not covered as: "xxx|" (last char to be aligned with first position)
+  vec <- c(" xx.x", " x, x", "xx (xx - xx)", " x (x.x, x.x)")
+  vec_aligned <- suppressMessages({
+    apply_col_alignment(vec,
+                        align = c(" xx|.x",
+                                  " x|, |x",
+                                  "xx| |(xx - |xx)"),
+                        type = "pos")
+  })
+  expect_equal(vec_aligned,
+               c("          xx.x         ",
+                 "           x, x        ",
+                 "          xx  (xx - xx)",
+                 "x (x.x, x.x)           ")
+  )
+
+  # align on 2 positions - full plan
   dat <- tibble::tribble(
     ~ lbl, ~ col, ~ val,
     "18-65"	, "trt", "15 (23.4 %)",
@@ -674,7 +720,7 @@ test_that("multi-character alignment", {
       col_style_structure(align = c("xx| (xx|.x %)",
                                     "xx| (xx|.x%)",
                                     "x| (x|.x %)"),
-                          type = "multi",
+                          type = "pos",
                           col = vars(trt, placebo))
     )
   )
@@ -694,7 +740,7 @@ test_that("multi-character alignment", {
 
   expect_equal(dat_aligned, dat_aligned_man)
 
-  # align on 3 chars
+  # align on 3 positions - full plan
 
   dat <- tibble::tribble(
     ~ one, ~ column, ~ value,
@@ -716,7 +762,7 @@ test_that("multi-character alignment", {
                                     " xx|.x |(x.x - |xx.x)",
                                     "||(xx, |xx)",
                                     "x|.xx"),
-                          type = "multi",
+                          type = "pos",
                           col = vars(two, three))
     )
   )
@@ -733,7 +779,7 @@ test_that("multi-character alignment", {
     "lbl1",  "12   (34%)       ", "24   (58%)       ",
     "lbl2",  "12.3 (2.3 - 15.3)", "15.4 (3.4 - 17.6)",
     "lbl3",  " 4.34            ", " 8.25            ",
-    "lbl4",  "     (10, 20)    ", "     (11, 22)    "
+    "lbl4",  "     (10,   20)  ", "     (11,   22)  "
   )
 
   expect_equal(dat_aligned, dat_aligned_man)
@@ -741,7 +787,7 @@ test_that("multi-character alignment", {
 
 })
 
-test_that("multi-character alignment detects inadequate inputs", {
+test_that("multi-positional alignment detects inadequate inputs", {
 
   dat <- tibble::tribble(
     ~ lbl, ~ col, ~ val,
@@ -756,7 +802,7 @@ test_that("multi-character alignment detects inadequate inputs", {
     value = val,
     col_style_plan = col_style_plan(
       col_style_structure(align = c(" xx |(xx)"),
-                          type = "multi",
+                          type = "pos",
                           col = vars(two, three))
     )
   )
@@ -768,8 +814,8 @@ test_that("multi-character alignment detects inadequate inputs", {
 
   msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
 
-  expect_equal(msgs, c("`align` input for `type=multi` in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
-                       "`align` input for `type=multi` in col_style_structure does not cover all possible values. Some cells may not be aligned.\n"))
+  expect_equal(msgs, c("`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
+                       "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n"))
 
 
   dat <- tibble::tribble(
@@ -786,7 +832,7 @@ test_that("multi-character alignment detects inadequate inputs", {
     col_style_plan = col_style_plan(
       col_style_structure(align = c(" xx|(xx|%)",
                                     " xx|.x(xx|.x%)"),
-                          type = "multi",
+                          type = "pos",
                           col = vars(two, three))
     )
   )
@@ -798,6 +844,44 @@ test_that("multi-character alignment detects inadequate inputs", {
 
   msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
 
-  expect_equal(msgs, c("Unable to complete multi-alignment in col_style_structure due to lack of whitespace available formatted value\n",
-                      "Unable to complete multi-alignment in col_style_structure due to lack of whitespace available formatted value\n"))
+  expect_equal(msgs, c("Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n",
+                       "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n"))
+})
+
+
+test_that("helper for constructing positional alignment works",{
+
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~param, ~ val,
+    "lbl1", "two"    ,"n",  12,
+    "lbl1", "two"    ,"pct", 33.9999,
+    "lbl1", "three"  ,"n",  24,
+    "lbl1", "three"  ,"pct", 58.222,
+    "lbl2", "two"    ,"n",  12,
+    "lbl2", "two"    ,"pct", 12.4353,
+    "lbl2", "three"  ,"n",  15,
+    "lbl2", "three"  ,"pct", 15.354)
+
+  tfrmt_obj <- tfrmt(
+    label = lbl,
+    column = vars(col),
+    param = param,
+    value = val,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = "lbl1",
+                     frmt_combine("{n} ({pct}%)",
+                                  n = frmt("x"),
+                                  pct = frmt("xx"))),
+      frmt_structure(group_val = ".default", label_val = "lbl2",
+                     frmt_combine("{n} ({pct}%)",
+                                  n = frmt("xxx"),
+                                  pct = frmt("xx.x")))
+    )
+  )
+
+  expect_equal(
+    display_val_frmts(tfrmt_obj, .data = dat, col = vars(everything())),
+    "c(\"xx (xx%)\",
+  \" xx (xx.x%)\")"
+  )
 })

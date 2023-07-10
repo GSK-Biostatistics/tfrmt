@@ -679,7 +679,7 @@
               ["my_var"]
             ],
             "align": ["left"],
-            "type": ["single"],
+            "type": ["char"],
             "width": [100]
           },
           {
@@ -687,7 +687,7 @@
               ["four"]
             ],
             "align": ["right"],
-            "type": ["single"],
+            "type": ["char"],
             "width": {}
           },
           {
@@ -696,7 +696,7 @@
               ["three"]
             ],
             "align": [".", ",", " "],
-            "type": ["single"],
+            "type": ["char"],
             "width": {}
           },
           {
@@ -709,7 +709,7 @@
               }
             ],
             "align": {},
-            "type": ["single"],
+            "type": ["char"],
             "width": [25]
           }
         ]
@@ -732,7 +732,7 @@
               ["my var"]
             ],
             "align": ["left"],
-            "type": ["single"],
+            "type": ["char"],
             "width": [100]
           }
         ]

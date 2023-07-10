@@ -7,7 +7,7 @@
 col_style_structure(
   col,
   align = NULL,
-  type = c("single", "multi"),
+  type = c("char", "pos"),
   width = NULL,
   ...
 )
@@ -18,7 +18,7 @@ or unquoted column name, a tidyselect semantic, or a span_structure.}
 
 \item{align}{Alignment to be applied to column. Defaults to \code{left} alignment. See details for acceptable values.}
 
-\item{type}{Type of alignment: "single" or "multi", for single-character alignment (default), and multiple-character alignment, respectively.}
+\item{type}{Type of alignment: "char" or "pos", for character alignment (default), and positional alignment, respectively. Positional alignment allows for aligning over multiple positions in the column.}
 
 \item{width}{Width to apply to the column in number of characters. Acceptable values include a
 numeric value, or a character string of a number.}
@@ -32,8 +32,8 @@ col_style_structure object
 Column Style Structure
 }
 \details{
-Supports alignment and width setting of data value columns (values found in the \code{column} column). Row group and label columns are left-aligned by default. Acceptable input values for \code{align} differ by type = "single" or "multi":
-\subsection{Single-character alignment (type = "single"):}{
+Supports alignment and width setting of data value columns (values found in the \code{column} column). Row group and label columns are left-aligned by default. Acceptable input values for \code{align} differ by type = "char" or "pos":
+\subsection{Character alignment (type = "char"):}{
 \itemize{
 \item "left" for left alignment
 \item "right" for right alignment"
@@ -44,21 +44,24 @@ spaces will be ignored.
 }
 }
 
-\subsection{Multi-character alignment (type = "multi"):}{
+\subsection{Positional alignment (type = "pos"):}{
 
-supply a vector of strings covering all formatted cell values, with numeric values represented as x's. These values can be created manually or obtained by applying the helper \verb{<insert helper>} to the \code{tfrmt} object. Alignment positions will be represented by vertical bars. For example, with starting values: c("12.3", "(5\%)", "2.35 (10.23)") we can align all of the first sets of decimals and parentheses by providing align = c("xx|.x", "||(x\%)", "x|.xx |")
+supply a vector of strings covering all formatted cell values, with numeric values represented as x's. These values can be created manually or obtained by utilizing the helper \code{display_val_frmts()}. Alignment positions will be represented by vertical bars. For example, with starting values: c("12.3", "(5\%)", "2.35 (10.23)") we can align all of the first sets of decimals and parentheses by providing align = c("xx|.x", "||(x\%)", "x|.xx |")
 }
 }
 \examples{
 
  plan <- col_style_plan(
-    col_style_structure(align = c("xx| |(xx\%)",
-                                  "xx|.x |(xx.x - xx.x)"), type = "multi", width = 100, col = "my_var"),
-    col_style_structure(align = "right", width = 200, col = vars(four)),
-    col_style_structure(align = c(".", ",", " "), col = vars(two, three)),
-    col_style_structure(width = 25, col = c(two, three)),
-    col_style_structure(width = 25, col = two),
-    col_style_structure(width = 25, col = span_structure(span = value, col = val2))
+    col_style_structure(col = "my_var",
+                        align = c("xx| |(xx\%)",
+                                  "xx|.x |(xx.x - xx.x)"),
+                        type = "pos", width = 100),
+    col_style_structure(col = vars(four), align = "right", width = 200),
+    col_style_structure(col = vars(two, three), align = c(".", ",", " ")),
+    col_style_structure(col = c(two, three), width = 25),
+    col_style_structure(col = two, width = 25),
+    col_style_structure(col = span_structure(span = value, col = val2),
+                        width = 25)
    )
 
 }

@@ -39,42 +39,12 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.chara
 
       selection <- style_el$cols[sel_id]
 
-      if(!is_span_structure(selection[[1]])){
-        col_selection <- col_plan_quo_to_vars(
-          x = selection,
-          column_names = column_names,
-          data_names = c(),
-          preselected_cols = col_plan_vars %>% map_chr(as_label),
-          return_only_selected = TRUE,
-          default_everything_behavior = TRUE
-        )
-      }else{
-        col_selection <- col_plan_span_structure_to_vars(
-          x = selection,
-          column_names = column_names,
-          data_names = c(),
-          preselected_cols = col_plan_vars %>% map_chr(as_label),
-          return_only_selected = TRUE
-        )
-      }
-
-      col_selection <- col_selection[!grepl("^-",col_selection)]
-
-      ## use names if they exist, else use content
-      if(!is.null(names(col_selection))){
-        col_sel_names <- names(col_selection)
-        if(any(col_sel_names == "")){
-          col_sel_names[col_sel_names == ""] <- col_selection[col_sel_names == ""]
-        }
-        col_selection <- col_sel_names
-      }
+      col_selection <- col_style_selections(selection, column_names, col_plan_vars)
 
       col_selection <- setdiff(col_selection, "..tfrmt_row_grp_lbl")
 
       col_selections <- c(col_selections, col_selection)
     }
-
-
 
     if(length(col_selections) > 0){
       col_style_selection <- style_el[setdiff(names(style_el),"cols")] %>%
@@ -118,6 +88,40 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.chara
 
 }
 
+# function to get all columns the col_style_structure applies to
+col_style_selections <- function(selection, column_names, col_plan_vars){
+  if(!is_span_structure(selection[[1]])){
+    col_selection <- col_plan_quo_to_vars(
+      x = selection,
+      column_names = column_names,
+      data_names = c(),
+      preselected_cols = col_plan_vars %>% map_chr(as_label),
+      return_only_selected = TRUE,
+      default_everything_behavior = TRUE
+    )
+  }else{
+    col_selection <- col_plan_span_structure_to_vars(
+      x = selection,
+      column_names = column_names,
+      data_names = c(),
+      preselected_cols = col_plan_vars %>% map_chr(as_label),
+      return_only_selected = TRUE
+    )
+  }
+
+  col_selection <- col_selection[!grepl("^-",col_selection)]
+
+  ## use names if they exist, else use content
+  if(!is.null(names(col_selection))){
+    col_sel_names <- names(col_selection)
+    if(any(col_sel_names == "")){
+      col_sel_names[col_sel_names == ""] <- col_selection[col_sel_names == ""]
+    }
+    col_selection <- col_sel_names
+  }
+
+  col_selection
+}
 
 #' Column level styling to vector defined in styling list
 #'
@@ -146,23 +150,23 @@ apply_style_to_col <- function(x, styling_list){
 #'
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column. Defaults to `left` alignment.
-#' @param type Type of alignment: "single" or "multi", for single-character alignment (default), and multiple-character alignment, respectively.
+#' @param type Type of alignment: "char" or "pos", for character alignment (default), and positional-alignment, respectively. Positional alignment allows for aligning over multiple positions in the column.
 #' @param column_name name alignment being applied to. Defaults to NULL
 #'
 #' @return Character vector containing aligned data values
 #'
 #' @noRd
-apply_col_alignment <- function(col, align, type = "single"){
+apply_col_alignment <- function(col, align, type = "char"){
 
   col_na_idx <- which(is.na(col))
   if(length(col_na_idx) > 0){
     col[col_na_idx] <- ""
   }
 
-  if (type=="single"){
-    out <- apply_col_alignment_single(col, align)
+  if (type=="char"){
+    out <- apply_col_alignment_char(col, align)
   } else {
-    out <- apply_col_alignment_multi(col, align)
+    out <- apply_col_alignment_pos(col, align)
   }
 
   if(length(col_na_idx) > 0){
@@ -177,7 +181,7 @@ apply_col_alignment <- function(col, align, type = "single"){
 #' @importFrom dplyr mutate across tibble bind_cols
 #' @importFrom stringr str_dup str_c str_trim str_detect
 #' @importFrom rlang warn
-apply_col_alignment_single <- function(col, align){
+apply_col_alignment_char <- function(col, align){
 
   if (!all(align %in% c("left","right"))){
     align <- ifelse(str_detect(align, "[[:alnum:]]"), paste0("\"", align, "\""), paste0("\\", align))
@@ -219,7 +223,7 @@ apply_col_alignment_single <- function(col, align){
 #' @importFrom tidyr separate pivot_longer replace_na
 #' @importFrom tidyselect starts_with
 #' @importFrom stringr str_replace_all str_count str_dup str_extract str_detect str_c
-apply_col_alignment_multi <- function(col, align){
+apply_col_alignment_pos <- function(col, align){
 
   # merge the alignment vec in with the column
   col_with_align <- tibble(col = trimws(col),
@@ -228,18 +232,22 @@ apply_col_alignment_multi <- function(col, align){
       tibble(align = trimws(align),
              col_as_x = str_replace_all(align, "\\|", "")),
       by = "col_as_x"
-    ) %>%
-    select(-"col_as_x") %>%
-    mutate(n_split_levs = str_count(align, "(?<!\\\\)[\\|]")+1)
+    )
 
   if (any(is.na(col_with_align$align))){
-    message("`align` input for `type=multi` in col_style_structure does not cover all possible values. Some cells may not be aligned.")
+    message("`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.")
   }
 
   # if nothing to align on, just return the original vec
   if (all(is.na(col_with_align$align))){
     return(col)
   }
+
+  # account for any with missing align strings
+  col_with_align <- col_with_align %>%
+    mutate(align = ifelse(is.na(align), col_as_x, align)) %>%
+    select(-"col_as_x") %>%
+    mutate(n_split_levs = str_count(align, "(?<!\\\\)[\\|]")+1)
 
   # get the maximum number of splits to make
   # ignore any |'s that have been escaped by user
@@ -260,6 +268,7 @@ apply_col_alignment_multi <- function(col, align){
            col_split_lev = gsub("col_split_", "", col_split_lev) %>% as.numeric())
 
   # 1) split the original col using the positions identified above
+  #     * except on the final one, do not split as this will be right-padded
   #
   # 2) further split into 2 pieces, so padding can be added consistently:
   #  - if the first substring, padding will be added to the left of entire string
@@ -269,17 +278,19 @@ apply_col_alignment_multi <- function(col, align){
     mutate(col_sub = substr(col, col_split_start, col_split_end)) %>%
     mutate(col_sub_1 = case_when(
       col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
+      col_split_lev == n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
       !str_detect(col_sub, " ") & ! col_split_lev == 1 ~ col_sub, # no space found - cannot split or pad
       TRUE ~ str_extract(col_sub, "^.+?(?= )")), # extract string prior to first space
       col_sub_2 = case_when(
         col_split_lev == 1 ~ col_sub,   # first substring so put the whole thing here
+        col_split_lev == n_split_levs ~ NA_character_, # last substring, nothing to left-pad
         TRUE ~ str_extract(col_sub, "(?= ).*")))  # extract string following & including first space
 
   # within each split level, find the # of chars it needs to take up, then left pad
   col_left_padded00 <- col_with_splits %>%
     group_by(col_split_lev) %>%
     mutate(to_add_left = nchar(col_sub) %>%
-             {max(.)-.} %>%
+             {max(., na.rm=TRUE)-.} %>%
              {str_dup(" ", .)})
 
   # notify user if left padding was intended but no space found
@@ -294,7 +305,7 @@ apply_col_alignment_multi <- function(col, align){
            col_sub_out = str_c(col_sub_1, to_add_left, col_sub_2))
 
   if (nrow(filter(col_left_padded01, no_space))>0){
-    message("Unable to complete multi-alignment in col_style_structure due to lack of whitespace available formatted value")
+    message("Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value")
   }
 
   # collapse back to 1 rec per formatted string
