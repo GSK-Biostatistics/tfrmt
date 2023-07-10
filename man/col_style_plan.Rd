@@ -19,9 +19,9 @@ right or on a specific character(s).
 \examples{
 
  plan <- col_style_plan(
-    col_style_structure(align = "left", width = 100, col = "my_var"),
-    col_style_structure(align = "right", col = vars(four)),
-    col_style_structure(align = c(".", ",", " "), col = vars(two, three))
+    col_style_structure(col = "my_var", align = "left", width = 100),
+    col_style_structure(col = vars(four), align = "right"),
+    col_style_structure(col = vars(two, three), align = c(".", ",", " "))
    )
 
 

@@ -95,7 +95,7 @@
 #'   ),
 #' # Specify column styling plan
 #'   col_style_plan = col_style_plan(
-#'     col_style_structure(align = c(".",","," "), col = vars(everything()))
+#'     col_style_structure(col = vars(everything()), align = c(".",","," "))
 #'   ))
 #'
 #' tfrmt_spec <- tfrmt(
@@ -154,7 +154,7 @@
 #'                       -starts_with("ord") ),
 #'   # Specify column styling plan
 #'   col_style_plan = col_style_plan(
-#'     col_style_structure(align = c(".",","," "), col = vars(everything()))
+#'     col_style_structure(col = vars(everything()), align = c(".",","," "))
 #'   ),
 #'
 #'   # Specify row group plan
