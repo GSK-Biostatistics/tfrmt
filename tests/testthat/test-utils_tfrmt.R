@@ -336,7 +336,7 @@ test_that("incomplete body_plan where params share label",{
   ) %>% group_by(rowlbl1)
 
   expect_equal(auto_tfrmt, man_tfrmt,
-               ignore_attr = c("class",".col_plan_vars"))
+               ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
 })
 
 

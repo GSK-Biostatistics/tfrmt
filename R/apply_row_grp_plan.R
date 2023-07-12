@@ -306,7 +306,6 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
     group <- as_vars(grps_avail)
 
     # Either drop group columns ("no print"), or format them w/ label
-
     if (element_row_grp_loc$location=="noprint"){
 
       add_ln_df <- .data %>% select(-c(!!!group))
@@ -319,8 +318,8 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
         group_by(!!group[[1]])
     } else { # Using the grouping in gt, but needs to drop all groups in label
       add_ln_df <- .data %>%
-        group_by(!!group[[1]]) %>%
-        select(-c(!!!group[-1]))
+        select(-c(!!!group[-1])) %>%
+        group_by(!!group[[1]])
     }
   }
   add_ln_df
