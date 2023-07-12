@@ -74,7 +74,9 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
 
   ## add `column` columns
   col_def <- make_col_df(column = tfrmt$column, group = tfrmt$group,
-                         label = tfrmt$label, col_plan = tfrmt$col_plan, n_cols)
+                         label = tfrmt$label,
+                         sorting_cols = tfrmt$sorting_cols,
+                         col_plan = tfrmt$col_plan, n_cols)
 
   output_dat <- output_dat %>%
     mutate(
@@ -149,9 +151,10 @@ add_sorting_cols <- function(data, sorting_cols){
   data
 }
 
-make_col_df <- function(column, group, label, col_plan, n_cols){
+make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols){
+
   column_vars <- column %>% map_chr(as_label)
-  grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label))
+  grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label), sorting_cols %>% map_chr(as_name))
   if(identical(column_vars, "__tfrmt__column")){
     column_vars <- "col"
   }
@@ -211,15 +214,16 @@ add_mock_big_ns <- function(data, column, param, big_n_struct){
   data
 }
 
-# Check the col plan contain positive information and isn't null
+# Check the col plan contain positive information, isn't null, and doesn't contain `everything()`
 col_plan_test <- function(col_plan){
   if(is.null(col_plan)){
     out <- FALSE
   } else {
-    first_chr <- col_plan$dots %>%
-      map_chr(as_label) %>%
+    all_names <- col_plan$dots %>%
+      map_chr(as_label)
+    first_chr <- all_names %>%
       str_sub(end = 1)
-    out <- !all(first_chr == "-")
+    out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
   }
   out
 }

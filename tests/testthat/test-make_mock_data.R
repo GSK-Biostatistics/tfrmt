@@ -648,3 +648,56 @@ test_that("Mock data for col_plan with only drops", {
     unique() %>%
     expect_equal(c("column1", "column2", "column3"))
 })
+
+test_that("Mock data for col_plan does not add group, label, or sorting_cols names to `column` variable", {
+
+
+  tf_cols <- tfrmt(
+    group="grp",
+    label="lbl",
+    param="prm",
+    column="col",
+    value="val",
+    sorting_cols = c("ord1","ord2"),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+    ),
+    col_plan = col_plan(
+      grp,
+      lbl,
+      col1,
+      col2,
+      -ord1,
+      -ord2
+    )
+  )
+
+  make_mock_data(tf_cols) %>%
+    pull(col) %>%
+    unique() %>%
+    expect_equal(c("col1","col2"))
+
+})
+
+test_that("Mock data ignores col_plan with everything()",{
+
+  tf_everything <- tfrmt(
+    group = "group",
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value",
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    ),
+    col_plan = col_plan(
+      -Total,
+      everything()
+    ))
+
+  col_names <- make_mock_data(tf_everything) %>%
+    pull(column) %>%
+    unique()
+  expect_equal(col_names, c("column1","column2","column3"))
+})
