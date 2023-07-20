@@ -75,6 +75,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     #Select before grouping to not have to deal with if it indents or not
     tentative_process(apply_col_plan, col_plan_vars,
                       fail_desc = "Unable to subset dataset columns") %>%
+    tentative_process(apply_page_struct,
+                      tfrmt$page_plan$struct_list,
+                      tfrmt$group,
+                      tfrmt$label) %>%
     tentative_process(apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
@@ -99,6 +103,12 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
                       tfrmt$label
                       )
 
+  # split up tables
+  if ("..tfrmt_page_num" %in% names(tbl_dat_wide_processed)){
+    tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
+      select(-`..tfrmt_page_num`) %>%
+      split(tbl_dat_wide_processed$`..tfrmt_page_num`)
+  }
   structure(
     tbl_dat_wide_processed,
     .col_plan_vars = col_plan_vars,

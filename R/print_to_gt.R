@@ -147,6 +147,32 @@ print_to_gt <- function(tfrmt, .data){
 
 #' Do all the formatting for the GT
 #'
+#' @param x formatted data for the table
+#' @param tfrmt tfrmt object
+#'
+#' @return gt or gt_group object
+#'
+#' @keywords internal
+#' @export
+cleaned_data_to_gt <- function(x, tfrmt){
+  UseMethod("cleaned_data_to_gt", x)
+}
+
+#' Apply formatting to a list of tables
+#'
+#' @param .data list of cleaned datasets
+#' @param tfrmt tfrmt
+#'
+#' @return gt_group object
+#' @noRd
+#' @importFrom gt gt_group
+cleaned_data_to_gt.list <- function(.data, tfrmt){
+
+    map(.data, ~cleaned_data_to_gt.default(.x, tfrmt)) %>%
+      gt_group(.list = .)
+}
+#' Apply formatting to a single table
+#'
 #' @param .data cleaned dataset
 #' @param tfrmt tfrmt
 #'
@@ -155,7 +181,8 @@ print_to_gt <- function(tfrmt, .data){
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md cols_hide sub_missing
-cleaned_data_to_gt <- function(.data, tfrmt){
+cleaned_data_to_gt.default <- function(.data, tfrmt){
+
   if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
       keep(function(x){
