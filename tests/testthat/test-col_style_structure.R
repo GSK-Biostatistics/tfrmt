@@ -654,3 +654,234 @@ test_that("Alphanumeric align string supplied",{
                  ))
 })
 
+
+test_that("multi-positional alignment", {
+
+  # 1 position align
+  vec <- c(" xx.x (xx.x)", " xx, xx", "xx (xx - xx)", " xx (xx %)")
+  vec_aligned <- apply_col_alignment(vec,
+                                     align = c(" xx.x |(xx.x)",
+                                               " xx, |xx",
+                                               "xx |(xx - xx)",
+                                               " xx |(xx %)"),
+                                     type = "pos")
+
+  expect_equal(vec_aligned,
+               c("xx.x (xx.x)   ",
+                 " xx, xx       ",
+                 "  xx (xx - xx)",
+                 "  xx (xx %)   "))
+
+  # 3 position align
+  vec <- c(" xx.x", " x, x", "xx (xx - xx)", " x (x.x, x.x)")
+  vec_aligned <- apply_col_alignment(vec,
+                                     align = c(" xx|.x",
+                                               " x|, |x",
+                                               "xx| |(xx - |xx)",
+                                               " x| |(x.x, |x.x)"),
+                                     type = "pos")
+
+  expect_equal(vec_aligned,
+               c("xx.x          ",
+                 " x, x         ",
+                 "xx  (xx - xx) ",
+                 " x  (x.x, x.x)"))
+
+  # positional alignment not covering all cases - will treat all not covered as: "xxx|" (last char to be aligned with first position)
+  vec <- c(" xx.x", " x, x", "xx (xx - xx)", " x (x.x, x.x)")
+  vec_aligned <- suppressMessages({
+    apply_col_alignment(vec,
+                        align = c(" xx|.x",
+                                  " x|, |x",
+                                  "xx| |(xx - |xx)"),
+                        type = "pos")
+  })
+  expect_equal(vec_aligned,
+               c("          xx.x         ",
+                 "           x, x        ",
+                 "          xx  (xx - xx)",
+                 "x (x.x, x.x)           ")
+  )
+
+  # align on 2 positions - full plan
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~ val,
+    "18-65"	, "trt", "15 (23.4 %)",
+    "18-65" , "placebo", "5 (3.8 %)",
+    "66-82" , "trt",	"34 (33.5 %)",
+    "66-82" , "placebo",	"48 (82.2%)"
+  )
+
+  tfrmt_obj <- tfrmt(
+    label = "lbl",
+    column = "col",
+    value = "val",
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c("xx| (xx|.x %)",
+                                    "xx| (xx|.x%)",
+                                    "x| (x|.x %)"),
+                          type = "pos",
+                          col = vars(trt, placebo))
+    )
+  )
+
+  dat_aligned <- dat %>%
+    pivot_wider(
+      names_from = col,
+      values_from = val
+    ) %>%
+    apply_col_style_plan(tfrmt_obj)
+
+  dat_aligned_man <- tibble::tribble(
+    ~ lbl    , ~trt    , ~placebo,
+    "18-65", "15 (23.4 %)", " 5  (3.8 %)",
+    "66-82", "34 (33.5 %)", "48 (82.2%) ",
+  )
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+  # align on 3 positions - full plan
+
+  dat <- tibble::tribble(
+    ~ one, ~ column, ~ value,
+    "lbl1", "two"    ," 12 (34%)",
+    "lbl1", "three"  ," 24 (58%)",
+    "lbl2", "two"    ," 12.3 (2.3 - 15.3)",
+    "lbl2", "three"  ," 15.4 (3.4 - 17.6)",
+    "lbl3", "two"    ,"  4.34"   ,
+    "lbl3", "three"  ,"  8.25"   ,
+    "lbl4", "two"    ,"(10, 20)" ,
+    "lbl4", "three"  ,"(11, 22)" )
+
+  tfrmt_obj <- tfrmt(
+    label = one,
+    column = vars(column),
+    value = value,
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(" xx| |(xx%)",
+                                    " xx|.x |(x.x - |xx.x)",
+                                    "||(xx, |xx)",
+                                    "x|.xx"),
+                          type = "pos",
+                          col = vars(two, three))
+    )
+  )
+
+  dat_aligned <- dat %>%
+    pivot_wider(
+      names_from = column,
+      values_from = value
+    ) %>%
+    apply_col_style_plan(tfrmt_obj)
+
+  dat_aligned_man <- tibble::tribble(
+    ~one    , ~two               ,~three           ,
+    "lbl1",  "12   (34%)       ", "24   (58%)       ",
+    "lbl2",  "12.3 (2.3 - 15.3)", "15.4 (3.4 - 17.6)",
+    "lbl3",  " 4.34            ", " 8.25            ",
+    "lbl4",  "     (10,   20)  ", "     (11,   22)  "
+  )
+
+  expect_equal(dat_aligned, dat_aligned_man)
+
+
+})
+
+test_that("multi-positional alignment detects inadequate inputs", {
+
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~ val,
+    "lbl1", "two"    ," 12 (34%)",
+    "lbl1", "three"  ," 24 (58%)",
+    "lbl2", "two"    ," 12.3 (2.3)",
+    "lbl2", "three"  ," 15.4 (5.4)")
+
+  tfrmt_obj <- tfrmt(
+    label = lbl,
+    column = vars(col),
+    value = val,
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(" xx |(xx)"),
+                          type = "pos",
+                          col = vars(two, three))
+    )
+  )
+  dat_wide <- dat %>%
+    pivot_wider(
+      names_from = col,
+      values_from = val
+    )
+
+  msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
+
+  expect_equal(msgs, c("`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
+                       "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n"))
+
+
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~ val,
+    "lbl1", "two"    ," 12(34%)",
+    "lbl1", "three"  ," 24(58%)",
+    "lbl2", "two"    ," 12.3(12.3%)",
+    "lbl2", "three"  ," 15.4(15.4%)")
+
+  tfrmt_obj <- tfrmt(
+    label = lbl,
+    column = vars(col),
+    value = val,
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(" xx|(xx|%)",
+                                    " xx|.x(xx|.x%)"),
+                          type = "pos",
+                          col = vars(two, three))
+    )
+  )
+  dat_wide <- dat %>%
+    pivot_wider(
+      names_from = col,
+      values_from = val
+    )
+
+  msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
+
+  expect_equal(msgs, c("Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n",
+                       "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n"))
+})
+
+
+test_that("helper for constructing positional alignment works",{
+
+  dat <- tibble::tribble(
+    ~ lbl, ~ col, ~param, ~ val,
+    "lbl1", "two"    ,"n",  12,
+    "lbl1", "two"    ,"pct", 33.9999,
+    "lbl1", "three"  ,"n",  24,
+    "lbl1", "three"  ,"pct", 58.222,
+    "lbl2", "two"    ,"n",  12,
+    "lbl2", "two"    ,"pct", 12.4353,
+    "lbl2", "three"  ,"n",  15,
+    "lbl2", "three"  ,"pct", 15.354)
+
+  tfrmt_obj <- tfrmt(
+    label = lbl,
+    column = vars(col),
+    param = param,
+    value = val,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = "lbl1",
+                     frmt_combine("{n} ({pct}%)",
+                                  n = frmt("x"),
+                                  pct = frmt("xx"))),
+      frmt_structure(group_val = ".default", label_val = "lbl2",
+                     frmt_combine("{n} ({pct}%)",
+                                  n = frmt("xxx"),
+                                  pct = frmt("xx.x")))
+    )
+  )
+
+  expect_equal(
+    display_val_frmts(tfrmt_obj, .data = dat, col = vars(everything())),
+    "c(\"xx (xx%)\",
+  \" xx (xx.x%)\")"
+  )
+})
