@@ -20,6 +20,7 @@ tfrmt(
   sorting_cols,
   big_n,
   footnote_plan,
+  page_plan,
   ...
 )
 }
@@ -54,6 +55,8 @@ columns. Takes a \code{\link[=col_plan]{col_plan()}}}
 \item{big_n}{how to format subject totals ("big Ns") for inclusion in the column labels. Takes a \code{\link[=big_n_structure]{big_n_structure()}}}
 
 \item{footnote_plan}{footnotes to be added to the table. Takes a \code{\link[=footnote_plan]{footnote_plan()}}}
+
+\item{page_plan}{pagination splits to be applied to the table. Takes a \code{\link[=page_plan]{page_plan()}}}
 
 \item{...}{These dots are for future extensions and must be empty.}
 }

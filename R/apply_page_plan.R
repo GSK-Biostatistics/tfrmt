@@ -4,13 +4,14 @@
 #' @param page_struct_list list of page structure objects
 #' @param group symbolic list of grouping
 #' @param label symbolic label column
+#' @param note_loc location of page note
 #'
 #' @noRd
 #' @importFrom purrr map
 #' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise
 #' @importFrom tidyr unnest nest pivot_longer
 #' @importFrom tidyselect starts_with
-apply_page_struct <- function(.data, page_struct_list, group, label){
+apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 
   .data <- .data %>%
     mutate(TEMP_row = row_number())
@@ -22,47 +23,47 @@ apply_page_struct <- function(.data, page_struct_list, group, label){
   # merge with data
   dat_plus_split <- tibble(TEMP_appl_row) %>%
     mutate(`..tfrmt_struct_num` = row_number()) %>%
-    unnest(cols = c(TEMP_appl_row)) %>%
-    group_by(TEMP_appl_row) %>%
-    arrange(TEMP_appl_row, desc(.data$`..tfrmt_struct_num`)) %>%
+    unnest(cols = .data$TEMP_appl_row) %>%
+    group_by(.data$TEMP_appl_row) %>%
+    arrange(.data$TEMP_appl_row, desc(.data$`..tfrmt_struct_num`)) %>%
     slice(1) %>%
     left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
-    arrange(TEMP_row) %>%
-    select(-TEMP_row)
+    arrange(.data$TEMP_row) %>%
+    select(-"TEMP_row")
 
   # fill missings so every row has a table index
   dat_plus_split <- dat_plus_split %>%
-    fill(`..tfrmt_struct_num`, .direction = "up") %>%
-    mutate(`..tfrmt_struct_num` = replace_na(`..tfrmt_struct_num`, max(`..tfrmt_struct_num`, na.rm = TRUE) + 1))
+    fill(.data$`..tfrmt_struct_num`, .direction = "up") %>%
+    mutate(`..tfrmt_struct_num` = replace_na(.data$`..tfrmt_struct_num`, max(.data$`..tfrmt_struct_num`, na.rm = TRUE) + 1))
 
   tbls_split_1 <- dat_plus_split %>%
-    group_by(`..tfrmt_struct_num`) %>%
-    nest() %>%
-    mutate(`..tfrmt_struct` = page_struct_list[`..tfrmt_struct_num`])
+    group_by(.data$`..tfrmt_struct_num`) %>%
+    nest(.key = "..tfrmt_data") %>%
+    mutate(`..tfrmt_struct` = page_struct_list[.data$`..tfrmt_struct_num`])
 
   # 2. get any groupings to further split by - based on values set to .default
   tbls_split_1_grp <- tbls_split_1 %>%
-    mutate(`..tfrmt_grouping` = map(`..tfrmt_struct`, expr_to_grouping, group, label)) %>%
+    mutate(`..tfrmt_grouping` = map(.data$`..tfrmt_struct`, expr_to_grouping, group, label)) %>%
     ungroup
 
   # 3. further split the tables by the grouping variables
   tbls_split_2 <- tbls_split_1_grp %>%
-    mutate(data = map2(data, `..tfrmt_grouping`, function(x, y) {
+    mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$`..tfrmt_grouping`, function(x, y) {
       x %>%
         group_by(across(all_of(y))) %>%
-        nest()
+        nest(.key = "..tfrmt_data")
      })) %>%
-    unnest(col = data)  %>%
+    unnest(cols = .data$`..tfrmt_data`)  %>%
     mutate(`..tfrmt_page_num` = row_number())
 
   # 4. add the names
-  if (ncol(select(tbls_split_2, - c("data", starts_with("..tfrmt"))))>0){
+  if (ncol(select(tbls_split_2, - starts_with("..tfrmt")))>0){
     tbl_nms <- tbls_split_2 %>%
-      select(-c(starts_with("..tfrmt"), data), `..tfrmt_page_num`) %>%
-      pivot_longer(cols = -`..tfrmt_page_num`, names_to = "grouping_col", values_to = "grouping_val") %>%
-      group_by(`..tfrmt_page_num`) %>%
-      filter(!is.na(grouping_val)) %>%
-      summarise(`..tfrmt_page_note` = paste0(grouping_col, ": ", grouping_val) %>% paste0(collapse = ",\n"))
+      select(-starts_with("..tfrmt"), "..tfrmt_page_num") %>%
+      pivot_longer(cols = -.data$`..tfrmt_page_num`, names_to = "grouping_col", values_to = "grouping_val") %>%
+      group_by(.data$`..tfrmt_page_num`) %>%
+      filter(!is.na(.data$grouping_val)) %>%
+      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
 
     tbls_split_2 <- left_join(tbls_split_2, tbl_nms, by = "..tfrmt_page_num")
   }
@@ -71,8 +72,9 @@ apply_page_struct <- function(.data, page_struct_list, group, label){
   if ("..tfrmt_page_note" %in% names(tbls_split_2)){
     pg_note <- tbls_split_2$`..tfrmt_page_note`
   }
+
   tbls_split_2 %>%
-        pull(data) %>%
+        pull(.data$`..tfrmt_data`) %>%
         setNames(pg_note)
 
 }
@@ -102,7 +104,7 @@ page_test_data <- function(cur_struct, .data, group, label){
 
   .data %>%
     filter(!!filter_expr) %>%
-    pull(TEMP_row)
+    pull(.data$TEMP_row)
 }
 
 #' Create the group_by expression for the data

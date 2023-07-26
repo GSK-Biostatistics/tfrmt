@@ -78,18 +78,19 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     tentative_process(apply_page_struct,
                       tfrmt$page_plan$struct_list,
                       tfrmt$group,
-                      tfrmt$label)
+                      tfrmt$label,
+                      tfrmt$page_plan$note_loc)
 
 
   # split up tables
   if ("..tfrmt_page_num" %in% names(tbl_dat_wide_processed)){
     tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
-      fill(`..tfrmt_page_num`, .direction = "up") %>%
-      group_by(`..tfrmt_page_num`, `..tfrmt_page_note`) %>%
+      fill(.data$`..tfrmt_page_num`, .direction = "up") %>%
+      group_by(.data$`..tfrmt_page_num`, .data$`..tfrmt_page_note`) %>%
       nest()
 
     tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
-      pull(data) %>%
+      pull(.data$data) %>%
       setNames(., tbl_dat_wide_processed$`..tfrmt_page_note`)
   }
 

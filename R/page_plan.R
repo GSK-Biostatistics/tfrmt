@@ -7,7 +7,7 @@
 #' @param note_loc Location of the note describing each table's subset value(s).
 #'   Useful if the `page_structure` contains only ".default" values (meaning the
 #'   table is split by every unique level of a grouping variable), and that
-#'   variable is dropped in the col_plan.
+#'   variable is dropped in the col_plan. `preheader` only available for rtf output.
 #' @param row_every_n Option to split at every *n* number of rows, consistent
 #'   with gt::gt_split(). Takes a numeric value.
 #'
@@ -17,7 +17,7 @@
 #' @examples
 #'  # use of page_struct
 #'  page_plan(
-#'     page_struct(group_val = "grp1", label_val = "lbl1")
+#'     page_structure(group_val = "grp1", label_val = "lbl1")
 #'  )
 #'
 #'  # use of #  rows
@@ -27,7 +27,7 @@
 #'
 #'
 page_plan <- function(...,
-                      note_loc = c("noprint","header","caption","source"),
+                      note_loc = c("noprint","preheader","source_note"),
                       row_every_n = NULL){
 
   page_structure_list <- list(...)
@@ -51,7 +51,7 @@ page_plan <- function(...,
 #'
 #' @examples
 #' # split page after every unique level of the grouping variable
-#'  page_struture(group_val = ".default", label_val = NULL)
+#'  page_structure(group_val = ".default", label_val = NULL)
 #'
 #'  # split page after specific levels
 #'  page_structure(group_val = "grp1", label_val = "lbl3")

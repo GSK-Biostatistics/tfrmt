@@ -207,9 +207,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
   }
   gt_out <- .data %>%
     gt(
-      rowname_col = as_label(tfrmt$label)) %>%
-    tab_header(title = tfrmt$title,
-               subtitle = tfrmt$subtitle)  %>%
+      rowname_col = as_label(tfrmt$label))  %>%
     sub_missing(
       rows = .data$..tfrmt_row_grp_lbl==TRUE,
       missing_text = ""
@@ -246,7 +244,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
       stub_row_group.border.color = "transparent",
       row_group.border.bottom.color = "transparent",
       row_group.border.top.color = "transparent",
-      table.font.names = c("Courier", default_fonts())) %>%
+      table.font.names = c("Courier", default_fonts()),
+      page.numbering = TRUE,
+      page.header.use_tbl_headings = FALSE) %>%
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
@@ -292,9 +292,27 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
     )
 
   # add page note if applicable
-  if (!is.null(page_note)){
-    gt_out_final <- gt_out_final %>%
-      gt::tab_caption(page_note)
+  if (!is.null(page_note) &&
+      !is.null(tfrmt$page_plan) &&
+      !tfrmt$page_plan$note_loc=="noprint"){
+
+    if (tfrmt$page_plan$note_loc=="preheader"){
+      gt_out_final <- gt_out_final  %>%
+        tab_header(title = tfrmt$title,
+                   subtitle = tfrmt$subtitle,
+                   preheader = page_note)
+    } else {
+
+      gt_out_final <- gt_out_final  %>%
+        tab_header(title = tfrmt$title,
+                   subtitle = tfrmt$subtitle)
+
+      if (tfrmt$page_plan$note_loc=="source"){
+        gt_out_final <- gt_out_final %>%
+          tab_source_note(page_note)
+      }
+
+    }
   }
 
   # add footnotes and output
