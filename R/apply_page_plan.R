@@ -7,42 +7,84 @@
 #'
 #' @noRd
 #' @importFrom purrr map
-#' @importFrom dplur mutate row_number group_by arrange slice left_join select desc
-#' @importFrom tidyr unnest replace_na fill
+#' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise
+#' @importFrom tidyr unnest nest pivot_longer
+#' @importFrom tidyselect starts_with
 apply_page_struct <- function(.data, page_struct_list, group, label){
 
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
-  # get indices of each tbl section
+  # 1. get the first round of sub-tables - based on values not set to .default
   TEMP_appl_row <- page_struct_list %>%
     map(page_test_data, .data, group, label)
 
   # merge with data
-dat_plus_split <- tibble(TEMP_appl_row) %>%
-  mutate(`..tfrmt_page_num` = row_number()) %>%
-  unnest(cols = c(TEMP_appl_row)) %>%
-  group_by(TEMP_appl_row) %>%
-  arrange(TEMP_appl_row, desc(.data$`..tfrmt_page_num`)) %>%
-  slice(1) %>%
-  left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
-  arrange(TEMP_row) %>%
-  select(-TEMP_row)
+  dat_plus_split <- tibble(TEMP_appl_row) %>%
+    mutate(`..tfrmt_struct_num` = row_number()) %>%
+    unnest(cols = c(TEMP_appl_row)) %>%
+    group_by(TEMP_appl_row) %>%
+    arrange(TEMP_appl_row, desc(.data$`..tfrmt_struct_num`)) %>%
+    slice(1) %>%
+    left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
+    arrange(TEMP_row) %>%
+    select(-TEMP_row)
 
-# fill missings so every row has a table index
-dat_plus_split %>%
-  fill(`..tfrmt_page_num`, .direction = "up") %>%
-  mutate(`..tfrmt_page_num` = replace_na(`..tfrmt_page_num`, max(`..tfrmt_page_num`, na.rm = TRUE) + 1))
+  # fill missings so every row has a table index
+  dat_plus_split <- dat_plus_split %>%
+    fill(`..tfrmt_struct_num`, .direction = "up") %>%
+    mutate(`..tfrmt_struct_num` = replace_na(`..tfrmt_struct_num`, max(`..tfrmt_struct_num`, na.rm = TRUE) + 1))
+
+  tbls_split_1 <- dat_plus_split %>%
+    group_by(`..tfrmt_struct_num`) %>%
+    nest() %>%
+    mutate(`..tfrmt_struct` = page_struct_list[`..tfrmt_struct_num`])
+
+  # 2. get any groupings to further split by - based on values set to .default
+  tbls_split_1_grp <- tbls_split_1 %>%
+    mutate(`..tfrmt_grouping` = map(`..tfrmt_struct`, expr_to_grouping, group, label)) %>%
+    ungroup
+
+  # 3. further split the tables by the grouping variables
+  tbls_split_2 <- tbls_split_1_grp %>%
+    mutate(data = map2(data, `..tfrmt_grouping`, function(x, y) {
+      x %>%
+        group_by(across(all_of(y))) %>%
+        nest()
+     })) %>%
+    unnest(col = data)  %>%
+    mutate(`..tfrmt_page_num` = row_number())
+
+  # 4. add the names
+  if (ncol(select(tbls_split_2, - c("data", starts_with("..tfrmt"))))>0){
+    tbl_nms <- tbls_split_2 %>%
+      select(-c(starts_with("..tfrmt"), data), `..tfrmt_page_num`) %>%
+      pivot_longer(cols = -`..tfrmt_page_num`, names_to = "grouping_col", values_to = "grouping_val") %>%
+      group_by(`..tfrmt_page_num`) %>%
+      filter(!is.na(grouping_val)) %>%
+      summarise(`..tfrmt_page_note` = paste0(grouping_col, ": ", grouping_val) %>% paste0(collapse = ",\n"))
+
+    tbls_split_2 <- left_join(tbls_split_2, tbl_nms, by = "..tfrmt_page_num")
+  }
+
+  pg_note <- NULL
+  if ("..tfrmt_page_note" %in% names(tbls_split_2)){
+    pg_note <- tbls_split_2$`..tfrmt_page_note`
+  }
+  tbls_split_2 %>%
+        pull(data) %>%
+        setNames(pg_note)
+
 }
 
 #' Test of the page rows in the data
 #'
 #' @param cur_struct current page struct
-#' @param .data data to test against NOTE: `TEMP_row` must be in the dataset
+#' @param .data data to test against
 #' @param group list of the group parameters
 #' @param label label symbol should only be one
 #'
-#' @return vector of the rows where a page split follows
+#' @return tibble filtered to the rows for the table
 #' @noRd
 #'
 #' @importFrom dplyr filter pull
@@ -59,7 +101,34 @@ page_test_data <- function(cur_struct, .data, group, label){
     parse_expr()
 
   .data %>%
-    filter(!!filter_expr)%>%
-    pull(.data$TEMP_row)
+    filter(!!filter_expr) %>%
+    pull(TEMP_row)
 }
 
+#' Create the group_by expression for the data
+#'
+#' @param cur_struct current page struct
+#' @param group list of the group parameters
+#' @param label label symbol should only be one
+#'
+#' @return list of indices for each of the tables
+#' @noRd
+expr_to_grouping <- function(cur_struct, group, label){
+
+  grouping <- NULL
+
+  if (!is.null(cur_struct$group_val)){
+    if(!is.list(cur_struct$group_val) && cur_struct$group_val==".default"){
+      grp_to_add <- map_chr(group, as_label)
+      grouping <- c(grouping, grp_to_add)
+    } else if (is.list(cur_struct$group_val) && any(cur_struct$group_val==".default")){
+      grp_to_add <- names(cur_struct$group_val)[map_lgl(cur_struct$group_val, ~.x==".default")]
+      grouping <- c(grouping, grp_to_add)
+    }
+  }
+  if (!is.null(cur_struct$label_val) && cur_struct$label_val==".default"){
+    grouping <- c(grouping, as_label(label))
+  }
+
+  grouping
+}

@@ -78,13 +78,29 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     tentative_process(apply_page_struct,
                       tfrmt$page_plan$struct_list,
                       tfrmt$group,
-                      tfrmt$label) %>%
-    tentative_process(apply_row_grp_lbl,
+                      tfrmt$label)
+
+
+  # split up tables
+  if ("..tfrmt_page_num" %in% names(tbl_dat_wide_processed)){
+    tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
+      fill(`..tfrmt_page_num`, .direction = "up") %>%
+      group_by(`..tfrmt_page_num`, `..tfrmt_page_note`) %>%
+      nest()
+
+    tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
+      pull(data) %>%
+      setNames(., tbl_dat_wide_processed$`..tfrmt_page_note`)
+  }
+
+  tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
+    apply_process(tentative_process,
+                  apply_row_grp_lbl,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
                       tfrmt$label) %>%
     #Not in a tentative process cause some of the inputs might be null but still valid
-    apply_footnote_meta(
+    apply_process(apply_footnote_meta,
                       footnote_plan = tfrmt$footnote_plan,
                       col_plan_vars = col_plan_vars,
                       element_row_grp_loc = tfrmt$row_grp_plan$label_loc,
@@ -92,23 +108,19 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
                       tfrmt$label,
                       columns = tfrmt$column
                       ) %>%
-    tentative_process(
+    apply_process(tentative_process,
       apply_col_style_plan,
       tfrmt,
       col_plan_vars = col_plan_vars
     ) %>%
-    tentative_process(remove_grp_cols,
+    apply_process(tentative_process,
+                  remove_grp_cols,
                       tfrmt$row_grp_plan$label_loc,
                       tfrmt$group,
                       tfrmt$label
                       )
 
-  # split up tables
-  if ("..tfrmt_page_num" %in% names(tbl_dat_wide_processed)){
-    tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
-      select(-`..tfrmt_page_num`) %>%
-      split(tbl_dat_wide_processed$`..tfrmt_page_num`)
-  }
+
   structure(
     tbl_dat_wide_processed,
     .col_plan_vars = col_plan_vars,
@@ -164,6 +176,24 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
   out
 }
 
+#' Apply a function to both lists and non-lists of data
+#'
+#' @param .data data to process (could be a list of tibbles or a single tibble)
+#' @param fx processing function
+#' @param ... inputs supplied to processing function
+#'
+#' @return processed data
+#' @noRd
+#'
+#' @importFrom purrr map
+apply_process <- function(.data, fx, ...){
+
+  if (inherits(.data, "tbl_df")){
+    fx(.data, ...)
+  } else if (is.list(.data)){
+    map(.data, fx, ...)
+  }
+}
 
 #' Checks required columns exsist
 #'
