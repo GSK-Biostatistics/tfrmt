@@ -144,15 +144,21 @@ test_that("page plan with mix of defined & group splits",{
   auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp1, grp2), quo(lbl))
 
   ## CURRENT BEHAVIOR:
-  # 1. split on last occurrence of grp2 = "a"
-  # 2. within 1, split for every unique value of grp1
+  # 1. split every level of grp1
+  # 2. within 1, split after each consecutive set of grp2 ="a"
 
   man_split <- list(
     `grp1: A` = tibble::tibble(
-      grp2 = c("a", "a", "b", "b"),
-      lbl = c("n", "pct", "n", "pct"),
-      prm = c("n", "pct", "n", "pct"),
-      trt = c(22, 11, 24, 55)
+      grp2 = c("a", "a"),
+      lbl = c("n", "pct"),
+      prm = c("n", "pct"),
+      trt = c(22, 11)
+    ),
+    `grp1: A` = tibble::tibble(
+      grp2 = c("b", "b"),
+      lbl = c("n", "pct"),
+      prm = c("n", "pct"),
+      trt = c(24, 55)
     ),
     `grp1: B` = tibble::tibble(
       grp2 = c("a", "a"),
@@ -160,15 +166,71 @@ test_that("page plan with mix of defined & group splits",{
       prm = c("n", "pct"),
       trt = c(33, 24)
     ),
-    tibble::tibble(
-      grp1 = c("B", "B"),
-      grp2 = c("b","b"),
+    `grp1: B` = tibble::tibble(
+      grp2 = c("b", "b"),
       lbl = c("n", "pct"),
       prm = c("n", "pct"),
-      trt = c(53,13)
+      trt = c(53, 13)
     )
   )
-  names(man_split)[3] <- NA
+
+  expect_equal(auto_split, man_split)
+})
+
+test_that("page plan with multiple structures", {
+
+  df <- tibble::tibble(
+    grp1 = c("A","A","A","A", "B","B","B","B"),
+    grp2 = c("a", "a", "b", "b", "a", "a", "b", "b"),
+    lbl = c("n","pct","n","pct", "n","pct","n","pct"),
+    prm = c("n","pct","n","pct","n","pct","n","pct"),
+    trt = c(22, 11, 24, 55, 33, 24, 53, 13)
+  )
+
+  # valid
+  my_page_plan <- page_plan(
+    page_structure(label_val = ".default"),
+    page_structure(group_val = list(grp1 = ".default", grp2 = "a")),
+    page_structure(group_val = list(grp2 = "b"))
+  )
+
+  expect_message(
+    auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp1, grp2), quo(lbl)),
+    paste0(
+      c("`page_plan` contains multiple `page_structures` with values set to \".default\". ",
+      "Only the last one specified will be used."),
+      collapse = "\n"
+  )
+  )
+
+
+
+  man_split <- list(
+    `grp1: A` = tibble::tibble(
+      grp2 = c("a", "a"),
+      lbl = c("n", "pct"),
+      prm = c("n", "pct"),
+      trt = c(22, 11)
+    ),
+    `grp1: A` = tibble::tibble(
+      grp2 = c("b", "b"),
+      lbl = c("n", "pct"),
+      prm = c("n", "pct"),
+      trt = c(24, 55)
+    ),
+    `grp1: B` = tibble::tibble(
+      grp2 = c("a", "a"),
+      lbl = c("n", "pct"),
+      prm = c("n", "pct"),
+      trt = c(33, 24)
+    ),
+    `grp1: B` = tibble::tibble(
+      grp2 = c("b", "b"),
+      lbl = c("n", "pct"),
+      prm = c("n", "pct"),
+      trt = c(53, 13)
+    )
+  )
 
   expect_equal(auto_split, man_split)
 })
