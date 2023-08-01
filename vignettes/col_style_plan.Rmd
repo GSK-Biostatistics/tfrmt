@@ -47,7 +47,10 @@ When the `col_style_plan()` is applied to the data, the most recent alignment an
 Let's take a look at how alignment can be applied to the example below, which contains a variety of different parameters which are formatted differently.
 
 <details>
-  <summary>Expand for the code used to produce the example data</summary>
+
+  <summary>
+  Expand for the code used to produce the example data.
+  </summary>
 ```{r}
 dat <- tribble(
   ~label     , ~param, ~column    , ~ value,   ~ord, 
