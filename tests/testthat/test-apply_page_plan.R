@@ -1,29 +1,32 @@
 
 test_that("Page plan with defined split", {
 
-  df <- tibble::tibble(
-    grp = c("A","A","B","B","C","C"),
-    lbl = c("a", "b", "a", "b", "a", "b"),
-    prm = "n",
-    trt = c(22, 11, 24, 55, 12, 19)
+  df <- tibble::tribble(
+    ~ grp, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" , "n"  , 22,
+    "A"  ,  "b" , "n"  , 11,
+    "B"  ,  "a" , "n"  , 24,
+    "B"  ,  "b" , "n"  , 55,
+    "C"  ,  "a" , "n"  , 12,
+    "C"  ,  "b" , "n"  , 19,
   )
   my_page_plan <- page_plan(
-    page_structure(group_val = "A", label_val = "a")
+    page_structure(group_val = "A")
   )
 
   auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp), quo(lbl))
   man_split <- list(
-    tibble::tibble(
-      grp = c("A"),
-      lbl = c("a"),
-      prm = "n",
-      trt = c(22)
+    tibble::tribble(
+      ~ grp, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" , "n"  , 22,
+      "A"  ,  "b" , "n"  , 11
     ),
-    tibble::tibble(
-      grp = c("A", "B","B","C","C"),
-      lbl = c("b", "a", "b", "a", "b"),
-      prm = "n",
-      trt = c(11, 24, 55, 12, 19)
+    tibble::tribble(
+      ~ grp, ~ lbl, ~ prm, ~ trt,
+      "B"  ,  "a" , "n"  , 24,
+      "B"  ,  "b" , "n"  , 55,
+      "C"  ,  "a" , "n"  , 12,
+      "C"  ,  "b" , "n"  , 19,
     )
   )
 
@@ -35,11 +38,14 @@ test_that("Page plan with defined split", {
 test_that("Page plan with grouped split", {
 
   # single grouping var
-  df <- tibble::tibble(
-    grp = c("A","A","B","B","C","C"),
-    lbl = c("a", "b", "a", "b", "a", "b"),
-    prm = "n",
-    trt = c(22, 11, 24, 55, 12, 19)
+  df <- tibble::tribble(
+    ~ grp, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" , "n"  , 22,
+    "A"  ,  "b" , "n"  , 11,
+    "B"  ,  "a" , "n"  , 24,
+    "B"  ,  "b" , "n"  , 55,
+    "C"  ,  "a" , "n"  , 12,
+    "C"  ,  "b" , "n"  , 19,
   )
   my_page_plan <- page_plan(
     page_structure(group_val = ".default")
@@ -47,32 +53,43 @@ test_that("Page plan with grouped split", {
 
   auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp), quo(lbl))
   man_split <- list(
-    `grp: A` = tibble::tibble(
-      lbl = c("a", "b"),
-      prm = "n",
-      trt = c(22, 11)
+    tibble::tribble(
+      ~ grp, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" , "n"  , 22,
+      "A"  ,  "b" , "n"  , 11
     ),
-    `grp: B` = tibble::tibble(
-      lbl = c("a", "b"),
-      prm = "n",
-      trt = c(24, 55)
+    tibble::tribble(
+      ~ grp, ~ lbl, ~ prm, ~ trt,
+      "B"  ,  "a" , "n"  , 24,
+      "B"  ,  "b" , "n"  , 55
     ),
-    `grp: C` = tibble::tibble(
-      lbl = c("a", "b"),
-      prm = "n",
-      trt = c(12, 19)
+    tibble::tribble(
+      ~ grp, ~ lbl, ~ prm, ~ trt,
+      "C"  ,  "a" , "n"  , 12,
+      "C"  ,  "b" , "n"  , 19,
     )
   )
 
-  expect_equal(auto_split, man_split)
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note", ".page_grp_vars"))
 
-  # multi grouping vars
-  df <- tibble::tibble(
-    grp1 = c("A","A","B","B","C","C"),
-    grp2 = c("a", "b", "a", "b", "a", "b"),
-    lbl = "n",
-    prm = "n",
-    trt = c(22, 11, 24, 55, 12, 19)
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("grp: A","grp: B", "grp: C")
+  )
+  expect_equal(
+    attr(auto_split, ".page_grp_vars"),
+    "grp"
+  )
+
+  # multi grouping vars - 1 selected
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" ,   "n"  , "n"  , 22,
+    "A"  ,  "b" ,   "n"  , "n"  , 11,
+    "B"  ,  "a" ,   "n"  , "n"  , 24,
+    "B"  ,  "b" ,   "n"  , "n"  , 55,
+    "C"  ,  "a" ,   "n"  , "n"  , 12,
+    "C"  ,  "b" ,   "n"  , "n"  , 19,
   )
   my_page_plan <- page_plan(
     page_structure(group_val = list(grp2 = ".default"))
@@ -80,29 +97,81 @@ test_that("Page plan with grouped split", {
 
   auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp1, grp2), quo(lbl))
   man_split <- list(
-    `grp2: a` = tibble::tibble(
-      grp1 = c("A", "B", "C"),
-      lbl = "n",
-      prm = "n",
-      trt = c(22, 24, 12)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "n"  , "n"  , 22,
+      "B"  ,  "a" ,   "n"  , "n"  , 24,
+      "C"  ,  "a" ,   "n"  , "n"  , 12
     ),
-    `grp2: b` = tibble::tibble(
-      grp1 = c("A", "B", "C"),
-      lbl = "n",
-      prm = "n",
-      trt = c(11, 55, 19)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "b" ,   "n"  , "n"  , 11,
+      "B"  ,  "b" ,   "n"  , "n"  , 55,
+      "C"  ,  "b" ,   "n"  , "n"  , 19,
     )
   )
 
-  expect_equal(auto_split, man_split)
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note", ".page_grp_vars"))
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("grp2: a","grp2: b")
+  )
+  expect_equal(
+    attr(auto_split, ".page_grp_vars"),
+    "grp2"
+  )
+
+  # multi grouping vars - 2 selected
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" ,   "n"  , "n"  , 22,
+    "A"  ,  "b" ,   "n"  , "n"  , 11,
+    "B"  ,  "a" ,   "n"  , "n"  , 24,
+    "B"  ,  "b" ,   "n"  , "n"  , 55
+  )
+  my_page_plan <- page_plan(
+    page_structure(group_val = ".default")
+  )
+
+  auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp1, grp2), quo(lbl))
+
+  man_split <- list(
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "n"  , "n"  , 22
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "b" ,   "n"  , "n"  , 11
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "B"  ,  "a" ,   "n"  , "n"  , 24
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "B"  ,  "b" ,   "n"  , "n"  , 55
+    )
+  )
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note", ".page_grp_vars"))
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("grp1: A,\ngrp2: a", "grp1: A,\ngrp2: b", "grp1: B,\ngrp2: a", "grp1: B,\ngrp2: b")
+  )
+  expect_equal(
+    attr(auto_split, ".page_grp_vars"),
+    c("grp1","grp2")
+  )
 
   # multi grouping vars w/ lbl
-  df <- tibble::tibble(
-    grp1 = c("A","A","A","A"),
-    grp2 = c("a", "a", "b", "b"),
-    lbl = c("n","pct","n","pct"),
-    prm = c("n","pct","n","pct"),
-    trt = c(22, 11, 24, 55)
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" ,   "n"  , "n"  , 22,
+    "A"  ,  "a" ,   "pct", "pct"  , 11,
+    "A"  ,  "b" ,   "n"  , "n"  , 24,
+    "A"  ,  "b" ,   "pct", "pct"  , 55
   )
   my_page_plan <- page_plan(
     page_structure(label_val = ".default")
@@ -110,32 +179,43 @@ test_that("Page plan with grouped split", {
 
   auto_split <- apply_page_struct(df, my_page_plan$struct_list, vars(grp1, grp2), quo(lbl))
   man_split <- list(
-    `lbl: n` = tibble::tibble(
-      grp1 = c("A", "A"),
-      grp2 = c("a", "b"),
-      prm = "n",
-      trt = c(22, 24)
-    ),
-    `lbl: pct` = tibble::tibble(
-      grp1 = c("A", "A"),
-      grp2 = c("a", "b"),
-      prm = "pct",
-      trt = c(11, 55)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "n"  , "n"  , 22,
+      "A"  ,  "b" ,   "n"  , "n"  , 24
+    ) ,
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "pct", "pct"  , 11,
+      "A"  ,  "b" ,   "pct", "pct"  , 55
     )
   )
 
-  expect_equal(auto_split, man_split)
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note",".page_grp_vars"))
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("lbl: n", "lbl: pct")
+  )
+  expect_equal(
+    attr(auto_split, ".page_grp_vars"),
+    "lbl"
+  )
 
 })
 
 test_that("page plan with mix of defined & group splits",{
 
-  df <- tibble::tibble(
-    grp1 = c("A","A","A","A", "B","B","B","B"),
-    grp2 = c("a", "a", "b", "b", "a", "a", "b", "b"),
-    lbl = c("n","pct","n","pct", "n","pct","n","pct"),
-    prm = c("n","pct","n","pct","n","pct","n","pct"),
-    trt = c(22, 11, 24, 55, 33, 24, 53, 13)
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+    "A"   , "a"   , "n" , "n" , 22,
+    "A"   , "a"   , "pct" , "pct" , 11,
+    "A"   , "b"   , "n" , "n" , 44,
+    "A"   , "b"   , "pct" , "pct" , 22,
+    "B"   , "a"   , "n" , "n" , 54,
+    "B"   , "a"   , "pct" , "pct" , 67,
+    "B"   , "b"   , "n" , "n" , 72,
+    "B"   , "b"   , "pct" , "pct" , 12
   )
   my_page_plan <- page_plan(
     page_structure(group_val = list(grp1 = ".default", grp2 = "a"))
@@ -148,43 +228,50 @@ test_that("page plan with mix of defined & group splits",{
   # 2. within 1, split after each consecutive set of grp2 ="a"
 
   man_split <- list(
-    `grp1: A` = tibble::tibble(
-      grp2 = c("a", "a"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(22, 11)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "A"   , "a"   , "n" , "n" , 22,
+      "A"   , "a"   , "pct" , "pct" , 11
     ),
-    `grp1: A` = tibble::tibble(
-      grp2 = c("b", "b"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(24, 55)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "A"   , "b"   , "n" , "n" , 44,
+      "A"   , "b"   , "pct" , "pct" , 22
     ),
-    `grp1: B` = tibble::tibble(
-      grp2 = c("a", "a"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(33, 24)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "B"   , "a"   , "n" , "n" , 54,
+      "B"   , "a"   , "pct" , "pct" , 67
     ),
-    `grp1: B` = tibble::tibble(
-      grp2 = c("b", "b"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(53, 13)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "B"   , "b"   , "n" , "n" , 72,
+      "B"   , "b"   , "pct" , "pct" , 12
     )
   )
 
-  expect_equal(auto_split, man_split)
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note",".page_grp_vars"))
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
+  )
+  expect_equal(
+    attr(auto_split, ".page_grp_vars"),
+    "grp1"
+  )
 })
 
 test_that("page plan with multiple structures", {
 
-  df <- tibble::tibble(
-    grp1 = c("A","A","A","A", "B","B","B","B"),
-    grp2 = c("a", "a", "b", "b", "a", "a", "b", "b"),
-    lbl = c("n","pct","n","pct", "n","pct","n","pct"),
-    prm = c("n","pct","n","pct","n","pct","n","pct"),
-    trt = c(22, 11, 24, 55, 33, 24, 53, 13)
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+    "A"   , "a"   , "n" , "n" , 22,
+    "A"   , "b"   , "n" , "n" , 11,
+    "A"   , "c"   , "n" , "n" , 44,
+    "B"   , "a"   , "n" , "n" , 54,
+    "B"   , "b"   , "n" , "n" , 67,
+    "B"   , "c"   , "n" , "n" , 72
   )
 
   # valid
@@ -206,31 +293,40 @@ test_that("page plan with multiple structures", {
 
 
   man_split <- list(
-    `grp1: A` = tibble::tibble(
-      grp2 = c("a", "a"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(22, 11)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "A"   , "a"   , "n" , "n" , 22
     ),
-    `grp1: A` = tibble::tibble(
-      grp2 = c("b", "b"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(24, 55)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "A"   , "b"   , "n" , "n" , 11
     ),
-    `grp1: B` = tibble::tibble(
-      grp2 = c("a", "a"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(33, 24)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "A"   , "c"   , "n" , "n" , 44
     ),
-    `grp1: B` = tibble::tibble(
-      grp2 = c("b", "b"),
-      lbl = c("n", "pct"),
-      prm = c("n", "pct"),
-      trt = c(53, 13)
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "B"   , "a"   , "n" , "n" , 54
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "B"   , "b"   , "n" , "n" , 67
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~lbl, ~prm, ~trt,
+      "B"   , "c"   , "n" , "n" , 72
     )
   )
 
-  expect_equal(auto_split, man_split)
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note", ".page_grp_vars"))
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
+  )
+  expect_equal(
+    attr(auto_split, ".page_grp_vars"),
+    "grp1"
+  )
 })

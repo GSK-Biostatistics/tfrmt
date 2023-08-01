@@ -4,13 +4,15 @@
 \alias{big_n_structure}
 \title{Big N Structure}
 \usage{
-big_n_structure(param_val, n_frmt = frmt("\\nN = xx"))
+big_n_structure(param_val, n_frmt = frmt("\\nN = xx"), by_page = FALSE)
 }
 \arguments{
 \item{param_val}{row value(s) of the parameter column for which the values
 are big n's}
 
 \item{n_frmt}{\code{\link[=frmt]{frmt()}} to control the formatting of the big n's}
+
+\item{by_page}{Option to include different big Ns for each group-defined set of pages (defined by any variables set to ".default" in the \code{page_plan}). Default is \code{FALSE}, meaning only the overall Ns are applied}
 }
 \value{
 big_n_structure object

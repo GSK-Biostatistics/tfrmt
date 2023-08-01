@@ -7,7 +7,7 @@
 #' @param note_loc location of page note
 #'
 #' @noRd
-#' @importFrom purrr map map_dbl
+#' @importFrom purrr map map_dbl accumulate
 #' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise last lag
 #' @importFrom tidyr unnest nest pivot_longer drop_na
 #' @importFrom tidyselect starts_with
@@ -32,51 +32,78 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     grping <- expr_to_grouping(page_struct_list[[struct_defaults_idx]], group, label)
 
     dat_split_1 <- .data %>%
-      group_by(across(all_of(grping)))%>%
-      nest(.key = "..tfrmt_data") %>%
-      ungroup() %>%
+      nest(`..tfrmt_data` = everything(), .by = (all_of(grping))) %>%
       mutate(`..tfrmt_split_num` = row_number())
 
     tbl_nms <- dat_split_1 %>%
       select(-"..tfrmt_data") %>%
-      pivot_longer(cols = -.data$`..tfrmt_split_num`, names_to = "grouping_col", values_to = "grouping_val") %>%
+      pivot_longer(cols = -"..tfrmt_split_num", names_to = "grouping_col", values_to = "grouping_val") %>%
       group_by(.data$`..tfrmt_split_num`) %>%
       filter(!is.na(.data$grouping_val)) %>%
       summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
 
     dat_split_1 <- left_join(dat_split_1, tbl_nms, by = "..tfrmt_split_num") %>%
-      select(-"..tfrmt_split_num")
+      select(c("..tfrmt_data", "..tfrmt_page_note"))
+
+    page_grp_vars <- grping
+
   } else {
     dat_split_1 <- tibble(`..tfrmt_data` = list(!!.data))
+
+    page_grp_vars <- NULL
   }
 
   # 3. Further split the sub-data based on specific values (loop over all combinations of page_structure & data)
   dat_split_2 <- dat_split_1 %>%
     mutate(split_idx = map(.data$`..tfrmt_data`, function(x){
-      map_dbl(page_struct_list, function(y){
+      map_dbl(page_struct_list, function(y){ # to do - do each of these separately.
         page_test_data(y, x, group, label)
       })
     })) %>%
     mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$split_idx, function(x, y){
+
       x %>%
-        mutate(`..tfrmt_split_after` = .data$TEMP_row %in% y,
-               `..tfrmt_split_after` = cumsum(.data$`..tfrmt_split_after`<lag(.data$`..tfrmt_split_after`, default = FALSE))) %>%
+        mutate(`..tfrmt_split_idx` = .data$TEMP_row %in% y,
+               ## do not include if FALSE preceded by FALSE
+               `..tfrmt_split_idx` = ifelse(!`..tfrmt_split_idx` & !lag(`..tfrmt_split_idx`, default = FALSE), NA_real_, `..tfrmt_split_idx`),
+               `..tfrmt_split_after` = accumulate(`..tfrmt_split_idx`, function(acc, x){
+                                                               if (is.na(acc)){
+                                                                 1
+                                                               } else if (is.na(x)){
+                                                                 acc
+                                                               } else {
+                                                                 acc + 1
+                                                               }
+                                                             })) %>%
+        fill(`..tfrmt_split_after`, .direction = "up") %>%
+        select(- `..tfrmt_split_idx`) %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)
     })) %>%
     select(-"split_idx") %>%
-    unnest(cols = .data$`..tfrmt_data`)
-
+    unnest(cols = "..tfrmt_data")
 
   pg_note <- NULL
   if ("..tfrmt_page_note" %in% names(dat_split_2)){
     pg_note <- dat_split_2$`..tfrmt_page_note`
   }
 
-  dat_split_2 %>%
+  dat_out <- dat_split_2 %>%
         mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, - "TEMP_row"))) %>%
-        pull(.data$`..tfrmt_data`) %>%
-        setNames(pg_note)
+        pull(.data$`..tfrmt_data`)
+
+  if ("..tfrmt_page_note" %in% names(dat_split_2)){
+    pg_note <- dat_split_2$`..tfrmt_page_note`
+    dat_out <-  dat_out %>%
+      map2(., pg_note, ~ structure(.x,
+                                   .page_note = .y))
+
+  }
+
+  structure(
+    dat_out,
+    .page_grp_vars = page_grp_vars
+  )
 
 }
 
@@ -175,5 +202,5 @@ expr_to_grouping <- function(cur_struct, group, label){
     grouping <- c(grouping, as_label(label))
   }
 
-  grouping
+  grouping %>% unname()
 }

@@ -169,21 +169,20 @@ cleaned_data_to_gt <- function(x, tfrmt){
 #' @importFrom purrr map2
 cleaned_data_to_gt.list <- function(.data, tfrmt){
 
-    map2(.data, names(.data), ~cleaned_data_to_gt.default(.x, tfrmt, .y)) %>%
+    map(.data, ~cleaned_data_to_gt.default(.x, tfrmt)) %>%
       gt_group(.list = .)
 }
 #' Apply formatting to a single table
 #'
 #' @param .data cleaned dataset
 #' @param tfrmt tfrmt
-#' @param page_note page-level note to include for the table
 #'
 #' @return GT object
 #' @noRd
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md cols_hide sub_missing
-cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
+cleaned_data_to_gt.default <- function(.data, tfrmt){
 
   if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
@@ -246,7 +245,8 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
       row_group.border.top.color = "transparent",
       table.font.names = c("Courier", default_fonts()),
       page.numbering = TRUE,
-      page.header.use_tbl_headings = FALSE) %>%
+      page.header.use_tbl_headings = FALSE,
+      page.orientation = "landscape") %>%
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
@@ -292,7 +292,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
     )
 
   # add page note if applicable
-  if (!is.null(page_note) &&
+  if (!is.null(attr(.data, ".page_note")) &&
       !is.null(tfrmt$page_plan) &&
       !tfrmt$page_plan$note_loc=="noprint"){
 
@@ -300,16 +300,16 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, page_note = NULL){
       gt_out_final <- gt_out_final  %>%
         tab_header(title = tfrmt$title,
                    subtitle = tfrmt$subtitle,
-                   preheader = page_note)
+                   preheader = attr(.data, ".page_note"))
     } else {
 
       gt_out_final <- gt_out_final  %>%
         tab_header(title = tfrmt$title,
                    subtitle = tfrmt$subtitle)
 
-      if (tfrmt$page_plan$note_loc=="source"){
+      if (tfrmt$page_plan$note_loc=="source_note"){
         gt_out_final <- gt_out_final %>%
-          tab_source_note(page_note)
+          tab_source_note(attr(.data, ".page_note"))
       }
 
     }
