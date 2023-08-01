@@ -215,24 +215,6 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL){
   out
 }
 
-#' Apply a function to both lists and non-lists of data
-#'
-#' @param .data data to process (could be a list of tibbles or a single tibble)
-#' @param fx processing function
-#' @param ... inputs supplied to processing function
-#'
-#' @return processed data
-#' @noRd
-#'
-#' @importFrom purrr map
-apply_process <- function(.data, fx, ...){
-
-  if (inherits(.data, "tbl_df")){
-    fx(.data, ...)
-  } else if (is.list(.data)){
-    map(.data, fx, ...)
-  }
-}
 
 #' Checks required columns exsist
 #'
