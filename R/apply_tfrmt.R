@@ -56,11 +56,12 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"
     ) %>%
-    tentative_process(apply_page_struct,
-                      tfrmt$page_plan$struct_list,
-                      tfrmt$group,
-                      tfrmt$label,
-                      tfrmt$page_plan$note_loc)
+    tentative_process(
+      apply_page_plan,
+      tfrmt$page_plan,
+      tfrmt$group,
+      tfrmt$label,
+      tfrmt$row_grp_plan$label_loc) #$location)
 
   # if big_n is to be by page, check that the big N's match the # of tables,
   # with the right groups
@@ -95,7 +96,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, big_n_df){
 
   if (inherits(.data, "list") && length(.data)>1){
-    if (inherits(.data, "list") && length(big_n_df)>1){
+    if (inherits(.data, "list") && inherits(big_n_df, "list") && length(big_n_df)>1){
       map2(.data, big_n_df, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, .y))
     } else {
       map(.data, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, big_n_df))
@@ -161,7 +162,7 @@ apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, big_n_df){
       tbl_dat_wide_processed,
       .col_plan_vars = col_plan_vars,
       .page_note = attr(.data, ".page_note"),
-      class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
+      class = class(tbl_dat_wide_processed)
     )
 
 }

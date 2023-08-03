@@ -7,7 +7,7 @@
 page_plan(
   ...,
   note_loc = c("noprint", "preheader", "source_note"),
-  row_every_n = NULL
+  max_rows = NULL
 )
 }
 \arguments{
@@ -18,8 +18,7 @@ Useful if the \code{page_structure} contains only ".default" values (meaning the
 table is split by every unique level of a grouping variable), and that
 variable is dropped in the col_plan. \code{preheader} only available for rtf output.}
 
-\item{row_every_n}{Option to split at every \emph{n} number of rows, consistent
-with gt::gt_split(). Takes a numeric value.}
+\item{max_rows}{Option to set a maximum number of rows per page. Takes a numeric value.}
 }
 \value{
 page_plan object
@@ -36,7 +35,7 @@ page_structure's and the row_every_n argument, respectively.
 
  # use of #  rows
  page_plan(
-    row_every_n = 5
+    max_rows = 5
  )
 
 

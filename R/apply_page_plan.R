@@ -1,4 +1,118 @@
-#' Apply page structure to data
+#' Apply page plan to data
+#'
+#' @param .data data
+#' @param page_plan tfrmt page_plan
+#' @param group symbolic list of grouping
+#' @param label symbolic label column
+#' @param row_grp_plan_label_loc row_grp_plan label location
+#'
+#' @noRd
+#' @importFrom rlang is_empty
+apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_loc = "indented"){
+
+  if (!is_empty(page_plan$struct_list)){
+    apply_page_struct(.data, page_plan$struct_list, group, label, page_plan$note_loc)
+  } else if (!is.null(page_plan$max_rows)){
+    apply_page_max_rows(.data, page_plan$max_rows, group, label, row_grp_plan_label_loc)
+  } else {
+    .data
+  }
+}
+
+#' Apply page plan splits based on row #s
+#'
+#' @param .data data
+#' @param max_rows max number of rows per page / # of rows to split after
+#' @param row_grp_plan_label_loc row_grp_plan label location
+#'
+#' @noRd
+#' @importFrom dplyr mutate row_number across pull filter if_any group_by
+#'   group_split slice bind_rows last
+#' @importFrom tidyselect contains
+#' @importFrom tidyr replace_na
+#' @importFrom tibble tibble
+#' @importFrom forcats fct_inorder
+apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_label_loc){
+
+  .data <- .data %>%
+    mutate(TEMP_row = row_number())
+
+  # determine # of rows to be added for the group during row grp lbl formatting
+  # only proceed if the # of group rows to be added < max_rows
+  #
+  #      - "gtdefault": +1
+  #      - "spanning" / "indented" : # of grouping vars
+  #      - "column": # of grouping vars - 1
+  #      - "noprint": +0
+  n_grp_vars <- length(group)
+  n_grp_rows <- switch(row_grp_plan_label_loc$location,
+                       gtdefault = 1,
+                       spanning = n_grp_vars,
+                       indented = n_grp_vars,
+                       column = n_grp_vars-1,
+                       noprint = 0)
+
+  if (!n_grp_rows<max_rows){
+    message("Unable to complete pagination because `max_rows` specified in `page_plan` is smaller than the number of rows dedicated to group labels. Suggest increasing `max_rows` and trying again.")
+    return(.data)
+  }
+
+  # 2. get info about summary rows
+  # dat_summ_rows <- .data %>%
+  #     mutate(across(c(!!!group), ~ .x==!!label)) %>%
+  #   pivot_longer(map_chr(group, as_label), names_to = "..tfrmt_summ_grp_num", values_to = "..tfrmt_summ_row") %>%
+  #   filter(`..tfrmt_summ_row`) %>%
+  #   group_by(TEMP_row) %>%
+  #   slice(1)  %>%
+  #   select(TEMP_row, `..tfrmt_summ_row`, `..tfrmt_summ_grp_num`) %>%
+  #   mutate(`..tfrmt_summ_grp_num` = which(rev(`..tfrmt_summ_grp_num`==map_chr(group, as_label))))
+
+  # 3) split the data by row number, accounting for row groups to be added
+
+  # start with top row, then add rows 1 by 1, testing # of rows each time
+  # dat_grp_num <- .data %>%
+  #   mutate(`..tfrmt_top_grp_num` = fct_inorder(!!group[[1]]) %>% as.numeric()) %>%
+  #   left_join(dat_summ_rows, by = "TEMP_row")
+
+  remain_dat <- .data #dat_grp_num
+  cur_dat <- tibble()
+
+  tbl_list <- vector(mode = "list")
+  i <- 1
+  while(nrow(remain_dat)>0){
+
+    # candidate row to consider adding to tbl
+    next_dat <- remain_dat %>% slice(1)
+
+    # if this row is added, how many rows will be in table
+    # TODO - simplify the calculations to not rely on combine_group_cols bc we dont need the formatting
+    #  currently leveraging this because the logic is right
+    cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
+      combine_group_cols(group, label, row_grp_plan_label_loc)
+
+    # if the table is within our limit, keep it
+    if (nrow(cur_dat_new) <= max_rows){
+      cur_dat <- bind_rows(cur_dat, next_dat)
+      remain_dat <- remain_dat %>% slice(-1)
+    }
+    # if we have hit or exceeded the limit, save the table
+    if (nrow(cur_dat_new) >= max_rows | nrow(remain_dat)==0){
+      tbl_list[[i]] <- cur_dat
+      i <- i + 1
+      cur_dat <- tibble()
+    }
+  }
+
+  # return single tbl or list of tbls
+  if (length(tbl_list)==1) {
+    tbl_list[[1]]
+  } else {
+    tbl_list
+  }
+
+}
+
+#' Apply page plan splits based on page_structures
 #'
 #' @param .data data
 #' @param page_struct_list list of page structure objects
