@@ -204,6 +204,7 @@ test_that("Page plan with grouped split", {
 
 })
 
+
 test_that("page plan with mix of defined & group splits",{
 
   df <- tibble::tribble(
@@ -441,7 +442,7 @@ test_that("Page plan with max_rows & group-level summary rows",{
     value = "val",
     body_plan = body_plan(frmt_structure(group_val=".default", label_val=".default", frmt("xx"))),
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
-    page_plan = page_plan(max_rows = 4)
+    page_plan = page_plan(max_rows = 3)
   )
   auto_split <- apply_tfrmt(dat_summ, mytfrmt)
 
@@ -450,20 +451,29 @@ test_that("Page plan with max_rows & group-level summary rows",{
          ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl`,
          "cat_1"       ,"34"  ,"23"   ,FALSE  ,
          "cat_2"       ,"43"  ,"15"   ,FALSE   ,
+         "  sub_cat_2" ,"12"  ,"73"   ,FALSE
+         ),
+       tibble::tribble(
+         ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl`,
+         "cat_2"       ,"43"  ,"15"   ,FALSE   ,
          "  sub_cat_2" ,"12"  ,"73"   ,FALSE    ,
          "    sub_cat_3","76"  ,"10"  ,FALSE
        ),
        tibble::tribble(
-         ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl` ,
+         ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl`,
          "cat_3"            ,"56"  ,"65"  ,FALSE  ,
-         "  sub_cat_3a"     ,"98"  ,"78"  ,FALSE  ,
-         "  sub_cat_3b"     ,NA    ,NA    ,TRUE   ,
-         "    sub_cat_3b_1" ,"11"  ,"35"  ,FALSE
+         "  sub_cat_3a"     ,"98"  ,"78"  ,FALSE
        ),
        tibble::tribble(
-         ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl`,
-         "cat_3"             ,NA    ,NA   ,TRUE,
-         "  sub_cat_3b"      ,NA    ,NA   ,TRUE,
+         ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl` ,
+         "cat_3"            ,"56"  ,"65"  ,FALSE  ,
+         "  sub_cat_3b"     ,NA    ,NA    ,TRUE   ,
+         "    sub_cat_3b_1"  ,"11"  ,"35" ,FALSE
+       ),
+       tibble::tribble(
+         ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl` ,
+         "cat_3"            ,"56"  ,"65"  ,FALSE  ,
+         "  sub_cat_3b"     ,NA    ,NA    ,TRUE   ,
          "    sub_cat_3b_3"  ," 5"  ," 8" ,FALSE
        )
   )
@@ -497,7 +507,7 @@ test_that("Page plan with max_rows & group-level summary rows",{
     ),
     tibble::tribble(
       ~my_label     ,~trt  ,~pla  ,~`..tfrmt_row_grp_lbl`,
-      "cat_3"            ,NA    ,NA    ,TRUE   ,
+      "cat_3"            ,"56"    ,"65"    ,FALSE   ,
       "  sub_cat_3b"     ,NA    ,NA    ,TRUE   ,
       "    sub_cat_3b_3"  ," 5"  ," 8" ,FALSE
     )
