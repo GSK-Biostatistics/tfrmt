@@ -110,8 +110,16 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
 
     frmtted_vals <- .data %>%
       filter((!!param) %in% big_n_structure$param_val) %>%
-      apply_frmt.frmt(big_n_structure$n_frmt, ., value, mock) %>%
-      select(!!!columns, !!value, where(~sum(is.na(.x))==0), -!!param)
+      apply_frmt.frmt(big_n_structure$n_frmt, ., value, mock)
+
+    if (big_n_structure$by_page){
+      frmtted_vals <-  frmtted_vals %>%
+        select(!!!columns, !!value, where(~sum(is.na(.x))==0), -!!param)
+    } else {
+      frmtted_vals <-  frmtted_vals %>%
+        select(!!!columns, !!value)
+    }
+
     # Test for missing big n's
     if(nrow(frmtted_vals) == 0){
       warning("Unable to add big n's as there are no matching parameter values in the given ARD")
