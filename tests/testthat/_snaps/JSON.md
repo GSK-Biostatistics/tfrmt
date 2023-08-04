@@ -680,6 +680,7 @@
               ["my_var"]
             ],
             "align": ["left"],
+            "type": ["char"],
             "width": [100]
           },
           {
@@ -687,6 +688,7 @@
               ["four"]
             ],
             "align": ["right"],
+            "type": ["char"],
             "width": {}
           },
           {
@@ -695,6 +697,7 @@
               ["three"]
             ],
             "align": [".", ",", " "],
+            "type": ["char"],
             "width": {}
           },
           {
@@ -707,6 +710,7 @@
               }
             ],
             "align": {},
+            "type": ["char"],
             "width": [25]
           }
         ]
@@ -729,6 +733,7 @@
               ["my var"]
             ],
             "align": ["left"],
+            "type": ["char"],
             "width": [100]
           }
         ]

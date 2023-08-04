@@ -515,6 +515,9 @@ test_that("json read/write", {
   expect_equal(read_tfrmt, test_tfrmt,
                ignore_attr = TRUE)
 
+  # remove json
+  file.remove(test_loc)
+
 })
 
 
