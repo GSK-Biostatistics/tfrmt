@@ -211,7 +211,7 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
                                                                  acc + 1  # new tbl idx
                                                                }
                                                              })) %>%
-        fill(.data$`..tfrmt_split_after`, .direction = "up") %>%
+        fill("..tfrmt_split_after", .direction = "up") %>%
         select(- "..tfrmt_split_idx") %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)

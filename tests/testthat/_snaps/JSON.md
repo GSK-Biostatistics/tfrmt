@@ -739,3 +739,48 @@
         ]
       } 
 
+# json page plan
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [
+            {
+              "group_val": [".default"],
+              "label_val": {}
+            },
+            {
+              "group_val": {},
+              "label_val": ["A"]
+            }
+          ],
+          "note_loc": ["source_note"],
+          "max_rows": {}
+        }
+      } 
+
+---
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [],
+          "note_loc": ["noprint"],
+          "max_rows": [5]
+        }
+      } 
+
