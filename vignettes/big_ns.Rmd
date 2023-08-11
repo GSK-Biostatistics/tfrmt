@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(tfrmt)
 library(tibble)
 library(dplyr)
+library(tidyr)
 ```
 
 Displaying subject totals ("Big N's") at the top of a table is a very common and necessary part of building tables for clinical trials. {tfrmt} allows you to do this via the `big_n` argument, which allows you to use a `big_n_structure` object to specify which values in the ARD should be added to the columns and how they should be formatted. 
