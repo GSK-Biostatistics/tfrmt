@@ -202,6 +202,45 @@ test_that("Page plan with grouped split", {
     "lbl"
   )
 
+  # specific lbl value
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" ,   "lbl1"  , "n"  , 22,
+    "A"  ,  "b" ,   "lbl1", "pct"  , 11,
+    "A"  ,  "a" ,   "lbl2"  , "n"  , 34,
+    "A"  ,  "b" ,   "lbl2", "pct"  , 65,
+    "A"  ,  "c" ,   "lbl1"  , "n"  , 97,
+    "A"  ,  "d" ,   "lbl1", "pct"  , 23,
+    "A"  ,  "c" ,   "lbl2"  , "n"  , 34,
+    "A"  ,  "d" ,   "lbl2", "pct"  , 42
+  )
+  my_page_plan <- page_plan(
+    page_structure(label_val = "lbl1")
+  )
+  auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+
+  man_split <- list(
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "lbl1"  , "n"  , 22,
+      "A"  ,  "b" ,   "lbl1", "pct"  , 11
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "lbl2"  , "n"  , 34,
+      "A"  ,  "b" ,   "lbl2", "pct"  , 65,
+      "A"  ,  "c" ,   "lbl1"  , "n"  , 97,
+      "A"  ,  "d" ,   "lbl1", "pct"  , 23
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "c" ,   "lbl2"  , "n"  , 34,
+      "A"  ,  "d" ,   "lbl2", "pct"  , 42
+    )
+  )
+
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note",".page_grp_vars"))
+
 })
 
 
