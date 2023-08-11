@@ -13,6 +13,9 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
   # preferentially apply any page_structures;
   # if none, then apply max_rows
   if (!is_empty(page_plan$struct_list)){
+    if (!is.null(page_plan$max_rows)){
+      message("`page_plan` does not currently support the use of both `page_structure`s and `max_rows` to define page splits. Provided `page_structure`(s) will be used, and `max_rows` will be ignored.")
+    }
     apply_page_struct(.data, page_plan$struct_list, group, label, page_plan$note_loc)
   } else if (!is.null(page_plan$max_rows)){
     apply_page_max_rows(.data, page_plan$max_rows, group, label, row_grp_plan_label_loc)
