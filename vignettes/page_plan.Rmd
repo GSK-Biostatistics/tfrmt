@@ -38,7 +38,7 @@ This feature involves splitting by the values of `group` and/or `label` variable
   
 These methods can also be combined with a `page_structure` or across multiple `page_structure`s. For example, `page_structure(group_val = ".default", label_val = "n")` will split on every unique group_val, as well as every instance where label_val = "n". 
 
-If any of the `page_structure`s contain a ".default", it may be desired to print a note indicating the grouping value for the given page at the time of rendering. The location of this note can be specified via the `note_loc` parameter in `page_plan`. The functionality for `note_loc` may be limited by the desired output type; for example, "preheader" is only available for RTF outputs, while "source_note" is available for all output types. 
+If any of the `page_structure`s contain a ".default", it may be desired to print a note indicating the grouping value for the given page at the time of rendering. The location of this note can be specified via the `note_loc` parameter in `page_plan`. The functionality for `note_loc` may be limited by the desired output type; for example, "preheader" is only available for RTF outputs, while "source_note" and "subtitle" are available for all output types. 
   
 2) **Max Rows-driven**:
 
