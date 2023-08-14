@@ -6,7 +6,7 @@
 \usage{
 page_plan(
   ...,
-  note_loc = c("noprint", "preheader", "source_note"),
+  note_loc = c("noprint", "preheader", "subtitle", "source_note"),
   max_rows = NULL
 )
 }
