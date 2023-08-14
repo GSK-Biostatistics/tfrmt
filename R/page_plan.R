@@ -26,7 +26,7 @@
 #'
 #'
 page_plan <- function(...,
-                      note_loc = c("noprint","preheader","source_note"),
+                      note_loc = c("noprint","preheader","subtitle","source_note"),
                       max_rows = NULL){
 
   page_structure_list <- list(...)
