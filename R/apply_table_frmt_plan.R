@@ -165,7 +165,10 @@ expr_to_filter.quosure <- function(cols, val){
 
 #' @importFrom purrr map2_chr map_chr
 expr_to_filter.quosures <- function(cols, val){
-  if(!is.list(val) & length(cols) == 1){
+
+  if (is.null(val)){
+    out <- "TRUE"
+  } else if(!is.list(val) & length(cols) == 1){
     cols <- cols[[1]]
     out <- expr_to_filter(cols,val)
   } else if(!is.list(val) && val == ".default"){

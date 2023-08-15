@@ -42,22 +42,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     # arrange if sorting cols are applied
     tentative_process(arrange_enquo, tfrmt$sorting_cols, fail_desc = "Unable to arrange dataset")
 
-  col_plan_vars <- tentative_process(
-    names(tbl_dat_wide),
-    create_col_order,
-    cp = tfrmt$col_plan,
-    columns = tfrmt$column,
-    fail_desc = "Unable to create dataset subset vars"
-    ) %>%
-    as_vars() %>% # Ensures col_plan_vars is a vars w/ names
-    tentative_process(
-      .,
-      apply_big_n_df,
-      columns = tfrmt$column,
-      value = tfrmt$value,
-      big_n_df = big_n_df,
-      fail_desc = "Unable to add big N's"
-    )
 
   if(is.null(tfrmt$row_grp_plan$label_loc)){
     tfrmt$row_grp_plan$label_loc <-  element_row_grp_loc(location = "indented")
@@ -72,39 +56,124 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"
     ) %>%
+    tentative_process(
+      apply_page_plan,
+      tfrmt$page_plan,
+      tfrmt$group,
+      tfrmt$label,
+      tfrmt$row_grp_plan$label_loc)
+
+  # if big_n is to be by page, check that the big N's match the # of tables,
+  # with the right groups
+  check_big_n_page(big_n_df, tbl_dat_wide_processed, tfrmt)
+
+  # Results of col plan
+  col_plan_vars <- tentative_process(
+    names(tbl_dat_wide),
+    create_col_order,
+    cp = tfrmt$col_plan,
+    columns = tfrmt$column,
+    fail_desc = "Unable to create dataset subset vars"
+  ) %>%
+    as_vars()
+
+  # apply remaining processing to single table or map over list of tables (paginated)
+  apply_tfrmt_subtable_mapper(tfrmt, tbl_dat_wide_processed, col_plan_vars, big_n_df)
+
+}
+
+
+#' Process the remainder of table or list of tables
+#'
+#' @param tfrmt tfrmt object
+#' @param .data processed wide tbl or list of processed wide tbls
+#' @param col_plan_vars col plan converted to vars() to be applied
+#' @param big_n_df tbl of big Ns to apply (if 1 set of overall Ns) or list of tbl of bigNs (if grouping by page)
+#' to apply
+#'
+#' @importFrom purrr map map2
+#' @noRd
+apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, big_n_df){
+
+  # there is a list of >1 tables
+  if (inherits(.data, "list") && length(.data)>1){
+
+    # there is a list of >1 big N tibbles
+    if (inherits(big_n_df, "list") && length(big_n_df)>1){
+      map2(.data, big_n_df, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, .y))
+    } else {
+
+      # there is only 1 set of (overall) big Ns
+      map(.data, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, big_n_df))
+    }
+  } else {
+
+    # there is a single table
+    apply_tfrmt_subtable(tfrmt, .data, col_plan_vars, big_n_df)
+  }
+}
+
+#' Processing to apply to each table
+#'
+#' @param tfrmt tfrmt object
+#' @param .data processed wide tbl
+#' @param col_plan_vars col plan converted to vars() to be applied
+#' @param big_n_df big Ns to apply
+#' @noRd
+apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, big_n_df){
+
+  if (inherits(big_n_df, "list")) {
+    big_n_df <- big_n_df[[1]]
+  }
+
+  col_plan_vars <- big_n_df %>%
+    tentative_process(
+      apply_big_n_df,
+      col_plan_vars,
+      columns = tfrmt$column,
+      value = tfrmt$value,
+      fail_desc = "Unable to add big N's"
+    )
+
+  tbl_dat_wide_processed <- .data  %>%
     #Select before grouping to not have to deal with if it indents or not
     tentative_process(apply_col_plan, col_plan_vars,
                       fail_desc = "Unable to subset dataset columns") %>%
-    tentative_process(apply_row_grp_lbl,
-                      tfrmt$row_grp_plan$label_loc,
-                      tfrmt$group,
-                      tfrmt$label) %>%
+    tentative_process(
+                  apply_row_grp_lbl,
+                  tfrmt$row_grp_plan$label_loc,
+                  tfrmt$group,
+                  tfrmt$label) %>%
     #Not in a tentative process cause some of the inputs might be null but still valid
     apply_footnote_meta(
-                      footnote_plan = tfrmt$footnote_plan,
-                      col_plan_vars = col_plan_vars,
-                      element_row_grp_loc = tfrmt$row_grp_plan$label_loc,
-                      tfrmt$group,
-                      tfrmt$label,
-                      columns = tfrmt$column
-                      ) %>%
-    tentative_process(
-      apply_col_style_plan,
-      tfrmt,
-      col_plan_vars = col_plan_vars
+                  footnote_plan = tfrmt$footnote_plan,
+                  col_plan_vars = col_plan_vars,
+                  element_row_grp_loc = tfrmt$row_grp_plan$label_loc,
+                  tfrmt$group,
+                  tfrmt$label,
+                  columns = tfrmt$column
     ) %>%
-    tentative_process(remove_grp_cols,
-                      tfrmt$row_grp_plan$label_loc,
-                      tfrmt$group,
-                      tfrmt$label
-                      )
+    tentative_process(
+                  apply_col_style_plan,
+                  tfrmt,
+                  col_plan_vars = col_plan_vars
+    ) %>%
+    tentative_process(
+                  remove_grp_cols,
+                  tfrmt$row_grp_plan$label_loc,
+                  tfrmt$group,
+                  tfrmt$label
+    )
 
-  structure(
-    tbl_dat_wide_processed,
-    .col_plan_vars = col_plan_vars,
-    class = c("processed_tfrmt_tbl",class(tbl_dat_wide_processed))
-  )
+    structure(
+      tbl_dat_wide_processed,
+      .col_plan_vars = col_plan_vars,
+      .page_note = attr(.data, ".page_note"),
+      class = class(tbl_dat_wide_processed)
+    )
+
 }
+
 
 
 #' Tentatively apply an element
@@ -403,4 +472,25 @@ check_order_vars <- function(.data,tfrmt){
       message("Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it.")
 
     }}
+}
+
+#' check that the # of big N's correspond to the # of pages
+#' @importFrom purrr map_dfr
+#' @importFrom dplyr select all_of distinct
+#' @noRd
+check_big_n_page <- function(big_n_df, data_wide, tfrmt){
+
+  if (!is.null(big_n_df) && tfrmt$big_n$by_page){
+      expected_pops <- length(data_wide)
+      expected_grp_vars <- attr(data_wide, ".page_grp_var")
+      expected_grp_levs <- map_dfr(data_wide, ~ select(.x, all_of(expected_grp_vars)) %>% distinct())
+      actual_pops <- length(big_n_df)
+      actual_grp_levs <- map_dfr(big_n_df, ~ select(.x, any_of(expected_grp_vars)) %>% distinct())
+
+      if (!identical(expected_pops,actual_pops) |
+          (!is_empty(actual_grp_levs) &&
+           !all.equal(expected_grp_levs, actual_grp_levs, check.attributes = FALSE))){
+        message("Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`")
+      }
+  }
 }

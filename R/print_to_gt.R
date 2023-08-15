@@ -147,6 +147,33 @@ print_to_gt <- function(tfrmt, .data){
 
 #' Do all the formatting for the GT
 #'
+#' @param x formatted data for the table
+#' @param tfrmt tfrmt object
+#'
+#' @return gt or gt_group object
+#'
+#' @keywords internal
+#' @export
+cleaned_data_to_gt <- function(x, tfrmt){
+  UseMethod("cleaned_data_to_gt", x)
+}
+
+#' Apply formatting to a list of tables
+#'
+#' @param .data list of cleaned datasets
+#' @param tfrmt tfrmt
+#'
+#' @return gt_group object
+#' @noRd
+#' @importFrom gt gt_group
+#' @importFrom purrr map2
+cleaned_data_to_gt.list <- function(.data, tfrmt){
+
+  map(.data, ~cleaned_data_to_gt.default(.x, tfrmt)) %>%
+    gt_group(.list = .)
+}
+#' Apply formatting to a single table
+#'
 #' @param .data cleaned dataset
 #' @param tfrmt tfrmt
 #'
@@ -155,7 +182,8 @@ print_to_gt <- function(tfrmt, .data){
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md cols_hide sub_missing
-cleaned_data_to_gt <- function(.data, tfrmt){
+cleaned_data_to_gt.default <- function(.data, tfrmt){
+
   if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
       keep(function(x){
@@ -178,9 +206,7 @@ cleaned_data_to_gt <- function(.data, tfrmt){
   }
   gt_out <- .data %>%
     gt(
-      rowname_col = as_label(tfrmt$label)) %>%
-    tab_header(title = tfrmt$title,
-               subtitle = tfrmt$subtitle)  %>%
+      rowname_col = as_label(tfrmt$label))  %>%
     sub_missing(
       rows = .data$..tfrmt_row_grp_lbl==TRUE,
       missing_text = ""
@@ -213,11 +239,17 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       footnotes.padding = px(1),
       source_notes.padding = px(1),
       row_group.padding = px(1),
+      stub.border.width = px(0),
       stub.border.color = "transparent",
+      stub_row_group.border.width = px(0),
       stub_row_group.border.color = "transparent",
+      row_group.border.bottom.width = px(0),
       row_group.border.bottom.color = "transparent",
       row_group.border.top.color = "transparent",
-      table.font.names = c("Courier", default_fonts())) %>%
+      table.font.names = c("Courier", default_fonts()),
+      page.numbering = TRUE,
+      page.header.use_tbl_headings = FALSE,
+      page.orientation = "landscape") %>%
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
@@ -261,6 +293,42 @@ cleaned_data_to_gt <- function(.data, tfrmt){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
+
+  # add page note if applicable
+  if (!is.null(attr(.data, ".page_note")) &&
+      !is.null(tfrmt$page_plan) &&
+      !tfrmt$page_plan$note_loc=="noprint"){
+
+    if (tfrmt$page_plan$note_loc=="preheader"){
+
+      gt_out_final <- gt_out_final  %>%
+        tab_header(title = tfrmt$title,
+                   subtitle = tfrmt$subtitle,
+                   preheader = attr(.data, ".page_note"))
+
+    } else if (tfrmt$page_plan$note_loc=="subtitle"){
+
+      title <- tfrmt$title %||% ""
+      subtitle <- paste0(tfrmt$subtitle, attr(.data, ".page_note"), collapse = "\n")
+
+      gt_out_final <- gt_out_final  %>%
+        tab_header(title = title,
+                   subtitle = subtitle)
+
+    } else {
+
+      gt_out_final <- gt_out_final  %>%
+        tab_header(title = tfrmt$title,
+                   subtitle = tfrmt$subtitle)
+
+      if (tfrmt$page_plan$note_loc=="source_note"){
+        gt_out_final <- gt_out_final %>%
+          tab_source_note(attr(.data, ".page_note"))
+      }
+
+    }
+  }
+
   # add footnotes and output
   gt_out_final %>%
     apply_footnote_plan(tfrmt,attr(.data,".footnote_locs"))

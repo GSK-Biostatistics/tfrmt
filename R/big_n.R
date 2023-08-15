@@ -11,13 +11,14 @@
 #' @param param_val row value(s) of the parameter column for which the values
 #'   are big n's
 #' @param n_frmt [frmt()] to control the formatting of the big n's
+#' @param by_page Option to include different big Ns for each group-defined set of pages (defined by any variables set to ".default" in the `page_plan`). Default is `FALSE`, meaning only the overall Ns are applied
 #'
 #' @seealso \href{https://gsk-biostatistics.github.io/tfrmt/articles/big_ns.html}{Link to related article}
 #'
 #' @return big_n_structure object
 #' @export
 #'
-big_n_structure <- function(param_val, n_frmt = frmt("\nN = xx")){
+big_n_structure <- function(param_val, n_frmt = frmt("\nN = xx"), by_page = FALSE){
 
   if(!is_frmt(n_frmt) | is_frmt_combine(n_frmt) | is_frmt_when(n_frmt)){
     stop("`n_frmt` must be given a frmt object")
@@ -26,7 +27,8 @@ big_n_structure <- function(param_val, n_frmt = frmt("\nN = xx")){
   structure(
     list(
       param_val = param_val,
-      n_frmt = n_frmt
+      n_frmt = n_frmt,
+      by_page = by_page
     ),
     class = c("big_n_structure","structure")
   )
@@ -43,7 +45,7 @@ big_n_structure <- function(param_val, n_frmt = frmt("\nN = xx")){
 #'
 #' @return named string vector
 #' @noRd
-apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
+apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value){
 
   if(!is.null(big_n_df) && nrow(big_n_df) > 0){
     col_lab <- columns %>% map_chr(as_label)
@@ -51,7 +53,6 @@ apply_big_n_df <- function(col_plan_vars, columns, value, big_n_df){
       map_chr(as_label) %>%
       split_data_names_to_df(data_names= c(), preselected_cols = .,
                              column_names = col_lab)
-
 
     for(i in seq(nrow(big_n_df))){
       big_n_i <- big_n_df %>%
@@ -101,22 +102,33 @@ remove_big_ns <- function(.data, param, big_n_structure){
 #' @param mock boolean if it is T/F
 #' @return tibble of the formatted big n's and expressions for where each goes
 #'
-#' @importFrom dplyr slice_tail
+#' @importFrom dplyr slice_tail filter select
+#' @importFrom tidyselect where
 #' @noRd
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
   if(!is.null(big_n_structure)){
+
     frmtted_vals <- .data %>%
       filter((!!param) %in% big_n_structure$param_val) %>%
-      apply_frmt.frmt(big_n_structure$n_frmt, ., value, mock) %>%
-      select(!!!columns, !!value)
+      apply_frmt.frmt(big_n_structure$n_frmt, ., value, mock)
+
+    if (big_n_structure$by_page){
+      frmtted_vals <-  frmtted_vals %>%
+        select(!!!columns, !!value, where(~sum(is.na(.x))==0), -!!param)
+    } else {
+      frmtted_vals <-  frmtted_vals %>%
+        select(!!!columns, !!value)
+    }
+
     # Test for missing big n's
     if(nrow(frmtted_vals) == 0){
       warning("Unable to add big n's as there are no matching parameter values in the given ARD")
     }
 
     # Test for too many big n's
+    grp_vars <- setdiff(names(frmtted_vals), as_label(value))
     multi_test <- frmtted_vals %>%
-      group_by(!!!columns) %>%
+      group_by(across(all_of(grp_vars))) %>%
       summarise(n = n()) %>%
       filter(n > 1)
     if(nrow(multi_test) > 0){
@@ -128,10 +140,12 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
               call. = FALSE)
     }
 
+    by_var <- setdiff(grp_vars, map_chr(columns, as_label))
+
     .data <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
       pivot_longer(
-        -c("_tfrmt______id", !!value),
+        -c("_tfrmt______id", !!value, all_of(by_var)),
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
       ) %>%
@@ -142,6 +156,13 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
       slice_tail() %>%
       ungroup()%>%
       select(-"_tfrmt______id")
+
+    if (big_n_structure$by_page){
+
+     .data <-  .data %>%
+        group_by(across(all_of(by_var))) %>%
+       group_split()
+    }
 
   } else {
     .data <- NULL

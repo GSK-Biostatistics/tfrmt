@@ -397,7 +397,8 @@
             "missing": {},
             "scientific": {},
             "transform": {}
-          }
+          },
+          "by_page": [false]
         }
       } 
 
