@@ -76,6 +76,9 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/body_plan.html</loc>
   </url>
   <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/cleaned_data_to_gt.html</loc>
+  </url>
+  <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.html</loc>
   </url>
   <url>
@@ -128,6 +131,12 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/layer_tfrmt.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/page_plan.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/page_structure.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/reference/param_set.html</loc>
