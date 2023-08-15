@@ -61,7 +61,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$page_plan,
       tfrmt$group,
       tfrmt$label,
-      tfrmt$row_grp_plan$label_loc) #$location)
+      tfrmt$row_grp_plan$label_loc)
 
   # if big_n is to be by page, check that the big N's match the # of tables,
   # with the right groups
@@ -95,13 +95,20 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 #' @noRd
 apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, big_n_df){
 
+  # there is a list of >1 tables
   if (inherits(.data, "list") && length(.data)>1){
-    if (inherits(.data, "list") && inherits(big_n_df, "list") && length(big_n_df)>1){
+
+    # there is a list of >1 big N tibbles
+    if (inherits(big_n_df, "list") && length(big_n_df)>1){
       map2(.data, big_n_df, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, .y))
     } else {
+
+      # there is only 1 set of (overall) big Ns
       map(.data, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, big_n_df))
     }
   } else {
+
+    # there is a single table
     apply_tfrmt_subtable(tfrmt, .data, col_plan_vars, big_n_df)
   }
 }
