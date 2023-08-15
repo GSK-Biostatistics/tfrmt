@@ -201,7 +201,7 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
         mutate(`..tfrmt_split_idx` = .data$TEMP_row %in% y,
               # carry it forward to denote start of next table,
               `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
-              `..tfrmt_split_after` = cumsum(`..tfrmt_start_idx`)) %>%
+              `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
         select(- c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)

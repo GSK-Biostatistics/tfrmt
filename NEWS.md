@@ -1,6 +1,7 @@
 # tfrmt development version
 
 * Improved column alignment capabilities (via `col_style_plan`). Alignment options now fall into two types: character (type = "char") and positional (type = "pos"). Positional alignment is new and allows for aligning across multiple positions. 
+* Add `page_plan` for splitting tables across multiple pages
 
 # tfrmt 0.0.3
 
