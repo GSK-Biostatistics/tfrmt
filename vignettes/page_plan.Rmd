@@ -44,7 +44,7 @@ If any of the `page_structure`s contain a ".default", it may be desired to print
 
 This feature, available via the `max_rows` argument in `page_plan`, involves splitting based on the maximum number of rows per table. Rows dedicated to group labels (without data) are included in the row counts. If a set of rows within a single `group` value are split apart, the group label will be repeated for each page. 
 
-**NOTE**: If both `max_rows` and `page_structure` are provided to the `page_plan`, the `page_structure` will be used. 
+**NOTE**: If both `max_rows` and `page_structure` are provided to the `page_plan`, the table will first be split according to the `page_structure`, follwed by the `max_rows`.
 
 
 Examples of each of these approaches are below. 
