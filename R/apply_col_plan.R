@@ -4,16 +4,40 @@
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
-apply_col_plan <- function(data, col_selection){
-
+apply_col_plan <- function(data, col_selection, grp_lbl){
 
   if(is.character(col_selection)){
     quo_col_selections <- map(col_selection, ~char_as_quo(.x))
     col_selection <- do.call(vars, quo_col_selections)
   }
 
-  select(data,!!!col_selection)
+  #exclude group and label variables from renaming
+  col_selection_grp_lbl <- col_selection %in% grp_lbl
+  if (any(col_selection_grp_lbl)){
+    names(col_selection)[col_selection_grp_lbl] <- ""
+  }
 
+  select(data, !!!col_selection)
+
+}
+
+
+#' create the stub header for table
+#' @importFrom purrr map_chr
+#' @noRd
+create_stub_head <- function(col_plan_vars, group){
+  grps <- map_chr(group, as_label)
+  col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
+
+  stub <- NULL
+  if (length(grps)>0 && length(col_plan_vars_chr)>0){
+    nms_grps <- col_plan_vars_chr[which(col_plan_vars_chr %in% grps)] %>% names()
+    nms_grps <- nms_grps[which(!nms_grps=="")]
+
+    if (length(nms_grps)>0){
+      stub <- nms_grps[1]
+    }
+  }
 }
 
 #' Creates a named vector explicitly calling all the columns

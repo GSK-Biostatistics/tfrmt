@@ -448,10 +448,7 @@ test_that("span_structure works on a renamed column", {
     tibble::as_tibble()
   })
 
-  attr(dat_aligned, ".footnote_locs") <- NULL
-  attr(dat_aligned, ".col_plan_vars") <- NULL
-
-  expect_equal(dat_aligned, dat_aligned_man)
+  expect_equal(dat_aligned, dat_aligned_man, ignore_attr = TRUE)
 
 })
 
