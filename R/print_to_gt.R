@@ -316,7 +316,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt){
                    subtitle = subtitle)
 
     } else {
-
       gt_out_final <- gt_out_final  %>%
         tab_header(title = tfrmt$title,
                    subtitle = tfrmt$subtitle)
@@ -327,6 +326,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt){
       }
 
     }
+  } else {
+    gt_out_final <- gt_out_final  %>%
+      tab_header(title = tfrmt$title,
+                 subtitle = tfrmt$subtitle)
   }
 
   # add footnotes and output
