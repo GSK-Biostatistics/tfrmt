@@ -176,11 +176,10 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, value, mock = FALSE, param,
   }
 
   ## format params as needed
-  .tmp_data <- map_dfr(fmt_param_vals, function(var){
-    fmt_to_apply <- frmt_def$frmt_ls[[var]]
-
+  .tmp_data <- map_dfr(fmt_param_vals, function(`__var`){
+    fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
     .data %>%
-      filter(!!param == str_remove_all(var, "`")) %>%
+      filter(!!param == str_remove_all(`__var`, "`")) %>%
       apply_frmt(
         frmt_def = fmt_to_apply,
         .data = .,
