@@ -169,8 +169,8 @@ cleaned_data_to_gt <- function(x, tfrmt){
 #' @importFrom purrr map2
 cleaned_data_to_gt.list <- function(.data, tfrmt){
 
-    map(.data, ~cleaned_data_to_gt.default(.x, tfrmt)) %>%
-      gt_group(.list = .)
+  map(.data, ~cleaned_data_to_gt.default(.x, tfrmt)) %>%
+    gt_group(.list = .)
 }
 #' Apply formatting to a single table
 #'
@@ -300,10 +300,21 @@ cleaned_data_to_gt.default <- function(.data, tfrmt){
       !tfrmt$page_plan$note_loc=="noprint"){
 
     if (tfrmt$page_plan$note_loc=="preheader"){
+
       gt_out_final <- gt_out_final  %>%
         tab_header(title = tfrmt$title,
                    subtitle = tfrmt$subtitle,
                    preheader = attr(.data, ".page_note"))
+
+    } else if (tfrmt$page_plan$note_loc=="subtitle"){
+
+      title <- tfrmt$title %||% ""
+      subtitle <- paste0(tfrmt$subtitle, attr(.data, ".page_note"), collapse = "\n")
+
+      gt_out_final <- gt_out_final  %>%
+        tab_header(title = title,
+                   subtitle = subtitle)
+
     } else {
 
       gt_out_final <- gt_out_final  %>%

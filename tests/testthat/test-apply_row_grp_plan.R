@@ -248,6 +248,34 @@ test_that("post space is truncated to data width",{
       "D",  "--------", "--------",  "--------"))
 })
 
+test_that("post space works when data contains NAs",{
+
+  df <- tibble(
+    grp1 = c("A","B","C","D"),
+    trtA = rep("xx (xx%)", 4),
+    trtB = rep("xx (xx%)", 4),
+    trtC = rep("xx (xx%)", 4),
+    other = c("a","a","b", NA)
+  )
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space ="----------------------")),
+    label_loc =element_row_grp_loc(location = "spanning")
+  )
+
+  expect_equal(
+    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    tibble::tribble(
+      ~grp1, ~trtA,      ~trtB,      ~trtC,      ~other,
+      "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", "a",
+      "A",  "--------", "--------",  "--------", "-",
+      "B",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", "a",
+      "B",  "--------", "--------",  "--------", "-",
+      "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", "b",
+      "C",  "--------", "--------",  "--------", "-",
+      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", NA,
+      "D",  "--------", "--------",  "--------", "-"))
+})
 
 test_that("Check combine_group_cols with a single group", {
 

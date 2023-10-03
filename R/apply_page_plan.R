@@ -13,6 +13,9 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
   # preferentially apply any page_structures;
   # if none, then apply max_rows
   if (!is_empty(page_plan$struct_list)){
+    if (!is.null(page_plan$max_rows)){
+      message("`page_plan` does not currently support the use of both `page_structure`s and `max_rows` to define page splits. Provided `page_structure`(s) will be used, and `max_rows` will be ignored.")
+    }
     apply_page_struct(.data, page_plan$struct_list, group, label, page_plan$note_loc)
   } else if (!is.null(page_plan$max_rows)){
     apply_page_max_rows(.data, page_plan$max_rows, group, label, row_grp_plan_label_loc)
@@ -130,8 +133,8 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
 #' @param note_loc location of page note
 #'
 #' @noRd
-#' @importFrom purrr map map_dbl accumulate
-#' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise last lag
+#' @importFrom purrr map map2 accumulate
+#' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise last lag case_when
 #' @importFrom tidyr unnest nest pivot_longer drop_na
 #' @importFrom tidyselect starts_with all_of
 apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
@@ -185,9 +188,9 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
     mutate(split_idx = map(.data$`..tfrmt_data`, function(x){
-      map_dbl(page_struct_list, function(y){
+      map(page_struct_list, function(y){
         page_test_data(y, x, group, label)
-      })
+      }) %>% unlist
     }))
 
   # determine where the splits should occur in data
@@ -196,28 +199,16 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 
       x %>%
         mutate(`..tfrmt_split_idx` = .data$TEMP_row %in% y,
-               # get the column to represent everything leading up to the split
-               `..tfrmt_split_idx` = ifelse(!.data$`..tfrmt_split_idx` &
-                                              !lag(.data$`..tfrmt_split_idx`, default = FALSE),
-                                            NA_real_, # set to NA if within a tbl
-                                            .data$`..tfrmt_split_idx`), # otherwise keep as is
-               # cumulative sum to capture each tbl chunk
-               `..tfrmt_split_after` = accumulate(.data$`..tfrmt_split_idx`, function(acc, x){
-                                                               if (is.na(acc)){ # first row
-                                                                 1
-                                                               } else if (is.na(x)){ # same idx
-                                                                 acc
-                                                               } else {
-                                                                 acc + 1  # new tbl idx
-                                                               }
-                                                             })) %>%
-        fill("..tfrmt_split_after", .direction = "up") %>%
-        select(- "..tfrmt_split_idx") %>%
+              # carry it forward to denote start of next table,
+              `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
+              `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
+        select(- c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)
     })) %>%
     select(-"split_idx") %>%
     unnest(cols = "..tfrmt_data")
+
 
   # 4. return the values
 

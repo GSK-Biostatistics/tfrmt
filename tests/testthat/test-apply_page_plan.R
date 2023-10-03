@@ -202,6 +202,45 @@ test_that("Page plan with grouped split", {
     "lbl"
   )
 
+  # specific lbl value
+  df <- tibble::tribble(
+    ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+    "A"  ,  "a" ,   "lbl1"  , "n"  , 22,
+    "A"  ,  "b" ,   "lbl1", "pct"  , 11,
+    "A"  ,  "a" ,   "lbl2"  , "n"  , 34,
+    "A"  ,  "b" ,   "lbl2", "pct"  , 65,
+    "A"  ,  "c" ,   "lbl1"  , "n"  , 97,
+    "A"  ,  "d" ,   "lbl1", "pct"  , 23,
+    "A"  ,  "c" ,   "lbl2"  , "n"  , 34,
+    "A"  ,  "d" ,   "lbl2", "pct"  , 42
+  )
+  my_page_plan <- page_plan(
+    page_structure(label_val = "lbl1")
+  )
+  auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+
+  man_split <- list(
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "lbl1"  , "n"  , 22,
+      "A"  ,  "b" ,   "lbl1", "pct"  , 11
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "a" ,   "lbl2"  , "n"  , 34,
+      "A"  ,  "b" ,   "lbl2", "pct"  , 65,
+      "A"  ,  "c" ,   "lbl1"  , "n"  , 97,
+      "A"  ,  "d" ,   "lbl1", "pct"  , 23
+    ),
+    tibble::tribble(
+      ~ grp1, ~ grp2, ~ lbl, ~ prm, ~ trt,
+      "A"  ,  "c" ,   "lbl2"  , "n"  , 34,
+      "A"  ,  "d" ,   "lbl2", "pct"  , 42
+    )
+  )
+
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note",".page_grp_vars"))
+
 })
 
 
@@ -515,3 +554,49 @@ test_that("Page plan with max_rows & group-level summary rows",{
   expect_equal(auto_split, man_split, ignore_attr = TRUE)
 })
 
+test_that("page plan with both page_structure and max_rows",{
+
+  dat_summ <- tibble::tribble(
+    ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
+    "cat_1" ,"cat_1"      , "cat_1"       , "pct" , "trt" , 34,
+    "cat_2" ,"cat_2"      , "cat_2"       , "pct" , "trt" , 43,
+    "cat_2" ,"sub_cat_2"  , "sub_cat_2"   , "pct" , "trt" , 12,
+    "cat_2" ,"sub_cat_2"  , "sub_cat_3"   , "pct" , "trt" , 76,
+    "cat_3" ,"cat_3"      , "cat_3"       , "pct" , "trt" , 56,
+    "cat_3" ,"sub_cat_3a" , "sub_cat_3a"  , "pct" , "trt" , 98,
+    "cat_3" ,"sub_cat_3b" , "sub_cat_3b_1", "pct" , "trt" , 11,
+    "cat_3" ,"sub_cat_3b" , "sub_cat_3b_3", "pct" , "trt" , 5
+  )
+  pp <- page_plan(
+      page_structure(group_val = list(grp1 = ".default")),
+      max_rows = 3)
+  auto_split <- apply_page_plan(dat_summ, pp, vars(grp1, grp2), quo(my_label))
+
+  expect_message(
+    auto_split <- apply_page_plan(dat_summ, pp, vars(grp1, grp2), quo(my_label)),
+    "`page_plan` does not currently support the use of both `page_structure`s and `max_rows` to define page splits. Provided `page_structure`(s) will be used, and `max_rows` will be ignored.",
+    fixed = TRUE
+  )
+
+  man_split <- list(
+    tibble::tribble(
+      ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
+      "cat_1" ,"cat_1"      , "cat_1"       , "pct" , "trt" , 34
+    ),
+    tibble::tribble(
+      ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
+      "cat_2" ,"cat_2"      , "cat_2"       , "pct" , "trt" , 43,
+      "cat_2" ,"sub_cat_2"  , "sub_cat_2"   , "pct" , "trt" , 12,
+      "cat_2" ,"sub_cat_2"  , "sub_cat_3"   , "pct" , "trt" , 76
+    ),
+    tibble::tribble(
+      ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
+      "cat_3" ,"cat_3"      , "cat_3"       , "pct" , "trt" , 56,
+      "cat_3" ,"sub_cat_3a" , "sub_cat_3a"  , "pct" , "trt" , 98,
+      "cat_3" ,"sub_cat_3b" , "sub_cat_3b_1", "pct" , "trt" , 11,
+      "cat_3" ,"sub_cat_3b" , "sub_cat_3b_3", "pct" , "trt" , 5
+    )
+  )
+
+  expect_equal(auto_split, man_split, ignore_attr = c(".page_note",".page_grp_vars"))
+})

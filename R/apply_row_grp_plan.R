@@ -45,9 +45,10 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
   dat_max_widths <- .data %>%
     summarise(across(everything(), function(x) {
       if (is.character(x)) {
-        max(sapply(str_split(x, "\\n"), function(y) {
-          max(nchar(y), na.rm = TRUE)
-        }), na.rm = TRUE)
+        str_split(x, "\\n") %>%
+          unlist() %>%
+          nchar() %>%
+          max(na.rm = TRUE)
       } else{
         max(nchar(x), na.rm = TRUE)
       }
