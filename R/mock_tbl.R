@@ -71,12 +71,12 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
     ungroup() %>%
     add_sorting_cols(tfrmt$sorting_cols)
 
-
   ## add `column` columns
   col_def <- make_col_df(column = tfrmt$column, group = tfrmt$group,
                          label = tfrmt$label,
                          sorting_cols = tfrmt$sorting_cols,
-                         col_plan = tfrmt$col_plan, n_cols)
+                         col_plan = tfrmt$col_plan,
+                         n_cols = n_cols)
 
   output_dat <- output_dat %>%
     mutate(
@@ -151,7 +151,7 @@ add_sorting_cols <- function(data, sorting_cols){
   data
 }
 
-make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols){
+make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols=NULL){
 
   column_vars <- column %>% map_chr(as_label)
   grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label), sorting_cols %>% map_chr(as_name))
