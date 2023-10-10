@@ -14,7 +14,7 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1), sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1), sym("label")),
     tibble::tribble(
       ~grp1,~label, ~trtA,      ~trtB,      ~trtC,
       "A",  "1",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -33,7 +33,7 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1), sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1), sym("label")),
     tibble::tribble(
       ~grp1, ~label, ~trtA,      ~trtB,       ~trtC,
       "A", "1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -65,7 +65,7 @@ test_that("insert post space - two grouping variables",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
     tibble::tribble(
       ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
@@ -104,7 +104,7 @@ test_that("insert mix - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
@@ -137,7 +137,7 @@ test_that("insert post space after specific value",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
     tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -173,7 +173,7 @@ test_that("overlapping row_grp_structures - prefers latest",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
     tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -208,7 +208,7 @@ test_that("no post space added if NULL",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -235,7 +235,7 @@ test_that("post space is truncated to data width",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
@@ -264,7 +264,7 @@ test_that("post space works when data contains NAs",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_ls, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,      ~other,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", "a",
@@ -420,7 +420,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
   expect_equal(auto_test_listcols, man_test_listcols)
 
 
-  auto_test_listcols <- apply_row_grp_struct(mock_multi_grp, sample_grp_plan$struct_ls,group = vars(grp1, grp2), label = sym("my_label"))
+  auto_test_listcols <- apply_row_grp_struct(mock_multi_grp, sample_grp_plan$struct_list,group = vars(grp1, grp2), label = sym("my_label"))
 
   man_test_listcols <- tibble::tribble(
     ~grp1,    ~grp2,   ~my_label,      ~trtA,     ~trtB,     ~trtC,

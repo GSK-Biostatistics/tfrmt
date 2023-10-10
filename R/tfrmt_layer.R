@@ -232,7 +232,7 @@ update_groups_body_plan <- function(tfrmt_body_plan, new_group_map){
 }
 
 update_groups_row_grp_plan <- function(tfrmt_row_grp_plan, new_group_map){
-    row_grp_structs <- lapply(tfrmt_row_grp_plan$struct_ls, function(struct){
+    row_grp_structs <- lapply(tfrmt_row_grp_plan$struct_list, function(struct){
       if(is.list(struct$group_val)){
         struct_groups <- names(struct$group_val)
         for(struct_group_idx in seq_along(struct_groups)){
