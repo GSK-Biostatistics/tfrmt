@@ -185,10 +185,6 @@ as_json.col_style_structure <- function(x){
   x
 }
 
-
-
-
-
 #' json to tfrmt
 #'
 #' Reader to read JSON files/objects into tfrmt objects
@@ -222,6 +218,7 @@ json_to_tfrmt <- function(path = NULL, json = NULL){
   cp <- ls_to_col_plan(dirty_list$col_plan)
   bn <- ls_to_big_n(dirty_list$big_n)
   fnp <- ls_to_footnote_plan(dirty_list$footnote_plan)
+  pp <- ls_to_page_plan(dirty_list$page_plan)
 
   all_params <- c(simple_params,
                   list(row_grp_plan = rgp),
@@ -229,14 +226,15 @@ json_to_tfrmt <- function(path = NULL, json = NULL){
                   list(big_n = bn),
                   list(footnote_plan = fnp),
                   list(col_plan = cp),
-                  list(col_style_plan = csp)) %>%
+                  list(col_style_plan = csp),
+                  list(page_plan = pp)) %>%
     discard(is.null)
   do.call(tfrmt, all_params)
 }
 
 ls_to_row_grp_plan <- function(ls){
   if(!is.null(ls)){
-    struct_ls <- ls$struct_ls %>%
+    struct_ls <- ls$struct_list %>%
       map(function(struct){
         el_block <- do.call(element_block, struct$block_to_apply %>% map(unlist))
         if(!is.null(names(struct$group_val))){
@@ -323,7 +321,8 @@ ls_to_big_n <- function(ls){
   if(!is.null(ls)){
     n_frmt = do.call(ls_to_frmt, list(ls$n_frmt))
     do.call(big_n_structure, list(param_val = unlist(ls$param_val),
-                                  n_frmt = n_frmt))
+                                  n_frmt = n_frmt,
+                                  by_page = unlist(ls$by_page)))
   }
 }
 
@@ -408,6 +407,26 @@ ls_to_col_style_plan <- function(ls){
     do.call(col_style_plan, struct_ls)
   }
 }
+
+#' @importFrom purrr map
+ls_to_page_plan <- function(ls){
+  if(!is.null(ls)){
+    struct_ls <- ls$struct_list %>%
+      map(function(struct){
+        group_val = simplify_group_val(struct$group_val)
+        unlisted <- struct%>%
+          map(unlist)
+        do.call(page_structure, list(group_val = group_val,
+                                     label_val = unlisted$label_val ))
+
+      })
+
+    do.call(page_plan, c(struct_ls,
+                         list(note_loc = unlist(ls$note_loc),
+                              max_rows = unlist(ls$max_rows))))
+  }
+}
+
 simplify_group_val <- function(group_ls){
   if(length(group_ls) == 0){
     group_val = NULL
@@ -418,3 +437,5 @@ simplify_group_val <- function(group_ls){
   }
   group_val
 }
+
+

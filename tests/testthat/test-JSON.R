@@ -464,6 +464,40 @@ test_that("json col_style_plan",{
     expect_equal(csp_spaces, ignore_attr = TRUE)
 })
 
+test_that("json page plan",{
+  pp <- tfrmt(
+    page_plan = page_plan(
+      page_structure(group_val = ".default", label_val = NULL),
+      page_structure(label_val = "A"),
+      note_loc = "source_note"
+    )
+  )
+
+  pp %>%
+    as_json() %>%
+    expect_snapshot()
+
+  pp %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(pp, ignore_attr = TRUE )
+
+  pp_max_rows <- tfrmt(
+    page_plan = page_plan(
+      max_rows = 5
+    )
+  )
+  pp_max_rows %>%
+    as_json() %>%
+    expect_snapshot()
+
+  pp_max_rows %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(pp_max_rows, ignore_attr = TRUE )
+})
+
+
 
 test_that("json read/write", {
   test_loc <- "test.json"
@@ -502,6 +536,11 @@ test_that("json read/write", {
     row_grp_plan = row_grp_plan(
       row_grp_structure(group_val = ".default", element_block(post_space = " ")),
       label_loc = element_row_grp_loc(location = "column")
+    ),
+
+    # specify page plan
+    page_plan = page_plan(
+      max_rows = 8
     )
 
   )

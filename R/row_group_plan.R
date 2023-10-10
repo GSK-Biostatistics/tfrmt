@@ -47,7 +47,7 @@ row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indent
   }
 
   structure(
-    list(struct_ls = row_grp_structure_list, label_loc = label_loc),
+    list(struct_list = row_grp_structure_list, label_loc = label_loc),
     class = c("row_grp_plan", "frmt_table")
   )
 }

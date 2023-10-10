@@ -51,7 +51,7 @@
         "value": {},
         "column": [],
         "row_grp_plan": {
-          "struct_ls": [
+          "struct_list": [
             {
               "group_val": ["A", "C"],
               "block_to_apply": {
@@ -86,7 +86,7 @@
         "value": {},
         "column": [],
         "row_grp_plan": {
-          "struct_ls": [
+          "struct_list": [
             {
               "group_val": {
                 "grp1": ["A"],
@@ -737,5 +737,50 @@
             "width": [100]
           }
         ]
+      } 
+
+# json page plan
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [
+            {
+              "group_val": [".default"],
+              "label_val": {}
+            },
+            {
+              "group_val": {},
+              "label_val": ["A"]
+            }
+          ],
+          "note_loc": ["source_note"],
+          "max_rows": {}
+        }
+      } 
+
+---
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [],
+          "note_loc": ["noprint"],
+          "max_rows": [5]
+        }
       } 
 
