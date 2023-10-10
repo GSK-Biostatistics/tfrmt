@@ -11,13 +11,14 @@ articles:
   examples: examples.html
   faq: faq.html
   footnotes: footnotes.html
+  json: json.html
   layer: layer.html
   mock_examples: mock_examples.html
   print_to_ggplot: print_to_ggplot.html
   row_grp_plan: row_grp_plan.html
   templates: templates.html
   unusual_tables: unusual_tables.html
-last_built: 2023-10-10T15:04Z
+last_built: 2023-10-10T15:26Z
 urls:
   reference: https://gsk-biostatistics.github.io/tfrmt/reference
   article: https://gsk-biostatistics.github.io/tfrmt/articles
