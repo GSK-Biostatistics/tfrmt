@@ -61,7 +61,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$page_plan,
       tfrmt$group,
       tfrmt$label,
-      tfrmt$row_grp_plan$label_loc)
+      tfrmt$row_grp_plan$label_loc$location)
 
   # if big_n is to be by page, check that the big N's match the # of tables,
   # with the right groups
