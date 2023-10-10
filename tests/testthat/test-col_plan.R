@@ -1410,3 +1410,62 @@ test_that("Tidyselect subtraction with span_structure",{
   )
 
 })
+
+
+
+
+test_that("Build simple tfrmt with stub header",{
+
+  basic_multi_column_template <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    value = val,
+    column = c(test1,test2),
+    col_plan = col_plan(
+      grp = group,
+      label,
+      tst = col4,
+      col3,
+      col1,
+      -col5,
+      -col2
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "indented"))
+  )
+
+  basic_example_dataset <- tibble::tribble(
+    ~group,     ~label,    ~test1, ~test2,    ~parm, ~val,
+    "g1", "rowlabel1",  "span 1", "col1",  "value",    1,
+    "g1", "rowlabel1",  "span 1", "col2",  "value",    1,
+    "g1", "rowlabel1",        NA, "col3",  "value",    1,
+    "g1", "rowlabel1",        NA, "col4",  "value",    1,
+    "g1", "rowlabel1",        NA, "col5",  "value",    1,
+    "g1", "rowlabel2",  "span 1", "col1",  "value",    2,
+    "g1", "rowlabel2",  "span 1", "col2",  "value",    2,
+    "g1", "rowlabel2",        NA, "col3",  "value",    2,
+    "g1", "rowlabel2",        NA, "col4",  "value",    2,
+    "g1", "rowlabel2",        NA, "col5",  "value",    2,
+    "g2", "rowlabel3",  "span 1", "col1",  "value",    3,
+    "g2", "rowlabel3",  "span 1", "col2",  "value",    3,
+    "g2", "rowlabel3",        NA, "col3",  "value",    3,
+    "g2", "rowlabel3",        NA, "col4",  "value",    3,
+    "g2", "rowlabel3",        NA, "col5",  "value",    3,
+  )
+
+  suppressMessages({
+    processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+  })
+
+  expect_equal(
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl"
+    )
+  )
+  expect_equal(
+    processed_gt[["_stubhead"]]$label,
+    "grp"
+  )
+
+})
