@@ -26,7 +26,57 @@ articles:
 - title:
   navbar: More
   contents:
+  - json
   - print_to_ggplot
   - faq
   - mock_examples
   - unusual_tables
+reference:
+- title: Build tfrmt
+  contents:
+  - tfrmt
+  - body_plan
+  - frmt_structure
+  - frmt
+  - frmt_combine
+  - frmt_when
+  - col_plan
+  - span_structure
+  - col_style_plan
+  - col_style_structure
+  - row_grp_plan
+  - row_grp_structure
+  - element_block
+  - element_row_grp_loc
+  - footnote_plan
+  - footnote_structure
+  - big_n_structure
+  - page_plan
+  - page_structure
+- title: Layer
+  contents:
+  - layer_tfrmt
+  - update_group
+- title: Print/Export
+  contents:
+  - print_mock_gt
+  - print_to_gt
+  - print_to_ggplot
+  - tfrmt_to_json
+  - json_to_tfrmt
+  - as_json
+- title: Included Templates
+  contents:
+  - tfrmt_n_pct
+  - tfrmt_sigdig
+  - param_set
+- title: Example Data
+  contents:
+  - starts_with("data_")
+- title: Helpers
+  contents:
+  - display_row_frmts
+  - display_val_frmts
+  - apply_frmt
+  - cleaned_data_to_gt
+  - starts_with("is_")
