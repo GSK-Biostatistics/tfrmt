@@ -32,7 +32,7 @@ The rules for how to split the table fall into 2 categories:
 
 This feature involves splitting by the values of `group` and/or `label` variables. It is specified via one or more `page_structure` objects. Within the `page_structure`, there are two possible methods for defining the splits:
 
-  - Split by every unique value of a `group` or `label` variable. This can be done by passing the value ".default" as such: `page_structure(group_val = ".default")`. There can be multiple `page_structure`s including values set to ".default". 
+  - Split by every unique value of a `group` or `label` variable. This can be done by passing the value ".default" as such: `page_structure(group_val = ".default")`. 
   
   - Split by a specific value of a `group` or `label` variable. This can be done by passing the specific value as such: `page_structure(label_val = "n")`. This will split after rows where label_val = "n". If there are consecutive rows with label_val = "n", it will split after the final row of that section of rows. This logic extends to instances where there are multiple sections with consecutive rows with label_val = "n"; there will be a split at the bottom of each section. Note: There can only be one `page_structure` that includes this level of specificity.
   
