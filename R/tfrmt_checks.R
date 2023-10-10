@@ -131,8 +131,8 @@ check_group_var_consistency_row_grp_plan <- function(x){
     is_invalid_row_grp_plan_message <- "Inconsistencies between group and row_grp_plan row_grp_structures"
     group_as_char <- map_chr(x$group, as_label)
 
-    for(idx in seq_along(x$row_grp_plan$struct_ls)){
-      struct <- x$row_grp_plan$struct_ls[[idx]]
+    for(idx in seq_along(x$row_grp_plan$struct_list)){
+      struct <- x$row_grp_plan$struct_list[[idx]]
       ## if the group_vars is a list, check that the names are matching group vars
       if(is.list(struct$group_val)){
 

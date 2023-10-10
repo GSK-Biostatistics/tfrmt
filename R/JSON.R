@@ -234,7 +234,7 @@ json_to_tfrmt <- function(path = NULL, json = NULL){
 
 ls_to_row_grp_plan <- function(ls){
   if(!is.null(ls)){
-    struct_ls <- ls$struct_ls %>%
+    struct_ls <- ls$struct_list %>%
       map(function(struct){
         el_block <- do.call(element_block, struct$block_to_apply %>% map(unlist))
         if(!is.null(names(struct$group_val))){

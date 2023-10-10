@@ -51,7 +51,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     #Apply row group structures defined in row_grp_plan
     tentative_process(
       apply_row_grp_struct,
-      tfrmt$row_grp_plan$struct_ls,
+      tfrmt$row_grp_plan$struct_list,
       tfrmt$group,
       tfrmt$label,
       fail_desc = "Unable to apply row group structure"

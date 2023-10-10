@@ -51,7 +51,7 @@
         "value": {},
         "column": [],
         "row_grp_plan": {
-          "struct_ls": [
+          "struct_list": [
             {
               "group_val": ["A", "C"],
               "block_to_apply": {
@@ -86,7 +86,7 @@
         "value": {},
         "column": [],
         "row_grp_plan": {
-          "struct_ls": [
+          "struct_list": [
             {
               "group_val": {
                 "grp1": ["A"],
