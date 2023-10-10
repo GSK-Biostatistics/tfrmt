@@ -162,9 +162,17 @@ print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
 ```
  
 ## Page-Level Big Ns
-If our table has a `page_plan` and is to be split by every unique value of a grouping variable, we may desire to have different big Ns for each split of the table. In this case, a user can supply group-level big Ns to the data. In order for this to work properly group levels MUST align to those indicated in the `page_plan` (i.e. any group or label values set to ".default" in the `page_structure`). This functionality can be enabled via the `by_page` argument in `big_n_structure`.
 
-For example, let's take the following data with group-level bigNs calculated:
+The `page_plan` allows users to split up large tables in many ways. Let's suppose our `page_plan` splits our table so that each subtable represents a different subpopulation defined by the `group` variable in the ARD. 
+
+To achieve this, our page_plan looks something like this:
+```r
+page_structure(group_val = ".default")
+```
+
+Because our subtables contain different populations, we want the big Ns displayed in the headers to be table-specific. To achieve this, we can supply multiple sets of big Ns in the ARD. We just need to specify the specific values of the `group` parameter that each big N belongs to. his functionality can be enabled via the `by_page` argument in `big_n_structure`.
+
+For example, let's take the following data, where we have calculated big Ns for each level of the grouping variable `grp`:
 ```{r}
 dat <- crossing(
   grp = c("A","B"),
@@ -184,7 +192,7 @@ dat <- bind_rows(dat, big_ns)
 tail(dat)
 ``` 
 
-Now we can make our paginated `tfrmt` and set `by_page` to `TRUE`:
+Now that we have all big Ns represented in the ARD, we can make sure of the `by_page` argument in the `big_n_structure` to ensure the various big Ns are assigned to the relevant pages defined by the `page_plan`. 
 ```{r}
 gts <- tfrmt(
   group = grp,
