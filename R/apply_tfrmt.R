@@ -61,7 +61,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
       tfrmt$page_plan,
       tfrmt$group,
       tfrmt$label,
-      tfrmt$row_grp_plan$label_loc)
+      tfrmt$row_grp_plan$label_loc$location)
 
   # if big_n is to be by page, check that the big N's match the # of tables,
   # with the right groups
@@ -77,8 +77,15 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
   ) %>%
     as_vars()
 
+  # just the stub
+  stub_header <- tentative_process(
+    col_plan_vars,
+    create_stub_head,
+    tfrmt$group
+  )
+
   # apply remaining processing to single table or map over list of tables (paginated)
-  apply_tfrmt_subtable_mapper(tfrmt, tbl_dat_wide_processed, col_plan_vars, big_n_df)
+  apply_tfrmt_subtable_mapper(tfrmt, tbl_dat_wide_processed, col_plan_vars, stub_header, big_n_df)
 
 }
 
@@ -88,28 +95,29 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 #' @param tfrmt tfrmt object
 #' @param .data processed wide tbl or list of processed wide tbls
 #' @param col_plan_vars col plan converted to vars() to be applied
+#' @param stub_header stub header (NULL if none)
 #' @param big_n_df tbl of big Ns to apply (if 1 set of overall Ns) or list of tbl of bigNs (if grouping by page)
 #' to apply
 #'
 #' @importFrom purrr map map2
 #' @noRd
-apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, big_n_df){
+apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, stub_header, big_n_df){
 
   # there is a list of >1 tables
   if (inherits(.data, "list") && length(.data)>1){
 
     # there is a list of >1 big N tibbles
     if (inherits(big_n_df, "list") && length(big_n_df)>1){
-      map2(.data, big_n_df, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, .y))
+      map2(.data, big_n_df, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, stub_header, .y))
     } else {
 
       # there is only 1 set of (overall) big Ns
-      map(.data, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, big_n_df))
+      map(.data, ~ apply_tfrmt_subtable(tfrmt, .x, col_plan_vars, stub_header, big_n_df))
     }
   } else {
 
     # there is a single table
-    apply_tfrmt_subtable(tfrmt, .data, col_plan_vars, big_n_df)
+    apply_tfrmt_subtable(tfrmt, .data, col_plan_vars, stub_header, big_n_df)
   }
 }
 
@@ -118,9 +126,10 @@ apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, big_n_df){
 #' @param tfrmt tfrmt object
 #' @param .data processed wide tbl
 #' @param col_plan_vars col plan converted to vars() to be applied
+#' @param stub_header stub header (NULL if none)
 #' @param big_n_df big Ns to apply
 #' @noRd
-apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, big_n_df){
+apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, stub_header, big_n_df){
 
   if (inherits(big_n_df, "list")) {
     big_n_df <- big_n_df[[1]]
@@ -135,9 +144,11 @@ apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, big_n_df){
       fail_desc = "Unable to add big N's"
     )
 
+
   tbl_dat_wide_processed <- .data  %>%
     #Select before grouping to not have to deal with if it indents or not
     tentative_process(apply_col_plan, col_plan_vars,
+                      c(tfrmt$group,tfrmt$label),
                       fail_desc = "Unable to subset dataset columns") %>%
     tentative_process(
                   apply_row_grp_lbl,
@@ -159,16 +170,17 @@ apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, big_n_df){
                   col_plan_vars = col_plan_vars
     ) %>%
     tentative_process(
-                  remove_grp_cols,
-                  tfrmt$row_grp_plan$label_loc,
-                  tfrmt$group,
-                  tfrmt$label
+      remove_grp_cols,
+      tfrmt$row_grp_plan$label_loc,
+      tfrmt$group,
+      tfrmt$label
     )
 
     structure(
       tbl_dat_wide_processed,
       .col_plan_vars = col_plan_vars,
       .page_note = attr(.data, ".page_note"),
+      .stub_header = stub_header,
       class = class(tbl_dat_wide_processed)
     )
 

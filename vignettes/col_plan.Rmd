@@ -115,6 +115,32 @@ tfrmt(
   print_to_gt(dat)
 ```
 
+# Naming the Group and Label columns
+
+It is also possible to provide a combined header for the group and label columns. To achieve this, rename the `group` variable in the column plan. If multiple `group` variables exist, any of them can be renamed. If more than one is renamed, {tfrmt} will use the highest level `group` name available. 
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  param = parm,
+  value = val,
+  column = my_col,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+  ),
+  col_plan = col_plan(
+    my_grp = group, 
+    label, 
+    starts_with("col"),
+    everything(),
+    col1         
+  )
+) %>% 
+  print_to_gt(dat)
+```
+
+Note that it is not currently possible to provide individual column headers if there are multiple group/label columns. 
 
 # Editing and Moving Column Spanners
 

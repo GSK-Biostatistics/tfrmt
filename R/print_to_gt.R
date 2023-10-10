@@ -181,8 +181,9 @@ cleaned_data_to_gt.list <- function(.data, tfrmt){
 #' @noRd
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md cols_hide sub_missing
+#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead
 cleaned_data_to_gt.default <- function(.data, tfrmt){
+
 
   if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
     existing_grp <- tfrmt$group %>%
@@ -201,8 +202,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt){
   if (!"..tfrmt_row_grp_lbl" %in% names(.data)) {
     # keep attribute for footnotes
     attr_footnote <- attr(.data,".footnote_locs")
+    attr_stub_header <- attr(.data,".stub_header")
     .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
     attr(.data,".footnote_locs") <- attr_footnote
+    attr(.data,".stub_header") <- attr_stub_header
   }
   gt_out <- .data %>%
     gt(
@@ -218,10 +221,16 @@ cleaned_data_to_gt.default <- function(.data, tfrmt){
       locations = cells_body(columns = everything())
     )
 
-
+  # group label in its own column
   if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
+  }
+
+  # stub header
+  if (!is.null(attr(.data, ".stub_header"))){
+    gt_out <- gt_out %>%
+      tab_stubhead(label = attr(.data, ".stub_header"))
   }
 
   gt_out_final  <- gt_out %>%

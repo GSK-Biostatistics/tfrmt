@@ -567,36 +567,54 @@ test_that("page plan with both page_structure and max_rows",{
     "cat_3" ,"sub_cat_3b" , "sub_cat_3b_1", "pct" , "trt" , 11,
     "cat_3" ,"sub_cat_3b" , "sub_cat_3b_3", "pct" , "trt" , 5
   )
-  pp <- page_plan(
-      page_structure(group_val = list(grp1 = ".default")),
-      max_rows = 3)
-  auto_split <- apply_page_plan(dat_summ, pp, vars(grp1, grp2), quo(my_label))
 
-  expect_message(
-    auto_split <- apply_page_plan(dat_summ, pp, vars(grp1, grp2), quo(my_label)),
-    "`page_plan` does not currently support the use of both `page_structure`s and `max_rows` to define page splits. Provided `page_structure`(s) will be used, and `max_rows` will be ignored.",
-    fixed = TRUE
-  )
+  mypp <- page_plan(
+    page_structure(group_val = list(grp1 = ".default")),
+    max_rows = 3)
+
+  mytfrmt <- tfrmt(
+    group = c("grp1","grp2"),
+    label = "my_label",
+    param = "prm",
+    column = "column",
+    value = "val",
+    body_plan = body_plan(frmt_structure(group_val=".default", label_val=".default", frmt("xx"))),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+    page_plan = mypp)
+  auto_split <- apply_tfrmt(dat_summ, mytfrmt)
 
   man_split <- list(
-    tibble::tribble(
-      ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
-      "cat_1" ,"cat_1"      , "cat_1"       , "pct" , "trt" , 34
-    ),
-    tibble::tribble(
-      ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
-      "cat_2" ,"cat_2"      , "cat_2"       , "pct" , "trt" , 43,
-      "cat_2" ,"sub_cat_2"  , "sub_cat_2"   , "pct" , "trt" , 12,
-      "cat_2" ,"sub_cat_2"  , "sub_cat_3"   , "pct" , "trt" , 76
-    ),
-    tibble::tribble(
-      ~grp1  ,~grp2        ,~my_label     ,   ~prm , ~column, ~val,
-      "cat_3" ,"cat_3"      , "cat_3"       , "pct" , "trt" , 56,
-      "cat_3" ,"sub_cat_3a" , "sub_cat_3a"  , "pct" , "trt" , 98,
-      "cat_3" ,"sub_cat_3b" , "sub_cat_3b_1", "pct" , "trt" , 11,
-      "cat_3" ,"sub_cat_3b" , "sub_cat_3b_3", "pct" , "trt" , 5
+      tibble::tribble(
+        ~my_label         ,~trt  ,~`..tfrmt_row_grp_lbl`,
+        "cat_1"           ,"34"  ,FALSE  ),
+      tibble::tribble(
+        ~my_label         ,~trt  ,~`..tfrmt_row_grp_lbl`,
+        "cat_2"           ,"43"  ,FALSE   ,
+        "  sub_cat_2"     ,"12"  ,FALSE    ,
+        "    sub_cat_3"   ,"76"  ,FALSE    ),
+      tibble::tribble(
+        ~my_label         ,~trt  ,~`..tfrmt_row_grp_lbl`,
+        "cat_3"           ,"56"  ,FALSE  ,
+        "  sub_cat_3a"    ,"98"  ,FALSE ),
+      tibble::tribble(
+        ~my_label         ,~trt  ,~`..tfrmt_row_grp_lbl`,
+        "cat_3"           ,"56"  ,FALSE  ,
+        "  sub_cat_3b"    ,NA    ,TRUE     ,
+        "    sub_cat_3b_1","11" ,FALSE
+      ),
+      tibble::tribble(
+        ~my_label     ,~trt  ,~`..tfrmt_row_grp_lbl`,
+        "cat_3"            ,"56"  ,FALSE   ,
+        "  sub_cat_3b"     ,NA    ,TRUE   ,
+        "    sub_cat_3b_3" ," 5"  ,FALSE
+      )
     )
+  expect_equal(auto_split, man_split, ignore_attr = TRUE)
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("grp1: cat_1", "grp1: cat_2", "grp1: cat_3", "grp1: cat_3", "grp1: cat_3")
   )
 
-  expect_equal(auto_split, man_split, ignore_attr = c(".page_note",".page_grp_vars"))
+
 })
