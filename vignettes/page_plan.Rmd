@@ -47,7 +47,7 @@ This feature, available via the `max_rows` argument in `page_plan`, involves spl
 **NOTE**: If both `max_rows` and `page_structure` are provided to the `page_plan`, the table will first be split according to the `page_structure`, follwed by the `max_rows`.
 
 
-Examples of each of these approaches are below. 
+Examples of each of these approaches are below. To reduce the amount of code displayed in the examples, following the initial table, `tfrmt`'s layering functionality will be used to add the `page_plan`.  For more information about this, see the `Layering tfrmts` vignette. 
 
 ### Values-driven splitting
 
@@ -69,7 +69,7 @@ head(data_demog2)
 
 The formatted table as a single page is as follows:
 ```{r}
-tfrmt(
+base_tfrmt <- tfrmt(
   # specify columns in the data
   group = c(rowlbl1,grp),
   label = rowlbl2,
@@ -104,7 +104,9 @@ tfrmt(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   )
-)  %>% 
+)  
+
+base_tfrmt %>% 
   print_to_gt(data_demog2) 
 ```
 
@@ -112,48 +114,16 @@ tfrmt(
 
 Suppose we want to split the table by every unique value of `rowlbl1`. and add a footnote indicating the table grouping. We can drop `rowlbl1` from the tables since its value will be printed in the note. We will use the `gt::grp_pull()` function to print the individual tables nicely in the vignette. 
 ```{r  }
-gts <- tfrmt(
-  # specify columns in the data
-  group = c(rowlbl1,grp),
-  label = rowlbl2,
-  column = column, 
-  param = param,
-  value = value,
-  sorting_cols = c(ord1, ord2),
-  # specify value formatting 
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                                          "<0.001" ~ "<0.001",
-                                                                                                          TRUE ~ frmt("x.xxx", missing = "")))
-  ),
-  # remove extra cols
-  col_plan = col_plan(-grp, 
-                      -rowlbl1,
-                      -starts_with("ord") ),
-  # Specify column styling plan
-  col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(Placebo, contains("Dose"), "Total", "p-value"))
-  ),
-  # Specify row group plan
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  # page plan
-  page_plan = page_plan(
-    page_structure(group_val = list(rowlbl1 = ".default")),
-    note_loc = "source_note"
-  )
-) %>% 
+gts <- base_tfrmt %>% 
+  layer_tfrmt(
+    tfrmt(
+      # page plan
+      page_plan = page_plan(
+        page_structure(group_val = list(rowlbl1 = ".default")),
+        note_loc = "source_note"
+      )   
+    )
+  ) %>% 
   print_to_gt(data_demog2)
 ```
 
@@ -171,48 +141,16 @@ gts %>% gt::grp_pull(3)
 
 We could also choose to split on both grouping variables as such (showing first 3 tables only):
 ```{r}
-gts <- tfrmt(
-  # specify columns in the data
-  group = c(rowlbl1,grp),
-  label = rowlbl2,
-  column = column, 
-  param = param,
-  value = value,
-  sorting_cols = c(ord1, ord2),
-  # specify value formatting 
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                                          "<0.001" ~ "<0.001",
-                                                                                                          TRUE ~ frmt("x.xxx", missing = "")))
-  ),
-  # remove extra cols
-  col_plan = col_plan(-grp, 
-                      -rowlbl1,
-                      -starts_with("ord") ),
-  # Specify column styling plan
-  col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(Placebo, contains("Dose"), "Total", "p-value"))
-  ),
-  # Specify row group plan
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  # page plan
-  page_plan = page_plan(
-    page_structure(group_val = ".default"),
-    note_loc = "source_note"
-  )
-) %>% 
+gts <- base_tfrmt %>% 
+  layer_tfrmt(
+    tfrmt(
+      # page plan
+      page_plan = page_plan(
+        page_structure(group_val = ".default"),
+        note_loc = "source_note"
+      )   
+    )
+  ) %>% 
   print_to_gt(data_demog2) 
 ```
 
@@ -231,47 +169,16 @@ gts %>% gt::grp_pull(3)
 
 Finally, we could split on a specific value observed in the data. For example, rowlbl1 = "Age (y)".
 ```{r}
-gts <- tfrmt(
-  # specify columns in the data
-  group = c(rowlbl1,grp),
-  label = rowlbl2,
-  column = column, 
-  param = param,
-  value = value,
-  sorting_cols = c(ord1, ord2),
-  # specify value formatting 
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                                          "<0.001" ~ "<0.001",
-                                                                                                          TRUE ~ frmt("x.xxx", missing = "")))
-  ),
-  # remove extra cols
-  col_plan = col_plan(-grp,  
-                      -starts_with("ord") ),
-  # Specify column styling plan
-  col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(Placebo, contains("Dose"), "Total", "p-value"))
-  ),
-  # Specify row group plan
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  # page plan
-  page_plan = page_plan(
-    page_structure(group_val = list(rowlbl1 = "Age (y)")),
-    note_loc = "source_note"
-  )
-) %>% 
+gts <- base_tfrmt %>% 
+  layer_tfrmt(
+    tfrmt(
+      # page plan
+      page_plan = page_plan(
+        page_structure(group_val = list(rowlbl1 = "Age (y)")),
+        note_loc = "source_note"
+      )
+    )
+  ) %>% 
   print_to_gt(data_demog2) 
 
 ```
@@ -289,46 +196,15 @@ gts %>% gt::grp_pull(2)
 To instead limit the number of rows per page, we can set the `max_rows` argument as such (showing first 3 tables only):
 
 ```{r}
-gts <- tfrmt(
-  # specify columns in the data
-  group = c(rowlbl1,grp),
-  label = rowlbl2,
-  column = column, 
-  param = param,
-  value = value,
-  sorting_cols = c(ord1, ord2),
-  # specify value formatting 
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                                          "<0.001" ~ "<0.001",
-                                                                                                          TRUE ~ frmt("x.xxx", missing = "")))
-  ),
-  # remove extra cols
-  col_plan = col_plan(-grp,  
-                      -starts_with("ord") ),
-  # Specify column styling plan
-  col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(Placebo, contains("Dose"), "Total", "p-value"))
-  ),
-  # Specify row group plan
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  # page plan
-  page_plan = page_plan(
-    max_rows = 20
-  )
-) %>% 
+gts <- base_tfrmt %>% 
+  layer_tfrmt(
+    tfrmt(
+      # page plan
+      page_plan = page_plan(
+        max_rows = 20
+      )
+    )
+  ) %>% 
   print_to_gt(data_demog2) 
 ```
 
