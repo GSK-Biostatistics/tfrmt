@@ -151,7 +151,7 @@ add_sorting_cols <- function(data, sorting_cols){
   data
 }
 
-make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols=NULL){
+make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols){
 
   column_vars <- column %>% map_chr(as_label)
   grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label), sorting_cols %>% map_chr(as_name))
