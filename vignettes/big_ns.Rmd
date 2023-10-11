@@ -165,12 +165,12 @@ print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
 
 The `page_plan` allows users to split up large tables in many ways. Let's suppose our `page_plan` splits our table so that each subtable represents a different subpopulation defined by the `group` variable in the ARD. 
 
-To achieve this, our page_plan looks something like this:
+In this case, our page_plan looks something like this:
 ```r
 page_structure(group_val = ".default")
 ```
 
-Because our subtables contain different populations, we want the big Ns displayed in the headers to be table-specific. To achieve this, we can supply multiple sets of big Ns in the ARD. We just need to specify the specific values of the `group` parameter that each big N belongs to. his functionality can be enabled via the `by_page` argument in `big_n_structure`.
+Because our subtables contain different populations, we want the big Ns displayed in the headers to be table-specific. To achieve this, we can supply multiple sets of big Ns in the ARD. We just need to specify the specific values of the `group` parameter that each big N belongs to. This functionality can be enabled via the `by_page` argument in `big_n_structure`.
 
 For example, let's take the following data, where we have calculated big Ns for each level of the grouping variable `grp`:
 ```{r}
