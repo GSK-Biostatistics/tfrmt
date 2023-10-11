@@ -1,8 +1,8 @@
 ---
-title: "Using Footnotes"
+title: "Footnote Plan"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using Footnotes}
+  %\VignetteIndexEntry{Footnote Plan}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

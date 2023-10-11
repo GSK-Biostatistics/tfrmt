@@ -18,10 +18,12 @@ knitr::opts_chunk$set(
 library(tfrmt)
 library(tibble)
 library(dplyr)
+library(tidyr)
 ```
 
 Displaying subject totals ("Big N's") at the top of a table is a very common and necessary part of building tables for clinical trials. {tfrmt} allows you to do this via the `big_n` argument, which allows you to use a `big_n_structure` object to specify which values in the ARD should be added to the columns and how they should be formatted. 
 
+### Overall Big Ns
 
 To dynamically add big N's to column labels, the information needs to be included in the ARD. As a simple example, let's take a small demographics table that just has Age and Sex for Placebo, Treatment and Total. 
 Below is our ARD prior to incorporating the big Ns:
@@ -159,6 +161,67 @@ with_more_big_n_data <- tribble(
 print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
 ```
  
+## Page-Level Big Ns
+
+The `page_plan` allows users to split up large tables in many ways. Let's suppose our `page_plan` splits our table so that each subtable represents a different subpopulation defined by the `group` variable in the ARD. 
+
+In this case, our page_plan looks something like this:
+```r
+page_structure(group_val = ".default")
+```
+
+Because our subtables contain different populations, we want the big Ns displayed in the headers to be table-specific. To achieve this, we can supply multiple sets of big Ns in the ARD. We just need to specify the specific values of the `group` parameter that each big N belongs to. This functionality can be enabled via the `by_page` argument in `big_n_structure`.
+
+For example, let's take the following data, where we have calculated big Ns for each level of the grouping variable `grp`:
+```{r}
+dat <- crossing(
+  grp = c("A","B"),
+  lbl = c("a","b"),
+  col = c("Placebo","Treatment"),
+  param = "mean"
+) %>% 
+  mutate(val = c(1.254, 3.483, 5.123, 4.239,4.364, 8.435, 7.645, 2.312))
+
+big_ns <- tibble(col = c("Placebo","Placebo","Treatment","Treatment"),
+                 grp = c("A", "B", "A", "B"),
+                 param = "bigN",
+                 val = c(34, 36, 42, 39))
+
+
+dat <- bind_rows(dat, big_ns)
+tail(dat)
+``` 
+
+Now that we have all big Ns represented in the ARD, we can make sure of the `by_page` argument in the `big_n_structure` to ensure the various big Ns are assigned to the relevant pages defined by the `page_plan`. 
+```{r}
+gts <- tfrmt(
+  group = grp,
+  label = lbl,
+  column = col, 
+  param = param,
+  value = val,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x.x"))
+  ),
+  page_plan = page_plan(
+    page_structure(group_val = ".default")
+  ),
+  big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"), by_page = TRUE)
+) %>% 
+  print_to_gt(dat)
+```
+
+```{r}
+gts %>% gt::grp_pull(1)
+```
+```{r}
+gts %>% gt::grp_pull(2)
+``` 
+```
+
+ 
+## Final note
+
 As a final note, column names for the big N's should match the ARD column names, rather than any future names. Regardless of any renaming that happens in the `col_plan`, the column name for the big N's should be consistent with column values in the ARD. The big N's will still be added if names do get updated in the `col_plan`.  
 ```{r}
 n_span_tfrmt %>% 

@@ -29,7 +29,9 @@ Much of the tfrmt is divided into "plans" which provide the blueprint for how th
  
 <p align="center"><img src="../man/figures/table_plans.png" width="900px"></p>
 
-Note: Footnotes also use this systems and have a footnote plan (`footnote_plan`) to define what footnote contents and where they should be applied. 
+Additional features that use this system: 
+- Footnotes can be specified via footnote plan (`footnote_plan`) to define what footnote contents and where they should be applied. 
+- Pagination can be specified via a page plan (`page_plan`) to define where the table should be split for separating onto multiple pages. 
 
 **3. Structures:** `*_structure()`
 
@@ -46,6 +48,7 @@ The following structures are available:
 - Row group structure (`row_grp_structure`) inside of row group plan (`row_grp_plan`)
 - Column style structure (`col_style_structure`) inside of column style plan (`col_style_plan`)
 - Footnote structure (`footnote_structure`) inside of footnote plan (`footnote_plan`)
+- Page structure (`page_structure`) inside of a page plan (`page_plan`)
 
 
 **4. Elements** `element_*()` **and Formats:** `frmt_*()`
