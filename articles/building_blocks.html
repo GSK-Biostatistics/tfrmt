@@ -50,7 +50,8 @@
     <a class="dropdown-item" href="../articles/col_plan.html">Column Plan</a>
     <a class="dropdown-item" href="../articles/col_style_plan.html">Column Style Plan</a>
     <a class="dropdown-item" href="../articles/big_ns.html">Big N's</a>
-    <a class="dropdown-item" href="../articles/footnotes.html">Using Footnotes</a>
+    <a class="dropdown-item" href="../articles/footnote_plan.html">Footnote Plan</a>
+    <a class="dropdown-item" href="../articles/page_plan.html">Pagination</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Building Tables</h6>
     <a class="dropdown-item" href="../articles/examples.html">Examples</a>
@@ -123,9 +124,11 @@ values will be aligned and set their widths</li>
 </ul>
 <p align="center">
 <img src="../reference/figures/table_plans.png" width="900px"></p>
-<p>Note: Footnotes also use this systems and have a footnote plan
-(<code>footnote_plan</code>) to define what footnote contents and where
-they should be applied.</p>
+<p>Additional features that use this system: - Footnotes can be
+specified via footnote plan (<code>footnote_plan</code>) to define what
+footnote contents and where they should be applied. - Pagination can be
+specified via a page plan (<code>page_plan</code>) to define where the
+table should be split for separating onto multiple pages.</p>
 <p><strong>3. Structures:</strong> <code>*_structure()</code></p>
 <p>The structure objects are for defining how the <em>location</em> of
 where a specific styling should be applied. Within a plan, one or more
@@ -154,6 +157,8 @@ group plan (<code>row_grp_plan</code>)</li>
 column style plan (<code>col_style_plan</code>)</li>
 <li>Footnote structure (<code>footnote_structure</code>) inside of
 footnote plan (<code>footnote_plan</code>)</li>
+<li>Page structure (<code>page_structure</code>) inside of a page plan
+(<code>page_plan</code>)</li>
 </ul>
 <p><strong>4. Elements</strong> <code>element_*()</code> <strong>and
 Formats:</strong> <code>frmt_*()</code></p>

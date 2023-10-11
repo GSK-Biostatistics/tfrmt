@@ -31,7 +31,7 @@
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/faq.html</loc>
   </url>
   <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/footnotes.html</loc>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/footnote_plan.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/index.html</loc>
@@ -44,6 +44,9 @@
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/mock_examples.html</loc>
+  </url>
+  <url>
+    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/page_plan.html</loc>
   </url>
   <url>
     <loc>https://gsk-biostatistics.github.io/tfrmt/articles/print_to_ggplot.html</loc>
