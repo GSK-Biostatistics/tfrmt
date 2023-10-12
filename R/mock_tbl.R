@@ -16,7 +16,21 @@
 #' @importFrom rlang as_name is_empty
 #' @importFrom tidyselect everything all_of
 #'
-#' @noRd
+#' @export
+#' @examples
+#'
+#' tfrmt_spec <- tfrmt(
+#'   label = label,
+#'   column = column,
+#'   param = param,
+#'   value=value,
+#'   body_plan = body_plan(
+#'     frmt_structure(group_val=".default", label_val=".default", frmt("xx.x"))
+#'     )
+#'   )
+#'
+#' make_mock_data(tfrmt_spec)
+#'
 make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
 
   body_plan <- tfrmt$body_plan
