@@ -80,3 +80,4 @@ reference:
   - apply_frmt
   - cleaned_data_to_gt
   - starts_with("is_")
+  - make_mock_data
