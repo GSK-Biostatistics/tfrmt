@@ -67,7 +67,9 @@ tfrmt(
   
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(everything()))
+    col_style_structure(align = c(".",","," "), col = c("Placebo", "Xanomeline Low Dose",
+                                                        "Xanomeline High Dose", "Total", "p-value")),
+    col_style_structure(align = "left", col = c("rowlbl1","rowlbl2"))
   ),
   
   # remove extra cols
@@ -205,7 +207,9 @@ tfrmt(
                       -starts_with("ord") ),
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(everything()))
+    col_style_structure(align = c(".",","," "), col = c("Placebo", "Xanomeline Low Dose",
+                                                        "Xanomeline High Dose", "Total", "p-value")),
+    col_style_structure(align = "left", col = c("rowlbl1","rowlbl2"))
   ),
   
     # Specify row group plan

@@ -47,7 +47,7 @@ This feature, available via the `max_rows` argument in `page_plan`, involves spl
 **NOTE**: If both `max_rows` and `page_structure` are provided to the `page_plan`, the table will first be split according to the `page_structure`, follwed by the `max_rows`.
 
 
-Examples of each of these approaches are below. To reduce the amount of code displayed in the examples, following the initial table, `tfrmt`'s layering functionality will be used to add the `page_plan`.  For more information about this, see the `Layering tfrmts` vignette. 
+Examples of each of these approaches are below. To reduce the amount of code displayed in the examples, following the initial table, `tfrmt`'s layering functionality will be used to add the `page_plan`.  For more information about this, see the "Layering tfrmts" vignette. 
 
 ### Values-driven splitting
 
@@ -112,7 +112,7 @@ base_tfrmt %>%
 
 #### Every unique value of 1 variable
 
-Suppose we want to split the table by every unique value of `rowlbl1`. and add a footnote indicating the table grouping. We can drop `rowlbl1` from the tables since its value will be printed in the note. We will use the `gt::grp_pull()` function to print the individual tables nicely in the vignette. 
+Suppose we want to split the table by every unique value of `rowlbl1` and add a footnote indicating the table grouping. We can drop `rowlbl1` from the tables since its value will be printed in the note. We will use the `gt::grp_pull()` function to print the individual tables nicely in the vignette. 
 ```{r  }
 gts <- base_tfrmt %>% 
   layer_tfrmt(
