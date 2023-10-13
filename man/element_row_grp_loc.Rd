@@ -18,7 +18,7 @@ group and label variables into a single column with sub-groups indented. The
 highest level group column will either be printed as a spanning header or in
 its own column in the gt. The 'noprint' option allows the user to suppress
 group values from being printed. Finally, the 'gtdefault' option allows
-users to use the {gt} defaults for styling multiple group columns.}
+users to use the 'gt' defaults for styling multiple group columns.}
 
 \item{indent}{A string of the number of spaces you want to indent}
 }

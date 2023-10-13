@@ -5,7 +5,7 @@
 #'
 #' @param ...  a series of [footnote_structure()] separated by commas
 #' @param marks type of marks required for footnotes, properties inherited from
-#'   tab_footnote in {gt}. Available options are "numbers", "letters",
+#'   tab_footnote in 'gt'. Available options are "numbers", "letters",
 #'   "standard" and "extended" (standard for a traditional set of 4 symbols,
 #'   extended for 6 symbols). The default option is set to "numbers".
 #'

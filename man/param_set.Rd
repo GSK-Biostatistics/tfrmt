@@ -10,7 +10,7 @@ param_set(...)
 \item{...}{Series of name-value pairs, optionally formatted using
 \code{glue::glue()} syntax (note \code{glue} syntax is required for combined
 parameters).The name represents the parameter and the value represents the number of places to round the parameter to.
-For combined parameters (e.g., "{min}, {max}"), value should
+For combined parameters (e.g., \code{"{min}, {max}"}), value should
 be a vector of the same length (e.g., c(1,1)).}
 }
 \value{
