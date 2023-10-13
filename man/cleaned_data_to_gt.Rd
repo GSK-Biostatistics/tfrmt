@@ -2,19 +2,30 @@
 % Please edit documentation in R/print_to_gt.R
 \name{cleaned_data_to_gt}
 \alias{cleaned_data_to_gt}
+\alias{cleaned_data_to_gt.list}
+\alias{cleaned_data_to_gt.default}
 \title{Do all the formatting for the GT}
 \usage{
-cleaned_data_to_gt(x, tfrmt)
+cleaned_data_to_gt(.data, tfrmt)
+
+\method{cleaned_data_to_gt}{list}(.data, tfrmt)
+
+\method{cleaned_data_to_gt}{default}(.data, tfrmt)
 }
 \arguments{
-\item{x}{formatted data for the table}
+\item{.data}{cleaned dataset}
 
-\item{tfrmt}{tfrmt object}
+\item{tfrmt}{tfrmt}
 }
 \value{
-gt or gt_group object
+gt_group object
+
+GT object
 }
 \description{
 Do all the formatting for the GT
+
+Apply formatting to a list of tables
+
+Apply formatting to a single table
 }
-\keyword{internal}
