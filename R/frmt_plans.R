@@ -118,7 +118,7 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #'  than the value, they will be represented as spaces.
 #'  - `frmt_combine()` defines how the parameters will be combined as a
 #'  `glue::glue()` statement. Parameters need to be equal to the values in the
-#'  param column and defined in the expression as "{param1} {param2}".
+#'  param column and defined in the expression as \code{"{param1} {param2}"}.
 #'
 #' ## missing
 #'  - `frmt()` Value to enter when the value is missing. When NULL, the value

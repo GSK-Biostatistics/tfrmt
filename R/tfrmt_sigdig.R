@@ -33,7 +33,7 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' @param ... Series of name-value pairs, optionally formatted using
 #'   `glue::glue()` syntax (note `glue` syntax is required for combined
 #'   parameters).The name represents the parameter and the value represents the number of places to round the parameter to.
-#'   For combined parameters (e.g., "{min}, {max}"), value should
+#'   For combined parameters (e.g., \code{"{min}, {max}"}), value should
 #'   be a vector of the same length (e.g., c(1,1)).
 #'
 #' @details Type `param_set()` in console to view package defaults. Use of the

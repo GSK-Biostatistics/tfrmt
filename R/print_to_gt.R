@@ -146,16 +146,10 @@ print_to_gt <- function(tfrmt, .data){
 
 
 #' Do all the formatting for the GT
-#'
-#' @param x formatted data for the table
-#' @param tfrmt tfrmt object
-#'
-#' @return gt or gt_group object
-#'
-#' @keywords internal
+#' @rdname cleaned_data_to_gt
 #' @export
-cleaned_data_to_gt <- function(x, tfrmt){
-  UseMethod("cleaned_data_to_gt", x)
+cleaned_data_to_gt <- function(.data, tfrmt){
+  UseMethod("cleaned_data_to_gt", .data)
 }
 
 #' Apply formatting to a list of tables
@@ -164,7 +158,8 @@ cleaned_data_to_gt <- function(x, tfrmt){
 #' @param tfrmt tfrmt
 #'
 #' @return gt_group object
-#' @noRd
+#' @rdname cleaned_data_to_gt
+#' @export
 #' @importFrom gt gt_group
 #' @importFrom purrr map2
 cleaned_data_to_gt.list <- function(.data, tfrmt){
@@ -178,7 +173,8 @@ cleaned_data_to_gt.list <- function(.data, tfrmt){
 #' @param tfrmt tfrmt
 #'
 #' @return GT object
-#' @noRd
+#' @rdname cleaned_data_to_gt
+#' @export
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead
