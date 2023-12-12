@@ -142,6 +142,8 @@ expr_to_filter <- function(cols, val){
   UseMethod("expr_to_filter", cols)
 }
 
+#' @importFrom stringr str_detect str_sub
+#' @importFrom rlang as_label
 expr_to_filter.quosure <- function(cols, val){
   ## If is missing a quosure, nothing to filter
   if(quo_is_missing(cols)){
@@ -152,6 +154,7 @@ expr_to_filter.quosure <- function(cols, val){
   if(all(val == ".default")){
     out <- "TRUE"
   } else {
+    val <- ifelse(str_detect(val, "^`.*`$"), str_sub(val, 2, -2), val)
     out <- as_label(cols) %>%
       paste0("`", ., "`") %>%
       paste0(" %in% c('",
