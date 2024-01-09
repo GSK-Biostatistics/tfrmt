@@ -86,7 +86,7 @@ For this table, we have three columns for each of the treatment groups, a total 
 
 The first thing we are going to do when building out the `tfrmt` is specify all our columns
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 tfrmt(
   # specify columns in the data
   group = c(rowlbl1,grp),
