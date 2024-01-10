@@ -192,6 +192,31 @@ tfrmt(
   print_to_gt(dat)
 ```
 
+If the user would like to rename column spanners then this can be specified using `span_structure`. Let' say we want to rename the column spanners from multiple levels; such that `"cols 1,2"` becomes `"first cols"` and `"col 4"` becomes `"just col4"` for the `span1` level, and `"column cols"` becomes `"most columns"` for the `span2` level. We can rename multiple spanners within the same level in the same `span_structure`, but when renaming multiple spanners in different levels we need to create a new `span_structure` for each level.
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  param = parm,
+  value = val,
+  column = c(span2, span1, my_col),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+  ),
+  col_plan = col_plan(
+    span_structure(span1 = c("first cols" = "cols 1,2"),
+                   span1 = c("just col4" = "col 4")),
+    span_structure(span2 = c("most columns" = "column cols")),
+    group,
+    label,
+    starts_with("col"),
+    new_col_3 = mycol3,
+    -mycol5
+  )
+) %>% 
+  print_to_gt(dat)
+```
 
 Let's suppose we want to move the "col 4" column to the beginning and also reorder "col1" and "col2". To achieve this, we can use `span_structure`. `span_structure` allows you to specify value(s) for a given column column, to specify the order. So can select `"col 4"`  from `span1`. Then use another `span_strcture` to select `"col2"` and then `"col1"` from `my_col` when `span1` equals `"col 1,2"`,and finally all the other columns. 
 
