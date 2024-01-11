@@ -225,8 +225,8 @@ tfrmt(
   ),
   col_plan = col_plan(
     # rename column spanner in same level
-    span_structure(span1 = c("first cols" = "cols 1,2"),
-                   span1 = c("just col4" = "col 4")),
+    span_structure(span1 = c("first cols" = "cols 1,2",
+                             "just col4" = "col 4")),
     # rename column spanner in different level
     span_structure(span2 = c("most columns" = "column cols")),
     group,
