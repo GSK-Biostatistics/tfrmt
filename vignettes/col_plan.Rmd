@@ -22,7 +22,6 @@ library(dplyr)
 
 The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labels and ordering. Similar to the column styling plan (`col_style_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like an advanced version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion, as well as preferentially selecting the _last_ instance a column is selected. For column spanning, multiple column columns need to exist in the input dataset. 
 
-
 Let's look at the workflow in more detail with the following dataset which includes a single `column` variable:
 
 ```{r}
@@ -46,12 +45,28 @@ dat <- tribble(
 
 ```
 
+This is what this data looks like formatted as a basic table.
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  param = parm,
+  value = val,
+  column = my_col,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+  )
+) %>% 
+  print_to_gt(dat)
+```
 
 # Simple Column Selection
 
 In the case of a single column variable with no column spanners, `col_plan` behaves similarly to `dplyr::select`. 
 
-Let's say we want to remove one of the columns:
+If we want to remove one of the columns we specify within a `col_plan`:
+
 ```{r}
 tfrmt(
   group = group,
@@ -63,7 +78,7 @@ tfrmt(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
   ),
   col_plan = col_plan(
-    -mycol5            
+    -mycol5
   )
 ) %>% 
   print_to_gt(dat)
@@ -82,10 +97,13 @@ tfrmt(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
   ),
   col_plan = col_plan(
+    # reordering
     group, 
     label, 
     starts_with("col"),
+    # renaming
     new_col_3 = mycol3,  
+    # removing
     -mycol5            
   )
 ) %>% 
@@ -109,15 +127,15 @@ tfrmt(
     label, 
     starts_with("col"),
     everything(),
-    col1         
+    col1 # moved to end
   )
 ) %>% 
   print_to_gt(dat)
 ```
 
-# Naming the Group and Label columns
+# Naming the Group-Label Header
 
-It is also possible to provide a combined header for the group and label columns. To achieve this, rename the `group` variable in the column plan. If multiple `group` variables exist, any of them can be renamed. If more than one is renamed, {tfrmt} will use the highest level `group` name available. 
+It is also possible to provide a combined header for the group and label columns - this is termed the "stub" in {gt}. To achieve this, rename the `group` variable in the column plan, just as you would with other columns. If multiple `group` variables exist, any of them can be renamed. If more than one is renamed, {tfrmt} will use the highest level `group` name available. 
 
 ```{r}
 tfrmt(
@@ -130,7 +148,7 @@ tfrmt(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
   ),
   col_plan = col_plan(
-    my_grp = group, 
+    my_grp = group, # rename group
     label, 
     starts_with("col"),
     everything(),
@@ -169,7 +187,7 @@ dat <- tribble(
 )
 ```
 
-Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable within col_plan. To edit or move the columns based on the the column spanners, span_structure must be used. Here we want to bring all the columns that start with "col" together, as well as rename `mycol3` and drop `mycol5`. 
+Similar to the case of 1 `column` variable, the user may remove and rename values for the lowest level `column` variable within col_plan. To edit or move the columns based on the the column spanners, `span_structure` must be used. Here we want to bring all the columns that start with "col" together, as well as rename `mycol3` and drop `mycol5`. 
 
 ```{r}
 tfrmt(
@@ -177,6 +195,7 @@ tfrmt(
   label = label,
   param = parm,
   value = val,
+  # specify spanner columns and unique column from data
   column = c(span2, span1, my_col),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
@@ -192,6 +211,33 @@ tfrmt(
   print_to_gt(dat)
 ```
 
+Renaming column spanners can also be specified using `span_structure`. We can rename multiple spanners _within the same level_ in the same `span_structure` - here `"cols 1,2"` becomes `"first cols"` and `"col 4"` becomes `"just col4"` for the `span1` level. But when renaming multiple spanners _in different levels_ we need to create a new `span_structure` for each level - so we write `"column cols"` becomes `"most columns"` for the `span2` level in a separate `span_structure`.
+
+```{r}
+tfrmt(
+  group = group,
+  label = label,
+  param = parm,
+  value = val,
+  column = c(span2, span1, my_col),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+  ),
+  col_plan = col_plan(
+    # rename column spanner in same level
+    span_structure(span1 = c("first cols" = "cols 1,2",
+                             "just col4" = "col 4")),
+    # rename column spanner in different level
+    span_structure(span2 = c("most columns" = "column cols")),
+    group,
+    label,
+    starts_with("col"),
+    new_col_3 = mycol3,
+    -mycol5
+  )
+) %>% 
+  print_to_gt(dat)
+```
 
 Let's suppose we want to move the "col 4" column to the beginning and also reorder "col1" and "col2". To achieve this, we can use `span_structure`. `span_structure` allows you to specify value(s) for a given column column, to specify the order. So can select `"col 4"`  from `span1`. Then use another `span_strcture` to select `"col2"` and then `"col1"` from `my_col` when `span1` equals `"col 1,2"`,and finally all the other columns. 
 
@@ -208,6 +254,7 @@ tfrmt(
   col_plan = col_plan(
     group, 
     label, 
+    # reordering spanners
     span_structure(span1 = c("col 4")),
     span_structure(span1 = c("cols 1,2"), my_col = c("col2", "col1")),
     everything(),
@@ -217,7 +264,6 @@ tfrmt(
 ) %>% 
   print_to_gt(dat)
 ```
-
 
 Reordering with multiple `column` variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. But, that isn't always the case take the following example:
 
@@ -253,9 +299,6 @@ tfrmt(
   print_to_gt(dat)
 ```
 
-For more examples of `col_plan`s see the examples or unusual table vignettes. 
-
-
-
+For more examples of `col_plan` see the examples or unusual table vignettes. 
 
 
