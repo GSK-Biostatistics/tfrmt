@@ -37,7 +37,7 @@ expr_to_filter.quosures <- function(cols, val){
   } else if(!is.list(val) & length(cols) == 1){
     cols <- cols[[1]]
     out <- expr_to_filter(cols,val)
-  } else if(!is.list(val) && val == ".default"){
+  } else if(!is.list(val) && all(val == ".default")){
     out <- "TRUE"
   }else if(!is.list(val)){
     stop("If multiple cols are provided, val must be a named list")
@@ -51,19 +51,21 @@ expr_to_filter.quosures <- function(cols, val){
   out
 }
 
-#' Test of the page rows in the data
+#' Given a *_structure with specific group/label value(s) (i.e. non-default),
+#' return the row indices corresponding to each unique value
 #'
-#' @param cur_struct current page struct
+#' @param cur_struct current structure object
 #' @param .data data to test against
 #' @param group list of the group parameters
 #' @param label label symbol should only be one
 #'
-#' @return tibble filtered to the rows where a split occurs following
+#' @return list of row indices
 #' @noRd
 #'
-#' @importFrom dplyr filter pull
+#' @importFrom dplyr filter pull select mutate group_by group_split
 #' @importFrom rlang parse_expr
-page_test_data <- function(cur_struct, .data, group, label){
+#' @importFrom purrr map_lgl map
+struct_val_idx <- function(cur_struct, .data, group, label){
 
   grp_expr <- "TRUE"
   lbl_expr <- "TRUE"
@@ -76,7 +78,7 @@ page_test_data <- function(cur_struct, .data, group, label){
     if (!is.list(cur_struct$group_val)){
       keep_vars <- group
     } else {
-      keep_vars <- group[map_lgl(cur_struct$group_val, ~!.x==".default")]
+      keep_vars <- group[map_lgl(cur_struct$group_val, ~!all(.x==".default"))]
     }
   }
 
@@ -99,22 +101,26 @@ page_test_data <- function(cur_struct, .data, group, label){
       mutate(breaks = .data$TEMP_row==lag(.data$TEMP_row, default = 0)+1,
              breaks = cumsum(!.data$breaks)) %>%
       group_by(.data$breaks) %>%
-      slice(n()) %>%
-      pull(.data$TEMP_row)
+      group_split() %>%
+      map(function(x) pull(x, TEMP_row))
 
   } else {
-    0
+    .data %>%
+      pull(.data$TEMP_row) %>%
+      list()
   }
 
 }
 
-# detect use of .default
+# detect use of .default in a *_structure object
+#' @importFrom purrr map_lgl
+#' @noRd
 detect_default <- function(struct){
 
   map_lgl(struct, ~ any(!is.null(.x) && any(.x==".default"))) %>% any()
 }
 
-# detect use of non-default
+# detect use of non-default in a  *_structure object entry
 detect_non_default <- function(struct_val){
 
   any(!is.null(struct_val) && any(!struct_val==".default"))
@@ -123,22 +129,25 @@ detect_non_default <- function(struct_val){
 
 #' Create the group_by expression for the data
 #'
-#' @param cur_struct current page struct
+#' @param cur_struct current structure object
 #' @param group list of the group parameters
 #' @param label label symbol should only be one
 #'
-#' @return list of indices for each of the tables
+#' @return character vector of variable names to group by
 #' @noRd
+#'
+#' @importFrom rlang as_label
+#' @importFrom purrr map_lgl map_chr
 expr_to_grouping <- function(cur_struct, group, label){
 
   grouping <- NULL
 
   if (!is.null(cur_struct$group_val)){
-    if(!is.list(cur_struct$group_val) && cur_struct$group_val==".default"){
+    if(!is.list(cur_struct$group_val) && all(cur_struct$group_val==".default")){
       grp_to_add <- map_chr(group, as_label)
       grouping <- c(grouping, grp_to_add)
     } else if (is.list(cur_struct$group_val) && any(cur_struct$group_val==".default")){
-      grp_to_add <- names(cur_struct$group_val)[map_lgl(cur_struct$group_val, ~.x==".default")]
+      grp_to_add <- names(cur_struct$group_val)[map_lgl(cur_struct$group_val, ~all(.x==".default"))]
       grouping <- c(grouping, grp_to_add)
     }
   }

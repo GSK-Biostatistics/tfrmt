@@ -146,10 +146,9 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
 #' @param note_loc location of page note
 #'
 #' @noRd
-#' @importFrom purrr map map2 accumulate
-#' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise last lag case_when
-#' @importFrom tidyr unnest nest pivot_longer drop_na
-#' @importFrom tidyselect starts_with all_of
+#' @importFrom purrr map map2 map_dbl
+#' @importFrom dplyr tibble row_number mutate group_by left_join select filter summarise  lag last
+#' @importFrom tidyr  pivot_longer
 apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 
   .data <- .data %>%
@@ -164,8 +163,10 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
             "Only the last one specified will be used.")
   }
 
-  # 2. If applicable, split by any group/label vars set to ".default"
-  struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
+  # 2. get all the subsets of data
+
+  # a) If applicable, split by any group/label vars set to ".default"
+  struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
 
   if (length(struct_defaults_idx)>0){
 
@@ -181,14 +182,15 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     dat_split_1 <- tibble(`..tfrmt_data` = list(!!.data))
   }
 
-  # 3. Further split the sub-data based on specific values (loop over all combinations of page_structure & data)
+  # b) Further split the sub-data based on specific values (loop over all combinations of page_structure & data)
 
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
     mutate(split_idx = map(.data$`..tfrmt_data`, function(x){
       map(page_struct_list, function(y){
-        page_test_data(y, x, group, label)
-      }) %>% unlist
+        struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
+          map_dbl(last) # keep just the last one to split after
+      }) %>% unlist()
     }))
 
   # determine where the splits should occur in data
@@ -207,7 +209,7 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     select(-"split_idx") %>%
     unnest(cols = "..tfrmt_data")
 
-  # 4. create the page_notes as applicable
+  # 3. create the page_notes as applicable
   if ("..tfrmt_split_num" %in% names(dat_split_2)){
     # create the page_notes to be carried forward as names for now
     tbl_nms <- dat_split_2 %>%
@@ -227,8 +229,7 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
   }
 
 
-  # 5. return the values
-
+  # 4. return the values
   # prep list of tbsl
   dat_out <- dat_split_2 %>%
     mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, - "TEMP_row"))) %>%
