@@ -16,6 +16,13 @@ apply_col_style_plan <- function(.data, tfrmt_obj, col_plan_vars = as_vars.chara
 
   style_plan <- tfrmt_obj$col_style_plan
 
+  # check if col_style_plan is part of tfrmt_obj and wrapped by col_style_plan
+  if (!is.null(style_plan)) {
+    if (!inherits(style_plan, "col_style_plan")) {
+      stop("col_style_structure must be wrapped by col_style_plan.")
+    }
+  }
+
   if(is.null(style_plan) || length(style_plan) == 0){
     return(.data)
   }
