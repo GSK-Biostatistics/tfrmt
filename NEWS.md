@@ -1,10 +1,8 @@
-# tfrmt development version
-
-Breaking changes:
-* `row_grp_plan` no longer splits on all grouping variables. Instead, it only splits on those explicitly mentioned, similar to `page_plan`
+# tfrmt development version 
 
 Bug fixes
 * Fixed issue where `frmt_combine` couldn't process variable names surrounded by backticks
+* Fixed bug where `row_grp_plan` splits on all grouping variables, even if not mentioned. Instead, the logic has been updated to split on those explicitly mentioned, similar to `page_plan`
 
 # tfrmt 0.1.0
 
