@@ -197,6 +197,15 @@ tfrmt <- function(
     class = c("tfrmt")
   )
 
+  # check non-null plan parameters are supplied with plan function
+  check_plan(new_tfrmt, "body_plan")
+  check_plan(new_tfrmt, "col_plan")
+  check_plan(new_tfrmt, "col_style_plan")
+  check_plan(new_tfrmt, "row_grp_plan")
+  check_plan(new_tfrmt, "footnote_plan")
+  check_plan(new_tfrmt, "page_plan")
+
+
   if(!missing(tfrmt_obj)){
     new_tfrmt <- layer_tfrmt(
       tfrmt_obj,
@@ -213,6 +222,7 @@ tfrmt <- function(
   check_footnote_plan(new_tfrmt)
 
   new_tfrmt
+  #browser()
 
 }
 

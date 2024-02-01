@@ -284,3 +284,24 @@ check_footnote_plan <- function(x){
 
 }
 
+
+#' Check if the plan parameter is consistent in tfrmt
+#' @noRd
+#' @param tfrmt_object tfrmt object to be checked
+#' @param plan plan parameter, e.g., col_style_plan
+#' @importFrom rlang abort inherits
+#'
+#'
+check_plan <- function(tfrmt_object, plan) {
+  # extract the plan element from the tfrmt_object
+  plan_element <- tfrmt_object[[plan]]
+
+  # check if the user supplied a value to the plan parameter
+  if (!is.null(plan_element)) {
+    # Check if the plan element inherits the plan attribute
+    if (!inherits(plan_element, plan)) {
+      stop("Check if ", plan, " parameter has been supplied ", plan, "() function")
+    }
+  }
+}
+
