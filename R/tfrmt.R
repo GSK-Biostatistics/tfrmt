@@ -222,7 +222,6 @@ tfrmt <- function(
   check_footnote_plan(new_tfrmt)
 
   new_tfrmt
-  #browser()
 
 }
 
