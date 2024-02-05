@@ -289,7 +289,7 @@ check_footnote_plan <- function(x){
 #' @noRd
 #' @param tfrmt_object tfrmt object to be checked
 #' @param plan plan parameter, e.g., col_style_plan
-#' @importFrom rlang abort inherits
+#' @importFrom rlang abort
 #'
 #'
 check_plan <- function(tfrmt_object, plan) {
