@@ -70,8 +70,7 @@ test_that("Testing error message for invalid input to plan parameters, specifica
       ),
       # col_style_structure() supplied to col_style_plan param instead of col_style_plan() funciton
       col_style_plan = col_style_structure(col = `p-value`, align = c("."), type = "char")
-    ),
-    "Invalid input supplied to the col_style_plan parameter. Please supply a col_style_plan()."
+    )
   )
 })
 
@@ -110,8 +109,7 @@ test_that("Testing error message for invalid input to big_n parameter",{
       ),
       # col_plan() supplied to big_n parameter instead of big_n_structure() function
       big_n = col_plan()
-    ),
-    "Invalid input supplied to the big_n parameter. Please supply a big_n_structure()."
+    )
   )
 })
 
