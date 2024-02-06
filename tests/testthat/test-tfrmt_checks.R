@@ -76,3 +76,43 @@ test_that("Testing error message for invalid input to plan parameters, specifica
 })
 
 
+
+test_that("Testing error message for invalid input to big_n parameter",{
+
+  expect_error(
+    # create tfrmt object
+    tfrmt_object <- tfrmt(
+      group = Group,
+      label = Label,
+      column = Column,
+      value = Value,
+      param = Param,
+      sorting_cols = c(ord1, ord2),
+      body_plan = body_plan(
+        frmt_structure(group_val = ".default",
+                       label_val = ".default",
+                       frmt_combine("{n} {pct}",
+                                    n = frmt("X"),
+                                    pct = frmt("(xx.x%)", missing = " ")
+                       )
+        ),
+        frmt_structure(group_val = "Age (y)", label_val = "Mean (SD)",
+                       frmt_combine("{mean} ({sd})",
+                                    mean = frmt("XX.X"),
+                                    sd = frmt("x.xx")
+                       )
+        ),
+        frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+      ),
+      col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      ),
+      # col_plan() supplied to big_n parameter instead of big_n_structure() function
+      big_n = col_plan()
+    ),
+    "Invalid input supplied to the big_n parameter. Please supply a big_n_structure()."
+  )
+})
+
+
