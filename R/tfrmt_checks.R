@@ -300,7 +300,7 @@ check_plan <- function(tfrmt_object, plan) {
   if (!is.null(plan_element)) {
     # Check if the plan element inherits the plan attribute
     if (!inherits(plan_element, plan)) {
-      stop("Invalid *_plan function has been supplied to the ", plan, " parameter")
+      stop("Invalid input supplied to the ", plan, " parameter. Please supply a ", plan, "().")
     }
   }
 }
