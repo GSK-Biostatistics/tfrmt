@@ -298,10 +298,25 @@ check_plan <- function(tfrmt_object, plan) {
 
   # check if the user supplied a value to the plan parameter
   if (!is.null(plan_element)) {
-    # Check if the plan element inherits the plan attribute
+    # check if the plan element inherits the plan attribute
     if (!inherits(plan_element, plan)) {
       stop("Invalid input supplied to the ", plan, " parameter. Please supply a ", plan, "().")
     }
   }
 }
+
+
+check_big_n <- function(tfrmt_object) {
+  # extract the big_n element from the tfrmt_object
+  big_n_element <- tfrmt_object[["big_n"]]
+
+  # check if the user supplied a value to the big_n parameter
+  if (!is.null(big_n_element)) {
+    # check if the big_n element inherits the big_n_structure
+    if (!inherits(big_n_element, "big_n_structure")) {
+      stop("Invalid input supplied to the big_n parameter. Please supply a big_n_structure().")
+    }
+  }
+}
+
 
