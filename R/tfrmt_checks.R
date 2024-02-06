@@ -285,7 +285,7 @@ check_footnote_plan <- function(x){
 }
 
 
-#' Check if the plan parameter is consistent in tfrmt
+#' Check if the plan parameter is supplied the correct plan function in tfrmt object
 #' @noRd
 #' @param tfrmt_object tfrmt object to be checked
 #' @param plan name of plan, e.g., "col_style_plan"
