@@ -156,8 +156,10 @@ apply_grp_block <- function(.data, group, element_block, widths){
       slice(n()) %>%
       mutate(across(c(-map_chr(group, as_name), -vars_select_helpers$where(is.numeric)),
                     ~replace(.x, value = fill_post_space(post_space = element_block$post_space,
-                                                           width = widths[[cur_column()]]))),
+                                                         fill = element_block$fill,
+                                                         width = widths[[cur_column()]]))),
              TEMP_row = .data$TEMP_row + 0.1)
+
 
     # combine with original data
     bind_rows(.data, grp_row_add) %>%
@@ -172,13 +174,14 @@ apply_grp_block <- function(.data, group, element_block, widths){
 #' Fill the cell value with post space character
 #'
 #' @param post_space Character value for post space
+#' @param fill Whether to recycle value in `post_space` to match data width
 #' @param width width to make the post_space value in order to fill the cell
 #'
 #' @return character value containing post space value modified to fill cell
 #' @noRd
 #'
 #' @importFrom stringr str_sub
-fill_post_space <- function(post_space, width){
+fill_post_space <- function(post_space, fill, width){
 
   ## if only white space, no need to make wider for visuals
   if(grepl("^\\s*$", post_space)){
@@ -186,8 +189,13 @@ fill_post_space <- function(post_space, width){
   }
 
   length_post_space <- nchar(post_space)
-  reps <- ceiling(width/length_post_space)
-  fill_val <- strrep(post_space, reps) %>% str_sub(1, width)
+
+  if (fill) {
+    reps <- ceiling(width/length_post_space)
+    fill_val <- strrep(post_space, reps) %>% str_sub(1, width)
+  } else {
+    fill_val <- str_sub(post_space, 1, width) # truncate to data width if needed
+  }
 
   return(fill_val)
 

@@ -56,14 +56,14 @@
               "group_val": ["A", "C"],
               "block_to_apply": {
                 "post_space": ["---"],
-                "border": ["outline", "bottom"]
+                "fill": [true]
               }
             },
             {
               "group_val": ["B"],
               "block_to_apply": {
                 "post_space": [" "],
-                "border": ["outline", "bottom"]
+                "fill": [true]
               }
             }
           ],
@@ -94,7 +94,7 @@
               },
               "block_to_apply": {
                 "post_space": [" "],
-                "border": ["outline", "bottom"]
+                "fill": [true]
               }
             }
           ],
