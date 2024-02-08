@@ -176,7 +176,8 @@ print.frmt_structure <- function(x, ...){
   cat(format(x, ...), sep = "\n")
 }
 
-
+#' @export
+#' @keywords internal
 format.body_plan <- function(x,...){
 
   table_body_plan_str <- c(
