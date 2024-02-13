@@ -2,6 +2,8 @@
 
 Bug fixes
 * Fixed issue where `frmt_combine` couldn't process variable names surrounded by backticks
+* Fixed issue where `row_grp_plan` post space did not respect `col_style_plan` widths by adding new `fill` argument to `element_block`. The `fill` argument controls whether post space values should be recycled for the cell's data width. For example, a cell width of 3 will be respected by the post space with the following syntax: `element_block(post_space = "---", fill = FALSE)`. 
+* Remove unused `border` argument in `element_block`. 
 
 # tfrmt 0.1.0
 
