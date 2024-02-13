@@ -8,7 +8,7 @@
 #' @noRd
 #' @importFrom dplyr tibble mutate group_by arrange slice group_map case_when left_join row_number select summarise across
 #' @importFrom purrr map map2_dfr
-#' @importFrom tidyr unnest nest
+#' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom tidyselect everything
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
@@ -18,28 +18,37 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
+  # for each structure object, (1) split the data on any default values, (2) split the data on specific data values
+  # get nested list object:
+  #  length = number of structures, each element contains list of data splits (row indices)
   TEMP_appl_row <- row_grp_struct_list %>%
-    map(grp_row_test_data, .data, group)
+    map(function(struct){
+      grping <- expr_to_grouping(struct, group)
+
+      split_dat <- .data %>%
+        group_by(across(all_of(grping))) %>%
+        group_split()
+      map(split_dat, function(dat) struct_val_idx(struct, dat, group, label)) %>% list_flatten()
+    })
+
   TEMP_block_to_apply <- row_grp_struct_list %>% map(~.$block_to_apply)
 
   # similar to frmts, only allow 1 element_block for a given row
   #   - within block-specific data, split data further by grouping vars
   dat_plus_block <- tibble(
     TEMP_appl_row,
-    TEMP_block_to_apply) %>%
+    TEMP_block_to_apply)%>%
     mutate(TEMP_block_rank = row_number()) %>%
-    unnest(cols = c(TEMP_appl_row)) %>%
+    # unnest to 1 rec per data chunk
+    unnest_longer(TEMP_appl_row, indices_to = "TEMP_chunk_num", transform = unlist) %>%
+    # unnest to 1 rec per data row, to handle where chunk >1 row
+    unnest(TEMP_appl_row) %>%
     group_by(TEMP_appl_row) %>%
     arrange(TEMP_appl_row, desc(.data$TEMP_block_rank)) %>%
     slice(1) %>%
     left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
-    group_by(.data$TEMP_block_rank, .data$TEMP_block_to_apply ) %>%
-    nest() %>%
-    mutate(data = case_when(
-      is.na(TEMP_block_rank) ~ map(.data$data, list),
-      TRUE ~ map(.data$data, ~ .x %>%  group_by(!!!group) %>% group_map(~as_tibble(.x), .keep = TRUE))
-    )) %>%
-    unnest("data")
+    group_by(.data$TEMP_block_rank, .data$TEMP_chunk_num, .data$TEMP_block_to_apply ) %>%
+    nest()
 
   # get max character width for each column in the full data
   dat_max_widths <- .data %>%

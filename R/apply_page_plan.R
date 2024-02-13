@@ -103,7 +103,7 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
       combine_group_cols_mod(group, label, row_grp_plan_label_loc)
 
 
-     # if the table is within our limit, keep it
+    # if the table is within our limit, keep it
     if (nrow(cur_dat_new) <= max_rows){
       cur_dat <- bind_rows(cur_dat, next_dat)
       remain_dat <- remain_dat %>% slice(-1)
@@ -146,10 +146,9 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
 #' @param note_loc location of page note
 #'
 #' @noRd
-#' @importFrom purrr map map2 accumulate
-#' @importFrom dplyr tibble row_number mutate group_by slice arrange left_join select desc  filter pull summarise last lag case_when
-#' @importFrom tidyr unnest nest pivot_longer drop_na
-#' @importFrom tidyselect starts_with all_of
+#' @importFrom purrr map map2 map_dbl
+#' @importFrom dplyr tibble row_number mutate group_by left_join select filter summarise  lag last
+#' @importFrom tidyr  pivot_longer
 apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 
   .data <- .data %>%
@@ -164,8 +163,10 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
             "Only the last one specified will be used.")
   }
 
-  # 2. If applicable, split by any group/label vars set to ".default"
-  struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
+  # 2. get all the subsets of data
+
+  # a) If applicable, split by any group/label vars set to ".default"
+  struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
 
   if (length(struct_defaults_idx)>0){
 
@@ -176,34 +177,20 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
       nest(`..tfrmt_data` = everything(), .by = (all_of(grping))) %>%
       mutate(`..tfrmt_split_num` = row_number())
 
-    # create the page_notes to be carried forward as names for now
-    tbl_nms <- dat_split_1 %>%
-      select(-"..tfrmt_data") %>%
-      pivot_longer(cols = -"..tfrmt_split_num", names_to = "grouping_col", values_to = "grouping_val") %>%
-      group_by(.data$`..tfrmt_split_num`) %>%
-      filter(!is.na(.data$grouping_val)) %>%
-      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
-
-    dat_split_1 <- left_join(dat_split_1, tbl_nms, by = "..tfrmt_split_num") %>%
-      select(c("..tfrmt_data", "..tfrmt_page_note"))
-
-    page_grp_vars <- grping # save for later
-
   } else {
     # no default - just nest to get in same structure for next step
     dat_split_1 <- tibble(`..tfrmt_data` = list(!!.data))
-
-    page_grp_vars <- NULL
   }
 
-  # 3. Further split the sub-data based on specific values (loop over all combinations of page_structure & data)
+  # b) Further split the sub-data based on specific values (loop over all combinations of page_structure & data)
 
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
     mutate(split_idx = map(.data$`..tfrmt_data`, function(x){
       map(page_struct_list, function(y){
-        page_test_data(y, x, group, label)
-      }) %>% unlist
+        struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
+          map_dbl(last) # keep just the last one to split after
+      }) %>% unlist()
     }))
 
   # determine where the splits should occur in data
@@ -212,9 +199,9 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 
       x %>%
         mutate(`..tfrmt_split_idx` = .data$TEMP_row %in% y,
-              # carry it forward to denote start of next table,
-              `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
-              `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
+               # carry it forward to denote start of next table,
+               `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
+               `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
         select(- c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)
@@ -222,13 +209,31 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     select(-"split_idx") %>%
     unnest(cols = "..tfrmt_data")
 
+  # 3. create the page_notes as applicable
+  if ("..tfrmt_split_num" %in% names(dat_split_2)){
+    # create the page_notes to be carried forward as names for now
+    tbl_nms <- dat_split_2 %>%
+      select(-"..tfrmt_data") %>%
+      pivot_longer(cols = -"..tfrmt_split_num", names_to = "grouping_col", values_to = "grouping_val") %>%
+      group_by(.data$`..tfrmt_split_num`) %>%
+      filter(!is.na(.data$grouping_val)) %>%
+      unique() %>%
+      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
+
+    page_grp_vars <- setdiff(names(dat_split_2), c("..tfrmt_data", "..tfrmt_split_num"))
+
+    dat_split_2 <- left_join(dat_split_2, tbl_nms, by = "..tfrmt_split_num") %>%
+      select(c("..tfrmt_data", "..tfrmt_page_note"))
+  } else {
+    page_grp_vars <- NULL
+  }
+
 
   # 4. return the values
-
   # prep list of tbsl
   dat_out <- dat_split_2 %>%
-        mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, - "TEMP_row"))) %>%
-        pull(.data$`..tfrmt_data`)
+    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, - "TEMP_row"))) %>%
+    pull(.data$`..tfrmt_data`)
 
   # add pg_note to individual tbls as applicable
   if ("..tfrmt_page_note" %in% names(dat_split_2)){
@@ -244,104 +249,6 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     .page_grp_vars = page_grp_vars
   )
 
-}
-
-#' Test of the page rows in the data
-#'
-#' @param cur_struct current page struct
-#' @param .data data to test against
-#' @param group list of the group parameters
-#' @param label label symbol should only be one
-#'
-#' @return tibble filtered to the rows where a split occurs following
-#' @noRd
-#'
-#' @importFrom dplyr filter pull
-#' @importFrom rlang parse_expr
-page_test_data <- function(cur_struct, .data, group, label){
-
-  grp_expr <- "TRUE"
-  lbl_expr <- "TRUE"
-  keep_vars <- NULL
-
-  # only do this if cur_struct contains a non-default value
-  if (detect_non_default(cur_struct$group_val)){
-    grp_expr <- expr_to_filter(group, cur_struct$group_val)
-
-    if (!is.list(cur_struct$group_val)){
-      keep_vars <- group
-    } else {
-      keep_vars <- group[map_lgl(cur_struct$group_val, ~!.x==".default")]
-    }
-  }
-
-  if (detect_non_default(cur_struct$label_val)){
-    lbl_expr <- expr_to_filter(label, cur_struct$label_val)
-    keep_vars <- c(keep_vars, label)
-  }
-
-  if (!is.null(keep_vars)){
-    filter_expr <- paste(
-      c(lbl_expr,grp_expr),
-      collapse = "&"
-    ) %>%
-      parse_expr()
-
-    .data %>%
-      filter(!!filter_expr) %>%
-      select(any_of(c(map_chr(keep_vars, as_label), "TEMP_row"))) %>%
-      # split only after non-consecutive sequence
-      mutate(breaks = .data$TEMP_row==lag(.data$TEMP_row, default = 0)+1,
-             breaks = cumsum(!.data$breaks)) %>%
-      group_by(.data$breaks) %>%
-      slice(n()) %>%
-      pull(.data$TEMP_row)
-
-  } else {
-    0
-  }
-
-}
-
-# detect use of .default
-detect_default <- function(struct){
-
-  map_lgl(struct, ~ any(!is.null(.x) && any(.x==".default"))) %>% any()
-}
-
-# detect use of non-default
-detect_non_default <- function(struct_val){
-
-  any(!is.null(struct_val) && any(!struct_val==".default"))
-
-}
-
-#' Create the group_by expression for the data
-#'
-#' @param cur_struct current page struct
-#' @param group list of the group parameters
-#' @param label label symbol should only be one
-#'
-#' @return list of indices for each of the tables
-#' @noRd
-expr_to_grouping <- function(cur_struct, group, label){
-
-  grouping <- NULL
-
-  if (!is.null(cur_struct$group_val)){
-    if(!is.list(cur_struct$group_val) && cur_struct$group_val==".default"){
-      grp_to_add <- map_chr(group, as_label)
-      grouping <- c(grouping, grp_to_add)
-    } else if (is.list(cur_struct$group_val) && any(cur_struct$group_val==".default")){
-      grp_to_add <- names(cur_struct$group_val)[map_lgl(cur_struct$group_val, ~.x==".default")]
-      grouping <- c(grouping, grp_to_add)
-    }
-  }
-  if (!is.null(cur_struct$label_val) && cur_struct$label_val==".default"){
-    grouping <- c(grouping, as_label(label))
-  }
-
-  grouping %>% unname()
 }
 
 
