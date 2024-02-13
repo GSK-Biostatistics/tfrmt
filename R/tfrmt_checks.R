@@ -317,7 +317,7 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
     # check if the big_n element inherits the big_n_structure
     if (!inherits(big_n_element, "big_n_structure")) {
       # display error message
-      abort(paste0("Invalid input supplied to the `big_n parameter`. Please supply a `big_n_structure()`."), call = parent_env)
+      abort(paste0("Invalid input supplied to the `big_n` parameter. Please supply a `big_n_structure()`."), call = parent_env)
     }
   }
 }
