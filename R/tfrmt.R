@@ -423,10 +423,14 @@ as_length_one_quo <- function(x, ...){
   UseMethod("as_length_one_quo",x)
 }
 
+#' @export
+#' @keywords internal
 as_length_one_quo.quosure <- function(x, ...){
   x
 }
 
+#' @export
+#' @keywords internal
 #' @importFrom rlang warn
 as_length_one_quo.quosures <- function(x, ..., arg = NULL){
   if(length(x) == 0){
@@ -446,6 +450,8 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL){
   }
 }
 
+#' @export
+#' @keywords internal
 as_length_one_quo.character <- function(x, ...){
   quo(!!sym(x))
 }
@@ -454,14 +460,20 @@ as_vars <-  function(x){
   UseMethod("as_vars",x)
 }
 
+#' @export
+#' @keywords internal
 as_vars.quosures <- function(x){
   x
 }
 
+#' @export
+#' @keywords internal
 as_vars.quosure <- function(x){
   vars(!!x)
 }
 
+#' @export
+#' @keywords internal
 as_vars.character <- function(x){
   do.call(vars,lapply(x,function(x){ quo(!!sym(x))}))
 }

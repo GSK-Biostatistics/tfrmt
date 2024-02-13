@@ -4,15 +4,12 @@
 \alias{element_block}
 \title{Element block}
 \usage{
-element_block(
-  post_space = c(NULL, " ", "-"),
-  border = c(NULL, "outline", "bottom")
-)
+element_block(post_space = c(NULL, " ", "-"), fill = TRUE)
 }
 \arguments{
-\item{post_space}{Option to create a new line after group block; specified characters will fill the cells}
+\item{post_space}{Values to show in a new line created after the group block}
 
-\item{border}{Option to add a solid border to group block (rectangle or just bottom border)}
+\item{fill}{Whether to recycle the value of \code{post_space} to match width of the data. Defaults to \code{TRUE}}
 }
 \value{
 element block object

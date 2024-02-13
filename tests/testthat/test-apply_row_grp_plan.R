@@ -272,6 +272,35 @@ test_that("post space is truncated to data width",{
       "D",  "--------", "--------",  "--------"))
 })
 
+
+test_that("do not recycle the post space for full width",{
+
+  df <- tibble(
+    grp1 = c("A","B","C","D"),
+    trtA = rep("xx (xx%)", 4),
+    trtB = rep("xx (xx%)", 4),
+    trtC = rep("xx (xx%)", 4),
+  )
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space ="--", fill = FALSE)),
+    label_loc =element_row_grp_loc(location = "spanning")
+  )
+
+  expect_equal(
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+    tibble::tribble(
+      ~grp1, ~trtA,      ~trtB,      ~trtC,
+      "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "A",  "--"      , "--"      ,  "--"      ,
+      "B",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "B",  "--"      , "--"      ,  "--"      ,
+      "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "C",  "--"      , "--"      ,  "--"      ,
+      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
+      "D",  "--"      , "--"      ,  "--"      ))
+})
+
 test_that("post space works when data contains NAs",{
 
   df <- tibble(

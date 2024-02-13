@@ -57,8 +57,8 @@ is_element_row_grp_loc <- function(x){
 
 #' Element block
 #'
-#' @param post_space Option to create a new line after group block; specified characters will fill the cells
-#' @param border Option to add a solid border to group block (rectangle or just bottom border)
+#' @param post_space Values to show in a new line created after the group block
+#' @param fill Whether to recycle the value of `post_space` to match width of the data. Defaults to `TRUE`
 #'
 #' @return element block object
 #'
@@ -84,9 +84,9 @@ is_element_row_grp_loc <- function(x){
 #'   )
 #' )
 element_block <- function(post_space = c(NULL, " ", "-"),
-                          border = c(NULL, "outline", "bottom")){
+                          fill = TRUE){
   structure(
-    list(post_space = post_space, border = border),
+    list(post_space = post_space, fill = fill),
     class = c("element_block", "element")
   )
 
