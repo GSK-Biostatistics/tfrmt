@@ -85,6 +85,30 @@ test_that("insert post space - two grouping variables",{
       "C",  "b",   " ", " " ," ", " ",
     ))
 
+  # grouping var not referenced - assumed NULL
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = list(grp1 = "A"), element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "spanning")
+  )
+
+   expect_equal(
+     apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
+     tibble::tribble(
+       ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
+       "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "A",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "A",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "A",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "A",  "b",   " ", " " ," ", " ",
+       "B",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "B",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "B",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "B",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "C",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "C",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "C",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
+       "C",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)"
+     ))
 })
 
 

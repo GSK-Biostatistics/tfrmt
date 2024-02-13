@@ -284,3 +284,42 @@ check_footnote_plan <- function(x){
 
 }
 
+
+#' Check if the plan parameter is supplied the correct plan function in tfrmt object
+#' @noRd
+#' @param tfrmt_object tfrmt object to be checked
+#' @param plan name of plan, e.g., "col_style_plan"
+#' @param parent_env parent environment
+#' @importFrom rlang abort
+#'
+#'
+check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
+  # extract the plan element from the tfrmt_object
+  plan_element <- tfrmt_object[[plan]]
+
+  # check if the user supplied a value to the plan parameter
+  if (!is.null(plan_element)) {
+    # check if the plan element inherits the plan attribute
+    if (!inherits(plan_element, plan)) {
+      # display error message
+      abort(paste0("Invalid input supplied to the `", plan, "` parameter. Please supply a `", plan, "()`."), call = parent_env)
+    }
+  }
+}
+
+
+check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
+  # extract the big_n element from the tfrmt_object
+  big_n_element <- tfrmt_object[["big_n"]]
+
+  # check if the user supplied a value to the big_n parameter
+  if (!is.null(big_n_element)) {
+    # check if the big_n element inherits the big_n_structure
+    if (!inherits(big_n_element, "big_n_structure")) {
+      # display error message
+      abort(paste0("Invalid input supplied to the `big_n` parameter. Please supply a `big_n_structure()`."), call = parent_env)
+    }
+  }
+}
+
+

@@ -136,59 +136,6 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param){
 }
 
 
-# Utilities ---------------------------------------------------------------
-
-expr_to_filter <- function(cols, val){
-  UseMethod("expr_to_filter", cols)
-}
-
-#' @importFrom stringr str_detect str_sub
-#' @importFrom rlang as_label
-expr_to_filter.quosure <- function(cols, val){
-  ## If is missing a quosure, nothing to filter
-  if(quo_is_missing(cols)){
-    return("TRUE")
-  }
-
-  # This is all so it works when there is a list
-  if(all(val == ".default")){
-    out <- "TRUE"
-  } else {
-    val <- ifelse(str_detect(val, "^`.*`$"), str_sub(val, 2, -2), val)
-    out <- as_label(cols) %>%
-      paste0("`", ., "`") %>%
-      paste0(" %in% c('",
-             paste0(val, collapse = "', '"),
-             "')")
-  }
-  out
-}
-
-
-
-#' @importFrom purrr map2_chr map_chr
-expr_to_filter.quosures <- function(cols, val){
-
-  if (is.null(val)){
-    out <- "TRUE"
-  } else if(!is.list(val) & length(cols) == 1){
-    cols <- cols[[1]]
-    out <- expr_to_filter(cols,val)
-  } else if(!is.list(val) && val == ".default"){
-    out <- "TRUE"
-  }else if(!is.list(val)){
-    stop("If multiple cols are provided, val must be a named list")
-  }else{
-    if(!all(names(val) %in% map_chr(cols, as_label))){
-      stop("Names of val entries do not all match col values")
-    }
-    out <- map2_chr(cols, val[map_chr(cols, as_label)], ~ expr_to_filter(.x, .y)) %>%
-      paste0(collapse = " & ")
-  }
-  out
-}
-
-
 #' @importFrom rlang parse_expr eval_bare
 all_missing <- function(cols, .data){
   paste0("is.na(.data$",cols,")", collapse = " & ") %>%
