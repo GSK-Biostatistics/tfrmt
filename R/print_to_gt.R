@@ -446,12 +446,18 @@ format_gt_column_labels <- function(gt_table, .data){
 #'
 convert_ws_unicode <- function(gt_table){
 
+  locations <- list(cells_body(),
+                    cells_column_labels(),
+                    cells_column_spanners())
+
+  if (!is.null(gt_table[["stub_df"]])){
+    locations <- c(locations,
+                   list(cells_stub()))
+  }
+
   gt_table %>%
     text_transform(
-      locations = list(cells_body(),
-                       cells_stub(),
-                       cells_column_labels(),
-                       cells_column_spanners()),
+      locations = locations,
       fn = function(x) {
 
         x_trimmed <- str_trim(x)
