@@ -4,7 +4,13 @@
 \alias{print_mock_gt}
 \title{Print mock table to GT}
 \usage{
-print_mock_gt(tfrmt, .data = NULL, .default = 1:3, n_cols = NULL)
+print_mock_gt(
+  tfrmt,
+  .data = NULL,
+  .default = 1:3,
+  n_cols = NULL,
+  .unicode_ws = TRUE
+)
 }
 \arguments{
 \item{tfrmt}{tfrmt the mock table will be based off of}
@@ -18,6 +24,8 @@ provided}
 \item{n_cols}{the number of columns. This will only be used if mock data isn't
 provided. If not supplied, it will default to using the \code{col_plan} from the
 \code{tfrmt}. If neither are available it will use 3.}
+
+\item{.unicode_ws}{Whether to convert white space to unicode in preparation for output}
 }
 \value{
 a stylized gt object
