@@ -38,6 +38,8 @@ create_stub_head <- function(col_plan_vars, group){
       stub <- nms_grps[1]
     }
   }
+
+  stub
 }
 
 #' Creates a named vector explicitly calling all the columns

@@ -4,12 +4,14 @@
 \alias{print_to_gt}
 \title{Print to gt}
 \usage{
-print_to_gt(tfrmt, .data)
+print_to_gt(tfrmt, .data, .unicode_ws = TRUE)
 }
 \arguments{
 \item{tfrmt}{tfrmt object that will dictate the structure of the table}
 
 \item{.data}{Data to style in order to make the table}
+
+\item{.unicode_ws}{Whether to convert white space to unicode in preparation for output}
 }
 \value{
 a stylized gt object

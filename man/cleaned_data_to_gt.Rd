@@ -6,16 +6,18 @@
 \alias{cleaned_data_to_gt.default}
 \title{Do all the formatting for the GT}
 \usage{
-cleaned_data_to_gt(.data, tfrmt)
+cleaned_data_to_gt(.data, tfrmt, .unicode_ws)
 
-\method{cleaned_data_to_gt}{list}(.data, tfrmt)
+\method{cleaned_data_to_gt}{list}(.data, tfrmt, .unicode_ws)
 
-\method{cleaned_data_to_gt}{default}(.data, tfrmt)
+\method{cleaned_data_to_gt}{default}(.data, tfrmt, .unicode_ws)
 }
 \arguments{
 \item{.data}{cleaned dataset}
 
 \item{tfrmt}{tfrmt}
+
+\item{.unicode_ws}{Whether to convert white space to unicode in preparation for output}
 }
 \value{
 gt_group object
@@ -29,3 +31,4 @@ Apply formatting to a list of tables
 
 Apply formatting to a single table
 }
+\keyword{internal}
