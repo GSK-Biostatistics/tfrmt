@@ -78,7 +78,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">print_mock_gt</span><span class="op">(</span><span class="va">tfrmt</span>, .data <span class="op">=</span> <span class="cn">NULL</span>, .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, n_cols <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">print_mock_gt</span><span class="op">(</span></span>
+<span>  <span class="va">tfrmt</span>,</span>
+<span>  .data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .default <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
+<span>  n_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .unicode_ws <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -101,6 +107,10 @@ provided</p></dd>
 <dd><p>the number of columns. This will only be used if mock data isn't
 provided. If not supplied, it will default to using the <code>col_plan</code> from the
 <code>tfrmt</code>. If neither are available it will use 3.</p></dd>
+
+
+<dt>.unicode_ws</dt>
+<dd><p>Whether to convert white space to unicode in preparation for output</p></dd>
 
 </dl></div>
     <div class="section level2">

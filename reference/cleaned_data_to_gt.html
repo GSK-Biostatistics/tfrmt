@@ -84,13 +84,13 @@ Apply formatting to a single table"><meta property="og:image" content="https://g
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cleaned_data_to_gt</span><span class="op">(</span><span class="va">.data</span>, <span class="va">tfrmt</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cleaned_data_to_gt</span><span class="op">(</span><span class="va">.data</span>, <span class="va">tfrmt</span>, <span class="va">.unicode_ws</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for list</span></span>
-<span><span class="fu">cleaned_data_to_gt</span><span class="op">(</span><span class="va">.data</span>, <span class="va">tfrmt</span><span class="op">)</span></span>
+<span><span class="fu">cleaned_data_to_gt</span><span class="op">(</span><span class="va">.data</span>, <span class="va">tfrmt</span>, <span class="va">.unicode_ws</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for default</span></span>
-<span><span class="fu">cleaned_data_to_gt</span><span class="op">(</span><span class="va">.data</span>, <span class="va">tfrmt</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">cleaned_data_to_gt</span><span class="op">(</span><span class="va">.data</span>, <span class="va">tfrmt</span>, <span class="va">.unicode_ws</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -101,6 +101,10 @@ Apply formatting to a single table"><meta property="og:image" content="https://g
 
 <dt>tfrmt</dt>
 <dd><p>tfrmt</p></dd>
+
+
+<dt>.unicode_ws</dt>
+<dd><p>Whether to convert white space to unicode in preparation for output</p></dd>
 
 </dl></div>
     <div class="section level2">
