@@ -5,6 +5,9 @@ template:
     image:
       src: man/figures/tfrmt.png
       alt: "tfrmt Hex Sticker"
+development:
+  mode: auto
+  version_label: default
 articles:
 - title: Table Components
   navbar: Table Components
