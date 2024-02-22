@@ -1,6 +1,4 @@
-comment:
-  layout: "reach, diff, flags, files"
-  behavior: default
+comment: false
 
 coverage:
   status:
