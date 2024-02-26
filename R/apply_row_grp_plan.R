@@ -96,6 +96,15 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
 #' @importFrom rlang !!!
 apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, ...){
 
+  # store values of label column
+  lbl_col <- rlang::eval_tidy(label, .data)
+
+  # check if lbl_col contains NA
+  if (any(is.na(lbl_col))) {
+    stop(paste0("`label` column ", quo_name(label), " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."))
+  }
+
+
   # check which group/label columns are available
 
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
