@@ -147,6 +147,11 @@ as_json.frmt_combine <- function(x){
 }
 
 #' @export
+as_json.frmt_asis <- function(x){
+  list(frmt_asis = x)
+}
+
+#' @export
 as_json.col_plan <- function(x){
   if(is.null(x)){
     c()

@@ -5,6 +5,7 @@
 \alias{apply_frmt.frmt}
 \alias{apply_frmt.frmt_combine}
 \alias{apply_frmt.frmt_when}
+\alias{apply_frmt.frmt_asis}
 \title{Apply formatting}
 \usage{
 apply_frmt(frmt_def, .data, value, mock = FALSE, ...)
@@ -24,6 +25,8 @@ apply_frmt(frmt_def, .data, value, mock = FALSE, ...)
 )
 
 \method{apply_frmt}{frmt_when}(frmt_def, .data, value, mock = FALSE, ...)
+
+\method{apply_frmt}{frmt_asis}(frmt_def, .data, value, ...)
 }
 \arguments{
 \item{frmt_def}{formatting to be applied}

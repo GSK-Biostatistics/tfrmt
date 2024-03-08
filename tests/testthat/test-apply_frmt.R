@@ -712,3 +712,110 @@ test_that("frmt_combine fills with partially missing values where a column is mi
 
 })
 
+
+test_that("list-column of values as input", {
+
+  data <- tibble(
+    Group = rep(c("Age (y)"), c(6)),
+    Label = rep(c("mean", "sd"),  times = c(3)),
+    Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
+    Param = rep(c("mean", "sd"),  times = c(3)),
+  )
+
+
+  # all numeric values
+   data_list <-tibble(x = list(1.0, 2, 3, 4.0, 5, 6))
+   data_vec <-tibble(x = c(1.0, 2, 3, 4.0, 5, 6))
+
+   sample_frmt <- frmt("x")
+   expect_equal(
+     apply_frmt.frmt(sample_frmt, data_list, quo(x)),
+     apply_frmt.frmt(sample_frmt, data_vec, quo(x))
+   )
+
+   # mix char and num
+   data_list <-tibble(x = list(1.0, "a", 3, 4.0, "b", 6),
+                      TEMP_row = 1:6)
+   expect_message(
+     apply_frmt.frmt(sample_frmt, data_list, quo(x)),
+     "Value formatting incomplete because non-numeric values detected in the following rows of the given dataset. Consider using `frmt_asis()` to format non-numeric values. 1, 2, 3, 4, 5, 6",
+     fixed = TRUE
+   )
+
+})
+
+test_that("apply frmt - as-is", {
+
+  # alone
+  sample_df <- tibble(
+    group = "group",
+    lab = paste("lab",1:6),
+    col = c("A","B","A","B","A","B"),
+    y = c("one","two","one","two","one","two"),
+    x = list("a","b","c","d","e","f")
+  ) %>% mutate(TEMP_row = row_number())
+
+  sample_frmt <- frmt_asis()
+
+  sample_df_frmted <- apply_frmt.frmt_asis(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    value = quo(x),
+    param = quo(y),
+    column = vars(col),
+    label = quo(lab),
+    group = vars(group)
+  ) %>% select(-TEMP_row)
+
+  expect_equal(
+    sample_df_frmted,
+    tibble::tribble(
+      ~group , ~lab   , ~col   , ~y    ,~ x    ,
+    "group", "lab 1", "A",     "one"   ,"a" ,
+    "group", "lab 2", "B",     "two"   ,"b" ,
+    "group", "lab 3", "A",     "one"   ,"c"  ,
+    "group", "lab 4", "B",     "two"   ,"d" ,
+    "group", "lab 5", "A",     "one"   ,"e" ,
+    "group", "lab 6", "B",     "two"   ,"f"
+  ))
+
+
+  # within a frmt_combine with numeric values
+  sample_df <- tibble(
+    group = "group",
+    lab = rep(paste("lab",1:5),3),
+    col = "col",
+    y = rep(c("A","B","C"),each = 5),
+    x = list(1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101,
+          "a","b","c","d","e")
+  ) %>% mutate(TEMP_row = row_number())
+
+  sample_frmt <- frmt_combine(
+    "{A} {B} - {C}",
+    A = frmt("xxx.x"),
+    B = frmt("(X.X%)"),
+    C = frmt_asis()
+  )
+
+  sample_df_frmted <- apply_frmt.frmt_combine(
+    frmt_def = sample_frmt,
+    .data = sample_df,
+    value = quo(x),
+    param = quo(y),
+    column = vars(col),
+    label = quo(lab),
+    group = vars(group)
+  )
+
+  expect_equal(
+    sample_df_frmted %>% select(-TEMP_row),
+    tibble(
+      group = "group",
+      lab = paste("lab",1:5),
+      col = "col",
+      y = "A",
+      x = c("1234.6 (1.2%) - a", "2345.7 (2.3%) - b", "3456.8 (3.5%) - c", "4567.9 (4.6%) - d", "5678.9 (5.7%) - e")
+    )
+  )
+})

@@ -4,6 +4,7 @@
 \alias{frmt}
 \alias{frmt_combine}
 \alias{frmt_when}
+\alias{frmt_asis}
 \title{Table Value Formatting}
 \usage{
 frmt(expression, missing = NULL, scientific = NULL, transform = NULL, ...)
@@ -11,6 +12,8 @@ frmt(expression, missing = NULL, scientific = NULL, transform = NULL, ...)
 frmt_combine(expression, ..., missing = NULL)
 
 frmt_when(..., missing = NULL)
+
+frmt_asis(...)
 }
 \arguments{
 \item{expression}{this is the string representing the intended format. See details: expression for more a detailed description.}
@@ -42,6 +45,9 @@ and need to share a label.
 
 \code{frmt_when()} is used when a rows format behaviour is dependent on the value itself and is written similarly to \code{\link[dplyr:case_when]{dplyr::case_when()}}.
 The left hand side of the equation is a \code{"TRUE"}for the default case or the right hand side of a boolean expression \code{">50"}.
+
+\code{frmt_asis()} is used for displaying values as-is, i.e. with no formatting.
+Useful for character strings.
 }
 \details{
 \subsection{expression}{
@@ -75,6 +81,8 @@ to \code{\link[dplyr:case_when]{dplyr::case_when()}}. The left hand side of the 
 default case or the right hand side of a boolean expression \code{">50"}. The
 right hand side of the equation is the \code{frmt()} to apply when the left
 side evaluates to \code{TRUE}.
+\item \code{frmt_asis()} These dots are for future extensions and must be
+empty.
 }
 }
 }

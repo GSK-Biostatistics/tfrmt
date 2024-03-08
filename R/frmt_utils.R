@@ -41,6 +41,20 @@ is_frmt_combine <- function(x){
 is_frmt_when <- function(x){
   inherits(x, "frmt_when")
 }
+
+#' Check if input is a frmt_asis
+#'
+#' @param x Object to check
+#' @export
+#' @examples
+#' x2 <- frmt_asis()
+#' is_frmt_asis(x2)
+#'
+#' @rdname frmt_utils
+is_frmt_asis <- function(x){
+  inherits(x, "frmt_asis")
+}
+
 #' Check if input is a frmt_structure
 #'
 #' @param x Object to check
@@ -118,6 +132,16 @@ format.frmt_when <- function(x, ...){
 
 #' @export
 print.frmt_when <- function(x,...){
+  cat(format(x),sep = "\n")
+}
+
+#' @export
+format.frmt_asis <- function(x, ...){
+  "< frmt_asis >"
+}
+
+#' @export
+print.frmt_asis <- function(x,...){
   cat(format(x),sep = "\n")
 }
 
@@ -344,6 +368,12 @@ as.character.frmt_combine <- function(x, ...){
          if_else(!is.null(x$missing), paste0(", missing = ", missing_to_chr(x$missing)), ""),
          ")"
   )
+}
+
+#' @method as.character frmt_asis
+#' @export
+as.character.frmt_asis <- function(x, ...){
+  "frmt_asis()"
 }
 
 

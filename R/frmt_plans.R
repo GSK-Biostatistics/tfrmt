@@ -95,6 +95,9 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #' `frmt_when()` is used when a rows format behaviour is dependent on the value itself and is written similarly to [dplyr::case_when()].
 #'  The left hand side of the equation is a `"TRUE"`for the default case or the right hand side of a boolean expression `">50"`.
 #'
+#' `frmt_asis()` is used for displaying values as-is, i.e. with no formatting.
+#' Useful for character strings.
+#'
 #' @seealso [body_plan()] combines the frmt_structures to be applied to the
 #'   table body, and [frmt_structure()] defines which rows the formats will be applied
 #'   to.
@@ -136,6 +139,8 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #'    default case or the right hand side of a boolean expression `">50"`. The
 #'    right hand side of the equation is the `frmt()` to apply when the left
 #'    side evaluates to `TRUE`.
+#'    - `frmt_asis()` These dots are for future extensions and must be
+#'    empty.
 #'
 #' @export
 #' @return frmt object
@@ -229,5 +234,15 @@ frmt_when <- function(..., missing = NULL){
   structure(
     list(frmt_ls = frmt_ls, missing = missing),
     class = c("frmt_when","frmt")
+  )
+}
+
+#' @rdname frmt
+#' @export
+frmt_asis <- function(...){
+
+  structure(
+    list(expression = NULL),
+    class = c("frmt_asis","frmt")
   )
 }

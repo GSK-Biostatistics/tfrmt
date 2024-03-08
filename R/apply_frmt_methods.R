@@ -45,8 +45,23 @@ apply_frmt.frmt <- function( frmt_def, .data, value, mock = FALSE, ...){
     out <- .data %>%
       mutate(!!value := frmt_def$expression)
   } else {
+
     vals <- .data %>%
       pull(!!value)
+
+    if (any(map_lgl(vals, ~!is.numeric(.x)))){
+browser()
+      .data %>%
+        pull(.data$TEMP_row) %>%
+        paste0(collapse = ", ") %>%
+        paste("Value formatting incomplete because non-numeric values detected in the following rows of the given dataset. Consider using `frmt_asis()` to format non-numeric values.", .) %>%
+        message()
+
+      return(mutate(.data, !!value := as.character(!!value)))
+
+    } else {
+      vals <- unlist(vals)
+    }
 
     if(length(vals) == 0){
       return(.data)
@@ -339,5 +354,16 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...){
       )
   }
   out
+
+}
+
+
+#' @export
+#'
+#' @rdname apply_frmt
+apply_frmt.frmt_asis <- function(frmt_def, .data, value, ...){
+
+  .data %>%
+    mutate(!!value := as.character(!!value))
 
 }
