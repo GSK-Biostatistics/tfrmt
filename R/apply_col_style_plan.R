@@ -248,7 +248,7 @@ apply_col_alignment_pos <- function(col, align){
       by = "col_as_x"
     )
 
-  if (any(is.na(col_with_align$align))){
+  if (nrow(filter(col_with_align, is.na(align) & nchar(col_as_x)>0))>0){
     message("`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.")
   }
 

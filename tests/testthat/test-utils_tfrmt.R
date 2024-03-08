@@ -278,7 +278,7 @@ test_that("Test body_plan missing", {
       row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
     ) %>%
       apply_tfrmt(input_data, .),
-    "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+    "The following rows of the given dataset have no format applied to them: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
   )
 
   expect_equal(empty_body_plan,
@@ -319,7 +319,7 @@ test_that("incomplete body_plan where params share label",{
 
     expect_message(
       auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec),
-      "The following rows of the given dataset have no format applied to them 1, 2, 4, 5"
+      "The following rows of the given dataset have no format applied to them: 1, 2, 4, 5"
     ) %>%
       expect_message(
         "Multiple param listed for the same group/label values"

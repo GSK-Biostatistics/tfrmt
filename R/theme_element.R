@@ -95,25 +95,3 @@ element_block <- function(post_space = c(NULL, " ", "-"),
 is_element_block <- function(x){
   inherits(x, "element_block")
 }
-
-
-
-element_stub <- function(collapse_ord = vars(), collapse_into = vars(), remove_dups = NULL){
-  structure(
-    list(collapse_ord = collapse_ord, collapse_into = collapse_into, remove_dups = remove_dups),
-    class = c("element_stub", "element")
-  )
-}
-
-#col_labels = element_label(newCol = "Hello World", wrap_txt = 30)
-element_label <- function(..., wrap_txt = 30){
-  structure(
-    list(...) %>%
-      c(wrap_txt = wrap_txt),
-    class = c("element_label", "element")
-  )
-}
-
-is_element_label <- function(x){
-  inherits(x, "element_label")
-}
