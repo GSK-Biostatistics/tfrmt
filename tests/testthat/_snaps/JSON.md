@@ -284,6 +284,29 @@
           {
             "group_val": [".default"],
             "label_val": [".default"],
+            "param_val": [".default"],
+            "frmt_asis": {
+              "expression": {}
+            }
+          }
+        ]
+      } 
+
+---
+
+    Code
+      .
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "body_plan": [
+          {
+            "group_val": [".default"],
+            "label_val": [".default"],
             "param_val": ["param1", "param2"],
             "frmt_combine": {
               "expression": ["{param1} {param2}"],
@@ -374,6 +397,14 @@
                 }
               },
               "missing": {}
+            }
+          },
+          {
+            "group_val": ["test2"],
+            "label_val": ["test2a"],
+            "param_val": [".default"],
+            "frmt_asis": {
+              "expression": {}
             }
           }
         ]

@@ -322,6 +322,10 @@ ls_to_frmt_when <- function(x){
   do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
 }
 
+ls_to_frmt_asis <- function(x){
+  frmt_asis()
+}
+
 ls_to_big_n <- function(ls){
   if(!is.null(ls)){
     n_frmt = do.call(ls_to_frmt, list(ls$n_frmt))

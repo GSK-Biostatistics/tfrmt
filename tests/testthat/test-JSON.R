@@ -214,6 +214,24 @@ test_that("json body plan", {
     json_to_tfrmt(json = .) %>%
     expect_equal(sci, ignore_attr = TRUE)
 
+  #Format as-is test
+  frmt_asis_simp <- tfrmt(
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_asis()
+      )
+    )
+  )
+  frmt_asis_simp %>%
+    as_json() %>%
+    expect_snapshot()
+  frmt_asis_simp %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt_asis_simp, ignore_attr = TRUE)
+
   #Everything test
   complex_frmt <- tfrmt(
     body_plan = body_plan(
@@ -243,6 +261,11 @@ test_that("json body plan", {
                                  param1 = frmt("XXX"),
                                  param2 = frmt("XXX"))
         )
+      ),
+      frmt_structure(
+        group_val = "test2",
+        label_val = "test2a",
+        frmt_asis()
       )
     )
   )
