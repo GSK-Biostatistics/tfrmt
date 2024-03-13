@@ -955,3 +955,56 @@ test_that("Row group plan indenting handles factor variables", {
       remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
     expected)
 })
+
+
+test_that("Row group plans when label column contains NA - error check",{
+
+  # create data
+  data_ae2 <- data_ae %>%
+    group_by(AEBODSYS, AETERM) %>%
+    mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>%
+    ungroup %>%
+    filter(pct_high >10) %>%
+    select(-pct_high)
+
+  data_ae2$AETERM <- ifelse(data_ae2$AETERM == "ANY BODY SYSTEM", NA, data_ae2$AETERM)
+
+
+  # create tfrmt and print - expect error
+  expect_message({
+    tfrmt(
+      group = AEBODSYS,
+      label = AETERM,
+      column = c(col2, col1),
+      param = param,
+      value = value,
+      sorting_cols = c(ord1, ord2),
+      body_plan = body_plan(
+        frmt_structure(group_val = ".default", label_val = ".default",
+                       frmt_combine("{n} {pct}",
+                                    n = frmt("XXX"),
+                                    pct = frmt_when(
+                                      "==100" ~ "",
+                                      "==0" ~ "",
+                                      TRUE ~ frmt("(xx.x %)")))),
+        frmt_structure(group_val = ".default", label_val = ".default",
+                       AEs = frmt("[XXX]")),
+        frmt_structure(group_val = ".default", label_val = ".default",
+                       pval = frmt_when(">0.99" ~ ">0.99",
+                                        "<0.001" ~ "<0.001",
+                                        "<0.05" ~ frmt("x.xxx*"),
+                                        TRUE ~ frmt("x.xxx", missing ="--")))
+      ),
+      col_plan = col_plan(
+        -starts_with("ord")
+      )) %>%
+      print_to_gt(., data_ae2) %>% tab_options(container.width = 1000)
+
+  },
+  paste("Unable to to apply apply_row_grp_lbl.",
+        "Reason: `label` column AETERM contains NA values. For group-level summary data, `label` and the relevant `group` values should match.",
+  sep = "\n"),
+  )
+})
+
+
