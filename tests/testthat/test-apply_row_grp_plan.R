@@ -957,7 +957,7 @@ test_that("Row group plan indenting handles factor variables", {
 })
 
 
-test_that("Row group plans when label column contains NA - error check",{
+test_that("Check row group plan in tfrmt - expect error when NA in label column",{
 
   # create data
   data_ae2 <- data_ae %>%
@@ -970,7 +970,7 @@ test_that("Row group plans when label column contains NA - error check",{
   data_ae2$AETERM <- ifelse(data_ae2$AETERM == "ANY BODY SYSTEM", NA, data_ae2$AETERM)
 
 
-  # create tfrmt and print - expect error
+  # expect error message
   expect_message({
     tfrmt(
       group = AEBODSYS,
@@ -1007,4 +1007,40 @@ test_that("Row group plans when label column contains NA - error check",{
   )
 })
 
+
+test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
+
+  # create mock data
+  mock_multi_grp <- tibble::tribble(
+    ~grp1,    ~grp2,     ~ my_label,
+    "grp1_1", "grp2_1", "my_label_1",
+    "grp1_1", "grp2_1", "my_label_2",
+    "grp1_1", "grp2_2", "my_label_1",
+    "grp1_1", "grp2_2", "my_label_2",
+    "grp1_2", "grp2_1", "my_label_1",
+    "grp1_2", "grp2_1", "my_label_2",
+    "grp1_2", "grp2_2", "my_label_1",
+    "grp1_2", "grp2_2", "my_label_2",
+  ) %>%
+    mutate(
+      trtA = rep("xx (xx%)", 8) %>% as.list(),
+      trtB = rep("xx (xx%)", 8) %>% as.list(),
+      trtC = rep("xx (xx%)", 8) %>% as.list(),
+    )
+
+  mock_multi_grp$my_label <- ifelse(mock_multi_grp$my_label == "my_label_1", NA, mock_multi_grp$my_label)
+
+  sample_grp_plan <- row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space =" ")),
+    label_loc = element_row_grp_loc(location = "indented")
+  )
+
+  # expect error message
+  expect_error({
+    auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label")) %>%
+      remove_grp_cols(sample_grp_plan$label_loc,group = vars(grp1, grp2),label = sym("my_label"))
+  },
+  paste("`label` column my_label contains NA values. For group-level summary data, `label` and the relevant `group` values should match.")
+  )
+})
 
