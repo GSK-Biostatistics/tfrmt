@@ -50,7 +50,7 @@ apply_frmt.frmt <- function( frmt_def, .data, value, mock = FALSE, ...){
       pull(!!value)
 
     if (any(map_lgl(vals, ~!is.numeric(.x)))){
-browser()
+
       .data %>%
         pull(.data$TEMP_row) %>%
         paste0(collapse = ", ") %>%
