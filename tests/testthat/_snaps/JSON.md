@@ -329,7 +329,7 @@
             "param_val": ["foo"],
             "frmt": {
               "expression": ["xx.x"],
-              "missing": {},
+              "missing": ["--"],
               "scientific": {},
               "transform": {}
             }

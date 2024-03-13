@@ -232,7 +232,7 @@ test_that("json body plan", {
       frmt_structure(
         group_val = "test1",
         label_val = ".default",
-        foo = frmt("xx.x")
+        foo = frmt("xx.x", missing = "--")
       ),
       frmt_structure(
         group_val = ".default",

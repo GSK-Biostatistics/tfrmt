@@ -295,6 +295,8 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 missing_to_chr <- function(x){
   if(!is.null(x) && x == ""){
     "''"
+  } else if (!is.null(x) && grepl("^['\"].*['\"]$", x)){
+    paste0("'", x, "'")
   } else {
     x
   }
