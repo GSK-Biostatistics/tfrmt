@@ -106,7 +106,8 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
 
   # remove the frmt_num field
   output_dat %>%
-    select(-"frmt_num")
+    select(-"frmt_num") %>%
+    unique()
 
 }
 
