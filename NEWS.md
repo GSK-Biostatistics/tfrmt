@@ -6,7 +6,7 @@ Bug fixes
 * Remove unused `border` argument in `element_block`. 
 * Fixed bug where `row_grp_plan` splits on all grouping variables, even if not mentioned. Instead, the logic has been updated to split on those explicitly mentioned, similar to `page_plan`
 * Fixed issue where padding and alignment is lost for non-HTML outputs via the `.unicode_ws` argument added to `print_to_gt()` and `print_mock_gt()`. This defaults to `TRUE` but should be set to `FALSE` for RTF outputs (until {gt} bug is resolved).
-* Fix issue where `make_mock_data` could result in duplicate rows 
+* Fixed issue where `make_mock_data` could result in duplicate rows 
 
 
 # tfrmt 0.1.0
