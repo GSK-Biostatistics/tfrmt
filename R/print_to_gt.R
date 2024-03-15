@@ -217,7 +217,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
   }
   gt_out <- .data %>%
     gt(
-      rowname_col = as_label(tfrmt$label))  %>%
+      rowname_col = as_label(tfrmt$label)) %>%
     sub_missing(
       rows = .data$..tfrmt_row_grp_lbl==TRUE,
       missing_text = ""
@@ -446,9 +446,7 @@ format_gt_column_labels <- function(gt_table, .data){
 #'
 convert_ws_unicode <- function(gt_table){
 
-  locations <- list(cells_body(),
-                    cells_column_labels(),
-                    cells_column_spanners())
+  locations <- list(cells_body())
 
   if (!is.null(gt_table[["stub_df"]])){
     locations <- c(locations,
