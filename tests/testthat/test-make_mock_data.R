@@ -159,6 +159,35 @@ test_that("Mock data contains all levels", {
                  "grp1_2", "grp2_2", "my_label_1"  , "N"     , "col1",
                  "grp1_2", "grp2_2", "my_label_2"  , "N"     , "col1"
                ))
+
+  # no duplicate levels introduced if body plan references a dummy level
+  plan1  <- tfrmt(
+    group = "grp",
+    label = "my_label",
+    param = "param2",
+    value = "val2",
+    column = "col",
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x")),
+      frmt_structure(group_val = list(grp = "grp_1"), label_val = ".default", frmt("xx.xx")
+    )
+    )
+  )
+  mock_dat1 <- make_mock_data(plan1, .default = 1:2, n_col = 1)
+
+  plan2  <- tfrmt(
+    group = "grp",
+    label = "my_label",
+    param = "param2",
+    value = "val2",
+    column = "col",
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
+      )
+    )
+  mock_dat2 <- make_mock_data(plan2, .default = 1:2, n_col = 1)
+
+  expect_equal(mock_dat1, mock_dat2)
 })
 
 
