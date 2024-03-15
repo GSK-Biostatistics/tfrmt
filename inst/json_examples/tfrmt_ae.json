@@ -1,0 +1,123 @@
+{
+  "group": ["AEBODSYS"],
+  "label": ["AETERM"],
+  "param": ["param"],
+  "value": ["value"],
+  "column": ["col2", "col1"],
+  "row_grp_plan": {
+    "struct_list": [],
+    "label_loc": {
+      "location": ["indented"],
+      "indent": ["  "]
+    }
+  },
+  "body_plan": [
+    {
+      "group_val": [".default"],
+      "label_val": [".default"],
+      "param_val": ["n", "pct"],
+      "frmt_combine": {
+        "expression": ["{n} {pct}"],
+        "frmt_ls": {
+          "n": {
+            "frmt": {
+              "expression": ["XXX"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "pct": {
+            "frmt_when": {
+              "frmt_ls": {
+                "==100": [""],
+                "==0": [""],
+                "TRUE": {
+                  "frmt": {
+                    "expression": ["(xx.x %)"],
+                    "missing": {},
+                    "scientific": {},
+                    "transform": {}
+                  }
+                }
+              },
+              "missing": {}
+            }
+          }
+        },
+        "missing": {}
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": [".default"],
+      "param_val": ["AEs"],
+      "frmt": {
+        "expression": ["[XXX]"],
+        "missing": {},
+        "scientific": {},
+        "transform": {}
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": [".default"],
+      "param_val": ["pval"],
+      "frmt_when": {
+        "frmt_ls": {
+          ">0.99": [">0.99"],
+          "<0.001": ["<0.001"],
+          "<0.05": {
+            "frmt": {
+              "expression": ["x.xxx*"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "TRUE": {
+            "frmt": {
+              "expression": ["x.xxx"],
+              "missing": ["--"],
+              "scientific": {},
+              "transform": {}
+            }
+          }
+        },
+        "missing": {}
+      }
+    }
+  ],
+  "col_style_plan": [
+    {
+      "cols": [
+        ["p_low"],
+        ["p_high"]
+      ],
+      "align": [".", ",", " "],
+      "type": ["char"],
+      "width": {}
+    }
+  ],
+  "col_plan": {
+    "col_plan": {
+      "dots": [
+        ["-starts_with(\"ord\")"],
+        {
+          "span_structure": {
+            "col2": ["Xanomeline High Dose", "Xanomeline Low Dose", "Placebo"],
+            "col1": ["n_pct", "AEs"]
+          }
+        },
+        {
+          "span_structure": {
+            "col2": ["fisher_pval"],
+            "col1": ["p_low", "p_high"]
+          }
+        }
+      ],
+      ".drop": [false]
+    }
+  },
+  "sorting_cols": ["ord1", "ord2"]
+}

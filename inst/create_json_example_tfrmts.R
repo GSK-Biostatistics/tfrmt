@@ -1,7 +1,8 @@
+#devtools::load_all()
 
 #------------------------------ Demography Table -------------------------------
 
-demog_tfrmt <- tfrmt(
+tfrmt_demog <- tfrmt(
   group = c(rowlbl1,grp),
   label = rowlbl2,
   column = column,
@@ -41,7 +42,7 @@ demog_tfrmt <- tfrmt(
 
 #---------------------------------- AE Table -----------------------------------
 
-ae_tfrmt <- tfrmt(
+tfrmt_ae <- tfrmt(
   group = AEBODSYS,
   label = AETERM,
   column = c(col2, col1),
@@ -96,7 +97,7 @@ ae_tfrmt <- tfrmt(
 
 #------------------------------ Efficacy Table -------------------------------
 
-efficacy_tfrmt <- tfrmt(
+tfrmt_efficacy <- tfrmt(
   group = group,
   label = label,
   column = column,
@@ -144,24 +145,6 @@ efficacy_tfrmt <- tfrmt(
 
 #--------------------------- Print Examples To {gt} ----------------------------
 
-demog_tfrmt %>% print_to_gt(data_demog)
-ae_tfrmt %>% print_to_gt(data_ae2)
-efficacy_tfrmt %>% print_to_gt(data_efficacy)
-
-#------------------------------ As JSON Examples -------------------------------
-
-demog_tfrmt %>% as_json()
-ae_tfrmt %>% as_json()
-efficacy_tfrmt %>% as_json()
-
-#----------------------------- Make JSON Examples ------------------------------
-
-demog_tfrmt %>% tfrmt_to_json(path = "inst/json_examples/demog_tfrmt.json")
-ae_tfrmt %>% tfrmt_to_json(path = "inst/json_examples/ae_tfrmt.json")
-efficacy_tfrmt %>% tfrmt_to_json(path = "inst/json_examples/efficacy_tfrmt.json")
-
-#----------------------------- Read JSON Examples ------------------------------
-
 data_ae2 <- data_ae %>%
   group_by(AEBODSYS, AETERM) %>%
   mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>%
@@ -170,10 +153,28 @@ data_ae2 <- data_ae %>%
   select(-pct_high)
 
 
-json_to_tfrmt(path = "inst/json_examples/demog_tfrmt.json") %>% print_to_gt(data_demog)
+tfrmt_demog %>% print_to_gt(data_demog)
+tfrmt_ae %>% print_to_gt(data_ae2)
+tfrmt_efficacy %>% print_to_gt(data_efficacy)
 
-#json_to_tfrmt(path = "inst/json_examples/ae_tfrmt.json") %>% print_to_gt(data_ae2)
+#------------------------------ As JSON Examples -------------------------------
 
-json_to_tfrmt(path = "inst/json_examples/efficacy_tfrmt.json") %>% print_to_gt(data_efficacy)
+tfrmt_demog %>% as_json()
+tfrmt_ae %>% as_json()
+tfrmt_efficacy %>% as_json()
+
+#----------------------------- Make JSON Examples ------------------------------
+
+tfrmt_demog %>% tfrmt_to_json(path = "inst/json_examples/tfrmt_demog.json")
+tfrmt_ae %>% tfrmt_to_json(path = "inst/json_examples/tfrmt_ae.json")
+tfrmt_efficacy %>% tfrmt_to_json(path = "inst/json_examples/tfrmt_efficacy.json")
+
+#----------------------------- Read JSON Examples ------------------------------
+
+json_to_tfrmt(path = "inst/json_examples/tfrmt_demog.json") %>% print_to_gt(data_demog)
+
+#json_to_tfrmt(path = "inst/json_examples/tfrmt_ae.json") %>% print_to_gt(data_ae2)
+
+json_to_tfrmt(path = "inst/json_examples/tfrmt_efficacy.json") %>% print_to_gt(data_efficacy)
 
 
