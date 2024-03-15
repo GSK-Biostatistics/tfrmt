@@ -1023,9 +1023,9 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
     "grp1_2", "grp2_2", "my_label_2",
   ) %>%
     mutate(
-      trtA = rep("xx (xx%)", 8) %>% as.list(),
-      trtB = rep("xx (xx%)", 8) %>% as.list(),
-      trtC = rep("xx (xx%)", 8) %>% as.list(),
+      trtA = rep("xx (xx%)", 8),
+      trtB = rep("xx (xx%)", 8),
+      trtC = rep("xx (xx%)", 8),
     )
 
   mock_multi_grp$my_label <- ifelse(mock_multi_grp$my_label == "my_label_1", NA, mock_multi_grp$my_label)
@@ -1037,8 +1037,7 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
 
   # expect error message
   expect_error({
-    auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label")) %>%
-      remove_grp_cols(sample_grp_plan$label_loc,group = vars(grp1, grp2),label = sym("my_label"))
+    auto_test_listcols <- apply_row_grp_lbl(mock_multi_grp, sample_grp_plan$label_loc,group = vars(grp1, grp2), label = sym("my_label"))
   },
   paste("`label` column my_label contains NA values. For group-level summary data, `label` and the relevant `group` values should match.")
   )
