@@ -320,7 +320,7 @@
                   }
                 }
               },
-              "missing": {}
+              "missing": [""]
             }
           },
           {
@@ -329,7 +329,7 @@
             "param_val": ["foo"],
             "frmt": {
               "expression": ["xx.x"],
-              "missing": {},
+              "missing": ["--"],
               "scientific": {},
               "transform": {}
             }
@@ -343,7 +343,7 @@
                 ">0.4": {
                   "frmt": {
                     "expression": ["(X.X%)"],
-                    "missing": {},
+                    "missing": [""],
                     "scientific": {},
                     "transform": {}
                   }

@@ -1,0 +1,205 @@
+{
+  "group": ["group"],
+  "label": ["label"],
+  "param": ["param"],
+  "value": ["value"],
+  "column": ["column"],
+  "row_grp_plan": {
+    "struct_list": [
+      {
+        "group_val": {
+          "group": ["Change from Baseline"]
+        },
+        "block_to_apply": {
+          "post_space": [" "],
+          "fill": [true]
+        }
+      },
+      {
+        "group_val": {
+          "group": ["p-value (Dose Response)"]
+        },
+        "block_to_apply": {
+          "post_space": [" "],
+          "fill": [true]
+        }
+      },
+      {
+        "group_val": {
+          "group": ["p-value (Xan - Placebo)"]
+        },
+        "block_to_apply": {
+          "post_space": [" "],
+          "fill": [true]
+        }
+      }
+    ],
+    "label_loc": {
+      "location": ["indented"],
+      "indent": ["  "]
+    }
+  },
+  "body_plan": [
+    {
+      "group_val": [".default"],
+      "label_val": ["n"],
+      "param_val": [".default"],
+      "frmt": {
+        "expression": ["xx"],
+        "missing": {},
+        "scientific": {},
+        "transform": {}
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": [".default"],
+      "param_val": ["p.value"],
+      "frmt_when": {
+        "frmt_ls": {
+          "<0.001": ["<0.001"],
+          ">0.99": [">0.99"],
+          "TRUE": {
+            "frmt": {
+              "expression": ["x.xxx"],
+              "missing": [" "],
+              "scientific": {},
+              "transform": {}
+            }
+          }
+        },
+        "missing": {}
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": ["Median (Range)"],
+      "param_val": ["median", "min", "max"],
+      "frmt_combine": {
+        "expression": ["{median} ({min};{max})"],
+        "frmt_ls": {
+          "median": {
+            "frmt": {
+              "expression": ["xx.x"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "min": {
+            "frmt": {
+              "expression": ["xx"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "max": {
+            "frmt": {
+              "expression": ["xx"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          }
+        },
+        "missing": [" "]
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": ["Mean (SD)"],
+      "param_val": ["mean", "sd"],
+      "frmt_combine": {
+        "expression": ["{mean} ({sd})"],
+        "frmt_ls": {
+          "mean": {
+            "frmt": {
+              "expression": ["xx.x"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "sd": {
+            "frmt": {
+              "expression": ["xx.xx"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          }
+        },
+        "missing": [" "]
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": ["Diff of LS Means (SE)"],
+      "param_val": ["diff", "diff_se"],
+      "frmt_combine": {
+        "expression": ["{diff} ({diff_se})"],
+        "frmt_ls": {
+          "diff": {
+            "frmt": {
+              "expression": ["xx.x"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "diff_se": {
+            "frmt": {
+              "expression": ["xx.xx"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          }
+        },
+        "missing": [" "]
+      }
+    },
+    {
+      "group_val": [".default"],
+      "label_val": ["95% CI"],
+      "param_val": ["diff_lcl", "diff_ucl"],
+      "frmt_combine": {
+        "expression": ["({diff_lcl};{diff_ucl})"],
+        "frmt_ls": {
+          "diff_lcl": {
+            "frmt": {
+              "expression": ["xx.x"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          },
+          "diff_ucl": {
+            "frmt": {
+              "expression": ["xx.x"],
+              "missing": {},
+              "scientific": {},
+              "transform": {}
+            }
+          }
+        },
+        "missing": [" "]
+      }
+    }
+  ],
+  "col_plan": {
+    "col_plan": {
+      "dots": [
+        ["group"],
+        ["label"],
+        ["Placebo"],
+        ["contains(\"Low\")"],
+        ["contains(\"High\")"],
+        ["-starts_with(\"ord\")"]
+      ],
+      ".drop": [false]
+    }
+  },
+  "sorting_cols": ["ord1", "ord2"]
+}
