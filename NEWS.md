@@ -1,4 +1,4 @@
-# tfrmt development version 
+# tfrmt 0.1.1 
 
 Bug fixes
 * Fixed issue where `frmt_combine` couldn't process variable names surrounded by backticks
