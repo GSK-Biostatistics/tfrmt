@@ -1,4 +1,3 @@
-#devtools::load_all()
 
 #------------------------------ Demography Table -------------------------------
 
@@ -173,7 +172,7 @@ tfrmt_efficacy %>% tfrmt_to_json(path = "inst/json_examples/tfrmt_efficacy.json"
 
 json_to_tfrmt(path = "inst/json_examples/tfrmt_demog.json") %>% print_to_gt(data_demog)
 
-#json_to_tfrmt(path = "inst/json_examples/tfrmt_ae.json") %>% print_to_gt(data_ae2)
+json_to_tfrmt(path = "inst/json_examples/tfrmt_ae.json") %>% print_to_gt(data_ae2)
 
 json_to_tfrmt(path = "inst/json_examples/tfrmt_efficacy.json") %>% print_to_gt(data_efficacy)
 

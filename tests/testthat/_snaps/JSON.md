@@ -320,7 +320,7 @@
                   }
                 }
               },
-              "missing": {}
+              "missing": [""]
             }
           },
           {
@@ -343,7 +343,7 @@
                 ">0.4": {
                   "frmt": {
                     "expression": ["(X.X%)"],
-                    "missing": {},
+                    "missing": [""],
                     "scientific": {},
                     "transform": {}
                   }

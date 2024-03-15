@@ -226,7 +226,8 @@ test_that("json body plan", {
           param2 = frmt_when(
             ">3" ~ frmt("(X.X%)"),
             "<=3" ~ frmt("Undetectable")
-          )
+          ),
+          missing = ""
         )
       ),
       frmt_structure(
@@ -238,10 +239,11 @@ test_that("json body plan", {
         group_val = ".default",
         label_val = ".default",
         frmt_when(
-          ">0.4" ~ frmt("(X.X%)"),
+          ">0.4" ~ frmt("(X.X%)", missing = ""),
           "<=0.4" ~ frmt_combine("[{par2m1}-{param2}]",
                                  param1 = frmt("XXX"),
-                                 param2 = frmt("XXX"))
+                                 param2 = frmt("XXX")),
+          missing = NULL
         )
       )
     )

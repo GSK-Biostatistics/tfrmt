@@ -293,9 +293,7 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec){
 
 
 missing_to_chr <- function(x){
-  if(!is.null(x) && x == ""){
-    "''"
-  } else if (!is.null(x) && grepl("^['\"].*['\"]$", x)){
+  if(!is.null(x) ){
     paste0("'", x, "'")
   } else {
     x
@@ -319,8 +317,7 @@ as.character.frmt <- function(x, ...){
 as.character.frmt_when <- function(x, ...){
   right <- x$frmt_ls %>%
     map_chr(~f_rhs(.x) %>%
-              as.character() %>%
-              missing_to_chr())
+              as.character() )
   left <- x$frmt_ls %>%
     map_chr(~f_lhs(.x)) %>%
     str_c("'", ., "'")
@@ -338,7 +335,7 @@ as.character.frmt_when <- function(x, ...){
 #' @export
 as.character.frmt_combine <- function(x, ...){
   params <- x$frmt_ls %>%
-    map_chr(~as.character(.x) %>% missing_to_chr()) %>%
+    map_chr(~as.character(.x)) %>%
     str_c(names(x$frmt_ls), " = ", .) %>%
     str_c(collapse = ", ")
   paste0("frmt_combine('", x$expression, "', ",
