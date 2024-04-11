@@ -448,7 +448,8 @@ convert_ws_unicode <- function(gt_table){
 
   locations <- list(cells_body())
 
-  if (!is.null(gt_table[["stub_df"]])){
+  if (!is.null(gt_table[["_stub_df"]])){
+
     locations <- c(locations,
                    list(cells_stub()))
   }
