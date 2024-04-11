@@ -1,3 +1,8 @@
+# tfrmt development version
+
+Bug fixes
+* Fixed issue where table stub indentation does not transfer to all output types
+
 # tfrmt 0.1.1 
 
 Bug fixes
