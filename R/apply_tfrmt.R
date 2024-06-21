@@ -421,7 +421,7 @@ frmt_struct_string <- function(grp, lbl, param_vals){
   if(length(group_names) > 1){
     group_val_char <- capture.output(dput(setNames(grp, group_names)))
   }else if(length(group_names) == 1){
-    group_val_char <-  capture.output(dput(grp[[1]]))
+    group_val_char <-  paste(capture.output(dput(grp[[1]])), collapse = "")
   }else{
     group_val_char <-  "\".default\""
   }
