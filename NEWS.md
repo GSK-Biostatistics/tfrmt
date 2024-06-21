@@ -1,7 +1,8 @@
-# tfrmt development version
+# tfrmt 0.1.2
 
 Bug fixes
 * Fixed issue where table stub indentation does not transfer to all output types
+* Fixed issue where incomplete `body_plan` may error if the grouping variable is a factor
 
 # tfrmt 0.1.1 
 
