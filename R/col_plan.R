@@ -1,6 +1,6 @@
 #' Define the Column Plan & Span Structures
 #'
-#' Using <[`tidy-select`][dplyr_tidy_select]> expressions and a series
+#' Using <[`tidy-select`][dplyr::dplyr_tidy_select]> expressions and a series
 #' span_structures, define the order of the columns. The selection follows "last
 #' selected" principals, meaning columns are moved to the _last_ selection as
 #' opposed to preserving the first location.
@@ -21,7 +21,7 @@
 #' statement, and the order of the columns not changed. It is preferred when
 #' creating the \code{col_plan()} to identify all the columns planned on
 #' preserving in the order they are wished to appear, or if
-#' <[`tidy-select`][dplyr_tidy_select]> arguments - such as
+#' <[`tidy-select`][dplyr::dplyr_tidy_select]> arguments - such as
 #' \code{\link[dplyr]{everything}}- are used, identify the de-selection after
 #' the positive-selection.
 #'
@@ -32,7 +32,7 @@
 #' @rdname col_plan
 #'
 #' @param ... For a col_plan and span_structure,
-#'   <[`tidy-select`][dplyr_tidy_select]> arguments, unquoted expressions
+#'   <[`tidy-select`][dplyr::dplyr_tidy_select]> arguments, unquoted expressions
 #'   separated by commas, and span_structures. span_structures must have the
 #'   arguments named to match the name the column in the input data has to identify the correct columns. See the examples
 #' @param .drop Boolean. Should un-listed columns be dropped from the data.

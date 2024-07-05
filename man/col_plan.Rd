@@ -11,7 +11,7 @@ span_structure(...)
 }
 \arguments{
 \item{...}{For a col_plan and span_structure,
-<\code{\link[=dplyr_tidy_select]{tidy-select}}> arguments, unquoted expressions
+<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> arguments, unquoted expressions
 separated by commas, and span_structures. span_structures must have the
 arguments named to match the name the column in the input data has to identify the correct columns. See the examples}
 
@@ -24,7 +24,7 @@ col_plan object
 span_structure object
 }
 \description{
-Using <\code{\link[=dplyr_tidy_select]{tidy-select}}> expressions and a series
+Using <\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> expressions and a series
 span_structures, define the order of the columns. The selection follows "last
 selected" principals, meaning columns are moved to the \emph{last} selection as
 opposed to preserving the first location.
@@ -43,7 +43,7 @@ result in the table preserving all columns not "de-selected" in the
 statement, and the order of the columns not changed. It is preferred when
 creating the \code{col_plan()} to identify all the columns planned on
 preserving in the order they are wished to appear, or if
-<\code{\link[=dplyr_tidy_select]{tidy-select}}> arguments - such as
+<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> arguments - such as
 \code{\link[dplyr]{everything}}- are used, identify the de-selection after
 the positive-selection.
 
