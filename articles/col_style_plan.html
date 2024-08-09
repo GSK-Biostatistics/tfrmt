@@ -5,87 +5,70 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="tfrmt">
 <title>Column Style Plan • tfrmt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Column Style Plan">
-<meta property="og:description" content="tfrmt">
-<meta property="og:image" content="https://gsk-biostatistics.github.io/tfrmt/reference/figures/tfrmt.png">
-<meta property="og:image:alt" content="tfrmt Hex Sticker">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Column Style Plan">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <h6 class="dropdown-header" data-toc-skip>Table Components</h6>
-    <a class="dropdown-item" href="../articles/building_blocks.html">Building Blocks</a>
-    <a class="dropdown-item" href="../articles/body_plan.html">Body Plan</a>
-    <a class="dropdown-item" href="../articles/row_grp_plan.html">Row Group Plan</a>
-    <a class="dropdown-item" href="../articles/col_plan.html">Column Plan</a>
-    <a class="dropdown-item" href="../articles/col_style_plan.html">Column Style Plan</a>
-    <a class="dropdown-item" href="../articles/big_ns.html">Big N's</a>
-    <a class="dropdown-item" href="../articles/footnote_plan.html">Footnote Plan</a>
-    <a class="dropdown-item" href="../articles/page_plan.html">Pagination</a>
-    <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>Building Tables</h6>
-    <a class="dropdown-item" href="../articles/examples.html">Examples</a>
-    <a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a>
-    <a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a>
-    <a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a>
-    <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>More</h6>
-    <a class="dropdown-item" href="../articles/json.html">Export to JSON</a>
-    <a class="dropdown-item" href="../articles/print_to_ggplot.html">Print to ggplot</a>
-    <a class="dropdown-item" href="../articles/faq.html">FAQ</a>
-    <a class="dropdown-item" href="../articles/mock_examples.html">Mock Examples</a>
-    <a class="dropdown-item" href="../articles/unusual_tables.html">Unusual Tables</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Table Components</h6></li>
+    <li><a class="dropdown-item" href="../articles/building_blocks.html">Building Blocks</a></li>
+    <li><a class="dropdown-item" href="../articles/body_plan.html">Body Plan</a></li>
+    <li><a class="dropdown-item" href="../articles/row_grp_plan.html">Row Group Plan</a></li>
+    <li><a class="dropdown-item" href="../articles/col_plan.html">Column Plan</a></li>
+    <li><a class="dropdown-item" href="../articles/col_style_plan.html">Column Style Plan</a></li>
+    <li><a class="dropdown-item" href="../articles/big_ns.html">Big N's</a></li>
+    <li><a class="dropdown-item" href="../articles/footnote_plan.html">Footnote Plan</a></li>
+    <li><a class="dropdown-item" href="../articles/page_plan.html">Pagination</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Building Tables</h6></li>
+    <li><a class="dropdown-item" href="../articles/examples.html">Examples</a></li>
+    <li><a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a></li>
+    <li><a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a></li>
+    <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
+    <li><a class="dropdown-item" href="../articles/json.html">Export to JSON</a></li>
+    <li><a class="dropdown-item" href="../articles/print_to_ggplot.html">Print to ggplot</a></li>
+    <li><a class="dropdown-item" href="../articles/faq.html">FAQ</a></li>
+    <li><a class="dropdown-item" href="../articles/mock_examples.html">Mock Examples</a></li>
+    <li><a class="dropdown-item" href="../articles/unusual_tables.html">Unusual Tables</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/GSK-Biostatistics/tfrmt/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/GSK-Biostatistics/tfrmt/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -94,10 +77,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Column Style Plan</h1>
+
+      <h1>Column Style Plan</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/HEAD/vignettes/col_style_plan.Rmd" class="external-link"><code>vignettes/col_style_plan.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/vignettes/col_style_plan.Rmd" class="external-link"><code>vignettes/col_style_plan.Rmd</code></a></small>
       <div class="d-none name"><code>col_style_plan.Rmd</code></div>
     </div>
 
@@ -221,23 +205,23 @@ Expand for the code used to produce the example data
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="gazfgiizax" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gazfgiizax table {
+<div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mwlefoodfi table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gazfgiizax thead, #gazfgiizax tbody, #gazfgiizax tfoot, #gazfgiizax tr, #gazfgiizax td, #gazfgiizax th {
+#mwlefoodfi thead, #mwlefoodfi tbody, #mwlefoodfi tfoot, #mwlefoodfi tr, #mwlefoodfi td, #mwlefoodfi th {
   border-style: none;
 }
 
-#gazfgiizax p {
+#mwlefoodfi p {
   margin: 0;
   padding: 0;
 }
 
-#gazfgiizax .gt_table {
+#mwlefoodfi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -263,12 +247,12 @@ Expand for the code used to produce the example data
   border-left-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_caption {
+#mwlefoodfi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gazfgiizax .gt_title {
+#mwlefoodfi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -280,7 +264,7 @@ Expand for the code used to produce the example data
   border-bottom-width: 0;
 }
 
-#gazfgiizax .gt_subtitle {
+#mwlefoodfi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -292,7 +276,7 @@ Expand for the code used to produce the example data
   border-top-width: 0;
 }
 
-#gazfgiizax .gt_heading {
+#mwlefoodfi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -304,13 +288,13 @@ Expand for the code used to produce the example data
   border-right-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_bottom_border {
+#mwlefoodfi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_col_headings {
+#mwlefoodfi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -325,7 +309,7 @@ Expand for the code used to produce the example data
   border-right-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_col_heading {
+#mwlefoodfi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -345,7 +329,7 @@ Expand for the code used to produce the example data
   overflow-x: hidden;
 }
 
-#gazfgiizax .gt_column_spanner_outer {
+#mwlefoodfi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -357,15 +341,15 @@ Expand for the code used to produce the example data
   padding-right: 4px;
 }
 
-#gazfgiizax .gt_column_spanner_outer:first-child {
+#mwlefoodfi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gazfgiizax .gt_column_spanner_outer:last-child {
+#mwlefoodfi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gazfgiizax .gt_column_spanner {
+#mwlefoodfi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -377,11 +361,11 @@ Expand for the code used to produce the example data
   width: 100%;
 }
 
-#gazfgiizax .gt_spanner_row {
+#mwlefoodfi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gazfgiizax .gt_group_heading {
+#mwlefoodfi .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -407,7 +391,7 @@ Expand for the code used to produce the example data
   text-align: left;
 }
 
-#gazfgiizax .gt_empty_group_heading {
+#mwlefoodfi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -422,15 +406,15 @@ Expand for the code used to produce the example data
   vertical-align: middle;
 }
 
-#gazfgiizax .gt_from_md > :first-child {
+#mwlefoodfi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gazfgiizax .gt_from_md > :last-child {
+#mwlefoodfi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gazfgiizax .gt_row {
+#mwlefoodfi .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -449,7 +433,7 @@ Expand for the code used to produce the example data
   overflow-x: hidden;
 }
 
-#gazfgiizax .gt_stub {
+#mwlefoodfi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -462,7 +446,7 @@ Expand for the code used to produce the example data
   padding-right: 5px;
 }
 
-#gazfgiizax .gt_stub_row_group {
+#mwlefoodfi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -476,15 +460,15 @@ Expand for the code used to produce the example data
   vertical-align: top;
 }
 
-#gazfgiizax .gt_row_group_first td {
+#mwlefoodfi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gazfgiizax .gt_row_group_first th {
+#mwlefoodfi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gazfgiizax .gt_summary_row {
+#mwlefoodfi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -494,16 +478,16 @@ Expand for the code used to produce the example data
   padding-right: 5px;
 }
 
-#gazfgiizax .gt_first_summary_row {
+#mwlefoodfi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_first_summary_row.thick {
+#mwlefoodfi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gazfgiizax .gt_last_summary_row {
+#mwlefoodfi .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -513,7 +497,7 @@ Expand for the code used to produce the example data
   border-bottom-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_grand_summary_row {
+#mwlefoodfi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -523,7 +507,7 @@ Expand for the code used to produce the example data
   padding-right: 5px;
 }
 
-#gazfgiizax .gt_first_grand_summary_row {
+#mwlefoodfi .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -533,7 +517,7 @@ Expand for the code used to produce the example data
   border-top-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_last_grand_summary_row_top {
+#mwlefoodfi .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -543,11 +527,11 @@ Expand for the code used to produce the example data
   border-bottom-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_striped {
+#mwlefoodfi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gazfgiizax .gt_table_body {
+#mwlefoodfi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -556,7 +540,7 @@ Expand for the code used to produce the example data
   border-bottom-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_footnotes {
+#mwlefoodfi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -570,7 +554,7 @@ Expand for the code used to produce the example data
   border-right-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_footnote {
+#mwlefoodfi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -579,7 +563,7 @@ Expand for the code used to produce the example data
   padding-right: 5px;
 }
 
-#gazfgiizax .gt_sourcenotes {
+#mwlefoodfi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -593,7 +577,7 @@ Expand for the code used to produce the example data
   border-right-color: #D3D3D3;
 }
 
-#gazfgiizax .gt_sourcenote {
+#mwlefoodfi .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -601,72 +585,81 @@ Expand for the code used to produce the example data
   padding-right: 5px;
 }
 
-#gazfgiizax .gt_left {
+#mwlefoodfi .gt_left {
   text-align: left;
 }
 
-#gazfgiizax .gt_center {
+#mwlefoodfi .gt_center {
   text-align: center;
 }
 
-#gazfgiizax .gt_right {
+#mwlefoodfi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gazfgiizax .gt_font_normal {
+#mwlefoodfi .gt_font_normal {
   font-weight: normal;
 }
 
-#gazfgiizax .gt_font_bold {
+#mwlefoodfi .gt_font_bold {
   font-weight: bold;
 }
 
-#gazfgiizax .gt_font_italic {
+#mwlefoodfi .gt_font_italic {
   font-style: italic;
 }
 
-#gazfgiizax .gt_super {
+#mwlefoodfi .gt_super {
   font-size: 65%;
 }
 
-#gazfgiizax .gt_footnote_marks {
+#mwlefoodfi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gazfgiizax .gt_asterisk {
+#mwlefoodfi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gazfgiizax .gt_indent_1 {
+#mwlefoodfi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gazfgiizax .gt_indent_2 {
+#mwlefoodfi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gazfgiizax .gt_indent_3 {
+#mwlefoodfi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gazfgiizax .gt_indent_4 {
+#mwlefoodfi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gazfgiizax .gt_indent_5 {
+#mwlefoodfi .gt_indent_5 {
   text-indent: 25px;
+}
+
+#mwlefoodfi .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mwlefoodfi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -732,23 +725,23 @@ covered in the plan will be left-aligned by default.</p>
 <span>  <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="vnjefrvhto" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vnjefrvhto table {
+<div id="ulbfdpbcyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ulbfdpbcyv table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vnjefrvhto thead, #vnjefrvhto tbody, #vnjefrvhto tfoot, #vnjefrvhto tr, #vnjefrvhto td, #vnjefrvhto th {
+#ulbfdpbcyv thead, #ulbfdpbcyv tbody, #ulbfdpbcyv tfoot, #ulbfdpbcyv tr, #ulbfdpbcyv td, #ulbfdpbcyv th {
   border-style: none;
 }
 
-#vnjefrvhto p {
+#ulbfdpbcyv p {
   margin: 0;
   padding: 0;
 }
 
-#vnjefrvhto .gt_table {
+#ulbfdpbcyv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -774,12 +767,12 @@ covered in the plan will be left-aligned by default.</p>
   border-left-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_caption {
+#ulbfdpbcyv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vnjefrvhto .gt_title {
+#ulbfdpbcyv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -791,7 +784,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-width: 0;
 }
 
-#vnjefrvhto .gt_subtitle {
+#ulbfdpbcyv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -803,7 +796,7 @@ covered in the plan will be left-aligned by default.</p>
   border-top-width: 0;
 }
 
-#vnjefrvhto .gt_heading {
+#ulbfdpbcyv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -815,13 +808,13 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_bottom_border {
+#ulbfdpbcyv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_col_headings {
+#ulbfdpbcyv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -836,7 +829,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_col_heading {
+#ulbfdpbcyv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -856,7 +849,7 @@ covered in the plan will be left-aligned by default.</p>
   overflow-x: hidden;
 }
 
-#vnjefrvhto .gt_column_spanner_outer {
+#ulbfdpbcyv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -868,15 +861,15 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 4px;
 }
 
-#vnjefrvhto .gt_column_spanner_outer:first-child {
+#ulbfdpbcyv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vnjefrvhto .gt_column_spanner_outer:last-child {
+#ulbfdpbcyv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vnjefrvhto .gt_column_spanner {
+#ulbfdpbcyv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -888,11 +881,11 @@ covered in the plan will be left-aligned by default.</p>
   width: 100%;
 }
 
-#vnjefrvhto .gt_spanner_row {
+#ulbfdpbcyv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vnjefrvhto .gt_group_heading {
+#ulbfdpbcyv .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -918,7 +911,7 @@ covered in the plan will be left-aligned by default.</p>
   text-align: left;
 }
 
-#vnjefrvhto .gt_empty_group_heading {
+#ulbfdpbcyv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -933,15 +926,15 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: middle;
 }
 
-#vnjefrvhto .gt_from_md > :first-child {
+#ulbfdpbcyv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vnjefrvhto .gt_from_md > :last-child {
+#ulbfdpbcyv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vnjefrvhto .gt_row {
+#ulbfdpbcyv .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -960,7 +953,7 @@ covered in the plan will be left-aligned by default.</p>
   overflow-x: hidden;
 }
 
-#vnjefrvhto .gt_stub {
+#ulbfdpbcyv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -973,7 +966,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#vnjefrvhto .gt_stub_row_group {
+#ulbfdpbcyv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -987,15 +980,15 @@ covered in the plan will be left-aligned by default.</p>
   vertical-align: top;
 }
 
-#vnjefrvhto .gt_row_group_first td {
+#ulbfdpbcyv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vnjefrvhto .gt_row_group_first th {
+#ulbfdpbcyv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vnjefrvhto .gt_summary_row {
+#ulbfdpbcyv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1005,16 +998,16 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#vnjefrvhto .gt_first_summary_row {
+#ulbfdpbcyv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_first_summary_row.thick {
+#ulbfdpbcyv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vnjefrvhto .gt_last_summary_row {
+#ulbfdpbcyv .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1024,7 +1017,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_grand_summary_row {
+#ulbfdpbcyv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1034,7 +1027,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#vnjefrvhto .gt_first_grand_summary_row {
+#ulbfdpbcyv .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1044,7 +1037,7 @@ covered in the plan will be left-aligned by default.</p>
   border-top-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_last_grand_summary_row_top {
+#ulbfdpbcyv .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1054,11 +1047,11 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_striped {
+#ulbfdpbcyv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vnjefrvhto .gt_table_body {
+#ulbfdpbcyv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1067,7 +1060,7 @@ covered in the plan will be left-aligned by default.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_footnotes {
+#ulbfdpbcyv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1081,7 +1074,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_footnote {
+#ulbfdpbcyv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -1090,7 +1083,7 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#vnjefrvhto .gt_sourcenotes {
+#ulbfdpbcyv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1104,7 +1097,7 @@ covered in the plan will be left-aligned by default.</p>
   border-right-color: #D3D3D3;
 }
 
-#vnjefrvhto .gt_sourcenote {
+#ulbfdpbcyv .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1112,72 +1105,81 @@ covered in the plan will be left-aligned by default.</p>
   padding-right: 5px;
 }
 
-#vnjefrvhto .gt_left {
+#ulbfdpbcyv .gt_left {
   text-align: left;
 }
 
-#vnjefrvhto .gt_center {
+#ulbfdpbcyv .gt_center {
   text-align: center;
 }
 
-#vnjefrvhto .gt_right {
+#ulbfdpbcyv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vnjefrvhto .gt_font_normal {
+#ulbfdpbcyv .gt_font_normal {
   font-weight: normal;
 }
 
-#vnjefrvhto .gt_font_bold {
+#ulbfdpbcyv .gt_font_bold {
   font-weight: bold;
 }
 
-#vnjefrvhto .gt_font_italic {
+#ulbfdpbcyv .gt_font_italic {
   font-style: italic;
 }
 
-#vnjefrvhto .gt_super {
+#ulbfdpbcyv .gt_super {
   font-size: 65%;
 }
 
-#vnjefrvhto .gt_footnote_marks {
+#ulbfdpbcyv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vnjefrvhto .gt_asterisk {
+#ulbfdpbcyv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vnjefrvhto .gt_indent_1 {
+#ulbfdpbcyv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vnjefrvhto .gt_indent_2 {
+#ulbfdpbcyv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vnjefrvhto .gt_indent_3 {
+#ulbfdpbcyv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vnjefrvhto .gt_indent_4 {
+#ulbfdpbcyv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vnjefrvhto .gt_indent_5 {
+#ulbfdpbcyv .gt_indent_5 {
   text-indent: 25px;
+}
+
+#ulbfdpbcyv .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ulbfdpbcyv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -1241,23 +1243,23 @@ better fit:</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>col <span class="op">=</span> <span class="va">`p-value`</span>, align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"char"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="jpeluzaaeo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jpeluzaaeo table {
+<div id="txvafbsnay" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#txvafbsnay table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jpeluzaaeo thead, #jpeluzaaeo tbody, #jpeluzaaeo tfoot, #jpeluzaaeo tr, #jpeluzaaeo td, #jpeluzaaeo th {
+#txvafbsnay thead, #txvafbsnay tbody, #txvafbsnay tfoot, #txvafbsnay tr, #txvafbsnay td, #txvafbsnay th {
   border-style: none;
 }
 
-#jpeluzaaeo p {
+#txvafbsnay p {
   margin: 0;
   padding: 0;
 }
 
-#jpeluzaaeo .gt_table {
+#txvafbsnay .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1283,12 +1285,12 @@ better fit:</p>
   border-left-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_caption {
+#txvafbsnay .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jpeluzaaeo .gt_title {
+#txvafbsnay .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1300,7 +1302,7 @@ better fit:</p>
   border-bottom-width: 0;
 }
 
-#jpeluzaaeo .gt_subtitle {
+#txvafbsnay .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1312,7 +1314,7 @@ better fit:</p>
   border-top-width: 0;
 }
 
-#jpeluzaaeo .gt_heading {
+#txvafbsnay .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1324,13 +1326,13 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_bottom_border {
+#txvafbsnay .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_col_headings {
+#txvafbsnay .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1345,7 +1347,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_col_heading {
+#txvafbsnay .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1365,7 +1367,7 @@ better fit:</p>
   overflow-x: hidden;
 }
 
-#jpeluzaaeo .gt_column_spanner_outer {
+#txvafbsnay .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1377,15 +1379,15 @@ better fit:</p>
   padding-right: 4px;
 }
 
-#jpeluzaaeo .gt_column_spanner_outer:first-child {
+#txvafbsnay .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jpeluzaaeo .gt_column_spanner_outer:last-child {
+#txvafbsnay .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jpeluzaaeo .gt_column_spanner {
+#txvafbsnay .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1397,11 +1399,11 @@ better fit:</p>
   width: 100%;
 }
 
-#jpeluzaaeo .gt_spanner_row {
+#txvafbsnay .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jpeluzaaeo .gt_group_heading {
+#txvafbsnay .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1427,7 +1429,7 @@ better fit:</p>
   text-align: left;
 }
 
-#jpeluzaaeo .gt_empty_group_heading {
+#txvafbsnay .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1442,15 +1444,15 @@ better fit:</p>
   vertical-align: middle;
 }
 
-#jpeluzaaeo .gt_from_md > :first-child {
+#txvafbsnay .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jpeluzaaeo .gt_from_md > :last-child {
+#txvafbsnay .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jpeluzaaeo .gt_row {
+#txvafbsnay .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1469,7 +1471,7 @@ better fit:</p>
   overflow-x: hidden;
 }
 
-#jpeluzaaeo .gt_stub {
+#txvafbsnay .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1482,7 +1484,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#jpeluzaaeo .gt_stub_row_group {
+#txvafbsnay .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1496,15 +1498,15 @@ better fit:</p>
   vertical-align: top;
 }
 
-#jpeluzaaeo .gt_row_group_first td {
+#txvafbsnay .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jpeluzaaeo .gt_row_group_first th {
+#txvafbsnay .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jpeluzaaeo .gt_summary_row {
+#txvafbsnay .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1514,16 +1516,16 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#jpeluzaaeo .gt_first_summary_row {
+#txvafbsnay .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_first_summary_row.thick {
+#txvafbsnay .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jpeluzaaeo .gt_last_summary_row {
+#txvafbsnay .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1533,7 +1535,7 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_grand_summary_row {
+#txvafbsnay .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1543,7 +1545,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#jpeluzaaeo .gt_first_grand_summary_row {
+#txvafbsnay .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1553,7 +1555,7 @@ better fit:</p>
   border-top-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_last_grand_summary_row_top {
+#txvafbsnay .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1563,11 +1565,11 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_striped {
+#txvafbsnay .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jpeluzaaeo .gt_table_body {
+#txvafbsnay .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1576,7 +1578,7 @@ better fit:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_footnotes {
+#txvafbsnay .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1590,7 +1592,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_footnote {
+#txvafbsnay .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -1599,7 +1601,7 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#jpeluzaaeo .gt_sourcenotes {
+#txvafbsnay .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1613,7 +1615,7 @@ better fit:</p>
   border-right-color: #D3D3D3;
 }
 
-#jpeluzaaeo .gt_sourcenote {
+#txvafbsnay .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1621,72 +1623,81 @@ better fit:</p>
   padding-right: 5px;
 }
 
-#jpeluzaaeo .gt_left {
+#txvafbsnay .gt_left {
   text-align: left;
 }
 
-#jpeluzaaeo .gt_center {
+#txvafbsnay .gt_center {
   text-align: center;
 }
 
-#jpeluzaaeo .gt_right {
+#txvafbsnay .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jpeluzaaeo .gt_font_normal {
+#txvafbsnay .gt_font_normal {
   font-weight: normal;
 }
 
-#jpeluzaaeo .gt_font_bold {
+#txvafbsnay .gt_font_bold {
   font-weight: bold;
 }
 
-#jpeluzaaeo .gt_font_italic {
+#txvafbsnay .gt_font_italic {
   font-style: italic;
 }
 
-#jpeluzaaeo .gt_super {
+#txvafbsnay .gt_super {
   font-size: 65%;
 }
 
-#jpeluzaaeo .gt_footnote_marks {
+#txvafbsnay .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jpeluzaaeo .gt_asterisk {
+#txvafbsnay .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jpeluzaaeo .gt_indent_1 {
+#txvafbsnay .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jpeluzaaeo .gt_indent_2 {
+#txvafbsnay .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jpeluzaaeo .gt_indent_3 {
+#txvafbsnay .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jpeluzaaeo .gt_indent_4 {
+#txvafbsnay .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jpeluzaaeo .gt_indent_5 {
+#txvafbsnay .gt_indent_5 {
   text-indent: 25px;
+}
+
+#txvafbsnay .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#txvafbsnay div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -1752,23 +1763,23 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="uxqxvtmnwd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uxqxvtmnwd table {
+<div id="jagfvsybha" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jagfvsybha table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#uxqxvtmnwd thead, #uxqxvtmnwd tbody, #uxqxvtmnwd tfoot, #uxqxvtmnwd tr, #uxqxvtmnwd td, #uxqxvtmnwd th {
+#jagfvsybha thead, #jagfvsybha tbody, #jagfvsybha tfoot, #jagfvsybha tr, #jagfvsybha td, #jagfvsybha th {
   border-style: none;
 }
 
-#uxqxvtmnwd p {
+#jagfvsybha p {
   margin: 0;
   padding: 0;
 }
 
-#uxqxvtmnwd .gt_table {
+#jagfvsybha .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1794,12 +1805,12 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-left-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_caption {
+#jagfvsybha .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uxqxvtmnwd .gt_title {
+#jagfvsybha .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1811,7 +1822,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-width: 0;
 }
 
-#uxqxvtmnwd .gt_subtitle {
+#jagfvsybha .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1823,7 +1834,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-top-width: 0;
 }
 
-#uxqxvtmnwd .gt_heading {
+#jagfvsybha .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1835,13 +1846,13 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_bottom_border {
+#jagfvsybha .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_col_headings {
+#jagfvsybha .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1856,7 +1867,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_col_heading {
+#jagfvsybha .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1876,7 +1887,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   overflow-x: hidden;
 }
 
-#uxqxvtmnwd .gt_column_spanner_outer {
+#jagfvsybha .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1888,15 +1899,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 4px;
 }
 
-#uxqxvtmnwd .gt_column_spanner_outer:first-child {
+#jagfvsybha .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uxqxvtmnwd .gt_column_spanner_outer:last-child {
+#jagfvsybha .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uxqxvtmnwd .gt_column_spanner {
+#jagfvsybha .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1908,11 +1919,11 @@ we will align on the first instance of a decimal, comma, or space:</p>
   width: 100%;
 }
 
-#uxqxvtmnwd .gt_spanner_row {
+#jagfvsybha .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#uxqxvtmnwd .gt_group_heading {
+#jagfvsybha .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1938,7 +1949,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   text-align: left;
 }
 
-#uxqxvtmnwd .gt_empty_group_heading {
+#jagfvsybha .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1953,15 +1964,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: middle;
 }
 
-#uxqxvtmnwd .gt_from_md > :first-child {
+#jagfvsybha .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uxqxvtmnwd .gt_from_md > :last-child {
+#jagfvsybha .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uxqxvtmnwd .gt_row {
+#jagfvsybha .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -1980,7 +1991,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   overflow-x: hidden;
 }
 
-#uxqxvtmnwd .gt_stub {
+#jagfvsybha .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1993,7 +2004,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#uxqxvtmnwd .gt_stub_row_group {
+#jagfvsybha .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2007,15 +2018,15 @@ we will align on the first instance of a decimal, comma, or space:</p>
   vertical-align: top;
 }
 
-#uxqxvtmnwd .gt_row_group_first td {
+#jagfvsybha .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uxqxvtmnwd .gt_row_group_first th {
+#jagfvsybha .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#uxqxvtmnwd .gt_summary_row {
+#jagfvsybha .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2025,16 +2036,16 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#uxqxvtmnwd .gt_first_summary_row {
+#jagfvsybha .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_first_summary_row.thick {
+#jagfvsybha .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uxqxvtmnwd .gt_last_summary_row {
+#jagfvsybha .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2044,7 +2055,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_grand_summary_row {
+#jagfvsybha .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2054,7 +2065,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#uxqxvtmnwd .gt_first_grand_summary_row {
+#jagfvsybha .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2064,7 +2075,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-top-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_last_grand_summary_row_top {
+#jagfvsybha .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2074,11 +2085,11 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_striped {
+#jagfvsybha .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uxqxvtmnwd .gt_table_body {
+#jagfvsybha .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2087,7 +2098,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_footnotes {
+#jagfvsybha .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2101,7 +2112,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_footnote {
+#jagfvsybha .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -2110,7 +2121,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#uxqxvtmnwd .gt_sourcenotes {
+#jagfvsybha .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2124,7 +2135,7 @@ we will align on the first instance of a decimal, comma, or space:</p>
   border-right-color: #D3D3D3;
 }
 
-#uxqxvtmnwd .gt_sourcenote {
+#jagfvsybha .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2132,72 +2143,81 @@ we will align on the first instance of a decimal, comma, or space:</p>
   padding-right: 5px;
 }
 
-#uxqxvtmnwd .gt_left {
+#jagfvsybha .gt_left {
   text-align: left;
 }
 
-#uxqxvtmnwd .gt_center {
+#jagfvsybha .gt_center {
   text-align: center;
 }
 
-#uxqxvtmnwd .gt_right {
+#jagfvsybha .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uxqxvtmnwd .gt_font_normal {
+#jagfvsybha .gt_font_normal {
   font-weight: normal;
 }
 
-#uxqxvtmnwd .gt_font_bold {
+#jagfvsybha .gt_font_bold {
   font-weight: bold;
 }
 
-#uxqxvtmnwd .gt_font_italic {
+#jagfvsybha .gt_font_italic {
   font-style: italic;
 }
 
-#uxqxvtmnwd .gt_super {
+#jagfvsybha .gt_super {
   font-size: 65%;
 }
 
-#uxqxvtmnwd .gt_footnote_marks {
+#jagfvsybha .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#uxqxvtmnwd .gt_asterisk {
+#jagfvsybha .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uxqxvtmnwd .gt_indent_1 {
+#jagfvsybha .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uxqxvtmnwd .gt_indent_2 {
+#jagfvsybha .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uxqxvtmnwd .gt_indent_3 {
+#jagfvsybha .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uxqxvtmnwd .gt_indent_4 {
+#jagfvsybha .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uxqxvtmnwd .gt_indent_5 {
+#jagfvsybha .gt_indent_5 {
   text-indent: 25px;
+}
+
+#jagfvsybha .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#jagfvsybha div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -2263,23 +2283,23 @@ respectively):</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>col <span class="op">=</span> <span class="va">trt2</span>, align <span class="op">=</span> <span class="st">"right"</span>, type <span class="op">=</span> <span class="st">"char"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="zceenopjnl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zceenopjnl table {
+<div id="gslqeqmfaa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gslqeqmfaa table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zceenopjnl thead, #zceenopjnl tbody, #zceenopjnl tfoot, #zceenopjnl tr, #zceenopjnl td, #zceenopjnl th {
+#gslqeqmfaa thead, #gslqeqmfaa tbody, #gslqeqmfaa tfoot, #gslqeqmfaa tr, #gslqeqmfaa td, #gslqeqmfaa th {
   border-style: none;
 }
 
-#zceenopjnl p {
+#gslqeqmfaa p {
   margin: 0;
   padding: 0;
 }
 
-#zceenopjnl .gt_table {
+#gslqeqmfaa .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2305,12 +2325,12 @@ respectively):</p>
   border-left-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_caption {
+#gslqeqmfaa .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zceenopjnl .gt_title {
+#gslqeqmfaa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2322,7 +2342,7 @@ respectively):</p>
   border-bottom-width: 0;
 }
 
-#zceenopjnl .gt_subtitle {
+#gslqeqmfaa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2334,7 +2354,7 @@ respectively):</p>
   border-top-width: 0;
 }
 
-#zceenopjnl .gt_heading {
+#gslqeqmfaa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2346,13 +2366,13 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_bottom_border {
+#gslqeqmfaa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_col_headings {
+#gslqeqmfaa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2367,7 +2387,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_col_heading {
+#gslqeqmfaa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2387,7 +2407,7 @@ respectively):</p>
   overflow-x: hidden;
 }
 
-#zceenopjnl .gt_column_spanner_outer {
+#gslqeqmfaa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2399,15 +2419,15 @@ respectively):</p>
   padding-right: 4px;
 }
 
-#zceenopjnl .gt_column_spanner_outer:first-child {
+#gslqeqmfaa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zceenopjnl .gt_column_spanner_outer:last-child {
+#gslqeqmfaa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zceenopjnl .gt_column_spanner {
+#gslqeqmfaa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2419,11 +2439,11 @@ respectively):</p>
   width: 100%;
 }
 
-#zceenopjnl .gt_spanner_row {
+#gslqeqmfaa .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zceenopjnl .gt_group_heading {
+#gslqeqmfaa .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2449,7 +2469,7 @@ respectively):</p>
   text-align: left;
 }
 
-#zceenopjnl .gt_empty_group_heading {
+#gslqeqmfaa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2464,15 +2484,15 @@ respectively):</p>
   vertical-align: middle;
 }
 
-#zceenopjnl .gt_from_md > :first-child {
+#gslqeqmfaa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zceenopjnl .gt_from_md > :last-child {
+#gslqeqmfaa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zceenopjnl .gt_row {
+#gslqeqmfaa .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2491,7 +2511,7 @@ respectively):</p>
   overflow-x: hidden;
 }
 
-#zceenopjnl .gt_stub {
+#gslqeqmfaa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2504,7 +2524,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#zceenopjnl .gt_stub_row_group {
+#gslqeqmfaa .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2518,15 +2538,15 @@ respectively):</p>
   vertical-align: top;
 }
 
-#zceenopjnl .gt_row_group_first td {
+#gslqeqmfaa .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zceenopjnl .gt_row_group_first th {
+#gslqeqmfaa .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zceenopjnl .gt_summary_row {
+#gslqeqmfaa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2536,16 +2556,16 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#zceenopjnl .gt_first_summary_row {
+#gslqeqmfaa .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_first_summary_row.thick {
+#gslqeqmfaa .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zceenopjnl .gt_last_summary_row {
+#gslqeqmfaa .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2555,7 +2575,7 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_grand_summary_row {
+#gslqeqmfaa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2565,7 +2585,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#zceenopjnl .gt_first_grand_summary_row {
+#gslqeqmfaa .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2575,7 +2595,7 @@ respectively):</p>
   border-top-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_last_grand_summary_row_top {
+#gslqeqmfaa .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2585,11 +2605,11 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_striped {
+#gslqeqmfaa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zceenopjnl .gt_table_body {
+#gslqeqmfaa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2598,7 +2618,7 @@ respectively):</p>
   border-bottom-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_footnotes {
+#gslqeqmfaa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2612,7 +2632,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_footnote {
+#gslqeqmfaa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -2621,7 +2641,7 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#zceenopjnl .gt_sourcenotes {
+#gslqeqmfaa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2635,7 +2655,7 @@ respectively):</p>
   border-right-color: #D3D3D3;
 }
 
-#zceenopjnl .gt_sourcenote {
+#gslqeqmfaa .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2643,72 +2663,81 @@ respectively):</p>
   padding-right: 5px;
 }
 
-#zceenopjnl .gt_left {
+#gslqeqmfaa .gt_left {
   text-align: left;
 }
 
-#zceenopjnl .gt_center {
+#gslqeqmfaa .gt_center {
   text-align: center;
 }
 
-#zceenopjnl .gt_right {
+#gslqeqmfaa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zceenopjnl .gt_font_normal {
+#gslqeqmfaa .gt_font_normal {
   font-weight: normal;
 }
 
-#zceenopjnl .gt_font_bold {
+#gslqeqmfaa .gt_font_bold {
   font-weight: bold;
 }
 
-#zceenopjnl .gt_font_italic {
+#gslqeqmfaa .gt_font_italic {
   font-style: italic;
 }
 
-#zceenopjnl .gt_super {
+#gslqeqmfaa .gt_super {
   font-size: 65%;
 }
 
-#zceenopjnl .gt_footnote_marks {
+#gslqeqmfaa .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zceenopjnl .gt_asterisk {
+#gslqeqmfaa .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zceenopjnl .gt_indent_1 {
+#gslqeqmfaa .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zceenopjnl .gt_indent_2 {
+#gslqeqmfaa .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zceenopjnl .gt_indent_3 {
+#gslqeqmfaa .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zceenopjnl .gt_indent_4 {
+#gslqeqmfaa .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zceenopjnl .gt_indent_5 {
+#gslqeqmfaa .gt_indent_5 {
   text-indent: 25px;
+}
+
+#gslqeqmfaa .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#gslqeqmfaa div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -2789,23 +2818,23 @@ multiple decimal places:</p>
 <span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">tf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="trqqhkufxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#trqqhkufxg table {
+<div id="ifmmyucmrw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ifmmyucmrw table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#trqqhkufxg thead, #trqqhkufxg tbody, #trqqhkufxg tfoot, #trqqhkufxg tr, #trqqhkufxg td, #trqqhkufxg th {
+#ifmmyucmrw thead, #ifmmyucmrw tbody, #ifmmyucmrw tfoot, #ifmmyucmrw tr, #ifmmyucmrw td, #ifmmyucmrw th {
   border-style: none;
 }
 
-#trqqhkufxg p {
+#ifmmyucmrw p {
   margin: 0;
   padding: 0;
 }
 
-#trqqhkufxg .gt_table {
+#ifmmyucmrw .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2831,12 +2860,12 @@ multiple decimal places:</p>
   border-left-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_caption {
+#ifmmyucmrw .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#trqqhkufxg .gt_title {
+#ifmmyucmrw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2848,7 +2877,7 @@ multiple decimal places:</p>
   border-bottom-width: 0;
 }
 
-#trqqhkufxg .gt_subtitle {
+#ifmmyucmrw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2860,7 +2889,7 @@ multiple decimal places:</p>
   border-top-width: 0;
 }
 
-#trqqhkufxg .gt_heading {
+#ifmmyucmrw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2872,13 +2901,13 @@ multiple decimal places:</p>
   border-right-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_bottom_border {
+#ifmmyucmrw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_col_headings {
+#ifmmyucmrw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2893,7 +2922,7 @@ multiple decimal places:</p>
   border-right-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_col_heading {
+#ifmmyucmrw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2913,7 +2942,7 @@ multiple decimal places:</p>
   overflow-x: hidden;
 }
 
-#trqqhkufxg .gt_column_spanner_outer {
+#ifmmyucmrw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2925,15 +2954,15 @@ multiple decimal places:</p>
   padding-right: 4px;
 }
 
-#trqqhkufxg .gt_column_spanner_outer:first-child {
+#ifmmyucmrw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#trqqhkufxg .gt_column_spanner_outer:last-child {
+#ifmmyucmrw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#trqqhkufxg .gt_column_spanner {
+#ifmmyucmrw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2945,11 +2974,11 @@ multiple decimal places:</p>
   width: 100%;
 }
 
-#trqqhkufxg .gt_spanner_row {
+#ifmmyucmrw .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#trqqhkufxg .gt_group_heading {
+#ifmmyucmrw .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2975,7 +3004,7 @@ multiple decimal places:</p>
   text-align: left;
 }
 
-#trqqhkufxg .gt_empty_group_heading {
+#ifmmyucmrw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2990,15 +3019,15 @@ multiple decimal places:</p>
   vertical-align: middle;
 }
 
-#trqqhkufxg .gt_from_md > :first-child {
+#ifmmyucmrw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#trqqhkufxg .gt_from_md > :last-child {
+#ifmmyucmrw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#trqqhkufxg .gt_row {
+#ifmmyucmrw .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3017,7 +3046,7 @@ multiple decimal places:</p>
   overflow-x: hidden;
 }
 
-#trqqhkufxg .gt_stub {
+#ifmmyucmrw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3030,7 +3059,7 @@ multiple decimal places:</p>
   padding-right: 5px;
 }
 
-#trqqhkufxg .gt_stub_row_group {
+#ifmmyucmrw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3044,15 +3073,15 @@ multiple decimal places:</p>
   vertical-align: top;
 }
 
-#trqqhkufxg .gt_row_group_first td {
+#ifmmyucmrw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#trqqhkufxg .gt_row_group_first th {
+#ifmmyucmrw .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#trqqhkufxg .gt_summary_row {
+#ifmmyucmrw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3062,16 +3091,16 @@ multiple decimal places:</p>
   padding-right: 5px;
 }
 
-#trqqhkufxg .gt_first_summary_row {
+#ifmmyucmrw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_first_summary_row.thick {
+#ifmmyucmrw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#trqqhkufxg .gt_last_summary_row {
+#ifmmyucmrw .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3081,7 +3110,7 @@ multiple decimal places:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_grand_summary_row {
+#ifmmyucmrw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3091,7 +3120,7 @@ multiple decimal places:</p>
   padding-right: 5px;
 }
 
-#trqqhkufxg .gt_first_grand_summary_row {
+#ifmmyucmrw .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3101,7 +3130,7 @@ multiple decimal places:</p>
   border-top-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_last_grand_summary_row_top {
+#ifmmyucmrw .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3111,11 +3140,11 @@ multiple decimal places:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_striped {
+#ifmmyucmrw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#trqqhkufxg .gt_table_body {
+#ifmmyucmrw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3124,7 +3153,7 @@ multiple decimal places:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_footnotes {
+#ifmmyucmrw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3138,7 +3167,7 @@ multiple decimal places:</p>
   border-right-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_footnote {
+#ifmmyucmrw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -3147,7 +3176,7 @@ multiple decimal places:</p>
   padding-right: 5px;
 }
 
-#trqqhkufxg .gt_sourcenotes {
+#ifmmyucmrw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3161,7 +3190,7 @@ multiple decimal places:</p>
   border-right-color: #D3D3D3;
 }
 
-#trqqhkufxg .gt_sourcenote {
+#ifmmyucmrw .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3169,72 +3198,81 @@ multiple decimal places:</p>
   padding-right: 5px;
 }
 
-#trqqhkufxg .gt_left {
+#ifmmyucmrw .gt_left {
   text-align: left;
 }
 
-#trqqhkufxg .gt_center {
+#ifmmyucmrw .gt_center {
   text-align: center;
 }
 
-#trqqhkufxg .gt_right {
+#ifmmyucmrw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#trqqhkufxg .gt_font_normal {
+#ifmmyucmrw .gt_font_normal {
   font-weight: normal;
 }
 
-#trqqhkufxg .gt_font_bold {
+#ifmmyucmrw .gt_font_bold {
   font-weight: bold;
 }
 
-#trqqhkufxg .gt_font_italic {
+#ifmmyucmrw .gt_font_italic {
   font-style: italic;
 }
 
-#trqqhkufxg .gt_super {
+#ifmmyucmrw .gt_super {
   font-size: 65%;
 }
 
-#trqqhkufxg .gt_footnote_marks {
+#ifmmyucmrw .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#trqqhkufxg .gt_asterisk {
+#ifmmyucmrw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#trqqhkufxg .gt_indent_1 {
+#ifmmyucmrw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#trqqhkufxg .gt_indent_2 {
+#ifmmyucmrw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#trqqhkufxg .gt_indent_3 {
+#ifmmyucmrw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#trqqhkufxg .gt_indent_4 {
+#ifmmyucmrw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#trqqhkufxg .gt_indent_5 {
+#ifmmyucmrw .gt_indent_5 {
   text-indent: 25px;
+}
+
+#ifmmyucmrw .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ifmmyucmrw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -3364,23 +3402,23 @@ apply the widths to that column as well.</p>
 <span>    <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>col <span class="op">=</span> <span class="va">trt2</span>, align <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="st">"5"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
-<div id="fsecckzrob" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fsecckzrob table {
+<div id="udacgqflgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#udacgqflgk table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fsecckzrob thead, #fsecckzrob tbody, #fsecckzrob tfoot, #fsecckzrob tr, #fsecckzrob td, #fsecckzrob th {
+#udacgqflgk thead, #udacgqflgk tbody, #udacgqflgk tfoot, #udacgqflgk tr, #udacgqflgk td, #udacgqflgk th {
   border-style: none;
 }
 
-#fsecckzrob p {
+#udacgqflgk p {
   margin: 0;
   padding: 0;
 }
 
-#fsecckzrob .gt_table {
+#udacgqflgk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3406,12 +3444,12 @@ apply the widths to that column as well.</p>
   border-left-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_caption {
+#udacgqflgk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fsecckzrob .gt_title {
+#udacgqflgk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3423,7 +3461,7 @@ apply the widths to that column as well.</p>
   border-bottom-width: 0;
 }
 
-#fsecckzrob .gt_subtitle {
+#udacgqflgk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3435,7 +3473,7 @@ apply the widths to that column as well.</p>
   border-top-width: 0;
 }
 
-#fsecckzrob .gt_heading {
+#udacgqflgk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3447,13 +3485,13 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_bottom_border {
+#udacgqflgk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_col_headings {
+#udacgqflgk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3468,7 +3506,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_col_heading {
+#udacgqflgk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3488,7 +3526,7 @@ apply the widths to that column as well.</p>
   overflow-x: hidden;
 }
 
-#fsecckzrob .gt_column_spanner_outer {
+#udacgqflgk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3500,15 +3538,15 @@ apply the widths to that column as well.</p>
   padding-right: 4px;
 }
 
-#fsecckzrob .gt_column_spanner_outer:first-child {
+#udacgqflgk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fsecckzrob .gt_column_spanner_outer:last-child {
+#udacgqflgk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fsecckzrob .gt_column_spanner {
+#udacgqflgk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3520,11 +3558,11 @@ apply the widths to that column as well.</p>
   width: 100%;
 }
 
-#fsecckzrob .gt_spanner_row {
+#udacgqflgk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fsecckzrob .gt_group_heading {
+#udacgqflgk .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3550,7 +3588,7 @@ apply the widths to that column as well.</p>
   text-align: left;
 }
 
-#fsecckzrob .gt_empty_group_heading {
+#udacgqflgk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3565,15 +3603,15 @@ apply the widths to that column as well.</p>
   vertical-align: middle;
 }
 
-#fsecckzrob .gt_from_md > :first-child {
+#udacgqflgk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fsecckzrob .gt_from_md > :last-child {
+#udacgqflgk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fsecckzrob .gt_row {
+#udacgqflgk .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3592,7 +3630,7 @@ apply the widths to that column as well.</p>
   overflow-x: hidden;
 }
 
-#fsecckzrob .gt_stub {
+#udacgqflgk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3605,7 +3643,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#fsecckzrob .gt_stub_row_group {
+#udacgqflgk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3619,15 +3657,15 @@ apply the widths to that column as well.</p>
   vertical-align: top;
 }
 
-#fsecckzrob .gt_row_group_first td {
+#udacgqflgk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fsecckzrob .gt_row_group_first th {
+#udacgqflgk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fsecckzrob .gt_summary_row {
+#udacgqflgk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3637,16 +3675,16 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#fsecckzrob .gt_first_summary_row {
+#udacgqflgk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_first_summary_row.thick {
+#udacgqflgk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fsecckzrob .gt_last_summary_row {
+#udacgqflgk .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3656,7 +3694,7 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_grand_summary_row {
+#udacgqflgk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3666,7 +3704,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#fsecckzrob .gt_first_grand_summary_row {
+#udacgqflgk .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3676,7 +3714,7 @@ apply the widths to that column as well.</p>
   border-top-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_last_grand_summary_row_top {
+#udacgqflgk .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -3686,11 +3724,11 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_striped {
+#udacgqflgk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fsecckzrob .gt_table_body {
+#udacgqflgk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3699,7 +3737,7 @@ apply the widths to that column as well.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_footnotes {
+#udacgqflgk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3713,7 +3751,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_footnote {
+#udacgqflgk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -3722,7 +3760,7 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#fsecckzrob .gt_sourcenotes {
+#udacgqflgk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3736,7 +3774,7 @@ apply the widths to that column as well.</p>
   border-right-color: #D3D3D3;
 }
 
-#fsecckzrob .gt_sourcenote {
+#udacgqflgk .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -3744,72 +3782,81 @@ apply the widths to that column as well.</p>
   padding-right: 5px;
 }
 
-#fsecckzrob .gt_left {
+#udacgqflgk .gt_left {
   text-align: left;
 }
 
-#fsecckzrob .gt_center {
+#udacgqflgk .gt_center {
   text-align: center;
 }
 
-#fsecckzrob .gt_right {
+#udacgqflgk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fsecckzrob .gt_font_normal {
+#udacgqflgk .gt_font_normal {
   font-weight: normal;
 }
 
-#fsecckzrob .gt_font_bold {
+#udacgqflgk .gt_font_bold {
   font-weight: bold;
 }
 
-#fsecckzrob .gt_font_italic {
+#udacgqflgk .gt_font_italic {
   font-style: italic;
 }
 
-#fsecckzrob .gt_super {
+#udacgqflgk .gt_super {
   font-size: 65%;
 }
 
-#fsecckzrob .gt_footnote_marks {
+#udacgqflgk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fsecckzrob .gt_asterisk {
+#udacgqflgk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fsecckzrob .gt_indent_1 {
+#udacgqflgk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fsecckzrob .gt_indent_2 {
+#udacgqflgk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fsecckzrob .gt_indent_3 {
+#udacgqflgk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fsecckzrob .gt_indent_4 {
+#udacgqflgk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fsecckzrob .gt_indent_5 {
+#udacgqflgk .gt_indent_5 {
   text-indent: 25px;
+}
+
+#udacgqflgk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#udacgqflgk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
 <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt1">trt1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="trt2">trt2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="p-value">p-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt1&lt;/span&gt;"><span class="gt_from_md">trt1</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;trt2&lt;/span&gt;"><span class="gt_from_md">trt2</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 0px; border-top-style: solid; border-top-color: transparent;" scope="col" id="&lt;span class='gt_from_md'&gt;p-value&lt;/span&gt;"><span class="gt_from_md">p-value</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
@@ -3845,28 +3892,26 @@ apply the widths to that column as well.</p>
 </div>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Becca Krouse, Christina Fillmore, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC, Ellis Hughes, Karima Ahmad, Shannon Haughton.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC, Ellis Hughes, Karima Ahmad, Shannon Haughton.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

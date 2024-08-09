@@ -1,189 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/404.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/big_ns.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/building_blocks.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/building_mocks.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/examples.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/faq.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/footnote_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/json.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/layer.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/mock_examples.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/page_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/print_to_ggplot.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/templates.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/articles/unusual_tables.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/index.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/apply_frmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/as_json.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/big_n_structure.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/body_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/cleaned_data_to_gt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/col_style_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_ae.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_demog.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_efficacy.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_labs.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/display_row_frmts.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/display_val_frmts.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_block.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_row_grp_loc.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_structure.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt_structure.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt_utils.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/json_to_tfrmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/layer_tfrmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/make_mock_data.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/page_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/page_structure.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/param_set.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_mock_gt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_ggplot.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_plan.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_structure.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_n_pct.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_sigdig.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_to_json.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/theme_element.html</loc>
-  </url>
-  <url>
-    <loc>https://gsk-biostatistics.github.io/tfrmt/reference/update_group.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/404.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/LICENSE.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/big_ns.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/building_blocks.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/building_mocks.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/examples.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/faq.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/footnote_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/index.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/json.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/layer.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/mock_examples.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/page_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/print_to_ggplot.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/templates.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/unusual_tables.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/authors.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/index.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/news/index.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/apply_frmt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/as_json.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/big_n_structure.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/body_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/cleaned_data_to_gt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/col_style_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_ae.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_demog.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_efficacy.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/data_labs.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/display_row_frmts.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/display_val_frmts.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_block.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_row_grp_loc.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_structure.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt_structure.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt_utils.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/index.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/json_to_tfrmt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/layer_tfrmt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/make_mock_data.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/page_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/page_structure.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/param_set.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/pipe.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_mock_gt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_ggplot.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_plan.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_structure.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_n_pct.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_sigdig.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_to_json.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/theme_element.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/update_group.html</loc></url>
 </urlset>
+
