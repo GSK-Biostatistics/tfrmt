@@ -617,6 +617,62 @@ test_that("Using col_plan to get column names", {
 
 })
 
+test_that("Using col_style_plan to get names",{
+
+  basic_cols <- tfrmt(
+    group = "group",
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value",
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    ),
+    col_style_plan = col_style_plan(
+      col_style_structure(align = ".", col = starts_with("Active")),
+      col_style_structure(align = " ", col = c("Placebo","Total"))
+    )
+  )
+
+  col_names <- make_mock_data(basic_cols) %>%
+    pull(column) %>%
+    unique()
+  expect_equal(col_names, c("Active","Placebo","Total"))
+
+
+  # combination col_style_plan/col_plan
+  auto_col_df <- tfrmt(
+    group = group,
+    label = quo(label),
+    param = parm,
+    column = c(test1,test2),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+    ),
+    col_plan = col_plan(
+      group,
+      label,
+      col4,
+      span_structure(test1 = `span 1`, test2 = c(col1, contains("col2"))),
+      span_structure(test1 = `span 2`, test2 = c(col7, col8)),
+      col3,
+      -col5
+    ),
+    col_style_plan = col_style_plan(
+      col_style_structure(align = ".", col = starts_with("Active")),
+      col_style_structure(align = " ", col = c("Placebo","Total"))
+    )
+  ) %>%
+    make_mock_data() %>%
+    select(test1, test2) %>%
+    distinct(test1, test2)
+
+  man_col_df <- tibble(test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2), rep(NA, 3)),
+                       test2 = c("col4","col3", "col5", "col1", "col2", "col7","col8", "Active","Placebo","Total"))
+  expect_equal(auto_col_df, man_col_df)
+})
+
 test_that("Will add big N avaliable", {
   pop_tbl_tfrmt <- tfrmt(
     column = TRT01A,
