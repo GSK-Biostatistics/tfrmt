@@ -148,7 +148,14 @@
     "col_plan": {
       "dots": [
         ["-grp"],
-        ["-starts_with(\"ord\")"]
+        ["-starts_with(\"ord\")"],
+        ["rowlbl1"],
+        ["rowlbl2"],
+        ["Placebo"],
+        ["Xanomeline Low Dose"],
+        ["Xanomeline High Dose"],
+        ["Total"],
+        ["p-value"]
       ],
       ".drop": [false]
     }

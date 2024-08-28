@@ -24,7 +24,11 @@ tfrmt_demog <- tfrmt(
   ),
 
   col_plan = col_plan(-grp,
-                      -starts_with("ord")
+                      -starts_with("ord"),
+                      rowlbl1,
+                      rowlbl2,
+                      "Placebo", "Xanomeline Low Dose",
+                      "Xanomeline High Dose", "Total", "p-value"
   )
   ,
   col_style_plan = col_style_plan(
