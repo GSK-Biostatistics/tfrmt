@@ -1,7 +1,8 @@
 # tfrmt development version
 
 Bug fixes
-* Fixes issue where JSON conversion of `frmt_when` dropped quotes from strings
+* Fixed issue where JSON conversion of `frmt_when` dropped quotes from strings
+* Avoid use of deprecated functionality in `dplyr::summarise()`
 
 # tfrmt 0.1.2
 

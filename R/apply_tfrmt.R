@@ -332,7 +332,7 @@ remove_empty_layers <- function(x, nlayers = 1){
 #'
 #' @importFrom purrr quietly
 #' @importFrom tidyselect starts_with everything
-#' @importFrom dplyr group_by across summarise n tally pull na_if all_of
+#' @importFrom dplyr group_by across summarise n tally pull na_if all_of reframe
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock){
@@ -355,7 +355,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
         unique() %>%
         group_by(!!!tfrmt$group,param_list) %>%
         mutate(label_quote=paste0('"',!!tfrmt$label,'"')) %>%
-        summarise(label_collapse=as.character(paste(label_quote,collapse=',')),!!!tfrmt$group,n) %>%
+        reframe(label_collapse=as.character(paste(label_quote,collapse=',')),!!!tfrmt$group,n) %>%
         unique() %>%
         rowwise() %>%
         mutate(
