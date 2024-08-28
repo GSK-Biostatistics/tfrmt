@@ -204,6 +204,42 @@
 ---
 
     Code
+      frmt_when_scalar %>% as_json()
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "body_plan": [
+          {
+            "group_val": [".default"],
+            "label_val": [".default"],
+            "param_val": [".default"],
+            "frmt_when": {
+              "frmt_ls": {
+                "<1": ["<1"],
+                "==100": [""],
+                "==0": [""],
+                "TRUE": {
+                  "frmt": {
+                    "expression": ["(xx)"],
+                    "missing": {},
+                    "scientific": {},
+                    "transform": {}
+                  }
+                }
+              },
+              "missing": {}
+            }
+          }
+        ]
+      } 
+
+---
+
+    Code
       .
     Output
       {

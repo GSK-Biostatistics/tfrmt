@@ -313,11 +313,24 @@ as.character.frmt <- function(x, ...){
 }
 
 #' @method as.character frmt_when
+#' @importFrom rlang quo `!!` f_rhs f_lhs eval_tidy as_label
+#' @importFrom stringr str_c
+#' @importFrom dplyr if_else
 #' @export
 as.character.frmt_when <- function(x, ...){
+
   right <- x$frmt_ls %>%
-    map_chr(~f_rhs(.x) %>%
-              as.character() )
+    map_chr(function(x){
+      val <- quo(!!f_rhs(x))
+      val_eval <- eval_tidy(val)
+      if (!is_frmt(val_eval)){
+        as_label(val)
+      } else {
+        as.character(val_eval)
+      }
+
+    })
+
   left <- x$frmt_ls %>%
     map_chr(~f_lhs(.x)) %>%
     str_c("'", ., "'")
@@ -330,6 +343,7 @@ as.character.frmt_when <- function(x, ...){
          ")"
   )
 }
+
 
 #' @method as.character frmt_combine
 #' @export
