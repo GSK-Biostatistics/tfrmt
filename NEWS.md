@@ -1,3 +1,8 @@
+# tfrmt development version
+
+Bug fixes
+* Fixes issue where JSON conversion of `frmt_when` dropped quotes from strings
+
 # tfrmt 0.1.2
 
 Bug fixes

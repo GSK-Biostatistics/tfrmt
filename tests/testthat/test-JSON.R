@@ -173,6 +173,32 @@ test_that("json body plan", {
     as_json() %>%
     json_to_tfrmt(json = .) %>%
     expect_equal(frmt_when_simp, ignore_attr = TRUE)
+
+
+  # format when with scalars
+  frmt_when_scalar <- tfrmt(
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_when(
+          "<1"~ "<1",
+          '==100' ~ '',
+          '==0' ~'',
+          TRUE ~ frmt("(xx)")
+        )
+      )
+    )
+  )
+  frmt_when_scalar %>%
+    as_json() |>
+    expect_snapshot()
+
+  frmt_when_scalar %>%
+    as_json() %>%
+    json_to_tfrmt(json = .) %>%
+    expect_equal(frmt_when_scalar, ignore_attr = TRUE)
+
   #Format combine test
   frmt_comb_simp <- tfrmt(
     body_plan = body_plan(
