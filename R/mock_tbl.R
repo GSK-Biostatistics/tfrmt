@@ -215,9 +215,10 @@ make_col_df <- function(column, group, label, sorting_cols, col_plan, col_style_
     # get col_style_plan referenced cols
     if (col_style_plan_test_res){
       cols_from_sp <- map(col_style_plan, ~.x$cols)  |>
-        purrr::list_flatten() |>
+        list_flatten() |>
         clean_col_names(dont_inc = grp_lb_vars)  %>%
-        tibble(column = .)
+        tibble(.)
+      names(cols_from_sp) <- last(column_vars)
 
       col_def <- bind_rows(col_def, cols_from_sp) |> unique()
     }
