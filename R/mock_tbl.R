@@ -90,6 +90,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
                          label = tfrmt$label,
                          sorting_cols = tfrmt$sorting_cols,
                          col_plan = tfrmt$col_plan,
+                         col_style_plan = tfrmt$col_style_plan,
                          n_cols = n_cols)
 
   output_dat <- output_dat %>%
@@ -166,7 +167,7 @@ add_sorting_cols <- function(data, sorting_cols){
   data
 }
 
-make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols){
+make_col_df <- function(column, group, label, sorting_cols, col_plan, col_style_plan, n_cols){
 
   column_vars <- column %>% map_chr(as_label)
   grp_lb_vars <- c(group %>% map_chr(as_name), as_label(label), sorting_cols %>% map_chr(as_name))
@@ -176,33 +177,54 @@ make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols){
 
   n_spans <- length(column_vars)
 
+  # test if col_plan/col_style_plan have names to use
+  col_plan_test_res <- col_plan_test(col_plan)
+  col_style_plan_test_res <- col_style_plan_test(col_style_plan)
+  col_def <- tibble()
+
   # Use provided column names if there is no spanning
-  if(col_plan_test(col_plan) & n_spans == 1 & is.null(n_cols)){
-    cols_to_use <- col_plan$dots %>%
-      clean_col_names(dont_inc = grp_lb_vars)
-    col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
-  } else if(col_plan_test(col_plan) & is.null(n_cols)){
-    # Gets the lowest level columns only
-    low_lvl_vars <- col_plan$dots %>%
-      discard(is.list) %>%
-      clean_col_names(dont_inc = grp_lb_vars)
+  if (col_plan_test_res || col_style_plan_test_res){
+    if(col_plan_test_res & n_spans == 1 & is.null(n_cols)){
+      cols_to_use <- col_plan$dots %>%
+        clean_col_names(dont_inc = grp_lb_vars)
+      col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
+    } else if(col_plan_test_res & is.null(n_cols)){
+      # Gets the lowest level columns only
+      low_lvl_vars <- col_plan$dots %>%
+        discard(is.list) %>%
+        clean_col_names(dont_inc = grp_lb_vars)
 
-    low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
+      low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
 
-    # creates a df for each span structure
-    span_df <- col_plan$dots %>%
-      keep(is.list) %>%
-      map_dfr(function(x){
-        span_df <- x %>%
-          map(~clean_col_names(., c())) %>%
-          reduce(crossing) %>%
-          unnest(cols = everything())
-        names(span_df) <- names(x)
-        span_df
-      })
-    col_def <- bind_rows(low_lvl_def, span_df)
+      # creates a df for each span structure
+      span_df <- col_plan$dots %>%
+        keep(is.list) %>%
+        map_dfr(function(x){
+          span_df <- x %>%
+            map(~clean_col_names(., c())) %>%
+            reduce(crossing) %>%
+            unnest(cols = everything())
+          names(span_df) <- names(x)
+          span_df
+        })
 
-  } else {
+      col_def <- bind_rows(low_lvl_def, span_df)
+
+    }
+
+    # get col_style_plan referenced cols
+    if (col_style_plan_test_res){
+      cols_from_sp <- map(col_style_plan, ~.x$cols)  |>
+        list_flatten() |>
+        clean_col_names(dont_inc = grp_lb_vars)  %>%
+        tibble(.)
+      names(cols_from_sp) <- last(column_vars)
+
+      col_def <- bind_rows(col_def, cols_from_sp) |> unique()
+    }
+
+  }
+  else {
     n_cols <- ifelse(is.null(n_cols), 3, n_cols)
     col_def <- tibble(!!column_vars[n_spans] := paste0(column_vars[[n_spans]], seq(1:n_cols)))
     if(n_spans > 1){
@@ -212,6 +234,8 @@ make_col_df <- function(column, group, label, sorting_cols, col_plan, n_cols){
       col_def <- bind_cols(col_spans_df, col_def)
     }
   }
+
+
   col_def
 }
 
@@ -239,6 +263,20 @@ col_plan_test <- function(col_plan){
     first_chr <- all_names %>%
       str_sub(end = 1)
     out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
+  }
+  out
+}
+
+
+# check the col_style_plan contains something besides `everything()`
+col_style_plan_test <- function(col_style_plan){
+  if(is.null(col_style_plan)){
+    out <- FALSE
+  } else {
+    all_names <- map(col_style_plan, ~.x$cols)  |>
+      list_flatten() %>%
+      map_chr(as_label)
+    out <- !all("everything()" %in% all_names)
   }
   out
 }
