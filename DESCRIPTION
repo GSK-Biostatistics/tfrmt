@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata to Analysis Results Datasets
-Version: 0.1.2.9000
+Version: 0.1.3
 Authors@R: 
     c(person(given = "Becca",
              family = "Krouse",

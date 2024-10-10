@@ -28,7 +28,7 @@ movement toward an industry standard data structure for Analysis Results
 Data “ARD”, which means analysis results datasets will have consistent
 structures and column names. Specifically, the ARD is long, with 1
 record per computed value. For more information about ARDs click
-[here](https://www.pharmasug.org/download/sde/rtp2021/PharmaSUG-NCSDE_2021-08.pdf).
+[here](https://pharmasug.org/download/sde/rtp2021/PharmaSUG-NCSDE_2021-08.pdf).
 
 tfrmt supports a vision where:
 
@@ -101,4 +101,8 @@ For more information about how to build your own tfrmt mocks/tables
 (like the one below!), please explore the
 [vignettes](https://gsk-biostatistics.github.io/tfrmt/articles/examples.html).
 
-![Example GT Demography Table](man/figures/gt_readme.png)
+<figure>
+<img src="man/figures/gt_readme.png"
+alt="Example GT Demography Table" />
+<figcaption aria-hidden="true">Example GT Demography Table</figcaption>
+</figure>

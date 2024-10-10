@@ -507,7 +507,8 @@ test_that("Test big n with footnotes", {
   ## confirm location of footnotes gets recorded correctly
   expect_equal(
     big_n_footnote_plan_gt$`_footnotes` %>%
-      select(locname, colname, locnum, rownum, footnotes),
+      select(locname, colname, locnum, rownum, footnotes) |>
+      as_tibble(),
     tibble(
       locname = c(
         "columns_columns",
