@@ -106,3 +106,19 @@ For more information about how to build your own tfrmt mocks/tables
 alt="Example GT Demography Table" />
 <figcaption aria-hidden="true">Example GT Demography Table</figcaption>
 </figure>
+
+# Recorded Presentations and Shared Materials
+
+[R/Pharma 2022 Day 1: Christina Fillmore - Why do I spend all my life
+formatting tables?](https://www.youtube.com/watch?v=00lGhuANUJw)
+
+[R/Pharma 2023: Becca Krouse - Everyone’s Invited: A Case Study on
+Bridging the Usability Gap](https://www.youtube.com/watch?v=Zg1LPJSO0kQ)
+
+[R/Pharma 2022 Workshop: Christina Fillmore, Ellis Hughes, Thomas
+Neitmann - Clinical Reporting in R (Day
+2)](https://www.youtube.com/watch?v=rYflZhFDSZQ)
+
+[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Huges -
+Leveraging and contributing to the the pharmaverse for clinical trial
+reporting in R](https://github.com/posit-conf-2023/r-pharma)
