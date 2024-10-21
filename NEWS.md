@@ -1,4 +1,4 @@
-# tfrmt development version
+# tfrmt 0.1.3
 
 Improvements
 * Incorporate contents of `col_style_plan` in the creation of mock data. 

@@ -1,7 +1,3 @@
-## Resubmission
-
-This is a resubmission. In this version I have provided the package anchor for `dplyr_tidy_select` that was not specified in the initial submission.
-
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
