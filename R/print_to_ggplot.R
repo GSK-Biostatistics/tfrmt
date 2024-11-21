@@ -28,7 +28,7 @@
 #'
 #' ```
 #' \if{html}{\out{
-#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png\" alt=\"Simple table to stack with a KM-plot\" style=\"width:50\\%;\">"`
+#' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png\" alt=\"Simple table to stack with a KM-plot\" style=\"width:100\\%;\">"`
 #' }}
 #'
 #' @importFrom rlang quo_is_missing as_label
