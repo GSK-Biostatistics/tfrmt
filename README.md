@@ -119,6 +119,6 @@ Bridging the Usability Gap](https://www.youtube.com/watch?v=Zg1LPJSO0kQ)
 Neitmann - Clinical Reporting in R (Day
 2)](https://www.youtube.com/watch?v=rYflZhFDSZQ)
 
-[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Huges -
+[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Hughes -
 Leveraging and contributing to the the pharmaverse for clinical trial
 reporting in R](https://github.com/posit-conf-2023/r-pharma)
