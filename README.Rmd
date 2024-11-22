@@ -84,20 +84,20 @@ For more information about how to build your own tfrmt mocks/tables (like the on
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
-data_demog <- data_demog %>% 
+data_demog <- data_demog %>%
   select(-value)
 tfrmt <- tfrmt(
   # specify columns in the data
   group = vars(rowlbl1,grp),
   label = rowlbl2,
-  column = column, 
+  column = column,
   param = param,
   value = value,
   sorting_cols = vars(ord1, ord2),
-  
+
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
                                                                                 n = frmt("xxx"),
                                                                                 pct = frmt_when("==100" ~ "",
                                                                                                 "==0" ~ "",
@@ -110,29 +110,38 @@ tfrmt <- tfrmt(
                                                                                  "<0.001" ~ "<0.001",
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
   ),
-  
+
   # Specify row group plan
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   ),
-  
+
   # Specify column style plan
   col_style = col_style_plan(
     col_style_structure(align = c(".",","," "), col = vars(everything()))
   ),
-  
+
   # remove extra cols
   col_plan = col_plan(Placebo,
                       starts_with("Xanom"),
                       Total,
-                      -grp, 
+                      -grp,
                       -starts_with("ord")
                       )
-) 
+)
 
 gt_out <- print_mock_gt(tfrmt, data_demog)
 invisible(gtsave(gt_out, "man/figures/gt_readme.png", vwidth = 999))
 ```
 
 ![Example GT Demography Table](man/figures/gt_readme.png)
+
+# Recorded Presentations and Shared Materials 
+[R/Pharma 2022 Day 1: Christina Fillmore - Why do I spend all my life formatting tables?](https://www.youtube.com/watch?v=00lGhuANUJw)   
+
+[R/Pharma 2023: Becca Krouse - Everyone's Invited: A Case Study on Bridging the Usability Gap](https://www.youtube.com/watch?v=Zg1LPJSO0kQ) 
+
+[R/Pharma 2022 Workshop: Christina Fillmore, Ellis Hughes, Thomas Neitmann - Clinical Reporting in R (Day 2)](https://www.youtube.com/watch?v=rYflZhFDSZQ) 
+
+[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Hughes - Leveraging and contributing to the the pharmaverse for clinical trial reporting in R](https://github.com/posit-conf-2023/r-pharma) 
