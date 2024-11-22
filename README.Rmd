@@ -144,4 +144,4 @@ invisible(gtsave(gt_out, "man/figures/gt_readme.png", vwidth = 999))
 
 [R/Pharma 2022 Workshop: Christina Fillmore, Ellis Hughes, Thomas Neitmann - Clinical Reporting in R (Day 2)](https://www.youtube.com/watch?v=rYflZhFDSZQ) 
 
-[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Huges - Leveraging and contributing to the the pharmaverse for clinical trial reporting in R](https://github.com/posit-conf-2023/r-pharma) 
+[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Hughes - Leveraging and contributing to the the pharmaverse for clinical trial reporting in R](https://github.com/posit-conf-2023/r-pharma) 
