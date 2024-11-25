@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Pagination • tfrmt</title>
+<title>Page Plan • tfrmt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pagination">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Page Plan">
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -43,7 +43,7 @@
     <li><a class="dropdown-item" href="../articles/col_style_plan.html">Column Style Plan</a></li>
     <li><a class="dropdown-item" href="../articles/big_ns.html">Big N's</a></li>
     <li><a class="dropdown-item" href="../articles/footnote_plan.html">Footnote Plan</a></li>
-    <li><a class="dropdown-item" href="../articles/page_plan.html">Pagination</a></li>
+    <li><a class="dropdown-item" href="../articles/page_plan.html">Page Plan</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Building Tables</h6></li>
     <li><a class="dropdown-item" href="../articles/examples.html">Examples</a></li>
@@ -52,7 +52,7 @@
     <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
-    <li><a class="dropdown-item" href="../articles/json.html">Export to JSON</a></li>
+    <li><a class="dropdown-item" href="../articles/json.html">JSON metadata</a></li>
     <li><a class="dropdown-item" href="../articles/print_to_ggplot.html">Print to ggplot</a></li>
     <li><a class="dropdown-item" href="../articles/faq.html">FAQ</a></li>
     <li><a class="dropdown-item" href="../articles/mock_examples.html">Mock Examples</a></li>
@@ -79,7 +79,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Pagination</h1>
+      <h1>Page Plan</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/vignettes/page_plan.Rmd" class="external-link"><code>vignettes/page_plan.Rmd</code></a></small>
@@ -99,7 +99,7 @@ onto multiple pages. Currently, the page plan splits tables horizontally
 (i.e. row-wise), but in the future it is also planned to allow vertical
 (i.e. column-wise) splitting.</p>
 <div class="section level2">
-<h2 id="pagination-rules">Pagination rules<a class="anchor" aria-label="anchor" href="#pagination-rules"></a>
+<h2 id="page-plan-rules">Page Plan rules<a class="anchor" aria-label="anchor" href="#page-plan-rules"></a>
 </h2>
 <p>The rules for how to split the table fall into 2 categories:</p>
 <ol style="list-style-type: decimal">
@@ -7721,13 +7721,13 @@ split up, the group header is repeated for each table.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="paginated-outputs">Paginated outputs<a class="anchor" aria-label="anchor" href="#paginated-outputs"></a>
+<h2 id="page-plan-outputs">Page Plan outputs<a class="anchor" aria-label="anchor" href="#page-plan-outputs"></a>
 </h2>
-<p>When pagination is applied, the result of the
-<code>print_to_gt</code> or <code>print_mock_gt</code> functions is a
-<code>gt_group</code> object (collection of individual
-<code>gt</code>s). Passing this result to the <code><a href="https://gt.rstudio.com/reference/gtsave.html" class="external-link">gt::gtsave()</a></code>
-function will result in a multi-paged output.</p>
+<p>When Page Plan is applied, the result of the <code>print_to_gt</code>
+or <code>print_mock_gt</code> functions is a <code>gt_group</code>
+object (collection of individual <code>gt</code>s). Passing this result
+to the <code><a href="https://gt.rstudio.com/reference/gtsave.html" class="external-link">gt::gtsave()</a></code> function will result in a multi-paged
+output.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
