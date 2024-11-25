@@ -1,8 +1,8 @@
 ---
-title: "Export to JSON"
+title: "JSON metadata"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Export to JSON}
+  %\VignetteIndexEntry{JSON metadata}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
