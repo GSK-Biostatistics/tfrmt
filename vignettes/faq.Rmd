@@ -68,4 +68,8 @@ tfrmt(
 
 ### How do I output my table?
 
-To output your table, use `tfrmt`'s `print_to_gt` and `print_mock_gt` functions, which create `gt` table objects. We recommend leveraging the export capabilities provided by the `gt` package to save and share your table. For more information on exporting, see [the gt package documentation](https://gt.rstudio.com/reference/gtsave.html).
+In order to share your table with others, you will likely want to output it to a document. To do this, use `tfrmt`'s `print_to_gt` and `print_mock_gt` functions, which create `gt` table objects. These functions allow you to view your table in R. However, `tfrmt` does not offer functionality to save the table directly to a document. Instead, the `gt` package handles this step, offering a range of export options for various document types, including HTML, LaTeX, and Word.
+
+To save and share your table, we recommend leveraging the export capabilities provided by the `gt` package. For more information on exporting, see [the gt package documentation](https://gt.rstudio.com/reference/gtsave.html).
+
+In summary, the `print_to_gt` and `print_mock_gt` functions create a `gt` table object that can be viewed in R, while exporting the table to a document is handled through `gt`'s export functions.
