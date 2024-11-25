@@ -14,17 +14,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r setup, message=FALSE, warning=FALSE, echo=FALSE}
 library(tfrmt)
 library(dplyr)
 library(gt)
 ```
 
-
 ### Can you format a column header?
 
-To format your column header, just use markdown syntax within your character strings. Examples of this could be a newline, or bolding certain words. 
-To add a newline to your column header you need to include the markdown syntax `<br>` or `\n` in your character string. For bolding, surround your text with `**` on either side. Some example code is provided below:
+To format your column header, just use markdown syntax within your character strings. Examples of this could be a newline, or bolding certain words. To add a newline to your column header you need to include the markdown syntax `<br>` or `\n` in your character string. For bolding, surround your text with `**` on either side. Some example code is provided below:
 
 ```{r}
 es_data <-tibble(rowlbl1 =c(rep("Completion Status",12),rep("Primary reason for withdrawal",28)),
@@ -67,3 +65,11 @@ tfrmt(
   print_to_gt(es_data) %>%
   tab_options(container.width = 1000)
 ```
+
+
+### How do I output my table?
+
+In order to share your table with others, you will likely want to output it to a document. You can view your table in R using `tfrmt`'s `print_to_gt` and `print_mock_gt` functions, which create `gt` table objects. However, `tfrmt` does not offer functionality to save the table directly to a document. To save and share your table, we recommend leveraging the export capabilities provided by the {gt} package. {gt} offers a range of export options for various document types, including HTML, LaTeX, and Word. For more information on exporting, see [the gt package documentation](https://gt.rstudio.com/reference/gtsave.html).
+
+
+In summary, the `print_to_gt` and `print_mock_gt` functions create a `gt` table object that can be viewed in R, while exporting the table to a document is handled through `gt`'s export functions.
