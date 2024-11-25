@@ -1,8 +1,8 @@
 ---
-title: "Pagination"
+title: "Page Plan"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Pagination}
+  %\VignetteIndexEntry{Page Plan}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,7 +24,7 @@ library(purrr)
 
 The purpose of the page plan is to provide the option to split tables onto multiple pages. Currently, the page plan splits tables horizontally (i.e. row-wise), but in the future it is also planned to allow vertical (i.e. column-wise) splitting. 
 
-## Pagination rules 
+## Page Plan rules 
 
 The rules for how to split the table fall into 2 categories:
 
@@ -221,6 +221,6 @@ gts %>% gt::grp_pull(3)
 
 Notice that for groups (defined by the rowlbl1 variable) that are split up, the group header is repeated for each table. 
 
-## Paginated outputs
+## Page Plan outputs
 
-When pagination is applied, the result of the `print_to_gt` or `print_mock_gt` functions is a `gt_group` object (collection of individual `gt`s). Passing this result to the `gt::gtsave()` function will result in a multi-paged output.
+When Page Plan is applied, the result of the `print_to_gt` or `print_mock_gt` functions is a `gt_group` object (collection of individual `gt`s). Passing this result to the `gt::gtsave()` function will result in a multi-paged output.
