@@ -59,7 +59,8 @@ Imports:
     tibble,
     ggplot2,
     jsonlite,
-    glue
+    glue,
+    cards
 Config/testthat/edition: 3
 URL: https://GSK-Biostatistics.github.io/tfrmt/, https://github.com/GSK-Biostatistics/tfrmt
 BugReports: https://github.com/GSK-Biostatistics/tfrmt/issues
