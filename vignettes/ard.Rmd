@@ -1,0 +1,150 @@
+---
+title: "ARD"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ARD}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE, warning=FALSE, echo=FALSE}
+library(tfrmt)
+library(cards)
+library(dplyr)
+library(tidyr)
+library(pharmaverseadam)
+library(gt)
+```
+
+# How to prepare input ARD
+
+We recommend using the **cards** package to create your ARDs. For more information, please visit the [cards documentation](https://insightsengineering.github.io/cards/latest-tag/index.html).
+
+We expect a long-format dataset, with one record per computed value. Required columns are as follows:
+
+-   **[Optional] Grouping columns**: One or more columns containing grouping values.
+
+-   **Label column**: A single column containing row label values.
+
+-   **Column value columns**: One or more columns containing the values for each column in your dataset.
+
+-   **Param column**: A single column that labels distinct types of values.
+
+-   **Value column**: A single column containing the computed raw data values.
+
+-   **[Optional] Sorting columns**: One or more columns with numeric values to control row ordering.
+
+### Additional Requirements
+
+-   Ensure all values are unformatted.
+
+-   Each row should contain only one value.
+
+-   Include distinct columns for each grouping variable.
+
+-   Ensure that all relevant information, particularly labels, is included.
+
+## Example: Using the **cards** package to create an ARD in the correct format for **tfrmt**
+
+```{r, message=FALSE}
+# Demographic summaries using {cards}
+
+# In this example we create demographic summaries by treatment group (TRT01A)
+
+# A. Set up
+## Load necessary packages
+library(cards)
+
+## Load ADaM ADSL data
+adsl <- pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y")
+
+
+# B. Compute overall continuous summaries
+
+ard_age_overall <- ard_continuous(
+  data = adsl,
+  variables = AGE
+)
+
+# c. Compute overall categorical summaries
+
+ard_agegr1_overall <- ard_categorical(
+  data = adsl,
+  variables = AGEGR1
+)
+
+
+# D. Calculate summaries by TRT01A
+ard_age <- ard_continuous(
+  data = adsl,
+  by = TRT01A,
+  variables = AGE
+)
+
+ard_agegr1 <- ard_categorical(
+  data = adsl,
+  by = TRT01A,
+  variables = AGEGR1
+)
+
+
+# E. Combine results using `bind_ard()`
+bind_ard(
+  ard_age,
+  ard_agegr1,
+  ard_age_overall,
+  ard_agegr1_overall
+)
+
+# F. Use the `ard_stack()` helper to calculate combined results in 1 step
+
+##  Note the summaries for the `by` variable are also included
+ard_full <- ard_stack(
+  data = adsl,
+  .by = TRT01A,
+  ard_continuous(variables = AGE),
+  ard_categorical(variables = c(AGEGR1,SEX,RACE,ETHNIC))
+)
+
+print(ard_full)
+
+# Manipulations to prep for display
+#  - Perform shuffle to consolidate columns
+#  - Fill in any overall summaries with TRT01A = "Overall"
+#  - Add columns to order on
+#  - keep only treatment group big N's (not variable-level Ns)
+ard_demog <- ard_full |>
+  shuffle_ard() |>
+  replace_na(list(TRT01A = "Overall")) |>
+  mutate(
+    stat_name = ifelse(
+      variable == "TRT01A" & stat_name == "n" |
+        variable == "..ard_total_n..",
+      "bigN",
+      stat_name
+    ),
+    ord1 = as.numeric(factor(
+      variable,
+      levels = c(
+        "AGE",
+        "AGEGR1",
+        "SEX",
+        "RACE",
+        "ETHNIC"
+      )
+    )),
+    ord2 = as.numeric(factor(label, levels = c("18-64", ">64")))
+  ) |>
+  filter(stat_name == "bigN" |
+           (!variable %in% c("TRT01A", "..ard_total_n..") &
+              !stat_name == "N"))
+
+print(ard_demog)
+```
