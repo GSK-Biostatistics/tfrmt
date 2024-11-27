@@ -43,7 +43,7 @@ We expect a long-format dataset, with one record per computed value. Required co
 
 ### Additional Requirements
 
--   Ensure all values are unformatted.
+-   Ensure all values in the `value` column are unformatted and type numeric.
 
 -   Each row should contain only one value.
 
