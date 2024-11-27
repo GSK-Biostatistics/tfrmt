@@ -45,7 +45,7 @@ We expect a long-format dataset, with one record per computed value. Required co
 
 -   Ensure all values in the `value` column are unformatted and type numeric.
 
--   Each row should contain only one value.
+-   Structure is 1 record per unique results value. 
 
 -   Include distinct columns for each grouping variable.
 
