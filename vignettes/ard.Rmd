@@ -25,9 +25,31 @@ library(gt)
 
 # How to prepare input ARD
 
-We recommend using the **cards** package to create your ARDs. For more information, please visit the [cards documentation](https://insightsengineering.github.io/cards/latest-tag/index.html).
+### What is an ARD?
 
-We expect a long-format dataset, with one record per computed value. Required columns are as follows:
+An **Analysis Results Data (ARD)** provides statistical analysis results in a structured, machine-readable format. It provides a way to store analysis outcomes in a consistent manner, making it easier to reuse and integrate those results into reports, tables, and figures.
+
+### Key Features of an ARD
+
+-   **Structured Data**: The ARD format organizes statistical results, ensuring they are easily interpreted and accessible for further analysis.
+
+-   **Reusability**: Once created, an ARD can be reused for future reporting needs, eliminating the need for repetitive data processing.
+
+-   **No Layout Description**: The ARD focuses on the data itself, not on the visual layout of tables or figures. This means you can use the data to generate reports in various formats.
+
+### How to Create an ARD
+
+We recommend using the **cards** package to create your ARDs. For more details, visit the [cards documentation](https://insightsengineering.github.io/cards/latest-tag/index.html).
+
+If you’re new to ARDs or the cards package, check out [ARDs and Cards Workshop Notes](https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/slides/01-intro-cards/#/title-slide).
+
+For information on the **Analysis Results Standard (ARS)**, visit this [CDISC Webinar on ARS](https://www.cdisc.org/events/webinar/analysis-results-standard-public-review).
+
+## Dataset Structure and Column Requirements
+
+We expect a long-format dataset, with one record per computed value.
+
+Required columns are as follows:
 
 -   **[Optional] Grouping columns**: One or more columns containing grouping values.
 
@@ -45,7 +67,7 @@ We expect a long-format dataset, with one record per computed value. Required co
 
 -   Ensure all values in the `value` column are unformatted and type numeric.
 
--   Structure is 1 record per unique results value. 
+-   Structure is 1 record per unique results value.
 
 -   Include distinct columns for each grouping variable.
 
