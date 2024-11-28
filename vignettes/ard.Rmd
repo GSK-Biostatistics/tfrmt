@@ -102,7 +102,7 @@ ard_demog <- ard_full |>
         "ETHNIC"
       )
     )),
-    ord2 = as.numeric(factor(variable_level, levels = c("18-64", ">64")))
+    ord2 = as.numeric(factor(label, levels = c("18-64", ">64")))
   ) |>
   filter(stat_name == "bigN" |
            (!variable %in% c("TRT01A", "..ard_total_n..") &
