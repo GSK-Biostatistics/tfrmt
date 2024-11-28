@@ -59,7 +59,8 @@ Imports:
     tibble,
     ggplot2,
     jsonlite,
-    glue,
+    glue
+Config/Needs/website:
     cards,
     pharmaverseadam
 Config/testthat/edition: 3
