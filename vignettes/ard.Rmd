@@ -65,9 +65,39 @@ library(cards)
 ## Load ADaM ADSL data
 adsl <- pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y")
 
-#  Use the `ard_stack()` helper to calculate combined results in 1 step
+# Example 1
+#  Simple example Using `ard_stack()` helper to calculate combined results in 1 step
+ard_full_simple <- ard_stack(
+  data = adsl,
+  .by = TRT01A,
+  .shuffle = TRUE,
+  ard_continuous(variables = AGE)
+)
 
-##  Note the summaries for the `by` variable are also included
+print(ard_full_simple)
+
+
+# Manipulations to prep for display
+#  - Fill in any overall summaries with TRT01A = "Overall"
+#  - keep only treatment group big N's (not variable-level Ns)
+ard_demog_simple <- ard_full_simple |>
+  replace_na(list(TRT01A = "Overall")) |>
+  mutate(
+    stat_name = ifelse(
+      variable == "TRT01A" & stat_name == "n" |
+        variable == "..ard_total_n..",
+      "bigN",
+      stat_name
+    )
+  ) |>
+  filter(stat_name == "bigN" |
+           (!variable %in% c("TRT01A", "..ard_total_n..") &
+              !stat_name == "N"))
+
+print(ard_demog_simple)
+
+# Example 2
+##  more detailed example using ard_continuous and ard_categorical
 ard_full <- ard_stack(
   data = adsl,
   .by = TRT01A,
@@ -79,7 +109,6 @@ ard_full <- ard_stack(
 print(ard_full)
 
 # Manipulations to prep for display
-#  - Perform shuffle to consolidate columns
 #  - Fill in any overall summaries with TRT01A = "Overall"
 #  - Add columns to order on
 #  - keep only treatment group big N's (not variable-level Ns)
