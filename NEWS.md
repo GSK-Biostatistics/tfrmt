@@ -1,7 +1,7 @@
 # tfrmt development version
 
 
-Bug fixes
+Improvements
 * Updated RTF footnotes so they go in the document footer by default.
 
 # tfrmt 0.1.3
