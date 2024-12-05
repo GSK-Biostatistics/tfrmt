@@ -399,3 +399,51 @@ test_that("incorrect footnote plan formats",{
   "when tfrmt contains multiple columns, column_val must be a named list")
 
 })
+
+
+
+
+test_that("struct utils quote escaping",{
+
+  dd <- tibble::tribble(
+   ~grp, ~rowlbl2, ~column, ~param, ~value,
+   "lowergrp1's", "n", "A",  "n",   1,
+   "lowergrp1's", "mean", "A",  "mean",   2,
+   "\"lowergrp2\"", "n", "A",  "n",   2,
+   '"lowergrp2"', "mean", "A",  "mean",   5
+  )
+
+  tfrmt_spec <- tfrmt(
+    group = grp,
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x")),
+      frmt_structure(group_val = "lowergrp's", label_val = "n", frmt("xx")),
+      frmt_structure(group_val = 'lowergrp\'s', label_val = "mean", frmt("xx.x")),
+      frmt_structure(group_val = "\"lowergrp2\"", label_val = "n", frmt("xxxx")),
+      frmt_structure(group_val = '"lowergrp2"', label_val = "mean", frmt("xx.xx"))
+    )
+  )
+
+
+  man_tfrmt <- tibble::tribble(
+    ~ rowlbl2         , ~A      ,
+    "lowergrp1's"   , NA  ,
+    "  n"           ,"1"    ,
+    "  mean"        ,"2"    ,
+    "\"lowergrp2\"" , NA    ,
+    "  n"           ,"   2" ,
+    "  mean"        ," 5.00",
+  )
+  expect_equal(
+    auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |> dplyr::select(rowlbl2:A),
+    man_tfrmt,
+    ignore_attr = c("class",".col_plan_vars",".footnote_locs")
+  )
+
+})
+
+

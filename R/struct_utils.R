@@ -20,9 +20,9 @@ expr_to_filter.quosure <- function(cols, val){
     val <- ifelse(str_detect(val, "^`.*`$"), str_sub(val, 2, -2), val)
     out <- as_label(cols) %>%
       paste0("`", ., "`") %>%
-      paste0(" %in% c('",
-             paste0(val, collapse = "', '"),
-             "')")
+      paste0(" %in% c(",
+             paste0(shQuote(val), collapse = ", "),
+             ")")
   }
   out
 }
