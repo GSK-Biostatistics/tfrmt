@@ -1,5 +1,8 @@
 # tfrmt development version
 
+Bug fixes 
+* Fix issue where `*_structure` functions did not correctly parse strings containing quotes in some cases (#466)
+
 # tfrmt 0.1.3
 
 Improvements
