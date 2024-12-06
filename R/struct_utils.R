@@ -21,7 +21,7 @@ expr_to_filter.quosure <- function(cols, val){
     out <- as_label(cols) %>%
       paste0("`", ., "`") %>%
       paste0(" %in% c(",
-             paste0(shQuote(val), collapse = ", "),
+             paste0(shQuote(val, type = "cmd"), collapse = ", "),
              ")")
   }
   out
