@@ -278,3 +278,8 @@ append_update_group_message <- function(e, x, y){
 
   e
 }
+
+#remove/reset part of a body plan
+reset_plan <- function(x){
+  tfrmt$x <- NULL
+}
