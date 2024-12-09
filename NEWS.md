@@ -1,5 +1,9 @@
 # tfrmt development version
 
+
+Improvements
+* Updated RTF footnotes so they go in the document footer by default.
+
 Bug fixes 
 * Fix issue where `*_structure` functions did not correctly parse strings containing quotes in some cases (#466)
 

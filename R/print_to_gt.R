@@ -266,6 +266,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       table.font.names = c("Courier", default_fonts()),
       page.numbering = TRUE,
       page.header.use_tbl_headings = FALSE,
+      page.footer.use_tbl_notes = TRUE,
       page.orientation = "landscape") %>%
 
     tab_style(
