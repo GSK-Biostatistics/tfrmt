@@ -279,24 +279,24 @@ append_update_group_message <- function(e, x, y){
   e
 }
 
-#remove/reset a layer of a tfrmt
-reset_plan <- function(tfrmt_obj, layer_name) {
+#remove/reset a component of a tfrmt
+reset_component <- function(tfrmt_obj, component_name) {
   # Validate inputs
   # check for class attribute
   if (!inherits(tfrmt_obj, "tfrmt")) {
     stop("The input object must be of class 'tfrmt'.")
   }
-  if (!is.character(layer_name) || length(layer_name) != 1) {
-    stop("The layer name must be a single string.")
+  if (!is.character(component_name) || length(component_name) != 1) {
+    stop("The component name must be a single string.")
   }
 
-  # Check if the specified layer exists in the list
-  if (!layer_name %in% names(tfrmt_obj)) {
-    stop(paste0("Layer '", layer_name, "' does not exist in the tfrmt object."))
+  # Check if the specified component exists in the list
+  if (!component_name %in% names(tfrmt_obj)) {
+    stop(paste0("component '", component_name, "' does not exist in the tfrmt object."))
   }
 
-  # Reset the specified layer by setting it to NULL
-  tfrmt_obj[[layer_name]] <- NULL
+  # Reset the specified component by setting it to NULL
+  tfrmt_obj[[component_name]] <- NULL
 
   # Return the modified tfrmt object
   return(tfrmt_obj)
