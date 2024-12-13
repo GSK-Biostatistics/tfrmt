@@ -282,8 +282,9 @@ append_update_group_message <- function(e, x, y){
 #remove/reset a layer of a tfrmt
 reset_plan <- function(tfrmt_obj, layer_name) {
   # Validate inputs
-  if (!is.list(tfrmt_obj)) {
-    stop("The input object must be a list representing a tfrmt.")
+  # check for class attribute
+  if (!inherits(tfrmt_obj, "tfrmt")) {
+    stop("The input object must be of class 'tfrmt'.")
   }
   if (!is.character(layer_name) || length(layer_name) != 1) {
     stop("The layer name must be a single string.")
