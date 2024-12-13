@@ -279,7 +279,24 @@ append_update_group_message <- function(e, x, y){
   e
 }
 
-#remove/reset part of a body plan
-reset_plan <- function(x){
-  tfrmt$x <- NULL
+#remove/reset a layer of a tfrmt
+reset_plan <- function(tfrmt_obj, layer_name) {
+  # Validate inputs
+  if (!is.list(tfrmt_obj)) {
+    stop("The input object must be a list representing a tfrmt.")
+  }
+  if (!is.character(layer_name) || length(layer_name) != 1) {
+    stop("The layer name must be a single string.")
+  }
+
+  # Check if the specified layer exists in the list
+  if (!layer_name %in% names(tfrmt_obj)) {
+    stop(paste0("Layer '", layer_name, "' does not exist in the tfrmt object."))
+  }
+
+  # Reset the specified layer by setting it to NULL
+  tfrmt_obj[[layer_name]] <- NULL
+
+  # Return the modified tfrmt object
+  return(tfrmt_obj)
 }
