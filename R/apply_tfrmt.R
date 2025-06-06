@@ -100,7 +100,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, stub_header, big_n_df){
 
   # there is a list of >1 tables
-  if (inherits(.data, "list") && length(.data)>1){
+  if (inherits(.data, "list")){
 
     # there is a list of >1 big N tibbles
     if (inherits(big_n_df, "list") && length(big_n_df)>1){
