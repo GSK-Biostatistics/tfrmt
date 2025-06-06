@@ -238,16 +238,23 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
   # add pg_note to individual tbls as applicable
   if ("..tfrmt_page_note" %in% names(dat_split_2)){
     pg_note <- dat_split_2$`..tfrmt_page_note`
+      dat_out <- list(structure(dat_out[[1]],
+                           .page_note = pg_note))
+
+      structure(
+        dat_out[[1]],
+        .page_grp_vars = page_grp_vars
+      )
     dat_out <-  dat_out %>%
       map2(., pg_note, ~ structure(.x,
                                    .page_note = .y))
-
+    structure(
+      dat_out,
+      .page_grp_vars = page_grp_vars
+    )
+    }
   }
 
-  structure(
-    dat_out,
-    .page_grp_vars = page_grp_vars
-  )
 
 }
 
