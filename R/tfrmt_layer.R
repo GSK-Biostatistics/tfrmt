@@ -278,3 +278,26 @@ append_update_group_message <- function(e, x, y){
 
   e
 }
+
+#remove/reset a component of a tfrmt
+reset_component <- function(tfrmt_obj, component_name) {
+  # Validate inputs
+  # check for class attribute
+  if (!inherits(tfrmt_obj, "tfrmt")) {
+    stop("The input object must be of class 'tfrmt'.")
+  }
+  if (!is.character(component_name) || length(component_name) != 1) {
+    stop("The component name must be a single string.")
+  }
+
+  # Check if the specified component exists in the list
+  if (!component_name %in% names(tfrmt_obj)) {
+    stop(paste0("component '", component_name, "' does not exist in the tfrmt object."))
+  }
+
+  # Reset the specified component by setting it to NULL
+  tfrmt_obj[[component_name]] <- NULL
+
+  # Return the modified tfrmt object
+  return(tfrmt_obj)
+}
