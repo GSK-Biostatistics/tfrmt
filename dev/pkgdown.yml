@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   big_ns: big_ns.html
@@ -19,7 +19,7 @@ articles:
   row_grp_plan: row_grp_plan.html
   templates: templates.html
   unusual_tables: unusual_tables.html
-last_built: 2025-05-22T20:24Z
+last_built: 2025-06-09T11:21Z
 urls:
   reference: https://gsk-biostatistics.github.io/tfrmt/reference
   article: https://gsk-biostatistics.github.io/tfrmt/articles
