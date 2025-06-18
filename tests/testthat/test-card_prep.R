@@ -13,61 +13,33 @@ test_that("extract_grouping_variables() works with a single grouping variable", 
       RACE
     ) |>
     dplyr::mutate(
-      SEX = factor(
-        SEX,
-        levels = c("F", "M")
-      ),
-      AGEGR1 = factor(
-        AGEGR1,
-        levels = c(
-          "<18",
-          "18-64",
-          ">64"
-        ),
-        labels = c(
-          "<=18 years",
-          "Between 18 and 65 years",
-          ">=65 years"
-        )
-      ),
-      ETHNIC = factor(
-        ETHNIC,
-        levels = c(
-          "HISPANIC OR LATINO",
-          "NOT HISPANIC OR LATINO",
-          "NOT REPORTED"
-        )
-      ),
-      ,
-      RACE = factor(
-        RACE,
-        levels = c(
-          "AMERICAN INDIAN OR ALASKA NATIVE",
-          "ASIAN",
-          "BLACK OR AFRICAN AMERICAN",
-          "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
-          "WHITE"
-        )
-      )
+      SEX = factor(SEX),
+      AGEGR1 = factor(AGEGR1),
+      ETHNIC = factor(ETHNIC),
+      RACE = factor(RACE)
     )
 
-  ard <- ard_stack(
-    data = adsl,
-    .by = ARM,
-    ard_continuous(
-      variables = AGE,
-      statistic = ~ continuous_summary_fns(c("N", "mean", "sd", "min", "max"))
-    ),
-    ard_categorical(
-      variables = c(
-        AGEGR1,
-        SEX,
-        ETHNIC,
-        RACE
-      )
-    ),
-    .overall = TRUE,
-    .total_n = TRUE
+  # `ard_categorical.data.frame()` throws a warning due to a partial argument
+  # match of `variable` to `variables`, hence the need to suppress warnings
+  suppressWarnings(
+    ard <- ard_stack(
+      data = adsl,
+      .by = ARM,
+      ard_continuous(
+        variables = AGE,
+        statistic = ~ continuous_summary_fns(c("N", "mean", "sd", "min", "max"))
+      ),
+      ard_categorical(
+        variables = c(
+          AGEGR1,
+          SEX,
+          ETHNIC,
+          RACE
+        )
+      ),
+      .overall = TRUE,
+      .total_n = TRUE
+    )
   )
 
   expect_equal(
@@ -76,7 +48,7 @@ test_that("extract_grouping_variables() works with a single grouping variable", 
   )
 })
 
-test_that("extract_grouping_variables() works", {
+test_that("extract_grouping_variables() works with multiple grouping variables", {
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(
       SAFFL == "Y"
@@ -91,41 +63,49 @@ test_that("extract_grouping_variables() works", {
     )
 
   # create siteid counts by country and arm
-  ard1 <- ard_strata(
-    .data = adsl,
-    .by = COUNTRY,
-    .f = ~ ard_categorical(
-      .x,
-      by = ARM,
-      variable = SITEID,
-      statistic = list(
-        SITEID = c("n", "p")
-      ),
-      denominator = adsl
+  # `ard_categorical.data.frame()` throws a warning due to a partial argument
+  # match of `variable` to `variables`, hence the need to suppress warnings
+  suppressWarnings(
+    ard1 <- ard_strata(
+      .data = adsl,
+      .by = COUNTRY,
+      .f = ~ ard_categorical(
+        .x,
+        by = ARM,
+        variable = SITEID,
+        statistic = list(
+          SITEID = c("n", "p")
+        ),
+        denominator = adsl
+      )
     )
   )
 
   # create ard for siteid counts by country (Total column)
-  ard2 <- ard_strata(
-    .data = adsl,
-    .by = COUNTRY,
-    .f = ~ ard_categorical(
-      .x,
-      variable = SITEID,
-      statistic = list(
-        SITEID = c("n", "p")
-      ),
-      denominator = adsl
-    )
-  ) |>
-    rename(
-      "group2" = group1,
-      "group2_level" = group1_level
+  # `ard_categorical.data.frame()` throws a warning due to a partial argument
+  # match of `variable` to `variables`, hence the need to suppress warnings
+  suppressWarnings(
+    ard2 <- ard_strata(
+      .data = adsl,
+      .by = COUNTRY,
+      .f = ~ ard_categorical(
+        .x,
+        variable = SITEID,
+        statistic = list(
+          SITEID = c("n", "p")
+        ),
+        denominator = adsl
+      )
     ) |>
-    mutate(
-      group1 = "ARM",
-      group1_level = list("Total")
-    )
+      rename(
+        "group2" = group1,
+        "group2_level" = group1_level
+      ) |>
+      mutate(
+        group1 = "ARM",
+        group1_level = list("Total")
+      )
+  )
 
   # counts by country
   ard3 <- ard_stack(
@@ -146,7 +126,6 @@ test_that("extract_grouping_variables() works", {
       variable_level = list("Subtotal")
     )
 
-
   final_ard <- bind_rows(
     ard1,
     ard2,
@@ -160,4 +139,3 @@ test_that("extract_grouping_variables() works", {
     c("ARM", "COUNTRY")
   )
 })
-
