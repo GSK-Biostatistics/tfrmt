@@ -49,7 +49,6 @@ prep_tfrmt <- function(x) {
       label = ifelse(stat_name=="N", "n", label)
     ) |>
     # filter(!(variable=="ARM" & stat_name !="bigN")) |>
-    View()
   mutate(
     # if seems like this coalescence is taking place almost always (when we have
     # continuous variables)

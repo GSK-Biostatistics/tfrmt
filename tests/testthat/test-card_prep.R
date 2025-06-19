@@ -27,7 +27,7 @@ test_that("extract_grouping_variables() works with a single grouping variable", 
       .by = ARM,
       cards::ard_continuous(
         variables = AGE,
-        statistic = ~ continuous_summary_fns(c("N", "mean", "sd", "min", "max"))
+        statistic = ~ cards::continuous_summary_fns(c("N", "mean", "sd", "min", "max"))
       ),
       cards::ard_categorical(
         variables = c(
