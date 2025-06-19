@@ -17,7 +17,7 @@ prep_tfrmt <- function(x) {
   interim_x |>
     # derive `label`
     mutate(
-      label = coalesce(variable_level, stat_label)
+      label = coalesce(.data$variable_level, .data$stat_label)
     ) |>
     mutate(
       by_var = if_else(
@@ -93,20 +93,10 @@ extract_card_metadata <- function(x) {
   ard_by_var <- extract_grouping_variables(x)
 
   # continuous variables
-  continuous_variables <- x |>
-    filter(
-      context == "continuous"
-    ) |>
-    distinct(variable) |>
-    pull(variable)
+  continuous_variables <- extract_variables(x, type = "continuous")
 
   # categorical variables
-  categorical_variables <- x |>
-    filter(
-      context == "categorical"
-    ) |>
-    distinct(variable) |>
-    pull(variable)
+  categorical_variables <- extract_variables(x, type = "categorical")
 
   # categorical and continuous variables stats
   categorical_stats <- c("n", "p")
@@ -148,11 +138,25 @@ extract_grouping_variables <- function(x) {
     ) |>
     # we want group1 to be first, followed by group2 etc ...
     dplyr::arrange(
-      name
+      .data$name
     ) |>
     dplyr::pull(
-      value
+      .data$value
     )
 
   grouping_variables
+}
+
+extract_variables <- function(x, type = c("continuous", "categorical")) {
+
+  type <- rlang::arg_match(type)
+
+  output <- x |>
+    dplyr::filter(
+      .data$context == type
+    ) |>
+    dplyr::distinct(.data$variable) |>
+    dplyr::pull(.data$variable)
+
+  output
 }
