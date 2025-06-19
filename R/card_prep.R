@@ -12,7 +12,7 @@ prep_tfrmt <- function(x) {
   card_metadata <- extract_card_metadata(x)
 
   interim_x <- x |>
-    shuffle_ard(trim = TRUE)
+    cards::shuffle_ard(trim = TRUE)
 
   interim_x |>
     # derive `label`

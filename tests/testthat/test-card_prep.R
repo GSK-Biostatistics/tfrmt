@@ -22,14 +22,14 @@ test_that("extract_grouping_variables() works with a single grouping variable", 
   # `ard_categorical.data.frame()` throws a warning due to a partial argument
   # match of `variable` to `variables`, hence the need to suppress warnings
   suppressWarnings(
-    ard <- ard_stack(
+    ard <- cards::ard_stack(
       data = adsl,
       .by = ARM,
-      ard_continuous(
+      cards::ard_continuous(
         variables = AGE,
         statistic = ~ continuous_summary_fns(c("N", "mean", "sd", "min", "max"))
       ),
-      ard_categorical(
+      cards::ard_categorical(
         variables = c(
           AGEGR1,
           SEX,
@@ -66,10 +66,10 @@ test_that("extract_grouping_variables() works with multiple grouping variables",
   # `ard_categorical.data.frame()` throws a warning due to a partial argument
   # match of `variable` to `variables`, hence the need to suppress warnings
   suppressWarnings(
-    ard1 <- ard_strata(
+    ard1 <- cards::ard_strata(
       .data = adsl,
       .by = COUNTRY,
-      .f = ~ ard_categorical(
+      .f = ~ cards::ard_categorical(
         .x,
         by = ARM,
         variable = SITEID,
@@ -85,10 +85,10 @@ test_that("extract_grouping_variables() works with multiple grouping variables",
   # `ard_categorical.data.frame()` throws a warning due to a partial argument
   # match of `variable` to `variables`, hence the need to suppress warnings
   suppressWarnings(
-    ard2 <- ard_strata(
+    ard2 <- cards::ard_strata(
       .data = adsl,
       .by = COUNTRY,
-      .f = ~ ard_categorical(
+      .f = ~ cards::ard_categorical(
         .x,
         variable = SITEID,
         statistic = list(
@@ -108,11 +108,11 @@ test_that("extract_grouping_variables() works with multiple grouping variables",
   )
 
   # counts by country
-  ard3 <- ard_stack(
+  ard3 <- cards::ard_stack(
     data = adsl,
     .by = ARM,
     .overall = TRUE,
-    ard_categorical(
+    cards::ard_categorical(
       variables = COUNTRY,
       statistic = everything() ~ c("n", "p")
     )
@@ -130,9 +130,9 @@ test_that("extract_grouping_variables() works with multiple grouping variables",
     ard1,
     ard2,
     ard3,
-    ard_total_n(adsl)
+    cards::ard_total_n(adsl)
   ) |>
-    unlist_ard_columns()
+    cards::unlist_ard_columns()
 
   expect_equal(
     extract_grouping_variables(final_ard),
