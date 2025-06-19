@@ -143,7 +143,7 @@ extract_grouping_variables <- function(x) {
       !tidyselect::contains("level")
     ) |>
     dplyr::distinct() |>
-    na.omit() |>
+    stats::na.omit() |>
     tidyr::pivot_longer(
       cols = tidyselect::everything()
     ) |>
