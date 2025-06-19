@@ -44,7 +44,8 @@ Suggests:
     rmarkdown,
     patchwork,
     survival,
-    ggfortify
+    ggfortify,
+    pharmaverseadam
 Imports: 
     magrittr,
     dplyr,
