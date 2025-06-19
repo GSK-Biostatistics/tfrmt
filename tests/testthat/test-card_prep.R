@@ -27,7 +27,9 @@ test_that("extract_grouping_variables() works with a single grouping variable", 
       .by = ARM,
       cards::ard_continuous(
         variables = AGE,
-        statistic = ~ cards::continuous_summary_fns(c("N", "mean", "sd", "min", "max"))
+        statistic = ~ cards::continuous_summary_fns(
+          c("N", "mean", "sd", "min", "max")
+        )
       ),
       cards::ard_categorical(
         variables = c(
@@ -48,7 +50,7 @@ test_that("extract_grouping_variables() works with a single grouping variable", 
   )
 })
 
-test_that("extract_grouping_variables() works with multiple grouping variables", {
+test_that("extract_grouping_variables() extracts multiple grouping variables", {
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(
       SAFFL == "Y"
@@ -137,5 +139,62 @@ test_that("extract_grouping_variables() works with multiple grouping variables",
   expect_equal(
     extract_grouping_variables(final_ard),
     c("ARM", "COUNTRY")
+  )
+})
+
+test_that("extract_variables() works", {
+  adsl <- pharmaverseadam::adsl |>
+    dplyr::filter(
+      SAFFL == "Y"
+    ) |>
+    dplyr::select(
+      USUBJID,
+      ARM,
+      SEX,
+      AGE,
+      AGEGR1,
+      ETHNIC,
+      RACE
+    ) |>
+    dplyr::mutate(
+      SEX = factor(SEX),
+      AGEGR1 = factor(AGEGR1),
+      ETHNIC = factor(ETHNIC),
+      RACE = factor(RACE)
+    )
+
+  # `ard_categorical.data.frame()` throws a warning due to a partial argument
+  # match of `variable` to `variables`, hence the need to suppress warnings
+  suppressWarnings(
+    ard <- cards::ard_stack(
+      data = adsl,
+      .by = ARM,
+      cards::ard_continuous(
+        variables = AGE,
+        statistic = ~ cards::continuous_summary_fns(
+          c("N", "mean", "sd", "min", "max")
+        )
+      ),
+      cards::ard_categorical(
+        variables = c(
+          AGEGR1,
+          SEX,
+          ETHNIC,
+          RACE
+        )
+      ),
+      .overall = TRUE,
+      .total_n = TRUE
+    )
+  )
+
+  expect_equal(
+    extract_variables(ard, type = "continuous"),
+    "AGE"
+  )
+
+  expect_equal(
+    extract_variables(ard, type = "categorical"),
+    c("AGEGR1", "SEX", "ETHNIC", "RACE", "ARM")
   )
 })
