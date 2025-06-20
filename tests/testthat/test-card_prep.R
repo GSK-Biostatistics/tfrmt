@@ -198,3 +198,118 @@ test_that("extract_variables() works", {
     c("AGEGR1", "SEX", "ETHNIC", "RACE", "ARM")
   )
 })
+
+test_that("extract_stats() works", {
+  adsl <- pharmaverseadam::adsl |>
+    dplyr::filter(
+      SAFFL == "Y"
+    ) |>
+    dplyr::select(
+      USUBJID,
+      ARM,
+      SEX,
+      AGE,
+      AGEGR1,
+      ETHNIC,
+      RACE
+    ) |>
+    dplyr::mutate(
+      SEX = factor(SEX),
+      AGEGR1 = factor(AGEGR1),
+      ETHNIC = factor(ETHNIC),
+      RACE = factor(RACE)
+    )
+
+  # `ard_categorical.data.frame()` throws a warning due to a partial argument
+  # match of `variable` to `variables`, hence the need to suppress warnings
+  suppressWarnings(
+    ard <- cards::ard_stack(
+      data = adsl,
+      .by = ARM,
+      cards::ard_continuous(
+        variables = AGE,
+        statistic = ~ cards::continuous_summary_fns(
+          c("N", "mean", "sd", "min", "max")
+        )
+      ),
+      cards::ard_categorical(
+        variables = c(
+          AGEGR1,
+          SEX,
+          ETHNIC,
+          RACE
+        )
+      ),
+      .overall = TRUE,
+      .total_n = TRUE
+    )
+  )
+
+  expect_equal(
+    extract_stats(ard, type = "continuous"),
+    c("N", "mean", "sd", "min", "max")
+  )
+
+  expect_equal(
+    extract_stats(ard, type = "categorical"),
+    c("n", "p", "N")
+  )
+})
+
+test_that("extract_card_metadata() works", {
+  adsl <- pharmaverseadam::adsl |>
+    dplyr::filter(
+      SAFFL == "Y"
+    ) |>
+    dplyr::select(
+      USUBJID,
+      ARM,
+      SEX,
+      AGE,
+      AGEGR1,
+      ETHNIC,
+      RACE
+    ) |>
+    dplyr::mutate(
+      SEX = factor(SEX),
+      AGEGR1 = factor(AGEGR1),
+      ETHNIC = factor(ETHNIC),
+      RACE = factor(RACE)
+    )
+
+  # `ard_categorical.data.frame()` throws a warning due to a partial argument
+  # match of `variable` to `variables`, hence the need to suppress warnings
+  suppressWarnings(
+    ard <- cards::ard_stack(
+      data = adsl,
+      .by = ARM,
+      cards::ard_continuous(
+        variables = AGE,
+        statistic = ~ cards::continuous_summary_fns(
+          c("N", "mean", "sd", "min", "max")
+        )
+      ),
+      cards::ard_categorical(
+        variables = c(
+          AGEGR1,
+          SEX,
+          ETHNIC,
+          RACE
+        )
+      ),
+      .overall = TRUE,
+      .total_n = TRUE
+    )
+  )
+
+  expect_equal(
+    extract_card_metadata(ard),
+    list(
+      grouping_variables = c("ARM"),
+      continuous_variables = c("AGE") ,
+      categorical_variables = c("AGEGR1", "SEX", "ETHNIC", "RACE", "ARM"),
+      continuous_variables_stats = c("N", "mean", "sd", "min", "max"),
+      categorical_variables_stats = c("n", "p", "N")
+    )
+  )
+})
