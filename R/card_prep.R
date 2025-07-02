@@ -2,7 +2,7 @@
 #'
 #' What does the preparation function need to do?
 #   *
-#'
+#'  * Is `bigN` only used for categorical variables?
 #'
 #' @param x (card) card object
 #'
@@ -10,79 +10,68 @@
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x) {
+prep_tfrmt <- function(x, tfrmt) {
   browser()
 
-  card_metadata <- extract_card_metadata(x)
+  # extract metadata (from the shuffle output)
+  card_args <- attributes(x)[["args"]]
+  card_by <- card_args$by
+  card_variables <- card_args$variables
 
-  # TODO can we have multiple grouping variables? If yes, handle the
-  # situation when card_metadata$grouping_variables has more than 1 var
-  grouping_variable <- ensym(card_metadata$grouping_variables)
+  # card_metadata <- extract_card_metadata(x)
 
-  interim_x <- x |>
-    cards::shuffle_ard(trim = TRUE)
+  interim_x <- x
 
-  interim_x |>
+  # extract labels (if attributes are present)
+  # drop context == "attributes"
+  if (has_attributes(x)) {
+    interim_x <- append_labels(x)
+  }
+
+  # TODO handle multiple grouping variables
+  first_grouping_var <- card_by[[1]]
+
+  a <- interim_x |>
     # derive `label`
     mutate(
       label = coalesce(.data$variable_level, .data$stat_label)
     ) |>
     mutate(
-      by_var = if_else(
+      !!sym(first_grouping_var) := if_else(
         # variable == "ARM",
-        # TODO can we have multiple grouping variables? If yes, handle the
-        # situation when card_metadata$grouping_variables has more than 1 var
-        variable == card_metadata$grouping_variables,
+        # TODO handle multiple grouping variables
+        # TODO check understanding: is bigN only for the outer (first) grouping
+        # variable?
+        variable == first_grouping_var,
         label,
         # ARM
-        !!grouping_variable
+        !!sym(first_grouping_var)
       ),
-      by_var = if_else(
-        is.na(by_var) | variable == "..ard_total_n..",
+      !!sym(first_grouping_var) := if_else(
+        is.na(!!sym(first_grouping_var)) | variable == "..ard_total_n..",
         "Total",
-        by_var
+        !!sym(first_grouping_var)
       )
     ) |>
     mutate(
-      stat_name2 = if_else(
-        (variable == "ARM" & stat_name == "n") | variable == "..ard_total_n..",
-        "bigN",
-        stat_name
-      ),
-      stat_name3 = case_when(
-        variable == "ARM" & stat_name == "n" ~ "bigN",
+      stat_name = case_when(
+        variable == first_grouping_var & stat_name == "n" ~ "bigN",
         variable == "..ard_total_n.." ~ "bigN",
         TRUE ~ stat_name
       ),
-      label = ifelse(stat_name=="N", "n", label)
+      label = if_else(
+        stat_name == "N",
+        "n",
+        label
+      )
     ) |>
-    # filter(!(variable=="ARM" & stat_name !="bigN")) |>
-  mutate(
-    # if seems like this coalescence is taking place almost always (when we have
-    # continuous variables)
-    label = if_else(is.na(label), stat_label, label),
+    # remove unneeded stats
+    # if variable is "ARM" keep only the big N rows
+    # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
+    filter(!(variable == first_grouping_var & stat_name !="bigN"))
 
-    # Add big N labels
-    ARM = if_else(variable == "ARM", label, ARM),
-    # ID total trt
-    ARM = ifelse(
-      is.na(ARM) | variable == "..ard_total_n..",
-      "Total",
-      ARM
-    ),
-    # unique stat names for big N's
-    stat_name = if_else(
-      (variable == "ARM" & stat_name == "n") | variable == "..ard_total_n..",
-      "bigN",
-      stat_name
-    ),
-    # relabel the label for n's
-    label = ifelse(
-      stat_name == "N",
-      "n",
-      label
-    )
-  )
+  a
+
 }
 
 #' Extract card metadata
@@ -128,8 +117,52 @@ extract_card_metadata <- function(x) {
   output
 }
 
-extract_grouping_variables <- function(x) {
+has_attributes <- function(x) {
+  shuffled_card_attributes_df <- x |>
+    dplyr::filter(
+      context == "attributes"
+    )
 
+  output <- FALSE
+
+  if (nrow(shuffled_card_attributes_df) > 0) {
+    output <- TRUE
+  }
+
+  output
+}
+
+append_labels <- function(x) {
+  browser()
+
+  variable_labels <- x |>
+    filter(context == "attributes") |>
+    filter(stat_label == "Variable Label") |>
+    select(
+      variable,
+      variable_label = stat
+    ) |>
+    unnest(variable_label)
+
+  output <- x |>
+    left_join(
+      variable_labels,
+      by = join_by(variable)
+    ) |>
+    relocate(
+      variable_label,
+      .after = variable
+    ) |>
+    # remove attributes
+    filter(
+      context != "attributes"
+    )
+
+  output
+}
+
+extract_grouping_variables <- function(x) {
+browser()
   grouping_variables <- x |>
     dplyr::select(
       tidyselect::contains("group")
@@ -149,8 +182,6 @@ extract_grouping_variables <- function(x) {
     dplyr::pull(
       .data$value
     )
-
-  grouping_variables
 }
 
 extract_variables <- function(x, type = c("continuous", "categorical")) {
