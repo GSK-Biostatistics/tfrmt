@@ -10,68 +10,41 @@
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, tfrmt) {
-  browser()
+prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
 
   # extract metadata (from the shuffle output)
   card_args <- attributes(x)[["args"]]
   card_by <- card_args$by
   card_variables <- card_args$variables
 
-  # card_metadata <- extract_card_metadata(x)
-
-  interim_x <- x
-
-  # extract labels (if attributes are present)
-  # drop context == "attributes"
-  if (has_attributes(x)) {
-    interim_x <- append_labels(x)
-  }
-
   # TODO handle multiple grouping variables
   first_grouping_var <- card_by[[1]]
 
-  a <- interim_x |>
-    # derive `label`
-    mutate(
-      label = coalesce(.data$variable_level, .data$stat_label)
+  output <- x |>
+    process_labels() |>
+    process_big_n(by = first_grouping_var) |>
+    process_order(
+      var_order = var_order,
+      stat_order = stat_order
     ) |>
     mutate(
-      !!sym(first_grouping_var) := if_else(
-        # variable == "ARM",
-        # TODO handle multiple grouping variables
-        # TODO check understanding: is bigN only for the outer (first) grouping
-        # variable?
-        variable == first_grouping_var,
-        label,
-        # ARM
-        !!sym(first_grouping_var)
-      ),
-      !!sym(first_grouping_var) := if_else(
-        is.na(!!sym(first_grouping_var)) | variable == "..ard_total_n..",
-        "Total",
-        !!sym(first_grouping_var)
+      variable = coalesce(
+        variable_label,
+        variable
       )
     ) |>
-    mutate(
-      stat_name = case_when(
-        variable == first_grouping_var & stat_name == "n" ~ "bigN",
-        variable == "..ard_total_n.." ~ "bigN",
-        TRUE ~ stat_name
-      ),
-      label = if_else(
-        stat_name == "N",
-        "n",
-        label
-      )
+    select(
+      !!sym(first_grouping_var),
+      variable,
+      label,
+      stat_name,
+      stat,
+      ord1,
+      ord2
     ) |>
-    # remove unneeded stats
-    # if variable is "ARM" keep only the big N rows
-    # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
-    filter(!(variable == first_grouping_var & stat_name !="bigN"))
+    unique()
 
-  a
-
+  output
 }
 
 #' Extract card metadata
@@ -132,8 +105,11 @@ has_attributes <- function(x) {
   output
 }
 
-append_labels <- function(x) {
-  browser()
+process_labels <- function(x) {
+
+  if (!has_attributes(x)) {
+    return(x)
+  }
 
   variable_labels <- x |>
     filter(context == "attributes") |>
@@ -157,6 +133,70 @@ append_labels <- function(x) {
     filter(
       context != "attributes"
     )
+
+  output
+}
+
+process_big_n <- function(x, by) {
+
+  by <- force(by)
+  sym_by <- ensym(by)
+
+  output <- x |>
+    # derive `label`
+    mutate(
+      label = coalesce(.data$variable_level, .data$stat_label)
+    ) |>
+    mutate(
+      !!sym_by := if_else(
+        # variable == "ARM",
+        # TODO handle multiple grouping variables
+        # TODO check understanding: is bigN only for the outer (first) grouping
+        # variable?
+        variable == by,
+        label,
+        # ARM
+        !!sym_by
+      ),
+      !!sym_by := if_else(
+        is.na(!!sym_by) | variable == "..ard_total_n..",
+        "Total",
+        !!sym_by
+      )
+    ) |>
+    mutate(
+      stat_name = case_when(
+        variable == by & stat_name == "n" ~ "bigN",
+        variable == "..ard_total_n.." ~ "bigN",
+        TRUE ~ stat_name
+      ),
+      label = if_else(
+        stat_name == "N",
+        "n",
+        label
+      )
+    ) |>
+    # remove unneeded stats
+    # if variable is "ARM" keep only the big N rows
+    # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
+    filter(!(variable == by & stat_name !="bigN"))
+
+  output
+}
+
+process_order <- function(x, var_order, stat_order = "n") {
+
+  # TODO check assumption holds
+  # assumption: ordering early works and we do not need to do that via the
+  # sorting_cols = c(ord1, ord2) argument
+  output <- x |>
+    mutate(
+      ord1 = fct_inorder(variable) |>
+        fct_relevel(var_order, after = 0) |>
+        as.numeric(),
+      ord2 = ifelse(label == stat_order, 1, 2)
+    ) |>
+    arrange(ord1, ord2)
 
   output
 }
