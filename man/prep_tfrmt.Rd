@@ -4,14 +4,23 @@
 \alias{prep_tfrmt}
 \title{Prepare card for tfrmt}
 \usage{
-prep_tfrmt(x)
+prep_tfrmt(x, tfrmt, var_order, stat_order = "n")
 }
 \arguments{
 \item{x}{(card) card object}
+
+\item{tfrmt}{(\code{tfrmt}) \code{tfrmt} object}
+
+\item{var_order}{variable order.}
+
+\item{stat_order}{stat order}
 }
 \value{
 a \code{data.frame}
 }
 \description{
-Prepare card for tfrmt
+What does the preparation function need to do?
+\itemize{
+\item Is \code{bigN} only used for categorical variables?
+}
 }

@@ -5,6 +5,9 @@
 #'  * Is `bigN` only used for categorical variables?
 #'
 #' @param x (card) card object
+#' @param tfrmt (`tfrmt`) `tfrmt` object
+#' @param var_order variable order.
+#' @param stat_order stat order
 #'
 #' @returns a `data.frame`
 #' @export
@@ -165,107 +168,6 @@ process_order <- function(x, var_order, stat_order = "n") {
         2
       )
     )
-
-  output
-}
-
-#' Extract card metadata
-#'
-#' `extract_card_metadata()` reverse engineers the `ard_stack()` call based on
-#' its output. It extracts the grouping variable, continuous and categorical
-#' variables and their statistics.
-#'
-#' @param x (card) card object
-#'
-#' @returns a list made up of 5 character vectors:
-#'   * `grouping_variables`: names of the grouping variables
-#'   * `continuous_variables`
-#'   * `categorical_variables`
-#'   * `continuous_variables_stats`
-#'   * `categorical_variables_stats`
-#'
-#' @export
-#'
-#' @examples
-extract_card_metadata <- function(x) {
-
-  # extract metadata (`.by`, variables, and stats) from the card object
-  # .by
-  ard_by_var <- extract_grouping_variables(x)
-
-  # extract variables
-  ard_continuous_variables <- extract_variables(x, type = "continuous")
-  ard_categorical_variables <- extract_variables(x, type = "categorical")
-
-  # extract stats
-  ard_continuous_stats <- extract_stats(x, type = "continuous")
-  ard_categorical_stats <- extract_stats(x, type = "categorical")
-
-  output <- list(
-    grouping_variables = ard_by_var,
-    continuous_variables = ard_continuous_variables,
-    categorical_variables = ard_categorical_variables,
-    continuous_variables_stats = ard_continuous_stats,
-    categorical_variables_stats = ard_categorical_stats
-  )
-
-  output
-}
-
-extract_grouping_variables <- function(x) {
-browser()
-  grouping_variables <- x |>
-    dplyr::select(
-      tidyselect::contains("group")
-    ) |>
-    dplyr::select(
-      !tidyselect::contains("level")
-    ) |>
-    dplyr::distinct() |>
-    stats::na.omit() |>
-    tidyr::pivot_longer(
-      cols = tidyselect::everything()
-    ) |>
-    # we want group1 to be first, followed by group2 etc ...
-    dplyr::arrange(
-      .data$name
-    ) |>
-    dplyr::pull(
-      .data$value
-    )
-}
-
-extract_variables <- function(x, type = c("continuous", "categorical")) {
-
-  type <- rlang::arg_match(type)
-
-  output <- x |>
-    dplyr::filter(
-      .data$context == type
-    ) |>
-    dplyr::distinct(.data$variable) |>
-    dplyr::pull(.data$variable)
-
-  output
-}
-
-extract_stats <- function(x, type = c("continuous", "categorical")) {
-
-  type <- rlang::arg_match(type)
-
-  categorical_stats <- c("n", "p")
-  common_stats <- "N"
-  unique_stats <- unique(x$stat_name)
-
-  continuous_ard_stats <- setdiff(unique_stats, categorical_stats)
-  output <- continuous_ard_stats
-
-  if (type == "categorical") {
-    categorical_ard_stats <- unique_stats |>
-      setdiff(continuous_ard_stats) |>
-      union(common_stats)
-    output <- categorical_ard_stats
-  }
 
   output
 }
