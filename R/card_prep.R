@@ -27,13 +27,13 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
       var_order = var_order,
       stat_order = stat_order
     ) |>
-    mutate(
-      variable = coalesce(
+    dplyr::mutate(
+      variable = dplyr::coalesce(
         variable_label,
         variable
       )
     ) |>
-    select(
+    dplyr::select(
       !!sym(first_grouping_var),
       variable,
       label,
@@ -44,6 +44,127 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
     ) |>
     unique() |>
     tidyr::unnest(stat)
+
+  output
+}
+
+
+
+has_attributes <- function(x) {
+  shuffled_card_attributes_df <- x |>
+    dplyr::filter(
+      context == "attributes"
+    )
+
+  output <- FALSE
+
+  if (nrow(shuffled_card_attributes_df) > 0) {
+    output <- TRUE
+  }
+
+  output
+}
+
+process_labels <- function(x) {
+
+  if (!has_attributes(x)) {
+    output <- x |>
+      dplyr::mutate(
+        variable_label = NA_character_
+      )
+
+    return(output)
+  }
+
+  variable_labels <- x |>
+    dplyr::filter(context == "attributes") |>
+    dplyr::filter(stat_label == "Variable Label") |>
+    dplyr::select(
+      variable,
+      variable_label = stat
+    ) |>
+    tidyr::unnest(variable_label)
+
+  output <- x |>
+    dplyr::left_join(
+      variable_labels,
+      by = dplyr::join_by(variable)
+    ) |>
+    dplyr::relocate(
+      variable_label,
+      .after = variable
+    ) |>
+    # remove attributes
+    dplyr::filter(
+      context != "attributes"
+    )
+
+  output
+}
+
+process_big_n <- function(x, by) {
+
+  by <- force(by)
+  sym_by <- rlang::ensym(by)
+
+  output <- x |>
+    # derive `label`
+    dplyr::mutate(
+      label = dplyr::coalesce(.data$variable_level, .data$stat_label)
+    ) |>
+    dplyr::mutate(
+      !!sym_by := dplyr::if_else(
+        # variable == "ARM",
+        # TODO handle multiple grouping variables
+        # TODO check understanding: is bigN only for the outer (first) grouping
+        # variable?
+        variable == by,
+        label,
+        # ARM
+        !!sym_by
+      ),
+      !!sym_by := dplyr::if_else(
+        is.na(!!sym_by) | variable == "..ard_total_n..",
+        "Total",
+        !!sym_by
+      )
+    ) |>
+    dplyr::mutate(
+      stat_name = dplyr::case_when(
+        variable == by & stat_name == "n" ~ "bigN",
+        variable == "..ard_total_n.." ~ "bigN",
+        TRUE ~ stat_name
+      ),
+      label = dplyr::if_else(
+        stat_name == "N",
+        "n",
+        label
+      )
+    ) |>
+    # remove unneeded stats
+    # if variable is "ARM" keep only the big N rows
+    # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
+    dplyr::filter(!(variable == by & stat_name !="bigN"))
+
+  output
+}
+
+process_order <- function(x, var_order, stat_order = "n") {
+
+  # TODO check assumption holds
+  # assumption: ordering early works and we do not need to do that via the
+  # sorting_cols = c(ord1, ord2) argument
+  output <- x |>
+    dplyr::mutate(
+      ord1 = forcats::fct_inorder(variable) |>
+        forcats::fct_relevel(var_order, after = 0) |>
+        as.numeric(),
+      ord2 = dplyr::if_else(
+        label == stat_order,
+        1,
+        2
+      )
+    )
 
   output
 }
@@ -87,119 +208,6 @@ extract_card_metadata <- function(x) {
     continuous_variables_stats = ard_continuous_stats,
     categorical_variables_stats = ard_categorical_stats
   )
-
-  output
-}
-
-has_attributes <- function(x) {
-  shuffled_card_attributes_df <- x |>
-    dplyr::filter(
-      context == "attributes"
-    )
-
-  output <- FALSE
-
-  if (nrow(shuffled_card_attributes_df) > 0) {
-    output <- TRUE
-  }
-
-  output
-}
-
-process_labels <- function(x) {
-
-  if (!has_attributes(x)) {
-    output <- x |>
-      mutate(variable_label = NA_character_)
-
-    return(output)
-  }
-
-  variable_labels <- x |>
-    filter(context == "attributes") |>
-    filter(stat_label == "Variable Label") |>
-    select(
-      variable,
-      variable_label = stat
-    ) |>
-    unnest(variable_label)
-
-  output <- x |>
-    left_join(
-      variable_labels,
-      by = join_by(variable)
-    ) |>
-    relocate(
-      variable_label,
-      .after = variable
-    ) |>
-    # remove attributes
-    filter(
-      context != "attributes"
-    )
-
-  output
-}
-
-process_big_n <- function(x, by) {
-
-  by <- force(by)
-  sym_by <- ensym(by)
-
-  output <- x |>
-    # derive `label`
-    mutate(
-      label = coalesce(.data$variable_level, .data$stat_label)
-    ) |>
-    mutate(
-      !!sym_by := if_else(
-        # variable == "ARM",
-        # TODO handle multiple grouping variables
-        # TODO check understanding: is bigN only for the outer (first) grouping
-        # variable?
-        variable == by,
-        label,
-        # ARM
-        !!sym_by
-      ),
-      !!sym_by := if_else(
-        is.na(!!sym_by) | variable == "..ard_total_n..",
-        "Total",
-        !!sym_by
-      )
-    ) |>
-    mutate(
-      stat_name = case_when(
-        variable == by & stat_name == "n" ~ "bigN",
-        variable == "..ard_total_n.." ~ "bigN",
-        TRUE ~ stat_name
-      ),
-      label = if_else(
-        stat_name == "N",
-        "n",
-        label
-      )
-    ) |>
-    # remove unneeded stats
-    # if variable is "ARM" keep only the big N rows
-    # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
-    filter(!(variable == by & stat_name !="bigN"))
-
-  output
-}
-
-process_order <- function(x, var_order, stat_order = "n") {
-
-  # TODO check assumption holds
-  # assumption: ordering early works and we do not need to do that via the
-  # sorting_cols = c(ord1, ord2) argument
-  output <- x |>
-    mutate(
-      ord1 = fct_inorder(variable) |>
-        fct_relevel(var_order, after = 0) |>
-        as.numeric(),
-      ord2 = ifelse(label == stat_order, 1, 2)
-    )
 
   output
 }
