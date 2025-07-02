@@ -42,7 +42,8 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
       ord1,
       ord2
     ) |>
-    unique()
+    unique() |>
+    tidyr::unnest(stat)
 
   output
 }
@@ -108,7 +109,10 @@ has_attributes <- function(x) {
 process_labels <- function(x) {
 
   if (!has_attributes(x)) {
-    return(x)
+    output <- x |>
+      mutate(variable_label = NA_character_)
+
+    return(output)
   }
 
   variable_labels <- x |>
@@ -195,8 +199,7 @@ process_order <- function(x, var_order, stat_order = "n") {
         fct_relevel(var_order, after = 0) |>
         as.numeric(),
       ord2 = ifelse(label == stat_order, 1, 2)
-    ) |>
-    arrange(ord1, ord2)
+    )
 
   output
 }
