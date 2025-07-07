@@ -30,11 +30,11 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
     purrr::map(rlang::quo_get_expr) |>
     purrr::map_chr(rlang::as_string)
 
-
   output <- x |>
     process_labels() |>
     # process big N by columns, not grouping variables
     process_big_n(column = column) |>
+    # TODO we need to add order_plan and digest it in process_order
     process_order(
       var_order = var_order,
       stat_order = stat_order
@@ -188,9 +188,14 @@ process_big_n <- function(x, column) {
 
 process_order <- function(x, var_order, stat_order = "n") {
 
+  # TODO decide: probably this function should not exist. The sorting should be
+  # done via an `order_plan()` and handled exclusively inside the apply_frmt()
+  # logic
+
   # TODO check assumption holds
   # assumption: ordering early works and we do not need to do that via the
   # sorting_cols = c(ord1, ord2) argument
+  # This assumption does hold. It looks like we can order early.
   output <- x |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(.data$variable) |>
