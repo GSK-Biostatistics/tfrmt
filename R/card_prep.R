@@ -21,11 +21,20 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
   card_variables <- card_args$variables
 
   # TODO handle multiple grouping variables
+  #
   first_grouping_var <- card_by[[1]]
+
+  # figure out which column(s) - currently supporting only one - will be spread
+  # and will make the column headers
+  column <- tfrmt$column |>
+    purrr::map(rlang::quo_get_expr) |>
+    purrr::map_chr(rlang::as_string)
+
 
   output <- x |>
     process_labels() |>
-    process_big_n(by = first_grouping_var) |>
+    # process big N by columns, not grouping variables
+    process_big_n(column = column) |>
     process_order(
       var_order = var_order,
       stat_order = stat_order
@@ -37,6 +46,7 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
       )
     ) |>
     dplyr::select(
+      # might be the spread column and not the grouping variable
       !!sym(first_grouping_var),
       .data$variable,
       .data$label,
@@ -111,10 +121,23 @@ process_labels <- function(x) {
   output
 }
 
-process_big_n <- function(x, by) {
+process_big_n <- function(x, column) {
+# browser()
+  # I originally thought we process bigN for the grouping variable (hence `by`),
+  # but we should process it based on the tfrmt$column (as this indicates which
+  # column will be spread -> mapped to the column headers)
 
-  by <- force(by)
-  sym_by <- rlang::ensym(by)
+  # TODO likely will need to be aware of the various big N's. the only thing we
+  # can do is prepare bigN everywhere where it exists and display it. if the user
+  # does not want it it needs to be removed from the ARD. the tfrmt bigN does not
+  # do any selection
+
+  # we are interested in the relationship between column headers (given by the
+  # tfrmt$column )
+
+  by <- column
+  # TODO support multiple columns (with `rlang::ensyms()`)
+  sym_by <- rlang::ensym(column)
 
   output <- x |>
     # derive `label`
@@ -128,8 +151,8 @@ process_big_n <- function(x, by) {
       !!sym_by := dplyr::if_else(
         # variable == "ARM",
         # TODO handle multiple grouping variables
-        # TODO check understanding: is bigN only for the outer (first) grouping
-        # variable?
+        # bigN can be for multiple grouping variables. it can only be used in
+        # the column headers though
         .data$variable == by,
         .data$label,
         # ARM
@@ -137,7 +160,7 @@ process_big_n <- function(x, by) {
       ),
       !!sym_by := dplyr::if_else(
         is.na(!!sym_by) | .data$variable == "..ard_total_n..",
-        "Total",
+        glue::glue("Overall {rlang::as_string(sym_by)}"),
         !!sym_by
       )
     ) |>
