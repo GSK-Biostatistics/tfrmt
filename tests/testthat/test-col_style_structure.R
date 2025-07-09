@@ -56,7 +56,7 @@ test_that("col_style_structure - advanced", {
   expect_equal(element_1$cols, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
   expect_equal(element_2$cols, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
   expect_equal(element_3$cols, list(list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
-  expect_equal(element_4$cols, list(quo(trt1), list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
+  expect_equal(element_4$cols, list(quo(trt1),list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
 })
 
 test_that("col_style_plan - basic", {
