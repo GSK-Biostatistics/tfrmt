@@ -6,17 +6,15 @@
 #'
 #' @param x (card) card object
 #' @param tfrmt (`tfrmt`) `tfrmt` object
-#' @param var_order variable order.
-#' @param stat_order stat order
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
+prep_tfrmt <- function(x, tfrmt) {
 
-  # TODO support tfrmt (priority 1), direct passing of args (2) and extracting from
-  # attributes (3)
+  # TODO support tfrmt (priority 1), direct passing of args (2) and extracting
+  # from attributes (3)
 
   # extract metadata (from the shuffle output)
   card_args <- attributes(x)[["args"]]
