@@ -48,41 +48,12 @@ test_that("col_style_structure - errors", {
 
 test_that("col_style_structure - advanced", {
 
-  element_1 <- col_style_structure(
-    align = "left",
-    col = c(n_tot, p, test)
-  )
-  element_2 <- col_style_structure(
-    align = "left",
-    col = c(n_tot, p, "test")
-  )
-  element_3 <- col_style_structure(
-    align = "right",
-    col = span_structure(
-      col = test,
-      col2 = value
-    )
-  )
-  element_4 <- col_style_structure(
-    align = ".",
-    col = c(
-      trt1,
-      span_structure(
-        col = test,
-        col2 = value
-      )
-    )
-  )
+  element_1 <- col_style_structure(align = "left", col = c(n_tot, p, test))
+  element_2 <- col_style_structure(align = "left", col = c(n_tot, p, "test"))
+  element_3 <- col_style_structure(align = "right", col = span_structure(col = test, col2 = value))
+  element_4 <- col_style_structure(align = ".", col = c(trt1, span_structure(col = test, col2 = value)))
 
-  expect_equal(
-    element_1$cols,
-    list(
-      quo(n_tot),
-      quo(p),
-      quo(test)
-    ),
-    ignore_attr = TRUE
-  )
+  expect_equal(element_1$cols, list(quo(n_tot), quo(p), quo(test)), ignore_attr = TRUE)
 
   expect_equal(
     element_2$cols,
