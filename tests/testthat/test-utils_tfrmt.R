@@ -37,7 +37,7 @@ plan  <- tfrmt(
   #This controls how the rows are sorted
   sorting_cols = vars(ord1, ord2),
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(" ", ",", "."), col= vars(starts_with("Var")))),
+    col_style_structure(align = c(" ", ",", "."), col = vars(starts_with("Var")))),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("XXX.XX")),
     frmt_structure(group_val = ".default", label_val = ".default",
@@ -193,7 +193,7 @@ test_that("Check apply_tfrmt for mock data",{
     ),
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
   )
-  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1) %>%
+  mock_dat <- make_mock_data(plan, .default = 1, n_cols = 1) %>%
     apply_tfrmt(plan, mock =TRUE)
 
   expected_dat <-  tibble::tribble(
@@ -227,7 +227,7 @@ test_that("Check apply_tfrmt for mock data",{
     ),
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("gtdefault"))
   )
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
   make_mock_dat_message <- mock_dat %>%
     apply_tfrmt(plan, mock =TRUE) %>%
