@@ -1,10 +1,12 @@
 #' Prepare card for tfrmt
 #'
 #' What does the preparation function need to do?
-#   *
-#'  * Is `bigN` only used for categorical variables?
+#'   * process labels: labels are persistent in cards and passed down via
+#'  attributes (e.g. by `ard_stack(..., .attributes = TRUE)`)
+#'  * `prepare_big_n()`: Is `bigN` only used for categorical variables?
 #'
-#' @param x (card) card object
+#'
+#' @param x (`card`) a `card` object
 #' @param tfrmt (`tfrmt`) `tfrmt` object
 #'
 #' @returns a `data.frame`
@@ -13,11 +15,12 @@
 #' @examples
 prep_tfrmt <- function(x, tfrmt) {
 
+  # browser()
   # TODO support tfrmt (priority 1), direct passing of args (2) and extracting
   # from attributes (3)
 
   # extract metadata (from the shuffle output)
-  card_args <- attributes(x)[["args"]]
+  card_args <- attr(x, "args")
   card_by <- card_args$by
   card_variables <- card_args$variables
 
@@ -43,13 +46,12 @@ prep_tfrmt <- function(x, tfrmt) {
     ) |>
     dplyr::select(
       # might be the spread column and not the grouping variable
-      !!sym(first_grouping_var),
+      .data[[column]],
+      # !!sym(first_grouping_var),
       .data$variable,
       .data$label,
       .data$stat_name,
-      .data$stat,
-      .data$ord1,
-      .data$ord2
+      .data$stat
     ) |>
     unique() |>
     tidyr::unnest(
