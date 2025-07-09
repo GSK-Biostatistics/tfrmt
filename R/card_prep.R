@@ -15,6 +15,9 @@
 #' @examples
 prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
 
+  # TODO support tfrmt (priority 1), direct passing of args (2) and extracting from
+  # attributes (3)
+
   # extract metadata (from the shuffle output)
   card_args <- attributes(x)[["args"]]
   card_by <- card_args$by
@@ -34,11 +37,6 @@ prep_tfrmt <- function(x, tfrmt, var_order, stat_order = "n") {
     process_labels() |>
     # process big N by columns, not grouping variables
     process_big_n(column = column) |>
-    # TODO we need to add order_plan and digest it in process_order
-    process_order(
-      var_order = var_order,
-      stat_order = stat_order
-    ) |>
     dplyr::mutate(
       variable = dplyr::coalesce(
         .data$variable_label,
@@ -181,31 +179,6 @@ process_big_n <- function(x, column) {
     # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
     dplyr::filter(
       !(.data$variable == by & .data$stat_name !="bigN")
-    )
-
-  output
-}
-
-process_order <- function(x, var_order, stat_order = "n") {
-
-  # TODO decide: probably this function should not exist. The sorting should be
-  # done via an `order_plan()` and handled exclusively inside the apply_frmt()
-  # logic
-
-  # TODO check assumption holds
-  # assumption: ordering early works and we do not need to do that via the
-  # sorting_cols = c(ord1, ord2) argument
-  # This assumption does hold. It looks like we can order early.
-  output <- x |>
-    dplyr::mutate(
-      ord1 = forcats::fct_inorder(.data$variable) |>
-        forcats::fct_relevel(var_order, after = 0) |>
-        as.numeric(),
-      ord2 = dplyr::if_else(
-        .data$label == stat_order,
-        1,
-        2
-      )
     )
 
   output
