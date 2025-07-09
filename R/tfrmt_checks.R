@@ -217,7 +217,7 @@ check_col_style_row_grp_consistency <- function(x){
     r_grp_plan_col_loc <- x$row_grp_plan$label_loc$location
 
     col_align_plan_as_char <- x$col_style_plan %>%
-      lapply(function(x) x$col %>% map_chr(as_label))
+      lapply(function(x) x$cols %>% map_chr(as_label))
     for(cap_vars_idx in seq_along(col_align_plan_as_char)){
       grp_in_cap <- group_as_char %in% col_align_plan_as_char[[cap_vars_idx]]
       if(length(x$col_style_plan[[cap_vars_idx]]$col) == 0){
