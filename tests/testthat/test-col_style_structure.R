@@ -5,10 +5,10 @@ test_that("col_style_structure - quo/vars/bare", {
   element_c <- col_style_structure(align = ".", col = c(trt1, trt2))
   element_ts <- col_style_structure(align = ".", col = starts_with("hello"))
 
-  expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
-  expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
-  expect_equal(element_c$col, vars(trt1, trt2), ignore_attr = TRUE)
-  expect_equal(element_ts$col, vars(starts_with("hello")), ignore_attr = TRUE)
+  expect_equal(element_l$cols, vars(n_tot), ignore_attr = TRUE)
+  expect_equal(element_r$cols, vars(p), ignore_attr = TRUE)
+  expect_equal(element_c$cols, vars(trt1, trt2), ignore_attr = TRUE)
+  expect_equal(element_ts$cols, vars(starts_with("hello")), ignore_attr = TRUE)
 
 })
 
@@ -18,9 +18,9 @@ test_that("col_style_structure - char", {
   element_r <- col_style_structure(align = "right", col = "p")
   element_c <- col_style_structure(align = ".", col = c("trt1", "trt2"))
 
-  expect_equal(element_l$col, vars(n_tot), ignore_attr = TRUE)
-  expect_equal(element_r$col, vars(p), ignore_attr = TRUE)
-  expect_equal(element_c$col, vars(trt1, trt2), ignore_attr = TRUE)
+  expect_equal(element_l$cols, vars(n_tot), ignore_attr = TRUE)
+  expect_equal(element_r$cols, vars(p), ignore_attr = TRUE)
+  expect_equal(element_c$cols, vars(trt1, trt2), ignore_attr = TRUE)
 
 })
 
@@ -48,15 +48,15 @@ test_that("col_style_structure - errors", {
 
 test_that("col_style_structure - advanced", {
 
-  element_1 <- col_style_structure(align = "left", col = c(n_tot,p,test))
-  element_2 <- col_style_structure(align = "left", col = c(n_tot,p,"test"))
+  element_1 <- col_style_structure(align = "left", col = c(n_tot, p, test))
+  element_2 <- col_style_structure(align = "left", col = c(n_tot, p, "test"))
   element_3 <- col_style_structure(align = "right", col = span_structure(col = test, col2 = value))
   element_4 <- col_style_structure(align = ".", col = c(trt1, span_structure(col = test, col2 = value)))
 
-  expect_equal(element_1$col, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
-  expect_equal(element_2$col, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
-  expect_equal(element_3$col, list(list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
-  expect_equal(element_4$col, list(quo(trt1),list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
+  expect_equal(element_1$cols, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
+  expect_equal(element_2$cols, list(quo(n_tot),quo(p),quo(test)), ignore_attr = TRUE)
+  expect_equal(element_3$cols, list(list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
+  expect_equal(element_4$cols, list(quo(trt1),list(col = vars(test), col1 = vars(value))), ignore_attr = TRUE)
 
 })
 
