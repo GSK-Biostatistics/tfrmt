@@ -156,6 +156,7 @@ process_big_n <- function(x, column) {
         # ARM
         !!sym_by
       ),
+      # TODO we might not need this since it should now be handled by `shuffle_ard()`
       !!sym_by := dplyr::if_else(
         is.na(!!sym_by) | .data$variable == "..ard_total_n..",
         glue::glue("Overall {rlang::as_string(sym_by)}"),
@@ -178,7 +179,7 @@ process_big_n <- function(x, column) {
     # if variable is "ARM" keep only the big N rows
     # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
     dplyr::filter(
-      !(.data$variable == by & .data$stat_name !="bigN")
+      !(.data$variable == by & .data$stat_name != "bigN")
     )
 
   output
