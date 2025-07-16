@@ -58,7 +58,12 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
           unlist() %>%
           nchar() %>%
           max(na.rm = TRUE)
-      } else{
+      }
+      else if (is.factor(x)) {
+        # Handle factor columns: convert to character before nchar
+        max(nchar(as.character(x)), na.rm = TRUE)
+      }
+      else{
         max(nchar(x), na.rm = TRUE)
       }
     }))
