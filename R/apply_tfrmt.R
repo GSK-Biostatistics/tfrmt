@@ -497,8 +497,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt){
 
       if (!identical(expected_pops,actual_pops) |
           (!is_empty(actual_grp_levs) &&
-           !all.equal(expected_grp_levs, actual_grp_levs, check.attributes = FALSE)
-           )){
+           !all.equal(expected_grp_levs, actual_grp_levs, check.attributes = FALSE))){
         message("Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`")
       }
   }
