@@ -832,8 +832,8 @@ test_that("sorted by paging (Group) variable",{
   expect_equal(
     map(auto, names),
     list(
-      c("Label","Placebo\nN = 32","Treatment\nN = 46","Total\nN = 49","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 32","Treatment\nN = 46","Total\nN = 49","..tfrmt_row_grp_lbl")
+      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl"),
+      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl")
     )
   )
 
