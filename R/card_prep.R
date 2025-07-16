@@ -105,7 +105,9 @@ process_labels <- function(x) {
   output <- x |>
     dplyr::left_join(
       variable_labels,
-      by = dplyr::join_by(variable)
+      by = dplyr::join_by(
+        .data$variable
+      )
     ) |>
     dplyr::relocate(
       .data$variable_label,
