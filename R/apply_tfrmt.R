@@ -100,7 +100,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
 apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, stub_header, big_n_df){
 
   # there is a list of >1 tables
-  if (inherits(.data, "list") && length(.data)>1){
+  if (inherits(.data, "list")){
 
     # there is a list of >1 big N tibbles
     if (inherits(big_n_df, "list") && length(big_n_df)>1){
@@ -488,9 +488,9 @@ check_order_vars <- function(.data,tfrmt){
 #' @noRd
 check_big_n_page <- function(big_n_df, data_wide, tfrmt){
 
-  if (!is.null(big_n_df) && tfrmt$big_n$by_page){
+  if (!is.null(big_n_df) && tfrmt$big_n$by_page) {
       expected_pops <- length(data_wide)
-      expected_grp_vars <- attr(data_wide, ".page_grp_var")
+      expected_grp_vars <- attr(data_wide, ".page_grp_vars")
       expected_grp_levs <- map_dfr(data_wide, ~ select(.x, all_of(expected_grp_vars)) %>% distinct())
       actual_pops <- length(big_n_df)
       actual_grp_levs <- map_dfr(big_n_df, ~ select(.x, any_of(expected_grp_vars)) %>% distinct())

@@ -31,7 +31,7 @@ test_that("Mock data contains all levels", {
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
     )
   )
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -60,7 +60,7 @@ test_that("Mock data contains all levels", {
       frmt_structure(group_val = list(grp3 = "D", grp4 = c("a","b")), label_val = ".default", frmt("xx.x"))
     )
   )
-  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1)
+  mock_dat <- make_mock_data(plan, .default = 1, n_cols = 1)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -89,7 +89,7 @@ test_that("Mock data contains all levels", {
       frmt_structure(group_val = list(grp1 = ".default", grp2 = c("c","d")), label_val = c("e","f"), mean = frmt("xx.x"))
     )
   )
-  mock_dat <- make_mock_data(plan, .default = 1, n_col = 1)
+  mock_dat <- make_mock_data(plan, .default = 1, n_cols = 1)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -102,7 +102,7 @@ test_that("Mock data contains all levels", {
 
 
   # group & label specified + multiple levels/columns
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -137,7 +137,7 @@ test_that("Mock data contains all levels", {
       frmt_structure(group_val = ".default", label_val = ".default", N = frmt("xx"))
     )
   )
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -173,7 +173,7 @@ test_that("Mock data contains all levels", {
     )
     )
   )
-  mock_dat1 <- make_mock_data(plan1, .default = 1:2, n_col = 1)
+  mock_dat1 <- make_mock_data(plan1, .default = 1:2, n_cols = 1)
 
   plan2  <- tfrmt(
     group = "grp",
@@ -185,7 +185,7 @@ test_that("Mock data contains all levels", {
       frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x"))
       )
     )
-  mock_dat2 <- make_mock_data(plan2, .default = 1:2, n_col = 1)
+  mock_dat2 <- make_mock_data(plan2, .default = 1:2, n_cols = 1)
 
   expect_equal(mock_dat1, mock_dat2)
 })
@@ -290,7 +290,7 @@ test_that("Mock data contains sorting_cols when available", {
     )
   )
 
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -318,7 +318,7 @@ test_that("Mock data contains sorting_cols when available", {
     )
   )
 
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 1)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -349,7 +349,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     )
   )
 
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -376,7 +376,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     )
   )
 
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
   expect_equal(mock_dat,
                tibble::tribble(
@@ -403,7 +403,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
     )
   )
 
-  mock_dat <- make_mock_data(plan, .default = 1:2, n_col = 2)
+  mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
   expect_equal(mock_dat,
                tibble::tribble(
