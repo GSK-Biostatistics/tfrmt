@@ -53,19 +53,12 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
   # get max character width for each column in the full data
   dat_max_widths <- .data %>%
     summarise(across(everything(), function(x) {
-      if (is.character(x)) {
-        str_split(x, "\\n") %>%
-          unlist() %>%
-          nchar() %>%
-          max(na.rm = TRUE)
-      }
-      else if (is.factor(x)) {
-        # Handle factor columns: convert to character before nchar
-        max(nchar(as.character(x)), na.rm = TRUE)
-      }
-      else{
-        max(nchar(x), na.rm = TRUE)
-      }
+      x %>%
+        as.character() %>%
+        str_split("\\n") %>%
+        unlist() %>%
+        nchar() %>%
+        max(na.rm = TRUE)
     }))
 
   # apply group block function to data subsets
