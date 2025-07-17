@@ -5,8 +5,9 @@ Improvements
 * Updated RTF footnotes so they go in the document footer by default.
 
 Bug fixes 
-* Fix issue where `*_structure` functions did not correctly parse strings containing quotes in some cases (#466)
-* Fix issue where page_plan doesn't work if there is only one level in your paging variable. 
+* Fix issue where `*_structure` functions did not correctly parse strings containing quotes in some cases. (#466)
+* Fix issue where page_plan doesn't work if there is only one level in your paging variable. (#506)
+* Fix issues where an error is thrown instead of a message if: (1) levels of page-specific big Ns do not align with levels of pagination (#505) or (2) the pagination levels are sorted non-alphabetically. (#516)
 
 # tfrmt 0.1.3
 
