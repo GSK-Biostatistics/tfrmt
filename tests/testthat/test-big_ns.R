@@ -744,9 +744,9 @@ test_that("not enough big Ns by page",{
 
   #remove sex bigns so we have a missmatch of big ns
   big_ns <- data %>%
+    filter(Group=="Age (y)") %>%
     summarise(.by = c( Column, Group), Value = sum(Value)) %>%
-    mutate(Param = "big_N") %>%
-    filter(!(Param=="big_N" & Group=="Sex"))
+    mutate(Param = "big_N")
 
   data <- bind_rows(data, big_ns)
 
@@ -780,8 +780,9 @@ test_that("not enough big Ns by page",{
 })
 
 
-test_that("sorted by paging (Group) variable",{
+test_that("Paging (group) variable is sorted non-alphabetically",{
 
+  # same sorting of data and big Ns
   data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
                  Label = rep("n",6),
                  Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
@@ -828,7 +829,7 @@ test_that("sorted by paging (Group) variable",{
       "Age (y)"
     )
   )
-
+ # check big Ns have been correctly applied
   expect_equal(
     map(auto, names),
     list(
@@ -837,5 +838,55 @@ test_that("sorted by paging (Group) variable",{
     )
   )
 
+
+
+  # different sorting of data and big Ns
+  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+                 Label = rep("n",6),
+                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+                 Param = rep("n",6),
+                 Value = c(12, 14, 31, 20, 32, 18)
+  ) %>%
+    mutate(ord1 = if_else(Group == "Age (y)", 1, 2)) %>%
+    arrange(desc(Group))
+
+  big_ns <- data %>%
+    summarise(.by = c( Column, Group), Value = sum(Value)) %>%
+    mutate(Param = "big_N") %>%
+    arrange(Group)
+
+  data <- bind_rows(data, big_ns)
+
+  mytfrmt <- tfrmt(
+    group = Group,
+    label = Label,
+    column = Column,
+    value = Value,
+    param = Param,
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+    ),
+    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+    ),
+    page_plan = page_plan(
+      page_structure(
+        group_val = list(Group = ".default"))
+    ),
+    big_n = big_n_structure(param_val = "big_N", by_page = TRUE)
+  )
+
+  auto <- mytfrmt %>%
+    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+
+  # check big Ns have been correctly applied
+  expect_equal(
+    map(auto, names),
+    list(
+      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl"),
+      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl")
+    )
+  )
 
 })
