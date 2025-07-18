@@ -13,11 +13,13 @@
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, tfrmt) {
+prep_tfrmt <- function(x, by, tfrmt) {
 
-  # browser()
-  # TODO support tfrmt (priority 1), direct passing of args (2) and extracting
-  # from attributes (3)
+  browser()
+  # TODO priority for extracting context - e.g. by variables, etc:
+  #   1. direct passing of args
+  #   2. from attributes
+  #   3. tfrmt object
 
   # extract metadata (from the shuffle output)
   card_args <- attr(x, "args")
@@ -106,7 +108,7 @@ process_labels <- function(x) {
     dplyr::left_join(
       variable_labels,
       by = dplyr::join_by(
-        .data$variable
+        variable
       )
     ) |>
     dplyr::relocate(
