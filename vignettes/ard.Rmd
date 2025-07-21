@@ -85,14 +85,14 @@ Required columns are as follows:
 library(cards)
 
 ## Load ADaM ADSL data
-adsl <- pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y")
+adsl <- pharmaverseadam::adsl |> 
+       dplyr::filter(SAFFL == "Y")
 
 # Example 1
 #  Simple example Using `ard_stack()` helper to calculate combined results in 1 step
 ard_full_simple <- ard_stack(
   data = adsl,
   .by = TRT01A,
-  .shuffle = TRUE,
   ard_continuous(variables = AGE)
 )
 
@@ -100,21 +100,23 @@ print(ard_full_simple)
 
 
 # Manipulations to prep for display
-#  - Fill in any overall summaries with TRT01A = "Overall"
-#  - keep only treatment group big N's (not variable-level Ns)
+
 ard_demog_simple <- ard_full_simple |>
+  #Rename the grouping and variable columns to their original column names.
+  rename_ard_columns(columns = c("group1")) |> 
+  unlist_ard_columns() |>
+  #Fill in any overall summaries with TRT01A = "Overall"
   replace_na(list(TRT01A = "Overall")) |>
+  #Add unique stat names for big N's 
   mutate(
     stat_name = ifelse(
-      variable == "TRT01A" & stat_name == "n" |
-        variable == "..ard_total_n..",
+      variable == "TRT01A" & stat_name == "n",
       "bigN",
       stat_name
     )
   ) |>
-  filter(stat_name == "bigN" |
-           (!variable %in% c("TRT01A", "..ard_total_n..") &
-              !stat_name == "N"))
+    # remove unneeded stats
+  filter(!(variable=="TRT01A" & stat_name !="bigN")) 
 
 print(ard_demog_simple)
 
@@ -123,7 +125,6 @@ print(ard_demog_simple)
 ard_full <- ard_stack(
   data = adsl,
   .by = TRT01A,
-  .shuffle = TRUE,
   ard_continuous(variables = AGE),
   ard_categorical(variables = c(AGEGR1,SEX,RACE,ETHNIC))
 )
@@ -135,11 +136,13 @@ print(ard_full)
 #  - Add columns to order on
 #  - keep only treatment group big N's (not variable-level Ns)
 ard_demog <- ard_full |>
+   #Rename the grouping and variable columns to their original column names.
+  rename_ard_columns(columns = c("group1")) |> 
+  unlist_ard_columns() |>
   replace_na(list(TRT01A = "Overall")) |>
   mutate(
     stat_name = ifelse(
-      variable == "TRT01A" & stat_name == "n" |
-        variable == "..ard_total_n..",
+      variable == "TRT01A" & stat_name == "n",
       "bigN",
       stat_name
     ),
@@ -153,11 +156,9 @@ ard_demog <- ard_full |>
         "ETHNIC"
       )
     )),
-    ord2 = as.numeric(factor(label, levels = c("18-64", ">64")))
+    ord2 = as.numeric(factor(variable_level, levels = c("18-64", ">64")))
   ) |>
-  filter(stat_name == "bigN" |
-           (!variable %in% c("TRT01A", "..ard_total_n..") &
-              !stat_name == "N"))
+  filter(!(variable=="TRT01A" & stat_name !="bigN"))
 
 print(ard_demog)
 ```
