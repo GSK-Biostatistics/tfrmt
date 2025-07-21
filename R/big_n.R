@@ -145,7 +145,7 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
 
     by_var <- setdiff(grp_vars, map_chr(columns, as_label))
 
-    .data <- frmtted_vals %>%
+    data_out <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
       pivot_longer(
         -c("_tfrmt______id", !!value, all_of(by_var)),
@@ -162,16 +162,17 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
 
     if (big_n_structure$by_page){
 
-      .data <- .data |>
-        unite("..tfrmt_big_n_order..", all_of(by_var)) %>%
+      data_out <- data_out |>
+        unite("..tfrmt_big_n_order..", all_of(by_var),remove = FALSE) %>%
         mutate(`..tfrmt_big_n_order..` = fct_inorder(`..tfrmt_big_n_order..`))%>%
         group_by(`..tfrmt_big_n_order..`) %>%
         group_split() %>%
         map(~select(.x, -"..tfrmt_big_n_order.."))
+
     }
 
   } else {
-    .data <- NULL
+    data_out <- NULL
   }
-  .data
+  data_out
 }
