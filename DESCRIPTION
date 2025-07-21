@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata to Analysis Results Datasets
-Version: 0.1.3.9000
+Version: 0.1.4
 Authors@R: 
     c(person(given = "Becca",
              family = "Krouse",
@@ -26,7 +26,15 @@ Authors@R:
             person(given = "Shannon",
                     family = "Haughton",
                     role = c("aut"),
-                    email = "shannon.l.haughton@gsk.com")
+                    email = "shannon.l.haughton@gsk.com"),
+            person(given = "Alanah",
+                    family = "Jonas",
+                    role = c("aut"),
+                    email = "alanah.x.jonas@gsk.com"),
+            person(given = "Dragoș",
+                   family = "Moldovan-Grünfeld",
+                   role = c("aut"),
+                   email = "dragos.v.moldovan-grunfeld@gsk.com")
              )
 Description: Creates a framework to store and apply display metadata to Analysis
     Results Datasets (ARDs). The use of 'tfrmt' allows users to define table 

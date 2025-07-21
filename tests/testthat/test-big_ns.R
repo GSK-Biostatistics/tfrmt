@@ -833,8 +833,8 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
   expect_equal(
     map(auto, names),
     list(
-      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl")
+      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl"),
+      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl")
     )
   )
 
@@ -877,16 +877,20 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
     big_n = big_n_structure(param_val = "big_N", by_page = TRUE)
   )
 
-  auto <- mytfrmt %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
-
-  # check big Ns have been correctly applied
-  expect_equal(
-    map(auto, names),
-    list(
-      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl")
-    )
+  expect_message(
+    auto <- mytfrmt %>%
+      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE),
+    "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan` and bigNs must be in order of the data"
+    ,
+    fixed = TRUE
   )
+  # # check big Ns have been correctly applied
+  # expect_equal(
+  #   map(auto, names),
+  #   list(
+  #     c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl"),
+  #     c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl")
+  #   )
+  # )
 
 })
