@@ -240,8 +240,7 @@ char_as_quo <- function(x) {
 
   is_negative <- grepl("^-", x)
   x <- gsub("^-", "", x) # Removes the leading '-'
-  x <- gsub("^`|`$", "", x) # Removes leading/trailing backticks
-  x <- gsub("^\"|\"$", "", x) # Removes leading/trailing double quotes
+  x <- gsub("^`|`$", "", x) # Removes leading/trailing backticks for col names with spaces in
 
   ## if x is a valid tidyselect call, leave it as is,
   ## otherwise wrap it in "`". This is so we can pass
