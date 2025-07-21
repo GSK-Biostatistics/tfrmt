@@ -7,15 +7,15 @@
 #'
 #'
 #' @param x (`card`) a `card` object
-#' @param tfrmt (`tfrmt`) `tfrmt` object
+#' @param column (character) column to use as header. symbol?
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, by, tfrmt) {
+prep_tfrmt <- function(x, column = NULL, variables = NULL) {
 
-  browser()
+  # browser()
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
   #   2. from attributes
@@ -26,15 +26,16 @@ prep_tfrmt <- function(x, by, tfrmt) {
   card_by <- card_args$by
   card_variables <- card_args$variables
 
-  # TODO handle multiple grouping variables
-  #
-  first_grouping_var <- card_by[[1]]
+  if (is.null(column)) {
+    # TODO handle multiple grouping variables?
+    # this assumption (the column making up the headers is the first of the
+    # ard `by` columns)
+    column <- card_by[1]
+  }
 
-  # figure out which column(s) - currently supporting only one - will be spread
-  # and will make the column headers
-  column <- tfrmt$column |>
-    purrr::map(rlang::quo_get_expr) |>
-    purrr::map_chr(rlang::as_string)
+  if (is.null(variables)) {
+    variables <- card_variables
+  }
 
   output <- x |>
     process_labels() |>
@@ -47,9 +48,7 @@ prep_tfrmt <- function(x, by, tfrmt) {
       )
     ) |>
     dplyr::select(
-      # might be the spread column and not the grouping variable
       .data[[column]],
-      # !!sym(first_grouping_var),
       .data$variable,
       .data$label,
       .data$stat_name,
@@ -58,7 +57,8 @@ prep_tfrmt <- function(x, by, tfrmt) {
     unique() |>
     tidyr::unnest(
       .data$stat
-    )
+    ) |>
+    order_rows_n_first()
 
   output
 }
@@ -137,9 +137,9 @@ process_big_n <- function(x, column) {
   # we are interested in the relationship between column headers (given by the
   # tfrmt$column )
 
-  by <- column
-  # TODO support multiple columns (with `rlang::ensyms()`)
-  sym_by <- rlang::ensym(column)
+  # TODO support multiple columns (with `rlang::syms()`). `sym()` if we pass
+  # column as a string
+  col_sym <- rlang::sym(column)
 
   output <- x |>
     # derive `label`
@@ -150,26 +150,28 @@ process_big_n <- function(x, column) {
       )
     ) |>
     dplyr::mutate(
-      !!sym_by := dplyr::if_else(
+      !!col_sym := dplyr::if_else(
         # variable == "ARM",
         # TODO handle multiple grouping variables
         # bigN can be for multiple grouping variables. it can only be used in
         # the column headers though
-        .data$variable == by,
+        .data$variable == column,
         .data$label,
         # ARM
-        !!sym_by
-      ),
-      # TODO we might not need this since it should now be handled by `shuffle_ard()`
-      !!sym_by := dplyr::if_else(
-        is.na(!!sym_by) | .data$variable == "..ard_total_n..",
-        glue::glue("Overall {rlang::as_string(sym_by)}"),
-        !!sym_by
+        !!col_sym
       )
     ) |>
+    # TODO we might not need this since it should now be handled by `shuffle_ard()`
+    # mutate(
+    #   !!col_sym := dplyr::if_else(
+    #     is.na(!!col_sym) | .data$variable == "..ard_total_n..",
+    #     glue::glue("Overall {column}"),
+    #     !!col_sym
+    #   )
+    # ) |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
-        .data$variable == by & .data$stat_name == "n" ~ "bigN",
+        .data$variable == column & .data$stat_name == "n" ~ "bigN",
         .data$variable == "..ard_total_n.." ~ "bigN",
         TRUE ~ .data$stat_name
       ),
@@ -183,7 +185,27 @@ process_big_n <- function(x, column) {
     # if variable is "ARM" keep only the big N rows
     # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
     dplyr::filter(
-      !(.data$variable == by & .data$stat_name != "bigN")
+      !(.data$variable == column & .data$stat_name != "bigN")
+    )
+
+  output
+}
+
+order_rows_n_first <- function(x) {
+  output <- x |>
+    dplyr::mutate(
+      stat_name_order = dplyr::if_else(
+        stat_name == "N",
+        1,
+        2
+      )
+    ) |>
+    dplyr::arrange(
+      variable,
+      stat_name_order
+    ) |>
+    dplyr::select(
+      -stat_name_order
     )
 
   output
