@@ -239,7 +239,9 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
 char_as_quo <- function(x) {
 
   is_negative <- grepl("^-", x)
-  x <- gsub("^-", "", x)
+  x <- gsub("^-", "", x) # Removes the leading '-'
+  x <- gsub("^`|`$", "", x) # Removes leading/trailing backticks
+  x <- gsub("^\"|\"$", "", x) # Removes leading/trailing double quotes
 
   ## if x is a valid tidyselect call, leave it as is,
   ## otherwise wrap it in "`". This is so we can pass
