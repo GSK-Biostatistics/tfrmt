@@ -323,18 +323,18 @@
     Code
       prep_tfrmt(shuffled_ard_attributes, "ARM")
     Output
-      # A tibble: 144 x 5
-         ARM                  variable        label                  stat_name    stat
-         <chr>                <chr>           <chr>                  <chr>       <dbl>
-       1 Overall ARM          ..ard_total_n.. N                      bigN      254    
-       2 Placebo              AGEGR1          n                      N          86    
-       3 Xanomeline High Dose AGEGR1          n                      N          84    
-       4 Xanomeline Low Dose  AGEGR1          n                      N          84    
-       5 Overall ARM          AGEGR1          n                      N         254    
-       6 Placebo              AGEGR1          <=18 years             n           0    
-       7 Placebo              AGEGR1          <=18 years             p           0    
-       8 Placebo              AGEGR1          Between 18 and 65 yea~ n          14    
-       9 Placebo              AGEGR1          Between 18 and 65 yea~ p           0.163
-      10 Placebo              AGEGR1          >=65 years             n          72    
-      # i 134 more rows
+      # A tibble: 112 x 5
+         ARM                  variable        label stat_name stat            
+         <chr>                <chr>           <chr> <chr>     <chr>           
+       1 Overall ARM          ..ard_total_n.. N     bigN      254             
+       2 Placebo              Age             n     N         86              
+       3 Xanomeline High Dose Age             n     N         84              
+       4 Xanomeline Low Dose  Age             n     N         84              
+       5 Overall ARM          Age             n     N         254             
+       6 Placebo              Age             Mean  mean      75.2093023255814
+       7 Placebo              Age             SD    sd        8.59016712714193
+       8 Placebo              Age             Min   min       52              
+       9 Placebo              Age             Max   max       89              
+      10 Xanomeline High Dose Age             Mean  mean      74.3809523809524
+      # i 102 more rows
 
