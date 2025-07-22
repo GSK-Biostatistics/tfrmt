@@ -61,7 +61,7 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
     ) |>
     unique() |>
     tidyr::unnest(
-      .data$stat
+      "stat"
     ) |>
     order_rows_n_first()
 
@@ -108,7 +108,7 @@ process_labels <- function(x) {
       "variable_label" = "stat"
     ) |>
     tidyr::unnest(
-      variable_label
+      "variable_label"
     )
 
   output <- x |>
@@ -119,8 +119,8 @@ process_labels <- function(x) {
       )
     ) |>
     dplyr::relocate(
-      variable_label,
-      .after = variable
+      "variable_label",
+      .after = "variable"
     ) |>
     # remove attributes
     dplyr::filter(
