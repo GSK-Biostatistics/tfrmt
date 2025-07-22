@@ -8,6 +8,8 @@
 #'
 #' @param x (`card`) a `card` object
 #' @param column (character) column to use as header. symbol?
+#' @param tbl_header (character) variable to use in table header.
+#' @param variables (character) variables.
 #'
 #' @returns a `data.frame`
 #' @export
@@ -15,7 +17,7 @@
 #' @examples
 prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
 
-  browser()
+  # browser()
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
   #   2. from attributes
@@ -41,7 +43,7 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
     process_labels() |>
     # process big N by (header) column, not grouping variables
     process_big_n_col_header(column = column) |>
-    augment_with_big_n(column = tbl_header)
+    augment_with_big_n(column = tbl_header) |>
     dplyr::mutate(
       variable = dplyr::coalesce(
         .data$variable_label,
@@ -49,15 +51,15 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
       )
     ) |>
     dplyr::select(
-      .data[[column]],
-      .data$variable,
-      .data$label,
-      .data$stat_name,
-      .data$stat
+      all_of(column),
+      variable,
+      label,
+      stat_name,
+      stat
     ) |>
     unique() |>
     tidyr::unnest(
-      .data$stat
+      stat
     ) |>
     order_rows_n_first()
 
@@ -98,11 +100,11 @@ process_labels <- function(x) {
       .data$stat_label == "Variable Label"
     ) |>
     dplyr::select(
-      .data$variable,
-      variable_label = .data$stat
+      variable,
+      variable_label = stat
     ) |>
     tidyr::unnest(
-      .data$variable_label
+      variable_label
     )
 
   output <- x |>
@@ -113,8 +115,8 @@ process_labels <- function(x) {
       )
     ) |>
     dplyr::relocate(
-      .data$variable_label,
-      .after = .data$variable
+      variable_label,
+      .after = variable
     ) |>
     # remove attributes
     dplyr::filter(
@@ -124,10 +126,11 @@ process_labels <- function(x) {
   output
 }
 
+# `column` here is the same value as the `column` argument
+# from `tfrmt(..., column = , ...)`
 process_big_n_col_header <- function(x, column = NULL) {
 
-  # this theoretically corresponds to bigN structure
-browser()
+  # this corresponds to bigN structure
 
   if(is.null(column)) {
     return(x)
@@ -139,22 +142,8 @@ browser()
     )
   }
 
-  # I originally thought we process bigN for the grouping variable (hence `by`),
-  # but we should process it based on the tfrmt$column (as this indicates which
-  # column will be spread -> mapped to the column headers)
-
-  # TODO likely will need to be aware of the various big N's. the only thing we
-  # can do is prepare bigN everywhere where it exists and display it. if the user
-  # does not want it it needs to be removed from the ARD. the tfrmt bigN does not
-  # do any selection
-
-  # we are interested in the relationship between column headers (given by the
-  # tfrmt$column )
-
-  # TODO support multiple columns (with `rlang::syms()`). `sym()` if we pass
-  # column as a string
-  # multiple columns will likely require a different approach. this approach
-  # holds only for processing big_n in the header column -> I renamed the function
+  # TODO maybe loon into supporting multiple columns (with `rlang::syms()`). `
+  # sym()` if we pass column as a string
   col_sym <- rlang::sym(column)
 
   output <- x |>
@@ -175,14 +164,6 @@ browser()
         !!col_sym
       )
     ) |>
-    # TODO we might not need this since it should now be handled by `shuffle_ard()`
-    # mutate(
-    #   !!col_sym := dplyr::if_else(
-    #     is.na(!!col_sym) | .data$variable == "..ard_total_n..",
-    #     glue::glue("Overall {column}"),
-    #     !!col_sym
-    #   )
-    # ) |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$variable == column & .data$stat_name == "n" ~ "bigN",
@@ -196,8 +177,7 @@ browser()
       )
     ) |>
     # remove unneeded stats
-    # if variable is "ARM" keep only the big N rows
-    # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
+    # keep only the big N rows for the target variable
     dplyr::filter(
       !(.data$variable == column & .data$stat_name != "bigN")
     )
@@ -206,10 +186,10 @@ browser()
 }
 
 augment_with_big_n <- function(x, column = NULL) {
-  # we could have the case when we do not have a big_n_structure, but we still
-  # want the bigN's displayed somewhere (for example in table headers)
-  # we could try to process that
-browser()
+  # this attempts to cater to the case when we do not have a big_n_structure,
+  # but we still have big N's displayed somewhere (for example in table headers)
+  # adds the bigN values to the column values
+
   if(is.null(column)) {
     return(x)
   }
@@ -228,18 +208,12 @@ browser()
     dplyr::filter(
       !is.na(.data[[column]])
     ) |>
-    dplyr::filter(
-      !stringr::str_detect(
-        .data[[column]],
-        pattern
-      )
-    ) |>
+    dplyr::filter(.data[[column]] != pattern) |>
     dplyr::filter(.data$variable == column) |>
     dplyr::filter(stat_name == "n") |>
     dplyr::mutate(
       col_augmented = glue::glue("{.data[[column]]} (N={stat})")
     )
-
 
   output <- x |>
     dplyr::left_join(
@@ -255,10 +229,9 @@ browser()
     dplyr::select(-col_augmented) |>
     # rests on the assumption that augmented columns will play a special role
     # and we are not interested in the absolute totals
-    # TODO improve this condition
-    # we need to keep Overall SITEID when stat_name is bigN
     dplyr::filter(
-      !(stringr::str_detect(.data[[column]], pattern) & stat_name == "bigN")
+      # we do not keep the `Overall ...` bigN's as we only want the group ones
+      !(.data[[column]] == pattern & stat_name != "bigN")
     )
 
   output
