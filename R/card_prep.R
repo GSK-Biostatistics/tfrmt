@@ -17,7 +17,6 @@
 #' @examples
 prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
 
-  # browser()
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
   #   2. from attributes
