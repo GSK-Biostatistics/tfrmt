@@ -39,6 +39,7 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
+    cards,
     covr,
     ggfortify,
     knitr,
