@@ -115,7 +115,7 @@ process_labels <- function(x) {
     dplyr::left_join(
       variable_labels,
       by = dplyr::join_by(
-        variable
+        "variable"
       )
     ) |>
     dplyr::relocate(
@@ -142,7 +142,7 @@ process_big_n_col_header <- function(x, column = NULL) {
 
   if (length(column) != 1) {
     stop(
-      "{.fn process_big_n_col_header} supports a single column.",
+      "`process_big_n_col_header` supports a single column.",
       call. = FALSE
     )
   }
@@ -201,7 +201,7 @@ augment_with_big_n <- function(x, column = NULL) {
 
   if (length(column) != 1) {
     stop(
-      "{.fn process_big_n_col_header} supports a single column.",
+      "`process_big_n_col_header` supports a single column.",
       call. = FALSE
     )
   }
@@ -212,13 +212,15 @@ augment_with_big_n <- function(x, column = NULL) {
 
   augmented_big_n <- x |>
     dplyr::filter(
-      !is.na(.data[[column]])
+      !is.na(.data[[column]]),
+      .data[[column]] != pattern,
+      .data$variable == column,
+      .data$stat_name == "n"
     ) |>
-    dplyr::filter(.data[[column]] != pattern) |>
-    dplyr::filter(.data$variable == column) |>
-    dplyr::filter(stat_name == "n") |>
     dplyr::mutate(
-      col_augmented = glue::glue("{.data[[column]]} (N={stat})")
+      col_augmented = glue::glue(
+        "{.data[[column]]} (N={stat})"
+      )
     )
 
   output <- x |>
