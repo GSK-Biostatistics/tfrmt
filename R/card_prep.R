@@ -137,8 +137,9 @@ process_big_n_col_header <- function(x, column = NULL) {
   }
 
   if (length(column) != 1) {
-    cli::cli_abort(
-      "{.fn process_big_n_col_header} supports a single column."
+    stop(
+      "{.fn process_big_n_col_header} supports a single column.",
+      call. = FALSE
     )
   }
 
@@ -195,8 +196,9 @@ augment_with_big_n <- function(x, column = NULL) {
   }
 
   if (length(column) != 1) {
-    cli::cli_abort(
-      "{.fn process_big_n_col_header} supports a single column."
+    stop(
+      "{.fn process_big_n_col_header} supports a single column.",
+      call. = FALSE
     )
   }
 
