@@ -52,10 +52,12 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
     ) |>
     dplyr::select(
       all_of(column),
-      variable,
-      label,
-      stat_name,
-      stat
+      # use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
+      # we need to use `"variable"` instead of `.data$variable`
+      "variable",
+      "label",
+      "stat_name",
+      "stat"
     ) |>
     unique() |>
     tidyr::unnest(
@@ -228,12 +230,12 @@ augment_with_big_n <- function(x, column = NULL) {
         .data[[column]]
       )
     ) |>
-    dplyr::select(-col_augmented) |>
+    dplyr::select(-.data$col_augmented) |>
     # rests on the assumption that augmented columns will play a special role
     # and we are not interested in the absolute totals
     dplyr::filter(
       # we do not keep the `Overall ...` bigN's as we only want the group ones
-      !(.data[[column]] == pattern & stat_name != "bigN")
+      !(.data[[column]] == pattern & .data$stat_name != "bigN")
     )
 
   output
@@ -243,17 +245,19 @@ order_rows_n_first <- function(x) {
   output <- x |>
     dplyr::mutate(
       stat_name_order = dplyr::if_else(
-        stat_name == "N",
+        .data$stat_name == "N",
         1,
         2
       )
     ) |>
     dplyr::arrange(
-      variable,
-      stat_name_order
+      .data$variable,
+      .data$stat_name_order
     ) |>
+    # use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
+    # need to use `"stat_name_order"` instead of `.data$stat_name_order`
     dplyr::select(
-      -stat_name_order
+      -"stat_name_order"
     )
 
   output
