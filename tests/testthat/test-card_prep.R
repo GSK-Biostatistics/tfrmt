@@ -60,13 +60,14 @@ test_that("prep_tfrmt() works", {
     # arranging for waldo::compare
     dplyr::arrange(ARM, variable, label)
 
-  ard_tbl_with_prep_and_no_attributes <- ard_no_attributes |>
+  ard_tbl_prep_and_no_attributes <- ard_no_attributes |>
     cards::shuffle_ard() |>
-    prep_tfrmt("ARM")
+    prep_tfrmt("ARM") |>
+    dplyr::arrange(ARM, variable, label)
 
   expect_identical(
     ard_tbl,
-    ard_tbl_no_attributes
+    ard_tbl_prep_and_no_attributes
   )
 
   dm_t01_format <-  tfrmt(
@@ -111,11 +112,11 @@ test_that("prep_tfrmt() works", {
   )
 
   expect_no_error(
-    print_to_gt(dm_t01_format, ard_tbl_no_attributes),
+    print_to_gt(dm_t01_format, ard_tbl_prep_and_no_attributes),
   )
 
   expect_snapshot(
-    print_to_gt(dm_t01_format, ard_tbl_no_attributes) |> gt::as_raw_html(),
+    print_to_gt(dm_t01_format, ard_tbl_prep_and_no_attributes) |> gt::as_raw_html(),
     transform = strip_id
   )
 })
