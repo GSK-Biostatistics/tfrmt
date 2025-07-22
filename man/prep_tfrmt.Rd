@@ -4,12 +4,16 @@
 \alias{prep_tfrmt}
 \title{Prepare card for tfrmt}
 \usage{
-prep_tfrmt(x, tfrmt)
+prep_tfrmt(x, column = NULL, tbl_header = NULL, variables = NULL)
 }
 \arguments{
 \item{x}{(\code{card}) a \code{card} object}
 
-\item{tfrmt}{(\code{tfrmt}) \code{tfrmt} object}
+\item{column}{(character) column to use as header. symbol?}
+
+\item{tbl_header}{(character) variable to use in table header.}
+
+\item{variables}{(character) variables.}
 }
 \value{
 a \code{data.frame}
