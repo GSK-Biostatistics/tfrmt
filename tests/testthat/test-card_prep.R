@@ -16,11 +16,10 @@ test_that("prep_tfrmt() works", {
       variables = c(AGEGR1, SEX, ETHNIC, RACE)
     ),
     .overall = TRUE,
-    .total_n = TRUE,
-    .attributes = FALSE
+    .total_n = TRUE
   )
 
-  ard_tbl <- ard |>
+  ard_tbl <- ard_no_attributes |>
     cards::shuffle_ard() |>
     dplyr::mutate(
       label = purrr::map_chr(
