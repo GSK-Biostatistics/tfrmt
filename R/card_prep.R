@@ -51,7 +51,7 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
     ) |>
     dplyr::select(
       all_of(column),
-      # use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
+      # use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
       # we need to use `"variable"` instead of `.data$variable`
       "variable",
       "label",
@@ -97,11 +97,11 @@ process_labels <- function(x) {
 
   variable_labels <- x |>
     dplyr::filter(
-      .data$context == "attributes" &
+      .data$context == "attributes",
       .data$stat_label == "Variable Label"
     ) |>
     dplyr::select(
-      # Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
+      # Use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
       # we need to use `"stat"` instead of `.data$stat`
       "variable",
       "variable_label" = "stat"
@@ -135,7 +135,7 @@ process_big_n_col_header <- function(x, column = NULL) {
 
   # this corresponds to bigN structure
 
-  if(is.null(column)) {
+  if (is.null(column)) {
     return(x)
   }
 
@@ -194,7 +194,7 @@ augment_with_big_n <- function(x, column = NULL) {
   # but we still have big N's displayed somewhere (for example in table headers)
   # adds the bigN values to the column values
 
-  if(is.null(column)) {
+  if (is.null(column)) {
     return(x)
   }
 

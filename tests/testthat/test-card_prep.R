@@ -111,7 +111,8 @@ test_that("prep_tfrmt() works", {
   )
 
   expect_snapshot(
-    print_to_gt(dm_t01_format, ard_tbl_prep_and_no_attributes) |> gt::as_raw_html(),
+    print_to_gt(dm_t01_format, ard_tbl_prep_and_no_attributes) |>
+      gt::as_raw_html(),
     transform = strip_id
   )
 })
