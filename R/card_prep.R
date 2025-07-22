@@ -2,7 +2,7 @@
 #'
 #' What does the preparation function need to do?
 #'   * process labels: labels are persistent in cards and passed down via
-#'  attributes (e.g. by `ard_stack(..., .attributes = TRUE)`)
+#'  attributes (e.g. by `cards::ard_stack(..., .attributes = TRUE)`)
 #'  * `prepare_big_n()`: Is `bigN` only used for categorical variables?
 #'
 #'

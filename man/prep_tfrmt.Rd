@@ -22,7 +22,7 @@ a \code{data.frame}
 What does the preparation function need to do?
 \itemize{
 \item process labels: labels are persistent in cards and passed down via
-attributes (e.g. by \code{ard_stack(..., .attributes = TRUE)})
+attributes (e.g. by \code{cards::ard_stack(..., .attributes = TRUE)})
 \item \code{prepare_big_n()}: Is \code{bigN} only used for categorical variables?
 }
 }
