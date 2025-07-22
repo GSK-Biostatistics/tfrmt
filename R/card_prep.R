@@ -13,9 +13,9 @@
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, column = NULL, variables = NULL) {
+prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
 
-  # browser()
+  browser()
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
   #   2. from attributes
@@ -39,8 +39,9 @@ prep_tfrmt <- function(x, column = NULL, variables = NULL) {
 
   output <- x |>
     process_labels() |>
-    # process big N by columns, not grouping variables
-    process_big_n(column = column) |>
+    # process big N by (header) column, not grouping variables
+    process_big_n_col_header(column = column) |>
+    augment_with_big_n(column = tbl_header)
     dplyr::mutate(
       variable = dplyr::coalesce(
         .data$variable_label,
@@ -123,8 +124,21 @@ process_labels <- function(x) {
   output
 }
 
-process_big_n <- function(x, column) {
-# browser()
+process_big_n_col_header <- function(x, column = NULL) {
+
+  # this theoretically corresponds to bigN structure
+browser()
+
+  if(is.null(column)) {
+    return(x)
+  }
+
+  if (length(column) != 1) {
+    cli::cli_abort(
+      "{.fn process_big_n_col_header} supports a single column."
+    )
+  }
+
   # I originally thought we process bigN for the grouping variable (hence `by`),
   # but we should process it based on the tfrmt$column (as this indicates which
   # column will be spread -> mapped to the column headers)
@@ -139,6 +153,8 @@ process_big_n <- function(x, column) {
 
   # TODO support multiple columns (with `rlang::syms()`). `sym()` if we pass
   # column as a string
+  # multiple columns will likely require a different approach. this approach
+  # holds only for processing big_n in the header column -> I renamed the function
   col_sym <- rlang::sym(column)
 
   output <- x |>
@@ -151,13 +167,11 @@ process_big_n <- function(x, column) {
     ) |>
     dplyr::mutate(
       !!col_sym := dplyr::if_else(
-        # variable == "ARM",
         # TODO handle multiple grouping variables
         # bigN can be for multiple grouping variables. it can only be used in
         # the column headers though
         .data$variable == column,
         .data$label,
-        # ARM
         !!col_sym
       )
     ) |>
@@ -186,6 +200,65 @@ process_big_n <- function(x, column) {
     # drop the rows where the variable is "ARM" and the stat_name is not `"bigN"`
     dplyr::filter(
       !(.data$variable == column & .data$stat_name != "bigN")
+    )
+
+  output
+}
+
+augment_with_big_n <- function(x, column = NULL) {
+  # we could have the case when we do not have a big_n_structure, but we still
+  # want the bigN's displayed somewhere (for example in table headers)
+  # we could try to process that
+browser()
+  if(is.null(column)) {
+    return(x)
+  }
+
+  if (length(column) != 1) {
+    cli::cli_abort(
+      "{.fn process_big_n_col_header} supports a single column."
+    )
+  }
+
+  sym_column <- rlang::sym(column)
+
+  pattern <- glue::glue("Overall {column}")
+
+  augmented_big_n <- x |>
+    dplyr::filter(
+      !is.na(.data[[column]])
+    ) |>
+    dplyr::filter(
+      !stringr::str_detect(
+        .data[[column]],
+        pattern
+      )
+    ) |>
+    dplyr::filter(.data$variable == column) |>
+    dplyr::filter(stat_name == "n") |>
+    dplyr::mutate(
+      col_augmented = glue::glue("{.data[[column]]} (N={stat})")
+    )
+
+
+  output <- x |>
+    dplyr::left_join(
+      augmented_big_n,
+      by = names(x)
+    ) |>
+    dplyr::mutate(
+      !!sym_column := dplyr::coalesce(
+        .data$col_augmented,
+        .data[[column]]
+      )
+    ) |>
+    dplyr::select(-col_augmented) |>
+    # rests on the assumption that augmented columns will play a special role
+    # and we are not interested in the absolute totals
+    # TODO improve this condition
+    # we need to keep Overall SITEID when stat_name is bigN
+    dplyr::filter(
+      !(stringr::str_detect(.data[[column]], pattern) & stat_name == "bigN")
     )
 
   output
