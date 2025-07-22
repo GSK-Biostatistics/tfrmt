@@ -122,6 +122,10 @@ test_that("prep_tfrmt() works", {
 })
 
 test_that("prep_tfrmt() works with attributes of shuffled ard", {
+  adsl <- pharmaverseadam::adsl |>
+    dplyr::filter(SAFFL == "Y") |>
+    dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE)
+
   ard_attributes <- cards::ard_stack(
     data = adsl,
     .by = ARM,
