@@ -122,15 +122,15 @@ test_that("prep_tfrmt() works", {
 })
 
 test_that("prep_tfrmt() works with attributes of shuffled ard", {
-  ard_attributes <- ard_stack(
+  ard_attributes <- cards::ard_stack(
     data = adsl,
     .by = ARM,
-    ard_continuous(
+    cards::ard_continuous(
       variables = AGE,
-      statistic = ~ continuous_summary_fns(
+      statistic = ~ cards::continuous_summary_fns(
         c("N","mean","sd","min","max"))
     ),
-    ard_categorical(
+    cards::ard_categorical(
       variables = c(AGEGR1, SEX, ETHNIC, RACE)
     ),
     .overall = TRUE,
@@ -139,7 +139,7 @@ test_that("prep_tfrmt() works with attributes of shuffled ard", {
   )
 
   shuffled_ard_attributes <- ard_attributes |>
-    shuffle_ard()
+    cards::shuffle_ard()
 
   ard_tbl_attributes <- shuffled_ard_attributes |>
     prep_tfrmt("ARM")
