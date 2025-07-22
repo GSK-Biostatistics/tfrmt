@@ -61,7 +61,7 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
     ) |>
     unique() |>
     tidyr::unnest(
-      stat
+      .data$stat
     ) |>
     order_rows_n_first()
 
@@ -102,8 +102,10 @@ process_labels <- function(x) {
       .data$stat_label == "Variable Label"
     ) |>
     dplyr::select(
-      variable,
-      variable_label = stat
+      # Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
+      # we need to use `"stat"` instead of `.data$stat`
+      "variable",
+      "variable_label" = "stat"
     ) |>
     tidyr::unnest(
       variable_label
@@ -230,7 +232,9 @@ augment_with_big_n <- function(x, column = NULL) {
         .data[[column]]
       )
     ) |>
-    dplyr::select(-.data$col_augmented) |>
+    # use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
+    # need to use `"col_augmented"` instead of `.data$col_augmented`
+    dplyr::select(-"col_augmented") |>
     # rests on the assumption that augmented columns will play a special role
     # and we are not interested in the absolute totals
     dplyr::filter(
