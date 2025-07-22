@@ -1,36 +1,7 @@
 test_that("prep_tfrmt() works", {
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
-    dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE) |>
-    dplyr::mutate(
-      SEX = factor(
-        SEX,
-        levels = c("F", "M")
-      ),
-      AGEGR1 = factor(
-        AGEGR1,
-        levels = c("<18", "18-64", ">64"),
-        labels = c("<=18 years", "Between 18 and 65 years", ">=65 years")
-      ),
-      ETHNIC = factor(
-        ETHNIC,
-        levels = c(
-          "HISPANIC OR LATINO",
-          "NOT HISPANIC OR LATINO",
-          "NOT REPORTED"
-        )
-      ),
-      RACE = factor(
-        RACE,
-        levels = c(
-          "AMERICAN INDIAN OR ALASKA NATIVE",
-          "ASIAN",
-          "BLACK OR AFRICAN AMERICAN",
-          "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
-          "WHITE"
-        )
-      )
-    )
+    dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE)
 
   ard_no_attributes <- cards::ard_stack(
     data = adsl,
@@ -92,9 +63,7 @@ test_that("prep_tfrmt() works", {
 
   ard_tbl_with_prep_and_no_attributes <- ard_no_attributes |>
     cards::shuffle_ard() |>
-    prep_tfrmt("ARM") |>
-    # arranging for waldo::compare
-    dplyr::arrange(ARM, variable, label)
+    prep_tfrmt("ARM")
 
   expect_identical(
     ard_tbl,
@@ -108,7 +77,6 @@ test_that("prep_tfrmt() works", {
     param = stat_name,
     value = stat,
     column = ARM,
-    # sorting_cols = c(ord1,ord2),
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",
@@ -128,9 +96,6 @@ test_that("prep_tfrmt() works", {
     big_n = big_n_structure(
       param_val = "bigN",
       n_frmt = frmt("\n(N=xx)")
-    ),
-    col_plan = col_plan(
-      -starts_with("ord")
     ),
     col_style_plan = col_style_plan(
       col_style_structure(
@@ -154,4 +119,33 @@ test_that("prep_tfrmt() works", {
     print_to_gt(dm_t01_format, ard_tbl_no_attributes) |> gt::as_raw_html(),
     transform = strip_id
   )
+})
+
+test_that("prep_tfrmt() works with attributes of shuffled ard", {
+  ard_attributes <- ard_stack(
+    data = adsl,
+    .by = ARM,
+    ard_continuous(
+      variables = AGE,
+      statistic = ~ continuous_summary_fns(
+        c("N","mean","sd","min","max"))
+    ),
+    ard_categorical(
+      variables = c(AGEGR1, SEX, ETHNIC, RACE)
+    ),
+    .overall = TRUE,
+    .total_n = TRUE,
+    .attributes = TRUE
+  )
+
+  shuffled_ard_attributes <- ard_attributes |>
+    shuffle_ard()
+
+  ard_tbl_attributes <- shuffled_ard_attributes |>
+    prep_tfrmt("ARM")
+
+  expect_snapshot(
+    prep_tfrmt(shuffled_ard_attributes, "ARM")
+  )
+
 })
