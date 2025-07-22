@@ -42,20 +42,15 @@ test_that("prep_tfrmt() works", {
         "Overall ARM",
         ARM
       ),
-      # unique stat names for big N's
       stat_name = dplyr::if_else(
-        (variable=="ARM" & stat_name=="n") | variable=="..ard_total_n..",
+        (variable == "ARM" & stat_name == "n") | variable == "..ard_total_n..",
         "bigN",
         stat_name
       ),
-      # relabel the label for n's
-      label = dplyr::if_else(stat_name=="N", "n", label)
+      label = dplyr::if_else(stat_name == "N", "n", label)
     ) |>
-    # remove unneeded stats
-    dplyr::filter(!(variable=="ARM" & stat_name !="bigN")) |>
-    # drop variables not needed
-    dplyr::select(ARM, variable, label, stat_name, stat)|>
-    # remove dups (extra denoms per variable level)
+    dplyr::filter(!(variable == "ARM" & stat_name != "bigN")) |>
+    dplyr::select(ARM, variable, label, stat_name, stat) |>
     unique() |>
     # arranging for waldo::compare
     dplyr::arrange(ARM, variable, label)
@@ -70,7 +65,7 @@ test_that("prep_tfrmt() works", {
     ard_tbl_prep_and_no_attributes
   )
 
-  dm_t01_format <-  tfrmt(
+  dm_t01_format <- tfrmt(
     title = "Table DM_T01: Summary of Demographic and Baseline Characteristics",
     group = variable,
     label = label,
@@ -89,7 +84,7 @@ test_that("prep_tfrmt() works", {
         frmt_combine(
           "{n} ({p}%)",
           n = frmt("xxx"),
-          p = frmt("xx", transform = ~.*100)
+          p = frmt("xx", transform = ~ . * 100)
         )
       )
     ),
@@ -99,7 +94,7 @@ test_that("prep_tfrmt() works", {
     ),
     col_style_plan = col_style_plan(
       col_style_structure(
-        col= everything(),
+        col = everything(),
         align = "left"
       )
     ),
@@ -132,7 +127,8 @@ test_that("prep_tfrmt() works with attributes of shuffled ard", {
     cards::ard_continuous(
       variables = AGE,
       statistic = ~ cards::continuous_summary_fns(
-        c("N","mean","sd","min","max"))
+        c("N", "mean", "sd", "min", "max")
+      )
     ),
     cards::ard_categorical(
       variables = c(AGEGR1, SEX, ETHNIC, RACE)
@@ -151,5 +147,4 @@ test_that("prep_tfrmt() works with attributes of shuffled ard", {
   expect_snapshot(
     prep_tfrmt(shuffled_ard_attributes, "ARM")
   )
-
 })
