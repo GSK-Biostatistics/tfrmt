@@ -8,14 +8,13 @@
 #'
 #' @param x (`card`) a `card` object
 #' @param column (character) column to use as header. symbol?
-#' @param tbl_header (character) variable to use in table header.
 #' @param variables (character) variables.
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
+prep_tfrmt <- function(x, column = NULL, variables = NULL) {
 
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
@@ -41,8 +40,7 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
   output <- x |>
     process_labels() |>
     # process big N by (header) column, not grouping variables
-    process_big_n_col_header(column = column) |>
-    augment_with_big_n(column = tbl_header) |>
+    process_big_n(column = column) |>
     dplyr::mutate(
       variable = dplyr::coalesce(
         .data$variable_label,
@@ -61,8 +59,7 @@ prep_tfrmt <- function(x, column = NULL, tbl_header = NULL, variables = NULL) {
     unique() |>
     tidyr::unnest(
       "stat"
-    ) |>
-    order_rows_n_first()
+    )
 
   output
 }
@@ -131,7 +128,7 @@ process_labels <- function(x) {
 
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
-process_big_n_col_header <- function(x, column = NULL) {
+process_big_n <- function(x, column = NULL) {
 
   # this corresponds to bigN structure
 
@@ -141,7 +138,7 @@ process_big_n_col_header <- function(x, column = NULL) {
 
   if (length(column) != 1) {
     stop(
-      "`process_big_n_col_header` supports a single column.",
+      "`process_big_n` supports a single column.",
       call. = FALSE
     )
   }
@@ -200,7 +197,7 @@ augment_with_big_n <- function(x, column = NULL) {
 
   if (length(column) != 1) {
     stop(
-      "`process_big_n_col_header` supports a single column.",
+      "`process_big_n` supports a single column.",
       call. = FALSE
     )
   }
