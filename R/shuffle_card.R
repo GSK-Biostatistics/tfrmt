@@ -14,9 +14,9 @@
 #' @export
 #'
 #' @examples
-#' bind_ard(
-#'   ard_categorical(ADSL, by = "ARM", variables = "AGEGR1"),
-#'   ard_categorical(ADSL, variables = "ARM")
+#' cards::bind_ard(
+#'   cards::ard_categorical(ADSL, by = "ARM", variables = "AGEGR1"),
+#'   cards::ard_categorical(ADSL, variables = "ARM")
 #' ) |>
 #'   shuffle_card()
 shuffle_card <- function(x, by = NULL, trim = TRUE) {
