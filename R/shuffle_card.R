@@ -120,7 +120,7 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
   .detect_msgs(x, "warning", "error")
   # flatten ard table for easier viewing ---------------------------------------
   x |>
-    dplyr::select(-c("fmt_fn", "warning", "error"))
+    dplyr::select(-c("fmt_fun", "warning", "error"))
 }
 
 
