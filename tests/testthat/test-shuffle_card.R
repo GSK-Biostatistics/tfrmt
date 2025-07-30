@@ -269,7 +269,7 @@ test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <v
 
 })
 
-test_that("shuffle_ard() fills with multiple `by` columns", {
+test_that("shuffle_card() fills with multiple `by` columns", {
   adae <- cards::ADAE |>
     dplyr::filter(
       SAFFL == "Y",
@@ -335,7 +335,7 @@ test_that("shuffle_ard() fills with multiple `by` columns", {
 
 })
 
-test_that("shuffle_ard() messages about 'Overall <var>' or 'Any <var>'", {
+test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
   test_data <- dplyr::tibble(
     ARM = c("..cards_overall..", "Overall ARM", NA, "BB", NA),
     TRTA = c(NA, NA, "..hierarchical_overall..", "C", "C")
@@ -438,7 +438,7 @@ test_that("shuffle_ard() messages about 'Overall <var>' or 'Any <var>'", {
 })
 
 
-test_that("shuffle_ard() preserves the attributes of a `card` object", {
+test_that("shuffle_card() preserves the attributes of a `card` object", {
   adae <- cards::ADAE |>
     dplyr::filter(
       SAFFL == "Y",
