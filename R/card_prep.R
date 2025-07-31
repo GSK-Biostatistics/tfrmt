@@ -23,6 +23,9 @@ prep_tfrmt <- function(x, column = NULL) {
   column <- rlang::ensym(column)
 
   output <- x |>
+    # remove attributes for now
+    # TODO add some logic to deal with them
+    dplyr::filter(context != "attributes") |>
     unite_data_vars(column) |>
     # process_labels() |>
     # process big N by (header) column, not grouping variables

@@ -150,8 +150,7 @@ test_that("prep_tfrmt() works with attributes of shuffled ard", {
     cards::shuffle_ard()
 
   ard_tbl_attributes <- shuffled_ard_attributes |>
-    prep_tfrmt("ARM") |>
-    arrange(variable)
+    prep_tfrmt("ARM")
 
   expect_snapshot(
     prep_tfrmt(shuffled_ard_attributes, "ARM")
