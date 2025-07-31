@@ -1,9 +1,7 @@
-skip_if_not(is_pkg_installed("withr"))
-
 test_that("shuffle/trim works", {
   withr::local_options(list(width = 200))
   # shuffle without group/var levels
-  ard_simple <- cards::ard_continuous(cards::ADSL, variables = "AGE")
+  ard_simple <- cards::ard_continuous(cards::ADSL, by = "ARM",variables = "AGE")
 
   ard_simple_shuffled <- ard_simple |>
     shuffle_card(by = NULL, trim = FALSE) |>
