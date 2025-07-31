@@ -20,7 +20,8 @@ test_that("prep_tfrmt() works", {
   )
 
   ard_tbl <- ard_no_attributes |>
-    cards::shuffle_ard() |>
+    cards::rename_ard_columns(all_ard_groups("names")) |>
+    cards::unlist_ard_columns(stat) |>
     dplyr::mutate(
       label = purrr::map_chr(
         variable_level,
@@ -52,17 +53,23 @@ test_that("prep_tfrmt() works", {
     dplyr::filter(!(variable == "ARM" & stat_name != "bigN")) |>
     dplyr::select(ARM, variable, label, stat_name, stat) |>
     unique() |>
+    dplyr::mutate(
+      variable = dplyr::if_else(
+        variable == "..ard_total_n..",
+        "ARM",
+        variable
+      )
+    ) |>
     # arranging for waldo::compare
     dplyr::arrange(ARM, variable, label)
 
   ard_tbl_prep_and_no_attributes <- ard_no_attributes |>
     cards::shuffle_ard() |>
-    prep_tfrmt("ARM") |>
-    dplyr::arrange(ARM, variable, label)
+    prep_tfrmt("ARM")
 
   expect_identical(
     ard_tbl,
-    ard_tbl_prep_and_no_attributes
+    dplyr::arrange(ard_tbl_prep_and_no_attributes, ARM, variable, label)
   )
 
   dm_t01_format <- tfrmt(
@@ -143,7 +150,8 @@ test_that("prep_tfrmt() works with attributes of shuffled ard", {
     cards::shuffle_ard()
 
   ard_tbl_attributes <- shuffled_ard_attributes |>
-    prep_tfrmt("ARM")
+    prep_tfrmt("ARM") |>
+    arrange(variable)
 
   expect_snapshot(
     prep_tfrmt(shuffled_ard_attributes, "ARM")
