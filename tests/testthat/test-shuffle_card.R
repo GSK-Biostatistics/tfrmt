@@ -103,7 +103,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
     cards::bind_ard(
       cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |> dplyr::slice(1),
       cards::ard_categorical(cards::ADSL, variables = AGEGR1) |> dplyr::slice(1),
-      ard_continuous(cards::ADSL, by = SEX, variables = AGE) |> dplyr::slice(1),
+      cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |> dplyr::slice(1),
       cards::ard_continuous(cards::ADSL, variables = AGE) |> dplyr::slice(1)
     ) |>
       shuffle_card(by = c("ARM","SEX")) |>

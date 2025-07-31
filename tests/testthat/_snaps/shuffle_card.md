@@ -98,6 +98,47 @@
       1 <NA>        Overall AGE continuous AGE           mean      Mean       75.1 
       2 Overall ARM Overall AGE <NA>       AGE           p         p           0.05
 
+---
+
+    Code
+      as.data.frame(shuffle_card(cards::bind_ard(dplyr::slice(cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(cards::ADSL, variables = AGEGR1), 1),
+      dplyr::slice(cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE), 1), dplyr::slice(cards::ard_continuous(cards::ADSL, variables = AGE), 1)), by = c("ARM", "SEX")))
+    Output
+                ARM         SEX AGEGR1         AGE     context stat_variable stat_name stat_label stat
+      1     Placebo        <NA>  65-80        <NA> categorical        AGEGR1         n          n   42
+      2 Overall ARM        <NA>  65-80        <NA> categorical        AGEGR1         n          n  144
+      3        <NA> Overall SEX   <NA> Overall AGE  continuous           AGE         N          N  254
+      4        <NA>           F   <NA> Overall AGE  continuous           AGE         N          N  143
+
+---
+
+    Code
+      shuffle_card(cards::bind_ard(dplyr::slice(cards::ard_categorical(cards::ADSL, by = c(ARM, SEX), variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(cards::ADSL, by = SEX, variables = AGEGR1),
+      1), dplyr::slice(cards::ard_categorical(cards::ADSL, variables = AGEGR1), 1)), by = c("ARM", "SEX"))
+    Output
+      # A tibble: 3 x 8
+        ARM         SEX         AGEGR1 context     stat_variable stat_name stat_label  stat
+        <chr>       <chr>       <chr>  <chr>       <chr>         <chr>     <chr>      <int>
+      1 Placebo     F           65-80  categorical AGEGR1        n         n             22
+      2 Overall ARM F           65-80  categorical AGEGR1        n         n             78
+      3 Overall ARM Overall SEX 65-80  categorical AGEGR1        n         n            144
+
+---
+
+    Code
+      shuffle_card(cards::bind_ard(cards::ard_continuous(adsl_new, variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")), cards::ard_continuous(adsl_new, by = "ARM", variables = "AGE",
+        statistic = ~ cards::continuous_summary_fns("mean"))), by = "ARM")
+    Message
+      i "Overall ARM" already exists in the `ARM` column. Using "Overall ARM.1".
+    Output
+      # A tibble: 4 x 7
+        ARM                  AGE         context    stat_variable stat_name stat_label  stat
+        <chr>                <chr>       <chr>      <chr>         <chr>     <chr>      <dbl>
+      1 Overall ARM.1        Overall AGE continuous AGE           mean      Mean        75.1
+      2 Overall ARM          Overall AGE continuous AGE           mean      Mean        75.2
+      3 Xanomeline High Dose Overall AGE continuous AGE           mean      Mean        74.4
+      4 Xanomeline Low Dose  Overall AGE continuous AGE           mean      Mean        75.7
+
 # shuffle_card fills missing group levels if the group is meaningful for cardx output
 
     Code

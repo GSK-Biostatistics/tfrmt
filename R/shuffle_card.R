@@ -163,7 +163,7 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 
   # determine grouping and merging variables
   grp_vars <- ard_args$by
-  id_vars <- setdiff(names(x), unique(c(vars_protected, grp_vars, "..ard_vars..")))
+  id_vars <- setdiff(names(x), unique(c(vars_protected, grp_vars, "..ard_vars..", "stat_variable")))
 
   if (!is_empty(grp_vars)){
 
