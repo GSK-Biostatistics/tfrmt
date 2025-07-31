@@ -1,61 +1,34 @@
 #' Prepare card for tfrmt
 #'
 #' What does the preparation function need to do?
-#'   * process labels: labels are persistent in cards and passed down via
-#'  attributes (e.g. by `cards::ard_stack(..., .attributes = TRUE)`)
-#'  * `prepare_big_n()`: Is `bigN` only used for categorical variables?
+#'  * `unite_data_vars()`: bring all data variables into a single column
+#'  (`variable`) and their levels into `variable_level`
+#'  * `prepare_big_n()`:
 #'
 #'
-#' @param x (`card`) a `card` object
-#' @param column (character) column to use as header. symbol?
-#' @param variables (character) variables.
+#' @param x a shuffled `card` object.
+#' @param column column to use as header.
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, column = NULL, variables = NULL) {
+prep_tfrmt <- function(x, column = NULL) {
 
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
   #   2. from attributes
   #   3. tfrmt object
 
-  # extract metadata (from the shuffle output)
-  card_args <- attr(x, "args")
-  card_by <- card_args$by
-  card_variables <- card_args$variables
+  column <- rlang::ensym(column)
 
-  if (is.null(column)) {
-    # TODO handle multiple grouping variables?
-    # this assumption (the column making up the headers is the first of the
-    # ard `by` columns)
-    column <- card_by[1]
-  }
-
-  if (is.null(variables)) {
-    variables <- card_variables
-  }
-
-  output1 <- x |>
+  output <- x |>
+    unite_data_vars(column) |>
     # process_labels() |>
     # process big N by (header) column, not grouping variables
-    process_big_n(column = column)
-
-  # browser()
-
-  output2 <- output1 |>
-    # dplyr::mutate(
-    #   variable = dplyr::coalesce(
-    #     .data$variable_label,
-    #     .data$variable
-    #   )
-    # ) |>
-    # unique() |>
+    process_big_n(column) |>
     dplyr::select(
-      # before
       all_of(column),
-      # needed for ae_t04
       # use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
       # we need to use `"variable"` instead of `.data$variable`
       "variable",
@@ -65,7 +38,7 @@ prep_tfrmt <- function(x, column = NULL, variables = NULL) {
     ) |>
     order_rows_n_first()
 
-  output2
+  output
 }
 
 
@@ -85,7 +58,7 @@ has_attributes <- function(x) {
 }
 
 process_labels <- function(x) {
-browser()
+
   if (!has_attributes(x)) {
     output <- x |>
       dplyr::mutate(
@@ -135,7 +108,7 @@ browser()
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, column = NULL) {
-# browser()
+
   # this corresponds to bigN structure
 
   if (is.null(column)) {
@@ -149,9 +122,6 @@ process_big_n <- function(x, column = NULL) {
     )
   }
 
-  # TODO pass column as symbol
-  col_sym <- rlang::sym(column)
-
   ard_vars <- c(
     "..ard_vars..",
     "context",
@@ -164,10 +134,10 @@ process_big_n <- function(x, column = NULL) {
   data_vars <- setdiff(names(x), c(ard_vars, column))
 
   # TODO move this outside process_big_n
-  df_united_vars <- unite_data_vars(x, col_sym, data_vars)
+  # df_united_vars <- unite_data_vars(x, column, data_vars)
 
   # browser()
-  output <- df_united_vars |>
+  output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$..ard_vars.. == "..ard_total_n.." ~ "bigN",
@@ -180,16 +150,16 @@ process_big_n <- function(x, column = NULL) {
     # we only want the bigN for overall
     dplyr::filter(stat_name != "out") |>
     dplyr::mutate(
-      !!col_sym := dplyr::case_when(
-        .data$..ard_vars.. == "..ard_total_n.." ~ glue::glue("Overall {col_sym}"),
-        is.na(!!col_sym) & variable_level == "..cards_overall.." ~ glue::glue("Overall {col_sym}"),
-        TRUE ~ !!col_sym
+      !!column := dplyr::case_when(
+        .data$..ard_vars.. == "..ard_total_n.." ~ glue::glue("Overall {column}"),
+        is.na(!!column) & variable_level == "..cards_overall.." ~ glue::glue("Overall {column}"),
+        TRUE ~ !!column
       )
     ) |>
     dplyr::select(-`..ard_vars..`) |>
     # we need "..cards_overall.." for the above `case_when()`
     dplyr::mutate(
-      # we overwrite "..card_overal.." (present for continuous variables)
+      # we overwrite "..card_overall.." (present for continuous variables)
       # variable_level with the variable name
       variable_level = dplyr::if_else(
         context == "continuous",
@@ -198,12 +168,12 @@ process_big_n <- function(x, column = NULL) {
       )
     ) |>
     dplyr::mutate(
-      !!col_sym := dplyr::if_else(
-        is.na(!!col_sym) & !is.na(variable),
-        glue::glue("Overall {col_sym}"),
-        !!col_sym
+      !!column := dplyr::if_else(
+        is.na(!!column) & !is.na(variable),
+        glue::glue("Overall {column}"),
+        !!column
       ),
-      !!col_sym := as.character(!!col_sym)
+      !!column := as.character(!!column)
     ) |>
     dplyr::mutate(label = stat_label) |>
     dplyr::mutate(
@@ -211,7 +181,7 @@ process_big_n <- function(x, column = NULL) {
         .data$stat_name == "N" ~ "n",
         # for identity with the current approach that has the `column` levels
         # in label
-        .data$stat_name == "bigN" & .data$context != "total_n" ~ !!col_sym,
+        .data$stat_name == "bigN" & .data$context != "total_n" ~ !!column,
         TRUE ~ .data$label
       ),
       label = as.character(label)
@@ -243,7 +213,7 @@ process_big_n <- function(x, column = NULL) {
     dplyr::mutate(
       variable = dplyr::if_else(
         is.na(variable),
-        rlang::as_name(col_sym),
+        rlang::as_name(column),
         variable
       )
     )
@@ -251,7 +221,18 @@ process_big_n <- function(x, column = NULL) {
   output1
 }
 
-unite_data_vars <- function(x, col_sym, data_vars) {
+unite_data_vars <- function(x, column) {
+
+  ard_vars <- c(
+    "..ard_vars..",
+    "context",
+    "stat_name",
+    "stat_label",
+    "stat",
+    "variable_label"
+  )
+
+  data_vars <- setdiff(names(x), c(ard_vars, column))
 
   .capture_var_name <- function(x, cur_col = dplyr::cur_column()) {
     output <- dplyr::if_else(
@@ -286,7 +267,7 @@ unite_data_vars <- function(x, col_sym, data_vars) {
       )
     ) |>
     dplyr::select(
-      tidyselect::all_of(col_sym),
+      tidyselect::all_of(column),
       variable,
       variable_level,
       tidyselect::everything()
@@ -295,7 +276,7 @@ unite_data_vars <- function(x, col_sym, data_vars) {
   output
 }
 
-# some basic ordering. order_plan can alway re-order.
+# some basic ordering. order_plan can always re-order.
 order_rows_n_first <- function(x) {
   output <- x |>
     mutate(

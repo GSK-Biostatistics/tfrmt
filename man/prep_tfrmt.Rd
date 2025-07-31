@@ -4,14 +4,12 @@
 \alias{prep_tfrmt}
 \title{Prepare card for tfrmt}
 \usage{
-prep_tfrmt(x, column = NULL, variables = NULL)
+prep_tfrmt(x, column = NULL)
 }
 \arguments{
-\item{x}{(\code{card}) a \code{card} object}
+\item{x}{a shuffled \code{card} object.}
 
-\item{column}{(character) column to use as header. symbol?}
-
-\item{variables}{(character) variables.}
+\item{column}{column to use as header.}
 }
 \value{
 a \code{data.frame}
@@ -19,8 +17,8 @@ a \code{data.frame}
 \description{
 What does the preparation function need to do?
 \itemize{
-\item process labels: labels are persistent in cards and passed down via
-attributes (e.g. by \code{cards::ard_stack(..., .attributes = TRUE)})
-\item \code{prepare_big_n()}: Is \code{bigN} only used for categorical variables?
+\item \code{unite_data_vars()}: bring all data variables into a single column
+(\code{variable}) and their levels into \code{variable_level}
+\item \code{prepare_big_n()}:
 }
 }
