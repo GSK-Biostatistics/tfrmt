@@ -52,10 +52,11 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
     dplyr::mutate(
       dplyr::across(
         c(cards::all_ard_groups("levels"), cards::all_ard_variables("levels")),
-        ~ lapply(., \(x) if (!is.null(x)) as.character(x) else NA_character_)
-      )) |>
+        ~ lapply(., \(x) if (!is.null(x)) as.character(x))
+      ),
+      stat_variable = variable) |>
+    dplyr::relocate(stat_variable, .after = "context") |>
     cards::rename_ard_columns(fill = "..cards_overall..")
-
 
   dat_cards_out <- dat_cards_grps_processed |>
     # unlist the list-columns
@@ -162,7 +163,7 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 
   # determine grouping and merging variables
   grp_vars <- ard_args$by
-  id_vars <- setdiff(names(x), unique(c(vars_protected, grp_vars, "..ard_vars..")))
+  id_vars <- setdiff(names(x), unique(c(vars_protected, grp_vars, "..ard_vars..", "stat_variable")))
 
   if (!is_empty(grp_vars)){
 

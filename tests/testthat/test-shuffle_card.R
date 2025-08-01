@@ -1,9 +1,6 @@
-skip_if_not(is_pkg_installed("withr"))
-
 test_that("shuffle/trim works", {
-  withr::local_options(list(width = 200))
   # shuffle without group/var levels
-  ard_simple <- cards::ard_continuous(cards::ADSL, variables = "AGE")
+  ard_simple <- cards::ard_continuous(cards::ADSL, by = "ARM",variables = "AGE")
 
   ard_simple_shuffled <- ard_simple |>
     shuffle_card(by = NULL, trim = FALSE) |>
@@ -68,7 +65,6 @@ test_that("shuffle/trim works", {
 # })
 
 test_that("shuffle_card notifies user about warnings/errors before dropping", {
-  withr::local_options(list(width = 200))
   expect_snapshot(
     cards::ard_continuous(
       cards::ADSL,
@@ -79,7 +75,6 @@ test_that("shuffle_card notifies user about warnings/errors before dropping", {
 })
 
 test_that("shuffle_card fills missing group levels if the group is meaningful", {
-  withr::local_options(list(width = 200))
   # mix of missing/nonmissing group levels present before shuffle
   expect_snapshot(
     cards::bind_ard(
@@ -105,7 +100,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
     cards::bind_ard(
       cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |> dplyr::slice(1),
       cards::ard_categorical(cards::ADSL, variables = AGEGR1) |> dplyr::slice(1),
-      ard_continuous(cards::ADSL, by = SEX, variables = AGE) |> dplyr::slice(1),
+      cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |> dplyr::slice(1),
       cards::ard_continuous(cards::ADSL, variables = AGE) |> dplyr::slice(1)
     ) |>
       shuffle_card(by = c("ARM","SEX")) |>
@@ -180,7 +175,6 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
 })
 
 test_that("shuffle_card fills missing group levels if the group is meaningful for cardx output", {
-  withr::local_options(list(width = 200))
   # cardx ARD: this is a dput() of a cardx result (see commented out code below) SAVED 2024-08-30
   ard_cardx <-
     structure(list(
