@@ -166,7 +166,6 @@ process_big_n <- function(x, column) {
 
 
 unite_data_vars <- function(x, column) {
-# browser()
 
   ard_vars <- c(
     "context",
@@ -197,19 +196,6 @@ unite_data_vars <- function(x, column) {
       variable_level,
       tidyselect::everything()
     )
-
-  output
-}
-
-# some basic ordering. order_plan can always re-order.
-order_rows_n_first <- function(x) {
-  output <- x |>
-    mutate(
-      ord1 = forcats::fct_inorder(stat_variable),
-      ord2 = if_else(label == "n", 1, 2)
-    ) |>
-    arrange(ord1, ord2) |>
-    select(-ord1, -ord2)
 
   output
 }
