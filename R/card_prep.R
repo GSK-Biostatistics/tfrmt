@@ -57,6 +57,10 @@ browser()
     process_big_n(column) |>
     process_categorical_vars(column)
 
+  if (has_args(x)) {
+    output <- fill_variables(output)
+  }
+
   output
 }
 
@@ -67,15 +71,18 @@ has_attributes <- function(x) {
       .data$context == "attributes"
     )
 
-  output <- FALSE
-
-  if (nrow(shuffled_card_attributes_df) > 0) {
-    output <- TRUE
-  }
+  output <- nrow(shuffled_card_attributes_df) > 0
 
   output
 }
 
+has_args <- function(x) {
+  args <- attr(x, "args")
+
+  output <- !rlang::is_empty(args)
+
+  output
+}
 
 # fill the main column(s) needs a string, might work with symbols
 fill_column <- function(x, column) {
@@ -85,6 +92,24 @@ fill_column <- function(x, column) {
     purrr::map(~ glue::glue("Overall {.x}"))
 
   output <- tidyr::replace_na(x, replacement_vals)
+
+  output
+}
+
+fill_variables <- function(x) {
+  browser()
+
+  variables <- attr(x, "args")[["variables"]]
+  variables_syms <- rlang::syms(variables)
+
+  output <- x |>
+    mutate(
+      !!variables_syms[[2]] := dplyr::if_else(
+        is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
+        glue::glue("Any {variables_syms[[2]]}"),
+        !!variables_syms[[2]]
+      )
+    )
 
   output
 }
@@ -150,6 +175,8 @@ unite_data_vars <- function(x, column) {
 
 process_categorical_vars <- function(x, column) {
 
+  browser()
+
   categorical_vars <- x |>
     dplyr::filter(context == "categorical") |>
     dplyr::distinct(stat_variable) |>
@@ -194,6 +221,8 @@ process_categorical_vars <- function(x, column) {
 
   output
 }
+
+
 
 process_labels <- function(x) {
 
