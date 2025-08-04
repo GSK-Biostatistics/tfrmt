@@ -354,7 +354,7 @@ test_that("prep_tfrmt() works with AE-T02", {
     ignore_attr = TRUE
   )
 
-  skip("temp skip")
+  skip("they're not exactly identical, but the rendered outputs are")
   expect_identical(
     gt::extract_body(a),
     gt::extract_body(b)
