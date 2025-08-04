@@ -15,6 +15,12 @@
 #' @examples
 prep_tfrmt <- function(x, column) {
 
+  if (!is.character(column)) {
+    cli::cli_abort(
+      "{.arg column} must be a character vector."
+    )
+  }
+
   # TODO get the logic to work with strings and then add support for symbols /
   # unquoted strings
 
