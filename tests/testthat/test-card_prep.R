@@ -378,6 +378,12 @@ test_that("fill_variables() fills pairwise conditionally with 'Any <variable_nam
     )
   )
 
+  # when passing a single variable, the input is returned unchanged
+  expect_identical(
+    fill_variables(df, variables = c("x")),
+    df
+  )
+
   expect_identical(
     fill_variables(df, variables = c("x", "y", "z")),
     tibble(
@@ -385,5 +391,18 @@ test_that("fill_variables() fills pairwise conditionally with 'Any <variable_nam
       y = c("a", "Any y", "b"),
       z = rep("Any z", 3)
     )
+  )
+})
+
+test_that("generate_pairs() works", {
+  variables <- c("foo", "bar", "baz")
+
+  expect_equal(
+    generate_pairs(variables),
+    list(
+      c("foo", "bar"),
+      c("bar", "baz")
+    ),
+    ignore_attr = TRUE
   )
 })
