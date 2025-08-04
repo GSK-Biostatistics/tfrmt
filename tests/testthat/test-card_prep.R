@@ -344,8 +344,6 @@ test_that("prep_tfrmt() works with AE-T02", {
     dplyr::select(-context, -stat_variable, -stat_label) |>
     dplyr::relocate(stat_name, .after = stat)
 
-
-
   b <- print_to_gt(ae_t02, ae2_ard_tbl_with_prep)
 
   expect_equal(
