@@ -24,6 +24,7 @@ BugReports: https://github.com/GSK-Biostatistics/tfrmt/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    cli,
     dplyr,
     forcats,
     ggplot2,
