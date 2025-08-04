@@ -198,14 +198,26 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
     # replace NA group values with "..cards_overall.." or "..hierarchical_overall.."
     # where it is likely to be a group or subgroup calculation
     x <- x |>
-      dplyr::mutate(across(all_of(grp_vars),
-                           ~ifelse(is.na(.x),
-                                   ..ard_vars..,
-                                   .x)))|>
-      dplyr::mutate(across(all_of(id_vars),
-                           ~ifelse(is.na(.x) & .data$..ard_vars.. == "..ard_hierarchical_overall..",
-                                   "..hierarchical_overall..",
-                                   .x)))
+      dplyr::mutate(
+        dplyr::across(
+          tidyselect::all_of(grp_vars),
+          ~ dplyr::if_else(
+            is.na(.x),
+            ..ard_vars..,
+            .x
+          )
+        )
+      )|>
+      dplyr::mutate(
+        dplyr::across(
+          tidyselect::all_of(id_vars),
+          ~ dplyr::if_else(
+            is.na(.x) & .data$..ard_vars.. == "..ard_hierarchical_overall..",
+            "..hierarchical_overall..",
+            .x
+          )
+        )
+      )
   }
 
   # replace `"..cards_overall.."` group values with "Overall <colname>" and
