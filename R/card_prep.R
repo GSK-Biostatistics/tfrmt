@@ -34,7 +34,9 @@ prep_tfrmt <- function(x, column) {
     x <- x |>
       # remove attributes for now
       # TODO add some logic to deal with them
-      dplyr::filter(context != "attributes")
+      dplyr::filter(
+        .data$context != "attributes"
+      )
   }
 
   interim <- x
