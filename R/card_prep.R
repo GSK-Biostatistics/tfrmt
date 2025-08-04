@@ -122,7 +122,7 @@ generate_pairs <- function(x) {
     dplyr::mutate(
       x_lead = dplyr::lead(x)
     ) |>
-    na.omit() |>
+    tidyr::drop_na() |>
     purrr::pmap(c)
 
   output
@@ -134,7 +134,7 @@ replace_na_pair <- function(x, pair) {
   variables_syms <- rlang::syms(pair)
 
   output <- x |>
-    mutate(
+    dplyr::mutate(
       !!variables_syms[[2]] := dplyr::if_else(
         is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
         glue::glue("Any {variables_syms[[2]]}"),
@@ -196,8 +196,8 @@ unite_data_vars <- function(x, column) {
     ) |>
     dplyr::select(
       tidyselect::all_of(column),
-      stat_variable,
-      variable_level,
+      "stat_variable",
+      "variable_level",
       tidyselect::everything()
     )
 
