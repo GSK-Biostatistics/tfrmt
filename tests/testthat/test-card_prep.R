@@ -344,12 +344,14 @@ test_that("prep_tfrmt() works with AE-T02", {
     dplyr::select(-context, -stat_variable, -stat_label) |>
     dplyr::relocate(stat_name, .after = stat)
 
-  b <- print_to_gt(ae_t02, ae2_ard_tbl_with_prep)
-
   expect_equal(
     arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
     arrange(ae2_ard_tbl_with_prep, TRT01A, AESEV, AEBODSYS, AETERM),
     ignore_attr = TRUE
+  )
+
+  expect_no_error(
+    b <- print_to_gt(ae_t02, ae2_ard_tbl_with_prep)
   )
 
   skip("they're not exactly identical, but the rendered outputs are")
