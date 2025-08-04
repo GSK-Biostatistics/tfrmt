@@ -49,7 +49,6 @@ prep_tfrmt <- function(x, column) {
   output <- interim |>
     fill_column(column) |>
     # process_labels() |>
-    # process big N by (header) column, not grouping variables
     process_big_n(column) |>
     process_categorical_vars(column)
 
@@ -109,6 +108,7 @@ fill_variables <- function(x, variables) {
 # fill_variables does pairwise conditional replacement of NAs. generate_pairs
 # builds those pairs
 generate_pairs <- function(x) {
+  # TODO drop names
   output <- tibble::tibble(x = x) |>
     dplyr::mutate(
       x_lead = dplyr::lead(x)
@@ -225,7 +225,7 @@ process_categorical_vars <- function(x, column) {
         "n",
         .data$label
       )
-      ) |>
+    ) |>
     dplyr::mutate(
       variable_level = dplyr::if_else(
         .data$stat_name == "N",

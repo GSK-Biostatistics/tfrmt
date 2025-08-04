@@ -206,10 +206,10 @@ test_that("prep_tfrmt() works with DM-T01", {
     b_html
   )
 
-expect_identical(
-  gt::extract_body(a),
-  gt::extract_body(b)
-)
+  expect_identical(
+    gt::extract_body(a),
+    gt::extract_body(b)
+  )
 
   expect_snapshot(
     gt::as_raw_html(b),
@@ -289,7 +289,7 @@ test_that("prep_tfrmt() works with AE-T02", {
       ">.99" ~ frmt("(>99%)"),
       "==0" ~ "",
       "<.01" ~ frmt("(<1%)"),
-      "TRUE" ~ frmt("(xx%)", transform = ~.*100)
+      "TRUE" ~ frmt("(xx%)", transform = ~ . * 100)
     )
   ) |>
     tfrmt(
@@ -359,7 +359,7 @@ test_that("prep_tfrmt() works with AE-T02", {
   )
 })
 
-test_that("fill_variables() fills pairwise conditionally with 'Any <variable_name>'", {
+test_that("fill_variables() fills pairwise conditionally", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -393,14 +393,35 @@ test_that("fill_variables() fills pairwise conditionally with 'Any <variable_nam
 })
 
 test_that("generate_pairs() works", {
-  variables <- c("foo", "bar", "baz")
-
+  # TODO replace with expect_identical - need to remove names first
   expect_equal(
-    generate_pairs(variables),
+    generate_pairs(
+      c("foo", "bar", "baz")
+    ),
     list(
       c("foo", "bar"),
       c("bar", "baz")
     ),
     ignore_attr = TRUE
+  )
+})
+
+test_that("replace_na_pair() works", {
+
+  expect_identical(
+    replace_na_pair(
+      tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, 3)
+      ),
+      pair = c("y", "z")
+    ),
+    # all NAs in z (when y is not NA) are replaced with `"Any z"`
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", NA, "b"),
+      z = c("Any z", NA, "Any z")
+    )
   )
 })
