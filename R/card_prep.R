@@ -1,10 +1,15 @@
 #' Prepare card for tfrmt
 #'
-#' What does the preparation function need to do?
-#'  * `unite_data_vars()`: bring all data variables into a single column
-#'  (`variable`) and their levels into `variable_level`
-#'  * `prepare_big_n()`:
-#'
+#' What does the preparation function do?
+#'   * `unite_data_vars()`: bring all categorical variables levels into a single
+#'     column, called `variable_level` (where applicable).
+#'  * `fill_column()` fills the passed column(s) with `"Overall <column_name>"`.
+#'  * `process_big_n()` identifies the bigN columns and changes `stat_name` to
+#'  `"bigN"`
+#'  * `process_categorical_vars()`: once we have bigN, it renames some of the
+#'  values in the categorical variable columns
+#'  * `fill_variable()`: in a hierarchical stack fills NA in one column
+#'  (with `"Any <column_name>"`) based on the presence of data in another column
 #'
 #' @param x a shuffled `card` object.
 #' @param column column(s) to use as header.
