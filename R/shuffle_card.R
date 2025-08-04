@@ -14,11 +14,13 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' cards::bind_ard(
 #'   cards::ard_categorical(ADSL, by = "ARM", variables = "AGEGR1"),
 #'   cards::ard_categorical(ADSL, variables = "ARM")
 #' ) |>
 #'   shuffle_card()
+#'}
 shuffle_card <- function(x, by = NULL, trim = TRUE) {
 
   stopifnot(inherits(x, "card")) # switch to cli

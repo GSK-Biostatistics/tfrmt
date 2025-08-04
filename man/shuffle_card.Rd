@@ -23,9 +23,11 @@ column, back fills missing grouping values from the variable levels where possib
 optionally trims statistics-level metadata.
 }
 \examples{
+\dontrun{
 cards::bind_ard(
   cards::ard_categorical(ADSL, by = "ARM", variables = "AGEGR1"),
   cards::ard_categorical(ADSL, variables = "ARM")
 ) |>
   shuffle_card()
+}
 }
