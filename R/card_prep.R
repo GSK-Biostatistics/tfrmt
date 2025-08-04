@@ -158,10 +158,12 @@ process_big_n <- function(x, column) {
         .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
         # we only want the bigN for overall -> we remove "out"
         .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
-        TRUE ~ stat_name
+        TRUE ~ .data$stat_name
       )
     ) |>
-    dplyr::filter(stat_name != "out")
+    dplyr::filter(
+      .data$stat_name != "out"
+    )
 
   output
 }
@@ -205,8 +207,12 @@ unite_data_vars <- function(x, column) {
 process_categorical_vars <- function(x, column) {
 
   categorical_vars <- x |>
-    dplyr::filter(context == "categorical") |>
-    dplyr::distinct(stat_variable) |>
+    dplyr::filter(
+      .data$context == "categorical"
+    ) |>
+    dplyr::distinct(
+      .data$stat_variable
+    ) |>
     dplyr::pull() |>
     setdiff(column)
 
@@ -215,8 +221,8 @@ process_categorical_vars <- function(x, column) {
   }
 
   output <- x |>
-    mutate(
-      label = stat_label,
+    dplyr::mutate(
+      label = .data$stat_label,
       label = dplyr::if_else(
         .data$stat_name == "N",
         "n",
@@ -233,16 +239,16 @@ process_categorical_vars <- function(x, column) {
     unique() |>
     dplyr::mutate(
       label = dplyr::if_else(
-        context == "categorical" & stat_name %in% c("n", "p"),
-        variable_level,
-        label
+        .data$context == "categorical" & .data$stat_name %in% c("n", "p"),
+        .data$variable_level,
+        .data$label
       ),
       # technically this transformation is not needed, the tfrmt table displays
       # correctly without it
       label = dplyr::if_else(
-        stat_name == "bigN" & context == "categorical",
+        .data$stat_name == "bigN" & .data$context == "categorical",
         !!rlang::sym(column),
-        label
+        .data$label
       )
     )
 
@@ -250,7 +256,7 @@ process_categorical_vars <- function(x, column) {
 }
 
 
-
+# for use with labelled variables
 process_labels <- function(x) {
 
   if (!has_attributes(x)) {
