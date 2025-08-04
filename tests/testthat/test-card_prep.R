@@ -348,12 +348,10 @@ test_that("prep_tfrmt() works with AE-T02", {
 
   b <- print_to_gt(ae_t02, ae2_ard_tbl_with_prep)
 
-  arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM) |> View("old")
-  arrange(ae2_ard_tbl_with_prep, TRT01A, AESEV, AEBODSYS, AETERM) |> View("new")
-
-  waldo::compare(
+  expect_equal(
     arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
-    arrange(ae2_ard_tbl_with_prep, TRT01A, AESEV, AEBODSYS, AETERM)
+    arrange(ae2_ard_tbl_with_prep, TRT01A, AESEV, AEBODSYS, AETERM),
+    ignore_attr = TRUE
   )
 
   expect_identical(
