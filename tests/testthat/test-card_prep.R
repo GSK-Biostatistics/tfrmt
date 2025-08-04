@@ -218,7 +218,7 @@ expect_identical(
 })
 
 test_that("prep_tfrmt() works with AE-T02", {
-skip()
+
   # data prep -------------------------------------------------------------
   # Filter to include only subjects marked as part of the safety population
   adsl <- pharmaverseadam::adsl |>
@@ -318,18 +318,18 @@ skip()
   # with prep_tfrmt -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
     shuffle_card() |>
-    prep_tfrmt(column = c(TRT01A, AESEV)) |>
+    prep_tfrmt(column = c("TRT01A", "AESEV")) |>
     mutate(
       AESEV = if_else(
         AESEV == "Overall AESEV",
         NA,
         AESEV
       ),
-      # TRT01A = if_else(
-      #   TRT01A == "Overall TRT01A",
-      #   NA,
-      #   TRT01A
-      # ),
+      TRT01A = if_else(
+        TRT01A == "Overall TRT01A",
+        NA,
+        TRT01A
+      ),
       AEBODSYS = if_else(
         AEBODSYS == "Any AEBODSYS",
         "ANY EVENT",
@@ -340,9 +340,16 @@ skip()
         "ANY EVENT",
         AETERM
       )
-    )
+    ) |>
+    dplyr::select(-context, -stat_variable, -stat_label) |>
+    dplyr::relocate(stat_name, .after = stat)
+
+
 
   b <- print_to_gt(ae_t02, ae2_ard_tbl_with_prep)
+
+  arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM) |> View("old")
+  arrange(ae2_ard_tbl_with_prep, TRT01A, AESEV, AEBODSYS, AETERM) |> View("new")
 
   waldo::compare(
     arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
@@ -352,5 +359,32 @@ skip()
   expect_identical(
     gt::extract_body(a),
     gt::extract_body(b)
+  )
+})
+
+test_that("fill_variables() fills pairwise conditionally with 'Any <variable_name>'", {
+  df <- tibble(
+    x = c(1, 2, NA),
+    y = c("a", NA, "b"),
+    z = rep(NA, 3)
+  )
+
+  # z is not filled - still 3 NAs
+  expect_identical(
+    fill_variables(df, variables = c("x", "y")),
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", "Any y", "b"),
+      z = rep(NA, 3)
+    )
+  )
+
+  expect_identical(
+    fill_variables(df, variables = c("x", "y", "z")),
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", "Any y", "b"),
+      z = rep("Any z", 3)
+    )
   )
 })
