@@ -58,7 +58,8 @@ browser()
     process_categorical_vars(column)
 
   if (has_args(x)) {
-    output <- fill_variables(output)
+    variables <- attr(x, "args")[["variables"]]
+    output <- fill_variables(output, variables = variables)
   }
 
   output
@@ -84,7 +85,7 @@ has_args <- function(x) {
   output
 }
 
-# fill the main column(s) needs a string, might work with symbols
+# replace_na in the main column(s) with "Overall <column_name>"
 fill_column <- function(x, column) {
 
   replacement_vals <- column |>
@@ -96,11 +97,41 @@ fill_column <- function(x, column) {
   output
 }
 
-fill_variables <- function(x) {
-  browser()
+# replace_na with "Any <column-name>" where applicable (where the preceding
+# column) is not NA
+fill_variables <- function(x, variables) {
 
-  variables <- attr(x, "args")[["variables"]]
-  variables_syms <- rlang::syms(variables)
+  if (length(variables) < 2) {
+    return(x)
+  }
+
+  pair_list <- generate_pairs(variables)
+
+  output <- x
+
+  # TODO need to test if the approach works for more than 2 variables
+  for (i in seq_along(pair_list)) {
+    output <- replace_na_pair(output, pair_list[[i]])
+  }
+
+  output
+}
+
+generate_pairs <- function(x) {
+  output <- tibble::tibble(x = x) |>
+    dplyr::mutate(
+      x_lead = dplyr::lead(x)
+    ) |>
+    na.omit() |>
+    purrr::pmap(c)
+
+  output
+}
+
+# replace missing values in one variable if a another variable is not NA
+replace_na_pair <- function(x, pair) {
+
+  variables_syms <- rlang::syms(pair)
 
   output <- x |>
     mutate(
@@ -108,7 +139,8 @@ fill_variables <- function(x) {
         is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
         glue::glue("Any {variables_syms[[2]]}"),
         !!variables_syms[[2]]
-      )
+      ),
+      !!variables_syms[[2]] := as.character(!!variables_syms[[2]])
     )
 
   output
@@ -175,8 +207,6 @@ unite_data_vars <- function(x, column) {
 
 process_categorical_vars <- function(x, column) {
 
-  browser()
-
   categorical_vars <- x |>
     dplyr::filter(context == "categorical") |>
     dplyr::distinct(stat_variable) |>
@@ -186,7 +216,7 @@ process_categorical_vars <- function(x, column) {
   if (rlang::is_empty(categorical_vars)) {
     return(x)
   }
-# browser()
+
   output <- x |>
     mutate(
       label = stat_label,
