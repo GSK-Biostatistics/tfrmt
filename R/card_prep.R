@@ -140,54 +140,12 @@ process_labels <- function(x) {
   output
 }
 
-process_big_n_hierarchical <- function(x, column) {
-  # browser()
-  ard_vars <- c(
-    "context",
-    "stat_variable",
-    "stat_name",
-    "stat_label",
-    "stat"
-  )
-
-  data_vars <- setdiff(names(x), c(ard_vars, column))
-
-  output <- x |>
-    mutate(
-      stat_name = case_when(
-        .data$context == "total_n" ~ "bigN",
-        # we only want to keep the subgroup totals, which get recoded to bigN
-        .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
-        .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
-        .default = stat_name
-      )
-    ) |>
-    dplyr::filter(stat_name != "out") |>
-    select(
-      all_of(column),
-      all_of(data_vars),
-      stat_name,
-      stat
-    ) |>
-    mutate(
-      AETERM = dplyr::if_else(
-        is.na(AETERM) & stat_name != "bigN",
-        "Any AETERM",
-        AETERM
-      )
-    )
-
-  output
-}
 
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, column) {
-# browser()
 
-  # in some cases we need to unite / coalesce before we can proceed to prepping
-  # bigN
-
+  # TODO support multiple values in column
 
   output <- x |>
     dplyr::mutate(
@@ -201,61 +159,9 @@ process_big_n <- function(x, column) {
         TRUE ~ stat_name
       )
     ) |>
-    dplyr::filter(stat_name != "out") #|>
-    # dplyr::mutate(
-    #   !!column := tidyr::replace_na(
-    #     !!column,
-    #     "Total"
-    #   )
-    # ) |>
-    # dplyr::mutate(label = stat_label) |>
-    # dplyr::mutate(
-    #   label = dplyr::case_when(
-    #     .data$stat_name == "N" ~ "n",
-    #     # for identity with the current approach that has the `column` levels
-    #     # in label
-    #     .data$stat_name == "bigN" & .data$context != "total_n" ~ !!column,
-    #     TRUE ~ .data$label
-    #   )
-    # ) |>
-    # # subgroup totals (n) are displayed once per variable - they are grouping
-    # # variable specific, not variable level specific
-    # # unique() will remove duplicates
-    # dplyr::mutate(
-    #   variable_level = dplyr::if_else(
-    #     .data$stat_name == "N",
-    #     NA,
-    #     .data$variable_level
-    #   )
-    # ) |>
-    # unique()
-
-  # enhance label
-  # output <- interim |>
-  #   dplyr::mutate(
-  #     label = dplyr::if_else(
-  #       context == "categorical" & stat_name %in% c("n", "p"),
-  #       variable_level,
-  #       label
-  #     )
-  #   ) |>
-  #   dplyr::select(-variable_level) |>
-    # dplyr::select(
-    #   all_of(column),
-    #   # use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
-    #   # we need to use `"variable"` instead of `.data$variable`
-    #   # "variable",
-    #   "stat_variable",
-    #   # "label",
-    #   "stat_name",
-    #   "stat_label",
-    #   "stat",
-    #   "context"
-    # )
-  #   order_rows_n_first()
+    dplyr::filter(stat_name != "out")
 
   output
-  # interim
 }
 
 
