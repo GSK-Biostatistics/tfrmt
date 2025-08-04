@@ -4,12 +4,12 @@
 \alias{prep_tfrmt}
 \title{Prepare card for tfrmt}
 \usage{
-prep_tfrmt(x, column = NULL)
+prep_tfrmt(x, column)
 }
 \arguments{
 \item{x}{a shuffled \code{card} object.}
 
-\item{column}{column to use as header.}
+\item{column}{column(s) to use as header.}
 }
 \value{
 a \code{data.frame}
