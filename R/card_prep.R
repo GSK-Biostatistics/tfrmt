@@ -22,7 +22,7 @@ prep_tfrmt <- function(x, column) {
   #   1. direct passing of args
   #   2. from attributes
   #   3. tfrmt object
-browser()
+
   # column <- rlang::enquo(column)
 
   # a <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
@@ -150,14 +150,11 @@ replace_na_pair <- function(x, pair) {
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, column) {
 
-  # TODO support multiple values in column
-# browser()
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$context == "total_n" ~ "bigN",
         # we only want to keep the subgroup totals, which get recoded to bigN
-        # .data$stat_variable == column & .data$stat_name == "n" ~ "bigN",
         .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
         # we only want the bigN for overall -> we remove "out"
         .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
