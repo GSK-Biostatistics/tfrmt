@@ -76,8 +76,8 @@ has_attributes <- function(x) {
   output
 }
 
+# fill the main column
 fill_column <- function(x, column) {
-  browser()
 
   column_sym <- rlang::sym(column)
 
@@ -91,55 +91,6 @@ fill_column <- function(x, column) {
 
   output
 }
-
-process_labels <- function(x) {
-
-  if (!has_attributes(x)) {
-    output <- x |>
-      dplyr::mutate(
-        variable_label = NA_character_
-      )
-
-    return(output)
-  }
-
-  # TODO this does not work in this current context as we do not have variable
-  # so the 2 branches effectively return different objects
-
-  variable_labels <- x |>
-    dplyr::filter(
-      .data$context == "attributes",
-      .data$stat_label == "Variable Label"
-    ) |>
-    dplyr::select(
-      # Use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
-      # we need to use `"stat"` instead of `.data$stat`
-      "variable",
-      "variable_label" = "stat"
-    ) |>
-    tidyr::unnest(
-      "variable_label"
-    )
-
-  output <- x |>
-    dplyr::left_join(
-      variable_labels,
-      by = dplyr::join_by(
-        "variable"
-      )
-    ) |>
-    dplyr::relocate(
-      "variable_label",
-      .after = "variable"
-    ) |>
-    # remove attributes
-    dplyr::filter(
-      .data$context != "attributes"
-    )
-
-  output
-}
-
 
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
@@ -202,8 +153,6 @@ unite_data_vars <- function(x, column) {
 
 process_categorical_vars <- function(x, column) {
 
-  browser()
-
   categorical_vars <- x |>
     dplyr::filter(context == "categorical") |>
     dplyr::distinct(stat_variable) |>
@@ -213,7 +162,7 @@ process_categorical_vars <- function(x, column) {
   if (rlang::is_empty(categorical_vars)) {
     return(x)
   }
-
+# browser()
   output <- x |>
     mutate(
       label = stat_label,
@@ -236,7 +185,62 @@ process_categorical_vars <- function(x, column) {
         context == "categorical" & stat_name %in% c("n", "p"),
         variable_level,
         label
+      ),
+      # technically this transformation is not needed, the tfrmt table displays
+      # correctly without it
+      label = dplyr::if_else(
+        stat_name == "bigN" & context == "categorical",
+        !!rlang::sym(column),
+        label
       )
+    )
+
+  output
+}
+
+process_labels <- function(x) {
+
+  if (!has_attributes(x)) {
+    output <- x |>
+      dplyr::mutate(
+        variable_label = NA_character_
+      )
+
+    return(output)
+  }
+
+  # TODO this does not work in this current context as we do not have variable
+  # so the 2 branches effectively return different objects
+
+  variable_labels <- x |>
+    dplyr::filter(
+      .data$context == "attributes",
+      .data$stat_label == "Variable Label"
+    ) |>
+    dplyr::select(
+      # Use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
+      # we need to use `"stat"` instead of `.data$stat`
+      "variable",
+      "variable_label" = "stat"
+    ) |>
+    tidyr::unnest(
+      "variable_label"
+    )
+
+  output <- x |>
+    dplyr::left_join(
+      variable_labels,
+      by = dplyr::join_by(
+        "variable"
+      )
+    ) |>
+    dplyr::relocate(
+      "variable_label",
+      .after = "variable"
+    ) |>
+    # remove attributes
+    dplyr::filter(
+      .data$context != "attributes"
     )
 
   output
