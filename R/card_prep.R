@@ -7,39 +7,55 @@
 #'
 #'
 #' @param x a shuffled `card` object.
-#' @param column column to use as header.
+#' @param column column(s) to use as header.
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, column = NULL) {
+prep_tfrmt <- function(x, column) {
+
+  # TODO get the logic to work with strings and then add support for symbols /
+  # unquoted strings
 
   # TODO priority for extracting context - e.g. by variables, etc:
   #   1. direct passing of args
   #   2. from attributes
   #   3. tfrmt object
+# browser()
+  # column <- rlang::enquo(column)
 
-  column <- rlang::ensym(column)
+  # a <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
+  # columns_quo <- a$column |>
+  #   rlang::quos_auto_name()
+  # columns_char <- names(columns_quo)
 
-  output <- x |>
-    # remove attributes for now
-    # TODO add some logic to deal with them
-    dplyr::filter(context != "attributes") |>
-    unite_data_vars(column) |>
+  if (has_attributes(x)) {
+    x <- x |>
+      # remove attributes for now
+      # TODO add some logic to deal with them
+      dplyr::filter(context != "attributes")
+  }
+
+  we_need_to_unite <- TRUE
+
+  # we don't need unite for hierarchical stack
+  if ("hierarchical" %in% unique(x$context)) {
+    we_need_to_unite <- FALSE
+  }
+
+  interim <- x
+
+  if (we_need_to_unite) {
+    interim <- unite_data_vars(x, column)
+  }
+
+  output <- interim |>
+    fill_column(column) |>
     # process_labels() |>
     # process big N by (header) column, not grouping variables
     process_big_n(column) |>
-    dplyr::select(
-      all_of(column),
-      # use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
-      # we need to use `"variable"` instead of `.data$variable`
-      "variable",
-      "label",
-      "stat_name",
-      "stat"
-    ) |>
-    order_rows_n_first()
+    process_categorical_vars(column)
 
   output
 }
@@ -56,6 +72,22 @@ has_attributes <- function(x) {
   if (nrow(shuffled_card_attributes_df) > 0) {
     output <- TRUE
   }
+
+  output
+}
+
+fill_column <- function(x, column) {
+  browser()
+
+  column_sym <- rlang::sym(column)
+
+  output <- x |> dplyr::mutate(
+    !!column_sym := tidyr::replace_na(
+      !!column_sym,
+      glue::glue("Overall {column}")
+    ),
+    !!column := as.character(!!column_sym)
+  )
 
   output
 }
@@ -108,144 +140,137 @@ process_labels <- function(x) {
   output
 }
 
-# `column` here is the same value as the `column` argument
-# from `tfrmt(..., column = , ...)`
-process_big_n <- function(x, column = NULL) {
-
-  # this corresponds to bigN structure
-
-  if (is.null(column)) {
-    return(x)
-  }
-
-  if (length(column) != 1) {
-    stop(
-      "`process_big_n` supports a single column.",
-      call. = FALSE
-    )
-  }
-
+process_big_n_hierarchical <- function(x, column) {
+  # browser()
   ard_vars <- c(
-    "..ard_vars..",
     "context",
+    "stat_variable",
     "stat_name",
     "stat_label",
-    "stat",
-    "variable_label"
+    "stat"
   )
 
   data_vars <- setdiff(names(x), c(ard_vars, column))
 
-  # TODO move this outside process_big_n
-  # df_united_vars <- unite_data_vars(x, column, data_vars)
+  output <- x |>
+    mutate(
+      stat_name = case_when(
+        .data$context == "total_n" ~ "bigN",
+        # we only want to keep the subgroup totals, which get recoded to bigN
+        .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
+        .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
+        .default = stat_name
+      )
+    ) |>
+    dplyr::filter(stat_name != "out") |>
+    select(
+      all_of(column),
+      all_of(data_vars),
+      stat_name,
+      stat
+    ) |>
+    mutate(
+      AETERM = dplyr::if_else(
+        is.na(AETERM) & stat_name != "bigN",
+        "Any AETERM",
+        AETERM
+      )
+    )
 
-  # browser()
+  output
+}
+
+# `column` here is the same value as the `column` argument
+# from `tfrmt(..., column = , ...)`
+process_big_n <- function(x, column) {
+# browser()
+
+  # in some cases we need to unite / coalesce before we can proceed to prepping
+  # bigN
+
+
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
-        .data$..ard_vars.. == "..ard_total_n.." ~ "bigN",
+        .data$context == "total_n" ~ "bigN",
         # we only want to keep the subgroup totals, which get recoded to bigN
-        is.na(.data$variable) & .data$stat_name == "n" ~ "bigN",
-        is.na(.data$variable) & .data$stat_name != "n" ~ "out",
+        # .data$stat_variable == column & .data$stat_name == "n" ~ "bigN",
+        .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
+        # we only want the bigN for overall -> we remove "out"
+        .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
         TRUE ~ stat_name
       )
     ) |>
-    # we only want the bigN for overall
-    dplyr::filter(stat_name != "out") |>
-    dplyr::mutate(
-      !!column := dplyr::case_when(
-        .data$..ard_vars.. == "..ard_total_n.." ~ glue::glue("Overall {column}"),
-        is.na(!!column) & variable_level == "..cards_overall.." ~ glue::glue("Overall {column}"),
-        TRUE ~ !!column
-      )
-    ) |>
-    dplyr::select(-`..ard_vars..`) |>
-    # we need "..cards_overall.." for the above `case_when()`
-    dplyr::mutate(
-      # we overwrite "..card_overall.." (present for continuous variables)
-      # variable_level with the variable name
-      variable_level = dplyr::if_else(
-        context == "continuous",
-        variable,
-        variable_level
-      )
-    ) |>
-    dplyr::mutate(
-      !!column := dplyr::if_else(
-        is.na(!!column) & !is.na(variable),
-        glue::glue("Overall {column}"),
-        !!column
-      ),
-      !!column := as.character(!!column)
-    ) |>
-    dplyr::mutate(label = stat_label) |>
-    dplyr::mutate(
-      label = dplyr::case_when(
-        .data$stat_name == "N" ~ "n",
-        # for identity with the current approach that has the `column` levels
-        # in label
-        .data$stat_name == "bigN" & .data$context != "total_n" ~ !!column,
-        TRUE ~ .data$label
-      ),
-      label = as.character(label)
-    ) |>
-    # subgroup totals (n) are displayed once per variable - they are grouping
-    # variable specific, not variable level specific
-    # unique() will remove duplicates
-    dplyr::mutate(
-      variable_level = dplyr::if_else(
-        .data$stat_name == "N",
-        NA,
-        .data$variable_level
-      )
-    ) |>
-    # we "need"/ use variable_label in prep_tfrmt
-    # select(-all_of(data_vars), -variable_label)
-    unique()
+    dplyr::filter(stat_name != "out") #|>
+    # dplyr::mutate(
+    #   !!column := tidyr::replace_na(
+    #     !!column,
+    #     "Total"
+    #   )
+    # ) |>
+    # dplyr::mutate(label = stat_label) |>
+    # dplyr::mutate(
+    #   label = dplyr::case_when(
+    #     .data$stat_name == "N" ~ "n",
+    #     # for identity with the current approach that has the `column` levels
+    #     # in label
+    #     .data$stat_name == "bigN" & .data$context != "total_n" ~ !!column,
+    #     TRUE ~ .data$label
+    #   )
+    # ) |>
+    # # subgroup totals (n) are displayed once per variable - they are grouping
+    # # variable specific, not variable level specific
+    # # unique() will remove duplicates
+    # dplyr::mutate(
+    #   variable_level = dplyr::if_else(
+    #     .data$stat_name == "N",
+    #     NA,
+    #     .data$variable_level
+    #   )
+    # ) |>
+    # unique()
 
-  # derive label
-  output1 <- output |>
-    dplyr::mutate(
-      label = dplyr::if_else(
-        context == "categorical" & stat_name %in% c("n", "p"),
-        variable_level,
-        label
-      )
-    ) |>
-    dplyr::select(-variable_level) |>
-    dplyr::mutate(
-      variable = dplyr::if_else(
-        is.na(variable),
-        rlang::as_name(column),
-        variable
-      )
-    )
+  # enhance label
+  # output <- interim |>
+  #   dplyr::mutate(
+  #     label = dplyr::if_else(
+  #       context == "categorical" & stat_name %in% c("n", "p"),
+  #       variable_level,
+  #       label
+  #     )
+  #   ) |>
+  #   dplyr::select(-variable_level) |>
+    # dplyr::select(
+    #   all_of(column),
+    #   # use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
+    #   # we need to use `"variable"` instead of `.data$variable`
+    #   # "variable",
+    #   "stat_variable",
+    #   # "label",
+    #   "stat_name",
+    #   "stat_label",
+    #   "stat",
+    #   "context"
+    # )
+  #   order_rows_n_first()
 
-  output1
+  output
+  # interim
 }
 
+
 unite_data_vars <- function(x, column) {
+# browser()
 
   ard_vars <- c(
-    "..ard_vars..",
     "context",
+    "stat_variable",
     "stat_name",
     "stat_label",
-    "stat",
-    "variable_label"
+    "stat"
   )
 
   data_vars <- setdiff(names(x), c(ard_vars, column))
-
-  .capture_var_name <- function(x, cur_col = dplyr::cur_column()) {
-    output <- dplyr::if_else(
-      !is.na(x),
-      cur_col,
-      NA_character_
-    )
-
-    output
-  }
 
   output <- x |>
     tidyr::unite(
@@ -254,16 +279,7 @@ unite_data_vars <- function(x, column) {
       na.rm = TRUE,
       remove = FALSE
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        tidyselect::all_of(data_vars), .capture_var_name
-      )
-    ) |>
-    dplyr::mutate(
-      variable = dplyr::coalesce(
-        !!!rlang::syms(data_vars)
-      )
-    ) |>
+    # drop the individual data columns and reorder the remaining ones
     dplyr::select(
       -tidyselect::all_of(
         data_vars
@@ -271,7 +287,7 @@ unite_data_vars <- function(x, column) {
     ) |>
     dplyr::select(
       tidyselect::all_of(column),
-      variable,
+      stat_variable,
       variable_level,
       tidyselect::everything()
     )
@@ -283,11 +299,53 @@ unite_data_vars <- function(x, column) {
 order_rows_n_first <- function(x) {
   output <- x |>
     mutate(
-      ord1 = forcats::fct_inorder(variable),
+      ord1 = forcats::fct_inorder(stat_variable),
       ord2 = if_else(label == "n", 1, 2)
     ) |>
     arrange(ord1, ord2) |>
     select(-ord1, -ord2)
+
+  output
+}
+
+process_categorical_vars <- function(x, column) {
+
+  browser()
+
+  categorical_vars <- x |>
+    dplyr::filter(context == "categorical") |>
+    dplyr::distinct(stat_variable) |>
+    dplyr::pull() |>
+    setdiff(column)
+
+  if (rlang::is_empty(categorical_vars)) {
+    return(x)
+  }
+
+  output <- x |>
+    mutate(
+      label = stat_label,
+      label = dplyr::if_else(
+        .data$stat_name == "N",
+        "n",
+        .data$label
+      )
+      ) |>
+    dplyr::mutate(
+      variable_level = dplyr::if_else(
+        .data$stat_name == "N",
+        NA,
+        .data$variable_level
+      )
+    ) |>
+    unique() |>
+    dplyr::mutate(
+      label = dplyr::if_else(
+        context == "categorical" & stat_name %in% c("n", "p"),
+        variable_level,
+        label
+      )
+    )
 
   output
 }
