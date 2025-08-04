@@ -22,7 +22,7 @@ prep_tfrmt <- function(x, column) {
   #   1. direct passing of args
   #   2. from attributes
   #   3. tfrmt object
-# browser()
+browser()
   # column <- rlang::enquo(column)
 
   # a <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
@@ -76,18 +76,15 @@ has_attributes <- function(x) {
   output
 }
 
-# fill the main column
+
+# fill the main column(s) needs a string, might work with symbols
 fill_column <- function(x, column) {
 
-  column_sym <- rlang::sym(column)
+  replacement_vals <- column |>
+    purrr::set_names(column) |>
+    purrr::map(~ glue::glue("Overall {.x}"))
 
-  output <- x |> dplyr::mutate(
-    !!column_sym := tidyr::replace_na(
-      !!column_sym,
-      glue::glue("Overall {column}")
-    ),
-    !!column := as.character(!!column_sym)
-  )
+  output <- tidyr::replace_na(x, replacement_vals)
 
   output
 }
@@ -97,7 +94,7 @@ fill_column <- function(x, column) {
 process_big_n <- function(x, column) {
 
   # TODO support multiple values in column
-
+# browser()
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
