@@ -37,16 +37,10 @@ prep_tfrmt <- function(x, column) {
       dplyr::filter(context != "attributes")
   }
 
-  we_need_to_unite <- TRUE
-
-  # we don't need unite for hierarchical stack
-  if ("hierarchical" %in% unique(x$context)) {
-    we_need_to_unite <- FALSE
-  }
-
   interim <- x
 
-  if (we_need_to_unite) {
+  # don't unite for hierarchical stack
+  if (!"hierarchical" %in% unique(x$context)) {
     interim <- unite_data_vars(x, column)
   }
 
@@ -59,24 +53,17 @@ prep_tfrmt <- function(x, column) {
 
   if (has_args(x)) {
     variables <- attr(x, "args")[["variables"]]
+    # TODO fill_variables could be connected to the "hierarchical" logic above
+    # (we are interested in pairwise conditional filling primarily in a
+    # hierarchical context)
     output <- fill_variables(output, variables = variables)
   }
 
   output
 }
 
-
-has_attributes <- function(x) {
-  shuffled_card_attributes_df <- x |>
-    dplyr::filter(
-      .data$context == "attributes"
-    )
-
-  output <- nrow(shuffled_card_attributes_df) > 0
-
-  output
-}
-
+# does the shuffled card have the `args` attribute - allows us to extract some
+# of the arguments of the original ard call
 has_args <- function(x) {
   args <- attr(x, "args")
 
@@ -117,6 +104,8 @@ fill_variables <- function(x, variables) {
   output
 }
 
+# fill_variables does pairwise conditional replacement of NAs. generate_pairs
+# builds those pairs
 generate_pairs <- function(x) {
   output <- tibble::tibble(x = x) |>
     dplyr::mutate(
@@ -129,6 +118,8 @@ generate_pairs <- function(x) {
 }
 
 # replace missing values in one variable if a another variable is not NA
+# this is the function used by fill_variables to iterate over the pairs of
+# columns
 replace_na_pair <- function(x, pair) {
 
   variables_syms <- rlang::syms(pair)
@@ -168,7 +159,8 @@ process_big_n <- function(x, column) {
   output
 }
 
-
+# convenience wrapper around tidyr::unite to create variable_level from the
+# individual columns (where applicable)
 unite_data_vars <- function(x, column) {
 
   ard_vars <- c(
@@ -204,6 +196,9 @@ unite_data_vars <- function(x, column) {
   output
 }
 
+# mostly for compatibility with the current approach
+# it derives and fills a new column, called label (most problematic for
+# categorical variables)
 process_categorical_vars <- function(x, column) {
 
   categorical_vars <- x |>
@@ -255,6 +250,18 @@ process_categorical_vars <- function(x, column) {
   output
 }
 
+# does the shuffled card have attributes (useful for ensuring column labels are
+# persistent)
+has_attributes <- function(x) {
+  shuffled_card_attributes_df <- x |>
+    dplyr::filter(
+      .data$context == "attributes"
+    )
+
+  output <- nrow(shuffled_card_attributes_df) > 0
+
+  output
+}
 
 # for use with labelled variables
 process_labels <- function(x) {
@@ -268,17 +275,12 @@ process_labels <- function(x) {
     return(output)
   }
 
-  # TODO this does not work in this current context as we do not have variable
-  # so the 2 branches effectively return different objects
-
   variable_labels <- x |>
     dplyr::filter(
       .data$context == "attributes",
       .data$stat_label == "Variable Label"
     ) |>
     dplyr::select(
-      # Use of .data in tidyselect expressions deprecated in tidyselect 1.2.0.
-      # we need to use `"stat"` instead of `.data$stat`
       "variable",
       "variable_label" = "stat"
     ) |>
