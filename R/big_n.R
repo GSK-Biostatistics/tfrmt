@@ -60,7 +60,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
         column_names = col_lab
       )
 
-    for (i in seq(nrow(big_n_df))){
+    for (i in seq_len(nrow(big_n_df))){
       big_n_i <- big_n_df %>%
         slice(i)
       data_names <- data_names %>%
