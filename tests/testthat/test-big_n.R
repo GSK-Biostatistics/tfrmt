@@ -1230,7 +1230,6 @@ test_that("not enough big Ns by page", {
   )
 })
 
-
 test_that("Paging (group) variable is sorted non-alphabetically", {
   # same sorting of data and big Ns
   data <- tibble(
