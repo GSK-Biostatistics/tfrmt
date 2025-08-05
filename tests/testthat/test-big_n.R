@@ -1066,11 +1066,12 @@ test_that("not enough big Ns by page", {
     big_n = big_n_structure(param_val = c("big_N"), by_page = TRUE)
   )
 
-  expect_message(
-    auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE),
-    "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`",
-    fixed = TRUE
+  expect_snapshot(
+      apply_tfrmt(
+        .data = data,
+        tfrmt = mytfrmt,
+        mock = FALSE
+      )
   )
 })
 
