@@ -29,7 +29,7 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 
   ard_attributes <- attributes(x)
   ard_args <- ard_attributes$args
-  if (!is.null(by)){
+  if (!is.null(by)) {
     ard_args$by <- by
   }
 
