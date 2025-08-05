@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{a data frame}
 
-\item{vars_protected}{(character) vector of protected, {cards}-specific
+\item{vars_protected}{(character) vector of protected, \code{cards}-specific
 variable names}
 
 \item{ard_args}{list of args passed from ard_* calls}
