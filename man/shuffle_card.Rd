@@ -9,6 +9,8 @@ shuffle_card(x, by = NULL, trim = TRUE)
 \arguments{
 \item{x}{an ARD data frame of class 'card'}
 
+\item{by}{column to shuffle by}
+
 \item{trim}{logical representing whether or not to trim away statistic-level metadata}
 }
 \value{

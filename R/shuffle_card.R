@@ -8,6 +8,7 @@
 #' optionally trims statistics-level metadata.
 #'
 #' @param x an ARD data frame of class 'card'
+#' @param by column to shuffle by
 #' @param trim logical representing whether or not to trim away statistic-level metadata
 #'
 #' @return a tibble
@@ -40,11 +41,19 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 
   # fill stat label if missing
   dat_cards <- dat_cards |>
-    dplyr::mutate(dplyr::across(any_of("stat_label"), ~ dplyr::coalesce(.x, stat_name)))
+    dplyr::mutate(
+      dplyr::across(
+        tidyselect::any_of("stat_label"),
+        ~ dplyr::coalesce(.x, stat_name)
+      )
+    )
 
   # split up the data into data/variable info & cards info
   vars_ard <- dat_cards |>
-    dplyr::select(cards::all_ard_groups(), cards::all_ard_variables()) |>
+    dplyr::select(
+      cards::all_ard_groups(),
+      cards::all_ard_variables()
+    ) |>
     names()
 
   vars_protected <- setdiff(names(dat_cards), vars_ard)
@@ -53,12 +62,21 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
   dat_cards_grps_processed <- dat_cards |>
     dplyr::mutate(
       dplyr::across(
-        c(cards::all_ard_groups("levels"), cards::all_ard_variables("levels")),
+        c(
+          cards::all_ard_groups("levels"),
+          cards::all_ard_variables("levels")
+        ),
         ~ lapply(., \(x) if (!is.null(x)) as.character(x))
       ),
-      stat_variable = variable) |>
-    dplyr::relocate(stat_variable, .after = "context") |>
-    cards::rename_ard_columns(fill = "..cards_overall..")
+      stat_variable = .data$variable
+    ) |>
+    dplyr::relocate(
+      .data$stat_variable,
+      .after = "context"
+    ) |>
+    cards::rename_ard_columns(
+      fill = "..cards_overall.."
+    )
 
   dat_cards_out <- dat_cards_grps_processed |>
     # unlist the list-columns
