@@ -10,14 +10,25 @@
 #'  * `fill_variables()`: in a hierarchical stack fills NA in one column
 #'  (with `"Any <column_name>"`) based on the presence of data in another column
 #'
-#' @param x a shuffled `card` object.
+#' @inheritParams shuffle_card
 #' @param column column(s) to use as header.
+#' @param variables `cards` variables
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, column) {
+prep_tfrmt <- function(x, column, variables) {
+
+  browser()
+
+  ard_args <- attr(x, "args")
+
+  shuffled_card <- shuffle_card(
+    x,
+    by = ard_args$by %||% column,
+    variables = ard_args$variables %||% variables
+  )
 
   if (!is.character(column)) {
     cli::cli_abort(
