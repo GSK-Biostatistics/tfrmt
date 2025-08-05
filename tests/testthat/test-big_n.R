@@ -1,11 +1,20 @@
 test_that("Defining the big Ns", {
-  bn1 <- big_n_structure(param_val = "bigN", n_frmt = frmt("Hello World"))
-  bn2 <- big_n_structure(param_val = c("bigN", "N"))
+  bn1 <- big_n_structure(
+    param_val = "bigN",
+    n_frmt = frmt("Hello World")
+  )
+  bn2 <- big_n_structure(
+    param_val = c("bigN", "N")
+  )
 
   expect_s3_class(bn1,"big_n_structure")
   expect_s3_class(bn2,"big_n_structure")
 
-  expect_equal(bn1[["param_val"]], c("bigN"), ignore_attr = c(".Environment"))
+  expect_equal(
+    bn1[["param_val"]],
+    c("bigN"),
+    ignore_attr = c(".Environment")
+  )
   expect_equal(bn1[["n_frmt"]], frmt("Hello World"), ignore_attr = c(".Environment"))
   expect_equal(bn2[["param_val"]], c("bigN", "N"), ignore_attr = c(".Environment"))
   expect_equal(bn2[["n_frmt"]], frmt("\nN = xx"), ignore_attr = c(".Environment"))
@@ -884,8 +893,20 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
   expect_equal(
     map(auto, names),
     list(
-      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl")
+      c(
+        "Label",
+        "Placebo\nN = 12",
+        "Treatment\nN = 14",
+        "Total\nN = 31",
+        "..tfrmt_row_grp_lbl"
+      ),
+      c(
+        "Label",
+        "Placebo\nN = 20",
+        "Treatment\nN = 32",
+        "Total\nN = 18",
+        "..tfrmt_row_grp_lbl"
+      )
     )
   )
 
