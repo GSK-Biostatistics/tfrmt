@@ -2,7 +2,7 @@
 % Please edit documentation in R/shuffle_card.R
 \name{shuffle_card}
 \alias{shuffle_card}
-\title{Shuffle {cards}}
+\title{Shuffle \code{cards}}
 \usage{
 shuffle_card(x, by = NULL, trim = TRUE)
 }

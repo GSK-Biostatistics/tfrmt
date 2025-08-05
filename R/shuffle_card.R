@@ -1,4 +1,4 @@
-#' Shuffle {cards}
+#' Shuffle `cards`
 #'
 #' @description `r lifecycle::badge('experimental')`\cr
 #'
@@ -37,7 +37,9 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
   dat_cards <- x |>
     cards::tidy_ard_column_order() |>
     cards::tidy_ard_row_order() |>
-    dplyr::mutate(..cards_idx.. = dplyr::row_number())
+    dplyr::mutate(
+      ..cards_idx.. = dplyr::row_number()
+    )
 
   # fill stat label if missing
   dat_cards <- dat_cards |>
@@ -71,7 +73,7 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
       stat_variable = .data$variable
     ) |>
     dplyr::relocate(
-      .data$stat_variable,
+      "stat_variable",
       .after = "context"
     ) |>
     cards::rename_ard_columns(
