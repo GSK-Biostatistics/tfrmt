@@ -3,12 +3,11 @@
 #' What does the preparation function do?
 #'   * `unite_data_vars()`: bring all categorical variables levels into a single
 #'     column, called `variable_level` (where applicable).
-#'  * `fill_column()` fills the passed column(s) with `"Overall <column_name>"`.
 #'  * `process_big_n()` identifies the bigN columns and changes `stat_name` to
 #'  `"bigN"`
 #'  * `process_categorical_vars()`: once we have bigN, it renames some of the
 #'  values in the categorical variable columns
-#'  * `fill_variable()`: in a hierarchical stack fills NA in one column
+#'  * `fill_variables()`: in a hierarchical stack fills NA in one column
 #'  (with `"Any <column_name>"`) based on the presence of data in another column
 #'
 #' @param x a shuffled `card` object.
@@ -58,7 +57,6 @@ prep_tfrmt <- function(x, column) {
   }
 
   output <- interim |>
-    fill_column(column) |>
     # process_labels() |>
     process_big_n(column) |>
     process_categorical_vars(column)
@@ -80,18 +78,6 @@ has_args <- function(x) {
   args <- attr(x, "args")
 
   output <- !rlang::is_empty(args)
-
-  output
-}
-
-# replace_na in the main column(s) with "Overall <column_name>"
-fill_column <- function(x, column) {
-
-  replacement_vals <- column |>
-    purrr::set_names(column) |>
-    purrr::map(~ glue::glue("Overall {.x}"))
-
-  output <- tidyr::replace_na(x, replacement_vals)
 
   output
 }

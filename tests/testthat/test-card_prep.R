@@ -169,7 +169,7 @@ test_that("prep_tfrmt() works with DM-T01", {
 
   # with prep_tfrmt -------------------------------------------------------
   ard_tbl_with_prep <- ard |>
-    shuffle_card() |>
+    shuffle_card(by = "ARM") |>
     prep_tfrmt("ARM") |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(stat_variable) |>
@@ -317,7 +317,7 @@ test_that("prep_tfrmt() works with AE-T02", {
 
   # with prep_tfrmt -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
-    shuffle_card() |>
+    shuffle_card(by = c("TRT01A", "AESEV")) |>
     prep_tfrmt(column = c("TRT01A", "AESEV")) |>
     mutate(
       AESEV = if_else(
