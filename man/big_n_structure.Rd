@@ -8,23 +8,25 @@ big_n_structure(param_val, n_frmt = frmt("\\nN = xx"), by_page = FALSE)
 }
 \arguments{
 \item{param_val}{row value(s) of the parameter column for which the values
-are big n's}
+are big N's}
 
-\item{n_frmt}{\code{\link[=frmt]{frmt()}} to control the formatting of the big n's}
+\item{n_frmt}{\code{\link[=frmt]{frmt()}} to control the formatting of the big N's}
 
-\item{by_page}{Option to include different big Ns for each group-defined set of pages (defined by any variables set to ".default" in the \code{page_plan}). Default is \code{FALSE}, meaning only the overall Ns are applied}
+\item{by_page}{Option to include different big N's for each group-defined set
+of pages (defined by any variables set to \code{".default"} in the \code{page_plan}).
+Default is \code{FALSE}, meaning only the overall Ns are applied}
 }
 \value{
 big_n_structure object
 }
 \description{
-Big N structure allows you to specify which values should become the subject totals ("big N" values)
-and how they should be formatted in the table's column labels. Values are specified by providing
-the value(s) of the \code{param} column for which the values are big N's.
-This will remove these from the body of the table and place them into columns
-matching the values in the column column(s). The default formatting is \code{N = xx},
-on its own line, but that can be changed by providing a different \code{frmt()} to
-\code{n_frmt}
+Big N structure allows you to specify which values should become the subject
+totals ("big N" values) and how they should be formatted in the table's
+column labels. Values are specified by providing the value(s) of the \code{param}
+column for which the values are big N's. This will remove these from the
+body of the table and place them into columns matching the values in the
+column column(s). The default formatting is \code{N = xx}, on its own line, but
+that can be changed by providing a different \code{frmt()} to \code{n_frmt}.
 }
 \seealso{
 \href{https://gsk-biostatistics.github.io/tfrmt/articles/big_ns.html}{Link to related article}
