@@ -51,9 +51,9 @@ big_n_structure <- function(param_val,
 apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
 
   if (!is.null(big_n_df) && nrow(big_n_df) > 0) {
-    col_lab <- columns |> map_chr(as_label)
+    col_lab <- columns |> purrr::map_chr(as_label)
     data_names <- col_plan_vars |>
-      map_chr(as_label) |>
+      purrr::map_chr(as_label) |>
       split_data_names_to_df(
         data_names = c(),
         preselected_cols = _,
@@ -62,16 +62,16 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
 
     for (i in seq_len(nrow(big_n_df))){
       big_n_i <- big_n_df |>
-        slice(i)
+        dplyr::slice(i)
       data_names <- data_names |>
-        mutate(
-          !!big_n_i$`__tfrmt_big_n_names__` := if_else(
+        dplyr::mutate(
+          !!big_n_i$`__tfrmt_big_n_names__` := dplyr::if_else(
             !!parse_expr(big_n_i$exp),
             paste0(
-              !!sym(big_n_i$`__tfrmt_big_n_names__`),
-              pull(big_n_i, !!value)
+              !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`),
+              dplyr::pull(big_n_i, !!value)
             ),
-            !!sym(big_n_i$`__tfrmt_big_n_names__`)
+            !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`)
           )
         )
     }
@@ -81,7 +81,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
       preselected_cols = c(),
       column_names = col_lab
     ) |>
-      map(~char_as_quo(.x)) |>
+      purrr::map(~ char_as_quo(.x)) |>
       do.call("vars", args = _)
 
   } else {
@@ -101,7 +101,9 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
 remove_big_ns <- function(.data, param, big_n_structure) {
   if (!is.null(big_n_structure)) {
     .data <- .data |>
-      filter(!(!!param) %in% big_n_structure$param_val)
+      dplyr::filter(
+        !(!!param) %in% big_n_structure$param_val
+      )
   }
   .data
 }
@@ -124,15 +126,30 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
   if (!is.null(big_n_structure)) {
 
     frmtted_vals <- .data |>
-      filter((!!param) %in% big_n_structure$param_val) |>
-      apply_frmt.frmt(big_n_structure$n_frmt, .data = _, value, mock)
+      dplyr::filter(
+        !!param %in% big_n_structure$param_val
+      ) |>
+      apply_frmt.frmt(
+        big_n_structure$n_frmt,
+        .data = _,
+        value = value,
+        mock = mock
+      )
 
     if (big_n_structure$by_page) {
       frmtted_vals <-  frmtted_vals |>
-        select(!!!columns, !!value, where(~sum(is.na(.x)) == 0), -!!param)
+        dplyr::select(
+          !!!columns,
+          !!value,
+          tidyselect::where(~sum(is.na(.x)) == 0),
+          -!!param
+        )
     } else {
       frmtted_vals <-  frmtted_vals |>
-        select(!!!columns, !!value)
+        dplyr::select(
+          !!!columns,
+          !!value
+        )
     }
 
     # Test for missing big n's
@@ -145,13 +162,19 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
     # Test for too many big n's
     grp_vars <- setdiff(names(frmtted_vals), as_label(value))
     multi_test <- frmtted_vals |>
-      group_by(across(all_of(grp_vars))) |>
-      summarise(n = n()) |>
-      filter(n > 1)
+      dplyr::group_by(
+        dplyr::across(
+          tidyselect::all_of(
+            grp_vars
+          )
+        )
+      ) |>
+      dplyr::summarise(n = n()) |>
+      dplyr::filter(n > 1)
     if (nrow(multi_test) > 0) {
 
       warn_df <- multi_test |>
-        select(-"n")
+        dplyr::select(-"n")
 
       warning(
         c(
@@ -165,18 +188,24 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
     by_var <- setdiff(grp_vars, map_chr(columns, as_label))
 
     .data <- frmtted_vals |>
-      mutate(`_tfrmt______id` = row_number()) |>
-      pivot_longer(
-        -c("_tfrmt______id", !!value, all_of(by_var)),
+      dplyr::mutate(
+        `_tfrmt______id` = dplyr::row_number()
+      ) |>
+      tidyr::pivot_longer(
+        -c(
+          "_tfrmt______id",
+          !!value,
+          tidyselect::all_of(by_var)
+        ),
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
       ) |>
-      filter(
+      dplyr::filter(
         !is.na(.data$`__tfrmt_big_n_values__`) &
           .data$`__tfrmt_big_n_values__` != ""
       ) |>
-      group_by(.data$`_tfrmt______id`) |>
-      mutate(
+      dplyr::group_by(.data$`_tfrmt______id`) |>
+      dplyr::mutate(
         exp = paste0(
           .data$`__tfrmt_big_n_names__`,
           "=='",
@@ -189,15 +218,20 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
           .data$`__tfrmt_big_n_names__`
         )
       ) |>
-      slice_tail() |>
-      ungroup() |>
-      select(-"_tfrmt______id")
+      dplyr::slice_tail() |>
+      dplyr::ungroup() |>
+      dplyr::select(-"_tfrmt______id")
 
     if (big_n_structure$by_page) {
 
       .data <-  .data |>
-        group_by(across(all_of(by_var))) |>
-        group_split()
+        dplyr::group_by(
+          dplyr::across(
+            tidyselect::all_of(
+              by_var)
+          )
+        ) |>
+        dplyr::group_split()
     }
 
   } else {
