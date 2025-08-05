@@ -162,6 +162,21 @@
 ---
 
     Code
+      as.data.frame(shuffle_card(cards::bind_ard(dplyr::slice(cards::ard_categorical(
+        cards::ADSL, by = ARM, variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
+        cards::ADSL, variables = AGEGR1), 1), dplyr::slice(cards::ard_continuous(
+        cards::ADSL, by = SEX, variables = AGE), 1), dplyr::slice(cards::ard_continuous(
+        cards::ADSL, variables = AGE), 1)), by = c("ARM", "SEX"), fill_overall = "{colname}"))
+    Output
+            ARM  SEX AGEGR1  AGE     context stat_variable stat_name stat_label stat
+      1 Placebo <NA>  65-80 <NA> categorical        AGEGR1         n          n   42
+      2     ARM <NA>  65-80 <NA> categorical        AGEGR1         n          n  144
+      3    <NA>  SEX   <NA>  AGE  continuous           AGE         N          N  254
+      4    <NA>    F   <NA>  AGE  continuous           AGE         N          N  143
+
+---
+
+    Code
       shuffle_card(cards::bind_ard(dplyr::slice(cards::ard_categorical(cards::ADSL,
       by = c(ARM, SEX), variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
         cards::ADSL, by = SEX, variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
@@ -173,6 +188,36 @@
       1 Placebo     F          65-80  catego~ AGEGR1        n         n             22
       2 Overall ARM F          65-80  catego~ AGEGR1        n         n             78
       3 Overall ARM Overall S~ 65-80  catego~ AGEGR1        n         n            144
+
+---
+
+    Code
+      shuffle_card(cards::bind_ard(dplyr::slice(cards::ard_categorical(cards::ADSL,
+      by = c(ARM, SEX), variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
+        cards::ADSL, by = SEX, variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
+        cards::ADSL, variables = AGEGR1), 1)), by = c("ARM", "SEX"), fill_overall = "total")
+    Output
+      # A tibble: 3 x 8
+        ARM     SEX   AGEGR1 context     stat_variable stat_name stat_label  stat
+        <chr>   <chr> <chr>  <chr>       <chr>         <chr>     <chr>      <int>
+      1 Placebo F     65-80  categorical AGEGR1        n         n             22
+      2 total   F     65-80  categorical AGEGR1        n         n             78
+      3 total   total 65-80  categorical AGEGR1        n         n            144
+
+---
+
+    Code
+      shuffle_card(cards::bind_ard(dplyr::slice(cards::ard_categorical(cards::ADSL,
+      by = c(ARM, SEX), variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
+        cards::ADSL, by = SEX, variables = AGEGR1), 1), dplyr::slice(cards::ard_categorical(
+        cards::ADSL, variables = AGEGR1), 1)), by = c("ARM", "SEX"), fill_overall = NA)
+    Output
+      # A tibble: 3 x 8
+        ARM     SEX   AGEGR1 context     stat_variable stat_name stat_label  stat
+        <chr>   <chr> <chr>  <chr>       <chr>         <chr>     <chr>      <int>
+      1 Placebo F     65-80  categorical AGEGR1        n         n             22
+      2 <NA>    F     65-80  categorical AGEGR1        n         n             78
+      3 <NA>    <NA>  65-80  categorical AGEGR1        n         n            144
 
 ---
 
@@ -211,7 +256,8 @@
 # shuffle_card() messages about 'Overall <var>' or 'Any <var>'
 
     Code
-      dplyr::mutate(test_data, dplyr::across(ARM:TRTA, .derive_overall_labels))
+      dplyr::mutate(test_data, dplyr::across(ARM:TRTA, ~ .derive_overall_labels(.x,
+        fill_overall = "Overall {colname}", fill_hierarchical_overall = "Any {colname}")))
     Message
       i "Overall ARM" already exists in the `ARM` column. Using "Overall ARM.1".
     Output

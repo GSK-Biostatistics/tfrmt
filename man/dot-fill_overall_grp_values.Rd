@@ -4,12 +4,26 @@
 \alias{.fill_overall_grp_values}
 \title{Fill Overall Group Variables}
 \usage{
-.fill_overall_grp_values(x, vars_protected, ard_args)
+.fill_overall_grp_values(x, by, fill_overall, fill_hierarchical_overall)
 }
 \arguments{
-\item{x}{a data frame}
+\item{x}{an ARD data frame of class 'card'}
 
-\item{ard_args}{list of args passed from ard_* calls}
+\item{by}{Grouping variable(s) used in calculations. Defaults to \code{NULL}. If
+available (i.e. if \code{x} comes from a stacking function), \code{attributes(x)$by}
+will be used instead of \code{by}.}
+
+\item{fill_overall}{scalar to fill missing grouping or variable levels. If a
+character is passed, then it is processed with glue::glue() where the
+colname element is available to inject into the string, e.g. 'Overall
+{colname}' may resolve to 'Overall AGE' for an AGE column. Default is
+'Overall {colname}'. If \code{NA} then no fill will occur.}
+
+\item{fill_hierarchical_overall}{scalar to fill variable levels for overall
+hierarchical calculations.  If a character is passed, then it is processed
+with glue::glue() where the colname element is available to inject into the
+string, e.g. 'Any {colname}' may resolve to 'Any AESOC' for an AESOC
+column. Default is 'Any {colname}'. If \code{NA} then no fill will occur.}
 }
 \value{
 data frame

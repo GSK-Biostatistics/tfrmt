@@ -3,14 +3,24 @@
 #' @description `r lifecycle::badge('experimental')`\cr
 #'
 #' This function ingests an ARD object and shuffles the information to prepare for analysis.
-#' Helpful for streamlining across multiple ARDs. Combines each group/group_level into 1
-#' column, back fills missing grouping values from the variable levels where possible, and
-#' optionally trims statistics-level metadata.
+#' Helpful for streamlining across multiple ARDs.
 #'
 #' @param x an ARD data frame of class 'card'
-#' @param by Grouping variable(s) used in calculations. Defaults to `NULL`. If available (i.e. if
-#'   `x` comes from a stacking function), `attributes(x)$by` will be used instead of `by`.
-#' @param trim logical representing whether or not to trim away statistic-level metadata
+#' @param by Grouping variable(s) used in calculations. Defaults to `NULL`. If
+#'   available (i.e. if `x` comes from a stacking function), `attributes(x)$by`
+#'   will be used instead of `by`.
+#' @param trim logical representing whether or not to trim away `fmt_fun`,
+#'   `error`, and `warning` columns
+#' @param fill_overall scalar to fill missing grouping or variable levels. If a
+#'   character is passed, then it is processed with glue::glue() where the
+#'   colname element is available to inject into the string, e.g. 'Overall
+#'   {colname}' may resolve to 'Overall AGE' for an AGE column. Default is
+#'   'Overall {colname}'. If `NA` then no fill will occur.
+#' @param fill_hierarchical_overall scalar to fill variable levels for overall
+#'   hierarchical calculations.  If a character is passed, then it is processed
+#'   with glue::glue() where the colname element is available to inject into the
+#'   string, e.g. 'Any {colname}' may resolve to 'Any AESOC' for an AESOC
+#'   column. Default is 'Any {colname}'. If `NA` then no fill will occur.
 #'
 #' @return a tibble
 #' @export
@@ -21,7 +31,11 @@
 #'   cards::ard_categorical(cards::ADSL, variables = "ARM")
 #' ) |>
 #'   shuffle_card()
-shuffle_card <- function(x, by = NULL, trim = TRUE) {
+shuffle_card <- function(x,
+                         by = NULL,
+                         trim = TRUE,
+                         fill_overall = "Overall {colname}",
+                         fill_hierarchical_overall = "Any {colname}") {
 
   if (!inherits(x, "card")) {
     cli::cli_abort(
@@ -34,17 +48,8 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
       env = rlang::caller_env())
   }
 
-  ard_attributes <- attributes(x)
-  ard_args <- ard_attributes$args
-  if (!is.null(by)){
-    if (!is.null(ard_args$by) && !identical(ard_args$by, by)){
-      cli::cli_inform(
-        "Mismatch between attributes of {.arg x} and supplied value to {.arg by}. Attributes will be used in lieu of {.arg by}",
-        env = rlang::caller_env())
-    } else {
-      ard_args$by <- by
-    }
-  }
+  ard_args <- attributes(x)$args
+  by <- .process_by(x, by)
 
   # make sure columns are in order & add index for retaining order
   dat_cards <- x |>
@@ -52,16 +57,10 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
     cards::tidy_ard_row_order() |>
     dplyr::mutate(..cards_idx.. = dplyr::row_number())
 
-  # fill stat label if missing
-  dat_cards <- dat_cards |>
-    dplyr::mutate(dplyr::across(any_of("stat_label"), ~ dplyr::coalesce(.x, stat_name)))
-
   # split up the data into data/variable info & cards info
   vars_ard <- dat_cards |>
     dplyr::select(cards::all_ard_groups(), cards::all_ard_variables()) |>
     names()
-
-  vars_protected <- setdiff(names(dat_cards), vars_ard)
 
   # process the data/variable info
   dat_cards_grps_processed <- dat_cards |>
@@ -72,13 +71,13 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
       ),
       stat_variable = variable) |>
     dplyr::relocate(stat_variable, .after = "context") |>
-    cards::rename_ard_columns(fill = "..cards_overall..")
+    cards::rename_ard_columns(fill = "..cards_overall..") |>
+    dplyr::select(-any_of(c("..ard_total_n..", "..ard_hierarchical_overall..")))
 
   dat_cards_out <- dat_cards_grps_processed |>
     # unlist the list-columns
     cards::unlist_ard_columns() |>
-    .coalesce_ard_vars() |>
-    .fill_overall_grp_values(vars_protected, ard_args) |>
+    .fill_overall_grp_values(by, fill_overall, fill_hierarchical_overall) |>
     dplyr::arrange(.data$..cards_idx..) |>
     dplyr::select(-"..cards_idx..")
 
@@ -95,36 +94,10 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
   output
 }
 
-
-#' Coalesce protected `..ard_*` variables into a single column, `..ard_vars..`
-#'
-#' @param x a data frame
-#'
-#' @return a tibble
-#' @noRd
-.coalesce_ard_vars <- function(x){
-
-  ard_vars <- intersect(c("..ard_total_n..", "..ard_hierarchical_overall.."), names(x))
-  if (length(ard_vars)>0){
-    x <- x |>
-      dplyr::mutate(across(all_of(ard_vars), ~ ifelse(!is.na(.x), dplyr::cur_column(), .x))) |>
-      dplyr::mutate(..ard_vars.. = do.call(dplyr::coalesce, across(all_of(ard_vars))))|>
-      dplyr::select(-all_of(ard_vars))
-  } else {
-    x <- x |>
-      dplyr::mutate(..ard_vars.. = NA)
-  }
-
-  x  |>
-    dplyr::relocate("..ard_vars..", .before = "..cards_idx..")
-
-}
-
 #' Trim ARD
 #'
-#' This function ingests an ARD object and trims columns and rows for downstream use in
-#' displays. The resulting data frame contains only numeric results, no supplemental
-#' information about errors/warnings, and unnested list columns.
+#' This function ingests an data.frame and trims columns for
+#' downstream use
 #'
 #' @param x (`data.frame`)\cr
 #'   a data frame
@@ -160,6 +133,30 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
   })
 }
 
+
+#' Process `by` variable
+#'
+#' @param x a data frame
+#' @param by Grouping variable(s) used in calculations. Defaults to `NULL`.
+#'
+#' @returns character string if `by` variable present
+#' @noRd
+.process_by <- function(x, by){
+
+  ard_attributes <- attributes(x)
+  ard_args <- ard_attributes$args
+  if (!is.null(by)){
+    if (!is.null(ard_args$by) && !identical(ard_args$by, by)){
+      cli::cli_inform(
+        "Mismatch between attributes of {.arg x} and supplied value to {.arg by}. Attributes will be used in lieu of {.arg by}",
+        env = rlang::caller_env())
+    } else {
+      ard_args$by <- by
+    }
+  }
+
+  ard_args$by
+}
 #' Fill Overall Group Variables
 #'
 #' This function fills the missing values of grouping variables with
@@ -171,15 +168,17 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 #' that have been used in other calculations of the same variable and statistics.
 #' `"Any"` will be used if it is likely to be a hierarchical calculation.
 #'
-#' @param x a data frame
-#' @param ard_args list of args passed from ard_* calls
+#' @inheritParams shuffle_card
 #'
 #' @return data frame
-.fill_overall_grp_values <- function(x, vars_protected, ard_args) {
+.fill_overall_grp_values <- function(x, by, fill_overall, fill_hierarchical_overall){
+
+  grp_vars <- by
+  vars_cards_protected <- c("context","stat_variable","stat_name","stat_label",
+                            "stat","fmt_fun", "warning", "error","..cards_idx..")
 
   # determine grouping and merging variables
-  grp_vars <- ard_args$by
-  id_vars <- setdiff(names(x), unique(c(vars_protected, grp_vars, "..ard_vars..", "stat_variable")))
+  id_vars <- setdiff(names(x), unique(c(vars_cards_protected, grp_vars)))
 
   if (!is_empty(grp_vars) && !is_empty(id_vars)){
 
@@ -209,31 +208,27 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
       }
     }
 
-    # replace NA group values with "..cards_overall.." or "..hierarchical_overall.."
-    # where it is likely to be a group or subgroup calculation
+    # replace NA variables with "..hierarchical_overall.." when present
     x <- x |>
-      dplyr::mutate(across(all_of(grp_vars),
-                           ~ifelse(is.na(.x),
-                                   ..ard_vars..,
-                                   .x)))|>
       dplyr::mutate(across(all_of(id_vars),
-                           ~ifelse(is.na(.x) & .data$..ard_vars.. == "..ard_hierarchical_overall..",
+                           ~ifelse(is.na(.x) & .data$stat_variable == "..ard_hierarchical_overall..",
                                    "..hierarchical_overall..",
                                    .x)))
   }
 
-  # replace `"..cards_overall.."` group values with "Overall <colname>" and
-  # `"..hierarchical_overall.."` with `"Any <colname>"`
+  # replace `"..cards_overall.."` and `"..hierarchical_overall.."` with fill values
   output <- x |>
     dplyr::mutate(
       dplyr::across(
         tidyselect::all_of(
-          c(grp_vars, id_vars)
+          c(grp_vars, setdiff(id_vars, "..cards_idx.."))
         ),
-        .derive_overall_labels
+        ~ .derive_overall_labels(.x,
+                                 colname = dplyr::cur_column(),
+                                 fill_overall,
+                                 fill_hierarchical_overall)
       )
-    ) |>
-    dplyr::select(-any_of("..ard_vars.."))
+    )
 
   output
 }
@@ -251,9 +246,13 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 #' @returns a character vector
 #'
 #' @noRd
-.derive_overall_labels <- function(x, cur_col = dplyr::cur_column()) {
-  glue_overall <- glue::glue("Overall {cur_col}")
-  glue_any <- glue::glue("Any {cur_col}")
+.derive_overall_labels <- function(x,
+                                   colname = dplyr::cur_column(),
+                                   fill_overall,
+                                   fill_hierarchical_overall) {
+
+  glue_overall <- ifelse(is.na(fill_overall), NA, glue::glue(fill_overall))
+  glue_any <- ifelse(is.na(fill_hierarchical_overall), NA, glue::glue(fill_hierarchical_overall))
 
   overall_val <- c(unique(x), glue_overall) |>
     make.unique() |>
@@ -262,16 +261,16 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
     make.unique() |>
     dplyr::last()
 
-  if (overall_val != glue_overall) {
+  if (!is.na(glue_overall) && overall_val != glue_overall) {
     cli::cli_alert_info(
-      "{.val {glue_overall}} already exists in the {.code {cur_col}} column. \\
+      "{.val {glue_overall}} already exists in the {.code {colname}} column. \\
       Using {.val {overall_val}}."
     )
   }
 
-  if (any_val != glue_any) {
+  if (!is.na(glue_any) && any_val != glue_any) {
     cli::cli_alert_info(
-      "{.val {glue_any}} already exists in the {.code {cur_col}} column. Using\\
+      "{.val {glue_any}} already exists in the {.code {colname}} column. Using\\
        {.val {any_val}}."
     )
   }
