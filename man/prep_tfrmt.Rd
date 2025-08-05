@@ -19,12 +19,11 @@ What does the preparation function do?
 \itemize{
 \item \code{unite_data_vars()}: bring all categorical variables levels into a single
 column, called \code{variable_level} (where applicable).
-\item \code{fill_column()} fills the passed column(s) with \code{"Overall <column_name>"}.
 \item \code{process_big_n()} identifies the bigN columns and changes \code{stat_name} to
 \code{"bigN"}
 \item \code{process_categorical_vars()}: once we have bigN, it renames some of the
 values in the categorical variable columns
-\item \code{fill_variable()}: in a hierarchical stack fills NA in one column
+\item \code{fill_variables()}: in a hierarchical stack fills NA in one column
 (with \code{"Any <column_name>"}) based on the presence of data in another column
 }
 }
