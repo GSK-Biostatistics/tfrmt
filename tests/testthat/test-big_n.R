@@ -509,7 +509,7 @@ test_that("Missing Big N in dataset", {
   expect_warning(apply_tfrmt(.data = dat, tfrmt = tfrmt_test, mock = FALSE))
 })
 
-test_that("using 'value' for values column where there may be conflict in big_n", {
+test_that("using 'value' for values column when conflicting with big_n", {
   # nolint start: commas_linter
   dat <- tibble::tribble(
     ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~value,
