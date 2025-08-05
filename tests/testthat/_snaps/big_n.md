@@ -1,3 +1,12 @@
+# Overlapping Big N's
+
+    The following columns have multiple Big N's associated with them:
+    Total
+
+# Missing Big N in dataset
+
+    Unable to add big n's as there are no matching parameter values in the given ARD
+
 # big Ns constant by page
 
     Code

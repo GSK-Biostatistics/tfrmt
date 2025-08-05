@@ -187,13 +187,16 @@ test_that("Simple Case big_n", {
   ) %>%
     names()
 
-  expect_equal(auto_mock, c(
-    "Label",
-    "Placebo\nN = xx",
-    "Treatment\nN = xx",
-    "Total\nN = xx",
-    "..tfrmt_row_grp_lbl"
-  ))
+  expect_equal(
+    auto_mock,
+    c(
+      "Label",
+      "Placebo\nN = xx",
+      "Treatment\nN = xx",
+      "Total\nN = xx",
+      "..tfrmt_row_grp_lbl"
+    )
+  )
 })
 
 test_that("Test with spanning headers", {
@@ -231,7 +234,11 @@ test_that("Test with spanning headers", {
     value = val,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x")
+      )
     ),
     col_plan = col_plan(
       group,
@@ -274,7 +281,6 @@ test_that("Test with spanning headers", {
     names()
 
   expect_equal(auto_blank, man)
-
 })
 
 test_that("Multiple big N params", {
@@ -335,7 +341,8 @@ test_that("Multiple big N params", {
           "{n} {pct}",
           n = frmt("X"),
           pct = frmt(
-            "(xx.x%)", missing = " "
+            "(xx.x%)",
+            missing = " "
           )
         )
       ),
@@ -354,17 +361,34 @@ test_that("Multiple big N params", {
         frmt("xx")
       )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
-    row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
     ),
-    big_n = big_n_structure(param_val = c("bigN", "big_n"))
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = ".default",
+        element_block(
+          post_space = " "
+        )
+      )
+    ),
+    big_n = big_n_structure(
+      param_val = c("bigN", "big_n")
+    )
   ) %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+    apply_tfrmt(
+      .data = data,
+      tfrmt = .,
+      mock = FALSE
+    ) %>%
     names()
 
   man <- big_ns %>%
-    mutate(foo = str_c(Column, "\nN = ", Value)) %>%
+    mutate(
+      foo = str_c(Column, "\nN = ", Value)
+    ) %>%
     pull(foo) %>%
     c("Label", ., "..tfrmt_row_grp_lbl")
   expect_equal(auto, man)
@@ -427,11 +451,15 @@ test_that("Overlapping Big N's", {
         frmt_combine(
           "{n} {pct}",
           n = frmt("X"),
-          pct = frmt("(xx.x%)", missing = " ")
+          pct = frmt(
+            "(xx.x%)",
+            missing = " "
+          )
         )
       ),
       frmt_structure(
-        group_val = "Age (y)", label_val = "Mean (SD)",
+        group_val = "Age (y)",
+        label_val = "Mean (SD)",
         frmt_combine(
           "{mean} ({sd})",
           mean = frmt("XX.X"),
@@ -462,9 +490,13 @@ test_that("Overlapping Big N's", {
     )
   )
 
-  expect_warning(apply_tfrmt(.data = data, tfrmt = tfrmt_test, mock = FALSE) %>%
-                   names())
-
+  expect_snapshot_warning(
+    apply_tfrmt(
+      .data = data,
+      tfrmt = tfrmt_test,
+      mock = FALSE
+    )
+  )
 })
 
 test_that("Missing Big N in dataset", {
@@ -496,17 +528,29 @@ test_that("Missing Big N in dataset", {
     value = val,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x")
+      )
     ),
     col_plan = col_plan(
       group,
       label,
       starts_with("col")
     ),
-    big_n = big_n_structure(param_val = "bigN")
+    big_n = big_n_structure(
+      param_val = "bigN"
+    )
   )
 
-  expect_warning(apply_tfrmt(.data = dat, tfrmt = tfrmt_test, mock = FALSE))
+  expect_snapshot_warning(
+    apply_tfrmt(
+      .data = dat,
+      tfrmt = tfrmt_test,
+      mock = FALSE
+    )
+  )
 })
 
 test_that("using 'value' for values column when conflicting with big_n", {
