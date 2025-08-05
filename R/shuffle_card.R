@@ -8,6 +8,8 @@
 #' optionally trims statistics-level metadata.
 #'
 #' @param x an ARD data frame of class 'card'
+#' @param by Grouping variable(s) used in calculations. Defaults to `NULL`. If available (i.e. if
+#'   `x` comes from a stacking function), `attributes(x)$by` will be used instead of `by`.
 #' @param trim logical representing whether or not to trim away statistic-level metadata
 #'
 #' @return a tibble
@@ -15,19 +17,33 @@
 #'
 #' @examples
 #' cards::bind_ard(
-#'   cards::ard_categorical(ADSL, by = "ARM", variables = "AGEGR1"),
-#'   cards::ard_categorical(ADSL, variables = "ARM")
+#'   cards::ard_categorical(cards::ADSL, by = "ARM", variables = "AGEGR1"),
+#'   cards::ard_categorical(cards::ADSL, variables = "ARM")
 #' ) |>
 #'   shuffle_card()
 shuffle_card <- function(x, by = NULL, trim = TRUE) {
 
-  stopifnot(inherits(x, "card")) # switch to cli
-  stopifnot(inherits(trim, "logical"))  # switch to cli
+  if (!inherits(x, "card")) {
+    cli::cli_abort(
+      "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
+    env = rlang::caller_env())
+  }
+  if (!inherits(trim, "logical")) {
+    cli::cli_abort(
+      "{.arg trim} argument must be class {.cls logical}}, not {.obj_type_friendly {trim}}",
+      env = rlang::caller_env())
+  }
 
   ard_attributes <- attributes(x)
   ard_args <- ard_attributes$args
   if (!is.null(by)){
-    ard_args$by <- by
+    if (!is.null(ard_args$by) && !identical(ard_args$by, by)){
+      cli::cli_inform(
+        "Mismatch between attributes of {.arg x} and supplied value to {.arg by}. Attributes will be used in lieu of {.arg by}",
+        env = rlang::caller_env())
+    } else {
+      ard_args$by <- by
+    }
   }
 
   # make sure columns are in order & add index for retaining order
@@ -165,7 +181,7 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
   grp_vars <- ard_args$by
   id_vars <- setdiff(names(x), unique(c(vars_protected, grp_vars, "..ard_vars..", "stat_variable")))
 
-  if (!is_empty(grp_vars)){
+  if (!is_empty(grp_vars) && !is_empty(id_vars)){
 
     # replace NA group values with "..cards_overall.." where it is likely to be an overall calculation
     for (g in grp_vars) {
