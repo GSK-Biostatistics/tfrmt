@@ -938,13 +938,13 @@ test_that("big Ns constant by page", {
     )
   )
 
-  expect_message(
-    auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE),
-    "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`",
-    fixed = TRUE
+  expect_snapshot(
+    auto <- apply_tfrmt(
+      .data = data,
+      tfrmt = mytfrmt,
+      mock = FALSE
+    )
   )
-
 
   expect_equal(
     map(auto, names),
@@ -967,7 +967,6 @@ test_that("big Ns constant by page", {
   )
 
   # too many big Ns provided with by_page = FALSE
-
   data <- tibble(
     Group = rep(c("Age (y)", "Sex"), c(3, 3)),
     Label = rep("n", 6),
@@ -1067,11 +1066,11 @@ test_that("not enough big Ns by page", {
   )
 
   expect_snapshot(
-      apply_tfrmt(
-        .data = data,
-        tfrmt = mytfrmt,
-        mock = FALSE
-      )
+    apply_tfrmt(
+      .data = data,
+      tfrmt = mytfrmt,
+      mock = FALSE
+    )
   )
 })
 
