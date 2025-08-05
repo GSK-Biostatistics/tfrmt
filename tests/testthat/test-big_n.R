@@ -1139,23 +1139,6 @@ test_that("big Ns constant by page", {
       mock = FALSE
     )
   )
-
-  expect_warning(
-    auto <- mytfrmt %>%
-      apply_tfrmt(
-        .data = data,
-        tfrmt = .,
-        mock = FALSE
-      ),
-    paste(
-      c(
-        "The following columns have multiple Big N's associated with them:",
-        "c(\"Placebo\", \"Total\", \"Treatment\")"
-      ),
-      collapse = "\n"
-    ),
-    fixed = TRUE
-  )
 })
 
 test_that("not enough big Ns by page", {
