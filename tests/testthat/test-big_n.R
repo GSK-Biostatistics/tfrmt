@@ -51,7 +51,7 @@ test_that("Defining the big Ns", {
 
 test_that("Simple Case big_n", {
 
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex", "Age (y)", "Sex"),
       c(3, 3, 6, 12)
@@ -75,22 +75,22 @@ test_that("Simple Case big_n", {
   ) |>
     # Note because tfrmt only does rounding we will need to have the percents
     # multiplied by 100
-    mutate(
-      Value = case_when(
+    dplyr::mutate(
+      Value = dplyr::case_when(
         Param == "pct" ~ Value * 100,
         TRUE ~ Value
       ),
-      ord1 = if_else(Group == "Age (y)", 1, 2),
-      ord2 = if_else(Label == "n", 1, 2)
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+      ord2 = dplyr::if_else(Label == "n", 1, 2)
     )
 
-  big_ns <- tibble(
+  big_ns <- tibble::tibble(
     Column = c("Placebo", "Treatment", "Total"),
     Param = "bigN",
     Value = c(30, 30, 60)
   )
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   tfrmt_sans_colplan <- tfrmt(
     group = Group,
@@ -189,7 +189,7 @@ test_that("Simple Case big_n", {
   )
 
   auto_mock <- apply_tfrmt(
-    .data = select(data, -Value),
+    .data = dplyr::select(data, -Value),
     tfrmt = tfrmt_wit_colplan,
     mock = TRUE
   ) |>
@@ -283,7 +283,13 @@ test_that("Test with spanning headers", {
 
   # try with empty strings rather than NA
   dat_blank <- dat |>
-    mutate(across(where(is.character), ~replace_na(.x, "")))
+    dplyr::mutate(
+      dplyr::across(
+        tidyselect::where(
+          is.character),
+        ~ tidyr::replace_na(.x, "")
+      )
+    )
 
   auto_blank <- apply_tfrmt(.data = dat_blank, tfrmt = auto_tfrmt) |>
     names()
@@ -293,7 +299,7 @@ test_that("Test with spanning headers", {
 
 test_that("Multiple big N params", {
 
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex", "Age (y)", "Sex"),
       c(3, 3, 6, 12)
@@ -317,22 +323,22 @@ test_that("Multiple big N params", {
   ) |>
     # Note because tfrmt only does rounding we will need to have the percents
     # multiplied by 100
-    mutate(
-      Value = case_when(
+    dplyr::mutate(
+      Value = dplyr::case_when(
         Param == "pct" ~ Value * 100,
         TRUE ~ Value
       ),
-      ord1 = if_else(Group == "Age (y)", 1, 2),
-      ord2 = if_else(Label == "n", 1, 2)
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+      ord2 = dplyr::if_else(Label == "n", 1, 2)
     )
 
-  big_ns <- tibble(
+  big_ns <- tibble::tibble(
     Column = c("Placebo", "Treatment", "Total"),
     Param = c("bigN", "big_n", "big_n"),
     Value = c(30, 30, 60)
   )
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   auto <- tfrmt(
     group = Group,
@@ -394,10 +400,10 @@ test_that("Multiple big N params", {
     names()
 
   man <- big_ns |>
-    mutate(
-      foo = str_c(Column, "\nN = ", Value)
+    dplyr::mutate(
+      foo = stringr::str_c(Column, "\nN = ", Value)
     ) |>
-    pull(foo)
+    dplyr::pull(foo)
 
   expect_equal(
     auto,
@@ -407,7 +413,7 @@ test_that("Multiple big N params", {
 
 test_that("Overlapping Big N's", {
 
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex", "Age (y)", "Sex"),
       c(3, 3, 6, 12)
@@ -431,22 +437,22 @@ test_that("Overlapping Big N's", {
   ) |>
     # Note because tfrmt only does rounding we will need to have the percents
     # multiplied by 100
-    mutate(
-      Value = case_when(
+    dplyr::mutate(
+      Value = dplyr::case_when(
         Param == "pct" ~ Value * 100,
         TRUE ~ Value
       ),
-      ord1 = if_else(Group == "Age (y)", 1, 2),
-      ord2 = if_else(Label == "n", 1, 2)
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+      ord2 = dplyr::if_else(Label == "n", 1, 2)
     )
 
-  big_ns <- tibble(
+  big_ns <- tibble::tibble(
     Column = c("Placebo", "Treatment", "Total", "Total"),
     Param = "bigN",
     Value = c(30, 30, 60, 65)
   )
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   tfrmt_test <- tfrmt(
     group = Group,
@@ -784,9 +790,9 @@ test_that("Test big n with footnotes", {
   ## confirm location of footnotes gets recorded correctly
   expect_equal(
     big_n_footnote_plan_gt$`_footnotes` |>
-      select(locname, colname, locnum, rownum, footnotes) |>
-      as_tibble(),
-    tibble(
+      dplyr::select(locname, colname, locnum, rownum, footnotes) |>
+      tibble::as_tibble(),
+    tibble::tibble(
       locname = c(
         "columns_columns",
         "data",
@@ -828,7 +834,7 @@ test_that("Test big n with footnotes", {
 
 test_that("big Ns vary by page", {
 
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex"),
       c(3, 3)
@@ -841,20 +847,20 @@ test_that("big Ns vary by page", {
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) |>
-    mutate(
-      ord1 = if_else(Group == "Age (y)", 1, 2)
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
     )
 
   big_ns <- data |>
-    summarise(
+    dplyr::summarise(
       .by = c(Group, Column),
       Value = sum(Value)
     ) |>
-    mutate(
+    dplyr::mutate(
       Param = "big_N"
     )
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -900,28 +906,28 @@ test_that("big Ns vary by page", {
     mock = FALSE
   )
 
-  auto_names <- map(auto, names)
-  man_names <- list(
-    c("Label",
-      "Placebo\nN = 12",
-      "Treatment\nN = 14",
-      "Total\nN = 31",
-      "..tfrmt_row_grp_lbl"),
-    c("Label",
-      "Placebo\nN = 20",
-      "Treatment\nN = 32",
-      "Total\nN = 18",
-      "..tfrmt_row_grp_lbl"
+  expect_equal(
+    purrr::map(auto, names),
+    list(
+      c("Label",
+        "Placebo\nN = 12",
+        "Treatment\nN = 14",
+        "Total\nN = 31",
+        "..tfrmt_row_grp_lbl"),
+      c("Label",
+        "Placebo\nN = 20",
+        "Treatment\nN = 32",
+        "Total\nN = 18",
+        "..tfrmt_row_grp_lbl"
+      )
     )
   )
-
-  expect_equal(auto_names, man_names)
 })
 
 test_that("big Ns constant by page", {
 
   # big Ns are constant by page
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex"),
       c(3, 3)
@@ -934,18 +940,20 @@ test_that("big Ns constant by page", {
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) |>
-    mutate(
-      ord1 = if_else(Group == "Age (y)", 1, 2)
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
     )
 
   big_ns <- data |>
-    summarise(
+    dplyr::summarise(
       .by = c(Column),
       Value = sum(Value)
     ) |>
-    mutate(Param = "big_N")
+    dplyr::mutate(
+      Param = "big_N"
+    )
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -992,7 +1000,7 @@ test_that("big Ns constant by page", {
   )
 
   expect_equal(
-    map(auto, names),
+    purrr::map(auto, names),
     list(
       c(
         "Label",
@@ -1060,7 +1068,7 @@ test_that("big Ns constant by page", {
   )
 
   expect_equal(
-    map(auto, names),
+    purrr::map(auto, names),
     list(
       c(
         "Label",
@@ -1080,7 +1088,7 @@ test_that("big Ns constant by page", {
   )
 
   # too many big Ns provided with by_page = FALSE
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex"),
       c(3, 3)
@@ -1093,17 +1101,17 @@ test_that("big Ns constant by page", {
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) |>
-    mutate(
-      ord1 = if_else(Group == "Age (y)", 1, 2)
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
     )
 
   big_ns <- data |>
-    summarise(
+    dplyr::summarise(
       .by = c(Group, Column),
       Value = sum(Value)
     ) |>
-    mutate(Param = "big_N")
-  data <- bind_rows(data, big_ns)
+    dplyr::mutate(Param = "big_N")
+  data <- dplyr::bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -1155,7 +1163,7 @@ test_that("big Ns constant by page", {
 test_that("not enough big Ns by page", {
 
   # big Ns are constant by page
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex"),
       c(3, 3)
@@ -1168,20 +1176,20 @@ test_that("not enough big Ns by page", {
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) |>
-    mutate(
-      ord1 = if_else(Group == "Age (y)", 1, 2)
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
     )
 
   #remove sex bigns so we have a missmatch of big ns
   big_ns <- data |>
-    filter(Group == "Age (y)") |>
-    summarise(
+    dplyr::filter(Group == "Age (y)") |>
+    dplyr::summarise(
       .by = c(Column, Group),
       Value = sum(Value)
     ) |>
-    mutate(Param = "big_N")
+    dplyr::mutate(Param = "big_N")
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -1232,7 +1240,7 @@ test_that("not enough big Ns by page", {
 
 test_that("Paging (group) variable is sorted non-alphabetically", {
   # same sorting of data and big Ns
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex"),
       c(3, 3)
@@ -1245,19 +1253,23 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) |>
-    mutate(
-      ord1 = if_else(Group == "Age (y)", 1, 2)
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
     )
 
   big_ns <- data |>
-    summarise(
+    dplyr::summarise(
       .by = c(Column, Group),
       Value = sum(Value)
     ) |>
-    mutate(Param = "big_N")
+    dplyr::mutate(Param = "big_N")
 
-  data <- bind_rows(data, big_ns) |>
-    arrange(desc(Group))
+  data <- dplyr::bind_rows(data, big_ns) |>
+    dplyr::arrange(
+      dplyr::desc(
+        Group
+      )
+    )
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -1307,7 +1319,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
   #check that the labels have printed in the changed order
   expect_equal(
     # This extracts the first value of the "Label" column from each element
-    map(auto, ~ .x[["Label"]][1]),
+    purrr::map(auto, ~ .x[["Label"]][1]),
     list(
       "Sex",
       "Age (y)"
@@ -1316,7 +1328,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
 
   # check big Ns have been correctly applied
   expect_equal(
-    map(auto, names),
+    purrr::map(auto, names),
     list(
       c(
         "Label",
@@ -1336,7 +1348,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
   )
 
   # different sorting of data and big Ns
-  data <- tibble(
+  data <- tibble::tibble(
     Group = rep(
       c("Age (y)", "Sex"),
       c(3, 3)
@@ -1349,20 +1361,24 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) |>
-    mutate(
-      ord1 = if_else(Group == "Age (y)", 1, 2)
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
     ) |>
-    arrange(desc(Group))
+    dplyr::arrange(
+      dplyr::desc(
+        Group
+      )
+    )
 
   big_ns <- data |>
-    summarise(
+    dplyr::summarise(
       .by = c(Column, Group),
       Value = sum(Value)
     ) |>
-    mutate(Param = "big_N") |>
-    arrange(Group)
+    dplyr::mutate(Param = "big_N") |>
+    dplyr::arrange(Group)
 
-  data <- bind_rows(data, big_ns)
+  data <- dplyr::bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -1411,7 +1427,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
 
   # check big Ns have been correctly applied
   expect_equal(
-    map(auto, names),
+    purrr::map(auto, names),
     list(
       c(
         "Label",
