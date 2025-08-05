@@ -178,6 +178,8 @@ shuffle_card <- function(x, by = NULL, trim = TRUE) {
 #' `"Any"` will be used if it is likely to be a hierarchical calculation.
 #'
 #' @param x a data frame
+#' @param vars_protected (character) vector of protected, {cards}-specific
+#'   variable names
 #' @param ard_args list of args passed from ard_* calls
 #'
 #' @return data frame
