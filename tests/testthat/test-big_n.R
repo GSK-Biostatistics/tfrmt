@@ -876,8 +876,12 @@ test_that("big Ns constant by page", {
     big_n = big_n_structure(param_val = c("big_N"), by_page = FALSE)
   )
 
-  auto <- mytfrmt %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+  auto <- apply_tfrmt(
+    .data = data,
+    tfrmt = mytfrmt,
+    mock = FALSE
+  )
+
   expect_equal(
     map(auto, names),
     list(
@@ -968,9 +972,15 @@ test_that("big Ns constant by page", {
 
   # too many big Ns provided with by_page = FALSE
   data <- tibble(
-    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Group = rep(
+      c("Age (y)", "Sex"),
+      c(3, 3)
+    ),
     Label = rep("n", 6),
-    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Column = rep(
+      c("Placebo", "Treatment", "Total"),
+      times = 2
+    ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) %>%
@@ -991,21 +1001,43 @@ test_that("big Ns constant by page", {
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(
+          post_space = " "
+        )
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = FALSE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = FALSE
+    )
   )
 
   expect_warning(
     auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)  ,
+      apply_tfrmt(
+        .data = data,
+        tfrmt = .,
+        mock = FALSE
+      ),
     paste(
       c(
         "The following columns have multiple Big N's associated with them:",
@@ -1015,10 +1047,7 @@ test_that("big Ns constant by page", {
     ),
     fixed = TRUE
   )
-
 })
-
-
 
 test_that("not enough big Ns by page", {
 
