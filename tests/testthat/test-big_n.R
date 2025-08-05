@@ -626,7 +626,6 @@ test_that("using 'value' for values column when conflicting with big_n", {
   )
 
   expect_equal(auto, man)
-
 })
 
 test_that("Test big n with footnotes", {
@@ -701,40 +700,62 @@ test_that("Test big n with footnotes", {
     footnote_plan = footnote_plan(
       footnote_structure(
         footnote_text = "Footnote goes here",
-        column_val = list(span = "Treatment", column = "T1&T2")
+        column_val = list(
+          span = "Treatment",
+          column = "T1&T2"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 2",
-        group_val = list(group = "group 1"),
-        label_val = list(label = "label 1"),
-        column_val = list(span = "Treatment", column = "T1")
+        group_val = list(
+          group = "group 1"
+        ),
+        label_val = list(
+          label = "label 1"
+        ),
+        column_val = list(
+          span = "Treatment",
+          column = "T1"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 3",
-        label_val = list(label = "label 1"),
-        column_val = list(span = "Treatment", column = "T1")
+        label_val = list(
+          label = "label 1"
+        ),
+        column_val = list(
+          span = "Treatment",
+          column = "T1"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 4",
-        label_val = list(label = "label 1"),
+        label_val = list(
+          label = "label 1"
+        ),
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 5",
-        group_val = list(group = "group 1")
+        group_val = list(
+          group = "group 1"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 6",
-        label_val = list(label = "label 1"),
-        column_val = list(span = "Treatment", column = c("T2"))
+        label_val = list(
+          label = "label 1"
+        ),
+        column_val = list(
+          span = "Treatment",
+          column = c("T2")
+        )
       )
     ),
-
     big_n = big_n_structure(
       param_val = "big_n"
     )
   ) %>%
     print_mock_gt(span_df_big_n)
-
 
   ## ensure big_n got applied
   expect_equal(
@@ -792,16 +813,20 @@ test_that("Test big n with footnotes", {
       )
     )
   )
-
-
 })
 
 test_that("big Ns vary by page", {
 
   data <- tibble(
-    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Group = rep(
+      c("Age (y)", "Sex"),
+      c(3, 3)
+    ),
     Label = rep("n", 6),
-    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Column = rep(
+      c("Placebo", "Treatment", "Total"),
+      times = 2
+    ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) %>%
@@ -814,7 +839,10 @@ test_that("big Ns vary by page", {
       .by = c(Group, Column),
       Value = sum(Value)
     ) %>%
-    mutate(Param = "big_N")
+    mutate(
+      Param = "big_N"
+    )
+
   data <- bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
@@ -855,12 +883,11 @@ test_that("big Ns vary by page", {
     )
   )
 
-  auto <- mytfrmt %>%
-    apply_tfrmt(
-      .data = data,
-      tfrmt = .,
-      mock = FALSE
-    )
+  auto <- apply_tfrmt(
+    .data = data,
+    tfrmt = mytfrmt,
+    mock = FALSE
+  )
 
   auto_names <- map(auto, names)
   man_names <- list(
@@ -884,9 +911,15 @@ test_that("big Ns constant by page", {
 
   # big Ns are constant by page
   data <- tibble(
-    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Group = rep(
+      c("Age (y)", "Sex"),
+      c(3, 3)
+    ),
     Label = rep("n", 6),
-    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Column = rep(
+      c("Placebo", "Treatment", "Total"),
+      times = 2
+    ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
   ) %>%
@@ -895,7 +928,10 @@ test_that("big Ns constant by page", {
     )
 
   big_ns <- data %>%
-    summarise(.by = c(Column), Value = sum(Value)) %>%
+    summarise(
+      .by = c(Column),
+      Value = sum(Value)
+    ) %>%
     mutate(Param = "big_N")
 
   data <- bind_rows(data, big_ns)
@@ -908,16 +944,34 @@ test_that("big Ns constant by page", {
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(
+          post_space = " "
+        )
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = FALSE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = FALSE
+    )
   )
 
   auto <- apply_tfrmt(
@@ -1033,7 +1087,10 @@ test_that("big Ns constant by page", {
     )
 
   big_ns <- data %>%
-    summarise(.by = c(Group, Column), Value = sum(Value)) %>%
+    summarise(
+      .by = c(Group, Column),
+      Value = sum(Value)
+    ) %>%
     mutate(Param = "big_N")
   data <- bind_rows(data, big_ns)
 
@@ -1072,6 +1129,14 @@ test_that("big Ns constant by page", {
     big_n = big_n_structure(
       param_val = c("big_N"),
       by_page = FALSE
+    )
+  )
+
+  expect_snapshot_warning(
+    apply_tfrmt(
+      .data = data,
+      tfrmt = mytfrmt,
+      mock = FALSE
     )
   )
 

@@ -14,6 +14,11 @@
     Message
       Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to ".default" in `page_plan`
 
+---
+
+    The following columns have multiple Big N's associated with them:
+    c("Placebo", "Total", "Treatment")
+
 # not enough big Ns by page
 
     Code
