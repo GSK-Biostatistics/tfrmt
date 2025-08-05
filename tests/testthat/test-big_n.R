@@ -72,7 +72,7 @@ test_that("Simple Case big_n", {
       15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293, 8, 7,
       15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
     )
-  ) %>%
+  ) |>
     # Note because tfrmt only does rounding we will need to have the percents
     # multiplied by 100
     mutate(
@@ -139,7 +139,7 @@ test_that("Simple Case big_n", {
     )
   )
 
-  tfrmt_wit_colplan <- tfrmt_sans_colplan %>%
+  tfrmt_wit_colplan <- tfrmt_sans_colplan |>
     tfrmt(
       col_plan = col_plan(
         everything(),
@@ -148,8 +148,12 @@ test_that("Simple Case big_n", {
       )
     )
 
-  auto_sans_colplan <- tfrmt_sans_colplan %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+  auto_sans_colplan <- tfrmt_sans_colplan |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    ) |>
     names()
 
   expect_equal(
@@ -165,8 +169,12 @@ test_that("Simple Case big_n", {
     )
   )
 
-  auto_wit_colplan <- tfrmt_wit_colplan %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+  auto_wit_colplan <- tfrmt_wit_colplan |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    ) |>
     names()
 
   expect_equal(
@@ -184,7 +192,7 @@ test_that("Simple Case big_n", {
     .data = select(data, -Value),
     tfrmt = tfrmt_wit_colplan,
     mock = TRUE
-  ) %>%
+  ) |>
     names()
 
   expect_equal(
@@ -257,7 +265,7 @@ test_that("Test with spanning headers", {
     )
   )
 
-  auto <- apply_tfrmt(.data = dat, tfrmt = auto_tfrmt) %>%
+  auto <- apply_tfrmt(.data = dat, tfrmt = auto_tfrmt) |>
     names()
 
   man <- c(
@@ -274,10 +282,10 @@ test_that("Test with spanning headers", {
 
 
   # try with empty strings rather than NA
-  dat_blank <- dat %>%
+  dat_blank <- dat |>
     mutate(across(where(is.character), ~replace_na(.x, "")))
 
-  auto_blank <- apply_tfrmt(.data = dat_blank, tfrmt = auto_tfrmt) %>%
+  auto_blank <- apply_tfrmt(.data = dat_blank, tfrmt = auto_tfrmt) |>
     names()
 
   expect_equal(auto_blank, man)
@@ -306,7 +314,7 @@ test_that("Multiple big N params", {
       15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293, 8, 7,
       15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
     )
-  ) %>%
+  ) |>
     # Note because tfrmt only does rounding we will need to have the percents
     # multiplied by 100
     mutate(
@@ -377,21 +385,24 @@ test_that("Multiple big N params", {
     big_n = big_n_structure(
       param_val = c("bigN", "big_n")
     )
-  ) %>%
+  ) |>
     apply_tfrmt(
       .data = data,
-      tfrmt = .,
+      tfrmt = _,
       mock = FALSE
-    ) %>%
+    ) |>
     names()
 
-  man <- big_ns %>%
+  man <- big_ns |>
     mutate(
       foo = str_c(Column, "\nN = ", Value)
-    ) %>%
-    pull(foo) %>%
-    c("Label", ., "..tfrmt_row_grp_lbl")
-  expect_equal(auto, man)
+    ) |>
+    pull(foo)
+
+  expect_equal(
+    auto,
+    c("Label", man, "..tfrmt_row_grp_lbl")
+  )
 })
 
 test_that("Overlapping Big N's", {
@@ -417,7 +428,7 @@ test_that("Overlapping Big N's", {
       15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293, 8, 7,
       15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
     )
-  ) %>%
+  ) |>
     # Note because tfrmt only does rounding we will need to have the percents
     # multiplied by 100
     mutate(
@@ -608,11 +619,11 @@ test_that("using 'value' for values column when conflicting with big_n", {
         location = "spanning"
       )
     )
-  ) %>%
+  ) |>
     apply_tfrmt(
       .data = dat,
-      tfrmt = .
-    ) %>%
+      tfrmt = _
+    ) |>
     names()
 
   man <- c(
@@ -639,7 +650,7 @@ test_that("Test big n with footnotes", {
   )
 
   # This one is used for examples 5 and 6
-  span_df <- df %>%
+  span_df <- df |>
     dplyr::mutate(
       span = dplyr::case_when(
         column == "PL" ~ "Placebo",
@@ -754,7 +765,7 @@ test_that("Test big n with footnotes", {
     big_n = big_n_structure(
       param_val = "big_n"
     )
-  ) %>%
+  ) |>
     print_mock_gt(span_df_big_n)
 
   ## ensure big_n got applied
@@ -772,7 +783,7 @@ test_that("Test big n with footnotes", {
 
   ## confirm location of footnotes gets recorded correctly
   expect_equal(
-    big_n_footnote_plan_gt$`_footnotes` %>%
+    big_n_footnote_plan_gt$`_footnotes` |>
       select(locname, colname, locnum, rownum, footnotes) |>
       as_tibble(),
     tibble(
@@ -829,16 +840,16 @@ test_that("big Ns vary by page", {
     ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
+  ) |>
     mutate(
       ord1 = if_else(Group == "Age (y)", 1, 2)
     )
 
-  big_ns <- data %>%
+  big_ns <- data |>
     summarise(
       .by = c(Group, Column),
       Value = sum(Value)
-    ) %>%
+    ) |>
     mutate(
       Param = "big_N"
     )
@@ -922,16 +933,16 @@ test_that("big Ns constant by page", {
     ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
+  ) |>
     mutate(
       ord1 = if_else(Group == "Age (y)", 1, 2)
     )
 
-  big_ns <- data %>%
+  big_ns <- data |>
     summarise(
       .by = c(Column),
       Value = sum(Value)
-    ) %>%
+    ) |>
     mutate(Param = "big_N")
 
   data <- bind_rows(data, big_ns)
@@ -1081,16 +1092,16 @@ test_that("big Ns constant by page", {
     ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
+  ) |>
     mutate(
       ord1 = if_else(Group == "Age (y)", 1, 2)
     )
 
-  big_ns <- data %>%
+  big_ns <- data |>
     summarise(
       .by = c(Group, Column),
       Value = sum(Value)
-    ) %>%
+    ) |>
     mutate(Param = "big_N")
   data <- bind_rows(data, big_ns)
 
@@ -1156,18 +1167,18 @@ test_that("not enough big Ns by page", {
     ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
+  ) |>
     mutate(
       ord1 = if_else(Group == "Age (y)", 1, 2)
     )
 
   #remove sex bigns so we have a missmatch of big ns
-  big_ns <- data %>%
-    filter(Group == "Age (y)") %>%
+  big_ns <- data |>
+    filter(Group == "Age (y)") |>
     summarise(
       .by = c(Column, Group),
       Value = sum(Value)
-    ) %>%
+    ) |>
     mutate(Param = "big_N")
 
   data <- bind_rows(data, big_ns)
@@ -1234,16 +1245,16 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
     ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
+  ) |>
     mutate(
       ord1 = if_else(Group == "Age (y)", 1, 2)
     )
 
-  big_ns <- data %>%
+  big_ns <- data |>
     summarise(
       .by = c(Column, Group),
       Value = sum(Value)
-    ) %>%
+    ) |>
     mutate(Param = "big_N")
 
   data <- bind_rows(data, big_ns) |>
@@ -1338,18 +1349,18 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
     ),
     Param = rep("n", 6),
     Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
+  ) |>
     mutate(
       ord1 = if_else(Group == "Age (y)", 1, 2)
-    ) %>%
+    ) |>
     arrange(desc(Group))
 
-  big_ns <- data %>%
+  big_ns <- data |>
     summarise(
       .by = c(Column, Group),
       Value = sum(Value)
-    ) %>%
-    mutate(Param = "big_N") %>%
+    ) |>
+    mutate(Param = "big_N") |>
     arrange(Group)
 
   data <- bind_rows(data, big_ns)
