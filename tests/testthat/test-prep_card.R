@@ -168,7 +168,6 @@ test_that("prep_card() works with demographic data", {
 
   # with prep_card --------------------------------------------------------
   ard_tbl_with_prep <- ard |>
-    # shuffle_card(by = "ARM") |>
     prep_card(column = "ARM") |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(stat_variable) |>
@@ -320,9 +319,6 @@ test_that("prep_card() works with adverse effects data", {
 
   # with prep_card -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
-    # shuffle_card(
-    #   by = c("AEBODSYS", "AETERM")
-    # ) |>
     prep_card(column = c("TRT01A", "AESEV")) |>
     mutate(
       AESEV = if_else(
