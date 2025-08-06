@@ -1,5 +1,4 @@
 test_that("prep_card() works with demographic data", {
-
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
@@ -51,7 +50,6 @@ test_that("prep_card() works with demographic data", {
     .total_n = TRUE
   )
 
-
   # tidy for table --------------------------------------------------------
   ard_tbl <- ard |>
     # rename cols, coalesce variable levels/stat_labels, unnest
@@ -62,9 +60,11 @@ test_that("prep_card() works with demographic data", {
         variable_level,
         ~ {
           # Assign NA if the element is empty
-          if (length(.x) == 0) return(NA_character_)
+          if (length(.x) == 0) {
+            return(NA_character_)
+          }
 
-          as.character(.x[[1]])   # Convert to character
+          as.character(.x[[1]]) # Convert to character
         }
       )
     ) |>
@@ -112,7 +112,6 @@ test_that("prep_card() works with demographic data", {
     # remove dups (extra denoms per variable level)
     unique()
 
-
   # the tfrmt table -------------------------------------------------------
   dm_t01 <- tfrmt(
     title = "Summary of Demographic Characteristics",
@@ -134,7 +133,7 @@ test_that("prep_card() works with demographic data", {
         frmt_combine(
           "{n} ({p}%)",
           n = frmt("xxx"),
-          p = frmt("xx", transform = ~. * 100)
+          p = frmt("xx", transform = ~ . * 100)
         )
       )
     ),
@@ -217,8 +216,7 @@ test_that("prep_card() works with demographic data", {
   )
 })
 
-test_that("prep_card() works with AE-T02", {
-
+test_that("prep_card() works with adverse effects data", {
   # data prep -------------------------------------------------------------
   # Filter to include only subjects marked as part of the safety population
   adsl <- pharmaverseadam::adsl |>
@@ -234,9 +232,9 @@ test_that("prep_card() works with AE-T02", {
   # create card -----------------------------------------------------------
   ae_ard <- cards::ard_stack_hierarchical(
     data = adae,
-    by =  c(TRT01A, AESEV),
+    by = c(TRT01A, AESEV),
     variables = c(AEBODSYS, AETERM),
-    statistic = ~ c("n", "p"),  # Calculate count and percentage
+    statistic = ~ c("n", "p"), # Calculate count and percentage
     denominator = adsl,
     id = USUBJID,
     over_variables = TRUE,
@@ -274,10 +272,15 @@ test_that("prep_card() works with AE-T02", {
     ) |>
     #filter to just the needed stats
     dplyr::filter(
-      !(is.na(AETERM)  & stat_name %in% c("N", "p"))
+      !(is.na(AETERM) & stat_name %in% c("N", "p"))
     ) |>
     dplyr::select(
-      TRT01A, AESEV, AEBODSYS, AETERM, stat, stat_name
+      TRT01A,
+      AESEV,
+      AEBODSYS,
+      AETERM,
+      stat,
+      stat_name
     )
 
   # the tfrmt table -------------------------------------------------------
@@ -411,7 +414,6 @@ test_that("generate_pairs() works", {
 })
 
 test_that("replace_na_pair() works", {
-
   expect_identical(
     replace_na_pair(
       tibble(
