@@ -20,8 +20,6 @@
 #' @examples
 prep_card <- function(x, column, variables) {
 
-  # browser()
-
   ard_args <- attr(x, "args")
 
   shuffled_card <- shuffle_card(
@@ -130,7 +128,6 @@ generate_pairs <- function(x) {
 # this is the function used by fill_variables to iterate over the pairs of
 # columns
 replace_na_pair <- function(x, pair) {
-
   variables_syms <- rlang::syms(pair)
 
   output <- x |>
@@ -149,7 +146,6 @@ replace_na_pair <- function(x, pair) {
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, column) {
-
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
@@ -171,7 +167,6 @@ process_big_n <- function(x, column) {
 # convenience wrapper around tidyr::unite to create variable_level from the
 # individual columns (where applicable)
 unite_data_vars <- function(x, column) {
-
   ard_vars <- c(
     "context",
     "stat_variable",
@@ -209,7 +204,6 @@ unite_data_vars <- function(x, column) {
 # it derives and fills a new column, called label (most problematic for
 # categorical variables)
 process_categorical_vars <- function(x, column) {
-
   categorical_vars <- x |>
     dplyr::filter(
       .data$context == "categorical"
@@ -274,7 +268,6 @@ has_attributes <- function(x) {
 
 # for use with labelled variables
 process_labels <- function(x) {
-
   if (!has_attributes(x)) {
     output <- x |>
       dplyr::mutate(
