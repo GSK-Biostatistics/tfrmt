@@ -18,9 +18,13 @@
 #' @export
 #'
 #' @examples
-prep_card <- function(x, column, variables = NULL) {
+prep_card <- function(x,
+                      column,
+                      variables = NULL,
+                      fill_overall = "Overall {colname}",
+                      fill_hierarchical_overall = "Any {colname}") {
 
-   if (!inherits(x, "card")) {
+  if (!inherits(x, "card")) {
     cli::cli_abort(
       "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
       env = rlang::caller_env()
@@ -30,16 +34,15 @@ prep_card <- function(x, column, variables = NULL) {
   ard_args <- attr(x, "args")
 
   # don't fill overall in a hierarchical context
-  fill_overall_arg <- dplyr::if_else(
-    "hierarchical" %in% unique(x$context),
-    NA,
-    "Overall {colname}"
-  )
+  # if ("hierarchical" %in% unique(x$context)) {
+  #   fill_overall <- NA
+  # }
 
   shuffled_card <- shuffle_card(
     x,
     by = ard_args$by %||% column,
-    fill_overall = fill_overall_arg
+    fill_overall = fill_overall,
+    fill_hierarchical_overall = fill_hierarchical_overall
   )
 
   if (!is.character(column)) {
@@ -84,7 +87,8 @@ prep_card <- function(x, column, variables = NULL) {
     process_big_n(column) |>
     process_categorical_vars(column) |>
     fill_variables(
-      variables = ard_args$variables %||% variables
+      variables = ard_args$variables %||% variables,
+      fill_value = fill_hierarchical_overall
     )
 
   output
@@ -102,10 +106,14 @@ has_args <- function(x) {
 
 # replace_na with "Any <column-name>" where applicable (where the preceding
 # column) is not NA
-fill_variables <- function(x, variables) {
+fill_variables <- function(x, variables, fill_value = "auto") {
 
   if (length(variables) < 2) {
     return(x)
+  }
+
+  if (fill_value == "Any {colname}") {
+    fill_value <- "auto"
   }
 
   pair_list <- generate_pairs(variables)
@@ -114,7 +122,7 @@ fill_variables <- function(x, variables) {
 
   # TODO need to test if the approach works for more than 2 variables
   for (i in seq_along(pair_list)) {
-    output <- replace_na_pair(output, pair_list[[i]])
+    output <- replace_na_pair(output, pair_list[[i]], fill_value)
   }
 
   output
@@ -137,14 +145,18 @@ generate_pairs <- function(x) {
 # replace missing values in one variable if a another variable is not NA
 # this is the function used by fill_variables to iterate over the pairs of
 # columns
-replace_na_pair <- function(x, pair) {
+replace_na_pair <- function(x, pair, fill_value = "auto") {
   variables_syms <- rlang::syms(pair)
+
+  if (fill_value == "auto") {
+    fill_value <- glue::glue("Any {variables_syms[[2]]}")
+  }
 
   output <- x |>
     dplyr::mutate(
       !!variables_syms[[2]] := dplyr::if_else(
         is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-        glue::glue("Any {variables_syms[[2]]}"),
+        fill_value,
         !!variables_syms[[2]]
       ),
       !!variables_syms[[2]] := as.character(!!variables_syms[[2]])

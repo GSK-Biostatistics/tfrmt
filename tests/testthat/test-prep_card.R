@@ -319,18 +319,10 @@ test_that("prep_card() works with adverse effects data", {
 
   # with prep_card -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
-    prep_card(column = c("TRT01A", "AESEV")) |>
-    mutate(
-      AEBODSYS = if_else(
-        AEBODSYS == "Any AEBODSYS",
-        "ANY EVENT",
-        AEBODSYS
-      ),
-      AETERM = if_else(
-        AETERM == "Any AETERM",
-        "ANY EVENT",
-        AETERM
-      )
+    prep_card(
+      column = c("TRT01A", "AESEV"),
+      fill_overall = NA,
+      fill_hierarchical_overall = "ANY EVENT"
     ) |>
     dplyr::select(-context, -stat_variable, -stat_label) |>
     dplyr::relocate(stat_name, .after = stat)
