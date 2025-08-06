@@ -4,12 +4,14 @@
 \alias{prep_tfrmt}
 \title{Prepare card for tfrmt}
 \usage{
-prep_tfrmt(x, column)
+prep_tfrmt(x, column, variables)
 }
 \arguments{
-\item{x}{a shuffled \code{card} object.}
+\item{x}{an ARD data frame of class 'card'}
 
 \item{column}{column(s) to use as header.}
+
+\item{variables}{\code{cards} variables}
 }
 \value{
 a \code{data.frame}

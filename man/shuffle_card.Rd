@@ -4,14 +4,35 @@
 \alias{shuffle_card}
 \title{Shuffle \code{cards}}
 \usage{
-shuffle_card(x, by = NULL, trim = TRUE)
+shuffle_card(
+  x,
+  by = NULL,
+  trim = TRUE,
+  fill_overall = "Overall {colname}",
+  fill_hierarchical_overall = "Any {colname}"
+)
 }
 \arguments{
 \item{x}{an ARD data frame of class 'card'}
 
-\item{by}{column to shuffle by}
+\item{by}{Grouping variable(s) used in calculations. Defaults to \code{NULL}. If
+available (i.e. if \code{x} comes from a stacking function), \code{attributes(x)$by}
+will be used instead of \code{by}.}
 
-\item{trim}{logical representing whether or not to trim away statistic-level metadata}
+\item{trim}{logical representing whether or not to trim away \code{fmt_fun},
+\code{error}, and \code{warning} columns}
+
+\item{fill_overall}{scalar to fill missing grouping or variable levels. If a
+character is passed, then it is processed with glue::glue() where the
+colname element is available to inject into the string, e.g. 'Overall
+{colname}' may resolve to 'Overall AGE' for an AGE column. Default is
+'Overall {colname}'. If \code{NA} then no fill will occur.}
+
+\item{fill_hierarchical_overall}{scalar to fill variable levels for overall
+hierarchical calculations.  If a character is passed, then it is processed
+with glue::glue() where the colname element is available to inject into the
+string, e.g. 'Any {colname}' may resolve to 'Any AESOC' for an AESOC
+column. Default is 'Any {colname}'. If \code{NA} then no fill will occur.}
 }
 \value{
 a tibble
@@ -20,16 +41,5 @@ a tibble
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
 
 This function ingests an ARD object and shuffles the information to prepare for analysis.
-Helpful for streamlining across multiple ARDs. Combines each group/group_level into 1
-column, back fills missing grouping values from the variable levels where possible, and
-optionally trims statistics-level metadata.
-}
-\examples{
-\dontrun{
-cards::bind_ard(
-  cards::ard_categorical(ADSL, by = "ARM", variables = "AGEGR1"),
-  cards::ard_categorical(ADSL, variables = "ARM")
-) |>
-  shuffle_card()
-}
+Helpful for streamlining across multiple ARDs.
 }

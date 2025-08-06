@@ -106,6 +106,17 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
       shuffle_card(by = c("ARM","SEX")) |>
       as.data.frame()
   )
+  # custom fill
+  expect_snapshot(
+    cards::bind_ard(
+      cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |> dplyr::slice(1),
+      cards::ard_categorical(cards::ADSL, variables = AGEGR1) |> dplyr::slice(1),
+      cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |> dplyr::slice(1),
+      cards::ard_continuous(cards::ADSL, variables = AGE) |> dplyr::slice(1)
+    ) |>
+      shuffle_card(by = c("ARM","SEX"), fill_overall = "{colname}") |>
+      as.data.frame()
+  )
 
   # mix of hierarchical group variables - fills overall only if variable has been calculated by group elsewhere
   expect_snapshot(
@@ -115,6 +126,23 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
       cards::ard_categorical(cards::ADSL, variables = AGEGR1) |> dplyr::slice(1)
     ) |>
       shuffle_card(by = c("ARM","SEX"))
+  )
+  # custom fill
+  expect_snapshot(
+    cards::bind_ard(
+      cards::ard_categorical(cards::ADSL, by = c(ARM, SEX), variables = AGEGR1) |> dplyr::slice(1),
+      cards::ard_categorical(cards::ADSL, by = SEX, variables = AGEGR1) |> dplyr::slice(1),
+      cards::ard_categorical(cards::ADSL, variables = AGEGR1) |> dplyr::slice(1)
+    ) |>
+      shuffle_card(by = c("ARM","SEX"), fill_overall = "total")
+  )
+  expect_snapshot(
+    cards::bind_ard(
+      cards::ard_categorical(cards::ADSL, by = c(ARM, SEX), variables = AGEGR1) |> dplyr::slice(1),
+      cards::ard_categorical(cards::ADSL, by = SEX, variables = AGEGR1) |> dplyr::slice(1),
+      cards::ard_categorical(cards::ADSL, variables = AGEGR1) |> dplyr::slice(1)
+    ) |>
+      shuffle_card(by = c("ARM","SEX"), fill_overall = NA)
   )
 
   # fills with a unique group value if one already exists in the df
@@ -230,7 +258,7 @@ test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <v
       TRTA %in% c("Placebo", "Xanomeline High Dose")
     )
 
-  shuffled_ard <- cards::ard_stack_hierarchical(
+  ard_hier <- cards::ard_stack_hierarchical(
     data = adae,
     by = TRTA,
     variables = c(AESOC, AETERM),
@@ -239,11 +267,13 @@ test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <v
     overall = TRUE,
     over_variables = TRUE,
     total_n = TRUE
-  ) |>
+  )
+
+  shuffled_ard_hier <- ard_hier |>
     shuffle_card()
 
   expect_identical(
-    shuffled_ard |>
+    shuffled_ard_hier |>
       dplyr::filter(
         context == "total_n"
       ) |>
@@ -251,16 +281,48 @@ test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <v
     "Overall TRTA"
   )
 
-  # expect_identical(
-  #   shuffled_ard |>
-  #     dplyr::filter(
-  #       variable == "..ard_hierarchical_overall.."
-  #     ) |>
-  #     dplyr::pull(AESOC) |>
-  #     unique(),
-  #   "Any AESOC"
-  # )
+  expect_identical(
+    shuffled_ard_hier |>
+      dplyr::filter(stat_variable == "..ard_hierarchical_overall..") |>
+      dplyr::pull(AESOC) |>
+      unique(),
+    "Any AESOC"
+  )
+  expect_identical(
+    shuffled_ard_hier |>
+      dplyr::filter(stat_variable == "..ard_hierarchical_overall..") |>
+      dplyr::pull(AETERM) |>
+      unique(),
+    "Any AETERM"
+  )
 
+  # custom fill
+  shuffled_ard_hier <- ard_hier |>
+    shuffle_card(fill_overall = "overall {colname} observed",
+                 fill_hierarchical_overall = "any {colname} observed")
+
+  expect_identical(
+    shuffled_ard_hier |>
+      dplyr::filter(
+        context == "total_n"
+      ) |>
+      dplyr::pull(TRTA),
+    "overall TRTA observed"
+  )
+  expect_identical(
+    shuffled_ard_hier |>
+      dplyr::filter(stat_variable == "..ard_hierarchical_overall..") |>
+      dplyr::pull(AESOC) |>
+      unique(),
+    "any AESOC observed"
+  )
+  expect_identical(
+    shuffled_ard_hier |>
+      dplyr::filter(stat_variable == "..ard_hierarchical_overall..") |>
+      dplyr::pull(AETERM) |>
+      unique(),
+    "any AETERM observed"
+  )
 })
 
 test_that("shuffle_card() fills with multiple `by` columns", {
@@ -341,7 +403,11 @@ test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
       dplyr::mutate(
         dplyr::across(
           ARM:TRTA,
-          .derive_overall_labels
+          ~ .derive_overall_labels(
+            .x,
+            fill_overall = "Overall {colname}",
+            fill_hierarchical_overall = "Any {colname}"
+          )
         )
       )
   )
