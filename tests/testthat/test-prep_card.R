@@ -321,16 +321,6 @@ test_that("prep_card() works with adverse effects data", {
   ae2_ard_tbl_with_prep <- ae_ard |>
     prep_card(column = c("TRT01A", "AESEV")) |>
     mutate(
-      AESEV = if_else(
-        AESEV == "Overall AESEV",
-        NA,
-        AESEV
-      ),
-      TRT01A = if_else(
-        TRT01A == "Overall TRT01A",
-        NA,
-        TRT01A
-      ),
       AEBODSYS = if_else(
         AEBODSYS == "Any AEBODSYS",
         "ANY EVENT",

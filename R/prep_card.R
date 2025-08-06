@@ -11,8 +11,8 @@
 #'  (with `"Any <column_name>"`) based on the presence of data in another column
 #'
 #' @inheritParams shuffle_card
-#' @param column column(s) to use as header.
-#' @param variables `cards` variables
+#' @param column (character) name of column(s) to use as header.
+#' @param variables (character) `cards` variables
 #'
 #' @returns a `data.frame`
 #' @export
@@ -23,14 +23,23 @@ prep_card <- function(x, column, variables = NULL) {
    if (!inherits(x, "card")) {
     cli::cli_abort(
       "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
-    env = rlang::caller_env())
+      env = rlang::caller_env()
+    )
   }
 
   ard_args <- attr(x, "args")
 
+  # don't fill overall in a hierarchical context
+  fill_overall_arg <- dplyr::if_else(
+    "hierarchical" %in% unique(x$context),
+    NA,
+    "Overall {colname}"
+  )
+
   shuffled_card <- shuffle_card(
     x,
-    by = ard_args$by %||% column
+    by = ard_args$by %||% column,
+    fill_overall = fill_overall_arg
   )
 
   if (!is.character(column)) {
@@ -254,8 +263,9 @@ process_categorical_vars <- function(x, column) {
   output
 }
 
-# does the shuffled card have attributes (useful for ensuring column labels are
-# persistent)
+# does the shuffled card have attributes (was the card created with
+# `attributes = TRUE`)
+# useful for ensuring column labels are persistent
 has_attributes <- function(x) {
   shuffled_card_attributes_df <- x |>
     dplyr::filter(
