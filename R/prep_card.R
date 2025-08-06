@@ -33,11 +33,6 @@ prep_card <- function(x,
 
   ard_args <- attr(x, "args")
 
-  # don't fill overall in a hierarchical context
-  # if ("hierarchical" %in% unique(x$context)) {
-  #   fill_overall <- NA
-  # }
-
   shuffled_card <- shuffle_card(
     x,
     by = ard_args$by %||% column,
