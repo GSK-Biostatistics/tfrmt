@@ -1,4 +1,4 @@
-test_that("prep_tfrmt() works with DM-T01", {
+test_that("prep_tfrmt() works with demographic data", {
 
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
@@ -115,7 +115,7 @@ test_that("prep_tfrmt() works with DM-T01", {
 
   # the tfrmt table -------------------------------------------------------
   dm_t01 <- tfrmt(
-    title = "Table Title",
+    title = "Summary of Demographic Characteristics",
     group = variable,
     label = label,
     param = stat_name,
@@ -169,8 +169,8 @@ test_that("prep_tfrmt() works with DM-T01", {
 
   # with prep_tfrmt -------------------------------------------------------
   ard_tbl_with_prep <- ard |>
-    shuffle_card(by = "ARM") |>
-    prep_tfrmt("ARM") |>
+    # shuffle_card(by = "ARM") |>
+    prep_tfrmt(column = "ARM") |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(stat_variable) |>
         forcats::fct_relevel("SEX", after = 0) |>
@@ -317,7 +317,9 @@ test_that("prep_tfrmt() works with AE-T02", {
 
   # with prep_tfrmt -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
-    shuffle_card(by = c("TRT01A", "AESEV")) |>
+    # shuffle_card(
+    #   by = c("AEBODSYS", "AETERM")
+    # ) |>
     prep_tfrmt(column = c("TRT01A", "AESEV")) |>
     mutate(
       AESEV = if_else(
