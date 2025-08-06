@@ -24,6 +24,10 @@ prep_card <- function(x,
                       fill_overall = "Overall {colname}",
                       fill_hierarchical_overall = "Any {colname}") {
 
+  # TODO prep_card only works with shuffled_cards
+  # TODO class the output of shuffle_card()
+  # and then shuffle if the object is not shuffled
+
   if (!inherits(x, "card")) {
     cli::cli_abort(
       "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
