@@ -1,4 +1,4 @@
-test_that("prep_tfrmt() works with demographic data", {
+test_that("prep_card() works with demographic data", {
 
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
@@ -167,10 +167,10 @@ test_that("prep_tfrmt() works with demographic data", {
     # the id is randomly generated
     strip_id()
 
-  # with prep_tfrmt -------------------------------------------------------
+  # with prep_card --------------------------------------------------------
   ard_tbl_with_prep <- ard |>
     # shuffle_card(by = "ARM") |>
-    prep_tfrmt(column = "ARM") |>
+    prep_card(column = "ARM") |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(stat_variable) |>
         forcats::fct_relevel("SEX", after = 0) |>
@@ -217,7 +217,7 @@ test_that("prep_tfrmt() works with demographic data", {
   )
 })
 
-test_that("prep_tfrmt() works with AE-T02", {
+test_that("prep_card() works with AE-T02", {
 
   # data prep -------------------------------------------------------------
   # Filter to include only subjects marked as part of the safety population
@@ -315,12 +315,12 @@ test_that("prep_tfrmt() works with AE-T02", {
   a <- print_to_gt(ae_t02, ae2_ard_tbl)
   a
 
-  # with prep_tfrmt -------------------------------------------------------
+  # with prep_card -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
     # shuffle_card(
     #   by = c("AEBODSYS", "AETERM")
     # ) |>
-    prep_tfrmt(column = c("TRT01A", "AESEV")) |>
+    prep_card(column = c("TRT01A", "AESEV")) |>
     mutate(
       AESEV = if_else(
         AESEV == "Overall AESEV",

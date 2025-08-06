@@ -18,16 +18,15 @@
 #' @export
 #'
 #' @examples
-prep_tfrmt <- function(x, column, variables) {
+prep_card <- function(x, column, variables) {
 
-  browser()
+  # browser()
 
   ard_args <- attr(x, "args")
 
   shuffled_card <- shuffle_card(
     x,
-    by = ard_args$by %||% column,
-    variables = ard_args$variables %||% variables
+    by = ard_args$by %||% column
   )
 
   if (!is.character(column)) {
@@ -60,11 +59,11 @@ prep_tfrmt <- function(x, column, variables) {
       )
   }
 
-  interim <- x
+  interim <- shuffled_card
 
   # don't unite for hierarchical stack
   if (!"hierarchical" %in% unique(x$context)) {
-    interim <- unite_data_vars(x, column)
+    interim <- unite_data_vars(shuffled_card, column)
   }
 
   output <- interim |>

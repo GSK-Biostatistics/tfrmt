@@ -1,4 +1,4 @@
-# prep_tfrmt() works with DM-T01
+# prep_card() works with DM-T01
 
     Code
       gt::as_raw_html(b)
