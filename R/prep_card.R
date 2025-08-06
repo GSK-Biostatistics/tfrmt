@@ -27,22 +27,18 @@ prep_card <- function(x,
   # TODO prep_card only works with shuffled_cards
   # TODO class the output of shuffle_card()
   # and then shuffle if the object is not shuffled
+# TODO check the error is propagated from the right caller env
 
-  if (!inherits(x, "card")) {
-    cli::cli_abort(
-      "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
-      env = rlang::caller_env()
+  if (!is_shuffled_card(x)) {
+    shuffled_card <- shuffle_card(
+      x,
+      by = ard_args$by %||% column,
+      fill_overall = fill_overall,
+      fill_hierarchical_overall = fill_hierarchical_overall
     )
   }
 
   ard_args <- attr(x, "args")
-
-  shuffled_card <- shuffle_card(
-    x,
-    by = ard_args$by %||% column,
-    fill_overall = fill_overall,
-    fill_hierarchical_overall = fill_hierarchical_overall
-  )
 
   if (!is.character(column)) {
     cli::cli_abort(
