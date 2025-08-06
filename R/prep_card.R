@@ -27,7 +27,8 @@ prep_card <- function(x,
   # TODO prep_card only works with shuffled_cards
   # TODO class the output of shuffle_card()
   # and then shuffle if the object is not shuffled
-# TODO check the error is propagated from the right caller env
+  # TODO check the error is propagated from the right caller env
+  # TODO check prep_card works both on its own and immediately following shuffle_card()
 
   shuffled_card <- x
 
