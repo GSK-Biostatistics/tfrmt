@@ -115,7 +115,6 @@ fill_variables <- function(x, variables, fill_value = "auto") {
 
   output <- x
 
-  # TODO need to test if the approach works for more than 2 variables
   for (i in seq_along(pair_list)) {
     output <- replace_na_pair(output, pair_list[[i]], fill_value)
   }
