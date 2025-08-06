@@ -18,7 +18,13 @@
 #' @export
 #'
 #' @examples
-prep_card <- function(x, column, variables) {
+prep_card <- function(x, column, variables = NULL) {
+
+   if (!inherits(x, "card")) {
+    cli::cli_abort(
+      "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
+    env = rlang::caller_env())
+  }
 
   ard_args <- attr(x, "args")
 
@@ -67,15 +73,10 @@ prep_card <- function(x, column, variables) {
   output <- interim |>
     # process_labels() |>
     process_big_n(column) |>
-    process_categorical_vars(column)
-
-  if (has_args(x)) {
-    variables <- attr(x, "args")[["variables"]]
-    # TODO fill_variables could be connected to the "hierarchical" logic above
-    # (we are interested in pairwise conditional filling primarily in a
-    # hierarchical context)
-    output <- fill_variables(output, variables = variables)
-  }
+    process_categorical_vars(column) |>
+    fill_variables(
+      variables = ard_args$variables %||% variables
+    )
 
   output
 }
