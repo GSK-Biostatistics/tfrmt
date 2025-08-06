@@ -379,8 +379,7 @@ test_that("fill_variables() fills pairwise conditionally", {
 })
 
 test_that("generate_pairs() works", {
-  # TODO replace with expect_identical - need to remove names first
-  expect_equal(
+  expect_identical(
     generate_pairs(
       c("foo", "bar", "baz")
     ),
