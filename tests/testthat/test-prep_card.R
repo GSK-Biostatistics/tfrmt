@@ -337,10 +337,11 @@ test_that("prep_card() works with adverse effects data", {
     b <- print_to_gt(ae_t02, ae2_ard_tbl_with_prep)
   )
 
-  skip("they're not exactly identical, but the rendered outputs are")
   expect_identical(
     gt::extract_body(a),
-    gt::extract_body(b)
+    gt::extract_body(b),
+    # for some reasom the .col_plan_vars attributes are different
+    ignore_attr = ".col_plan_vars"
   )
 })
 
