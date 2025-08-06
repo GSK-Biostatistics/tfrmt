@@ -100,7 +100,7 @@ shuffle_card <- function(x,
   # re-attach the args attribute
   attr(output, "args") <- ard_args
 
-  class(output) <- "shuffled_card"
+  class(output) <- c("shuffled_card", class(output))
 
   output
 }

@@ -29,6 +29,10 @@ prep_card <- function(x,
   # and then shuffle if the object is not shuffled
 # TODO check the error is propagated from the right caller env
 
+  shuffled_card <- x
+
+  ard_args <- attr(shuffled_card, "args")
+
   if (!is_shuffled_card(x)) {
     shuffled_card <- shuffle_card(
       x,
@@ -37,8 +41,6 @@ prep_card <- function(x,
       fill_hierarchical_overall = fill_hierarchical_overall
     )
   }
-
-  ard_args <- attr(x, "args")
 
   if (!is.character(column)) {
     cli::cli_abort(
