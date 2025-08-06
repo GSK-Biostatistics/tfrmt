@@ -100,7 +100,13 @@ shuffle_card <- function(x,
   # re-attach the args attribute
   attr(output, "args") <- ard_args
 
+  class(output) <- "shuffled_card"
+
   output
+}
+
+is_shuffled_card <- function(x) {
+  inherits(x, "shuffled_card")
 }
 
 #' Trim ARD
