@@ -347,6 +347,68 @@ test_that("prep_card() works with adverse effects data", {
   )
 })
 
+test_that("prep_card() with and without shuffle_card() are identical", {
+  # data prep -------------------------------------------------------------
+  adsl <- pharmaverseadam::adsl |>
+    dplyr::filter(SAFFL == "Y") |>
+    dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE) |>
+    dplyr::mutate(
+      SEX = factor(
+        SEX,
+        levels = c("F", "M")
+      ),
+      AGEGR1 = factor(
+        AGEGR1,
+        levels = c("<18", "18-64", ">64"),
+        labels = c("<=18 years", "Between 18 and 65 years", ">=65 years")
+      ),
+      ETHNIC = factor(
+        ETHNIC,
+        levels = c(
+          "HISPANIC OR LATINO",
+          "NOT HISPANIC OR LATINO",
+          "NOT REPORTED"
+        )
+      ),
+      RACE = factor(
+        RACE,
+        levels = c(
+          "AMERICAN INDIAN OR ALASKA NATIVE",
+          "ASIAN",
+          "BLACK OR AFRICAN AMERICAN",
+          "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER",
+          "WHITE"
+        )
+      )
+    )
+
+  # create card -----------------------------------------------------------
+  ard <- cards::ard_stack(
+    data = adsl,
+    .by = ARM,
+    cards::ard_continuous(
+      variables = AGE,
+      statistic = ~ cards::continuous_summary_fns(
+        c("N", "mean", "sd", "min", "max")
+      )
+    ),
+    cards::ard_categorical(
+      variables = c(AGEGR1, SEX, ETHNIC, RACE)
+    ),
+    .overall = TRUE,
+    .total_n = TRUE
+  )
+
+
+  expect_identical(
+    ard |>
+      prep_card(by = "ARM"),
+    ard |>
+      shuffle_card(by = "ARM") |>
+      prep_card(by = "ARM")
+  )
+})
+
 test_that("prep_card() unite_data_vars does not over-unite", {
   # we only want to unite when it effectively has the same impact as coalesce
   a <- cards::ard_strata(
@@ -550,6 +612,7 @@ test_that("generate_pairs() works", {
 })
 
 test_that("replace_na_pair() works", {
+
   expect_identical(
     replace_na_pair(
       tibble(
@@ -564,6 +627,42 @@ test_that("replace_na_pair() works", {
       x = c(1, 2, NA),
       y = c("a", NA, "b"),
       z = c("Any z", NA, "Any z")
+    )
+  )
+
+  expect_identical(
+    replace_na_pair(
+      tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, 3)
+      ),
+      pair = c("y", "z"),
+      fill_hierarchical_overall = "foo"
+    ),
+    # all NAs in z (when y is not NA) are replaced with `"Any z"`
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", NA, "b"),
+      z = c("foo", NA, "foo")
+    )
+  )
+
+  expect_identical(
+    replace_na_pair(
+      tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, 3)
+      ),
+      pair = c("y", "z"),
+      fill_from = "left"
+    ),
+    # all NAs in z (when y is not NA) are replaced with `"Any z"`
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", NA, "b"),
+      z = c("a", NA, "b")
     )
   )
 })

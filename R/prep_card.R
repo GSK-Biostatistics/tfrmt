@@ -28,12 +28,13 @@ prep_card <- function(x,
                       fill_hierarchical_overall = "Any {colname}",
                       fill_from = NULL) {
 
-  # TODO prep_card only works with shuffled_cards
-  # TODO class the output of shuffle_card()
-  # and then shuffle if the object is not shuffled
   # TODO check the error is propagated from the right caller env
-  # TODO check prep_card works both on its own and immediately following shuffle_
-# browser()
+
+  if (!is.character(by)) {
+    cli::cli_abort(
+      "{.arg by} must be a character vector."
+    )
+  }
 
   ard_args <- attr(x, "args")
 
@@ -49,11 +50,7 @@ prep_card <- function(x,
     )
   }
 
-  if (!is.character(by)) {
-    cli::cli_abort(
-      "{.arg by} must be a character vector."
-    )
-  }
+
 
   # TODO get the logic to work with strings and then add support for symbols /
   # unquoted strings
