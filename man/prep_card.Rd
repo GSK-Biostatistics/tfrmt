@@ -4,14 +4,37 @@
 \alias{prep_card}
 \title{Prepare card for tfrmt}
 \usage{
-prep_card(x, column, variables)
+prep_card(
+  x,
+  by,
+  variables = NULL,
+  fill_overall = "Overall {colname}",
+  fill_hierarchical_overall = "Any {colname}",
+  fill_from = NULL
+)
 }
 \arguments{
 \item{x}{an ARD data frame of class 'card'}
 
-\item{column}{column(s) to use as header.}
+\item{by}{(character) name of column(s) to use as header.}
 
-\item{variables}{\code{cards} variables}
+\item{variables}{(character) \code{cards} variables}
+
+\item{fill_overall}{scalar to fill missing grouping or variable levels. If a
+character is passed, then it is processed with glue::glue() where the
+colname element is available to inject into the string, e.g. 'Overall
+{colname}' may resolve to 'Overall AGE' for an AGE column. Default is
+'Overall {colname}'. If \code{NA} then no fill will occur.}
+
+\item{fill_hierarchical_overall}{scalar to fill variable levels for overall
+hierarchical calculations.  If a character is passed, then it is processed
+with glue::glue() where the colname element is available to inject into the
+string, e.g. 'Any {colname}' may resolve to 'Any AESOC' for an AESOC
+column. Default is 'Any {colname}'. If \code{NA} then no fill will occur.}
+
+\item{fill_from}{(character) Indicates when doing pair-wise filling whether
+to fill from the column to the left. Defaults to \code{NULL}. Can be either \code{NULL}
+or \code{"left"}.}
 }
 \value{
 a \code{data.frame}
@@ -25,7 +48,7 @@ column, called \code{variable_level} (where applicable).
 \code{"bigN"}
 \item \code{process_categorical_vars()}: once we have bigN, it renames some of the
 values in the categorical variable columns
-\item \code{fill_variables()}: in a hierarchical stack fills NA in one column
+\item \code{fill_pairs()}: in a hierarchical stack fills NA in one column
 (with \code{"Any <column_name>"}) based on the presence of data in another column
 }
 }
