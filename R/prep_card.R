@@ -28,11 +28,12 @@ prep_card <- function(x,
   # TODO class the output of shuffle_card()
   # and then shuffle if the object is not shuffled
   # TODO check the error is propagated from the right caller env
-  # TODO check prep_card works both on its own and immediately following shuffle_card()
+  # TODO check prep_card works both on its own and immediately following shuffle_
+# browser()
+
+  ard_args <- attr(x, "args")
 
   shuffled_card <- x
-
-  ard_args <- attr(shuffled_card, "args")
 
   if (!is_shuffled_card(x)) {
     shuffled_card <- shuffle_card(
@@ -64,8 +65,8 @@ prep_card <- function(x,
   #   rlang::quos_auto_name()
   # columns_char <- names(columns_quo)
 
-  if (has_attributes(x)) {
-    x <- x |>
+  if (has_attributes(shuffled_card)) {
+    shuffled_card <- shuffled_card |>
       # remove attributes for now
       # TODO add some logic to deal with them
       dplyr::filter(
@@ -76,11 +77,13 @@ prep_card <- function(x,
   interim <- shuffled_card
 
   # don't unite for hierarchical stack
-  if (!"hierarchical" %in% unique(x$context)) {
-    interim <- unite_data_vars(shuffled_card, column)
-  }
+  # TODO coalesce only if there is a single value rowwise
+  # if (!"hierarchical" %in% unique(shuffled_card$context)) {
+  #   interim <- unite_data_vars(shuffled_card, column)
+  # }
 
   output <- interim |>
+    unite_data_vars(column) |>
     # process_labels() |>
     process_big_n(column) |>
     process_categorical_vars(column) |>
@@ -165,6 +168,7 @@ replace_na_pair <- function(x, pair, fill_value = "auto") {
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, column) {
+  # browser()
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
@@ -186,6 +190,13 @@ process_big_n <- function(x, column) {
 # convenience wrapper around tidyr::unite to create variable_level from the
 # individual columns (where applicable)
 unite_data_vars <- function(x, column) {
+
+  if ("hierarchical" %in% unique(x$context)) {
+    return(x)
+  }
+
+
+  # browser()
   ard_vars <- c(
     "context",
     "stat_variable",
@@ -196,33 +207,75 @@ unite_data_vars <- function(x, column) {
 
   data_vars <- setdiff(names(x), c(ard_vars, column))
 
-  output <- x |>
+  interim <- x |>
+    mutate(
+      variable_level_coalesced = coalesce(
+        !!!rlang::syms(data_vars)
+      )
+    ) |>
     tidyr::unite(
-      col = "variable_level",
+      col = "variable_level_untd",
       tidyselect::all_of(data_vars),
       na.rm = TRUE,
       remove = FALSE
     ) |>
-    # drop the individual data columns and reorder the remaining ones
-    dplyr::select(
-      -tidyselect::all_of(
-        data_vars
+    dplyr::mutate(
+      variable_level_untd = dplyr::if_else(
+        variable_level_untd == "",
+        NA_character_,
+        variable_level_untd
       )
-    ) |>
-    dplyr::select(
-      tidyselect::all_of(column),
-      "stat_variable",
-      "variable_level",
-      tidyselect::everything()
     )
+
+  if (identical(interim$variable_level_untd, interim$variable_level_coalesced)) {
+    output <- interim |>
+      # drop the individual data columns and reorder the remaining ones
+      dplyr::select(
+        -tidyselect::all_of(
+          data_vars
+        ),
+        -"variable_level_coalesced"
+      ) |>
+      dplyr::select(
+        tidyselect::all_of(column),
+        "stat_variable",
+        "variable_level" = "variable_level_untd",
+        tidyselect::everything()
+      )
+  } else {
+    output <- x
+  }
+
+  # output <- x |>
+  #   tidyr::unite(
+  #     col = "variable_level",
+  #     tidyselect::all_of(data_vars),
+  #     na.rm = TRUE,
+  #     remove = FALSE
+  #   ) |>
+  #   # drop the individual data columns and reorder the remaining ones
+  #   dplyr::select(
+  #     -tidyselect::all_of(
+  #       data_vars
+  #     )
+  #   ) |>
+  #   dplyr::select(
+  #     tidyselect::all_of(column),
+  #     "stat_variable",
+  #     "variable_level",
+  #     tidyselect::everything()
+  #   )
 
   output
 }
+
+
 
 # mostly for compatibility with the current approach
 # it derives and fills a new column, called label (most problematic for
 # categorical variables)
 process_categorical_vars <- function(x, column) {
+  # browser()
   categorical_vars <- x |>
     dplyr::filter(
       .data$context == "categorical"
@@ -233,7 +286,7 @@ process_categorical_vars <- function(x, column) {
     dplyr::pull() |>
     setdiff(column)
 
-  if (rlang::is_empty(categorical_vars)) {
+  if (rlang::is_empty(categorical_vars) || !"variable_level" %in% names(x)) {
     return(x)
   }
 
