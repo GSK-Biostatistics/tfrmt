@@ -408,14 +408,47 @@ test_that("fill_pairs() fills pairwise conditionally", {
   )
 })
 
-test_that("fill_pairs() fills from the column to the left", {
+test_that("fill_pairs() with `fill_hierarchical_overall`", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, "3")
   )
 
-  fill_pairs(df, variables = c("x", "y", "z"), fill_from = "left")
+  # the second value of y is replaced with "2
+  expect_identical(
+    fill_pairs(
+      df,
+      variables = c("x", "y"),
+      fill_hierarchical_overall = "foo"
+    ),
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", "foo", "b"),
+      z = rep(NA, 3)
+    )
+  )
+
+  expect_identical(
+    fill_pairs(
+      df,
+      variables = c("x", "y", "z"),
+      fill_hierarchical_overall = "bar"
+    ),
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", "bar", "b"),
+      z = c("bar", "bar", "bar")
+    )
+  )
+})
+
+test_that("fill_pairs() with `fill_from='left'` works", {
+  df <- tibble(
+    x = c(1, 2, NA),
+    y = c("a", NA, "b"),
+    z = rep(NA, "3")
+  )
 
   # the second value of y is replaced with "2
   expect_identical(
