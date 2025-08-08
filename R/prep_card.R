@@ -177,25 +177,18 @@ replace_na_pair <- function(x,
       as.character()
   }
 
+  if (!is.null(fill_from) && fill_from == "left") {
+    fill_hierarchical_overall <- rlang::quo(as.character(!!variables_syms[[1]]))
+  }
+
   output <- x |>
     dplyr::mutate(
       !!variables_syms[[2]] := dplyr::if_else(
         is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-        fill_hierarchical_overall,
+        !!fill_hierarchical_overall,
         !!variables_syms[[2]]
       )
     )
-
-  if (!is.null(fill_from) && fill_from == "left") {
-    output <- x |>
-      dplyr::mutate(
-        !!variables_syms[[2]] := dplyr::if_else(
-          is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-          as.character(!!variables_syms[[1]]),
-          !!variables_syms[[2]]
-        )
-      )
-  }
 
   output
 }
