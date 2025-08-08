@@ -1,14 +1,14 @@
 #' Prepare card for tfrmt
 #'
 #' What does the preparation function do?
-#'   * `unite_data_vars()`: bring all categorical variables levels into a single
-#'     column, called `variable_level` (where applicable).
+#'  * `unite_data_vars()`: brings all categorical variables levels into a single
+#'  column, called `variable_level` (where applicable).
 #'  * `process_big_n()` identifies the bigN columns and changes `stat_name` to
 #'  `"bigN"`
 #'  * `process_categorical_vars()`: once we have bigN, it renames some of the
 #'  values in the categorical variable columns
-#'  * `fill_pairs()`: in a hierarchical stack fills NA in one column
-#'  (with `"Any <column_name>"`) based on the presence of data in another column
+#'  * `fill_pairs()`: in a hierarchical stack fills NA in one column based on
+#'  the presence of data in another column
 #'
 #' @inheritParams shuffle_card
 #' @param by (character) name of column(s) to use as header.
@@ -81,12 +81,6 @@ prep_card <- function(x,
 
   interim <- shuffled_card
 
-  # don't unite for hierarchical stack
-  # TODO coalesce only if there is a single value rowwise
-  # if (!"hierarchical" %in% unique(shuffled_card$context)) {
-  #   interim <- unite_data_vars(shuffled_card, by)
-  # }
-
   output <- interim |>
     unite_data_vars(by) |>
     # process_labels() |>
@@ -111,8 +105,8 @@ has_args <- function(x) {
   output
 }
 
-# replace_na with "Any <column-name>" where applicable (where the preceding
-# column) is not NA
+# replace_na with a given value (defaults to "Any <column-name>") or with values
+# from the column to the left when the preceding column is not NA
 fill_pairs <- function(x,
                        variables,
                        fill_hierarchical_overall = "auto",
@@ -120,7 +114,7 @@ fill_pairs <- function(x,
 
   if (!rlang::is_character(fill_hierarchical_overall)) {
     cli::cli_abort(
-      ""
+      "{.arg fill_hierarchical_overall} must be a character."
     )
   }
 
