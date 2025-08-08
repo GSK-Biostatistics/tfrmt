@@ -145,13 +145,12 @@ fill_pairwise <- function(x,
 # fill_pairwise does pairwise conditional replacement of NAs. generate_pairs
 # builds those pairs
 generate_pairs <- function(x) {
-  # TODO drop names
   output <- tibble::tibble(x = x) |>
     dplyr::mutate(
       x_lead = dplyr::lead(x)
     ) |>
     tidyr::drop_na() |>
-    purrr::pmap(c)
+    purrr::pmap(c, use.names = FALSE)
 
   output
 }

@@ -326,3 +326,11 @@
       Error in `replace_na_pair()`:
       ! `fill_from` must either be `NULL` or `"left"`
 
+# fill_pairwise() errors with `fill_hierarchical_overall` non-char
+
+    Code
+      fill_pairwise(df, variables = c("x", "y", "z"), fill_hierarchical_overall = 2)
+    Condition
+      Error in `fill_pairwise()`:
+      ! `fill_hierarchical_overall` must be a character.
+
