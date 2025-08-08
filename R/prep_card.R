@@ -30,7 +30,7 @@ prep_card <- function(x,
 
   # TODO check the error is propagated from the right caller env
 
-  if (!is.character(by)) {
+  if (!is.null(by) & !is.character(by)) {
     cli::cli_abort(
       "{.arg by} must be a character vector."
     )
