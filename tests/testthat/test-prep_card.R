@@ -168,7 +168,7 @@ test_that("prep_card() works with demographic data", {
 
   # with prep_card --------------------------------------------------------
   ard_tbl_with_prep <- ard |>
-    prep_card(column = "ARM") |>
+    prep_card(by = "ARM") |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(stat_variable) |>
         forcats::fct_relevel("SEX", after = 0) |>
@@ -229,15 +229,17 @@ test_that("prep_card() works with adverse effects data", {
     dplyr::ungroup()
 
   # create card -----------------------------------------------------------
-  ae_ard <- cards::ard_stack_hierarchical(
-    data = adae,
-    by = c(TRT01A, AESEV),
-    variables = c(AEBODSYS, AETERM),
-    statistic = ~ c("n", "p"), # Calculate count and percentage
-    denominator = adsl,
-    id = USUBJID,
-    over_variables = TRUE,
-    total_n = TRUE
+  suppressMessages(
+    ae_ard <- cards::ard_stack_hierarchical(
+      data = adae,
+      by = c(TRT01A, AESEV),
+      variables = c(AEBODSYS, AETERM),
+      statistic = ~ c("n", "p"), # Calculate count and percentage
+      denominator = adsl,
+      id = USUBJID,
+      over_variables = TRUE,
+      total_n = TRUE
+    )
   )
 
   # tidy for table --------------------------------------------------------
@@ -320,7 +322,7 @@ test_that("prep_card() works with adverse effects data", {
   # with prep_card -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
     prep_card(
-      column = c("TRT01A", "AESEV"),
+      by = c("TRT01A", "AESEV"),
       fill_overall = NA,
       fill_hierarchical_overall = "ANY EVENT"
     ) |>
@@ -345,7 +347,35 @@ test_that("prep_card() works with adverse effects data", {
   )
 })
 
-test_that("fill_variables() fills pairwise conditionally", {
+test_that("prep_card() unite_data_vars does not over-unite", {
+  # we only want to unite when it effectively has the same impact as coalesce
+  a <- cards::ard_strata(
+    cards::ADSL,
+    .by = ARM,
+    .f = ~ cards::ard_categorical(
+      .x,
+      by = SEX,
+      variables = AGEGR1
+    )
+  )
+
+  b <- a |>
+    prep_card(by = "ARM")
+
+  # there is no variable_level column
+  expect_true(
+    !"variable_level" %in% names(b)
+  )
+
+  # b is actually identical to the shuffled_card
+  # # TODO think how we can figure this out and maybe return early
+  expect_identical(
+    shuffle_card(a),
+    b
+  )
+})
+
+test_that("fill_pairs() fills pairwise conditionally", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -354,7 +384,7 @@ test_that("fill_variables() fills pairwise conditionally", {
 
   # z is not filled - still 3 NAs
   expect_identical(
-    fill_variables(df, variables = c("x", "y")),
+    fill_pairs(df, variables = c("x", "y")),
     tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
@@ -364,16 +394,45 @@ test_that("fill_variables() fills pairwise conditionally", {
 
   # when passing a single variable, the input is returned unchanged
   expect_identical(
-    fill_variables(df, variables = c("x")),
+    fill_pairs(df, variables = c("x")),
     df
   )
 
   expect_identical(
-    fill_variables(df, variables = c("x", "y", "z")),
+    fill_pairs(df, variables = c("x", "y", "z")),
     tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
       z = rep("Any z", 3)
+    )
+  )
+})
+
+test_that("fill_pairs() fills from the column to the left", {
+  df <- tibble(
+    x = c(1, 2, NA),
+    y = c("a", NA, "b"),
+    z = rep(NA, "3")
+  )
+
+  fill_pairs(df, variables = c("x", "y", "z"), fill_from = "left")
+
+  # the second value of y is replaced with "2
+  expect_identical(
+    fill_pairs(df, variables = c("x", "y"), fill_from = "left"),
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", "2", "b"),
+      z = rep(NA, 3)
+    )
+  )
+
+  expect_identical(
+    fill_pairs(df, variables = c("x", "y", "z"), fill_from = "left"),
+    tibble(
+      x = c(1, 2, NA),
+      y = c("a", "2", "b"),
+      z = c("a", "2", "b")
     )
   )
 })
