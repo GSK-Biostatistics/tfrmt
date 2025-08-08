@@ -50,15 +50,10 @@ prep_card <- function(x,
     )
   }
 
-  # TODO get the logic to work with strings and then add support for symbols /
-  # unquoted strings
+  # TODO get the logic to work with strings and then maybe add support for
+  # symbols / unquoted strings
+  # with tfrmt_find_args(..., env = environment(), parent_env = caller_env())
 
-  # by <- rlang::enquo(by)
-
-  # a <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
-  # by_quo <- a$by |>
-  #   rlang::quos_auto_name()
-  # by_char <- names(by_quo)
 
   if (has_attributes(shuffled_card)) {
     shuffled_card <- shuffled_card |>
@@ -221,64 +216,44 @@ unite_data_vars <- function(x, by) {
 
   interim <- x |>
     mutate(
-      variable_level_coalesced = coalesce(
+      var_level_coalesced = coalesce(
         !!!rlang::syms(data_vars)
       )
     ) |>
     tidyr::unite(
-      col = "variable_level_untd",
+      col = "var_level_untd",
       tidyselect::all_of(data_vars),
       na.rm = TRUE,
       remove = FALSE
     ) |>
     dplyr::mutate(
-      variable_level_untd = dplyr::if_else(
-        .data$variable_level_untd == "",
+      var_level_untd = dplyr::if_else(
+        .data$var_level_untd == "",
         NA_character_,
-        .data$variable_level_untd
+        .data$var_level_untd
       )
     )
 
   # for ard_strata we expect there is a difference between unite and coalesce
   # and we shouldn't do it
-  if (identical(interim$variable_level_untd, interim$variable_level_coalesced)) {
+  if (identical(interim$var_level_untd, interim$var_level_coalesced)) {
     output <- interim |>
       # drop the individual data columns and reorder the remaining ones
       dplyr::select(
         -tidyselect::all_of(
           data_vars
         ),
-        -"variable_level_coalesced"
+        -"var_level_coalesced"
       ) |>
       dplyr::select(
         tidyselect::all_of(by),
         "stat_variable",
-        "variable_level" = "variable_level_untd",
+        "variable_level" = "var_level_untd",
         tidyselect::everything()
       )
   } else {
     output <- x
   }
-
-  # output <- x |>
-  #   tidyr::unite(
-  #     col = "variable_level",
-  #     tidyselect::all_of(data_vars),
-  #     na.rm = TRUE,
-  #     remove = FALSE
-  #   ) |>
-  #   # drop the individual data columns and reorder the remaining ones
-  #   dplyr::select(
-  #     -tidyselect::all_of(
-  #       data_vars
-  #     )
-  #   ) |>
-  #   dplyr::select(
-  #     tidyselect::all_of(by),
-  #     "stat_variable",
-  #     "variable_level",
-  #     tidyselect::everything()
-  #   )
 
   output
 }
