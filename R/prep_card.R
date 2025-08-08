@@ -43,22 +43,15 @@ prep_card <- function(x,
   if (!is_shuffled_card(x)) {
     shuffled_card <- shuffle_card(
       x,
-      # message about switching the value for by
+      # TODO message about switching the value for by
       by = ard_args$by %||% by,
       fill_overall = fill_overall,
       fill_hierarchical_overall = fill_hierarchical_overall
     )
   }
 
-
-
   # TODO get the logic to work with strings and then add support for symbols /
   # unquoted strings
-
-  # TODO priority for extracting context - e.g. by variables, etc:
-  #   1. direct passing of args
-  #   2. from attributes
-  #   3. tfrmt object
 
   # by <- rlang::enquo(by)
 
@@ -76,11 +69,8 @@ prep_card <- function(x,
       )
   }
 
-  interim <- shuffled_card
-
-  output <- interim |>
+  output <- shuffled_card |>
     unite_data_vars(by) |>
-    # process_labels() |>
     process_big_n(by) |>
     process_categorical_vars(by) |>
     fill_pairwise(
@@ -361,49 +351,6 @@ has_attributes <- function(x) {
     )
 
   output <- nrow(shuffled_card_attributes_df) > 0
-
-  output
-}
-
-# for use with labelled variables
-process_labels <- function(x) {
-  if (!has_attributes(x)) {
-    output <- x |>
-      dplyr::mutate(
-        variable_label = NA_character_
-      )
-
-    return(output)
-  }
-
-  variable_labels <- x |>
-    dplyr::filter(
-      .data$context == "attributes",
-      .data$stat_label == "Variable Label"
-    ) |>
-    dplyr::select(
-      "variable",
-      "variable_label" = "stat"
-    ) |>
-    tidyr::unnest(
-      "variable_label"
-    )
-
-  output <- x |>
-    dplyr::left_join(
-      variable_labels,
-      by = dplyr::join_by(
-        "variable"
-      )
-    ) |>
-    dplyr::relocate(
-      "variable_label",
-      .after = "variable"
-    ) |>
-    # remove attributes
-    dplyr::filter(
-      .data$context != "attributes"
-    )
 
   output
 }
