@@ -48,7 +48,7 @@ column, called \code{variable_level} (where applicable).
 \code{"bigN"}
 \item \code{process_categorical_vars()}: once we have bigN, it renames some of the
 values in the categorical variable columns
-\item \code{fill_pairs()}: in a hierarchical stack fills NA in one column based on
+\item \code{fill_pairwise()}: in a hierarchical stack fills NA in one column based on
 the presence of data in another column
 }
 }

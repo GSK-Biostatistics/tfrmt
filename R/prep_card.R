@@ -7,7 +7,7 @@
 #'  `"bigN"`
 #'  * `process_categorical_vars()`: once we have bigN, it renames some of the
 #'  values in the categorical variable columns
-#'  * `fill_pairs()`: in a hierarchical stack fills NA in one column based on
+#'  * `fill_pairwise()`: in a hierarchical stack fills NA in one column based on
 #'  the presence of data in another column
 #'
 #' @inheritParams shuffle_card
@@ -86,7 +86,7 @@ prep_card <- function(x,
     # process_labels() |>
     process_big_n(by) |>
     process_categorical_vars(by) |>
-    fill_pairs(
+    fill_pairwise(
       variables = ard_args$variables %||% variables,
       fill_hierarchical_overall = fill_hierarchical_overall,
       fill_from = fill_from
@@ -107,7 +107,7 @@ has_args <- function(x) {
 
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
-fill_pairs <- function(x,
+fill_pairwise <- function(x,
                        variables,
                        fill_hierarchical_overall = "auto",
                        fill_from = NULL) {
@@ -142,7 +142,7 @@ fill_pairs <- function(x,
   output
 }
 
-# fill_pairs does pairwise conditional replacement of NAs. generate_pairs
+# fill_pairwise does pairwise conditional replacement of NAs. generate_pairs
 # builds those pairs
 generate_pairs <- function(x) {
   # TODO drop names
@@ -157,7 +157,7 @@ generate_pairs <- function(x) {
 }
 
 # replace missing values in one variable if a another variable is not NA
-# this is the function used by fill_pairs to iterate over the pairs of
+# this is the function used by fill_pairwise to iterate over the pairs of
 # columns
 replace_na_pair <- function(x,
                             pair,
