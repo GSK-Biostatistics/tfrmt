@@ -6,7 +6,7 @@
 \usage{
 prep_card(
   x,
-  by,
+  by = NULL,
   variables = NULL,
   fill_overall = "Overall {colname}",
   fill_hierarchical_overall = "Any {colname}",
