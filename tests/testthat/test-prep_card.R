@@ -450,7 +450,6 @@ test_that("fill_pairwise() with `fill_from='left'` works", {
     z = rep(NA, "3")
   )
 
-  # the second value of y is replaced with "2
   expect_identical(
     fill_pairwise(df, variables = c("x", "y"), fill_from = "left"),
     tibble(
@@ -466,6 +465,23 @@ test_that("fill_pairwise() with `fill_from='left'` works", {
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
       z = c("a", "2", "b")
+    )
+  )
+})
+
+test_that("fill_pairwise() complains with `fill_from` other than 'left'", {
+  df <- tibble(
+    x = c(1, 2, NA),
+    y = c("a", NA, "b"),
+    z = rep(NA, "3")
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    fill_pairwise(
+      df,
+      variables = c("x", "y", "z"),
+      fill_from = "foo"
     )
   )
 })

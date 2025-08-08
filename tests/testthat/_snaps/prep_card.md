@@ -318,3 +318,11 @@
       </table>
       </div>
 
+# fill_pairwise() complains with `fill_from` other than 'left'
+
+    Code
+      fill_pairwise(df, variables = c("x", "y", "z"), fill_from = "foo")
+    Condition
+      Error in `replace_na_pair()`:
+      ! `fill_from` must either be `NULL` or `"left"`
+
