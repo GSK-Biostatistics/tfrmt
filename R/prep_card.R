@@ -108,9 +108,9 @@ has_args <- function(x) {
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
 fill_pairwise <- function(x,
-                       variables,
-                       fill_hierarchical_overall = "auto",
-                       fill_from = NULL) {
+                          variables,
+                          fill_hierarchical_overall = "auto",
+                          fill_from = NULL) {
 
   if (!rlang::is_character(fill_hierarchical_overall)) {
     cli::cli_abort(
