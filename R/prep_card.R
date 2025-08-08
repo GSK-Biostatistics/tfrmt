@@ -182,7 +182,7 @@ replace_na_pair <- function(x,
 # `by` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, by) {
-  # browser()
+
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
@@ -209,8 +209,6 @@ unite_data_vars <- function(x, by) {
     return(x)
   }
 
-
-  # browser()
   ard_vars <- c(
     "context",
     "stat_variable",
@@ -291,7 +289,7 @@ unite_data_vars <- function(x, by) {
 # it derives and fills a new column, called label (most problematic for
 # categorical variables)
 process_categorical_vars <- function(x, by) {
-  # browser()
+
   categorical_vars <- x |>
     dplyr::filter(
       .data$context == "categorical"
