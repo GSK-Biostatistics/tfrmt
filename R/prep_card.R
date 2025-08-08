@@ -249,9 +249,9 @@ unite_data_vars <- function(x, by) {
     ) |>
     dplyr::mutate(
       variable_level_untd = dplyr::if_else(
-        variable_level_untd == "",
+        .data$variable_level_untd == "",
         NA_character_,
-        variable_level_untd
+        .data$variable_level_untd
       )
     )
 
