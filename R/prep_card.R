@@ -7,22 +7,26 @@
 #'  `"bigN"`
 #'  * `process_categorical_vars()`: once we have bigN, it renames some of the
 #'  values in the categorical variable columns
-#'  * `fill_variables()`: in a hierarchical stack fills NA in one column
+#'  * `fill_pairs()`: in a hierarchical stack fills NA in one column
 #'  (with `"Any <column_name>"`) based on the presence of data in another column
 #'
 #' @inheritParams shuffle_card
-#' @param column (character) name of column(s) to use as header.
+#' @param by (character) name of column(s) to use as header.
 #' @param variables (character) `cards` variables
+#' @param fill_from (character) Indicates when doing pair-wise filling whether
+#' to fill from the column to the left. Defaults to `NULL`. Can be either `NULL`
+#' or `"left"`.
 #'
 #' @returns a `data.frame`
 #' @export
 #'
 #' @examples
 prep_card <- function(x,
-                      column,
+                      by,
                       variables = NULL,
                       fill_overall = "Overall {colname}",
-                      fill_hierarchical_overall = "Any {colname}") {
+                      fill_hierarchical_overall = "Any {colname}",
+                      fill_from = NULL) {
 
   # TODO prep_card only works with shuffled_cards
   # TODO class the output of shuffle_card()
@@ -38,15 +42,16 @@ prep_card <- function(x,
   if (!is_shuffled_card(x)) {
     shuffled_card <- shuffle_card(
       x,
-      by = ard_args$by %||% column,
+      # message about switching the value for by
+      by = ard_args$by %||% by,
       fill_overall = fill_overall,
       fill_hierarchical_overall = fill_hierarchical_overall
     )
   }
 
-  if (!is.character(column)) {
+  if (!is.character(by)) {
     cli::cli_abort(
-      "{.arg column} must be a character vector."
+      "{.arg by} must be a character vector."
     )
   }
 
@@ -58,12 +63,12 @@ prep_card <- function(x,
   #   2. from attributes
   #   3. tfrmt object
 
-  # column <- rlang::enquo(column)
+  # by <- rlang::enquo(by)
 
   # a <- tfrmt_find_args(..., env = environment(), parent_env = caller_env())
-  # columns_quo <- a$column |>
+  # by_quo <- a$by |>
   #   rlang::quos_auto_name()
-  # columns_char <- names(columns_quo)
+  # by_char <- names(by_quo)
 
   if (has_attributes(shuffled_card)) {
     shuffled_card <- shuffled_card |>
@@ -79,17 +84,18 @@ prep_card <- function(x,
   # don't unite for hierarchical stack
   # TODO coalesce only if there is a single value rowwise
   # if (!"hierarchical" %in% unique(shuffled_card$context)) {
-  #   interim <- unite_data_vars(shuffled_card, column)
+  #   interim <- unite_data_vars(shuffled_card, by)
   # }
 
   output <- interim |>
-    unite_data_vars(column) |>
+    unite_data_vars(by) |>
     # process_labels() |>
-    process_big_n(column) |>
-    process_categorical_vars(column) |>
-    fill_variables(
+    process_big_n(by) |>
+    process_categorical_vars(by) |>
+    fill_pairs(
       variables = ard_args$variables %||% variables,
-      fill_value = fill_hierarchical_overall
+      fill_hierarchical_overall = fill_hierarchical_overall,
+      fill_from = fill_from
     )
 
   output
@@ -107,14 +113,23 @@ has_args <- function(x) {
 
 # replace_na with "Any <column-name>" where applicable (where the preceding
 # column) is not NA
-fill_variables <- function(x, variables, fill_value = "auto") {
+fill_pairs <- function(x,
+                       variables,
+                       fill_hierarchical_overall = "auto",
+                       fill_from = NULL) {
+
+  if (!rlang::is_character(fill_hierarchical_overall)) {
+    cli::cli_abort(
+      ""
+    )
+  }
 
   if (length(variables) < 2) {
     return(x)
   }
 
-  if (fill_value == "Any {colname}") {
-    fill_value <- "auto"
+  if (fill_hierarchical_overall == "Any {colname}") {
+    fill_hierarchical_overall <- "auto"
   }
 
   pair_list <- generate_pairs(variables)
@@ -122,13 +137,18 @@ fill_variables <- function(x, variables, fill_value = "auto") {
   output <- x
 
   for (i in seq_along(pair_list)) {
-    output <- replace_na_pair(output, pair_list[[i]], fill_value)
+    output <- replace_na_pair(
+      output,
+      pair = pair_list[[i]],
+      fill_hierarchical_overall = fill_hierarchical_overall,
+      fill_from = fill_from
+    )
   }
 
   output
 }
 
-# fill_variables does pairwise conditional replacement of NAs. generate_pairs
+# fill_pairs does pairwise conditional replacement of NAs. generate_pairs
 # builds those pairs
 generate_pairs <- function(x) {
   # TODO drop names
@@ -143,40 +163,61 @@ generate_pairs <- function(x) {
 }
 
 # replace missing values in one variable if a another variable is not NA
-# this is the function used by fill_variables to iterate over the pairs of
+# this is the function used by fill_pairs to iterate over the pairs of
 # columns
-replace_na_pair <- function(x, pair, fill_value = "auto") {
+replace_na_pair <- function(x,
+                            pair,
+                            fill_hierarchical_overall = "auto",
+                            fill_from = NULL) {
+
+  if (!is.null(fill_from) && fill_from != "left") {
+    cli::cli_abort(
+      '{.arg fill_from} must either be `NULL` or `"left"`'
+    )
+  }
+
   variables_syms <- rlang::syms(pair)
 
-  if (fill_value == "auto") {
-    fill_value <- glue::glue("Any {variables_syms[[2]]}")
+  if (fill_hierarchical_overall == "auto") {
+    fill_hierarchical_overall <- glue::glue("Any {variables_syms[[2]]}") |>
+      as.character()
   }
 
   output <- x |>
     dplyr::mutate(
       !!variables_syms[[2]] := dplyr::if_else(
         is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-        fill_value,
+        fill_hierarchical_overall,
         !!variables_syms[[2]]
-      ),
-      !!variables_syms[[2]] := as.character(!!variables_syms[[2]])
+      )
     )
+
+  if (!is.null(fill_from) && fill_from == "left") {
+    output <- x |>
+      dplyr::mutate(
+        !!variables_syms[[2]] := dplyr::if_else(
+          is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
+          as.character(!!variables_syms[[1]]),
+          !!variables_syms[[2]]
+        )
+      )
+  }
 
   output
 }
 
-# `column` here is the same value as the `column` argument
+# `by` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
-process_big_n <- function(x, column) {
+process_big_n <- function(x, by) {
   # browser()
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$context == "total_n" ~ "bigN",
         # we only want to keep the subgroup totals, which get recoded to bigN
-        .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
+        .data$stat_variable %in% by & .data$stat_name == "n" ~ "bigN",
         # we only want the bigN for overall -> we remove "out"
-        .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
+        .data$stat_variable %in% by & .data$stat_name != "n" ~ "out",
         TRUE ~ .data$stat_name
       )
     ) |>
@@ -189,7 +230,7 @@ process_big_n <- function(x, column) {
 
 # convenience wrapper around tidyr::unite to create variable_level from the
 # individual columns (where applicable)
-unite_data_vars <- function(x, column) {
+unite_data_vars <- function(x, by) {
 
   if ("hierarchical" %in% unique(x$context)) {
     return(x)
@@ -205,7 +246,7 @@ unite_data_vars <- function(x, column) {
     "stat"
   )
 
-  data_vars <- setdiff(names(x), c(ard_vars, column))
+  data_vars <- setdiff(names(x), c(ard_vars, by))
 
   interim <- x |>
     mutate(
@@ -227,6 +268,8 @@ unite_data_vars <- function(x, column) {
       )
     )
 
+  # for ard_strata we expect there is a difference between unite and coalesce
+  # and we shouldn't do it
   if (identical(interim$variable_level_untd, interim$variable_level_coalesced)) {
     output <- interim |>
       # drop the individual data columns and reorder the remaining ones
@@ -237,7 +280,7 @@ unite_data_vars <- function(x, column) {
         -"variable_level_coalesced"
       ) |>
       dplyr::select(
-        tidyselect::all_of(column),
+        tidyselect::all_of(by),
         "stat_variable",
         "variable_level" = "variable_level_untd",
         tidyselect::everything()
@@ -260,7 +303,7 @@ unite_data_vars <- function(x, column) {
   #     )
   #   ) |>
   #   dplyr::select(
-  #     tidyselect::all_of(column),
+  #     tidyselect::all_of(by),
   #     "stat_variable",
   #     "variable_level",
   #     tidyselect::everything()
@@ -274,7 +317,7 @@ unite_data_vars <- function(x, column) {
 # mostly for compatibility with the current approach
 # it derives and fills a new column, called label (most problematic for
 # categorical variables)
-process_categorical_vars <- function(x, column) {
+process_categorical_vars <- function(x, by) {
   # browser()
   categorical_vars <- x |>
     dplyr::filter(
@@ -284,7 +327,7 @@ process_categorical_vars <- function(x, column) {
       .data$stat_variable
     ) |>
     dplyr::pull() |>
-    setdiff(column)
+    setdiff(by)
 
   if (rlang::is_empty(categorical_vars) || !"variable_level" %in% names(x)) {
     return(x)
@@ -317,7 +360,7 @@ process_categorical_vars <- function(x, column) {
       # correctly without it
       label = dplyr::if_else(
         .data$stat_name == "bigN" & .data$context == "categorical",
-        !!rlang::sym(column),
+        !!rlang::sym(by),
         .data$label
       )
     )
