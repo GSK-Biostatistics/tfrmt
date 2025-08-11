@@ -45,7 +45,7 @@ prep_card <- function(x,
     shuffled_card <- shuffle_card(
       x,
       # TODO message about switching the value for column
-      by = ard_args$by %||% column,
+      by = ard_args$by %||% c(column, group),
       fill_overall = fill_overall,
       fill_hierarchical_overall = fill_hierarchical_overall
     )
