@@ -11,7 +11,7 @@
 #'  the presence of data in another column
 #'
 #' @inheritParams shuffle_card
-#' @param by (character) name of column(s) to use as header.
+#' @param column (character) name of column(s) to use as header.
 #' @param variables (character) `cards` variables
 #' @param fill_from (character) Indicates when doing pair-wise filling whether
 #' to fill from the column to the left. Defaults to `NULL`. Can be either `NULL`
@@ -22,7 +22,8 @@
 #'
 #' @examples
 prep_card <- function(x,
-                      by = NULL,
+                      column = NULL,
+                      group = NULL,
                       variables = NULL,
                       fill_overall = "Overall {colname}",
                       fill_hierarchical_overall = "Any {colname}",
@@ -30,9 +31,9 @@ prep_card <- function(x,
 
   # TODO check the error is propagated from the right caller env
 
-  if (!is.null(by) & !is.character(by)) {
+  if (!is.null(column) & !is.character(column)) {
     cli::cli_abort(
-      "{.arg by} must be a character vector."
+      "{.arg column} must be a character vector."
     )
   }
 
@@ -43,8 +44,8 @@ prep_card <- function(x,
   if (!is_shuffled_card(x)) {
     shuffled_card <- shuffle_card(
       x,
-      # TODO message about switching the value for by
-      by = ard_args$by %||% by,
+      # TODO message about switching the value for column
+      by = ard_args$by %||% column,
       fill_overall = fill_overall,
       fill_hierarchical_overall = fill_hierarchical_overall
     )
@@ -65,9 +66,9 @@ prep_card <- function(x,
   }
 
   output <- shuffled_card |>
-    unite_data_vars(by) |>
-    process_big_n(by) |>
-    process_categorical_vars(by) |>
+    unite_data_vars(column) |>
+    process_big_n(column) |>
+    process_categorical_vars(column) |>
     fill_pairwise(
       variables = ard_args$variables %||% variables,
       fill_hierarchical_overall = fill_hierarchical_overall,
@@ -174,18 +175,18 @@ replace_na_pair <- function(x,
   output
 }
 
-# `by` here is the same value as the `column` argument
+# `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
-process_big_n <- function(x, by) {
+process_big_n <- function(x, column) {
 
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$context == "total_n" ~ "bigN",
         # we only want to keep the subgroup totals, which get recoded to bigN
-        .data$stat_variable %in% by & .data$stat_name == "n" ~ "bigN",
+        .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
         # we only want the bigN for overall -> we remove "out"
-        .data$stat_variable %in% by & .data$stat_name != "n" ~ "out",
+        .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
         TRUE ~ .data$stat_name
       )
     ) |>
@@ -198,7 +199,7 @@ process_big_n <- function(x, by) {
 
 # convenience wrapper around tidyr::unite to create variable_level from the
 # individual columns (where applicable)
-unite_data_vars <- function(x, by) {
+unite_data_vars <- function(x, column) {
 
   if ("hierarchical" %in% unique(x$context)) {
     return(x)
@@ -212,7 +213,7 @@ unite_data_vars <- function(x, by) {
     "stat"
   )
 
-  data_vars <- setdiff(names(x), c(ard_vars, by))
+  data_vars <- setdiff(names(x), c(ard_vars, column))
 
   # no need to apply the logic for a single variable
   if (length(data_vars) == 1) {
@@ -255,7 +256,7 @@ unite_data_vars <- function(x, by) {
       -"var_level_coalesced"
     ) |>
     dplyr::select(
-      tidyselect::all_of(by),
+      tidyselect::all_of(column),
       "stat_variable",
       "variable_level" = "var_level_untd",
       tidyselect::everything()
@@ -269,7 +270,7 @@ unite_data_vars <- function(x, by) {
 # mostly for compatibility with the current approach
 # it derives and fills a new column, called label (most problematic for
 # categorical variables)
-process_categorical_vars <- function(x, by) {
+process_categorical_vars <- function(x, column) {
 
   categorical_vars <- x |>
     dplyr::filter(
@@ -279,7 +280,7 @@ process_categorical_vars <- function(x, by) {
       .data$stat_variable
     ) |>
     dplyr::pull() |>
-    setdiff(by)
+    setdiff(column)
 
   if (rlang::is_empty(categorical_vars) || !"variable_level" %in% names(x)) {
     return(x)
@@ -313,7 +314,7 @@ process_categorical_vars <- function(x, by) {
       # correctly without it
       label = dplyr::if_else(
         .data$stat_name == "bigN" & .data$context == "categorical",
-        !!rlang::sym(by),
+        !!rlang::sym(column),
         .data$label
       )
     )

@@ -168,7 +168,7 @@ test_that("prep_card() works with demographic data", {
 
   # with prep_card --------------------------------------------------------
   ard_tbl_with_prep <- ard |>
-    prep_card(by = "ARM") |>
+    prep_card(column = "ARM") |>
     dplyr::mutate(
       ord1 = forcats::fct_inorder(stat_variable) |>
         forcats::fct_relevel("SEX", after = 0) |>
@@ -322,7 +322,7 @@ test_that("prep_card() works with adverse effects data", {
   # with prep_card -------------------------------------------------------
   ae2_ard_tbl_with_prep <- ae_ard |>
     prep_card(
-      by = c("TRT01A", "AESEV"),
+      column = c("TRT01A", "AESEV"),
       fill_overall = NA,
       fill_hierarchical_overall = "ANY EVENT"
     ) |>
@@ -402,10 +402,10 @@ test_that("prep_card() with and without shuffle_card() are identical", {
 
   expect_identical(
     ard |>
-      prep_card(by = "ARM"),
+      prep_card(column = "ARM"),
     ard |>
       shuffle_card(by = "ARM") |>
-      prep_card(by = "ARM")
+      prep_card(column = "ARM")
   )
 })
 
@@ -422,7 +422,7 @@ test_that("prep_card() unite_data_vars does not over-unite", {
   )
 
   b <- a |>
-    prep_card(by = "ARM")
+    prep_card(column = "ARM")
 
   # there is no variable_level column
   expect_true(
