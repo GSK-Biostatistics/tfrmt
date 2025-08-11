@@ -6,7 +6,8 @@
 \usage{
 prep_card(
   x,
-  by = NULL,
+  column = NULL,
+  group = NULL,
   variables = NULL,
   fill_overall = "Overall {colname}",
   fill_hierarchical_overall = "Any {colname}",
@@ -16,9 +17,11 @@ prep_card(
 \arguments{
 \item{x}{an ARD data frame of class 'card'}
 
-\item{by}{(character) name of column(s) to use as header.}
+\item{column}{(character) variable(s) to use for column names.}
 
-\item{variables}{(character) \code{cards} variables}
+\item{group}{(character) grouping variables to use in the formatted table.}
+
+\item{variables}{(character) incoming \code{cards} variables.}
 
 \item{fill_overall}{scalar to fill missing grouping or variable levels. If a
 character is passed, then it is processed with glue::glue() where the

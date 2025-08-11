@@ -10,9 +10,11 @@
 #'  * `fill_pairwise()`: in a hierarchical stack fills NA in one column based on
 #'  the presence of data in another column
 #'
+#' @inheritParams tfrmt
 #' @inheritParams shuffle_card
-#' @param column (character) name of column(s) to use as header.
-#' @param variables (character) `cards` variables
+#' @param column (character) variable(s) to use for column names.
+#' @param group (character) grouping variables to use in the formatted table.
+#' @param variables (character) incoming `cards` variables.
 #' @param fill_from (character) Indicates when doing pair-wise filling whether
 #' to fill from the column to the left. Defaults to `NULL`. Can be either `NULL`
 #' or `"left"`.
