@@ -345,6 +345,23 @@ test_that("prep_card() works with adverse effects data", {
     # for some reasom the .col_plan_vars attributes are different
     ignore_attr = ".col_plan_vars"
   )
+
+  # pass variables explicitly and do not rely on them being found from the
+  # cards object
+  ae2_ard_tbl_with_prep_explicit <- ae_ard |>
+    prep_card(
+      column = c("TRT01A", "AESEV"),
+      variables = c("AEBODSYS", "AETERM"),
+      fill_overall = NA,
+      fill_hierarchical_overall = "ANY EVENT"
+    ) |>
+    dplyr::select(-context, -stat_variable, -stat_label) |>
+    dplyr::relocate(stat_name, .after = stat)
+
+  expect_identical(
+    ae2_ard_tbl_with_prep,
+    ae2_ard_tbl_with_prep_explicit
+  )
 })
 
 test_that("prep_card() with and without shuffle_card() are identical", {
