@@ -214,6 +214,11 @@ unite_data_vars <- function(x, by) {
 
   data_vars <- setdiff(names(x), c(ard_vars, by))
 
+  # no need to apply the logic for a single variable
+  if (length(data_vars) == 1) {
+    return(x)
+  }
+
   interim <- x |>
     mutate(
       var_level_coalesced = coalesce(
@@ -234,26 +239,27 @@ unite_data_vars <- function(x, by) {
       )
     )
 
-  # for ard_strata we expect there is a difference between unite and coalesce
-  # and we shouldn't do it
-  if (identical(interim$var_level_untd, interim$var_level_coalesced)) {
-    output <- interim |>
-      # drop the individual data columns and reorder the remaining ones
-      dplyr::select(
-        -tidyselect::all_of(
-          data_vars
-        ),
-        -"var_level_coalesced"
-      ) |>
-      dplyr::select(
-        tidyselect::all_of(by),
-        "stat_variable",
-        "variable_level" = "var_level_untd",
-        tidyselect::everything()
-      )
-  } else {
-    output <- x
+  # we don't expect a difference between unite and coalesce
+  # if such a difference exists (e.g. for some ard_strata cases) then we should
+  # not attempt to unite as its not meaningful
+  if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
+    return(x)
   }
+
+  output <- interim |>
+    # drop the individual data columns and reorder the remaining ones
+    dplyr::select(
+      -tidyselect::all_of(
+        data_vars
+      ),
+      -"var_level_coalesced"
+    ) |>
+    dplyr::select(
+      tidyselect::all_of(by),
+      "stat_variable",
+      "variable_level" = "var_level_untd",
+      tidyselect::everything()
+    )
 
   output
 }
@@ -302,6 +308,7 @@ process_categorical_vars <- function(x, by) {
         .data$variable_level,
         .data$label
       ),
+      # TODO figure out how to recode multiple variables
       # technically this transformation is not needed, the tfrmt table displays
       # correctly without it
       label = dplyr::if_else(
