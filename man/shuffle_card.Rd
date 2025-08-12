@@ -23,16 +23,17 @@ will be used instead of \code{by}.}
 \code{error}, and \code{warning} columns}
 
 \item{fill_overall}{scalar to fill missing grouping or variable levels. If a
-character is passed, then it is processed with glue::glue() where the
-colname element is available to inject into the string, e.g. 'Overall
-{colname}' may resolve to 'Overall AGE' for an AGE column. Default is
-'Overall {colname}'. If \code{NA} then no fill will occur.}
+character is passed, then it is processed with \code{\link[glue:glue]{glue::glue()}} where the
+colname element is available to inject into the string,
+e.g. \verb{Overall \{colname\}} may resolve to \code{"Overall AGE"} for an \code{AGE}
+column. Default is \verb{Overall \{colname\}}. If \code{NA} then no fill will occur.}
 
 \item{fill_hierarchical_overall}{scalar to fill variable levels for overall
-hierarchical calculations.  If a character is passed, then it is processed
-with glue::glue() where the colname element is available to inject into the
-string, e.g. 'Any {colname}' may resolve to 'Any AESOC' for an AESOC
-column. Default is 'Any {colname}'. If \code{NA} then no fill will occur.}
+hierarchical calculations. If a character is passed, then it is processed
+with \code{\link[glue:glue]{glue::glue()}} where the colname element is available to inject into
+the string, e.g. \verb{Any \{colname\}} may resolve to \code{"Any AESOC"} for an
+\code{AESOC} column. Default is \verb{Any \{colname\}}. If \code{NA} then no fill will
+occur.}
 }
 \value{
 a tibble

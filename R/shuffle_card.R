@@ -12,15 +12,16 @@
 #' @param trim logical representing whether or not to trim away `fmt_fun`,
 #'   `error`, and `warning` columns
 #' @param fill_overall scalar to fill missing grouping or variable levels. If a
-#'   character is passed, then it is processed with glue::glue() where the
-#'   colname element is available to inject into the string, e.g. 'Overall
-#'   {colname}' may resolve to 'Overall AGE' for an AGE column. Default is
-#'   'Overall {colname}'. If `NA` then no fill will occur.
+#'   character is passed, then it is processed with [glue::glue()] where the
+#'   colname element is available to inject into the string,
+#'   e.g. `Overall {colname}` may resolve to `"Overall AGE"` for an `AGE`
+#'   column. Default is `Overall {colname}`. If `NA` then no fill will occur.
 #' @param fill_hierarchical_overall scalar to fill variable levels for overall
-#'   hierarchical calculations.  If a character is passed, then it is processed
-#'   with glue::glue() where the colname element is available to inject into the
-#'   string, e.g. 'Any {colname}' may resolve to 'Any AESOC' for an AESOC
-#'   column. Default is 'Any {colname}'. If `NA` then no fill will occur.
+#'   hierarchical calculations. If a character is passed, then it is processed
+#'   with [glue::glue()] where the colname element is available to inject into
+#'   the string, e.g. `Any {colname}` may resolve to `"Any AESOC"` for an
+#'   `AESOC` column. Default is `Any {colname}`. If `NA` then no fill will
+#'   occur.
 #'
 #' @return a tibble
 #' @export
