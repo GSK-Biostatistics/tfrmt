@@ -342,12 +342,11 @@ test_that("prep_card() works with adverse effects data", {
   expect_identical(
     gt::extract_body(a),
     gt::extract_body(b),
-    # for some reasom the .col_plan_vars attributes are different
     ignore_attr = ".col_plan_vars"
   )
 
-  # pass variables explicitly and do not rely on them being found from the
-  # cards object
+  # pass variables explicitly and don't rely on them being present in the
+  # `cards` object
   ae2_ard_tbl_with_prep_explicit <- ae_ard |>
     prep_card(
       column = c("TRT01A", "AESEV"),
@@ -364,7 +363,7 @@ test_that("prep_card() works with adverse effects data", {
   )
 })
 
-test_that("prep_card() with and without shuffle_card() are identical", {
+test_that("prep_card() with and w/out shuffle_card() outputs identical", {
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
