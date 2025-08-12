@@ -46,7 +46,7 @@ prep_card <- function(x,
   if (!is_shuffled_card(x)) {
     shuffled_card <- shuffle_card(
       x,
-      # TODO message about switching the value for column
+      # TODO message about switching the value for `by`
       by = ard_args$by %||% c(column, group),
       fill_overall = fill_overall,
       fill_hierarchical_overall = fill_hierarchical_overall
@@ -61,7 +61,7 @@ prep_card <- function(x,
   if (has_attributes(shuffled_card)) {
     shuffled_card <- shuffled_card |>
       # remove attributes for now
-      # TODO add some logic to deal with them
+      # TODO add some logic to deal with them - useful for labelled columns
       dplyr::filter(
         .data$context != "attributes"
       )
