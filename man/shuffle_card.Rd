@@ -41,6 +41,6 @@ a tibble
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
 
-This function ingests an ARD object and shuffles the information to prepare for analysis.
-Helpful for streamlining across multiple ARDs.
+This function ingests an ARD object and shuffles the information to prepare
+for analysis. Helpful for streamlining across multiple ARDs.
 }

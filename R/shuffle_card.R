@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge('experimental')`\cr
 #'
-#' This function ingests an ARD object and shuffles the information to prepare for analysis.
-#' Helpful for streamlining across multiple ARDs.
+#' This function ingests an ARD object and shuffles the information to prepare
+#' for analysis. Helpful for streamlining across multiple ARDs.
 #'
 #' @param x an ARD data frame of class 'card'
 #' @param by Grouping variable(s) used in calculations. Defaults to `NULL`. If
