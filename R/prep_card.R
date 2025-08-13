@@ -284,69 +284,6 @@ prep_big_n <- function(x, vars) {
   output
 }
 
-# mostly for compatibility with the current approach
-# it derives and fills a new column, called label (most problematic for
-# categorical variables)
-# TODO split:
-#   * creation of the labels (separate processing function)
-#   * removing duplicates (variable_level): questionable (maybe control with an arg)
-#   * post big N cleanup (recoding of some Ns into n) DON'T DO
-#   *
-process_categorical_vars <- function(x, column) {
-
-  categorical_vars <- x |>
-    dplyr::filter(
-      .data$context == "categorical"
-    ) |>
-    dplyr::distinct(
-      .data$stat_variable
-    ) |>
-    dplyr::pull() |>
-    setdiff(column)
-
-  if (rlang::is_empty(categorical_vars) || !"variable_level" %in% names(x)) {
-    return(x)
-  }
-
-  output <- x |>
-    dplyr::mutate(
-      label = .data$stat_label#,
-      # label = dplyr::if_else(
-      #   .data$stat_name == "N",
-      #   "n",
-      #   .data$label
-      # )
-    ) |>
-    dplyr::mutate(
-      # variable_level = dplyr::if_else(
-      #   .data$stat_name == "N",
-      #   NA,
-      #   .data$variable_level
-      # )
-    ) |>
-    unique() |>
-    dplyr::mutate(
-      label = dplyr::if_else(
-        # TODO too specific (don't recode here)
-        .data$context == "categorical",
-        # & .data$stat_name %in% c("n", "p"),
-        .data$variable_level,
-        .data$label
-      ),
-      # TODO figure out how to recode multiple variables
-      # technically this transformation is not needed, the tfrmt table displays
-      # correctly without it
-      label = dplyr::if_else(
-        .data$stat_name == "bigN" & .data$context == "categorical",
-        !!rlang::sym(column),
-        .data$label
-      )
-    )
-
-  output
-}
-
-
 #' Prepare label
 #'
 #' Adds a `label` column which is a combination of `stat_label` (for continuous
