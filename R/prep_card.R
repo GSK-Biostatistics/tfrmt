@@ -3,7 +3,7 @@
 #' What does the preparation function do?
 #'  * `prep_unite_vars()`: brings all categorical variables levels into a single
 #'  column, called `variable_level` (where applicable).
-#'  * `process_big_n()` identifies the bigN columns and changes `stat_name` to
+#'  * `prep_big_n()()` identifies the bigN columns and changes `stat_name` to
 #'  `"bigN"`
 #'  * `process_categorical_vars()`: once we have bigN, it renames some of the
 #'  values in the categorical variable columns
@@ -38,7 +38,7 @@ prep_card <- function(x,
       "{.arg column} must be a character vector."
     )
   }
-# browser()
+
   ard_args <- attr(x, "args")
 
   shuffled_card <- x
@@ -79,10 +79,10 @@ prep_card <- function(x,
 
   output <- shuffled_card |>
     prep_unite_vars(vars = vars_to_unite) |>
-    process_big_n(column) |>
+    prep_big_n(vars = column) |>
     prep_label() |>
     fill_pairwise(
-      variables = ard_args$variables %||% variables,
+      vars = ard_args$variables %||% variables,
       fill_hierarchical_overall = fill_hierarchical_overall,
       fill_from = fill_from
     )
@@ -103,7 +103,7 @@ has_args <- function(x) {
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
 fill_pairwise <- function(x,
-                          variables,
+                          vars,
                           fill_hierarchical_overall = "auto",
                           fill_from = NULL) {
 
@@ -113,7 +113,7 @@ fill_pairwise <- function(x,
     )
   }
 
-  if (length(variables) < 2) {
+  if (length(vars) < 2) {
     return(x)
   }
 
@@ -121,12 +121,12 @@ fill_pairwise <- function(x,
     fill_hierarchical_overall <- "auto"
   }
 
-  pair_list <- generate_pairs(variables)
+  pair_list <- generate_pairs(vars)
 
   output <- x
 
   for (i in seq_along(pair_list)) {
-    output <- replace_na_pair(
+    output <- replace_na_pairwise(
       output,
       pair = pair_list[[i]],
       fill_hierarchical_overall = fill_hierarchical_overall,
@@ -153,10 +153,10 @@ generate_pairs <- function(x) {
 # replace missing values in one variable if a another variable is not NA
 # this is the function used by fill_pairwise to iterate over the pairs of
 # columns
-replace_na_pair <- function(x,
-                            pair,
-                            fill_hierarchical_overall = "auto",
-                            fill_from = NULL) {
+replace_na_pairwise <- function(x,
+                                pair,
+                                fill_hierarchical_overall = "auto",
+                                fill_from = NULL) {
 
   if (!is.null(fill_from) && fill_from != "left") {
     cli::cli_abort(
@@ -189,15 +189,15 @@ replace_na_pair <- function(x,
 
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
-process_big_n <- function(x, column) {
+prep_big_n <- function(x, vars) {
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$context == "total_n" ~ "bigN",
         # we only want to keep the subgroup totals, which get recoded to bigN
-        .data$stat_variable %in% column & .data$stat_name == "n" ~ "bigN",
+        .data$stat_variable %in% vars & .data$stat_name == "n" ~ "bigN",
         # we only want the bigN for overall -> we remove "out"
-        .data$stat_variable %in% column & .data$stat_name != "n" ~ "out",
+        .data$stat_variable %in% vars & .data$stat_name != "n" ~ "out",
         TRUE ~ .data$stat_name
       )
     ) |>
