@@ -27,3 +27,22 @@ and
 If your \code{tfrmt} contains a \code{\link[=big_n_structure]{big_n_structure()}} you pass the tfrmt \code{column} to
 \code{prep_big_n()} via \code{vars}.
 }
+\examples{
+df <- data.frame(
+  stat_name = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
+  context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
+  stat_variable = rep(c("a", "b", "c"), each = 3)
+) |>
+  dplyr::bind_rows(
+    data.frame(
+      stat_name = "n",
+      context = "total_n",
+      stat_variable = "d"
+    )
+  )
+
+prep_big_n(
+  df,
+  vars = c("b", "c")
+)
+}

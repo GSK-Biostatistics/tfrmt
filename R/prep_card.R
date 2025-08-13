@@ -176,6 +176,23 @@ prep_unite_vars <- function(x, vars, remove = TRUE) {
 #' @export
 #'
 #' @examples
+#' df <- data.frame(
+#'   stat_name = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
+#'   context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
+#'   stat_variable = rep(c("a", "b", "c"), each = 3)
+#' ) |>
+#'   dplyr::bind_rows(
+#'     data.frame(
+#'       stat_name = "n",
+#'       context = "total_n",
+#'       stat_variable = "d"
+#'     )
+#'   )
+#'
+#' prep_big_n(
+#'   df,
+#'   vars = c("b", "c")
+#' )
 prep_big_n <- function(x, vars) {
   output <- x |>
     dplyr::mutate(
@@ -209,6 +226,13 @@ prep_big_n <- function(x, vars) {
 #' @export
 #'
 #' @examples
+#' df <- data.frame(
+#'   variable_level = c("d", "e", "f"),
+#'   stat_label = c("a", "b", "c"),
+#'   context = c("categorical", "continuous", "hierarchical")
+#' )
+#'
+#' prep_label(df)
 prep_label <- function(x) {
 
   if (!all(c("variable_level", "stat_label") %in% names(x))) {
@@ -240,34 +264,54 @@ prep_label <- function(x) {
 #' 2 pairs `("A", "B")` and `("B", "C")`. Therefore the order of the variables
 #' matters.
 #'
+#' In each pair the second column `B` will be filled if `A` is not missing. One
+#' can choose the value to fill with:
+#'   * `"Any {colname}"`, in this case evaluating to `"Any B"` is the default.
+#'   * Any other value. For example `"Any event"` for an adverse effects table.
+#'   * the value of pair's first column. In this case, the value of `A`.
+#'
 #' @param x (data.frame) a shuffled card.
 #' @param vars (characters) a vector of variables to generate pairs from.
 #' @param fill (character) value to replace with. Defaults to `"Any {colname}"`,
 #'   in which case `colname` will be replaced with the name of the column.
-#' @param fill_from
+#' @param fill_from (character) indicating whether to fill from the left column
+#'   of the pair.
 #'
-#' @returns
+#' @returns a data.frame with the same columns as the input, but in which some
+#'   the desired columns have been filled pairwise.
 #' @export
 #'
 #' @examples
+#' df <- data.frame(
+#'   x = c(1, 2, NA),
+#'   y = c("a", NA, "b"),
+#'   z = rep(NA, 3)
+#' )
+#'
+#' prep_fill_pairwise(
+#'   df,
+#'   vars = c("x", "y")
+#' )
+#'
+#' prep_fill_pairwise(
+#'   df,
+#'   vars = c("x", "y"),
+#'   fill = "foo"
+#' )
+#'
+#' #' prep_fill_pairwise(
+#'   df,
+#'   vars = c("x", "y", "z"),
+#'   fill_from = "left"
+#' )
 prep_fill_pairwise <- function(x,
                                vars,
                                fill = "Any {colname}",
                                fill_from = NULL) {
 
-  if (!rlang::is_character(fill)) {
-    cli::cli_abort(
-      "{.arg fill} must be a character."
-    )
-  }
-
   if (length(vars) < 2) {
     return(x)
   }
-
-  # if (fill == "Any {colname}") {
-  #   fill <- "auto"
-  # }
 
   pair_list <- generate_pairs(vars)
 
@@ -291,13 +335,13 @@ prep_fill_pairwise <- function(x,
 #' `generate_pairs()` builds those pairs.
 #'
 #' @param x (character) a vector of 2 or more column names
-#' @inheritParams cli::cli_abort()
+#' @inheritParams cli::cli_abort
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)
 #' @keywords internal
 #'
 #' @examples
-#'  tfrmt:::generate_pairs(c("foo", "bar", "baz"))
+#' tfrmt:::generate_pairs(c("foo", "bar", "baz"))
 generate_pairs <- function(x, call = rlang::caller_env()) {
 
   if (!rlang::is_character(x)) {
@@ -324,19 +368,63 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
   output
 }
 
-
-
-# replace missing values in one variable if a another variable is not NA
-# this is the function used by prep_fill_pairwise to iterate over the pairs of
-# columns
+#' Replace `NA`s pairwise conditionally
+#'
+#' Replace missing values in one variable if a another variable is not `NA`.
+#' This is the function used by [prep_fill_pairwise()] to iterate over the pairs
+#' of columns.
+#'
+#' @param x (data.frame) a shuffled card.
+#' @param pair (character) a vector of exactly 2 column names.
+#' @inheritParams prep_card
+#' @inheritParams cli::cli_abort
+#'
+#' @returns a list of length 2 character vectors (pairs of column names)
+#' @keywords internal
+#'
+#' @examples
+#' replace_na_pairwise(
+#'   data.frame(
+#'   x = c(1, 2, NA),
+#'   y = c("a", NA, "b"),
+#'   z = rep(NA, 3)
+#'   ),
+#'   pair = c("y", "z")
+#' )
 replace_na_pairwise <- function(x,
                                 pair,
                                 fill = "Any {colname}",
-                                fill_from = NULL) {
+                                fill_from = NULL,
+                                call = rlang::caller_env()) {
+
+  if (!rlang::is_character(pair)) {
+    cli::cli_abort(
+      "{.arg pair} must be a character vector. You have supplied \\
+      {.obj_type_friendly {pair}}.",
+      call = call
+    )
+  }
+
+  if (length(pair) != 2) {
+    cli::cli_abort(
+      "{.arg pair} must contain exactly 2 elements. The one you supplied has \\
+      {length(pair)}.",
+      call = call
+    )
+  }
+
+  if (!rlang::is_scalar_character(fill)) {
+    cli::cli_abort(
+      "{.arg fill} must be a character vector of length 1.",
+      call = call
+    )
+  }
 
   if (!is.null(fill_from) && fill_from != "left") {
     cli::cli_abort(
-      '{.arg fill_from} must either be `NULL` or `"left"`'
+      '{.arg fill_from} must either be `NULL` or `"left"`. \\
+      {.code "{fill_from}"} is not an accepted value.',
+      call = call
     )
   }
 
