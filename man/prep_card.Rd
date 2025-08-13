@@ -29,6 +29,9 @@ colname element is available to inject into the string,
 e.g. \verb{Overall \{colname\}} may resolve to \code{"Overall AGE"} for an \code{AGE}
 column. Default is \verb{Overall \{colname\}}. If \code{NA} then no fill will occur.}
 
+\item{fill}{(character) value to fill with. Defaults to \code{"Any {colname}"}.
+Not used if \code{fill_from} is specified.}
+
 \item{fill_from}{(character) Indicates when doing pair-wise filling whether
 to fill from the column to the left. Defaults to \code{NULL}. Can be either \code{NULL}
 or \code{"left"}.}
@@ -45,7 +48,7 @@ column, called \code{variable_level} (where applicable).
 desired columns.
 \item \code{prep_label()}: creates a \code{label} column from \code{variable_level} for
 categorical variables and \code{stat_label} for all other variable types.
-\item \code{prep_fill_pairwise()}: in a hierarchical stack fills NA in one column based on
-the presence of data in another column
+\item \code{prep_fill_pairwise()}: in a hierarchical stack replaces NA in one column
+conditional on the presence of data in another column.
 }
 }

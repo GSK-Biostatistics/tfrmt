@@ -7,14 +7,16 @@
 #'  desired columns.
 #'  * `prep_label()`: creates a `label` column from `variable_level` for
 #'  categorical variables and `stat_label` for all other variable types.
-#'  * `prep_fill_pairwise()`: in a hierarchical stack fills NA in one column based on
-#'  the presence of data in another column
+#'  * `prep_fill_pairwise()`: in a hierarchical stack replaces NA in one column
+#'  conditional on the presence of data in another column.
 #'
 #' @inheritParams tfrmt
 #' @inheritParams shuffle_card
 #' @param column (character) variable(s) to use for column names.
 #' @param group (character) grouping variables to use in the formatted table.
 #' @param variables (character) incoming `cards` variables.
+#' @param fill (character) value to fill with. Defaults to `"Any {colname}"`.
+#'   Not used if `fill_from` is specified.
 #' @param fill_from (character) Indicates when doing pair-wise filling whether
 #' to fill from the column to the left. Defaults to `NULL`. Can be either `NULL`
 #' or `"left"`.
@@ -56,7 +58,6 @@ prep_card <- function(x,
   # TODO get the logic to work with strings and then maybe add support for
   # symbols / unquoted strings
   # with tfrmt_find_args(..., env = environment(), parent_env = caller_env())
-
 
   if (has_attributes(shuffled_card)) {
     shuffled_card <- shuffled_card |>
