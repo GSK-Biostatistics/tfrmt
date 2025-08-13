@@ -290,7 +290,7 @@ prep_fill_pairwise <- function(x,
 #' [prep_fill_pairwise()] does pairwise conditional replacement of `NA`s.
 #' `generate_pairs()` builds those pairs.
 #'
-#' @param x (data.frame) a shuffled card
+#' @param x (character) a vector of 2 or more column names
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)
 #' @keywords internal
@@ -298,6 +298,20 @@ prep_fill_pairwise <- function(x,
 #' @examples
 #'  tfrmt:::generate_pairs(c("foo", "bar", "baz"))
 generate_pairs <- function(x) {
+
+  if (!rlang::is_character(x)) {
+    cli::cli_abort(
+      "{.arg x} must be a character vector. You have supplied \\
+      {.obj_type_friendly {x}}."
+    )
+  }
+
+  if (length(x) < 2) {
+    cli::cli_abort(
+      "{.arg x} must contain at least 2 column names. It contains {length(x)}."
+    )
+  }
+
   output <- tibble::tibble(x = x) |>
     dplyr::mutate(
       x_lead = dplyr::lead(x)
