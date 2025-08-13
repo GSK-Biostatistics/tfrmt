@@ -7,7 +7,7 @@
 #'  `"bigN"`
 #'  * `process_categorical_vars()`: once we have bigN, it renames some of the
 #'  values in the categorical variable columns
-#'  * `fill_pairwise()`: in a hierarchical stack fills NA in one column based on
+#'  * `prep_fill_pairwise()`: in a hierarchical stack fills NA in one column based on
 #'  the presence of data in another column
 #'
 #' @inheritParams tfrmt
@@ -81,7 +81,7 @@ prep_card <- function(x,
     prep_unite_vars(vars = vars_to_unite) |>
     prep_big_n(vars = column) |>
     prep_label() |>
-    fill_pairwise(
+    prep_fill_pairwise(
       vars = ard_args$variables %||% variables,
       fill_hierarchical_overall = fill_hierarchical_overall,
       fill_from = fill_from
@@ -102,7 +102,7 @@ has_args <- function(x) {
 
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
-fill_pairwise <- function(x,
+prep_fill_pairwise <- function(x,
                           vars,
                           fill_hierarchical_overall = "auto",
                           fill_from = NULL) {
@@ -137,7 +137,7 @@ fill_pairwise <- function(x,
   output
 }
 
-# fill_pairwise does pairwise conditional replacement of NAs. generate_pairs
+# prep_fill_pairwise does pairwise conditional replacement of NAs. generate_pairs
 # builds those pairs
 generate_pairs <- function(x) {
   output <- tibble::tibble(x = x) |>
@@ -151,7 +151,7 @@ generate_pairs <- function(x) {
 }
 
 # replace missing values in one variable if a another variable is not NA
-# this is the function used by fill_pairwise to iterate over the pairs of
+# this is the function used by prep_fill_pairwise to iterate over the pairs of
 # columns
 replace_na_pairwise <- function(x,
                                 pair,

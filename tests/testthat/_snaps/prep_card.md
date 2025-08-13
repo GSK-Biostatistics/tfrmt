@@ -318,19 +318,19 @@
       </table>
       </div>
 
-# fill_pairwise() complains with `fill_from` other than 'left'
+# prep_fill_pairwise() complains with `fill_from` other than 'left'
 
     Code
-      fill_pairwise(df, vars = c("x", "y", "z"), fill_from = "foo")
+      prep_fill_pairwise(df, vars = c("x", "y", "z"), fill_from = "foo")
     Condition
       Error in `replace_na_pairwise()`:
       ! `fill_from` must either be `NULL` or `"left"`
 
-# fill_pairwise() errors with `fill_hierarchical_overall` non-char
+# prep_fill_pairwise() errors with `fill_hierarchical_overall` non-char
 
     Code
-      fill_pairwise(df, vars = c("x", "y", "z"), fill_hierarchical_overall = 2)
+      prep_fill_pairwise(df, vars = c("x", "y", "z"), fill_hierarchical_overall = 2)
     Condition
-      Error in `fill_pairwise()`:
+      Error in `prep_fill_pairwise()`:
       ! `fill_hierarchical_overall` must be a character.
 

@@ -472,7 +472,7 @@ test_that("prep_card() prep_unite_vars does not over-unite", {
   )
 })
 
-test_that("fill_pairwise() fills pairwise conditionally", {
+test_that("prep_fill_pairwise() fills pairwise conditionally", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -481,7 +481,7 @@ test_that("fill_pairwise() fills pairwise conditionally", {
 
   # z is not filled - still 3 NAs
   expect_identical(
-    fill_pairwise(df, vars = c("x", "y")),
+    prep_fill_pairwise(df, vars = c("x", "y")),
     tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
@@ -491,12 +491,12 @@ test_that("fill_pairwise() fills pairwise conditionally", {
 
   # when passing a single variable, the input is returned unchanged
   expect_identical(
-    fill_pairwise(df, vars = c("x")),
+    prep_fill_pairwise(df, vars = c("x")),
     df
   )
 
   expect_identical(
-    fill_pairwise(df, vars = c("x", "y", "z")),
+    prep_fill_pairwise(df, vars = c("x", "y", "z")),
     tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
@@ -505,7 +505,7 @@ test_that("fill_pairwise() fills pairwise conditionally", {
   )
 })
 
-test_that("fill_pairwise() with `fill_hierarchical_overall`", {
+test_that("prep_fill_pairwise() with `fill_hierarchical_overall`", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -514,7 +514,7 @@ test_that("fill_pairwise() with `fill_hierarchical_overall`", {
 
   # the second value of y is replaced with "2
   expect_identical(
-    fill_pairwise(
+    prep_fill_pairwise(
       df,
       vars = c("x", "y"),
       fill_hierarchical_overall = "foo"
@@ -527,7 +527,7 @@ test_that("fill_pairwise() with `fill_hierarchical_overall`", {
   )
 
   expect_identical(
-    fill_pairwise(
+    prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
       fill_hierarchical_overall = "bar"
@@ -540,7 +540,7 @@ test_that("fill_pairwise() with `fill_hierarchical_overall`", {
   )
 })
 
-test_that("fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'", {
+test_that("prep_fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -548,7 +548,7 @@ test_that("fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'", {
   )
 
   expect_identical(
-    fill_pairwise(
+    prep_fill_pairwise(
       df,
       vars = c("x", "y"),
       fill_hierarchical_overall = "Any {colname}"
@@ -561,7 +561,7 @@ test_that("fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'", {
   )
 
   expect_identical(
-    fill_pairwise(
+    prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
       fill_hierarchical_overall = "Any {colname}"
@@ -574,7 +574,7 @@ test_that("fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'", {
   )
 })
 
-test_that("fill_pairwise() with `fill_from='left'` works", {
+test_that("prep_fill_pairwise() with `fill_from='left'` works", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -582,7 +582,7 @@ test_that("fill_pairwise() with `fill_from='left'` works", {
   )
 
   expect_identical(
-    fill_pairwise(df, vars = c("x", "y"), fill_from = "left"),
+    prep_fill_pairwise(df, vars = c("x", "y"), fill_from = "left"),
     tibble(
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
@@ -591,7 +591,7 @@ test_that("fill_pairwise() with `fill_from='left'` works", {
   )
 
   expect_identical(
-    fill_pairwise(df, vars = c("x", "y", "z"), fill_from = "left"),
+    prep_fill_pairwise(df, vars = c("x", "y", "z"), fill_from = "left"),
     tibble(
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
@@ -600,7 +600,7 @@ test_that("fill_pairwise() with `fill_from='left'` works", {
   )
 })
 
-test_that("fill_pairwise() complains with `fill_from` other than 'left'", {
+test_that("prep_fill_pairwise() complains with `fill_from` other than 'left'", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -609,7 +609,7 @@ test_that("fill_pairwise() complains with `fill_from` other than 'left'", {
 
   expect_snapshot(
     error = TRUE,
-    fill_pairwise(
+    prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
       fill_from = "foo"
@@ -617,7 +617,7 @@ test_that("fill_pairwise() complains with `fill_from` other than 'left'", {
   )
 })
 
-test_that("fill_pairwise() errors with `fill_hierarchical_overall` non-char", {
+test_that("prep_fill_pairwise() errors with `fill_hierarchical_overall` non-char", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -626,7 +626,7 @@ test_that("fill_pairwise() errors with `fill_hierarchical_overall` non-char", {
 
   expect_snapshot(
     error = TRUE,
-    fill_pairwise(
+    prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
       fill_hierarchical_overall = 2
