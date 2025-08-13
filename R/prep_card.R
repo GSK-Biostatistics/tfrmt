@@ -189,6 +189,22 @@ replace_na_pairwise <- function(x,
 
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
+
+#' Prepare `bigN` stat variables
+#'
+#' `prep_big_n()` does 2 things:
+#'   * it recodes the `"n"` `stat_name` into `bigN` for the desired variables,
+#'   and
+#'   * it drops all other `stat_names` for the same variables.
+#'
+#' @param x
+#' @param vars (character) a vector of variables to prepare `bigN` for.
+#'
+#' @returns a data.frame with the same columns as the input. The `stat_name`
+#'   column is modified.
+#' @export
+#'
+#' @examples
 prep_big_n <- function(x, vars) {
   output <- x |>
     dplyr::mutate(

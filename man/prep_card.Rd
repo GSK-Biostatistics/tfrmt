@@ -10,7 +10,7 @@ prep_card(
   group = NULL,
   variables = NULL,
   fill_overall = "Overall {colname}",
-  fill_hierarchical_overall = "Any {colname}",
+  fill = "Any {colname}",
   fill_from = NULL
 )
 }
@@ -29,13 +29,6 @@ colname element is available to inject into the string,
 e.g. \verb{Overall \{colname\}} may resolve to \code{"Overall AGE"} for an \code{AGE}
 column. Default is \verb{Overall \{colname\}}. If \code{NA} then no fill will occur.}
 
-\item{fill_hierarchical_overall}{scalar to fill variable levels for overall
-hierarchical calculations. If a character is passed, then it is processed
-with \code{\link[glue:glue]{glue::glue()}} where the colname element is available to inject into
-the string, e.g. \verb{Any \{colname\}} may resolve to \code{"Any AESOC"} for an
-\code{AESOC} column. Default is \verb{Any \{colname\}}. If \code{NA} then no fill will
-occur.}
-
 \item{fill_from}{(character) Indicates when doing pair-wise filling whether
 to fill from the column to the left. Defaults to \code{NULL}. Can be either \code{NULL}
 or \code{"left"}.}
@@ -52,7 +45,7 @@ column, called \code{variable_level} (where applicable).
 \code{"bigN"}
 \item \code{process_categorical_vars()}: once we have bigN, it renames some of the
 values in the categorical variable columns
-\item \code{fill_pairwise()}: in a hierarchical stack fills NA in one column based on
+\item \code{prep_fill_pairwise()}: in a hierarchical stack fills NA in one column based on
 the presence of data in another column
 }
 }
