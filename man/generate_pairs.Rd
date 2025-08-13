@@ -4,10 +4,10 @@
 \alias{generate_pairs}
 \title{Generate pairs for pairwise filling}
 \usage{
-generate_pairs(x)
+generate_pairs(x, call = rlang::caller_env())
 }
 \arguments{
-\item{x}{(data.frame) a shuffled card}
+\item{x}{(character) a vector of 2 or more column names}
 }
 \value{
 a list of length 2 character vectors (pairs of column names)

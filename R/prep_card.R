@@ -291,13 +291,14 @@ prep_fill_pairwise <- function(x,
 #' `generate_pairs()` builds those pairs.
 #'
 #' @param x (character) a vector of 2 or more column names
+#' @inheritParams cli::cli_abort()
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)
 #' @keywords internal
 #'
 #' @examples
 #'  tfrmt:::generate_pairs(c("foo", "bar", "baz"))
-generate_pairs <- function(x) {
+generate_pairs <- function(x, call = rlang::caller_env()) {
 
   if (!rlang::is_character(x)) {
     cli::cli_abort(
@@ -308,7 +309,8 @@ generate_pairs <- function(x) {
 
   if (length(x) < 2) {
     cli::cli_abort(
-      "{.arg x} must contain at least 2 column names. It contains {length(x)}."
+      "{.arg x} must contain at least 2 column names. It contains {length(x)}.",
+      call = call
     )
   }
 
