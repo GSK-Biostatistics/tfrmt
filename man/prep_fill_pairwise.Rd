@@ -14,7 +14,12 @@ prep_fill_pairwise(x, vars, fill = "Any {colname}", fill_from = NULL)
 \item{fill}{(character) value to replace with. Defaults to \code{"Any {colname}"},
 in which case \code{colname} will be replaced with the name of the column.}
 
-\item{fill_from}{}
+\item{fill_from}{(character) indicating whether to fill from the left column
+of the pair.}
+}
+\value{
+a data.frame with the same columns as the input, but in which some
+the desired columns have been filled pairwise.
 }
 \description{
 Replace \code{NA} values in one column conditional on the same row having a
@@ -25,4 +30,36 @@ The user supplies a vector of columns from which the pairs will be extracted
 with a rolling window. For example \code{vars <- c("A", "B", "C")} will generate
 2 pairs \verb{("A", "B")} and \verb{("B", "C")}. Therefore the order of the variables
 matters.
+
+In each pair the second column \code{B} will be filled if \code{A} is not missing. One
+can choose the value to fill with:
+\itemize{
+\item \code{"Any {colname}"}, in this case evaluating to \code{"Any B"} is the default.
+\item Any other value. For example \code{"Any event"} for an adverse effects table.
+\item the value of pair's first column. In this case, the value of \code{A}.
+}
+}
+\examples{
+df <- data.frame(
+  x = c(1, 2, NA),
+  y = c("a", NA, "b"),
+  z = rep(NA, 3)
+)
+
+prep_fill_pairwise(
+  df,
+  vars = c("x", "y")
+)
+
+prep_fill_pairwise(
+  df,
+  vars = c("x", "y"),
+  fill = "foo"
+)
+
+#' prep_fill_pairwise(
+  df,
+  vars = c("x", "y", "z"),
+  fill_from = "left"
+)
 }

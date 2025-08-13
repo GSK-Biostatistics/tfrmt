@@ -19,3 +19,12 @@ Adds a \code{label} column which is a combination of \code{stat_label} (for cont
 variables) and \code{variable_level} (for categorical ones) if these 2 columns are
 present in the input data frame.
 }
+\examples{
+df <- data.frame(
+  variable_level = c("d", "e", "f"),
+  stat_label = c("a", "b", "c"),
+  context = c("categorical", "continuous", "hierarchical")
+)
+
+prep_label(df)
+}
