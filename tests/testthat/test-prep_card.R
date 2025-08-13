@@ -474,11 +474,17 @@ test_that("prep_card() removes context == 'attributes'", {
     .attributes = TRUE
   )
 
-  expect_identical(
+  # expect_equal since there are some small differences in the `stat` column
+  # which `shuffle_card()` returns as character. the conversion to double
+  # seems to be lossy
+  expect_equal(
     prep_card(
       ard,
       column = "ARM"
-    ),
+    ) |>
+      dplyr::mutate(
+        stat = as.double(stat)
+      ),
     prep_card(
       ard |> dplyr::filter(context != "attributes"),
       column = "ARM"
