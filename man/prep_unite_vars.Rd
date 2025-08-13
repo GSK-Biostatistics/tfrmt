@@ -19,7 +19,7 @@ a data.frame with an additional column, called \code{variable_level} or
 the input unchanged.
 }
 \description{
-A wrapper around \code{tidyr::unite()} which only pastes several columns into one.
+A wrapper around \code{tidyr::unite()} which pastes several columns into one.
 In addition it checks the output is identical to \code{dplyr::coalesce()}. If not
 the input is returned unchanged. Useful for uniting sparsely populated
 columns, for example when processing a \code{shuffled_card} created with
