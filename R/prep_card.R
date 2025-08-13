@@ -3,10 +3,10 @@
 #' What does the preparation function do?
 #'  * `prep_unite_vars()`: brings all categorical variables levels into a single
 #'  column, called `variable_level` (where applicable).
-#'  * `prep_big_n()()` identifies the bigN columns and changes `stat_name` to
-#'  `"bigN"`
-#'  * `process_categorical_vars()`: once we have bigN, it renames some of the
-#'  values in the categorical variable columns
+#'  * `prep_big_n()`: recodes the `"n"` `stat_name` into `"bigN"` for the
+#'  desired columns.
+#'  * `prep_label()`: creates a `label` column from `variable_level` for
+#'  categorical variables and `stat_label` for all other variable types.
 #'  * `prep_fill_pairwise()`: in a hierarchical stack fills NA in one column based on
 #'  the presence of data in another column
 #'
@@ -90,15 +90,6 @@ prep_card <- function(x,
   output
 }
 
-# does the shuffled card have the `args` attribute - allows us to extract some
-# of the arguments of the original ard call
-has_args <- function(x) {
-  args <- attr(x, "args")
-
-  output <- !rlang::is_empty(args)
-
-  output
-}
 
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
@@ -187,42 +178,7 @@ replace_na_pairwise <- function(x,
   output
 }
 
-#' Prepare `bigN` stat variables
-#'
-#' `prep_big_n()` does 2 things:
-#'   * it recodes the `"n"` `stat_name` into `bigN` for the desired variables,
-#'   and
-#'   * it drops all other `stat_names` for the same variables.
-#'
-#' If your `tfrmt` contains a [big_n_structure()] you pass the tfrmt `column` to
-#' `prep_big_n()` via `vars`.
-#'
-#' @param x (data.frame)
-#' @param vars (character) a vector of variables to prepare `bigN` for.
-#'
-#' @returns a data.frame with the same columns as the input. The `stat_name`
-#'   column is modified.
-#' @export
-#'
-#' @examples
-prep_big_n <- function(x, vars) {
-  output <- x |>
-    dplyr::mutate(
-      stat_name = dplyr::case_when(
-        .data$context == "total_n" ~ "bigN",
-        # we only want to keep the subgroup totals, which get recoded to bigN
-        .data$stat_variable %in% vars & .data$stat_name == "n" ~ "bigN",
-        # we only want the bigN for overall -> we remove "out"
-        .data$stat_variable %in% vars & .data$stat_name != "n" ~ "out",
-        TRUE ~ .data$stat_name
-      )
-    ) |>
-    dplyr::filter(
-      .data$stat_name != "out"
-    )
 
-  output
-}
 
 #' Unite variables
 #'
@@ -291,7 +247,42 @@ prep_unite_vars <- function(x, vars, remove = TRUE) {
   output
 }
 
+#' Prepare `bigN` stat variables
+#'
+#' `prep_big_n()` does 2 things:
+#'   * it recodes the `"n"` `stat_name` into `bigN` for the desired variables,
+#'   and
+#'   * it drops all other `stat_names` for the same variables.
+#'
+#' If your `tfrmt` contains a [big_n_structure()] you pass the tfrmt `column` to
+#' `prep_big_n()` via `vars`.
+#'
+#' @param x (data.frame)
+#' @param vars (character) a vector of variables to prepare `bigN` for.
+#'
+#' @returns a data.frame with the same columns as the input. The `stat_name`
+#'   column is modified.
+#' @export
+#'
+#' @examples
+prep_big_n <- function(x, vars) {
+  output <- x |>
+    dplyr::mutate(
+      stat_name = dplyr::case_when(
+        .data$context == "total_n" ~ "bigN",
+        # we only want to keep the subgroup totals, which get recoded to bigN
+        .data$stat_variable %in% vars & .data$stat_name == "n" ~ "bigN",
+        # we only want the bigN for overall -> we remove "out"
+        .data$stat_variable %in% vars & .data$stat_name != "n" ~ "out",
+        TRUE ~ .data$stat_name
+      )
+    ) |>
+    dplyr::filter(
+      .data$stat_name != "out"
+    )
 
+  output
+}
 
 # mostly for compatibility with the current approach
 # it derives and fills a new column, called label (most problematic for
