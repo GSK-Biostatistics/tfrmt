@@ -398,7 +398,7 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
 #' @keywords internal
 #'
 #' @examples
-#' replace_na_pairwise(
+#' tfrmt:::replace_na_pairwise(
 #'   data.frame(
 #'   x = c(1, 2, NA),
 #'   y = c("a", NA, "b"),

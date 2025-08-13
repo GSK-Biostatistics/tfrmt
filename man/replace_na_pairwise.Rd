@@ -47,7 +47,7 @@ This is the function used by \code{\link[=prep_fill_pairwise]{prep_fill_pairwise
 of columns.
 }
 \examples{
-replace_na_pairwise(
+tfrmt:::replace_na_pairwise(
   data.frame(
   x = c(1, 2, NA),
   y = c("a", NA, "b"),
