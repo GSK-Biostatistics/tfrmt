@@ -532,7 +532,7 @@ test_that("prep_unite_vars() works", {
   )
 })
 
-test_that("prep_unite_vars() return the input unchanged when context hierarchical", {
+test_that("prep_unite_vars() returns the input when context hierarchical", {
 
   df <- tibble::tibble(
     a = 1:6,
@@ -649,7 +649,12 @@ test_that("prep_big_n() works", {
     ),
     tibble::tibble(
       stat_name = c("n", "max", "min", rep("bigN", 3)),
-      context = c(rep("continuous", 3), "hierarchical", "categorical", "total_n"),
+      context = c(
+        rep("continuous", 3),
+        "hierarchical",
+        "categorical",
+        "total_n"
+      ),
       stat_variable = c(rep("a", 3), "b", "c", "d")
     )
   )
@@ -691,7 +696,8 @@ test_that("prep_label() works", {
   )
 })
 
-test_that("prep_label() returns the input when the required labels are missing", {
+test_that("prep_label() returns the input when the required cols are missing", {
+  # `variable_level` col is not present
   df <- tibble::tibble(
     x = c("d", "e", "f"),
     stat_label = c("a", "b", "c"),
@@ -703,6 +709,7 @@ test_that("prep_label() returns the input when the required labels are missing",
     df
   )
 
+  # `stat_label` col is not present
   df2 <- tibble::tibble(
     variable_level = c("d", "e", "f"),
     y = c("a", "b", "c"),
@@ -1050,12 +1057,3 @@ test_that("is_card_with_attributes() works", {
 
   expect_false(is_card_with_attributes(df2))
 })
-
-# TODO add unit tests for
-# x |>
-# shuffle_card() |>
-# prep_big_n(var = "ARM") |>
-# prep_unite_vars(var = c("AGE","AGEGR1","SEX","RACE")) |>
-# prep_label() #variable_level (categorical) / stat_label (continuous) combination
-#
-# vs x |> prep_card()

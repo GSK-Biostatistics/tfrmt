@@ -35,7 +35,7 @@ prep_card <- function(x,
 
   # TODO check the error is propagated from the right caller env
 
-  if (!is.null(column) & !is.character(column)) {
+  if (!is.null(column) && !is.character(column)) {
     cli::cli_abort(
       "{.arg column} must be a character vector."
     )
