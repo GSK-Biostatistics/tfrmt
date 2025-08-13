@@ -1,5 +1,5 @@
 test_that("prep_card() works with demographic data", {
-  skip("interim")
+
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
@@ -236,7 +236,7 @@ test_that("prep_card() works with demographic data", {
 })
 
 test_that("prep_card() works with adverse effects data", {
-  skip("interim")
+
   # data prep -------------------------------------------------------------
   # Filter to include only subjects marked as part of the safety population
   adsl <- pharmaverseadam::adsl |>
@@ -385,7 +385,7 @@ test_that("prep_card() works with adverse effects data", {
 })
 
 test_that("prep_card() with and w/out shuffle_card() outputs identical", {
-  skip("interim")
+
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
@@ -556,7 +556,7 @@ test_that("prep_unite_vars() does not over unite", {
 })
 
 test_that("prep_card() prep_unite_vars does not over-unite", {
-  skip("interim")
+
   # we only want to unite when it effectively has the same impact as coalesce
   a <- cards::ard_strata(
     cards::ADSL,
