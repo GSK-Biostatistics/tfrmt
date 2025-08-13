@@ -197,7 +197,10 @@ replace_na_pairwise <- function(x,
 #'   and
 #'   * it drops all other `stat_names` for the same variables.
 #'
-#' @param x
+#' If your `tfrmt` contains a [big_n_structure()] you pass the tfrmt `column` to
+#' `prep_big_n()` via `vars`.
+#'
+#' @param x (data.frame)
 #' @param vars (character) a vector of variables to prepare `bigN` for.
 #'
 #' @returns a data.frame with the same columns as the input. The `stat_name`

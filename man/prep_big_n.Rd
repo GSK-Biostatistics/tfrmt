@@ -7,6 +7,8 @@
 prep_big_n(x, vars)
 }
 \arguments{
+\item{x}{(data.frame)}
+
 \item{vars}{(character) a vector of variables to prepare \code{bigN} for.}
 }
 \value{
@@ -20,4 +22,8 @@ column is modified.
 and
 \item it drops all other \code{stat_names} for the same variables.
 }
+}
+\details{
+If your \code{tfrmt} contains a \code{\link[=big_n_structure]{big_n_structure()}} you pass the tfrmt \code{column} to
+\code{prep_big_n()} via \code{vars}.
 }
