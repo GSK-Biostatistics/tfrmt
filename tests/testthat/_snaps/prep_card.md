@@ -318,6 +318,14 @@
       </table>
       </div>
 
+# prep_card() fails when column is not character
+
+    Code
+      prep_card(ard, column = 2)
+    Condition
+      Error in `prep_card()`:
+      ! `column` must be a character vector.
+
 # prep_unite_vars() works
 
     Code
