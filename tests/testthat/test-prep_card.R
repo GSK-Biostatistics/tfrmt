@@ -476,6 +476,10 @@ test_that("prep_card() prep_unite_vars does not over-unite", {
   )
 })
 
+test_that("prep_unite_vars() works", {
+
+})
+
 test_that("prep_big_n() works", {
   df <- tibble::tibble(
     stat_name = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
@@ -506,6 +510,13 @@ test_that("prep_big_n() works", {
     prep_big_n(
       df,
       vars = c("b", "c")
+    )
+  )
+
+  expect_snapshot(
+    prep_big_n(
+      df,
+      vars = "b"
     )
   )
 })
