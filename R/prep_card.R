@@ -230,9 +230,29 @@ prep_label <- function(x) {
 
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
+#' Replace `NA` in pairs
+#'
+#' Replace `NA` values in one column conditional on the same row having a
+#' non-NA value in a different column.
+#'
+#' The user supplies a vector of columns from which the pairs will be extracted
+#' with a rolling window. For example `vars <- c("A", "B", "C")` will generate
+#' 2 pairs `("A", "B")` and `("B", "C")`. Therefore the order of the variables
+#' matters.
+#'
+#' @param x (data.frame) a shuffled card.
+#' @param vars (characters) a vector of variables to generate pairs from.
+#' @param fill (character) value to replace with. Defaults to `"Any {colname}"`,
+#'   in which case `colname` will be replaced with the name of the column.
+#' @param fill_from
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 prep_fill_pairwise <- function(x,
                                vars,
-                               fill = "auto",
+                               fill = "Any {colname}",
                                fill_from = NULL) {
 
   if (!rlang::is_character(fill)) {
@@ -245,9 +265,9 @@ prep_fill_pairwise <- function(x,
     return(x)
   }
 
-  if (fill == "Any {colname}") {
-    fill <- "auto"
-  }
+  # if (fill == "Any {colname}") {
+  #   fill <- "auto"
+  # }
 
   pair_list <- generate_pairs(vars)
 
@@ -285,7 +305,7 @@ generate_pairs <- function(x) {
 # columns
 replace_na_pairwise <- function(x,
                                 pair,
-                                fill = "auto",
+                                fill = "Any {colname}",
                                 fill_from = NULL) {
 
   if (!is.null(fill_from) && fill_from != "left") {
@@ -296,7 +316,7 @@ replace_na_pairwise <- function(x,
 
   variables_syms <- rlang::syms(pair)
 
-  if (fill == "auto") {
+  if (fill == "Any {colname}") {
     fill <- glue::glue("Any {variables_syms[[2]]}") |>
       as.character()
   }
