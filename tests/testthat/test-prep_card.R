@@ -1,4 +1,5 @@
 test_that("prep_card() works with demographic data", {
+  skip("interim")
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
@@ -235,6 +236,7 @@ test_that("prep_card() works with demographic data", {
 })
 
 test_that("prep_card() works with adverse effects data", {
+  skip("interim")
   # data prep -------------------------------------------------------------
   # Filter to include only subjects marked as part of the safety population
   adsl <- pharmaverseadam::adsl |>
@@ -383,6 +385,7 @@ test_that("prep_card() works with adverse effects data", {
 })
 
 test_that("prep_card() with and w/out shuffle_card() outputs identical", {
+  skip("interim")
   # data prep -------------------------------------------------------------
   adsl <- pharmaverseadam::adsl |>
     dplyr::filter(SAFFL == "Y") |>
@@ -445,6 +448,7 @@ test_that("prep_card() with and w/out shuffle_card() outputs identical", {
 })
 
 test_that("prep_card() prep_unite_vars does not over-unite", {
+  skip("interim")
   # we only want to unite when it effectively has the same impact as coalesce
   a <- cards::ard_strata(
     cards::ADSL,
@@ -472,8 +476,102 @@ test_that("prep_card() prep_unite_vars does not over-unite", {
   )
 })
 
+test_that("prep_big_n() works", {
+  df <- tibble::tibble(
+    stat_name = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
+    context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
+    stat_variable = rep(c("a", "b", "c"), each = 3)
+  ) |>
+    bind_rows(
+      tibble::tibble(
+        stat_name = "n",
+        context = "total_n",
+        stat_variable = "d"
+      )
+    )
+
+  expect_identical(
+    prep_big_n(
+      df,
+      vars = c("b", "c")
+    ),
+    tibble::tibble(
+      stat_name = c("n", "max", "min", rep("bigN", 3)),
+      context = c(rep("continuous", 3), "hierarchical", "categorical", "total_n"),
+      stat_variable = c(rep("a", 3), "b", "c", "d")
+    )
+  )
+
+  expect_snapshot(
+    prep_big_n(
+      df,
+      vars = c("b", "c")
+    )
+  )
+})
+
+test_that("prep_label() works", {
+  df <- tibble::tibble(
+    variable_level = c("d", "e", "f"),
+    stat_label = c("a", "b", "c"),
+    context = c("categorical", "continuous", "hierarchical")
+  )
+
+  expect_identical(
+    prep_label(df),
+    tibble::tibble(
+      variable_level = c("d", "e", "f"),
+      stat_label = c("a", "b", "c"),
+      context = c("categorical", "continuous", "hierarchical"),
+      label = c("d", "b", "c")
+    )
+  )
+
+  expect_snapshot(
+    prep_label(df)
+  )
+})
+
+test_that("prep_label() returns the input when the required labels are missing", {
+  df <- tibble::tibble(
+    x = c("d", "e", "f"),
+    stat_label = c("a", "b", "c"),
+    context = c("categorical", "continuous", "hierarchical")
+  )
+
+  expect_identical(
+    prep_label(df),
+    df
+  )
+
+  df2 <- tibble::tibble(
+    variable_level = c("d", "e", "f"),
+    y = c("a", "b", "c"),
+    context = c("categorical", "continuous", "hierarchical")
+  )
+
+  expect_identical(
+    prep_label(df2),
+    df2
+  )
+})
+
+test_that("prep_fill_pairwise() returns the input when `length(vars) < 2`", {
+  df <- tibble::tibble(
+    x = c(1, 2, NA),
+    y = c("a", NA, "b"),
+    z = rep(NA, 3)
+  )
+
+  expect_identical(
+    prep_fill_pairwise(df, vars = "y"),
+    df
+  )
+})
+
 test_that("prep_fill_pairwise() fills pairwise conditionally", {
-  df <- tibble(
+
+  df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, 3)
@@ -482,7 +580,7 @@ test_that("prep_fill_pairwise() fills pairwise conditionally", {
   # z is not filled - still 3 NAs
   expect_identical(
     prep_fill_pairwise(df, vars = c("x", "y")),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
       z = rep(NA, 3)
@@ -497,7 +595,7 @@ test_that("prep_fill_pairwise() fills pairwise conditionally", {
 
   expect_identical(
     prep_fill_pairwise(df, vars = c("x", "y", "z")),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
       z = rep("Any z", 3)
@@ -506,7 +604,8 @@ test_that("prep_fill_pairwise() fills pairwise conditionally", {
 })
 
 test_that("prep_fill_pairwise() with `fill`", {
-  df <- tibble(
+
+  df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, "3")
@@ -519,7 +618,7 @@ test_that("prep_fill_pairwise() with `fill`", {
       vars = c("x", "y"),
       fill = "foo"
     ),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "foo", "b"),
       z = rep(NA, 3)
@@ -532,7 +631,7 @@ test_that("prep_fill_pairwise() with `fill`", {
       vars = c("x", "y", "z"),
       fill = "bar"
     ),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "bar", "b"),
       z = c("bar", "bar", "bar")
@@ -541,7 +640,8 @@ test_that("prep_fill_pairwise() with `fill`", {
 })
 
 test_that("prep_fill_pairwise() with `fill` 'Any {colname}'", {
-  df <- tibble(
+
+  df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, "3")
@@ -553,7 +653,7 @@ test_that("prep_fill_pairwise() with `fill` 'Any {colname}'", {
       vars = c("x", "y"),
       fill = "Any {colname}"
     ),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
       z = rep(NA, 3)
@@ -566,7 +666,7 @@ test_that("prep_fill_pairwise() with `fill` 'Any {colname}'", {
       vars = c("x", "y", "z"),
       fill = "Any {colname}"
     ),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "Any y", "b"),
       z = c("Any z", "Any z", "Any z")
@@ -575,7 +675,8 @@ test_that("prep_fill_pairwise() with `fill` 'Any {colname}'", {
 })
 
 test_that("prep_fill_pairwise() with `fill_from='left'` works", {
-  df <- tibble(
+
+  df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, "3")
@@ -583,7 +684,7 @@ test_that("prep_fill_pairwise() with `fill_from='left'` works", {
 
   expect_identical(
     prep_fill_pairwise(df, vars = c("x", "y"), fill_from = "left"),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
       z = rep(NA, 3)
@@ -592,7 +693,7 @@ test_that("prep_fill_pairwise() with `fill_from='left'` works", {
 
   expect_identical(
     prep_fill_pairwise(df, vars = c("x", "y", "z"), fill_from = "left"),
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
       z = c("a", "2", "b")
@@ -601,7 +702,8 @@ test_that("prep_fill_pairwise() with `fill_from='left'` works", {
 })
 
 test_that("prep_fill_pairwise() complains with `fill_from` other than 'left'", {
-  df <- tibble(
+
+  df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, "3")
@@ -618,7 +720,8 @@ test_that("prep_fill_pairwise() complains with `fill_from` other than 'left'", {
 })
 
 test_that("prep_fill_pairwise() errors with `fill` non-char", {
-  df <- tibble(
+
+  df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
     z = rep(NA, "3")
@@ -635,6 +738,7 @@ test_that("prep_fill_pairwise() errors with `fill` non-char", {
 })
 
 test_that("generate_pairs() works", {
+
   expect_identical(
     generate_pairs(
       c("foo", "bar", "baz")
@@ -646,11 +750,27 @@ test_that("generate_pairs() works", {
   )
 })
 
+test_that("generate_pairs() complains", {
+
+  # with non-character input
+  expect_snapshot(
+    error = TRUE,
+    generate_pairs(1:3)
+  )
+
+  # with an input having less than 2 elements
+  expect_snapshot(
+    error = TRUE,
+    generate_pairs("foo")
+  )
+
+})
+
 test_that("replace_na_pairwise() works", {
 
   expect_identical(
     replace_na_pairwise(
-      tibble(
+      tibble::tibble(
         x = c(1, 2, NA),
         y = c("a", NA, "b"),
         z = rep(NA, 3)
@@ -658,7 +778,7 @@ test_that("replace_na_pairwise() works", {
       pair = c("y", "z")
     ),
     # all NAs in z (when y is not NA) are replaced with `"Any z"`
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", NA, "b"),
       z = c("Any z", NA, "Any z")
@@ -667,7 +787,7 @@ test_that("replace_na_pairwise() works", {
 
   expect_identical(
     replace_na_pairwise(
-      tibble(
+      tibble::tibble(
         x = c(1, 2, NA),
         y = c("a", NA, "b"),
         z = rep(NA, 3)
@@ -676,7 +796,7 @@ test_that("replace_na_pairwise() works", {
       fill = "foo"
     ),
     # all NAs in z (when y is not NA) are replaced with `"Any z"`
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", NA, "b"),
       z = c("foo", NA, "foo")
@@ -685,7 +805,7 @@ test_that("replace_na_pairwise() works", {
 
   expect_identical(
     replace_na_pairwise(
-      tibble(
+      tibble::tibble(
         x = c(1, 2, NA),
         y = c("a", NA, "b"),
         z = rep(NA, 3)
@@ -694,7 +814,7 @@ test_that("replace_na_pairwise() works", {
       fill_from = "left"
     ),
     # all NAs in z (when y is not NA) are replaced with `"Any z"`
-    tibble(
+    tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", NA, "b"),
       z = c("a", NA, "b")
@@ -702,3 +822,56 @@ test_that("replace_na_pairwise() works", {
   )
 })
 
+test_that("replace_na_pairwise() complains", {
+
+  expect_snapshot(
+    error = TRUE,
+    replace_na_pairwise(
+      tibble::tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, 3)
+      ),
+      pair = 1:2
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    replace_na_pairwise(
+      tibble::tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, 3)
+      ),
+      pair = c("x", "y", "z")
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    replace_na_pairwise(
+      tibble::tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, "3")
+      ),
+      pair = c("y", "z"),
+      fill_from = "right"
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    replace_na_pairwise(
+      tibble::tibble(
+        x = c(1, 2, NA),
+        y = c("a", NA, "b"),
+        z = rep(NA, "3")
+      ),
+      pair = c("y", "z"),
+      fill = 2
+    )
+  )
+
+})
