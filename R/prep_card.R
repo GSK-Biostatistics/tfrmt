@@ -28,7 +28,7 @@ prep_card <- function(x,
                       group = NULL,
                       variables = NULL,
                       fill_overall = "Overall {colname}",
-                      fill_hierarchical_overall = "Any {colname}",
+                      fill = "Any {colname}",
                       fill_from = NULL) {
 
   # TODO check the error is propagated from the right caller env
@@ -49,7 +49,7 @@ prep_card <- function(x,
       # TODO message about switching the value for `by`
       by = ard_args$by %||% c(column, group),
       fill_overall = fill_overall,
-      fill_hierarchical_overall = fill_hierarchical_overall
+      fill_hierarchical_overall = fill
     )
   }
 
@@ -83,7 +83,7 @@ prep_card <- function(x,
     prep_label() |>
     prep_fill_pairwise(
       vars = ard_args$variables %||% variables,
-      fill_hierarchical_overall = fill_hierarchical_overall,
+      fill = fill,
       fill_from = fill_from
     )
 
@@ -103,13 +103,13 @@ has_args <- function(x) {
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
 prep_fill_pairwise <- function(x,
-                          vars,
-                          fill_hierarchical_overall = "auto",
-                          fill_from = NULL) {
+                               vars,
+                               fill = "auto",
+                               fill_from = NULL) {
 
-  if (!rlang::is_character(fill_hierarchical_overall)) {
+  if (!rlang::is_character(fill)) {
     cli::cli_abort(
-      "{.arg fill_hierarchical_overall} must be a character."
+      "{.arg fill} must be a character."
     )
   }
 
@@ -117,8 +117,8 @@ prep_fill_pairwise <- function(x,
     return(x)
   }
 
-  if (fill_hierarchical_overall == "Any {colname}") {
-    fill_hierarchical_overall <- "auto"
+  if (fill == "Any {colname}") {
+    fill <- "auto"
   }
 
   pair_list <- generate_pairs(vars)
@@ -129,7 +129,7 @@ prep_fill_pairwise <- function(x,
     output <- replace_na_pairwise(
       output,
       pair = pair_list[[i]],
-      fill_hierarchical_overall = fill_hierarchical_overall,
+      fill = fill,
       fill_from = fill_from
     )
   }
@@ -155,7 +155,7 @@ generate_pairs <- function(x) {
 # columns
 replace_na_pairwise <- function(x,
                                 pair,
-                                fill_hierarchical_overall = "auto",
+                                fill = "auto",
                                 fill_from = NULL) {
 
   if (!is.null(fill_from) && fill_from != "left") {
@@ -166,20 +166,20 @@ replace_na_pairwise <- function(x,
 
   variables_syms <- rlang::syms(pair)
 
-  if (fill_hierarchical_overall == "auto") {
-    fill_hierarchical_overall <- glue::glue("Any {variables_syms[[2]]}") |>
+  if (fill == "auto") {
+    fill <- glue::glue("Any {variables_syms[[2]]}") |>
       as.character()
   }
 
   if (!is.null(fill_from) && fill_from == "left") {
-    fill_hierarchical_overall <- rlang::quo(as.character(!!variables_syms[[1]]))
+    fill <- rlang::quo(as.character(!!variables_syms[[1]]))
   }
 
   output <- x |>
     dplyr::mutate(
       !!variables_syms[[2]] := dplyr::if_else(
         is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-        !!fill_hierarchical_overall,
+        !!fill,
         !!variables_syms[[2]]
       )
     )

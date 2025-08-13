@@ -343,7 +343,7 @@ test_that("prep_card() works with adverse effects data", {
     prep_card(
       column = c("TRT01A", "AESEV"),
       fill_overall = NA,
-      fill_hierarchical_overall = "ANY EVENT"
+      fill = "ANY EVENT"
     ) |>
     dplyr::select(-context, -stat_variable, -stat_label) |>
     dplyr::relocate(stat_name, .after = stat)
@@ -371,7 +371,7 @@ test_that("prep_card() works with adverse effects data", {
       column = c("TRT01A", "AESEV"),
       variables = c("AEBODSYS", "AETERM"),
       fill_overall = NA,
-      fill_hierarchical_overall = "ANY EVENT"
+      fill = "ANY EVENT"
     ) |>
     dplyr::select(-context, -stat_variable, -stat_label) |>
     dplyr::relocate(stat_name, .after = stat)
@@ -505,7 +505,7 @@ test_that("prep_fill_pairwise() fills pairwise conditionally", {
   )
 })
 
-test_that("prep_fill_pairwise() with `fill_hierarchical_overall`", {
+test_that("prep_fill_pairwise() with `fill`", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -517,7 +517,7 @@ test_that("prep_fill_pairwise() with `fill_hierarchical_overall`", {
     prep_fill_pairwise(
       df,
       vars = c("x", "y"),
-      fill_hierarchical_overall = "foo"
+      fill = "foo"
     ),
     tibble(
       x = c(1, 2, NA),
@@ -530,7 +530,7 @@ test_that("prep_fill_pairwise() with `fill_hierarchical_overall`", {
     prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
-      fill_hierarchical_overall = "bar"
+      fill = "bar"
     ),
     tibble(
       x = c(1, 2, NA),
@@ -540,7 +540,7 @@ test_that("prep_fill_pairwise() with `fill_hierarchical_overall`", {
   )
 })
 
-test_that("prep_fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'", {
+test_that("prep_fill_pairwise() with `fill` 'Any {colname}'", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -551,7 +551,7 @@ test_that("prep_fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'
     prep_fill_pairwise(
       df,
       vars = c("x", "y"),
-      fill_hierarchical_overall = "Any {colname}"
+      fill = "Any {colname}"
     ),
     tibble(
       x = c(1, 2, NA),
@@ -564,7 +564,7 @@ test_that("prep_fill_pairwise() with `fill_hierarchical_overall` 'Any {colname}'
     prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
-      fill_hierarchical_overall = "Any {colname}"
+      fill = "Any {colname}"
     ),
     tibble(
       x = c(1, 2, NA),
@@ -617,7 +617,7 @@ test_that("prep_fill_pairwise() complains with `fill_from` other than 'left'", {
   )
 })
 
-test_that("prep_fill_pairwise() errors with `fill_hierarchical_overall` non-char", {
+test_that("prep_fill_pairwise() errors with `fill` non-char", {
   df <- tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -629,7 +629,7 @@ test_that("prep_fill_pairwise() errors with `fill_hierarchical_overall` non-char
     prep_fill_pairwise(
       df,
       vars = c("x", "y", "z"),
-      fill_hierarchical_overall = 2
+      fill = 2
     )
   )
 })
@@ -673,7 +673,7 @@ test_that("replace_na_pairwise() works", {
         z = rep(NA, 3)
       ),
       pair = c("y", "z"),
-      fill_hierarchical_overall = "foo"
+      fill = "foo"
     ),
     # all NAs in z (when y is not NA) are replaced with `"Any z"`
     tibble(
