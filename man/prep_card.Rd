@@ -41,10 +41,10 @@ What does the preparation function do?
 \itemize{
 \item \code{prep_unite_vars()}: brings all categorical variables levels into a single
 column, called \code{variable_level} (where applicable).
-\item \code{prep_big_n()()} identifies the bigN columns and changes \code{stat_name} to
-\code{"bigN"}
-\item \code{process_categorical_vars()}: once we have bigN, it renames some of the
-values in the categorical variable columns
+\item \code{prep_big_n()}: recodes the \code{"n"} \code{stat_name} into \code{"bigN"} for the
+desired columns.
+\item \code{prep_label()}: creates a \code{label} column from \code{variable_level} for
+categorical variables and \code{stat_label} for all other variable types.
 \item \code{prep_fill_pairwise()}: in a hierarchical stack fills NA in one column based on
 the presence of data in another column
 }

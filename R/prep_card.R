@@ -90,96 +90,6 @@ prep_card <- function(x,
   output
 }
 
-
-# replace_na with a given value (defaults to "Any <column-name>") or with values
-# from the column to the left when the preceding column is not NA
-prep_fill_pairwise <- function(x,
-                               vars,
-                               fill = "auto",
-                               fill_from = NULL) {
-
-  if (!rlang::is_character(fill)) {
-    cli::cli_abort(
-      "{.arg fill} must be a character."
-    )
-  }
-
-  if (length(vars) < 2) {
-    return(x)
-  }
-
-  if (fill == "Any {colname}") {
-    fill <- "auto"
-  }
-
-  pair_list <- generate_pairs(vars)
-
-  output <- x
-
-  for (i in seq_along(pair_list)) {
-    output <- replace_na_pairwise(
-      output,
-      pair = pair_list[[i]],
-      fill = fill,
-      fill_from = fill_from
-    )
-  }
-
-  output
-}
-
-# prep_fill_pairwise does pairwise conditional replacement of NAs. generate_pairs
-# builds those pairs
-generate_pairs <- function(x) {
-  output <- tibble::tibble(x = x) |>
-    dplyr::mutate(
-      x_lead = dplyr::lead(x)
-    ) |>
-    tidyr::drop_na() |>
-    purrr::pmap(c, use.names = FALSE)
-
-  output
-}
-
-# replace missing values in one variable if a another variable is not NA
-# this is the function used by prep_fill_pairwise to iterate over the pairs of
-# columns
-replace_na_pairwise <- function(x,
-                                pair,
-                                fill = "auto",
-                                fill_from = NULL) {
-
-  if (!is.null(fill_from) && fill_from != "left") {
-    cli::cli_abort(
-      '{.arg fill_from} must either be `NULL` or `"left"`'
-    )
-  }
-
-  variables_syms <- rlang::syms(pair)
-
-  if (fill == "auto") {
-    fill <- glue::glue("Any {variables_syms[[2]]}") |>
-      as.character()
-  }
-
-  if (!is.null(fill_from) && fill_from == "left") {
-    fill <- rlang::quo(as.character(!!variables_syms[[1]]))
-  }
-
-  output <- x |>
-    dplyr::mutate(
-      !!variables_syms[[2]] := dplyr::if_else(
-        is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-        !!fill,
-        !!variables_syms[[2]]
-      )
-    )
-
-  output
-}
-
-
-
 #' Unite variables
 #'
 #' A wrapper around `tidyr::unite()` which pastes several columns into one.
@@ -317,6 +227,94 @@ prep_label <- function(x) {
   output
 }
 
+# replace_na with a given value (defaults to "Any <column-name>") or with values
+# from the column to the left when the preceding column is not NA
+prep_fill_pairwise <- function(x,
+                               vars,
+                               fill = "auto",
+                               fill_from = NULL) {
+
+  if (!rlang::is_character(fill)) {
+    cli::cli_abort(
+      "{.arg fill} must be a character."
+    )
+  }
+
+  if (length(vars) < 2) {
+    return(x)
+  }
+
+  if (fill == "Any {colname}") {
+    fill <- "auto"
+  }
+
+  pair_list <- generate_pairs(vars)
+
+  output <- x
+
+  for (i in seq_along(pair_list)) {
+    output <- replace_na_pairwise(
+      output,
+      pair = pair_list[[i]],
+      fill = fill,
+      fill_from = fill_from
+    )
+  }
+
+  output
+}
+
+# prep_fill_pairwise does pairwise conditional replacement of NAs. generate_pairs
+# builds those pairs
+generate_pairs <- function(x) {
+  output <- tibble::tibble(x = x) |>
+    dplyr::mutate(
+      x_lead = dplyr::lead(x)
+    ) |>
+    tidyr::drop_na() |>
+    purrr::pmap(c, use.names = FALSE)
+
+  output
+}
+
+
+
+# replace missing values in one variable if a another variable is not NA
+# this is the function used by prep_fill_pairwise to iterate over the pairs of
+# columns
+replace_na_pairwise <- function(x,
+                                pair,
+                                fill = "auto",
+                                fill_from = NULL) {
+
+  if (!is.null(fill_from) && fill_from != "left") {
+    cli::cli_abort(
+      '{.arg fill_from} must either be `NULL` or `"left"`'
+    )
+  }
+
+  variables_syms <- rlang::syms(pair)
+
+  if (fill == "auto") {
+    fill <- glue::glue("Any {variables_syms[[2]]}") |>
+      as.character()
+  }
+
+  if (!is.null(fill_from) && fill_from == "left") {
+    fill <- rlang::quo(as.character(!!variables_syms[[1]]))
+  }
+
+  output <- x |>
+    dplyr::mutate(
+      !!variables_syms[[2]] := dplyr::if_else(
+        is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
+        !!fill,
+        !!variables_syms[[2]]
+      )
+    )
+
+  output
+}
 
 # does the shuffled card have attributes (was the card created with
 # `attributes = TRUE`)
