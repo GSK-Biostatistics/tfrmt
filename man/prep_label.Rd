@@ -15,6 +15,7 @@ a data.frame with a \code{label} column (if the input has the required
 columns) or the input unchanged.
 }
 \description{
-Adds a label column which is a combination of \code{stat_label} (for continuous
-variables) and \code{variable_level} (for categorical ones). The input data frame
+Adds a \code{label} column which is a combination of \code{stat_label} (for continuous
+variables) and \code{variable_level} (for categorical ones) if these 2 columns are
+present in the input data frame.
 }

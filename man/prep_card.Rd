@@ -46,7 +46,7 @@ a \code{data.frame}
 \description{
 What does the preparation function do?
 \itemize{
-\item \code{unite_data_vars()}: brings all categorical variables levels into a single
+\item \code{prep_unite_vars()}: brings all categorical variables levels into a single
 column, called \code{variable_level} (where applicable).
 \item \code{process_big_n()} identifies the bigN columns and changes \code{stat_name} to
 \code{"bigN"}
