@@ -57,7 +57,7 @@ prep_fill_pairwise(
   fill = "foo"
 )
 
-#' prep_fill_pairwise(
+prep_fill_pairwise(
   df,
   vars = c("x", "y", "z"),
   fill_from = "left"

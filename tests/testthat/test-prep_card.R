@@ -1005,3 +1005,12 @@ test_that("is_card_with_attributes() works", {
 
   expect_false(is_card_with_attributes(df2))
 })
+
+# TODO add unit tests for
+# x |>
+# shuffle_card() |>
+# prep_big_n(var = "ARM") |>
+# prep_unite_vars(var = c("AGE","AGEGR1","SEX","RACE")) |>
+# prep_label() #variable_level (categorical) / stat_label (continuous) combination
+#
+# vs x |> prep_card()
