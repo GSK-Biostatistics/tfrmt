@@ -38,7 +38,7 @@ prep_card <- function(x,
       "{.arg column} must be a character vector."
     )
   }
-
+# browser()
   ard_args <- attr(x, "args")
 
   shuffled_card <- x
@@ -70,7 +70,7 @@ prep_card <- function(x,
   output <- shuffled_card |>
     unite_data_vars(column) |>
     process_big_n(column) |>
-    process_categorical_vars(column) |>
+    prep_label() |>
     fill_pairwise(
       variables = ard_args$variables %||% variables,
       fill_hierarchical_overall = fill_hierarchical_overall,
@@ -180,7 +180,6 @@ replace_na_pair <- function(x,
 # `column` here is the same value as the `column` argument
 # from `tfrmt(..., column = , ...)`
 process_big_n <- function(x, column) {
-
   output <- x |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
@@ -201,7 +200,12 @@ process_big_n <- function(x, column) {
 
 # convenience wrapper around tidyr::unite to create variable_level from the
 # individual columns (where applicable)
+# TODO exclude both `by` and `group` and the function should take the variables
+# as input
+# TODO think about API as we could have a single naming convention for the variables argument
 unite_data_vars <- function(x, column) {
+
+  # browser()
 
   if ("hierarchical" %in% unique(x$context)) {
     return(x)
@@ -272,6 +276,11 @@ unite_data_vars <- function(x, column) {
 # mostly for compatibility with the current approach
 # it derives and fills a new column, called label (most problematic for
 # categorical variables)
+# TODO split:
+#   * creation of the labels (separate processing function)
+#   * removing duplicates (variable_level): questionable (maybe control with an arg)
+#   * post big N cleanup (recoding of some Ns into n) DON'T DO
+#   *
 process_categorical_vars <- function(x, column) {
 
   categorical_vars <- x |>
@@ -290,24 +299,26 @@ process_categorical_vars <- function(x, column) {
 
   output <- x |>
     dplyr::mutate(
-      label = .data$stat_label,
-      label = dplyr::if_else(
-        .data$stat_name == "N",
-        "n",
-        .data$label
-      )
+      label = .data$stat_label#,
+      # label = dplyr::if_else(
+      #   .data$stat_name == "N",
+      #   "n",
+      #   .data$label
+      # )
     ) |>
     dplyr::mutate(
-      variable_level = dplyr::if_else(
-        .data$stat_name == "N",
-        NA,
-        .data$variable_level
-      )
+      # variable_level = dplyr::if_else(
+      #   .data$stat_name == "N",
+      #   NA,
+      #   .data$variable_level
+      # )
     ) |>
     unique() |>
     dplyr::mutate(
       label = dplyr::if_else(
-        .data$context == "categorical" & .data$stat_name %in% c("n", "p"),
+        # TODO too specific (don't recode here)
+        .data$context == "categorical",
+        # & .data$stat_name %in% c("n", "p"),
         .data$variable_level,
         .data$label
       ),
@@ -323,6 +334,47 @@ process_categorical_vars <- function(x, column) {
 
   output
 }
+
+
+#' Prepare label
+#'
+#' Adds a label column which is a combination of `stat_label` (for continuous
+#' variables) and `variable_level` (for categorical ones). The input data frame
+#'
+#' @param x (data.frame) a data.frame downstream of `shuffle_card()`. Does not
+#'   necessarily need to be a `shuffled_card` object.
+#'
+#' @returns a data.frame with a `label` column (if the input has the required
+#'   columns) or the input unchanged.
+#' @export
+#'
+#' @examples
+prep_label <- function(x) {
+
+  if (!all(c("variable_level", "stat_label") %in% names(x))) {
+    cli::cli_alert_info(
+      "{.fn prep_label} requires both {.code stat_label} and \\
+      {.code variable_level} columns to be present in the input data.
+      They are not so the input will be returned unchanged."
+    )
+    return(x)
+  }
+
+  cli::cli_progress_step("Using {.fn prep_label}")
+
+  output <- x |>
+    dplyr::mutate(
+      label = .data$stat_label,
+      label = dplyr::if_else(
+        .data$context == "categorical",
+        .data$variable_level,
+        .data$label
+      )
+    )
+
+  output
+}
+
 
 # does the shuffled card have attributes (was the card created with
 # `attributes = TRUE`)

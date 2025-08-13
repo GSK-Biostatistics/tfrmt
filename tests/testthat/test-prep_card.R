@@ -170,6 +170,25 @@ test_that("prep_card() works with demographic data", {
   ard_tbl_with_prep <- ard |>
     prep_card(column = "ARM") |>
     dplyr::mutate(
+      label = dplyr::if_else(
+        .data$stat_name == "N",
+        "n",
+        .data$label
+      ),
+      variable_level = dplyr::if_else(
+        .data$stat_name == "N",
+        NA,
+        .data$variable_level
+      )
+    ) |>
+    unique() |>
+    dplyr::mutate(
+      # we need this for compatibility with the manual processing
+      label = dplyr::if_else(
+        .data$stat_name == "bigN" & .data$context == "categorical",
+        ARM,
+        .data$label
+      ),
       ord1 = forcats::fct_inorder(stat_variable) |>
         forcats::fct_relevel("SEX", after = 0) |>
         as.numeric(),
@@ -682,3 +701,4 @@ test_that("replace_na_pair() works", {
     )
   )
 })
+
