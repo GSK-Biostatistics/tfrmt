@@ -187,9 +187,6 @@ replace_na_pairwise <- function(x,
   output
 }
 
-# `column` here is the same value as the `column` argument
-# from `tfrmt(..., column = , ...)`
-
 #' Prepare `bigN` stat variables
 #'
 #' `prep_big_n()` does 2 things:
@@ -376,15 +373,8 @@ process_categorical_vars <- function(x, column) {
 prep_label <- function(x) {
 
   if (!all(c("variable_level", "stat_label") %in% names(x))) {
-    cli::cli_alert_info(
-      "{.fn prep_label} requires both {.code stat_label} and \\
-      {.code variable_level} columns to be present in the input data.
-      They are not so the input will be returned unchanged."
-    )
     return(x)
   }
-
-  cli::cli_progress_step("Using {.fn prep_label}")
 
   output <- x |>
     dplyr::mutate(
