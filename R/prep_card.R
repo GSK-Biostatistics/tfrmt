@@ -210,7 +210,7 @@ process_big_n <- function(x, column) {
 
 #' Unite variables
 #'
-#' A wrapper around `tidyr::unite()` which only pastes several columns into one.
+#' A wrapper around `tidyr::unite()` which pastes several columns into one.
 #' In addition it checks the output is identical to `dplyr::coalesce()`. If not
 #' the input is returned unchanged. Useful for uniting sparsely populated
 #' columns, for example when processing a `shuffled_card` created with
@@ -235,7 +235,7 @@ prep_unite_vars <- function(x, vars, remove = TRUE) {
     return(x)
   }
 
-  # we do not want to apply the logic for a single variable
+  # we do cannot unite a single variable
   if (length(vars) == 1) {
     return(x)
   }
@@ -260,15 +260,11 @@ prep_unite_vars <- function(x, vars, remove = TRUE) {
       )
     )
 
-  # we don't expect a difference between unite and coalesce
-  # if such a difference exists (e.g. for some ard_strata cases) then we should
-  # not attempt to unite as its not meaningful
   if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
     return(x)
   }
 
   output <- interim |>
-    # drop the individual data columns and var_level_coalesced
     dplyr::select(
       -"var_level_coalesced"
     ) |>
