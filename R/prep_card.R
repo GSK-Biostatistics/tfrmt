@@ -1,7 +1,7 @@
 #' Prepare card for tfrmt
 #'
 #' What does the preparation function do?
-#'  * `unite_data_vars()`: brings all categorical variables levels into a single
+#'  * `prep_unite_vars()`: brings all categorical variables levels into a single
 #'  column, called `variable_level` (where applicable).
 #'  * `process_big_n()` identifies the bigN columns and changes `stat_name` to
 #'  `"bigN"`
@@ -67,8 +67,18 @@ prep_card <- function(x,
       )
   }
 
+  ard_vars <- c(
+    "context",
+    "stat_variable",
+    "stat_name",
+    "stat_label",
+    "stat"
+  )
+
+  vars_to_unite <- setdiff(names(shuffled_card), c(ard_vars, column))
+
   output <- shuffled_card |>
-    unite_data_vars(column) |>
+    prep_unite_vars(vars = vars_to_unite) |>
     process_big_n(column) |>
     prep_label() |>
     fill_pairwise(
@@ -198,45 +208,49 @@ process_big_n <- function(x, column) {
   output
 }
 
-# convenience wrapper around tidyr::unite to create variable_level from the
-# individual columns (where applicable)
-# TODO exclude both `by` and `group` and the function should take the variables
-# as input
-# TODO think about API as we could have a single naming convention for the variables argument
-unite_data_vars <- function(x, column) {
-
-  # browser()
+#' Unite variables
+#'
+#' A wrapper around `tidyr::unite()` which only pastes several columns into one.
+#' In addition it checks the output is identical to `dplyr::coalesce()`. If not
+#' the input is returned unchanged. Useful for uniting sparsely populated
+#' columns, for example when processing a `shuffled_card` created with
+#' `card::ard_stack()`.
+#'
+#' If the data is the result of a hierarchical ard stack, the input is returned
+#' unchanged.
+#'
+#' @param x (data.frame) a shuffled card
+#' @param vars (character) a vector of variables to unite. If a single variable
+#'   is supplied, the input is returned unchanged.
+#' @inheritParams tidyr::unite
+#'
+#' @returns a data.frame with an additional column, called `variable_level` or
+#'   the input unchanged.
+#' @export
+#'
+#' @examples
+prep_unite_vars <- function(x, vars, remove = TRUE) {
 
   if ("hierarchical" %in% unique(x$context)) {
     return(x)
   }
 
-  ard_vars <- c(
-    "context",
-    "stat_variable",
-    "stat_name",
-    "stat_label",
-    "stat"
-  )
-
-  data_vars <- setdiff(names(x), c(ard_vars, column))
-
-  # no need to apply the logic for a single variable
-  if (length(data_vars) == 1) {
+  # we do not want to apply the logic for a single variable
+  if (length(vars) == 1) {
     return(x)
   }
 
   interim <- x |>
     mutate(
       var_level_coalesced = coalesce(
-        !!!rlang::syms(data_vars)
+        !!!rlang::syms(vars)
       )
     ) |>
     tidyr::unite(
       col = "var_level_untd",
-      tidyselect::all_of(data_vars),
+      tidyselect::all_of(vars),
       na.rm = TRUE,
-      remove = FALSE
+      remove = remove
     ) |>
     dplyr::mutate(
       var_level_untd = dplyr::if_else(
@@ -254,18 +268,12 @@ unite_data_vars <- function(x, column) {
   }
 
   output <- interim |>
-    # drop the individual data columns and reorder the remaining ones
+    # drop the individual data columns and var_level_coalesced
     dplyr::select(
-      -tidyselect::all_of(
-        data_vars
-      ),
       -"var_level_coalesced"
     ) |>
-    dplyr::select(
-      tidyselect::all_of(column),
-      "stat_variable",
+    dplyr::rename(
       "variable_level" = "var_level_untd",
-      tidyselect::everything()
     )
 
   output
@@ -338,8 +346,9 @@ process_categorical_vars <- function(x, column) {
 
 #' Prepare label
 #'
-#' Adds a label column which is a combination of `stat_label` (for continuous
-#' variables) and `variable_level` (for categorical ones). The input data frame
+#' Adds a `label` column which is a combination of `stat_label` (for continuous
+#' variables) and `variable_level` (for categorical ones) if these 2 columns are
+#' present in the input data frame.
 #'
 #' @param x (data.frame) a data.frame downstream of `shuffle_card()`. Does not
 #'   necessarily need to be a `shuffled_card` object.

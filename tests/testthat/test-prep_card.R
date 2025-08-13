@@ -444,7 +444,7 @@ test_that("prep_card() with and w/out shuffle_card() outputs identical", {
   )
 })
 
-test_that("prep_card() unite_data_vars does not over-unite", {
+test_that("prep_card() prep_unite_vars does not over-unite", {
   # we only want to unite when it effectively has the same impact as coalesce
   a <- cards::ard_strata(
     cards::ADSL,
