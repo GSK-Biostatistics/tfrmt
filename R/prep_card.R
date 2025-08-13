@@ -59,7 +59,7 @@ prep_card <- function(x,
   # symbols / unquoted strings
   # with tfrmt_find_args(..., env = environment(), parent_env = caller_env())
 
-  if (has_attributes(shuffled_card)) {
+  if (is_card_with_attributes(shuffled_card)) {
     shuffled_card <- shuffled_card |>
       # remove attributes for now
       # TODO add some logic to deal with them - useful for labelled columns
@@ -112,6 +112,21 @@ prep_card <- function(x,
 #' @export
 #'
 #' @examples
+#' df <- data.frame(
+#'   a = 1:6,
+#'   context = rep("categorical", 6),
+#'   b = c("a", rep(NA, 5)),
+#'   c = c(NA, "b", rep(NA, 4)),
+#'   d = c(NA, NA, "c", rep(NA, 3)),
+#'   e = c(NA, NA, NA, "d", rep(NA, 2)),
+#'   f = c(NA, NA, NA, NA, "e", NA),
+#'   g = c(rep(NA, 5), "f")
+#' )
+#'
+#' prep_unite_vars(
+#'   df,
+#'   vars = c("b", "c", "d", "e", "f", "g")
+#' )
 prep_unite_vars <- function(x, vars, remove = TRUE) {
 
   if ("hierarchical" %in% unique(x$context)) {
@@ -454,7 +469,7 @@ replace_na_pairwise <- function(x,
 # does the shuffled card have attributes (was the card created with
 # `attributes = TRUE`)
 # useful for ensuring column labels are persistent
-has_attributes <- function(x) {
+is_card_with_attributes <- function(x) {
   shuffled_card_attributes_df <- x |>
     dplyr::filter(
       .data$context == "attributes"

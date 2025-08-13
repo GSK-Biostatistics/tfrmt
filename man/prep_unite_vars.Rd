@@ -29,3 +29,20 @@ columns, for example when processing a \code{shuffled_card} created with
 If the data is the result of a hierarchical ard stack, the input is returned
 unchanged.
 }
+\examples{
+df <- data.frame(
+  a = 1:6,
+  context = rep("categorical", 6),
+  b = c("a", rep(NA, 5)),
+  c = c(NA, "b", rep(NA, 4)),
+  d = c(NA, NA, "c", rep(NA, 3)),
+  e = c(NA, NA, NA, "d", rep(NA, 2)),
+  f = c(NA, NA, NA, NA, "e", NA),
+  g = c(rep(NA, 5), "f")
+)
+
+prep_unite_vars(
+  df,
+  vars = c("b", "c", "d", "e", "f", "g")
+)
+}

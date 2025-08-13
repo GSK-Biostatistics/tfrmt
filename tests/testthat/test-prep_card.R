@@ -447,6 +447,114 @@ test_that("prep_card() with and w/out shuffle_card() outputs identical", {
   )
 })
 
+test_that("prep_unite_vars() works", {
+  df <- tibble::tibble(
+    a = 1:6,
+    context = rep("categorical", 6),
+    b = c("a", rep(NA, 5)),
+    c = c(NA, "b", rep(NA, 4)),
+    d = c(NA, NA, "c", rep(NA, 3)),
+    e = c(NA, NA, NA, "d", rep(NA, 2)),
+    f = c(NA, NA, NA, NA, "e", NA),
+    g = c(rep(NA, 5), "f")
+  )
+
+  expect_identical(
+    prep_unite_vars(
+      df,
+      vars = c("b", "c", "d", "e", "f", "g")
+    ),
+    tibble::tibble(
+      a = 1:6,
+      context = rep("categorical", 6),
+      variable_level = c("a", "b", "c", "d", "e", "f")
+    )
+  )
+
+  expect_snapshot(
+    prep_unite_vars(
+      df,
+      vars = c("b", "c", "d", "e", "f", "g")
+    )
+  )
+
+  expect_snapshot(
+    prep_unite_vars(
+      df,
+      vars = c("b", "c", "d", "e", "f"),
+      remove = FALSE
+    )
+  )
+})
+
+test_that("prep_unite_vars() return the input unchanged when context hierarchical", {
+
+  df <- tibble::tibble(
+    a = 1:6,
+    context = rep("hierarchical", 6),
+    b = c("a", rep(NA, 5)),
+    c = c(NA, "b", rep(NA, 4)),
+    d = c(NA, NA, "c", rep(NA, 3)),
+    e = c(NA, NA, NA, "d", rep(NA, 2)),
+    f = c(NA, NA, NA, NA, "e", NA),
+    g = c(rep(NA, 5), "f")
+  )
+
+  expect_identical(
+    prep_unite_vars(
+      df,
+      vars = c("b", "c", "d", "e", "f", "g")
+    ),
+    df
+  )
+})
+
+test_that("prep_unite_vars() return the input unchanged when length(vars)=1", {
+
+  df <- tibble::tibble(
+    a = 1:6,
+    context = rep("categorical", 6),
+    b = c("a", rep(NA, 5)),
+    c = c(NA, "b", rep(NA, 4)),
+    d = c(NA, NA, "c", rep(NA, 3)),
+    e = c(NA, NA, NA, "d", rep(NA, 2)),
+    f = c(NA, NA, NA, NA, "e", NA),
+    g = c(rep(NA, 5), "f")
+  )
+
+  expect_identical(
+    prep_unite_vars(
+      df,
+      vars = "b"
+    ),
+    df
+  )
+})
+
+test_that("prep_unite_vars() does not over unite", {
+
+  # c, d and e are identical, the are not pasted together in the output
+  # the input is returned unchanged
+  df <- tibble::tibble(
+    a = 1:6,
+    context = rep("categorical", 6),
+    b = c("a", rep(NA, 5)),
+    c = c(NA, "b", rep(NA, 4)),
+    d = c(NA, "b", rep(NA, 4)),
+    e = c(NA, "b", rep(NA, 4)),
+    f = c(NA, NA, NA, NA, "e", NA),
+    g = c(rep(NA, 5), "f")
+  )
+
+  expect_identical(
+    prep_unite_vars(
+      df,
+      vars = c("b", "c", "d", "e", "f", "g")
+    ),
+    df
+  )
+})
+
 test_that("prep_card() prep_unite_vars does not over-unite", {
   skip("interim")
   # we only want to unite when it effectively has the same impact as coalesce
@@ -468,16 +576,11 @@ test_that("prep_card() prep_unite_vars does not over-unite", {
     !"variable_level" %in% names(b)
   )
 
-  # b is actually identical to the shuffled_card
-  # # TODO think how we can figure this out and maybe return early
+  # nothing happens, b is actually identical to the shuffled_card
   expect_identical(
     shuffle_card(a),
     b
   )
-})
-
-test_that("prep_unite_vars() works", {
-
 })
 
 test_that("prep_big_n() works", {
@@ -885,4 +988,20 @@ test_that("replace_na_pairwise() complains", {
     )
   )
 
+})
+
+test_that("is_card_with_attributes() works", {
+  df <- tibble::tibble(
+    context = c("categorical", "attributes"),
+    a = 1:2
+  )
+
+  expect_true(is_card_with_attributes(df))
+
+  df2 <- tibble::tibble(
+    context = c("categorical", "continuous"),
+    a = 1:2
+  )
+
+  expect_false(is_card_with_attributes(df2))
 })
