@@ -24,6 +24,7 @@ BugReports: https://github.com/GSK-Biostatistics/tfrmt/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    cards (>= 0.6.1.9010),
     cli,
     dplyr,
     forcats,
@@ -40,7 +41,6 @@ Imports:
     tidyr,
     tidyselect
 Suggests:
-    cards (>= 0.6.1.9010),
     covr,
     ggfortify,
     knitr,
