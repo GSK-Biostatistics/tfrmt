@@ -7,7 +7,7 @@
 prep_unite_vars(x, vars, remove = TRUE)
 }
 \arguments{
-\item{x}{(data.frame) a shuffled card}
+\item{x}{(data.frame)}
 
 \item{vars}{(character) a vector of variables to unite. If a single variable
 is supplied, the input is returned unchanged.}

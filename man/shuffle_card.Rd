@@ -8,6 +8,7 @@ shuffle_card(
   x,
   by = NULL,
   trim = TRUE,
+  order_rows = TRUE,
   fill_overall = "Overall {colname}",
   fill_hierarchical_overall = "Any {colname}"
 )
@@ -21,6 +22,9 @@ will be used instead of \code{by}.}
 
 \item{trim}{logical representing whether or not to trim away \code{fmt_fun},
 \code{error}, and \code{warning} columns}
+
+\item{order_rows}{logical representing whether or not to apply
+\code{cards::tidy_ard_row_order()} to sort the rows}
 
 \item{fill_overall}{scalar to fill missing grouping or variable levels. If a
 character is passed, then it is processed with \code{\link[glue:glue]{glue::glue()}} where the
@@ -43,4 +47,13 @@ a tibble
 
 This function ingests an ARD object and shuffles the information to prepare
 for analysis. Helpful for streamlining across multiple ARDs.
+}
+\examples{
+\dontrun{
+cards::bind_ard(
+  cards::ard_categorical(cards::ADSL, by = "ARM", variables = "AGEGR1"),
+  cards::ard_categorical(cards::ADSL, variables = "ARM")
+) |>
+  shuffle_card()
+  }
 }

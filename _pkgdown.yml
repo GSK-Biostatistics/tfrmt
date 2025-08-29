@@ -27,6 +27,7 @@ articles:
   - layer
   - building_mocks
   - templates
+  - cards_to_tfrmt
 - title:
   navbar: More
   contents:
@@ -85,3 +86,8 @@ reference:
   - cleaned_data_to_gt
   - starts_with("is_")
   - make_mock_data
+- title: {cards} to {tfrmt} Helpers
+  - prep_big_n
+  - prep_unite_vars
+  - prep_fill_pairwise
+  - prep_label

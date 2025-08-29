@@ -17,12 +17,11 @@ replace_na_pairwise(
 
 \item{pair}{(character) a vector of exactly 2 column names.}
 
-\item{fill}{(character) value to fill with. Defaults to \code{"Any {colname}"}.
-Not used if \code{fill_from} is specified.}
+\item{fill}{(character) value to replace with. Defaults to \code{"Any {colname}"},
+in which case \code{colname} will be replaced with the name of the column.}
 
-\item{fill_from}{(character) Indicates when doing pair-wise filling whether
-to fill from the column to the left. Defaults to \code{NULL}. Can be either \code{NULL}
-or \code{"left"}.}
+\item{fill_from}{(character) indicating whether to fill from the left column
+of the pair.}
 
 \item{call}{The execution environment of a currently running
 function, e.g. \code{call = caller_env()}. The corresponding function
