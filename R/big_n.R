@@ -102,8 +102,11 @@ remove_big_ns <- function(.data, param, big_n_structure){
 #' @param mock boolean if it is T/F
 #' @return tibble of the formatted big n's and expressions for where each goes
 #'
-#' @importFrom dplyr slice_tail filter select
+#' @importFrom dplyr slice_tail filter select group_by group_split
+#' @importFrom tidyr unite
 #' @importFrom tidyselect where
+#' @importFrom purrr map
+#' @importFrom forcats fct_inorder
 #' @noRd
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
   if(!is.null(big_n_structure)){
@@ -142,7 +145,7 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
 
     by_var <- setdiff(grp_vars, map_chr(columns, as_label))
 
-    .data <- frmtted_vals %>%
+    data_out <- frmtted_vals %>%
       mutate(`_tfrmt______id` = row_number()) %>%
       pivot_longer(
         -c("_tfrmt______id", !!value, all_of(by_var)),
@@ -157,15 +160,23 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
       ungroup()%>%
       select(-"_tfrmt______id")
 
-    if (big_n_structure$by_page){
+    if (big_n_structure$by_page ){
+      if (is_empty(by_var)){
+        data_out <- data_out |>
+          group_split()
+      } else {
+        data_out <- data_out |>
+          unite("..tfrmt_big_n_order..", all_of(by_var),remove = FALSE) %>%
+          mutate(`..tfrmt_big_n_order..` = fct_inorder(`..tfrmt_big_n_order..`))%>%
+          group_by(`..tfrmt_big_n_order..`) %>%
+          group_split() %>%
+          map(~select(.x, -"..tfrmt_big_n_order.."))
+      }
 
-     .data <-  .data %>%
-        group_by(across(all_of(by_var))) %>%
-       group_split()
     }
 
   } else {
-    .data <- NULL
+    data_out <- NULL
   }
-  .data
+  data_out
 }
