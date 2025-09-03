@@ -14,7 +14,20 @@
 \arguments{
 \item{x}{(character) content of target (current) column}
 
-\item{cur_col}{(character) name of current column}
+\item{colname}{(character) name of current column}
+
+\item{fill_overall}{scalar to fill missing grouping or variable levels. If a
+character is passed, then it is processed with \code{\link[glue:glue]{glue::glue()}} where the
+colname element is available to inject into the string,
+e.g. \verb{Overall \{colname\}} may resolve to \code{"Overall AGE"} for an \code{AGE}
+column. Default is \verb{Overall \{colname\}}. If \code{NA} then no fill will occur.}
+
+\item{fill_hierarchical_overall}{scalar to fill variable levels for overall
+hierarchical calculations. If a character is passed, then it is processed
+with \code{\link[glue:glue]{glue::glue()}} where the colname element is available to inject into
+the string, e.g. \verb{Any \{colname\}} may resolve to \code{"Any AESOC"} for an
+\code{AESOC} column. Default is \verb{Any \{colname\}}. If \code{NA} then no fill will
+occur.}
 }
 \value{
 a character vector

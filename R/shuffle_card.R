@@ -330,7 +330,8 @@ is_shuffled_card <- function(x) {
 #' `make.unique()` which appends a sequence number.
 #'
 #' @param x (character) content of target (current) column
-#' @param cur_col (character) name of current column
+#' @param colname (character) name of current column
+#' @inheritParams shuffle_card
 #'
 #' @returns a character vector
 #'
