@@ -627,7 +627,7 @@ test_that("prep_combine_vars() does not over unite", {
   )
 })
 
-test_that("prep_combine_vars() complains when the context col is missing", {
+test_that("prep_combine_vars() informs when the context col is missing", {
   df <- tibble::tibble(
     a = 1:6,
     b = c("a", rep(NA, 5)),
@@ -689,6 +689,25 @@ test_that("prep_big_n() works", {
       df,
       vars = "b"
     )
+  )
+})
+
+test_that("prep_big_n() informs when required columns are missing", {
+  df <- tibble::tibble(
+    a = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
+    context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
+    stat_variable = rep(c("a", "b", "c"), each = 3)
+  )
+
+  expect_identical(
+    suppressMessages(
+      prep_big_n(df)
+    ),
+    df
+  )
+
+  expect_snapshot(
+    prep_big_n(df)
   )
 })
 
@@ -756,8 +775,20 @@ test_that("prep_hierarchical_fill() returns the input when `length(vars) < 2`", 
   )
 
   expect_identical(
-    prep_hierarchical_fill(df, vars = "y"),
+    suppressMessages(
+      prep_hierarchical_fill(
+        df,
+        vars = "y"
+      )
+    ),
     df
+  )
+
+  expect_snapshot(
+    prep_hierarchical_fill(
+      df,
+      vars = "y"
+    ),
   )
 })
 
@@ -777,12 +808,6 @@ test_that("prep_hierarchical_fill() fills pairwise conditionally", {
       y = c("a", "Any y", "b"),
       z = rep(NA, 3)
     )
-  )
-
-  # when passing a single variable, the input is returned unchanged
-  expect_identical(
-    prep_hierarchical_fill(df, vars = c("x")),
-    df
   )
 
   expect_identical(

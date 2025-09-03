@@ -1,4 +1,4 @@
-prep_info_return <- "The input data will be returned unmodified."
+prep_info_return <- "Unable to apply {.fn {prep_func}}."
 
 #' Combine variables
 #'
@@ -43,6 +43,9 @@ prep_info_return <- "The input data will be returned unmodified."
 #'   vars = c("b", "c", "d", "e", "f", "g")
 #' )
 prep_combine_vars <- function(df, vars, remove = TRUE) {
+
+  prep_func <- rlang::frame_call() |>
+    rlang::call_name()
 
   if (!"context" %in% names(df)) {
     cli::cli_inform(
@@ -99,7 +102,8 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
   if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
     cli::cli_inform(
       c(
-        "i" = "The {.code vars} columns cannot be combined.",
+        "i" = "Combining the columns listed in {.code vars} would result in \\
+        a loss of information.",
         "*" = prep_info_return
       )
     )
@@ -122,10 +126,10 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `prep_big_n()` does 2 things:
-#'   * it recodes the `"n"` `stat_name` into `bigN` for the desired variables,
+#' `prep_big_n()`:
+#'   * recodes the `"n"` `stat_name` into `bigN` for the desired variables,
 #'   and
-#'   * it drops all other `stat_names` for the same variables.
+#'   * drops all other `stat_names` for the same variables.
 #'
 #' If your `tfrmt` contains a [big_n_structure()] you pass the tfrmt `column` to
 #' `prep_big_n()` via `vars`.
@@ -156,6 +160,22 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 #'   vars = c("b", "c")
 #' )
 prep_big_n <- function(df, vars) {
+
+  prep_func <- rlang::frame_call() |>
+    rlang::call_name()
+
+  required_cols <- c("context", "stat_variable", "stat_name")
+
+  if (!all(required_cols %in% names(df))) {
+    cli::cli_inform(
+      c(
+        "i" = "{.code {required_cols}} columns need to be present in the input data.",
+        "*" = prep_info_return
+      )
+    )
+    return(df)
+  }
+
   output <- df |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
@@ -199,13 +219,15 @@ prep_big_n <- function(df, vars) {
 #' prep_label(df)
 prep_label <- function(df) {
 
-  if (!all(c("variable_level", "stat_label") %in% names(df))) {
+  prep_func <- rlang::frame_call() |>
+    rlang::call_name()
+  required_cols <- c("variable_level", "stat_label")
+
+  if (!all(required_cols %in% names(df))) {
     cli::cli_inform(
       c(
-        "i" = "Both {.code variable_level} and {.code stat_label} columns \\
-        need to be present in the input data.",
-        "*" = "They are not so the input {.code data.frame} will be returned \\
-        unmodified."
+        "i" = "{.code {required_cols}} columns need to be present in the input data.",
+        "*" = prep_info_return
       )
     )
     return(df)
@@ -284,7 +306,16 @@ prep_hierarchical_fill <- function(df,
                                    fill = "Any {colname}",
                                    fill_from = NULL) {
 
+  prep_func <- rlang::frame_call() |>
+    rlang::call_name()
+
   if (length(vars) < 2) {
+    cli::cli_inform(
+      c(
+        "i" = "You needs to supply at least 2 columns in {.code vars}.",
+        "*" = prep_info_return
+      )
+    )
     return(df)
   }
 

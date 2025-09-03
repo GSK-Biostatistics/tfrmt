@@ -34,7 +34,7 @@
       prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
     Message
       i The `context` column indicates data comes from a hierarchical `ard` stack.
-      * The input data will be returned unmodified.
+      * Unable to apply `prep_combine_vars()`.
     Output
       # A tibble: 6 x 8
             a context      b     c     d     e     f     g    
@@ -52,7 +52,7 @@
       prep_combine_vars(df, vars = "b")
     Message
       i You supplied a single column in `vars`.
-      * The input data will be returned unmodified.
+      * Unable to apply `prep_combine_vars()`.
     Output
       # A tibble: 6 x 8
             a context     b     c     d     e     f     g    
@@ -69,8 +69,8 @@
     Code
       prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
     Message
-      i The `vars` columns cannot be combined.
-      * The input data will be returned unmodified.
+      i Combining the columns listed in `vars` would result in a loss of information.
+      * Unable to apply `prep_combine_vars()`.
     Output
       # A tibble: 6 x 8
             a context     b     c     d     e     f     g    
@@ -82,13 +82,13 @@
       5     5 categorical <NA>  <NA>  <NA>  <NA>  e     <NA> 
       6     6 categorical <NA>  <NA>  <NA>  <NA>  <NA>  f    
 
-# prep_combine_vars() complains when the context col is missing
+# prep_combine_vars() informs when the context col is missing
 
     Code
       prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
     Message
       i The `context` column is missing from the input data.
-      * The input data will be returned unmodified.
+      * Unable to apply `prep_combine_vars()`.
     Output
       # A tibble: 6 x 7
             a b     c     d     e     f     g    
@@ -132,6 +132,27 @@
       7 p         categorical  c            
       8 bigN      total_n      d            
 
+# prep_big_n() informs when required columns are missing
+
+    Code
+      prep_big_n(df)
+    Message
+      i `context`, `stat_variable`, and `stat_name` columns need to be present in the input data.
+      * Unable to apply `prep_big_n()`.
+    Output
+      # A tibble: 9 x 3
+        a     context      stat_variable
+        <chr> <chr>        <chr>        
+      1 n     continuous   a            
+      2 max   continuous   a            
+      3 min   continuous   a            
+      4 n     hierarchical b            
+      5 N     hierarchical b            
+      6 p     hierarchical b            
+      7 n     categorical  c            
+      8 N     categorical  c            
+      9 p     categorical  c            
+
 # prep_label() works
 
     Code
@@ -149,8 +170,8 @@
     Code
       prep_label(df)
     Message
-      i Both `variable_level` and `stat_label` columns need to be present in the input data.
-      * They are not so the input `data.frame` will be returned unmodified.
+      i `variable_level` and `stat_label` columns need to be present in the input data.
+      * Unable to apply `prep_label()`.
     Output
       # A tibble: 3 x 3
         x     stat_label context     
@@ -164,8 +185,8 @@
     Code
       prep_label(df2)
     Message
-      i Both `variable_level` and `stat_label` columns need to be present in the input data.
-      * They are not so the input `data.frame` will be returned unmodified.
+      i `variable_level` and `stat_label` columns need to be present in the input data.
+      * Unable to apply `prep_label()`.
     Output
       # A tibble: 3 x 3
         variable_level y     context     
@@ -173,6 +194,21 @@
       1 d              a     categorical 
       2 e              b     continuous  
       3 f              c     hierarchical
+
+# prep_hierarchical_fill() returns the input when `length(vars) < 2`
+
+    Code
+      prep_hierarchical_fill(df, vars = "y")
+    Message
+      i You needs to supply at least 2 columns in `vars`.
+      * Unable to apply `prep_hierarchical_fill()`.
+    Output
+      # A tibble: 3 x 3
+            x y     z    
+        <dbl> <chr> <lgl>
+      1     1 a     NA   
+      2     2 <NA>  NA   
+      3    NA b     NA   
 
 # prep_hierarchical_fill() complains with `fill_from` other than 'left'
 
