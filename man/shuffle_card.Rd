@@ -55,5 +55,5 @@ cards::bind_ard(
   cards::ard_categorical(cards::ADSL, variables = "ARM")
 ) |>
   shuffle_card()
-  }
+}
 }
