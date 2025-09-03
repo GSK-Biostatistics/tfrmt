@@ -21,7 +21,7 @@ library(cards)
 
 Preparing analysis results in a tidy ARD format is a prerequisite for a {tfrmt} table. A useful tool for ARD creation is the [{cards}](https://insightsengineering.github.io/cards/latest-tag/) package. By design, the output of {cards} is display-agnostic and only contains information about the summaries themselves. Thus, the output requires a bit of manipulation to get the ARD in a display-ready format. For example, a `cards` object will label all denominators as "N", but {tfrmt} expects header (i.e. population-level) big Ns to have a unique label that sets them apart from other denominators, like "bigN". 
 
-{tfrmt} contains several helper functions to ease the transition from the `cards` output to a display-ready ARD fit for {tfrmt}. Below are two examples utilitizing these helpers for a demographics and AE table. 
+{tfrmt} contains several helper functions to ease the transition from the `cards` output to a display-ready ARD fit for {tfrmt}. Below are two examples utilizing these helpers for a demographics and AE table. 
 
 ## Demog table
 
@@ -51,11 +51,11 @@ ard_demog_shuffled
 
 Note that the variables have been transformed wide and renamed. NULL values have also been filled with "Overall <colname>".
 
-For our {tfrmt} table, `AGEGR1` and `AGE` need to be combined into a single variable. We can use the `prep_unite_vars()` helper for this:
+For our {tfrmt} table, `AGEGR1` and `AGE` need to be combined into a single variable. We can use the `prep_combine_vars()` helper for this:
 
 ```{r}
 ard_demog_shuffled <- ard_demog_shuffled |> 
-  prep_unite_vars(vars = c("AGEGR1","AGE"))
+  prep_combine_vars(vars = c("AGEGR1","AGE"))
 
 ard_demog_shuffled
 ```
@@ -87,12 +87,12 @@ ard_demog_shuffled
 Finally, we can do any additional table-specific manipulations and we're ready for our tfrmt!
 ```{r}
 ard_final <- ard_demog_shuffled |> 
-  # drop uneeded variables
+  # drop unneeded variables
   dplyr::select(-c(variable_level, context, stat_label)) |> 
   # add sorting
   dplyr::mutate(ord1 = dplyr::case_when(
-    label=="18-64" ~ 1, 
-    label==">64" ~ 2,
+    label == "18-64" ~ 1, 
+    label == ">64" ~ 2,
     TRUE ~ 3
   ))
 
@@ -109,8 +109,16 @@ tfrmt(
   column = ARM,
   sorting_cols = ord1,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx.x")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("xx%", transform = ~.*100))
+    frmt_structure(
+      group_val = ".default", 
+      label_val = ".default", 
+      frmt("xx.x")
+    ),
+    frmt_structure(
+      group_val = ".default", 
+      label_val = ".default", 
+      p = frmt("xx%", transform = ~.*100)
+    )
   ),
   big_n = big_n_structure(param_val = "bigN"),
   col_plan = col_plan(-ord1)
@@ -160,11 +168,14 @@ ard_ae_shuffled |>
   dplyr::filter(!is.na(AESOC) & is.na(AEDECOD))
 ```
 
-We need to populate these missing values for our table. In order to display these as group summaries, the value for AEDECOD must match the value for AESOC. We can use the `prep_fill_pairwise` helper to fill the value from AESOC into AEDECOD:
+We need to populate these missing values for our table. In order to display these as group summaries, the value for AEDECOD must match the value for AESOC. We can use the `prep_hierarchical_fill()` helper to fill the value from AESOC into AEDECOD:
 
 ```{r}
 ard_ae_shuffled <- ard_ae_shuffled |> 
-  prep_fill_pairwise(vars = c("AESOC","AEDECOD"), fill_from = "left")
+  prep_hierarchical_fill(
+    vars = c("AESOC","AEDECOD"), 
+    fill_from = "left"
+  )
 
 ard_ae_shuffled |> 
   dplyr::filter(AESOC == AEDECOD)
@@ -206,15 +217,19 @@ tfrmt(
   value = stat,
   column = ARM,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine(
-                     "{n} ({p}%)",
-                     n = frmt("xx"),
-                     p = frmt("xx", transform = ~ . *100)
-                   )
+    frmt_structure(
+      group_val = ".default", 
+      label_val = ".default", 
+      frmt_combine(
+        "{n} ({p}%)",
+        n = frmt("xx"),
+        p = frmt("xx", transform = ~ . *100)
+      )
     )
   ),
-  big_n = big_n_structure(param_val = "bigN") 
+  big_n = big_n_structure(
+    param_val = "bigN"
+  ) 
 ) |> 
   print_to_gt(ard_final)
 ```
