@@ -34,7 +34,7 @@
       prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
     Condition
       Error in `prep_combine_vars()`:
-      ! The `context` column is missing from the input data.
+      ! The `context` column is expected but missing from the input data.
 
 # prep_big_n() works
 

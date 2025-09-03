@@ -42,7 +42,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 
   if (!"context" %in% names(df)) {
     cli::cli_abort(
-      "The {.code context} column is missing from the input data."
+      "The {.code context} column is expected but missing from the input data."
     )
   }
 
