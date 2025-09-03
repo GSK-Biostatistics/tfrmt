@@ -1,4 +1,6 @@
-#' Unite variables
+#' Combine variables
+#'
+#' @description `r lifecycle::badge('experimental')`\cr
 #'
 #' A wrapper around `tidyr::unite()` which pastes several columns into one.
 #' In addition it checks the output is identical to `dplyr::coalesce()`. If not
@@ -82,6 +84,8 @@ prep_combine_vars <- function(x, vars, remove = TRUE) {
 
 #' Prepare `bigN` stat variables
 #'
+#' @description `r lifecycle::badge('experimental')`\cr
+#'
 #' `prep_big_n()` does 2 things:
 #'   * it recodes the `"n"` `stat_name` into `bigN` for the desired variables,
 #'   and
@@ -136,6 +140,8 @@ prep_big_n <- function(x, vars) {
 
 #' Prepare label
 #'
+#' @description `r lifecycle::badge('experimental')`\cr
+#'
 #' Adds a `label` column which is a combination of `stat_label` (for continuous
 #' variables) and `variable_level` (for categorical ones) if these 2 columns are
 #' present in the input data frame.
@@ -176,6 +182,8 @@ prep_label <- function(x) {
 # replace_na with a given value (defaults to "Any <column-name>") or with values
 # from the column to the left when the preceding column is not NA
 #' Replace `NA` in pairs
+#'
+#' @description `r lifecycle::badge('experimental')`\cr
 #'
 #' Replace `NA` values in one column conditional on the same row having a
 #' non-NA value in a different column.

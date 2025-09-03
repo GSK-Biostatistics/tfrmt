@@ -22,10 +22,11 @@ a data.frame with the same columns as the input, but in which some
 the desired columns have been filled pairwise.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+
 Replace \code{NA} values in one column conditional on the same row having a
 non-NA value in a different column.
-}
-\details{
+
 The user supplies a vector of columns from which the pairs will be extracted
 with a rolling window. For example \code{vars <- c("A", "B", "C")} will generate
 2 pairs \verb{("A", "B")} and \verb{("B", "C")}. Therefore the order of the variables

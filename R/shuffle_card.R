@@ -45,7 +45,7 @@ shuffle_card <- function(x,
 
   if (!requireNamespace("cards", quietly = TRUE)) {
     cli::cli_abort(
-      "The {.pkg cards} package must be installed to use this function."
+      "The {.pkg cards} package must be installed to use {.fn shuffle_card}."
     )
   }
 

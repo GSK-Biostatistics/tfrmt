@@ -16,14 +16,15 @@ a data.frame with the same columns as the input. The \code{stat_name}
 column is modified.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+
 \code{prep_big_n()} does 2 things:
 \itemize{
 \item it recodes the \code{"n"} \code{stat_name} into \code{bigN} for the desired variables,
 and
 \item it drops all other \code{stat_names} for the same variables.
 }
-}
-\details{
+
 If your \code{tfrmt} contains a \code{\link[=big_n_structure]{big_n_structure()}} you pass the tfrmt \code{column} to
 \code{prep_big_n()} via \code{vars}.
 }

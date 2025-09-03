@@ -2,7 +2,7 @@
 % Please edit documentation in R/prep_card.R
 \name{prep_combine_vars}
 \alias{prep_combine_vars}
-\title{Unite variables}
+\title{Combine variables}
 \usage{
 prep_combine_vars(x, vars, remove = TRUE)
 }
@@ -19,13 +19,14 @@ a data.frame with an additional column, called \code{variable_level} or
 the input unchanged.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+
 A wrapper around \code{tidyr::unite()} which pastes several columns into one.
 In addition it checks the output is identical to \code{dplyr::coalesce()}. If not
 the input is returned unchanged. Useful for uniting sparsely populated
 columns, for example when processing a \code{shuffled_card} created with
 \code{card::ard_stack()}.
-}
-\details{
+
 If the data is the result of a hierarchical ard stack, the input is returned
 unchanged.
 }

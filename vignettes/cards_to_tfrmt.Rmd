@@ -30,10 +30,13 @@ Demographics tables commonly contain a mix of categorical and continuous summari
 ```{r}
 ard_demog <- ard_stack(
   data = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
-  ard_categorical(variables = "AGEGR1", 
-                  statistic = ~ c("p")),
-  ard_continuous(variables = "AGE", 
-                 statistic = ~ continuous_summary_fns(c("mean","sd"))),
+  ard_categorical(
+    variables = "AGEGR1", 
+    statistic = ~ c("p")
+  ),
+  ard_continuous(
+    variables = "AGE", 
+    statistic = ~ continuous_summary_fns(c("mean","sd"))),
   .by = "ARM"
 )
 
