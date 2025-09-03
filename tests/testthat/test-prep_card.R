@@ -620,34 +620,6 @@ test_that("prep_combine_vars() complains when the context col is missing", {
   )
 })
 
-# test_that("prep_card() prep_combine_vars does not over-unite", {
-#
-#   # we only want to unite when it effectively has the same impact as coalesce
-#   a <- cards::ard_strata(
-#     cards::ADSL,
-#     .by = ARM,
-#     .f = ~ cards::ard_categorical(
-#       .x,
-#       by = SEX,
-#       variables = AGEGR1
-#     )
-#   )
-#
-#   b <- a |>
-#     prep_card(column = "ARM")
-#
-#   # there is no variable_level column
-#   expect_true(
-#     !"variable_level" %in% names(b)
-#   )
-#
-#   # nothing happens, b is actually identical to the shuffled_card
-#   expect_identical(
-#     shuffle_card(a),
-#     b
-#   )
-# })
-
 test_that("prep_big_n() works", {
   df <- tibble::tibble(
     stat_name = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
