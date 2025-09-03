@@ -1,6 +1,7 @@
 #' Shuffle `cards`
 #'
-#' @description `r lifecycle::badge('experimental')`\cr
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' This function ingests an ARD object and shuffles the information to prepare
 #' for analysis. Helpful for streamlining across multiple ARDs.
