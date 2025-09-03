@@ -2441,7 +2441,9 @@ the specific values of the <code>group</code> parameter that each big N
 belongs to. This functionality can be enabled via the
 <code>by_page</code> argument in <code>big_n_structure</code>.</p>
 <p>For example, let’s take the following data, where we have calculated
-big Ns for each level of the grouping variable <code>grp</code>:</p>
+big Ns for each level of the grouping variable <code>grp</code>. NOTE:
+the bigN rows should be in the same order as the rest of the data
+(i.e. A, B rather than B, A for the <code>grp</code> variable).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span></span>
 <span>  grp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span><span class="op">)</span>,</span>
