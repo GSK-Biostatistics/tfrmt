@@ -86,7 +86,9 @@ reference:
   - cleaned_data_to_gt
   - starts_with("is_")
   - make_mock_data
-- title: {cards} to {tfrmt} Helpers
+- title: "Helpers: {cards} to {tfrmt}"
+  contents:
+  - shuffle_card
   - prep_big_n
   - prep_unite_vars
   - prep_fill_pairwise

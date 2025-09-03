@@ -136,7 +136,7 @@ is_shuffled_card <- function(x) {
 #'   a data frame
 #'
 #' @return a tibble
-#' @noRd
+#' @keywords internal
 .trim_ard <- function(x) {
 
   # detect any warning/error messages and notify user
@@ -155,7 +155,7 @@ is_shuffled_card <- function(x) {
 #' @param x a data frame
 #' @param ... columns to search within
 #'
-#' @noRd
+#' @keywords internal
 .detect_msgs <- function(x, ...) {
   dots <- rlang::dots_list(...)
 
@@ -173,7 +173,7 @@ is_shuffled_card <- function(x) {
 #' @param by Grouping variable(s) used in calculations. Defaults to `NULL`.
 #'
 #' @returns character string if `by` variable present
-#' @noRd
+#' @keywords internal
 .process_by <- function(x, by){
 
   ard_attributes <- attributes(x)
@@ -204,18 +204,34 @@ is_shuffled_card <- function(x) {
 #' @inheritParams shuffle_card
 #'
 #' @return data frame
-.fill_overall_grp_values <- function(x, by, fill_overall, fill_hierarchical_overall){
+#'
+#' @keywords internal
+.fill_overall_grp_values <- function(x,
+                                     by,
+                                     fill_overall,
+                                     fill_hierarchical_overall) {
 
   grp_vars <- by
-  vars_cards_protected <- c("context","stat_variable","stat_name","stat_label",
-                            "stat","fmt_fun","fmt_fn", "warning", "error","..cards_idx..")
+  vars_cards_protected <- c(
+    "context",
+    "stat_variable",
+    "stat_name",
+    "stat_label",
+    "stat",
+    "fmt_fun",
+    "fmt_fn",
+    "warning",
+    "error",
+    "..cards_idx.."
+  )
 
   # determine grouping and merging variables
   id_vars <- setdiff(names(x), unique(c(vars_cards_protected, grp_vars)))
 
   if (!is_empty(grp_vars) && !is_empty(id_vars)){
 
-    # replace NA group values with "..cards_overall.." where it is likely to be an overall calculation
+    # replace NA group values with "..cards_overall.." where it is likely to be
+    # an overall calculation
     for (g in grp_vars) {
 
       # rows with missing group
@@ -278,7 +294,7 @@ is_shuffled_card <- function(x) {
 #'
 #' @returns a character vector
 #'
-#' @noRd
+#' @keywords internal
 .derive_overall_labels <- function(x,
                                    colname = dplyr::cur_column(),
                                    fill_overall,
