@@ -10,7 +10,8 @@
 #'
 #' If the data is the result of a hierarchical ard stack (with
 #' [cards::ard_stack_hierarchical()] or [cards::ard_stack_hierarchical_count()]),
-#' the input is returned unchanged.
+#' the input is returned unchanged. This is assessed from the information in the
+#' `context` column, which, if not present will result in an error.
 #'
 #' @param df (data.frame)
 #' @param vars (character) a vector of variables to unite. If a single variable
@@ -38,6 +39,12 @@
 #'   vars = c("b", "c", "d", "e", "f", "g")
 #' )
 prep_combine_vars <- function(df, vars, remove = TRUE) {
+
+  if (!"context" %in% names(df)) {
+    cli::cli_abort(
+      "The {.code context} column is missing from the input data."
+    )
+  }
 
   if ("hierarchical" %in% unique(df$context)) {
     return(df)
@@ -285,7 +292,8 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
   if (!rlang::is_character(x)) {
     cli::cli_abort(
       "{.arg x} must be a character vector. You have supplied \\
-      {.obj_type_friendly {x}}."
+      {.obj_type_friendly {x}}.",
+      call = call
     )
   }
 

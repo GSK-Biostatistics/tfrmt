@@ -28,6 +28,14 @@
       5     5 categorical e              <NA>  <NA>  <NA>  <NA>  e     <NA> 
       6     6 categorical <NA>           <NA>  <NA>  <NA>  <NA>  <NA>  f    
 
+# prep_combine_vars() complains when the context col is missing
+
+    Code
+      prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
+    Condition
+      Error in `prep_combine_vars()`:
+      ! The `context` column is missing from the input data.
+
 # prep_big_n() works
 
     Code
@@ -123,7 +131,7 @@
     Code
       generate_pairs(1:3)
     Condition
-      Error in `generate_pairs()`:
+      Error:
       ! `x` must be a character vector. You have supplied an integer vector.
 
 ---

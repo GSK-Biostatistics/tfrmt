@@ -600,6 +600,26 @@ test_that("prep_combine_vars() does not over unite", {
   )
 })
 
+test_that("prep_combine_vars() complains when the context col is missing", {
+  df <- tibble::tibble(
+    a = 1:6,
+    b = c("a", rep(NA, 5)),
+    c = c(NA, "b", rep(NA, 4)),
+    d = c(NA, "b", rep(NA, 4)),
+    e = c(NA, "b", rep(NA, 4)),
+    f = c(NA, NA, NA, NA, "e", NA),
+    g = c(rep(NA, 5), "f")
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_combine_vars(
+      df,
+      vars = c("b", "c", "d", "e", "f", "g")
+    )
+  )
+})
+
 # test_that("prep_card() prep_combine_vars does not over-unite", {
 #
 #   # we only want to unite when it effectively has the same impact as coalesce
