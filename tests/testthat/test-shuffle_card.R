@@ -204,33 +204,43 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
 
 test_that("shuffle_card fills missing group levels if the group is meaningful for cardx output", {
   # cardx ARD: this is a dput() of a cardx result (see commented out code below) SAVED 2024-08-30
-  ard_cardx <-
-    structure(list(
-      group1 = c("ARM", "ARM", "SEX", "SEX"), variable = c(
+  ard_cardx <- structure(
+    list(
+      group1 = c("ARM", "ARM", "SEX", "SEX"),
+      variable = c(
         "AGEGR1",
         "AGEGR1", "AGEGR1", "AGEGR1"
-      ), context = c(
+      ),
+      context = c(
         "stats_chisq_test",
         "stats_chisq_test", "stats_chisq_test", "stats_chisq_test"
       ),
-      stat_name = c("statistic", "p.value", "statistic", "p.value"), stat_label = c(
+      stat_name = c("statistic", "p.value", "statistic", "p.value"),
+      stat_label = c(
         "X-squared Statistic", "p-value", "X-squared Statistic",
         "p-value"
-      ), stat = list(
+      ),
+      stat = list(
         statistic = c(`X-squared` = 5.07944166638125),
-        p.value = 0.0788884197453486, statistic = c(`X-squared` = 1.03944199945198),
+        p.value = 0.0788884197453486,
+        statistic = c(`X-squared` = 1.03944199945198),
         p.value = 0.594686442507218
-      ), fmt_fun = list(
+      ),
+      fmt_fun = list(
         statistic = 1L,
         p.value = 1L, statistic = 1L, p.value = 1L
-      ), warning = list(
+      ),
+      warning = list(
         warning = NULL, warning = NULL, warning = NULL, warning = NULL
       ),
       error = list(error = NULL, error = NULL, error = NULL, error = NULL)
-    ), row.names = c(
+    ),
+    row.names = c(
       NA,
       -4L
-    ), class = c("card", "tbl_df", "tbl", "data.frame"))
+    ),
+    class = c("card", "tbl_df", "tbl", "data.frame")
+  )
 
   expect_snapshot(
     ard_cardx |>
