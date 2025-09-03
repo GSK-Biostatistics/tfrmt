@@ -50,8 +50,6 @@ Suggests:
     survival,
     testthat (>= 3.0.0),
     withr
-VignetteBuilder: 
-    knitr
 Remotes: 
     insightsengineering/cards
 Config/testthat/edition: 3
