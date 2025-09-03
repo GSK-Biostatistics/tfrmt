@@ -1,7 +1,7 @@
-# prep_unite_vars() works
+# prep_combine_vars() works
 
     Code
-      prep_unite_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
+      prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
     Output
       # A tibble: 6 x 3
             a context     variable_level
@@ -16,7 +16,7 @@
 ---
 
     Code
-      prep_unite_vars(df, vars = c("b", "c", "d", "e", "f"), remove = FALSE)
+      prep_combine_vars(df, vars = c("b", "c", "d", "e", "f"), remove = FALSE)
     Output
       # A tibble: 6 x 9
             a context     variable_level b     c     d     e     f     g    

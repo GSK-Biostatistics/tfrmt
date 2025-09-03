@@ -90,6 +90,6 @@ reference:
   contents:
   - shuffle_card
   - prep_big_n
-  - prep_unite_vars
+  - prep_combine_vars
   - prep_fill_pairwise
   - prep_label

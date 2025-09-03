@@ -492,7 +492,7 @@
 #   )
 # })
 
-test_that("prep_unite_vars() works", {
+test_that("prep_combine_vars() works", {
   df <- tibble::tibble(
     a = 1:6,
     context = rep("categorical", 6),
@@ -505,7 +505,7 @@ test_that("prep_unite_vars() works", {
   )
 
   expect_identical(
-    prep_unite_vars(
+    prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
     ),
@@ -517,14 +517,14 @@ test_that("prep_unite_vars() works", {
   )
 
   expect_snapshot(
-    prep_unite_vars(
+    prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
     )
   )
 
   expect_snapshot(
-    prep_unite_vars(
+    prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f"),
       remove = FALSE
@@ -532,7 +532,7 @@ test_that("prep_unite_vars() works", {
   )
 })
 
-test_that("prep_unite_vars() returns the input when context hierarchical", {
+test_that("prep_combine_vars() returns the input when context hierarchical", {
 
   df <- tibble::tibble(
     a = 1:6,
@@ -546,7 +546,7 @@ test_that("prep_unite_vars() returns the input when context hierarchical", {
   )
 
   expect_identical(
-    prep_unite_vars(
+    prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
     ),
@@ -554,7 +554,7 @@ test_that("prep_unite_vars() returns the input when context hierarchical", {
   )
 })
 
-test_that("prep_unite_vars() return the input unchanged when length(vars)=1", {
+test_that("prep_combine_vars() return the input unchanged when length(vars)=1", {
 
   df <- tibble::tibble(
     a = 1:6,
@@ -568,7 +568,7 @@ test_that("prep_unite_vars() return the input unchanged when length(vars)=1", {
   )
 
   expect_identical(
-    prep_unite_vars(
+    prep_combine_vars(
       df,
       vars = "b"
     ),
@@ -576,7 +576,7 @@ test_that("prep_unite_vars() return the input unchanged when length(vars)=1", {
   )
 })
 
-test_that("prep_unite_vars() does not over unite", {
+test_that("prep_combine_vars() does not over unite", {
 
   # c, d and e are identical, the are not pasted together in the output
   # the input is returned unchanged
@@ -592,7 +592,7 @@ test_that("prep_unite_vars() does not over unite", {
   )
 
   expect_identical(
-    prep_unite_vars(
+    prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
     ),
@@ -600,7 +600,7 @@ test_that("prep_unite_vars() does not over unite", {
   )
 })
 
-# test_that("prep_card() prep_unite_vars does not over-unite", {
+# test_that("prep_card() prep_combine_vars does not over-unite", {
 #
 #   # we only want to unite when it effectively has the same impact as coalesce
 #   a <- cards::ard_strata(

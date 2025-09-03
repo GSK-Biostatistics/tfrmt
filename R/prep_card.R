@@ -30,11 +30,11 @@
 #'   g = c(rep(NA, 5), "f")
 #' )
 #'
-#' prep_unite_vars(
+#' prep_combine_vars(
 #'   df,
 #'   vars = c("b", "c", "d", "e", "f", "g")
 #' )
-prep_unite_vars <- function(x, vars, remove = TRUE) {
+prep_combine_vars <- function(x, vars, remove = TRUE) {
 
   if ("hierarchical" %in% unique(x$context)) {
     return(x)
