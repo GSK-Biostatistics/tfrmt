@@ -86,8 +86,12 @@ shuffle_card <- function(x,
         ),
         ~ lapply(., \(x) if (!is.null(x)) as.character(x))
       ),
-      stat_variable = variable) |>
-    dplyr::relocate(stat_variable, .after = "context") |>
+      stat_variable = .data$variable
+    ) |>
+    dplyr::relocate(
+      "stat_variable",
+      .after = "context"
+    ) |>
     cards::rename_ard_columns(fill = "..cards_overall..") |>
     dplyr::select(-any_of(c("..ard_total_n..", "..ard_hierarchical_overall..")))
 
