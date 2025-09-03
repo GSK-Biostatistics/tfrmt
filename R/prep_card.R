@@ -95,7 +95,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 #' If your `tfrmt` contains a [big_n_structure()] you pass the tfrmt `column` to
 #' `prep_big_n()` via `vars`.
 #'
-#' @param x (data.frame)
+#' @param df (data.frame)
 #' @param vars (character) a vector of variables to prepare `bigN` for.
 #'
 #' @returns a data.frame with the same columns as the input. The `stat_name`

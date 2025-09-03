@@ -7,9 +7,9 @@
 prep_big_n(df, vars)
 }
 \arguments{
-\item{vars}{(character) a vector of variables to prepare \code{bigN} for.}
+\item{df}{(data.frame)}
 
-\item{x}{(data.frame)}
+\item{vars}{(character) a vector of variables to prepare \code{bigN} for.}
 }
 \value{
 a data.frame with the same columns as the input. The \code{stat_name}
