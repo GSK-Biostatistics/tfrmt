@@ -72,6 +72,36 @@
       2 e              b          continuous   b    
       3 f              c          hierarchical c    
 
+# prep_label() returns the input when the required cols are missing
+
+    Code
+      prep_label(df)
+    Message
+      i Both `variable_level` and `stat_label` columns need to be present in the input data.
+      * They are not so the input `data.frame` will be returned unmodified.
+    Output
+      # A tibble: 3 x 3
+        x     stat_label context     
+        <chr> <chr>      <chr>       
+      1 d     a          categorical 
+      2 e     b          continuous  
+      3 f     c          hierarchical
+
+---
+
+    Code
+      prep_label(df2)
+    Message
+      i Both `variable_level` and `stat_label` columns need to be present in the input data.
+      * They are not so the input `data.frame` will be returned unmodified.
+    Output
+      # A tibble: 3 x 3
+        variable_level y     context     
+        <chr>          <chr> <chr>       
+      1 d              a     categorical 
+      2 e              b     continuous  
+      3 f              c     hierarchical
+
 # prep_hierarchical_fill() complains with `fill_from` other than 'left'
 
     Code

@@ -705,8 +705,12 @@ test_that("prep_label() returns the input when the required cols are missing", {
   )
 
   expect_identical(
-    prep_label(df),
+    suppressMessages(prep_label(df)),
     df
+  )
+
+  expect_snapshot(
+    prep_label(df)
   )
 
   # `stat_label` col is not present
@@ -716,8 +720,12 @@ test_that("prep_label() returns the input when the required cols are missing", {
     context = c("categorical", "continuous", "hierarchical")
   )
 
+  expect_snapshot(
+    prep_label(df2)
+  )
+
   expect_identical(
-    prep_label(df2),
+    suppressMessages(prep_label(df2)),
     df2
   )
 })

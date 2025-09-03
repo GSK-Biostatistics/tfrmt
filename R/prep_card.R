@@ -164,6 +164,14 @@ prep_big_n <- function(df, vars) {
 prep_label <- function(df) {
 
   if (!all(c("variable_level", "stat_label") %in% names(df))) {
+    cli::cli_inform(
+      c(
+        "i" = "Both {.code variable_level} and {.code stat_label} columns \\
+        need to be present in the input data.",
+        "*" = "They are not so the input {.code data.frame} will be returned \\
+        unmodified."
+      )
+    )
     return(df)
   }
 
