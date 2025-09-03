@@ -1,3 +1,5 @@
+prep_info_return <- "The input data will be returned unmodified."
+
 #' Combine variables
 #'
 #' @description
@@ -12,7 +14,8 @@
 #' If the data is the result of a hierarchical ard stack (with
 #' [cards::ard_stack_hierarchical()] or [cards::ard_stack_hierarchical_count()]),
 #' the input is returned unchanged. This is assessed from the information in the
-#' `context` column, which, if not present will result in an error.
+#' `context` column. If the input data does not have a column called `context`,
+#' the input will be returned unmodified.
 #'
 #' @param df (data.frame)
 #' @param vars (character) a vector of variables to unite. If a single variable
@@ -42,17 +45,34 @@
 prep_combine_vars <- function(df, vars, remove = TRUE) {
 
   if (!"context" %in% names(df)) {
-    cli::cli_abort(
-      "The {.code context} column is expected but missing from the input data."
+    cli::cli_inform(
+      c(
+        "i" = "The {.code context} column is missing from the input data.",
+        "*" = prep_info_return
+      )
     )
+    return(df)
   }
 
   if ("hierarchical" %in% unique(df$context)) {
+    cli::cli_inform(
+      c(
+        "i" = "The {.code context} column indicates data comes from a \\
+        hierarchical {.code ard} stack.",
+        "*" = prep_info_return
+      )
+    )
     return(df)
   }
 
   # we do cannot unite a single variable
   if (length(vars) == 1) {
+    cli::cli_inform(
+      c(
+        "i" = "You supplied a single column in {.code vars}.",
+        "*" = prep_info_return
+      )
+    )
     return(df)
   }
 
@@ -77,6 +97,12 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
     )
 
   if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
+    cli::cli_inform(
+      c(
+        "i" = "The {.code vars} columns cannot be combined.",
+        "*" = prep_info_return
+      )
+    )
     return(df)
   }
 

@@ -28,13 +28,77 @@
       5     5 categorical e              <NA>  <NA>  <NA>  <NA>  e     <NA> 
       6     6 categorical <NA>           <NA>  <NA>  <NA>  <NA>  <NA>  f    
 
+# prep_combine_vars() returns the input when context hierarchical
+
+    Code
+      prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
+    Message
+      i The `context` column indicates data comes from a hierarchical `ard` stack.
+      * The input data will be returned unmodified.
+    Output
+      # A tibble: 6 x 8
+            a context      b     c     d     e     f     g    
+        <int> <chr>        <chr> <chr> <chr> <chr> <chr> <chr>
+      1     1 hierarchical a     <NA>  <NA>  <NA>  <NA>  <NA> 
+      2     2 hierarchical <NA>  b     <NA>  <NA>  <NA>  <NA> 
+      3     3 hierarchical <NA>  <NA>  c     <NA>  <NA>  <NA> 
+      4     4 hierarchical <NA>  <NA>  <NA>  d     <NA>  <NA> 
+      5     5 hierarchical <NA>  <NA>  <NA>  <NA>  e     <NA> 
+      6     6 hierarchical <NA>  <NA>  <NA>  <NA>  <NA>  f    
+
+# prep_combine_vars() return the input unchanged when length(vars)=1
+
+    Code
+      prep_combine_vars(df, vars = "b")
+    Message
+      i You supplied a single column in `vars`.
+      * The input data will be returned unmodified.
+    Output
+      # A tibble: 6 x 8
+            a context     b     c     d     e     f     g    
+        <int> <chr>       <chr> <chr> <chr> <chr> <chr> <chr>
+      1     1 categorical a     <NA>  <NA>  <NA>  <NA>  <NA> 
+      2     2 categorical <NA>  b     <NA>  <NA>  <NA>  <NA> 
+      3     3 categorical <NA>  <NA>  c     <NA>  <NA>  <NA> 
+      4     4 categorical <NA>  <NA>  <NA>  d     <NA>  <NA> 
+      5     5 categorical <NA>  <NA>  <NA>  <NA>  e     <NA> 
+      6     6 categorical <NA>  <NA>  <NA>  <NA>  <NA>  f    
+
+# prep_combine_vars() does not over unite
+
+    Code
+      prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
+    Message
+      i The `vars` columns cannot be combined.
+      * The input data will be returned unmodified.
+    Output
+      # A tibble: 6 x 8
+            a context     b     c     d     e     f     g    
+        <int> <chr>       <chr> <chr> <chr> <chr> <chr> <chr>
+      1     1 categorical a     <NA>  <NA>  <NA>  <NA>  <NA> 
+      2     2 categorical <NA>  b     b     b     <NA>  <NA> 
+      3     3 categorical <NA>  <NA>  <NA>  <NA>  <NA>  <NA> 
+      4     4 categorical <NA>  <NA>  <NA>  <NA>  <NA>  <NA> 
+      5     5 categorical <NA>  <NA>  <NA>  <NA>  e     <NA> 
+      6     6 categorical <NA>  <NA>  <NA>  <NA>  <NA>  f    
+
 # prep_combine_vars() complains when the context col is missing
 
     Code
       prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
-    Condition
-      Error in `prep_combine_vars()`:
-      ! The `context` column is expected but missing from the input data.
+    Message
+      i The `context` column is missing from the input data.
+      * The input data will be returned unmodified.
+    Output
+      # A tibble: 6 x 7
+            a b     c     d     e     f     g    
+        <int> <chr> <chr> <chr> <chr> <chr> <chr>
+      1     1 a     <NA>  <NA>  <NA>  <NA>  <NA> 
+      2     2 <NA>  b     b     b     <NA>  <NA> 
+      3     3 <NA>  <NA>  <NA>  <NA>  <NA>  <NA> 
+      4     4 <NA>  <NA>  <NA>  <NA>  <NA>  <NA> 
+      5     5 <NA>  <NA>  <NA>  <NA>  e     <NA> 
+      6     6 <NA>  <NA>  <NA>  <NA>  <NA>  f    
 
 # prep_big_n() works
 

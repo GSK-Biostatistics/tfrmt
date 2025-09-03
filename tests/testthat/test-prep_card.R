@@ -546,11 +546,20 @@ test_that("prep_combine_vars() returns the input when context hierarchical", {
   )
 
   expect_identical(
+    suppressMessages(
+      prep_combine_vars(
+        df,
+        vars = c("b", "c", "d", "e", "f", "g")
+      )
+    ),
+    df
+  )
+
+  expect_snapshot(
     prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
-    ),
-    df
+    )
   )
 })
 
@@ -568,11 +577,20 @@ test_that("prep_combine_vars() return the input unchanged when length(vars)=1", 
   )
 
   expect_identical(
+    suppressMessages(
+      prep_combine_vars(
+        df,
+        vars = "b"
+      )
+    ),
+    df
+  )
+
+  expect_snapshot(
     prep_combine_vars(
       df,
       vars = "b"
-    ),
-    df
+    )
   )
 })
 
@@ -592,11 +610,20 @@ test_that("prep_combine_vars() does not over unite", {
   )
 
   expect_identical(
+    suppressMessages(
+      prep_combine_vars(
+        df,
+        vars = c("b", "c", "d", "e", "f", "g")
+      )
+    ),
+    df
+  )
+
+  expect_snapshot(
     prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
-    ),
-    df
+    )
   )
 })
 
@@ -612,7 +639,6 @@ test_that("prep_combine_vars() complains when the context col is missing", {
   )
 
   expect_snapshot(
-    error = TRUE,
     prep_combine_vars(
       df,
       vars = c("b", "c", "d", "e", "f", "g")
