@@ -11,6 +11,8 @@
 #'   will be used instead of `by`.
 #' @param trim logical representing whether or not to trim away `fmt_fun`,
 #'   `error`, and `warning` columns
+#' @param order_rows logical representing whether or not to apply
+#'   `cards::tidy_ard_row_order()` to sort the rows
 #' @param fill_overall scalar to fill missing grouping or variable levels. If a
 #'   character is passed, then it is processed with [glue::glue()] where the
 #'   colname element is available to inject into the string,
@@ -33,9 +35,11 @@
 #'   cards::ard_categorical(cards::ADSL, variables = "ARM")
 #' ) |>
 #'   shuffle_card()
+#'   }
 shuffle_card <- function(x,
                          by = NULL,
                          trim = TRUE,
+                         order_rows = TRUE,
                          fill_overall = "Overall {colname}",
                          fill_hierarchical_overall = "Any {colname}") {
 
@@ -54,9 +58,12 @@ shuffle_card <- function(x,
   by <- .process_by(x, by)
 
   # make sure columns are in order & add index for retaining order
+  if (isTRUE(order_rows)){
+    x <- x |>
+      cards::tidy_ard_row_order()
+  }
   dat_cards <- x |>
     cards::tidy_ard_column_order() |>
-    cards::tidy_ard_row_order() |>
     dplyr::mutate(
       ..cards_idx.. = dplyr::row_number()
     )
@@ -126,7 +133,7 @@ is_shuffled_card <- function(x) {
   .detect_msgs(x, "warning", "error")
   # flatten ard table for easier viewing ---------------------------------------
   x |>
-    dplyr::select(-c("fmt_fun", "warning", "error"))
+    dplyr::select(-any_of(c("fmt_fun", "fmt_fn","warning", "error")))
 }
 
 
@@ -191,7 +198,7 @@ is_shuffled_card <- function(x) {
 
   grp_vars <- by
   vars_cards_protected <- c("context","stat_variable","stat_name","stat_label",
-                            "stat","fmt_fun", "warning", "error","..cards_idx..")
+                            "stat","fmt_fun","fmt_fn", "warning", "error","..cards_idx..")
 
   # determine grouping and merging variables
   id_vars <- setdiff(names(x), unique(c(vars_cards_protected, grp_vars)))

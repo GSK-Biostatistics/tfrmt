@@ -7,8 +7,7 @@
 prep_label(x)
 }
 \arguments{
-\item{x}{(data.frame) a data.frame downstream of \code{shuffle_card()}. Does not
-necessarily need to be a \code{shuffled_card} object.}
+\item{x}{(data.frame)}
 }
 \value{
 a data.frame with a \code{label} column (if the input has the required

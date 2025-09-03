@@ -1,96 +1,3 @@
-#' Prepare card for tfrmt
-#'
-#' What does the preparation function do?
-#'  * `prep_unite_vars()`: brings all categorical variables levels into a single
-#'  column, called `variable_level` (where applicable).
-#'  * `prep_big_n()`: recodes the `"n"` `stat_name` into `"bigN"` for the
-#'  desired columns.
-#'  * `prep_label()`: creates a `label` column from `variable_level` for
-#'  categorical variables and `stat_label` for all other variable types.
-#'  * `prep_fill_pairwise()`: in a hierarchical stack replaces NA in one column
-#'  conditional on the presence of data in another column.
-#'
-#' @inheritParams tfrmt
-#' @inheritParams shuffle_card
-#' @param column (character) variable(s) to use for column names.
-#' @param group (character) grouping variables to use in the formatted table.
-#' @param variables (character) incoming `cards` variables.
-#' @param fill (character) value to fill with. Defaults to `"Any {colname}"`.
-#'   Not used if `fill_from` is specified.
-#' @param fill_from (character) Indicates when doing pair-wise filling whether
-#' to fill from the column to the left. Defaults to `NULL`. Can be either `NULL`
-#' or `"left"`.
-#'
-#' @returns a `data.frame`
-#' @export
-#'
-#' @examples
-prep_card <- function(x,
-                      column = NULL,
-                      group = NULL,
-                      variables = NULL,
-                      fill_overall = "Overall {colname}",
-                      fill = "Any {colname}",
-                      fill_from = NULL) {
-
-  # TODO check the error is propagated from the right caller env
-
-  if (!is.null(column) && !is.character(column)) {
-    cli::cli_abort(
-      "{.arg column} must be a character vector."
-    )
-  }
-
-  ard_args <- attr(x, "args")
-
-  shuffled_card <- x
-
-  if (!is_shuffled_card(x)) {
-    shuffled_card <- shuffle_card(
-      x,
-      # TODO message about switching the value for `by`
-      by = ard_args$by %||% c(column, group),
-      fill_overall = fill_overall,
-      fill_hierarchical_overall = fill
-    )
-  }
-
-  # TODO get the logic to work with strings and then maybe add support for
-  # symbols / unquoted strings
-  # with tfrmt_find_args(..., env = environment(), parent_env = caller_env())
-
-  if (is_card_with_attributes(shuffled_card)) {
-    shuffled_card <- shuffled_card |>
-      # remove attributes for now
-      # TODO add some logic to deal with them - useful for labelled columns
-      dplyr::filter(
-        .data$context != "attributes"
-      )
-  }
-
-  ard_vars <- c(
-    "context",
-    "stat_variable",
-    "stat_name",
-    "stat_label",
-    "stat"
-  )
-
-  vars_to_unite <- setdiff(names(shuffled_card), c(ard_vars, column))
-
-  output <- shuffled_card |>
-    prep_unite_vars(vars = vars_to_unite) |>
-    prep_big_n(vars = column) |>
-    prep_label() |>
-    prep_fill_pairwise(
-      vars = ard_args$variables %||% variables,
-      fill = fill,
-      fill_from = fill_from
-    )
-
-  output
-}
-
 #' Unite variables
 #'
 #' A wrapper around `tidyr::unite()` which pastes several columns into one.
@@ -102,7 +9,7 @@ prep_card <- function(x,
 #' If the data is the result of a hierarchical ard stack, the input is returned
 #' unchanged.
 #'
-#' @param x (data.frame) a shuffled card
+#' @param x (data.frame)
 #' @param vars (character) a vector of variables to unite. If a single variable
 #'   is supplied, the input is returned unchanged.
 #' @inheritParams tidyr::unite
@@ -233,8 +140,7 @@ prep_big_n <- function(x, vars) {
 #' variables) and `variable_level` (for categorical ones) if these 2 columns are
 #' present in the input data frame.
 #'
-#' @param x (data.frame) a data.frame downstream of `shuffle_card()`. Does not
-#'   necessarily need to be a `shuffled_card` object.
+#' @param x (data.frame)
 #'
 #' @returns a data.frame with a `label` column (if the input has the required
 #'   columns) or the input unchanged.
@@ -258,7 +164,7 @@ prep_label <- function(x) {
     dplyr::mutate(
       label = .data$stat_label,
       label = dplyr::if_else(
-        .data$context == "categorical",
+        .data$context %in% c("categorical", "tabulate"),
         .data$variable_level,
         .data$label
       )
@@ -285,7 +191,7 @@ prep_label <- function(x) {
 #'   * Any other value. For example `"Any event"` for an adverse effects table.
 #'   * the value of pair's first column. In this case, the value of `A`.
 #'
-#' @param x (data.frame) a shuffled card.
+#' @param x (data.frame)
 #' @param vars (characters) a vector of variables to generate pairs from.
 #' @param fill (character) value to replace with. Defaults to `"Any {colname}"`,
 #'   in which case `colname` will be replaced with the name of the column.
@@ -391,7 +297,7 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
 #'
 #' @param x (data.frame) a shuffled card.
 #' @param pair (character) a vector of exactly 2 column names.
-#' @inheritParams prep_card
+#' @inheritParams prep_fill_pairwise
 #' @inheritParams cli::cli_abort
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)

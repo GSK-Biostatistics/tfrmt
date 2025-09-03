@@ -7,7 +7,7 @@
 prep_fill_pairwise(x, vars, fill = "Any {colname}", fill_from = NULL)
 }
 \arguments{
-\item{x}{(data.frame) a shuffled card.}
+\item{x}{(data.frame)}
 
 \item{vars}{(characters) a vector of variables to generate pairs from.}
 

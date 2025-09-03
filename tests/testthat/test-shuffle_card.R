@@ -535,3 +535,23 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
     attributes(shuffled_ard)[["args"]]
   )
 })
+
+
+test_that("shuffle_card() sorting option", {
+  withr::local_seed(0829)
+
+  ard <- cards::ard_continuous(cards::ADSL, by = "ARM", variables = "AGE")
+  # randomly sort data
+  ard_mixed <- dplyr::slice(ard, sample.int(nrow(ard)))
+
+  ard_unnest <- ard_mixed |>
+    cards::rename_ard_columns(fill = "Overall {colname}") |>
+    cards::unlist_ard_columns() |>
+    dplyr::select(-any_of(c("fmt_fn", "fmt_fun", "warning", "error")))
+
+  expect_equal(
+    ard_unnest,
+    shuffle_card(ard_mixed, order_rows = FALSE) |> dplyr::select(-stat_variable),
+    ignore_attr = TRUE
+  )
+})
