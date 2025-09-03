@@ -27,7 +27,7 @@ For more information about error calls, see \ifelse{html}{\link[rlang:topic-erro
 a list of length 2 character vectors (pairs of column names)
 }
 \description{
-\code{\link[=prep_fill_pairwise]{prep_fill_pairwise()}} does pairwise conditional replacement of \code{NA}s.
+\code{\link[=prep_hierarchical_fill]{prep_hierarchical_fill()}} does pairwise conditional replacement of \code{NA}s.
 \code{generate_pairs()} builds those pairs.
 }
 \examples{

@@ -72,20 +72,20 @@
       2 e              b          continuous   b    
       3 f              c          hierarchical c    
 
-# prep_fill_pairwise() complains with `fill_from` other than 'left'
+# prep_hierarchical_fill() complains with `fill_from` other than 'left'
 
     Code
-      prep_fill_pairwise(df, vars = c("x", "y", "z"), fill_from = "foo")
+      prep_hierarchical_fill(df, vars = c("x", "y", "z"), fill_from = "foo")
     Condition
-      Error in `prep_fill_pairwise()`:
+      Error in `prep_hierarchical_fill()`:
       ! `fill_from` must either be `NULL` or `"left"`. `"foo"` is not an accepted value.
 
-# prep_fill_pairwise() errors with `fill` non-char
+# prep_hierarchical_fill() errors with `fill` non-char
 
     Code
-      prep_fill_pairwise(df, vars = c("x", "y", "z"), fill = 2)
+      prep_hierarchical_fill(df, vars = c("x", "y", "z"), fill = 2)
     Condition
-      Error in `prep_fill_pairwise()`:
+      Error in `prep_hierarchical_fill()`:
       ! `fill` must be a character vector of length 1.
 
 # generate_pairs() complains

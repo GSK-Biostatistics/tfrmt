@@ -209,26 +209,26 @@ prep_label <- function(x) {
 #'   z = rep(NA, 3)
 #' )
 #'
-#' prep_fill_pairwise(
+#' prep_hierarchical_fill(
 #'   df,
 #'   vars = c("x", "y")
 #' )
 #'
-#' prep_fill_pairwise(
+#' prep_hierarchical_fill(
 #'   df,
 #'   vars = c("x", "y"),
 #'   fill = "foo"
 #' )
 #'
-#' prep_fill_pairwise(
+#' prep_hierarchical_fill(
 #'   df,
 #'   vars = c("x", "y", "z"),
 #'   fill_from = "left"
 #' )
-prep_fill_pairwise <- function(x,
-                               vars,
-                               fill = "Any {colname}",
-                               fill_from = NULL) {
+prep_hierarchical_fill <- function(x,
+                                   vars,
+                                   fill = "Any {colname}",
+                                   fill_from = NULL) {
 
   if (length(vars) < 2) {
     return(x)
@@ -252,7 +252,7 @@ prep_fill_pairwise <- function(x,
 
 #' Generate pairs for pairwise filling
 #'
-#' [prep_fill_pairwise()] does pairwise conditional replacement of `NA`s.
+#' [prep_hierarchical_fill()] does pairwise conditional replacement of `NA`s.
 #' `generate_pairs()` builds those pairs.
 #'
 #' @param x (character) a vector of 2 or more column names
@@ -292,12 +292,12 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
 #' Replace `NA`s pairwise conditionally
 #'
 #' Replace missing values in one variable if a another variable is not `NA`.
-#' This is the function used by [prep_fill_pairwise()] to iterate over the pairs
-#' of columns.
+#' This is the function used by [prep_hierarchical_fill()] to iterate over the
+#' pairs of columns.
 #'
 #' @param x (data.frame) a shuffled card.
 #' @param pair (character) a vector of exactly 2 column names.
-#' @inheritParams prep_fill_pairwise
+#' @inheritParams prep_hierarchical_fill
 #' @inheritParams cli::cli_abort
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)

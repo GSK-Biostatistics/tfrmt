@@ -42,8 +42,8 @@ a list of length 2 character vectors (pairs of column names)
 }
 \description{
 Replace missing values in one variable if a another variable is not \code{NA}.
-This is the function used by \code{\link[=prep_fill_pairwise]{prep_fill_pairwise()}} to iterate over the pairs
-of columns.
+This is the function used by \code{\link[=prep_hierarchical_fill]{prep_hierarchical_fill()}} to iterate over the
+pairs of columns.
 }
 \examples{
 tfrmt:::replace_na_pairwise(
