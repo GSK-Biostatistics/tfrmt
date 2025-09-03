@@ -56,7 +56,8 @@ shuffle_card <- function(x,
   }
   if (!inherits(trim, "logical")) {
     cli::cli_abort(
-      "{.arg trim} argument must be class {.cls logical}}, not {.obj_type_friendly {trim}}"
+      "{.arg trim} argument must be class {.cls logical}}, not \\
+      {.obj_type_friendly {trim}}"
     )
   }
 
@@ -141,7 +142,7 @@ is_shuffled_card <- function(x) {
 
   # detect any warning/error messages and notify user
   .detect_msgs(x, "warning", "error")
-  # flatten ard table for easier viewing ---------------------------------------
+  # flatten ard table for easier viewing
   x |>
     dplyr::select(-any_of(c("fmt_fun", "fmt_fn","warning", "error")))
 }
@@ -161,7 +162,9 @@ is_shuffled_card <- function(x) {
 
   lapply(dots, function(var) {
     if (any(!map_lgl(x[[var]], is.null))) {
-      cli::cli_inform("{.val {var}} column contains messages that will be removed.")
+      cli::cli_inform(
+        "{.val {var}} column contains messages that will be removed."
+      )
     }
   })
 }
@@ -181,7 +184,8 @@ is_shuffled_card <- function(x) {
   if (!is.null(by)){
     if (!is.null(ard_args$by) && !identical(ard_args$by, by)){
       cli::cli_inform(
-        "Mismatch between attributes of {.arg x} and supplied value to {.arg by}. Attributes will be used in lieu of {.arg by}",
+        "Mismatch between attributes of {.arg x} and supplied value to \\
+        {.arg by}. Attributes will be used in lieu of {.arg by}",
         env = rlang::caller_env())
     } else {
       ard_args$by <- by
@@ -228,7 +232,7 @@ is_shuffled_card <- function(x) {
   # determine grouping and merging variables
   id_vars <- setdiff(names(x), unique(c(vars_cards_protected, grp_vars)))
 
-  if (!is_empty(grp_vars) && !is_empty(id_vars)){
+  if (!is_empty(grp_vars) && !is_empty(id_vars)) {
 
     # replace NA group values with "..cards_overall.." where it is likely to be
     # an overall calculation
@@ -246,36 +250,72 @@ is_shuffled_card <- function(x) {
         x_missing_by_replaced <- x_missing_by |>
           dplyr::rows_update(
             x_nonmissing_by |>
-              dplyr::mutate(!!g := ifelse(!is.na(.data[[g]]), "..cards_overall..", .data[[g]])) |>
-              dplyr::select(-any_of(c(setdiff(names(x), c(g, id_vars))))) |>
+              dplyr::mutate(
+                !!g := dplyr::if_else(
+                  !is.na(.data[[g]]),
+                  "..cards_overall..",
+                  .data[[g]]
+                )
+              ) |>
+              dplyr::select(
+                -dplyr::any_of(
+                  c(
+                    setdiff(
+                      names(x),
+                      c(g, id_vars)
+                    )
+                  )
+                )
+              ) |>
               dplyr::distinct(),
             by = id_vars,
             unmatched = "ignore"
           )
 
-        x <- dplyr::rows_update(x, x_missing_by_replaced, by = "..cards_idx..")
+        x <- dplyr::rows_update(
+          x,
+          x_missing_by_replaced,
+          by = "..cards_idx.."
+        )
       }
     }
 
     # replace NA variables with "..hierarchical_overall.." when present
     x <- x |>
-      dplyr::mutate(across(all_of(id_vars),
-                           ~ifelse(is.na(.x) & .data$stat_variable == "..ard_hierarchical_overall..",
-                                   "..hierarchical_overall..",
-                                   .x)))
+      dplyr::mutate(
+        dplyr::across(
+          dplyr::all_of(
+            id_vars
+          ),
+          ~ ifelse(
+            is.na(.x) & .data$stat_variable == "..ard_hierarchical_overall..",
+            "..hierarchical_overall..",
+            .x
+          )
+        )
+      )
   }
 
-  # replace `"..cards_overall.."` and `"..hierarchical_overall.."` with fill values
+  # replace `"..cards_overall.."` and `"..hierarchical_overall.."` with fill
+  # values
   output <- x |>
     dplyr::mutate(
       dplyr::across(
-        tidyselect::all_of(
-          c(grp_vars, setdiff(id_vars, "..cards_idx.."))
+        dplyr::all_of(
+          c(
+            grp_vars,
+            setdiff(
+              id_vars,
+              "..cards_idx.."
+            )
+          )
         ),
-        ~ .derive_overall_labels(.x,
-                                 colname = dplyr::cur_column(),
-                                 fill_overall,
-                                 fill_hierarchical_overall)
+        ~ .derive_overall_labels(
+          .x,
+          colname = dplyr::cur_column(),
+          fill_overall,
+          fill_hierarchical_overall
+        )
       )
     )
 
@@ -300,8 +340,16 @@ is_shuffled_card <- function(x) {
                                    fill_overall,
                                    fill_hierarchical_overall) {
 
-  glue_overall <- ifelse(is.na(fill_overall), NA, glue::glue(fill_overall))
-  glue_any <- ifelse(is.na(fill_hierarchical_overall), NA, glue::glue(fill_hierarchical_overall))
+  glue_overall <- ifelse(
+    is.na(fill_overall),
+    NA,
+    glue::glue(fill_overall)
+  )
+  glue_any <- ifelse(
+    is.na(fill_hierarchical_overall),
+    NA,
+    glue::glue(fill_hierarchical_overall)
+  )
 
   overall_val <- c(unique(x), glue_overall) |>
     make.unique() |>
