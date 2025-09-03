@@ -80,7 +80,7 @@
       Error in `prep_hierarchical_fill()`:
       ! `fill_from` must either be `NULL` or `"left"`. `"foo"` is not an accepted value.
 
-# prep_hierarchical_fill() errors with `fill` non-char
+# prep_hierarchical_fill() errors when `fill` is not character
 
     Code
       prep_hierarchical_fill(df, vars = c("x", "y", "z"), fill = 2)

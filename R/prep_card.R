@@ -4,14 +4,15 @@
 #'
 #' A wrapper around `tidyr::unite()` which pastes several columns into one.
 #' In addition it checks the output is identical to `dplyr::coalesce()`. If not
-#' the input is returned unchanged. Useful for uniting sparsely populated
-#' columns, for example when processing a `shuffled_card` created with
-#' `card::ard_stack()`.
+#' identical, the input data.frame is returned unchanged. Useful for uniting
+#' sparsely populated columns, for example when processing a `shuffled_card`
+#' created with [cards::ard_stack()].
 #'
-#' If the data is the result of a hierarchical ard stack, the input is returned
-#' unchanged.
+#' If the data is the result of a hierarchical ard stack (with
+#' [cards::ard_stack_hierarchical()] or [cards::ard_stack_hierarchical_count()]),
+#' the input is returned unchanged.
 #'
-#' @param x (data.frame)
+#' @param df (data.frame)
 #' @param vars (character) a vector of variables to unite. If a single variable
 #'   is supplied, the input is returned unchanged.
 #' @inheritParams tidyr::unite
@@ -36,26 +37,26 @@
 #'   df,
 #'   vars = c("b", "c", "d", "e", "f", "g")
 #' )
-prep_combine_vars <- function(x, vars, remove = TRUE) {
+prep_combine_vars <- function(df, vars, remove = TRUE) {
 
-  if ("hierarchical" %in% unique(x$context)) {
-    return(x)
+  if ("hierarchical" %in% unique(df$context)) {
+    return(df)
   }
 
   # we do cannot unite a single variable
   if (length(vars) == 1) {
-    return(x)
+    return(df)
   }
 
-  interim <- x |>
-    mutate(
+  interim <- df |>
+    dplyr::mutate(
       var_level_coalesced = coalesce(
         !!!rlang::syms(vars)
       )
     ) |>
     tidyr::unite(
       col = "var_level_untd",
-      tidyselect::all_of(vars),
+      dplyr::all_of(vars),
       na.rm = TRUE,
       remove = remove
     ) |>
@@ -68,7 +69,7 @@ prep_combine_vars <- function(x, vars, remove = TRUE) {
     )
 
   if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
-    return(x)
+    return(df)
   }
 
   output <- interim |>
@@ -119,8 +120,8 @@ prep_combine_vars <- function(x, vars, remove = TRUE) {
 #'   df,
 #'   vars = c("b", "c")
 #' )
-prep_big_n <- function(x, vars) {
-  output <- x |>
+prep_big_n <- function(df, vars) {
+  output <- df |>
     dplyr::mutate(
       stat_name = dplyr::case_when(
         .data$context == "total_n" ~ "bigN",
@@ -146,7 +147,7 @@ prep_big_n <- function(x, vars) {
 #' variables) and `variable_level` (for categorical ones) if these 2 columns are
 #' present in the input data frame.
 #'
-#' @param x (data.frame)
+#' @param df (data.frame)
 #'
 #' @returns a data.frame with a `label` column (if the input has the required
 #'   columns) or the input unchanged.
@@ -160,13 +161,13 @@ prep_big_n <- function(x, vars) {
 #' )
 #'
 #' prep_label(df)
-prep_label <- function(x) {
+prep_label <- function(df) {
 
-  if (!all(c("variable_level", "stat_label") %in% names(x))) {
-    return(x)
+  if (!all(c("variable_level", "stat_label") %in% names(df))) {
+    return(df)
   }
 
-  output <- x |>
+  output <- df |>
     dplyr::mutate(
       label = .data$stat_label,
       label = dplyr::if_else(
@@ -199,7 +200,7 @@ prep_label <- function(x) {
 #'   * Any other value. For example `"Any event"` for an adverse effects table.
 #'   * the value of pair's first column. In this case, the value of `A`.
 #'
-#' @param x (data.frame)
+#' @param df (data.frame)
 #' @param vars (characters) a vector of variables to generate pairs from.
 #' @param fill (character) value to replace with. Defaults to `"Any {colname}"`,
 #'   in which case `colname` will be replaced with the name of the column.
@@ -233,18 +234,18 @@ prep_label <- function(x) {
 #'   vars = c("x", "y", "z"),
 #'   fill_from = "left"
 #' )
-prep_hierarchical_fill <- function(x,
+prep_hierarchical_fill <- function(df,
                                    vars,
                                    fill = "Any {colname}",
                                    fill_from = NULL) {
 
   if (length(vars) < 2) {
-    return(x)
+    return(df)
   }
 
   pair_list <- generate_pairs(vars)
 
-  output <- x
+  output <- df
 
   for (i in seq_along(pair_list)) {
     output <- replace_na_pairwise(

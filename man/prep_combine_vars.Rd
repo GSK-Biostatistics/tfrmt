@@ -4,10 +4,10 @@
 \alias{prep_combine_vars}
 \title{Combine variables}
 \usage{
-prep_combine_vars(x, vars, remove = TRUE)
+prep_combine_vars(df, vars, remove = TRUE)
 }
 \arguments{
-\item{x}{(data.frame)}
+\item{df}{(data.frame)}
 
 \item{vars}{(character) a vector of variables to unite. If a single variable
 is supplied, the input is returned unchanged.}
@@ -23,12 +23,13 @@ the input unchanged.
 
 A wrapper around \code{tidyr::unite()} which pastes several columns into one.
 In addition it checks the output is identical to \code{dplyr::coalesce()}. If not
-the input is returned unchanged. Useful for uniting sparsely populated
-columns, for example when processing a \code{shuffled_card} created with
-\code{card::ard_stack()}.
+identical, the input data.frame is returned unchanged. Useful for uniting
+sparsely populated columns, for example when processing a \code{shuffled_card}
+created with \code{\link[cards:ard_stack]{cards::ard_stack()}}.
 
-If the data is the result of a hierarchical ard stack, the input is returned
-unchanged.
+If the data is the result of a hierarchical ard stack (with
+\code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical()}} or \code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical_count()}}),
+the input is returned unchanged.
 }
 \examples{
 df <- data.frame(

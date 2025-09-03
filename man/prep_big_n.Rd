@@ -4,12 +4,12 @@
 \alias{prep_big_n}
 \title{Prepare \code{bigN} stat variables}
 \usage{
-prep_big_n(x, vars)
+prep_big_n(df, vars)
 }
 \arguments{
-\item{x}{(data.frame)}
-
 \item{vars}{(character) a vector of variables to prepare \code{bigN} for.}
+
+\item{x}{(data.frame)}
 }
 \value{
 a data.frame with the same columns as the input. The \code{stat_name}

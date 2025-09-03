@@ -4,10 +4,10 @@
 \alias{prep_hierarchical_fill}
 \title{Replace \code{NA} in pairs}
 \usage{
-prep_hierarchical_fill(x, vars, fill = "Any {colname}", fill_from = NULL)
+prep_hierarchical_fill(df, vars, fill = "Any {colname}", fill_from = NULL)
 }
 \arguments{
-\item{x}{(data.frame)}
+\item{df}{(data.frame)}
 
 \item{vars}{(characters) a vector of variables to generate pairs from.}
 

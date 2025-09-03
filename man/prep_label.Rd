@@ -4,10 +4,10 @@
 \alias{prep_label}
 \title{Prepare label}
 \usage{
-prep_label(x)
+prep_label(df)
 }
 \arguments{
-\item{x}{(data.frame)}
+\item{df}{(data.frame)}
 }
 \value{
 a data.frame with a \code{label} column (if the input has the required
