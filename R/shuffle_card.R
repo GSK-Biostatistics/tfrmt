@@ -35,7 +35,7 @@
 #'   cards::ard_categorical(cards::ADSL, variables = "ARM")
 #' ) |>
 #'   shuffle_card()
-#'   }
+#' }
 shuffle_card <- function(x,
                          by = NULL,
                          trim = TRUE,
@@ -43,15 +43,21 @@ shuffle_card <- function(x,
                          fill_overall = "Overall {colname}",
                          fill_hierarchical_overall = "Any {colname}") {
 
+  if (!requireNamespace("cards", quietly = TRUE)) {
+    cli::cli_abort(
+      "The {.pkg cards} package must be installed to use this function."
+    )
+  }
+
   if (!inherits(x, "card")) {
     cli::cli_abort(
-      "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}",
-    env = rlang::caller_env())
+      "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}"
+    )
   }
   if (!inherits(trim, "logical")) {
     cli::cli_abort(
-      "{.arg trim} argument must be class {.cls logical}}, not {.obj_type_friendly {trim}}",
-      env = rlang::caller_env())
+      "{.arg trim} argument must be class {.cls logical}}, not {.obj_type_friendly {trim}}"
+    )
   }
 
   ard_args <- attributes(x)$args
