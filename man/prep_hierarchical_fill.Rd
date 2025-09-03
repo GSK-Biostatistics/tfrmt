@@ -22,7 +22,7 @@ a data.frame with the same columns as the input, but in which some
 the desired columns have been filled pairwise.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Replace \code{NA} values in one column conditional on the same row having a
 non-NA value in a different column.

@@ -19,7 +19,7 @@ a data.frame with an additional column, called \code{variable_level} or
 the input unchanged.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 A wrapper around \code{tidyr::unite()} which pastes several columns into one.
 In addition it checks the output is identical to \code{dplyr::coalesce()}. If not

@@ -14,7 +14,7 @@ a data.frame with a \code{label} column (if the input has the required
 columns) or the input unchanged.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Adds a \code{label} column which is a combination of \code{stat_label} (for continuous
 variables) and \code{variable_level} (for categorical ones) if these 2 columns are
