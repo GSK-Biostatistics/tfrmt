@@ -152,10 +152,24 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
       ) %>%
-      filter(!is.na(.data$`__tfrmt_big_n_values__`) & .data$`__tfrmt_big_n_values__` != "") %>%
+      filter(
+        !is.na(.data$`__tfrmt_big_n_values__`) &
+          .data$`__tfrmt_big_n_values__` != ""
+      ) %>%
       group_by(.data$`_tfrmt______id`) %>%
-      mutate(exp = paste0(.data$`__tfrmt_big_n_names__`, "=='", .data$`__tfrmt_big_n_values__`, "'",  collapse = "&"),
-             `__tfrmt_big_n_names__` = paste0("__tfrmt_new_name__", .data$`__tfrmt_big_n_names__`)) %>%
+      mutate(
+        exp = paste0(
+          .data$`__tfrmt_big_n_names__`,
+          "=='",
+          .data$`__tfrmt_big_n_values__`,
+          "'",
+          collapse = "&"
+        ),
+        `__tfrmt_big_n_names__` = paste0(
+          "__tfrmt_new_name__",
+          .data$`__tfrmt_big_n_names__`
+        )
+      ) %>%
       slice_tail() %>%
       ungroup()%>%
       select(-"_tfrmt______id")
@@ -166,11 +180,19 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock){
           group_split()
       } else {
         data_out <- data_out |>
-          unite("..tfrmt_big_n_order..", all_of(by_var),remove = FALSE) %>%
-          mutate(`..tfrmt_big_n_order..` = fct_inorder(`..tfrmt_big_n_order..`))%>%
-          group_by(`..tfrmt_big_n_order..`) %>%
+          unite(
+            "..tfrmt_big_n_order..",
+            all_of(by_var),
+            remove = FALSE
+          ) %>%
+          mutate(
+            `..tfrmt_big_n_order..` = fct_inorder(.data$`..tfrmt_big_n_order..`)
+          ) %>%
+          group_by(.data$`..tfrmt_big_n_order..`) %>%
           group_split() %>%
-          map(~select(.x, -"..tfrmt_big_n_order.."))
+          map(
+            ~select(.x, -"..tfrmt_big_n_order..")
+          )
       }
 
     }
