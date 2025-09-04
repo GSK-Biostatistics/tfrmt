@@ -569,7 +569,7 @@ test_that("prep_combine_vars() returns the input when context hierarchical", {
   )
 })
 
-test_that("prep_combine_vars() return the input unchanged when length(vars)=1", {
+test_that("prep_combine_vars() return input unchanged when length(vars)=1", {
 
   df <- tibble::tibble(
     a = 1:6,
@@ -652,6 +652,34 @@ test_that("prep_combine_vars() informs when the context col is missing", {
   )
 })
 
+test_that("prep_combine_vars() errors when `vars` is not character", {
+  df <- tibble::tibble(
+    a = 1:6,
+    b = c("a", rep(NA, 5)),
+    c = c(NA, "b", rep(NA, 4)),
+    d = c(NA, "b", rep(NA, 4)),
+    e = c(NA, "b", rep(NA, 4)),
+    f = c(NA, NA, NA, NA, "e", NA),
+    g = c(rep(NA, 5), "f")
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_combine_vars(
+      df,
+      vars = 1:3
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_combine_vars(
+      df,
+      vars = c(TRUE, FALSE)
+    )
+  )
+})
+
 test_that("prep_big_n() works", {
   df <- tibble::tibble(
     stat_name = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
@@ -707,13 +735,43 @@ test_that("prep_big_n() informs when required columns are missing", {
 
   expect_identical(
     suppressMessages(
-      prep_big_n(df)
+      prep_big_n(
+        df,
+        vars = "a"
+      )
     ),
     df
   )
 
   expect_snapshot(
-    prep_big_n(df)
+    prep_big_n(
+      df,
+      vars = "a"
+    )
+  )
+})
+
+test_that("prep_big_n() errors when `vars` is not character", {
+  df <- tibble::tibble(
+    a = c("n", "max", "min", rep(c("n", "N", "p"), times = 2)),
+    context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
+    stat_variable = rep(c("a", "b", "c"), each = 3)
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_big_n(
+      df,
+      vars = 1
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_big_n(
+      df,
+      vars = TRUE
+    )
   )
 })
 
@@ -775,7 +833,7 @@ test_that("prep_label() returns the input when the required cols are missing", {
   )
 })
 
-test_that("prep_hierarchical_fill() returns the input when `length(vars) < 2`", {
+test_that("prep_hierarchical_fill() returns input when `length(vars) < 2`", {
   df <- tibble::tibble(
     x = c(1, 2, NA),
     y = c("a", NA, "b"),
@@ -926,7 +984,7 @@ test_that("prep_hierarchical_fill() with `fill_from='left'` works", {
   )
 })
 
-test_that("prep_hierarchical_fill() complains with `fill_from` other than 'left'", {
+test_that("prep_hierarchical_fill() complains with `fill_from` != 'left'", {
 
   df <- tibble::tibble(
     x = c(1, 2, NA),
@@ -940,6 +998,31 @@ test_that("prep_hierarchical_fill() complains with `fill_from` other than 'left'
       df,
       vars = c("x", "y", "z"),
       fill_from = "foo"
+    )
+  )
+})
+
+test_that("prep_hierarchical_fill() errors when `vars` is not character", {
+
+  df <- tibble::tibble(
+    x = c(1, 2, NA),
+    y = c("a", NA, "b"),
+    z = rep(NA, "3")
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_hierarchical_fill(
+      df,
+      vars = 1:3
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    prep_hierarchical_fill(
+      df,
+      vars = c(TRUE, FALSE)
     )
   )
 })

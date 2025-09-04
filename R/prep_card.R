@@ -12,10 +12,11 @@ prep_info_return <- "Unable to apply {.fn {prep_func}}."
 #' created with [cards::ard_stack()].
 #'
 #' If the data is the result of a hierarchical ard stack (with
-#' [cards::ard_stack_hierarchical()] or [cards::ard_stack_hierarchical_count()]),
-#' the input is returned unchanged. This is assessed from the information in the
-#' `context` column. If the input data does not have a column called `context`,
-#' the input will be returned unmodified.
+#' [cards::ard_stack_hierarchical()] or
+#' [cards::ard_stack_hierarchical_count()]), the input is returned unchanged.
+#' This is assessed from the information in the `context` column which needs to
+#' be present. If the input data does not have a `context` column, the input
+#' will be returned unmodified.
 #'
 #' @param df (data.frame)
 #' @param vars (character) a vector of variables to unite. If a single variable
@@ -43,6 +44,13 @@ prep_info_return <- "Unable to apply {.fn {prep_func}}."
 #'   vars = c("b", "c", "d", "e", "f", "g")
 #' )
 prep_combine_vars <- function(df, vars, remove = TRUE) {
+
+  if (!rlang::is_character(vars)) {
+    cli::cli_abort(
+      "{.arg vars} must be a character vector. You have supplied \\
+      {.obj_type_friendly {vars}}."
+    )
+  }
 
   prep_func <- rlang::frame_call() |>
     rlang::call_name()
@@ -165,6 +173,13 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 #' )
 prep_big_n <- function(df, vars) {
 
+  if (!rlang::is_character(vars)) {
+    cli::cli_abort(
+      "{.arg vars} must be a character vector. You have supplied \\
+      {.obj_type_friendly {vars}}."
+    )
+  }
+
   prep_func <- rlang::frame_call() |>
     rlang::call_name()
 
@@ -228,6 +243,7 @@ prep_label <- function(df) {
 
   prep_func <- rlang::frame_call() |>
     rlang::call_name()
+
   required_cols <- c("context", "variable_level", "stat_label", "stat_name")
   missing_cols <- setdiff(required_cols, names(df))
 
@@ -314,6 +330,13 @@ prep_hierarchical_fill <- function(df,
                                    vars,
                                    fill = "Any {colname}",
                                    fill_from = NULL) {
+
+  if (!rlang::is_character(vars)) {
+    cli::cli_abort(
+      "{.arg vars} must be a character vector. You have supplied \\
+      {.obj_type_friendly {vars}}."
+    )
+  }
 
   prep_func <- rlang::frame_call() |>
     rlang::call_name()

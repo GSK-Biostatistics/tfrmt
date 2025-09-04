@@ -366,7 +366,7 @@
       5     5 hierarchical <NA>  <NA>  <NA>  <NA>  e     <NA> 
       6     6 hierarchical <NA>  <NA>  <NA>  <NA>  <NA>  f    
 
-# prep_combine_vars() return the input unchanged when length(vars)=1
+# prep_combine_vars() return input unchanged when length(vars)=1
 
     Code
       prep_combine_vars(df, vars = "b")
@@ -420,6 +420,22 @@
       5     5 <NA>  <NA>  <NA>  <NA>  e     <NA> 
       6     6 <NA>  <NA>  <NA>  <NA>  <NA>  f    
 
+# prep_combine_vars() errors when `vars` is not character
+
+    Code
+      prep_combine_vars(df, vars = 1:3)
+    Condition
+      Error in `prep_combine_vars()`:
+      ! `vars` must be a character vector. You have supplied an integer vector.
+
+---
+
+    Code
+      prep_combine_vars(df, vars = c(TRUE, FALSE))
+    Condition
+      Error in `prep_combine_vars()`:
+      ! `vars` must be a character vector. You have supplied a logical vector.
+
 # prep_big_n() works
 
     Code
@@ -455,7 +471,7 @@
 # prep_big_n() informs when required columns are missing
 
     Code
-      prep_big_n(df)
+      prep_big_n(df, vars = "a")
     Message
       i Required column (`stat_name`) not present in the input data.
       * Unable to apply `prep_big_n()`.
@@ -472,6 +488,22 @@
       7 n     categorical  c            
       8 N     categorical  c            
       9 p     categorical  c            
+
+# prep_big_n() errors when `vars` is not character
+
+    Code
+      prep_big_n(df, vars = 1)
+    Condition
+      Error in `prep_big_n()`:
+      ! `vars` must be a character vector. You have supplied a number.
+
+---
+
+    Code
+      prep_big_n(df, vars = TRUE)
+    Condition
+      Error in `prep_big_n()`:
+      ! `vars` must be a character vector. You have supplied `TRUE`.
 
 # prep_label() works
 
@@ -521,7 +553,7 @@
       2 e              b     continuous  
       3 f              c     hierarchical
 
-# prep_hierarchical_fill() returns the input when `length(vars) < 2`
+# prep_hierarchical_fill() returns input when `length(vars) < 2`
 
     Code
       prep_hierarchical_fill(df, vars = "y")
@@ -536,13 +568,29 @@
       2     2 <NA>  NA   
       3    NA b     NA   
 
-# prep_hierarchical_fill() complains with `fill_from` other than 'left'
+# prep_hierarchical_fill() complains with `fill_from` != 'left'
 
     Code
       prep_hierarchical_fill(df, vars = c("x", "y", "z"), fill_from = "foo")
     Condition
       Error in `prep_hierarchical_fill()`:
       ! `fill_from` must either be `NULL` or `"left"`. `"foo"` is not an accepted value.
+
+# prep_hierarchical_fill() errors when `vars` is not character
+
+    Code
+      prep_hierarchical_fill(df, vars = 1:3)
+    Condition
+      Error in `prep_hierarchical_fill()`:
+      ! `vars` must be a character vector. You have supplied an integer vector.
+
+---
+
+    Code
+      prep_hierarchical_fill(df, vars = c(TRUE, FALSE))
+    Condition
+      Error in `prep_hierarchical_fill()`:
+      ! `vars` must be a character vector. You have supplied a logical vector.
 
 # prep_hierarchical_fill() errors when `fill` is not character
 
