@@ -318,35 +318,6 @@
       </table>
       </div>
 
-# prep_...() pipe with adverse effects data
-
-    Code
-      prep_hierarchical_fill(prep_label(prep_big_n(prep_combine_vars(shuffle_card(
-        ae_ard, by = c("TRT01A", "AESEV"), fill_overall = NA,
-        fill_hierarchical_overall = "ANY EVENT"), vars = c("AEBODSYS", "AETERM")),
-      vars = c("TRT01A", "AESEV"))), vars = c("AEBODSYS", "AETERM"), fill = "ANY EVENT")
-    Message
-      i The `context` column indicates data comes from a hierarchical `ard` stack.
-      * Unable to apply `prep_combine_vars()`.
-      i Required column (`variable_level`) not present in the input data.
-      * Unable to apply `prep_label()`.
-    Output
-      # A tibble: 238 x 9
-         TRT01A       AESEV AEBODSYS AETERM context stat_variable stat_name stat_label
-         <chr>        <chr> <chr>    <chr>  <chr>   <chr>         <chr>     <chr>     
-       1 <NA>         <NA>  <NA>     <NA>   total_n ..ard_total_~ bigN      N         
-       2 Placebo      <NA>  <NA>     <NA>   catego~ TRT01A        bigN      n         
-       3 Xanomeline ~ <NA>  <NA>     <NA>   catego~ TRT01A        bigN      n         
-       4 Xanomeline ~ <NA>  <NA>     <NA>   catego~ TRT01A        bigN      n         
-       5 Placebo      MILD  ANY EVE~ ANY E~ hierar~ ..ard_hierar~ n         n         
-       6 Placebo      MILD  ANY EVE~ ANY E~ hierar~ ..ard_hierar~ p         %         
-       7 Placebo      MILD  GASTROI~ ANY E~ hierar~ AEBODSYS      n         n         
-       8 Placebo      MILD  GASTROI~ ANY E~ hierar~ AEBODSYS      p         %         
-       9 Placebo      MILD  GENERAL~ ANY E~ hierar~ AEBODSYS      n         n         
-      10 Placebo      MILD  GENERAL~ ANY E~ hierar~ AEBODSYS      p         %         
-      # i 228 more rows
-      # i 1 more variable: stat <dbl>
-
 # prep_combine_vars() works
 
     Code

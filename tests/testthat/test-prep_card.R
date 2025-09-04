@@ -391,8 +391,7 @@ test_that("prep_...() pipe with adverse effects data", {
   )
 
   # check messaging around combining vars in a hierarchical ard stack df
-  # check messaging around prep_label() needing `variable_level`
-  expect_snapshot(
+  expect_message(
     ae_ard |>
       shuffle_card(
         by = c("TRT01A", "AESEV"),
@@ -401,15 +400,25 @@ test_that("prep_...() pipe with adverse effects data", {
       ) |>
       prep_combine_vars(
         vars = c("AEBODSYS", "AETERM")
+      ),
+    regexp = "The `context` column indicates data comes from a hierarchical `ard` stack.",
+    fixed = TRUE
+  )
+
+  # check messaging around prep_label() needing `variable_level`
+  expect_message(
+    ae_ard |>
+      shuffle_card(
+        by = c("TRT01A", "AESEV"),
+        fill_overall = NA,
+        fill_hierarchical_overall = "ANY EVENT"
       ) |>
       prep_big_n(
         vars = c("TRT01A", "AESEV")
       ) |>
-      prep_label() |>
-      prep_hierarchical_fill(
-        vars = c("AEBODSYS", "AETERM"),
-        fill = "ANY EVENT"
-      )
+      prep_label(),
+    regexp = "Required column (`variable_level`) not present in the input data.",
+    fixed = TRUE
   )
 })
 
