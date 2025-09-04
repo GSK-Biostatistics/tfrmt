@@ -2,18 +2,21 @@
 
 
 Improvements
-* Added `prep_...()` functions to reduce the manual processing required for a 
-`card` object before its use with {tfrmt}. (#509, @dragosmg)
-  * `prep_combine_vars()`: useful for combining sparsely populated columns into 
-  a single one.
-  * `prep_big_n()`: useful when the tfrmt contains a bigN structure. It recodes 
-  the `"n"` `stat_name` into `"bigN"` for the desired variables.
-  * `prep_label()`: combines `stat_label` and `variable_level` for categorical 
-  (or categorical-like) variables.
-  * `prep_hierarchical_fill()`: does a pair-wise replacement of missing values 
-  (`NAs`) in one column based on another column. It can replace `NA` either 
-  with a predetermined value, with the value of the other column in the pair, or
-  with a {glue} expression.
+
+* Working with ARDs: 
+  * Added `shuffle_card()`, which prepares an ARD object for analysis. 
+  * Added `prep_...()` functions to reduce the manual processing required for an 
+  ARD object once it has been shuffled. (#509, @dragosmg)
+    * `prep_combine_vars()`: useful for combining sparsely populated columns into 
+    a single one.
+    * `prep_big_n()`: useful when the tfrmt contains a bigN structure. It recodes 
+    the `"n"` `stat_name` into `"bigN"` for the desired variables.
+    * `prep_label()`: combines `stat_label` and `variable_level` for categorical 
+    (or categorical-like) variables.
+    * `prep_hierarchical_fill()`: does a pair-wise replacement of missing values 
+    (`NAs`) in one column based on another column. It can replace `NA` either 
+    with a predetermined value, with the value of the other column in the pair, or
+    with a {glue} expression.
 * Updated RTF footnotes so they go in the document footer by default.
 
 Bug fixes 
