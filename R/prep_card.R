@@ -8,8 +8,8 @@ prep_info_return <- "Unable to apply {.fn {prep_func}}."
 #' A wrapper around `tidyr::unite()` which pastes several columns into one.
 #' In addition it checks the output is identical to `dplyr::coalesce()`. If not
 #' identical, the input data.frame is returned unchanged. Useful for uniting
-#' sparsely populated columns, for example when processing a `shuffled_card`
-#' created with [cards::ard_stack()].
+#' sparsely populated columns, for example when processing an ard that was
+#' created with [cards::ard_stack()] then shuffled with `[shuffle_card()]`.
 #'
 #' If the data is the result of a hierarchical ard stack (with
 #' [cards::ard_stack_hierarchical()] or
