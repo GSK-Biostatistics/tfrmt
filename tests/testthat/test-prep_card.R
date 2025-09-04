@@ -218,6 +218,11 @@ test_that("prep_...() pipe with demographic data", {
     )
 
   expect_identical(
+    nrow(ard_tbl),
+    nrow(prepped_ard)
+  )
+
+  expect_identical(
     dplyr::arrange(ard_tbl, ord1, ord2),
     dplyr::arrange(prepped_ard, ord1, ord2)
   )
