@@ -1183,19 +1183,3 @@ test_that("replace_na_pairwise() complains", {
   )
 
 })
-
-test_that("is_card_with_attributes() works", {
-  df <- tibble::tibble(
-    context = c("categorical", "attributes"),
-    a = 1:2
-  )
-
-  expect_true(is_card_with_attributes(df))
-
-  df2 <- tibble::tibble(
-    context = c("categorical", "continuous"),
-    a = 1:2
-  )
-
-  expect_false(is_card_with_attributes(df2))
-})

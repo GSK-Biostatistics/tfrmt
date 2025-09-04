@@ -24,8 +24,8 @@ the input unchanged.
 A wrapper around \code{tidyr::unite()} which pastes several columns into one.
 In addition it checks the output is identical to \code{dplyr::coalesce()}. If not
 identical, the input data.frame is returned unchanged. Useful for uniting
-sparsely populated columns, for example when processing a \code{shuffled_card}
-created with \code{\link[cards:ard_stack]{cards::ard_stack()}}.
+sparsely populated columns, for example when processing an ard that was
+created with \code{\link[cards:ard_stack]{cards::ard_stack()}} then shuffled with \verb{[shuffle_card()]}.
 
 If the data is the result of a hierarchical ard stack (with
 \code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical()}} or

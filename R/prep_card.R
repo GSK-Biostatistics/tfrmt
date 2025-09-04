@@ -490,33 +490,3 @@ replace_na_pairwise <- function(x,
 
   output
 }
-
-#' Check `card` has attributes
-#'
-#' Checks if `card` was created with `attributes = TRUE`. Useful when working
-#' with labelled columns and we want to ensure the labels are persistent. Also
-#' useful if we want to trim the incoming shuffled card.
-#'
-#' @param x (data.frame) a shuffled card
-#'
-#' @returns `TRUE` if the input data.frame has `"attributes"` in the `context`
-#'   column.
-#' @keywords internal
-#'
-#' @examples
-#' df <- data.frame(
-#'   context = c("categorical", "attributes"),
-#'   a = 1:2
-#' )
-#'
-#' tfrmt:::is_card_with_attributes(df)
-is_card_with_attributes <- function(x) {
-  shuffled_card_attributes_df <- x |>
-    dplyr::filter(
-      .data$context == "attributes"
-    )
-
-  output <- nrow(shuffled_card_attributes_df) > 0
-
-  output
-}
