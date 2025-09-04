@@ -47,10 +47,14 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
   prep_func <- rlang::frame_call() |>
     rlang::call_name()
 
-  if (!"context" %in% names(df)) {
+  required_cols <- "context"
+  missing_cols <- setdiff(required_cols, names(df))
+
+  if (!rlang::is_empty(missing_cols)) {
     cli::cli_inform(
       c(
-        "i" = "The {.code context} column is missing from the input data.",
+        "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
+        the input data.",
         "*" = prep_info_return
       )
     )
@@ -165,11 +169,13 @@ prep_big_n <- function(df, vars) {
     rlang::call_name()
 
   required_cols <- c("context", "stat_variable", "stat_name")
+  missing_cols <- setdiff(required_cols, names(df))
 
-  if (!all(required_cols %in% names(df))) {
+  if (!rlang::is_empty(missing_cols)) {
     cli::cli_inform(
       c(
-        "i" = "{.code {required_cols}} columns need to be present in the input data.",
+        "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
+        the input data.",
         "*" = prep_info_return
       )
     )

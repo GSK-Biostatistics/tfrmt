@@ -436,7 +436,7 @@
     Code
       prep_combine_vars(df, vars = c("b", "c", "d", "e", "f", "g"))
     Message
-      i The `context` column is missing from the input data.
+      i Required column (`context`) not present in the input data.
       * Unable to apply `prep_combine_vars()`.
     Output
       # A tibble: 6 x 7
@@ -486,7 +486,7 @@
     Code
       prep_big_n(df)
     Message
-      i `context`, `stat_variable`, and `stat_name` columns need to be present in the input data.
+      i Required column (`stat_name`) not present in the input data.
       * Unable to apply `prep_big_n()`.
     Output
       # A tibble: 9 x 3
