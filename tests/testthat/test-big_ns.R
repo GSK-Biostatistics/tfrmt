@@ -952,6 +952,12 @@ output_list <- tfrmt_two_groups %>%
 # Expect two elements in the output list, one for each `By group` value
 expect_length(output_list, 2)
 
+# Check the order of page notes
+expect_equal(
+  map_chr(output_list, ~attr(.x, ".page_note")),
+  c("by group: 101", "by group: 102")
+)
+
 # Check the first page (`by group` = "101")
 page_1_names <- names(output_list[[1]])
 expect_equal(
