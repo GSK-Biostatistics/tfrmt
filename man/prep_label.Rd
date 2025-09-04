@@ -24,6 +24,7 @@ present in the input data frame.
 df <- data.frame(
   variable_level = c("d", "e", "f"),
   stat_label = c("a", "b", "c"),
+  stat_name = c("n", "N", "n"),
   context = c("categorical", "continuous", "hierarchical")
 )
 
