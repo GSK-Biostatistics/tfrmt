@@ -28,10 +28,11 @@ sparsely populated columns, for example when processing a \code{shuffled_card}
 created with \code{\link[cards:ard_stack]{cards::ard_stack()}}.
 
 If the data is the result of a hierarchical ard stack (with
-\code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical()}} or \code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical_count()}}),
-the input is returned unchanged. This is assessed from the information in the
-\code{context} column. If the input data does not have a column called \code{context},
-the input will be returned unmodified.
+\code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical()}} or
+\code{\link[cards:ard_stack_hierarchical]{cards::ard_stack_hierarchical_count()}}), the input is returned unchanged.
+This is assessed from the information in the \code{context} column which needs to
+be present. If the input data does not have a \code{context} column, the input
+will be returned unmodified.
 }
 \examples{
 df <- data.frame(
