@@ -198,7 +198,8 @@ test_that("prep_...() pipe with demographic data", {
       # we need these additional steps for compatibility with the manual
       # processing
       label = dplyr::if_else(
-        .data$stat_name == "bigN" & .data$context == "categorical",
+        .data$stat_name == "bigN" &
+          .data$context %in% c("categorical", "tabulate"),
         ARM,
         .data$label
       ),
@@ -216,11 +217,6 @@ test_that("prep_...() pipe with demographic data", {
       ord1,
       ord2
     )
-
-  expect_identical(
-    nrow(ard_tbl),
-    nrow(prepped_ard)
-  )
 
   expect_identical(
     dplyr::arrange(ard_tbl, ord1, ord2),
