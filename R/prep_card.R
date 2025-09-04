@@ -221,12 +221,14 @@ prep_label <- function(df) {
 
   prep_func <- rlang::frame_call() |>
     rlang::call_name()
-  required_cols <- c("variable_level", "stat_label")
+  required_cols <- c("context", "variable_level", "stat_label", "stat_name")
+  missing_cols <- setdiff(required_cols, names(df))
 
-  if (!all(required_cols %in% names(df))) {
+  if (!rlang::is_empty(missing_cols)) {
     cli::cli_inform(
       c(
-        "i" = "{.code {required_cols}} columns need to be present in the input data.",
+        "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
+        the input data.",
         "*" = prep_info_return
       )
     )
@@ -237,7 +239,7 @@ prep_label <- function(df) {
     dplyr::mutate(
       label = .data$stat_label,
       label = dplyr::if_else(
-        .data$context %in% c("categorical", "tabulate"),
+        .data$context != "continuous" & .data$stat_name %in% c("n", "N", "p"),
         .data$variable_level,
         .data$label
       )
@@ -268,7 +270,7 @@ prep_label <- function(df) {
 #'   * the value of pair's first column. In this case, the value of `A`.
 #'
 #' @param df (data.frame)
-#' @param vars (characters) a vector of variables to generate pairs from.
+#' @param vars (character) a vector of variables to generate pairs from.
 #' @param fill (character) value to replace with. Defaults to `"Any {colname}"`,
 #'   in which case `colname` will be replaced with the name of the column.
 #' @param fill_from (character) indicating whether to fill from the left column
