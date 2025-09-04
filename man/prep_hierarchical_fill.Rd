@@ -9,7 +9,7 @@ prep_hierarchical_fill(df, vars, fill = "Any {colname}", fill_from = NULL)
 \arguments{
 \item{df}{(data.frame)}
 
-\item{vars}{(characters) a vector of variables to generate pairs from.}
+\item{vars}{(character) a vector of variables to generate pairs from.}
 
 \item{fill}{(character) value to replace with. Defaults to \code{"Any {colname}"},
 in which case \code{colname} will be replaced with the name of the column.}
