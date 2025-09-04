@@ -262,7 +262,8 @@ prep_label <- function(df) {
     dplyr::mutate(
       label = .data$stat_label,
       label = dplyr::if_else(
-        .data$context != "continuous" & .data$stat_name %in% c("n", "N", "p"),
+        !.data$context %in% c("continuous", "summary") &
+          .data$stat_name %in% c("n", "N", "p"),
         .data$variable_level,
         .data$label
       )
