@@ -217,10 +217,10 @@ test_that("prep_...() pipe with demographic data", {
       ord2
     )
 
-  # expect_identical(
-  #   dplyr::arrange(ard_tbl, ord1, ord2),
-  #   dplyr::arrange(prepped_ard, ord1, ord2)
-  # )
+  expect_identical(
+    dplyr::arrange(ard_tbl, ord1, ord2),
+    dplyr::arrange(prepped_ard, ord1, ord2)
+  )
 
   expect_no_error(
     b <- print_to_gt(dm_t01, prepped_ard)
@@ -360,13 +360,9 @@ test_that("prep_...() pipe with adverse effects data", {
       fill_overall = NA,
       fill_hierarchical_overall = "ANY EVENT"
     ) |>
-    # prep_combine_vars(
-    #   vars = c("AEBODSYS", "AETERM")
-    # ) |>
     prep_big_n(
       vars = c("TRT01A", "AESEV")
     ) |>
-    # prep_label() |>
     prep_hierarchical_fill(
       vars = c("AEBODSYS", "AETERM"),
       fill = "ANY EVENT"
@@ -421,82 +417,6 @@ test_that("prep_...() pipe with adverse effects data", {
     fixed = TRUE
   )
 })
-
-
-#
-# test_that("prep_card() fails when column is not character", {
-#
-#   # data prep -------------------------------------------------------------
-#   adsl <- pharmaverseadam::adsl |>
-#     dplyr::filter(SAFFL == "Y") |>
-#     dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE)
-#
-#   # create card -----------------------------------------------------------
-#   ard <- cards::ard_stack(
-#     data = adsl,
-#     .by = ARM,
-#     cards::ard_continuous(
-#       variables = AGE,
-#       statistic = ~ cards::continuous_summary_fns(
-#         c("N", "mean", "sd", "min", "max")
-#       )
-#     ),
-#     cards::ard_categorical(
-#       variables = c(AGEGR1, SEX, ETHNIC, RACE)
-#     ),
-#     .overall = TRUE,
-#     .total_n = TRUE
-#   )
-#
-#
-#   expect_snapshot(
-#     error = TRUE,
-#     prep_card(ard, column = 2),
-#   )
-# })
-#
-# test_that("prep_card() removes context == 'attributes'", {
-#
-#   # data prep -------------------------------------------------------------
-#   adsl <- cards::ADSL |>
-#     dplyr::filter(SAFFL == "Y") |>
-#     dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE)
-#
-#   # create card -----------------------------------------------------------
-#   ard <- cards::ard_stack(
-#     data = adsl,
-#     .by = ARM,
-#     cards::ard_continuous(
-#       variables = AGE,
-#       statistic = ~ cards::continuous_summary_fns(
-#         c("N", "mean", "sd", "min", "max")
-#       )
-#     ),
-#     cards::ard_categorical(
-#       variables = c(AGEGR1, SEX, ETHNIC, RACE)
-#     ),
-#     .overall = TRUE,
-#     .total_n = TRUE,
-#     .attributes = TRUE
-#   )
-#
-#   # expect_equal since there are some small differences in the `stat` column
-#   # which `shuffle_card()` returns as character. the conversion to double
-#   # seems to be lossy
-#   expect_equal(
-#     prep_card(
-#       ard,
-#       column = "ARM"
-#     ) |>
-#       dplyr::mutate(
-#         stat = as.double(stat)
-#       ),
-#     prep_card(
-#       ard |> dplyr::filter(context != "attributes"),
-#       column = "ARM"
-#     )
-#   )
-# })
 
 test_that("prep_combine_vars() works", {
   df <- tibble::tibble(
