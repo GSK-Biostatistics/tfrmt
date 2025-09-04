@@ -422,39 +422,7 @@ test_that("prep_...() pipe with adverse effects data", {
   )
 })
 
-# test_that("prep_card() with and w/out shuffle_card() outputs identical", {
-#
-#   # data prep -------------------------------------------------------------
-#   adsl <- pharmaverseadam::adsl |>
-#     dplyr::filter(SAFFL == "Y") |>
-#     dplyr::select(USUBJID, ARM, SEX, AGE, AGEGR1, ETHNIC, RACE)
-#
-#   # create card -----------------------------------------------------------
-#   ard <- cards::ard_stack(
-#     data = adsl,
-#     .by = ARM,
-#     cards::ard_continuous(
-#       variables = AGE,
-#       statistic = ~ cards::continuous_summary_fns(
-#         c("N", "mean", "sd", "min", "max")
-#       )
-#     ),
-#     cards::ard_categorical(
-#       variables = c(AGEGR1, SEX, ETHNIC, RACE)
-#     ),
-#     .overall = TRUE,
-#     .total_n = TRUE
-#   )
-#
-#
-#   expect_identical(
-#     ard |>
-#       prep_card(column = "ARM"),
-#     ard |>
-#       shuffle_card(by = "ARM") |>
-#       prep_card(column = "ARM")
-#   )
-# })
+
 #
 # test_that("prep_card() fails when column is not character", {
 #
