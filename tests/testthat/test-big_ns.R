@@ -885,3 +885,99 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
     fixed = TRUE
   )
 })
+
+
+test_that("Two grouping variables with a page_plan work as expected (renamed variables with a space)", {
+
+# Create the original data frame
+original_data <- tibble(
+  Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+  Label = rep("n", 6),
+  Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+  Param = rep("n", 6),
+  Value = c(12, 14, 31, 20, 32, 18)
+) %>%
+  mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+
+# Duplicate the data and add the `by group` column
+data_101 <- original_data %>% mutate(`by group` = "101")
+data_102 <- original_data %>% mutate(`by group` = "102")
+
+# Combine the two data frames
+data <- bind_rows(data_101, data_102)
+
+# Create mock big Ns
+big_ns <- data %>%
+  group_by(`by group`, Column) %>%
+  summarise(Value = sum(Value)) %>%
+  mutate(Param = "bigN") %>%
+  filter(`by group` == "101") %>%
+  ungroup()
+
+data <- bind_rows(data, big_ns)|>
+  arrange(desc(Group))
+
+# Define the tfrmt object with two grouping variables and a page_plan
+tfrmt_two_groups <- tfrmt(
+  group = c(`by group`, Group),
+  label = Label,
+  column = Column,
+  value = Value,
+  param = Param,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+  ),
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = " "))
+  ),
+  page_plan = page_plan(
+    page_structure(
+      group_val = list(`by group` = ".default")
+    ),
+    note_loc = "subtitle"
+  ),
+  big_n = big_n_structure(param_val = "bigN"),
+  col_plan = col_plan(-`by group`)
+)
+
+# Apply the tfrmt and check the output for each page
+output_list <- tfrmt_two_groups %>%
+  apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+
+# Expect two elements in the output list, one for each `By group` value
+expect_length(output_list, 2)
+
+# Check the order of page notes
+expect_equal(
+  map_chr(output_list, ~attr(.x, ".page_note")),
+  c("by group: 101", "by group: 102")
+)
+
+# Check the first page (`by group` = "101")
+page_1_names <- names(output_list[[1]])
+expect_equal(
+  page_1_names,
+  c(
+    "Label",
+    "ord1",
+    "Placebo\nN = 32",
+    "Treatment\nN = 46",
+    "Total\nN = 49",
+    "..tfrmt_row_grp_lbl"
+  )
+)
+
+# Check the second page (`by group` = "102")
+page_2_names <- names(output_list[[2]])
+expect_equal(
+  page_2_names,
+  c(
+    "Label",
+    "ord1",
+    "Placebo\nN = 32",
+    "Treatment\nN = 46",
+    "Total\nN = 49",
+    "..tfrmt_row_grp_lbl"
+  )
+)
+})
