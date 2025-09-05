@@ -171,7 +171,7 @@ shuffle_card <- function(x,
 #' @param by Grouping variable(s) used in calculations. Defaults to `NULL`.
 #'
 #' @returns character string if `by` variable present
-#' @keywords internal
+#' @noRd
 .process_by <- function(x, by){
 
   ard_attributes <- attributes(x)
