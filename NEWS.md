@@ -6,7 +6,7 @@ Improvements
 * Working with ARDs created from the {cards} package: 
   * Added `shuffle_card()`, which prepares a `card` ARD object for analysis. 
   * Added `prep_...()` functions to reduce the manual processing required for a 
-  ARD object once it has been shuffled. (#509, @dragosmg)
+  `card` ARD object once it has been shuffled. (#509, @dragosmg)
     * `prep_combine_vars()`: useful for combining sparsely populated columns into 
     a single one.
     * `prep_big_n()`: useful when the tfrmt contains a bigN structure. It recodes 
