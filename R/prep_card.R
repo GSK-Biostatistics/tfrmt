@@ -420,7 +420,7 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
 #' @inheritParams cli::cli_abort
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' tfrmt:::replace_na_pairwise(
