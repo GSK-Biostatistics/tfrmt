@@ -132,7 +132,7 @@ shuffle_card <- function(x,
 #'   a data frame
 #'
 #' @return a tibble
-#' @keywords internal
+#' @noRd
 .trim_ard <- function(x) {
 
   # detect any warning/error messages and notify user
