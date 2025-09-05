@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' This function ingests an ARD object and shuffles the information to prepare
+#' This function ingests an ARD object of class `card` and shuffles the information to prepare
 #' for analysis. Helpful for streamlining across multiple ARDs.
 #'
 #' @param x an ARD data frame of class 'card'
