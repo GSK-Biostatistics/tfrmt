@@ -1,33 +1,40 @@
 # tfrmt development version
 
+## Improvements
 
-Improvements
 * Updated RTF footnotes so they go in the document footer by default.
 
-Bug fixes 
+## Bug fixes 
+
 * Fix issue where `*_structure` functions did not correctly parse strings containing quotes in some cases. (#466)
 * Fix issue where page_plan doesn't work if there is only one level in your paging variable. (#506)
 * Fix issues where an error is thrown instead of a message if: (1) levels of page-specific big Ns do not align with levels of pagination (#505) or (2) the pagination levels are sorted non-alphabetically. (#516)
 * Fix issue where the big_n_structure doesn't work when the column name used for page_plan/grouping has a space in it. (#522)
 
+
 # tfrmt 0.1.3
 
-Improvements
+## Improvements
+
 * Incorporate contents of `col_style_plan` in the creation of mock data. 
 
-Bug fixes
+## Bug fixes
+
 * Fixed issue where JSON conversion of `frmt_when` dropped quotes from strings
 * Avoid use of deprecated functionality in `dplyr::summarise()`
 
+
 # tfrmt 0.1.2
 
-Bug fixes
+## Bug fixes
 * Fixed issue where table stub indentation does not transfer to all output types
 * Fixed issue where incomplete `body_plan` may error if the grouping variable is a factor
 
+
 # tfrmt 0.1.1 
 
-Bug fixes
+## Bug fixes
+
 * Fixed issue where `frmt_combine` couldn't process variable names surrounded by backticks
 * Fixed issue where `row_grp_plan` post space did not respect `col_style_plan` widths by adding new `fill` argument to `element_block`. The `fill` argument controls whether post space values should be recycled for the cell's data width. For example, a cell width of 3 will be respected by the post space with the following syntax: `element_block(post_space = "---", fill = FALSE)`. 
 * Remove unused `border` argument in `element_block`. 
@@ -38,17 +45,21 @@ Bug fixes
 
 # tfrmt 0.1.0
 
-New features:
+## New features:
+
 * Improved column alignment capabilities (via `col_style_plan`). Alignment options now fall into two types: character (type = "char") and positional (type = "pos"). Positional alignment is new and allows for aligning across multiple positions. 
 * Add `page_plan` for splitting tables across multiple pages
 * Add ability to add a group/label header via the `col_plan`
 
-Breaking changes:
+## Breaking changes:
+
 * Name of the list component inside `row_grp_plan` that stores `row_grp_structure`s has been changed from "struct_ls" to "struct_list" to be consistent with other objects. This may impact compatibility with JSON files created using prior versions of {tfrmt}.
 
-Bug fixes:
+## Bug fixes:
+
 * `frmt_combine` no longer throws error if group variable is named "var"
 * `row_grp_plan` with post-space no longer throws error if character column contains NA values
+
 
 # tfrmt 0.0.3
 
