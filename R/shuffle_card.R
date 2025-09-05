@@ -330,7 +330,7 @@ shuffle_card <- function(x,
 #'
 #' @returns a character vector
 #'
-#' @keywords internal
+#' @noRd
 .derive_overall_labels <- function(x,
                                    colname = dplyr::cur_column(),
                                    fill_overall,
