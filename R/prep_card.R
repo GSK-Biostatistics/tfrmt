@@ -272,7 +272,6 @@ prep_label <- function(df) {
   output
 }
 
-# replace_na with a given value (defaults to "Any <column-name>") or with values
 #' Fill missing values in hierarchical variables
 #'
 #' @description
