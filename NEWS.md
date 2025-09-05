@@ -3,7 +3,7 @@
 
 Improvements
 
-* Working with ARDs: 
+* Working with ARDs created from the {cards} package: 
   * Added `shuffle_card()`, which prepares an ARD object for analysis. 
   * Added `prep_...()` functions to reduce the manual processing required for an 
   ARD object once it has been shuffled. (#509, @dragosmg)
