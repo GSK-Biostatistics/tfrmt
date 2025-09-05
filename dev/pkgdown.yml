@@ -6,6 +6,7 @@ articles:
   body_plan: body_plan.html
   building_blocks: building_blocks.html
   building_mocks: building_mocks.html
+  cards_to_tfrmt: cards_to_tfrmt.html
   col_plan: col_plan.html
   col_style_plan: col_style_plan.html
   examples: examples.html
@@ -19,7 +20,7 @@ articles:
   row_grp_plan: row_grp_plan.html
   templates: templates.html
   unusual_tables: unusual_tables.html
-last_built: 2025-09-05T12:24Z
+last_built: 2025-09-05T13:06Z
 urls:
   reference: https://gsk-biostatistics.github.io/tfrmt/reference
   article: https://gsk-biostatistics.github.io/tfrmt/articles
