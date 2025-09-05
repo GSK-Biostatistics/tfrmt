@@ -343,7 +343,7 @@ prep_hierarchical_fill <- function(df,
   if (length(vars) < 2) {
     cli::cli_inform(
       c(
-        "i" = "You needs to supply at least 2 columns in {.code vars}.",
+        "i" = "At least 2 columns must be supplied to {.code vars}.",
         "*" = prep_info_return
       )
     )
