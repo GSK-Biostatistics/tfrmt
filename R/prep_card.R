@@ -377,7 +377,7 @@ prep_hierarchical_fill <- function(df,
 #' @inheritParams cli::cli_abort
 #'
 #' @returns a list of length 2 character vectors (pairs of column names)
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' tfrmt:::generate_pairs(c("foo", "bar", "baz"))
