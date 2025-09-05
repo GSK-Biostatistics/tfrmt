@@ -204,7 +204,7 @@ shuffle_card <- function(x,
 #'
 #' @return data frame
 #'
-#' @keywords internal
+#' @noRd
 .fill_overall_grp_values <- function(x,
                                      by,
                                      fill_overall,
