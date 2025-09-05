@@ -2,7 +2,7 @@
 % Please edit documentation in R/prep_card.R
 \name{prep_hierarchical_fill}
 \alias{prep_hierarchical_fill}
-\title{Replace \code{NA} in pairs}
+\title{Fill missing values in hierarchical variables}
 \usage{
 prep_hierarchical_fill(df, vars, fill = "Any {colname}", fill_from = NULL)
 }
