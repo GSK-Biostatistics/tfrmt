@@ -151,7 +151,7 @@ shuffle_card <- function(x,
 #' @param x a data frame
 #' @param ... columns to search within
 #'
-#' @keywords internal
+#' @noRd
 .detect_msgs <- function(x, ...) {
   dots <- rlang::dots_list(...)
 
