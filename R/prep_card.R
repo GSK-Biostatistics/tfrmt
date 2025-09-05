@@ -295,8 +295,9 @@ prep_label <- function(df) {
 #' @param vars (character) a vector of variables to generate pairs from.
 #' @param fill (character) value to replace with. Defaults to `"Any {colname}"`,
 #'   in which case `colname` will be replaced with the name of the column.
-#' @param fill_from (character) indicating whether to fill from the left column
-#'   of the pair.
+#' @param fill_from_left (logical) indicating whether to fill from the left
+#'   (first) column in the pair. Defaults to `FALSE`. If `TRUE` it takes
+#'   precedence over `fill`.
 #'
 #' @returns a data.frame with the same columns as the input, but in which some
 #'   the desired columns have been filled pairwise.
@@ -323,12 +324,12 @@ prep_label <- function(df) {
 #' prep_hierarchical_fill(
 #'   df,
 #'   vars = c("x", "y", "z"),
-#'   fill_from = "left"
+#'   fill_from_left = TRUE
 #' )
 prep_hierarchical_fill <- function(df,
                                    vars,
                                    fill = "Any {colname}",
-                                   fill_from = NULL) {
+                                   fill_from_left = FALSE) {
 
   if (!rlang::is_character(vars)) {
     cli::cli_abort(
@@ -359,7 +360,7 @@ prep_hierarchical_fill <- function(df,
       output,
       pair = pair_list[[i]],
       fill = fill,
-      fill_from = fill_from
+      fill_from_left = fill_from_left
     )
   }
 
@@ -432,7 +433,7 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
 replace_na_pairwise <- function(x,
                                 pair,
                                 fill = "Any {colname}",
-                                fill_from = NULL,
+                                fill_from_left = FALSE,
                                 call = rlang::caller_env()) {
 
   if (!rlang::is_character(pair)) {
@@ -458,14 +459,6 @@ replace_na_pairwise <- function(x,
     )
   }
 
-  if (!is.null(fill_from) && fill_from != "left") {
-    cli::cli_abort(
-      '{.arg fill_from} must either be `NULL` or `"left"`. \\
-      {.code "{fill_from}"} is not an accepted value.',
-      call = call
-    )
-  }
-
   variables_syms <- rlang::syms(pair)
 
   if (fill == "Any {colname}") {
@@ -473,7 +466,7 @@ replace_na_pairwise <- function(x,
       as.character()
   }
 
-  if (!is.null(fill_from) && fill_from == "left") {
+  if (fill_from_left) {
     fill <- rlang::quo(as.character(!!variables_syms[[1]]))
   }
 

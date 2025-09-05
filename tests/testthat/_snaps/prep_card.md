@@ -558,7 +558,7 @@
     Code
       prep_hierarchical_fill(df, vars = "y")
     Message
-      i You needs to supply at least 2 columns in `vars`.
+      i At least 2 columns must be supplied to `vars`.
       * Unable to apply `prep_hierarchical_fill()`.
     Output
       # A tibble: 3 x 3
@@ -567,14 +567,6 @@
       1     1 a     NA   
       2     2 <NA>  NA   
       3    NA b     NA   
-
-# prep_hierarchical_fill() complains with `fill_from` != 'left'
-
-    Code
-      prep_hierarchical_fill(df, vars = c("x", "y", "z"), fill_from = "foo")
-    Condition
-      Error in `prep_hierarchical_fill()`:
-      ! `fill_from` must either be `NULL` or `"left"`. `"foo"` is not an accepted value.
 
 # prep_hierarchical_fill() errors when `vars` is not character
 
@@ -633,15 +625,6 @@
     Condition
       Error:
       ! `pair` must contain exactly 2 elements. The one you supplied has 3.
-
----
-
-    Code
-      replace_na_pairwise(tibble::tibble(x = c(1, 2, NA), y = c("a", NA, "b"), z = rep(
-        NA, "3")), pair = c("y", "z"), fill_from = "right")
-    Condition
-      Error:
-      ! `fill_from` must either be `NULL` or `"left"`. `"right"` is not an accepted value.
 
 ---
 

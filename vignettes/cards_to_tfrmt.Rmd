@@ -177,7 +177,7 @@ We need to populate these missing values for our table. In order to display thes
 ard_ae_shuffled <- ard_ae_shuffled |> 
   prep_hierarchical_fill(
     vars = c("AESOC","AEDECOD"), 
-    fill_from = "left"
+    fill_from_left = TRUE
   )
 
 ard_ae_shuffled |> 

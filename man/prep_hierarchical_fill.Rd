@@ -4,7 +4,12 @@
 \alias{prep_hierarchical_fill}
 \title{Fill missing values in hierarchical variables}
 \usage{
-prep_hierarchical_fill(df, vars, fill = "Any {colname}", fill_from = NULL)
+prep_hierarchical_fill(
+  df,
+  vars,
+  fill = "Any {colname}",
+  fill_from_left = FALSE
+)
 }
 \arguments{
 \item{df}{(data.frame)}
@@ -14,8 +19,9 @@ prep_hierarchical_fill(df, vars, fill = "Any {colname}", fill_from = NULL)
 \item{fill}{(character) value to replace with. Defaults to \code{"Any {colname}"},
 in which case \code{colname} will be replaced with the name of the column.}
 
-\item{fill_from}{(character) indicating whether to fill from the left column
-of the pair.}
+\item{fill_from_left}{(logical) indicating whether to fill from the left
+(first) column in the pair. Defaults to \code{FALSE}. If \code{TRUE} it takes
+precedence over \code{fill}.}
 }
 \value{
 a data.frame with the same columns as the input, but in which some
@@ -61,6 +67,6 @@ prep_hierarchical_fill(
 prep_hierarchical_fill(
   df,
   vars = c("x", "y", "z"),
-  fill_from = "left"
+  fill_from_left = TRUE
 )
 }

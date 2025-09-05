@@ -878,7 +878,7 @@ test_that("prep_hierarchical_fill() with `fill` 'Any {colname}'", {
   )
 })
 
-test_that("prep_hierarchical_fill() with `fill_from='left'` works", {
+test_that("prep_hierarchical_fill() with `fill_from_left = TRUE' works", {
 
   df <- tibble::tibble(
     x = c(1, 2, NA),
@@ -887,7 +887,11 @@ test_that("prep_hierarchical_fill() with `fill_from='left'` works", {
   )
 
   expect_identical(
-    prep_hierarchical_fill(df, vars = c("x", "y"), fill_from = "left"),
+    prep_hierarchical_fill(
+      df,
+      vars = c("x", "y"),
+      fill_from_left = TRUE
+    ),
     tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
@@ -896,29 +900,15 @@ test_that("prep_hierarchical_fill() with `fill_from='left'` works", {
   )
 
   expect_identical(
-    prep_hierarchical_fill(df, vars = c("x", "y", "z"), fill_from = "left"),
+    prep_hierarchical_fill(
+      df,
+      vars = c("x", "y", "z"),
+      fill_from_left = TRUE
+    ),
     tibble::tibble(
       x = c(1, 2, NA),
       y = c("a", "2", "b"),
       z = c("a", "2", "b")
-    )
-  )
-})
-
-test_that("prep_hierarchical_fill() complains with `fill_from` != 'left'", {
-
-  df <- tibble::tibble(
-    x = c(1, 2, NA),
-    y = c("a", NA, "b"),
-    z = rep(NA, "3")
-  )
-
-  expect_snapshot(
-    error = TRUE,
-    prep_hierarchical_fill(
-      df,
-      vars = c("x", "y", "z"),
-      fill_from = "foo"
     )
   )
 })
@@ -1040,7 +1030,7 @@ test_that("replace_na_pairwise() works", {
         z = rep(NA, 3)
       ),
       pair = c("y", "z"),
-      fill_from = "left"
+      fill_from_left = TRUE
     ),
     # all NAs in z (when y is not NA) are replaced with `"Any z"`
     tibble::tibble(
@@ -1074,19 +1064,6 @@ test_that("replace_na_pairwise() complains", {
         z = rep(NA, 3)
       ),
       pair = c("x", "y", "z")
-    )
-  )
-
-  expect_snapshot(
-    error = TRUE,
-    replace_na_pairwise(
-      tibble::tibble(
-        x = c(1, 2, NA),
-        y = c("a", NA, "b"),
-        z = rep(NA, "3")
-      ),
-      pair = c("y", "z"),
-      fill_from = "right"
     )
   )
 
