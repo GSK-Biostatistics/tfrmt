@@ -272,7 +272,7 @@ test_that("Test with spanning headers", {
     mutate(
       across(
         where(is.character),
-        ~replace_na(.x, "")
+        ~ replace_na(.x, "")
       )
     )
 
