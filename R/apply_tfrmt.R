@@ -491,15 +491,15 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt){
   if (!is.null(big_n_df) && tfrmt$big_n$by_page) {
       expected_pops <- length(data_wide)
       expected_grp_vars <- attr(data_wide, ".page_grp_vars")
-      expected_grp_levs <- map_dfr(data_wide, ~ select(.x, all_of(expected_grp_vars)) %>% distinct()) %>% arrange(across(everything()))
+      expected_grp_levs <- map_dfr(data_wide, ~ select(.x, all_of(expected_grp_vars)) %>% distinct())
       actual_pops <- length(big_n_df)
-      actual_grp_levs <- map_dfr(big_n_df, ~ select(.x, any_of(expected_grp_vars)) %>% distinct()) %>% arrange(across(everything()))
+      actual_grp_levs <- map_dfr(big_n_df, ~ select(.x, any_of(expected_grp_vars)) %>% distinct())
 
       if (!identical(expected_pops,actual_pops) |
           (!is_empty(actual_grp_levs) &&
-           isFALSE(all.equal(expected_grp_levs, actual_grp_levs, check.attributes = FALSE))
+           !isTRUE(all.equal(expected_grp_levs, actual_grp_levs, check.attributes = FALSE))
            )){
-        message("Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`")
+        message("Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan` and bigNs must be in order of the data")
       }
   }
 }

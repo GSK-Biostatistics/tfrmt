@@ -119,6 +119,11 @@ remove_big_ns <- function(.data, param, big_n_structure) {
 #' @param mock boolean if it is T/F
 #' @return tibble of the formatted big n's and expressions for where each goes
 #'
+#' @importFrom dplyr slice_tail filter select group_by group_split
+#' @importFrom tidyr unite
+#' @importFrom tidyselect where
+#' @importFrom purrr map
+#' @importFrom forcats fct_inorder
 #' @noRd
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
   if (!is.null(big_n_structure)) {
@@ -185,25 +190,19 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
 
     by_var <- setdiff(grp_vars, map_chr(columns, as_label))
 
-    .data <- frmtted_vals |>
-      dplyr::mutate(
-        `_tfrmt______id` = dplyr::row_number()
-      ) |>
-      tidyr::pivot_longer(
-        -c(
-          "_tfrmt______id",
-          !!value,
-          tidyselect::all_of(by_var)
-        ),
+    data_out <- frmtted_vals %>%
+      mutate(`_tfrmt______id` = row_number()) %>%
+      pivot_longer(
+        -c("_tfrmt______id", !!value, all_of(by_var)),
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
-      ) |>
-      dplyr::filter(
+      ) %>%
+      filter(
         !is.na(.data$`__tfrmt_big_n_values__`) &
           .data$`__tfrmt_big_n_values__` != ""
-      ) |>
-      dplyr::group_by(.data$`_tfrmt______id`) |>
-      dplyr::mutate(
+      ) %>%
+      group_by(.data$`_tfrmt______id`) %>%
+      mutate(
         exp = paste0(
           .data$`__tfrmt_big_n_names__`,
           "=='",
@@ -215,25 +214,36 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
           "__tfrmt_new_name__",
           .data$`__tfrmt_big_n_names__`
         )
-      ) |>
-      dplyr::slice_tail() |>
-      dplyr::ungroup() |>
-      dplyr::select(-"_tfrmt______id")
+      ) %>%
+      slice_tail() %>%
+      ungroup()%>%
+      select(-"_tfrmt______id")
 
-    if (big_n_structure$by_page) {
-
-      .data <-  .data |>
-        dplyr::group_by(
-          dplyr::across(
-            tidyselect::all_of(
-              by_var)
+    if (big_n_structure$by_page ){
+      if (is_empty(by_var)){
+        data_out <- data_out |>
+          group_split()
+      } else {
+        data_out <- data_out |>
+          unite(
+            "..tfrmt_big_n_order..",
+            all_of(by_var),
+            remove = FALSE
+          ) %>%
+          mutate(
+            `..tfrmt_big_n_order..` = fct_inorder(.data$`..tfrmt_big_n_order..`)
+          ) %>%
+          group_by(.data$`..tfrmt_big_n_order..`) %>%
+          group_split() %>%
+          map(
+            ~select(.x, -"..tfrmt_big_n_order..")
           )
-        ) |>
-        dplyr::group_split()
+      }
+
     }
 
   } else {
-    .data <- NULL
+    data_out <- NULL
   }
-  .data
+  data_out
 }
