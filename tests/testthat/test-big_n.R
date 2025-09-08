@@ -962,23 +962,33 @@ test_that("big Ns constant by page",{
     )
   )
 
-  expect_message(
+  expect_snapshot(
     auto <- mytfrmt |>
       apply_tfrmt(
         .data = data,
         tfrmt = _,
         mock = FALSE
-      ),
-    "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`",
-    fixed = TRUE
-  )
+      )
+    )
 
 
   expect_equal(
     map(auto, names),
     list(
-      c("Label","Placebo\nN = 32","Treatment\nN = 46","Total\nN = 49","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 32","Treatment\nN = 46","Total\nN = 49","..tfrmt_row_grp_lbl")
+      c(
+        "Label",
+        "Placebo\nN = 32",
+        "Treatment\nN = 46",
+        "Total\nN = 49",
+        "..tfrmt_row_grp_lbl"
+      ),
+      c(
+        "Label",
+        "Placebo\nN = 32",
+        "Treatment\nN = 46",
+        "Total\nN = 49",
+        "..tfrmt_row_grp_lbl"
+      )
     )
   )
 
