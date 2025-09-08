@@ -20,22 +20,30 @@ test_that("Defining the big Ns", {
 
 test_that("Simple Case big_n", {
 
-  data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
-                 Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
-                 Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
-                 Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
-                 )
-  ) %>%
-    # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-    mutate(Value = case_when(Param == "pct" ~ Value * 100,
-                             TRUE ~ Value),
-           ord1 = if_else(Group == "Age (y)", 1, 2),
-           ord2 = if_else(Label == "n", 1, 2))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+    Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+    Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
+    Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
+    )
+  ) |>
+    # Note because tfrmt only does rounding we will need to have the percents
+    # multiplied by 100
+    mutate(
+      Value = case_when(
+        Param == "pct" ~ Value * 100,
+        TRUE ~ Value
+      ),
+      ord1 = if_else(Group == "Age (y)", 1, 2),
+      ord2 = if_else(Label == "n", 1, 2)
+    )
 
-  big_ns <- tibble(Column = c("Placebo", "Treatment", "Total"),
-                   Param = "bigN",
-                   Value = c(30,30,60))
+  big_ns <- tibble(
+    Column = c("Placebo", "Treatment", "Total"),
+    Param = "bigN",
+    Value = c(30,30,60)
+  )
 
 
   data <- bind_rows(data, big_ns)
@@ -48,34 +56,55 @@ test_that("Simple Case big_n", {
     param = Param,
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default",
-                     label_val = ".default",
-                     frmt_combine("{n} {pct}",
-                                  n = frmt("X"),
-                                  pct = frmt("(xx.x%)", missing = " ")
-                     )
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{n} {pct}",
+          n = frmt("X"),
+          pct = frmt("(xx.x%)", missing = " ")
+        )
       ),
-      frmt_structure(group_val = "Age (y)", label_val = "Mean (SD)",
-                     frmt_combine("{mean} ({sd})",
-                                  mean = frmt("XX.X"),
-                                  sd = frmt("x.xx")
-                     )
+      frmt_structure(
+        group_val = "Age (y)",
+        label_val = "Mean (SD)",
+        frmt_combine(
+          "{mean} ({sd})",
+          mean = frmt("XX.X"),
+          sd = frmt("x.xx")
+        )
       ),
-      frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n", frmt("xx")
+      )
     ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
-    big_n = big_n_structure(param_val = "bigN")
+    big_n = big_n_structure(
+      param_val = "bigN"
+    )
   )
 
-  tfrmt_wit_colplan <- tfrmt_sans_colplan %>%
+  tfrmt_wit_colplan <- tfrmt_sans_colplan |>
     tfrmt(
-      col_plan = col_plan(everything(), -starts_with("ord"), "Total")
+      col_plan = col_plan(
+        everything(),
+        -starts_with("ord"),
+        "Total"
+      )
     )
 
-  auto_sans_colplan <- tfrmt_sans_colplan %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+  auto_sans_colplan <- tfrmt_sans_colplan |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    ) |>
     names()
 
   expect_equal(
@@ -91,8 +120,12 @@ test_that("Simple Case big_n", {
     )
   )
 
-  auto_wit_colplan <- tfrmt_wit_colplan %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+  auto_wit_colplan <- tfrmt_wit_colplan |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    ) |>
     names()
 
   expect_equal(
@@ -106,16 +139,23 @@ test_that("Simple Case big_n", {
     )
   )
 
-  auto_mock <- apply_tfrmt(.data = select(data, -Value), tfrmt = tfrmt_wit_colplan, mock = TRUE) %>%
+  auto_mock <- apply_tfrmt(
+    .data = select(data, -Value),
+    tfrmt = tfrmt_wit_colplan,
+    mock = TRUE
+  ) |>
     names()
 
-  expect_equal(auto_mock, c(
-    "Label",
-    "Placebo\nN = xx",
-    "Treatment\nN = xx",
-    "Total\nN = xx",
-    "..tfrmt_row_grp_lbl"
-  ))
+  expect_equal(
+    auto_mock,
+    c(
+      "Label",
+      "Placebo\nN = xx",
+      "Treatment\nN = xx",
+      "Total\nN = xx",
+      "..tfrmt_row_grp_lbl"
+    )
+  )
 
 })
 
@@ -152,7 +192,11 @@ test_that("Test with spanning headers", {
     value = val,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x")
+      )
     ),
     col_plan = col_plan(
       group,
@@ -162,50 +206,77 @@ test_that("Test with spanning headers", {
       -mycol5
     ),
     row_grp_plan = row_grp_plan(
-      label_loc = element_row_grp_loc(location = "spanning")),
-    big_n = big_n_structure(param_val = "bigN")
+      label_loc = element_row_grp_loc(
+        location = "spanning"
+      )
+    ),
+    big_n = big_n_structure(
+      param_val = "bigN"
+    )
   )
 
-  auto <- apply_tfrmt(.data = dat, tfrmt = auto_tfrmt) %>%
+  auto <- apply_tfrmt(
+    .data = dat,
+    tfrmt = auto_tfrmt
+  ) |>
     names()
 
-  man <- c("group"                                                                    , "label",
-           "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1", "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
-           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6",
-           "..tfrmt_row_grp_lbl")
+  man <- c(
+    "group",
+    "label",
+    "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1",
+    "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
+    "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   ,
+    "new_col_3\nN =  6",
+    "..tfrmt_row_grp_lbl"
+  )
 
   expect_equal(auto, man)
 
 
   # try with empty strings rather than NA
-  dat_blank <- dat %>%
-    mutate(across(where(is.character), ~replace_na(.x, "")))
+  dat_blank <- dat |>
+    mutate(
+      across(
+        where(is.character),
+        ~replace_na(.x, "")
+      )
+    )
 
-  auto_blank <- apply_tfrmt(.data = dat_blank, tfrmt = auto_tfrmt) %>%
+  auto_blank <- apply_tfrmt(
+    .data = dat_blank,
+    tfrmt = auto_tfrmt
+  ) |>
     names()
 
   expect_equal(auto_blank, man)
-
 })
 
 test_that("Multiple big N params", {
 
-  data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
-                 Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
-                 Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
-                 Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
-                 )
-  ) %>%
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+    Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+    Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
+    Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
+    )
+  ) |>
     # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-    mutate(Value = case_when(Param == "pct" ~ Value * 100,
-                             TRUE ~ Value),
-           ord1 = if_else(Group == "Age (y)", 1, 2),
-           ord2 = if_else(Label == "n", 1, 2))
+    mutate(
+      Value = case_when(
+        Param == "pct" ~ Value * 100,
+        TRUE ~ Value
+      ),
+      ord1 = if_else(Group == "Age (y)", 1, 2),
+      ord2 = if_else(Label == "n", 1, 2)
+    )
 
-  big_ns <- tibble(Column = c("Placebo", "Treatment", "Total"),
-                   Param = c("bigN", "big_n", "big_n"),
-                   Value = c(30,30,60))
+  big_ns <- tibble(
+    Column = c("Placebo", "Treatment", "Total"),
+    Param = c("bigN", "big_n", "big_n"),
+    Value = c(30,30,60)
+  )
 
 
   data <- bind_rows(data, big_ns)
@@ -218,56 +289,94 @@ test_that("Multiple big N params", {
     param = Param,
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default",
-                     label_val = ".default",
-                     frmt_combine("{n} {pct}",
-                                  n = frmt("X"),
-                                  pct = frmt("(xx.x%)", missing = " ")
-                     )
-      ),
-      frmt_structure(group_val = "Age (y)", label_val = "Mean (SD)",
-                     frmt_combine("{mean} ({sd})",
-                                  mean = frmt("XX.X"),
-                                  sd = frmt("x.xx")
-                     )
-      ),
-      frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{n} {pct}",
+          n = frmt("X"),
+          pct = frmt("(xx.x%)",
+          missing = " "
+        )
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+      frmt_structure(
+        group_val = "Age (y)",
+        label_val = "Mean (SD)",
+        frmt_combine(
+          "{mean} ({sd})",
+          mean = frmt("XX.X"),
+          sd = frmt("x.xx")
+        )
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xx")
+      )
+    ),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
-    big_n = big_n_structure(param_val = c("bigN", "big_n"))
-  ) %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE) %>%
+    big_n = big_n_structure(
+      param_val = c("bigN", "big_n")
+    )
+  ) |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE) |>
     names()
 
-  man <- big_ns %>%
-    mutate(foo = str_c(Column, "\nN = ", Value)) %>%
-    pull(foo) %>%
-    c("Label", . , "..tfrmt_row_grp_lbl")
+  man <- big_ns |>
+    mutate(
+      foo = str_c(Column, "\nN = ", Value)
+    ) |>
+    pull(foo) |>
+    append(
+      values = "..tfrmt_row_grp_lbl"
+    ) |>
+    append(
+      values = "Label",
+      after = 0L
+    )
+
   expect_equal(auto, man)
 })
 
 test_that("Overlapping Big N's",{
 
-  data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
-                 Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
-                 Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
-                 Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
-                 )
-  ) %>%
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+    Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+    Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
+    Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
+    )
+  ) |>
     # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-    mutate(Value = case_when(Param == "pct" ~ Value * 100,
-                             TRUE ~ Value),
-           ord1 = if_else(Group == "Age (y)", 1, 2),
-           ord2 = if_else(Label == "n", 1, 2))
+    mutate(
+      Value = case_when(
+        Param == "pct" ~ Value * 100,
+        TRUE ~ Value
+      ),
+      ord1 = if_else(Group == "Age (y)", 1, 2),
+      ord2 = if_else(Label == "n", 1, 2)
+    )
 
-  big_ns <- tibble(Column = c("Placebo", "Treatment", "Total", "Total"),
-                   Param = "bigN",
-                   Value = c(30,30,60, 65))
-
+  big_ns <- tibble(
+    Column = c("Placebo", "Treatment", "Total", "Total"),
+    Param = "bigN",
+    Value = c(30,30,60, 65)
+  )
 
   data <- bind_rows(data, big_ns)
 
@@ -279,31 +388,57 @@ test_that("Overlapping Big N's",{
     param = Param,
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default",
-                     label_val = ".default",
-                     frmt_combine("{n} {pct}",
-                                  n = frmt("X"),
-                                  pct = frmt("(xx.x%)", missing = " ")
-                     )
-      ),
-      frmt_structure(group_val = "Age (y)", label_val = "Mean (SD)",
-                     frmt_combine("{mean} ({sd})",
-                                  mean = frmt("XX.X"),
-                                  sd = frmt("x.xx")
-                     )
-      ),
-      frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{n} {pct}",
+          n = frmt("X"),
+          pct = frmt(
+            "(xx.x%)",
+            missing = " "
+        )
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+      frmt_structure(
+        group_val = "Age (y)",
+        label_val = "Mean (SD)",
+        frmt_combine(
+          "{mean} ({sd})",
+          mean = frmt("XX.X"),
+          sd = frmt("x.xx")
+        )
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xx")
+      )
+    ),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
-    big_n = big_n_structure(param_val = "bigN")
+    big_n = big_n_structure(
+      param_val = "bigN"
+    )
   )
 
-  expect_warning(apply_tfrmt(.data = data, tfrmt = tfrmt_test, mock = FALSE) %>%
-                   names())
-
+  expect_warning(
+    apply_tfrmt(
+      .data = data,
+      tfrmt = tfrmt_test,
+      mock = FALSE
+    ) |>
+    names()
+  )
 })
 
 test_that("Missing Big N in dataset", {
@@ -333,17 +468,29 @@ test_that("Missing Big N in dataset", {
     value = val,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x")
+      )
     ),
     col_plan = col_plan(
       group,
       label,
       starts_with("col")
     ),
-    big_n = big_n_structure(param_val = "bigN")
+    big_n = big_n_structure(
+      param_val = "bigN"
+    )
   )
 
-  expect_warning(apply_tfrmt(.data = dat, tfrmt = tfrmt_test, mock = FALSE))
+  expect_warning(
+    apply_tfrmt(
+      .data = dat,
+      tfrmt = tfrmt_test,
+      mock = FALSE
+    )
+  )
 })
 
 test_that("using 'value' for values column where there may be conflict in big_n", {
@@ -372,8 +519,6 @@ test_that("using 'value' for values column where there may be conflict in big_n"
     NA, NA,             NA,         NA, "mycol3",  "bigN",    6,
   )
 
-
-
   auto <- tfrmt(
     group = group,
     label = label,
@@ -381,7 +526,11 @@ test_that("using 'value' for values column where there may be conflict in big_n"
     value = value,
     column = c(span2, span1, my_col),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x")
+      )
     ),
     col_plan = col_plan(
       group,
@@ -390,20 +539,32 @@ test_that("using 'value' for values column where there may be conflict in big_n"
       new_col_3 = mycol3,
       -mycol5
     ),
-    big_n = big_n_structure(param_val = "bigN"),
+    big_n = big_n_structure(
+      param_val = "bigN"
+    ),
     row_grp_plan = row_grp_plan(
-      label_loc = element_row_grp_loc(location = "spanning"))
-  ) %>%
-    apply_tfrmt(.data = dat, tfrmt = .) %>%
+      label_loc = element_row_grp_loc(
+        location = "spanning"
+      )
+    )
+  ) |>
+    apply_tfrmt(
+      .data = dat,
+      tfrmt = _
+    ) |>
     names()
 
-  man <- c("group"                                                                    , "label",
-           "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1", "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
-           "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   , "new_col_3\nN =  6",
-           "..tfrmt_row_grp_lbl" )
+  man <- c(
+    "group",
+    "label",
+    "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col1",
+    "column cols\nN = 18___tlang_delim___cols 1,2\nN = 12___tlang_delim___col2",
+    "column cols\nN = 18___tlang_delim___col 4___tlang_delim___col4\nN =  6"   ,
+    "new_col_3\nN =  6",
+    "..tfrmt_row_grp_lbl"
+  )
 
   expect_equal(auto, man)
-
 })
 
 test_that("Test big n with footnotes", {
@@ -417,8 +578,13 @@ test_that("Test big n with footnotes", {
   )
 
   # This one is used for examples 5 and 6
-  span_df <- df %>% dplyr::mutate(span = dplyr::case_when(column == "PL" ~ "Placebo",
-                                            column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"))
+  span_df <- df |>
+    dplyr::mutate(
+      span = dplyr::case_when(
+        column == "PL" ~ "Placebo",
+        column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
+      )
+    )
 
 
   span_df_big_n <- dplyr::bind_rows(
@@ -441,38 +607,60 @@ test_that("Test big n with footnotes", {
     column = c("span", "column"),
     param = param,
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default",
-                        element_block(post_space = "   ")) ),
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = "   ")
+      )
+    ),
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default",
-                     frmt_combine("{count} ({percent})",
-                                  count = frmt("xx"),
-                                  percent = frmt("xx.x")))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{count} ({percent})",
+          count = frmt("xx"),
+          percent = frmt("xx.x")
+        )
+      )
     ),
     col_plan = col_plan(
-      group, label,
-      span_structure(span = c("Placebo"),
-                     column = c("PL")),
-      span_structure(span = c("Treatment"),
-                     column = c("T1", "T2", "T1&T2"))
+      group,
+      label,
+      span_structure(
+        span = c("Placebo"),
+        column = c("PL")
+      ),
+      span_structure(
+        span = c("Treatment"),
+        column = c("T1", "T2", "T1&T2")
+      )
     ),
 
     # Add footnote here
     footnote_plan = footnote_plan(
       footnote_structure(
         footnote_text = "Footnote goes here",
-        column_val = list(span = "Treatment", column = "T1&T2")
+        column_val = list(
+          span = "Treatment",
+          column = "T1&T2"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 2",
         group_val = list(group = "group 1"),
         label_val = list(label = "label 1"),
-        column_val = list(span = "Treatment", column = "T1")
+        column_val = list(
+          span = "Treatment",
+          column = "T1"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 3",
         label_val = list(label = "label 1"),
-        column_val = list(span = "Treatment", column = "T1")
+        column_val = list(
+          span = "Treatment",
+          column = "T1"
+        )
       ),
       footnote_structure(
         footnote_text = "Footnote goes here 4",
@@ -485,29 +673,42 @@ test_that("Test big n with footnotes", {
       footnote_structure(
         footnote_text = "Footnote goes here 6",
         label_val = list(label = "label 1"),
-        column_val = list(span = "Treatment", column = c("T2"))
+        column_val = list(
+          span = "Treatment",
+          column = c("T2")
+        )
       )
     ),
-
     big_n = big_n_structure(
       param_val = "big_n"
     )
-  ) %>%
+  ) |>
     print_mock_gt(span_df_big_n)
 
 
   ## ensure big_n got applied
   expect_equal(
     names(big_n_footnote_plan_gt$`_data`),
-    c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1\nN = xx",
-      "Treatment___tlang_delim___T2\nN = xx", "Treatment___tlang_delim___T1&T2\nN = xx",
-      "..tfrmt_row_grp_lbl")
+    c(
+      "label",
+      "Placebo___tlang_delim___PL",
+      "Treatment___tlang_delim___T1\nN = xx",
+      "Treatment___tlang_delim___T2\nN = xx",
+      "Treatment___tlang_delim___T1&T2\nN = xx",
+      "..tfrmt_row_grp_lbl"
     )
+  )
 
   ## confirm location of footnotes gets recorded correctly
   expect_equal(
-    big_n_footnote_plan_gt$`_footnotes` %>%
-      select(locname, colname, locnum, rownum, footnotes) |>
+    big_n_footnote_plan_gt$`_footnotes` |>
+      select(
+        locname,
+        colname,
+        locnum,
+        rownum,
+        footnotes
+      ) |>
       as_tibble(),
     tibble(
       locname = c(
@@ -547,23 +748,30 @@ test_that("Test big n with footnotes", {
       )
     )
   )
-
-
 })
 
 test_that("big Ns vary by page",{
 
-  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
-                 Label = rep("n",6),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
-                 Param = rep("n",6),
-                 Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
-    mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n",6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n",6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    mutate(
+      ord1 = if_else(Group == "Age (y)", 1, 2)
+    )
 
-  big_ns <- data %>%
-    summarise(.by = c(Group, Column), Value = sum(Value)) %>%
-    mutate(Param = "big_N")
+  big_ns <- data |>
+    summarise(
+      .by = c(Group, Column),
+      Value = sum(Value)
+    ) |>
+    mutate(
+      Param = "big_N"
+    )
+
   data <- bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
@@ -574,46 +782,83 @@ test_that("big Ns vary by page",{
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = TRUE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = TRUE
+    )
   )
 
-  auto <- mytfrmt %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+  auto <- mytfrmt |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    )
 
   auto_names <- map(auto, names)
   man_names <- list(
-    c("Label", "Placebo\nN = 12", "Treatment\nN = 14", "Total\nN = 31", "..tfrmt_row_grp_lbl"),
-    c("Label", "Placebo\nN = 20", "Treatment\nN = 32", "Total\nN = 18", "..tfrmt_row_grp_lbl")
+    c(
+      "Label",
+      "Placebo\nN = 12",
+      "Treatment\nN = 14",
+      "Total\nN = 31",
+      "..tfrmt_row_grp_lbl"
+    ),
+    c(
+      "Label",
+      "Placebo\nN = 20",
+      "Treatment\nN = 32",
+      "Total\nN = 18",
+      "..tfrmt_row_grp_lbl"
+    )
   )
   expect_equal(auto_names, man_names)
-
-
-
 })
 
 test_that("big Ns constant by page",{
 
   # big Ns are constant by page
-  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
-                 Label = rep("n",6),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
-                 Param = rep("n",6),
-                 Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
-    mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n",6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n",6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    mutate(
+      ord1 = if_else(Group == "Age (y)", 1, 2)
+    )
 
-  big_ns <- data %>%
-    summarise(.by = c( Column), Value = sum(Value)) %>%
-    mutate(Param = "big_N")
+  big_ns <- data |>
+    summarise(
+      .by = c( Column),
+      Value = sum(Value)
+    ) |>
+    mutate(
+      Param = "big_N"
+    )
 
   data <- bind_rows(data, big_ns)
 
@@ -625,25 +870,58 @@ test_that("big Ns constant by page",{
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = FALSE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = FALSE
+    )
   )
 
-  auto <- mytfrmt %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+  auto <- mytfrmt |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    )
+
   expect_equal(
     map(auto, names),
     list(
-      c("Label","Placebo\nN = 32","Treatment\nN = 46","Total\nN = 49","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 32","Treatment\nN = 46","Total\nN = 49","..tfrmt_row_grp_lbl")
+      c(
+        "Label",
+        "Placebo\nN = 32",
+        "Treatment\nN = 46",
+        "Total\nN = 49",
+        "..tfrmt_row_grp_lbl"
+      ),
+      c(
+        "Label",
+        "Placebo\nN = 32",
+        "Treatment\nN = 46",
+        "Total\nN = 49",
+        "..tfrmt_row_grp_lbl"
+      )
     )
   )
 
@@ -656,21 +934,41 @@ test_that("big Ns constant by page",{
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = TRUE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = TRUE
+    )
   )
 
   expect_message(
-    auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE),
+    auto <- mytfrmt |>
+      apply_tfrmt(
+        .data = data,
+        tfrmt = _,
+        mock = FALSE
+      ),
     "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`",
     fixed = TRUE
   )
