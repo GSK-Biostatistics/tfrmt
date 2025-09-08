@@ -218,7 +218,6 @@ test_that("Simple Case big_n", {
       "..tfrmt_row_grp_lbl"
     )
   )
-
 })
 
 test_that("Test with spanning headers", {
@@ -1545,7 +1544,7 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
 
   # Check the order of page notes
   expect_identical(
-    map_chr(
+    purrr::map_chr(
       output_list,
       ~ attr(.x, ".page_note")
     ),
