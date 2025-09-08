@@ -1155,7 +1155,7 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
       )
     )
 
-  big_ns <- data %>%
+  big_ns <- data |>
     summarise(
       .by = c( Column, Group),
       Value = sum(Value)
