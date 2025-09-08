@@ -169,7 +169,7 @@ test_that("Simple Case big_n", {
     ) |>
     names()
 
-  expect_equal(
+  expect_identical(
     auto_sans_colplan,
     c(
       "Label",
@@ -190,7 +190,7 @@ test_that("Simple Case big_n", {
     ) |>
     names()
 
-  expect_equal(
+  expect_identical(
     auto_wit_colplan,
     c(
       "Label",
@@ -208,7 +208,7 @@ test_that("Simple Case big_n", {
   ) |>
     names()
 
-  expect_equal(
+  expect_identical(
     auto_mock,
     c(
       "Label",
@@ -293,7 +293,7 @@ test_that("Test with spanning headers", {
     "..tfrmt_row_grp_lbl"
   )
 
-  expect_equal(auto, man)
+  expect_identical(auto, man)
 
   # try with empty strings rather than NA
   dat_blank <- dat |>
@@ -310,7 +310,7 @@ test_that("Test with spanning headers", {
   ) |>
     names()
 
-  expect_equal(auto_blank, man)
+  expect_identical(auto_blank, man)
 })
 
 test_that("Multiple big N params", {
@@ -424,7 +424,7 @@ test_that("Multiple big N params", {
     ) |>
     names()
 
-  expect_equal(
+  expect_identical(
     auto,
     c(
       "Label",
@@ -671,7 +671,7 @@ test_that("using 'value' for values column where there may be conflict in big_n"
     "..tfrmt_row_grp_lbl"
   )
 
-  expect_equal(auto, man)
+  expect_identical(auto, man)
 })
 
 test_that("Test big n with footnotes", {
@@ -792,7 +792,7 @@ test_that("Test big n with footnotes", {
 
 
   ## ensure big_n got applied
-  expect_equal(
+  expect_identical(
     names(big_n_footnote_plan_gt$`_data`),
     c(
       "label",
@@ -805,7 +805,7 @@ test_that("Test big n with footnotes", {
   )
 
   ## confirm location of footnotes gets recorded correctly
-  expect_equal(
+  expect_identical(
     big_n_footnote_plan_gt$`_footnotes` |>
       select(
         locname,
@@ -943,7 +943,7 @@ test_that("big Ns vary by page", {
       "..tfrmt_row_grp_lbl"
     )
   )
-  expect_equal(auto_names, man_names)
+  expect_identical(auto_names, man_names)
 })
 
 test_that("big Ns constant by page", {
@@ -1018,7 +1018,7 @@ test_that("big Ns constant by page", {
       mock = FALSE
     )
 
-  expect_equal(
+  expect_identical(
     map(auto, names),
     list(
       c(
@@ -1085,7 +1085,7 @@ test_that("big Ns constant by page", {
       )
   )
 
-  expect_equal(
+  expect_identical(
     map(auto, names),
     list(
       c(
@@ -1346,7 +1346,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
   )
 
   # check big Ns have been correctly applied
-  expect_equal(
+  expect_identical(
     map(auto, names),
     list(
       c(
@@ -1544,14 +1544,20 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
   expect_length(output_list, 2)
 
   # Check the order of page notes
-  expect_equal(
-    map_chr(output_list, ~attr(.x, ".page_note")),
-    c("by group: 101", "by group: 102")
+  expect_identical(
+    map_chr(
+      output_list,
+      ~ attr(.x, ".page_note")
+    ),
+    c(
+      "by group: 101",
+      "by group: 102"
+    )
   )
 
   # Check the first page (`by group` = "101")
   page_1_names <- names(output_list[[1]])
-  expect_equal(
+  expect_identical(
     page_1_names,
     c(
       "Label",
@@ -1565,7 +1571,7 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
 
   # Check the second page (`by group` = "102")
   page_2_names <- names(output_list[[2]])
-  expect_equal(
+  expect_identical(
     page_2_names,
     c(
       "Label",
