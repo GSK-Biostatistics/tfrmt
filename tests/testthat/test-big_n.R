@@ -1128,33 +1128,46 @@ test_that("not enough big Ns by page",{
     )
   )
 
-  expect_message(
-    auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE),
-    "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan`",
-    fixed = TRUE
+  expect_snapshot(
+    mytfrmt |>
+      apply_tfrmt(
+        .data = data,
+        tfrmt = _,
+        mock = FALSE
+      )
   )
-
 })
 
 
 test_that("Paging (group) variable is sorted non-alphabetically",{
 
   # same sorting of data and big Ns
-  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
-                 Label = rep("n",6),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
-                 Param = rep("n",6),
-                 Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
-    mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n",6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n",6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    mutate(
+      ord1 = if_else(
+        Group == "Age (y)", 1, 2
+      )
+    )
 
   big_ns <- data %>%
-    summarise(.by = c( Column, Group), Value = sum(Value)) %>%
-    mutate(Param = "big_N")
+    summarise(
+      .by = c( Column, Group),
+      Value = sum(Value)
+    ) |>
+    mutate(
+      Param = "big_N"
+    )
 
   data <- bind_rows(data, big_ns)|>
-    arrange(desc(Group))
+    arrange(
+      desc(Group)
+    )
 
   mytfrmt <- tfrmt(
     group = Group,
@@ -1163,24 +1176,45 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
     value = Value,
     param = Param,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
       page_structure(
-        group_val = list(Group = ".default"))
+        group_val = list(
+          Group = ".default"
+        )
+      )
     ),
-    big_n = big_n_structure(param_val = "big_N", by_page = TRUE)
+    big_n = big_n_structure(
+      param_val = "big_N",
+      by_page = TRUE
+    )
   )
 
-  auto <- mytfrmt %>%
-    apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+  auto <- mytfrmt |>
+    apply_tfrmt(
+      .data = data,
+      tfrmt = _,
+      mock = FALSE
+    )
 
   #check that the labels have printed in the changed order
-  expect_equal(
+  expect_identical(
     map(auto, ~ .x[["Label"]][1]), # This extracts the first value of the "Label" column from each element
     list(
       "Sex",
@@ -1191,27 +1225,49 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
   expect_equal(
     map(auto, names),
     list(
-      c("Label","Placebo\nN = 20","Treatment\nN = 32","Total\nN = 18","..tfrmt_row_grp_lbl"),
-      c("Label","Placebo\nN = 12","Treatment\nN = 14","Total\nN = 31","..tfrmt_row_grp_lbl")
+      c(
+        "Label",
+        "Placebo\nN = 20",
+        "Treatment\nN = 32",
+        "Total\nN = 18",
+        "..tfrmt_row_grp_lbl"
+      ),
+      c(
+        "Label",
+        "Placebo\nN = 12",
+        "Treatment\nN = 14",
+        "Total\nN = 31",
+        "..tfrmt_row_grp_lbl"
+      )
     )
   )
 
-
-
   # different sorting of data and big Ns
-  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
-                 Label = rep("n",6),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
-                 Param = rep("n",6),
-                 Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
-    mutate(ord1 = if_else(Group == "Age (y)", 1, 2)) %>%
-    arrange(desc(Group))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n",6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n",6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    mutate(
+      ord1 = if_else(Group == "Age (y)", 1, 2)
+    ) |>
+    arrange(
+      desc(Group)
+    )
 
-  big_ns <- data %>%
-    summarise(.by = c( Column, Group), Value = sum(Value)) %>%
-    mutate(Param = "big_N") %>%
-    arrange(Group)
+  big_ns <- data |>
+    summarise(
+      .by = c( Column, Group),
+      Value = sum(Value)
+    ) |>
+    mutate(
+      Param = "big_N"
+    ) |>
+    arrange(
+      Group
+    )
 
   data <- bind_rows(data, big_ns)
 
@@ -1222,25 +1278,43 @@ test_that("Paging (group) variable is sorted non-alphabetically",{
     value = Value,
     param = Param,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
       page_structure(
-        group_val = list(Group = ".default"))
+        group_val = list(
+          Group = ".default"
+        )
+      )
     ),
-    big_n = big_n_structure(param_val = "big_N", by_page = TRUE)
+    big_n = big_n_structure(
+      param_val = "big_N",
+      by_page = TRUE
+    )
   )
 
-  expect_message(
-    auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE),
-    "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan` and bigNs must be in order of the data"
-    ,
-    fixed = TRUE
+  expect_snapshot(
+    mytfrmt |>
+      apply_tfrmt(
+        .data = data,
+        tfrmt = _,
+        mock = FALSE
+      )
   )
 })
 
@@ -1254,26 +1328,39 @@ original_data <- tibble(
   Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
   Param = rep("n", 6),
   Value = c(12, 14, 31, 20, 32, 18)
-) %>%
-  mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+) |>
+  mutate(
+    ord1 = if_else(Group == "Age (y)", 1, 2)
+  )
 
 # Duplicate the data and add the `by group` column
-data_101 <- original_data %>% mutate(`by group` = "101")
-data_102 <- original_data %>% mutate(`by group` = "102")
+data_101 <- original_data |> mutate(`by group` = "101")
+data_102 <- original_data |> mutate(`by group` = "102")
 
 # Combine the two data frames
 data <- bind_rows(data_101, data_102)
 
 # Create mock big Ns
-big_ns <- data %>%
-  group_by(`by group`, Column) %>%
-  summarise(Value = sum(Value)) %>%
-  mutate(Param = "bigN") %>%
-  filter(`by group` == "101") %>%
+big_ns <- data |>
+  group_by(
+    `by group`,
+    Column
+  ) |>
+  summarise(
+    Value = sum(Value)
+  ) |>
+  mutate(
+    Param = "bigN"
+  ) |>
+  filter(
+    `by group` == "101"
+  ) |>
   ungroup()
 
 data <- bind_rows(data, big_ns)|>
-  arrange(desc(Group))
+  arrange(
+    desc(Group)
+  )
 
 # Define the tfrmt object with two grouping variables and a page_plan
 tfrmt_two_groups <- tfrmt(
@@ -1283,24 +1370,43 @@ tfrmt_two_groups <- tfrmt(
   value = Value,
   param = Param,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+    frmt_structure(
+      group_val = ".default",
+      label_val = "n",
+      frmt("xx")
+    )
   ),
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " "))
+    row_grp_structure(
+      group_val = ".default",
+      element_block(
+        post_space = " "
+      )
+    )
   ),
   page_plan = page_plan(
     page_structure(
-      group_val = list(`by group` = ".default")
+      group_val = list(
+        `by group` = ".default"
+      )
     ),
     note_loc = "subtitle"
   ),
-  big_n = big_n_structure(param_val = "bigN"),
-  col_plan = col_plan(-`by group`)
+  big_n = big_n_structure(
+    param_val = "bigN"
+  ),
+  col_plan = col_plan(
+    -`by group`
+  )
 )
 
 # Apply the tfrmt and check the output for each page
-output_list <- tfrmt_two_groups %>%
-  apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)
+output_list <- tfrmt_two_groups |>
+  apply_tfrmt(
+    .data = data,
+    tfrmt = _,
+    mock = FALSE
+  )
 
 # Expect two elements in the output list, one for each `By group` value
 expect_length(output_list, 2)
