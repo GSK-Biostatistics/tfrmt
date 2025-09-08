@@ -240,7 +240,7 @@ test_that("Test with spanning headers", {
     "g2", "rowlabel3",             NA,         NA, "mycol3",  "value",    3,
     "g2", "rowlabel3",  "column cols",    "col 4",   "col4",  "value",    3,
     "g2", "rowlabel3",             NA,         NA, "mycol5",  "value",    3,
-    #big n's
+    # big n's
     NA, NA,  "column cols",         NA,       NA,  "bigN",    18,
     NA, NA,  "column cols", "cols 1,2",       NA,  "bigN",    12,
     NA, NA,  "column cols",    "col 4",   "col4",  "bigN",     6,
@@ -295,13 +295,12 @@ test_that("Test with spanning headers", {
 
   expect_equal(auto, man)
 
-
   # try with empty strings rather than NA
   dat_blank <- dat |>
     dplyr::mutate(
-      across(
-        where(is.character),
-        ~ replace_na(.x, "")
+      dplyr::across(
+        dplyr::where(is.character),
+        ~ tidyr::replace_na(.x, "")
       )
     )
 
@@ -425,20 +424,16 @@ test_that("Multiple big N params", {
     ) |>
     names()
 
-  man <- big_ns |>
-    dplyr::mutate(
-      foo = str_c(Column, "\nN = ", Value)
-    ) |>
-    pull(foo) |>
-    append(
-      values = "..tfrmt_row_grp_lbl"
-    ) |>
-    append(
-      values = "Label",
-      after = 0L
+  expect_equal(
+    auto,
+    c(
+      "Label",
+      "Placebo\nN = 30",
+      "Treatment\nN = 30",
+      "Total\nN = 60",
+      "..tfrmt_row_grp_lbl"
     )
-
-  expect_equal(auto, man)
+  )
 })
 
 test_that("Overlapping Big N's", {
