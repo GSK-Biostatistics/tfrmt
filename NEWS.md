@@ -1,4 +1,4 @@
-# tfrmt development version
+# tfrmt 0.2.0
 
 ## Improvements
 
