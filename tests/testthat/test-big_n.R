@@ -994,17 +994,26 @@ test_that("big Ns constant by page",{
 
   # too many big Ns provided with by_page = FALSE
 
-  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
-                 Label = rep("n",6),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
-                 Param = rep("n",6),
-                 Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
-    mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n",6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n",6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    mutate(
+      ord1 = if_else(Group == "Age (y)", 1, 2)
+    )
 
-  big_ns <- data %>%
-    summarise(.by = c(Group, Column), Value = sum(Value)) %>%
-    mutate(Param = "big_N")
+  big_ns <- data |>
+    summarise(
+      .by = c(Group, Column),
+      Value = sum(Value)
+    ) |>
+    mutate(
+      Param = "big_N"
+    )
+
   data <- bind_rows(data, big_ns)
 
   mytfrmt <- tfrmt(
@@ -1015,46 +1024,71 @@ test_that("big Ns constant by page",{
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = FALSE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = FALSE
+    )
   )
 
-  expect_warning(
-    auto <- mytfrmt %>%
-      apply_tfrmt(.data = data, tfrmt = ., mock = FALSE)  ,
-    paste(c("The following columns have multiple Big N's associated with them:",
-          "c(\"Placebo\", \"Total\", \"Treatment\")"), collapse = "\n"),
-      fixed = TRUE
+  expect_snapshot_warning(
+    mytfrmt |>
+      apply_tfrmt(
+        .data = data,
+        tfrmt = _,
+        mock = FALSE
+      )
   )
-
 })
-
 
 
 test_that("not enough big Ns by page",{
 
   # big Ns are constant by page
-  data <- tibble(Group = rep(c("Age (y)", "Sex"), c(3, 3)),
-                 Label = rep("n",6),
-                 Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
-                 Param = rep("n",6),
-                 Value = c(12, 14, 31, 20, 32, 18)
-  ) %>%
-    mutate(ord1 = if_else(Group == "Age (y)", 1, 2))
+  data <- tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n",6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n",6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    mutate(
+      ord1 = if_else(Group == "Age (y)", 1, 2)
+    )
 
-  #remove sex bigns so we have a missmatch of big ns
-  big_ns <- data %>%
-    filter(Group=="Age (y)") %>%
-    summarise(.by = c( Column, Group), Value = sum(Value)) %>%
-    mutate(Param = "big_N")
+  #remove sex bigNs so we have a mismatch of big ns
+  big_ns <- data |>
+    filter(
+      Group=="Age (y)"
+    ) |>
+    summarise(
+      .by = c( Column, Group),
+      Value = sum(Value)
+    ) |>
+    mutate(
+      Param = "big_N"
+    )
 
   data <- bind_rows(data, big_ns)
 
@@ -1066,16 +1100,32 @@ test_that("not enough big Ns by page",{
     param = Param,
     sorting_cols = ord1,
     body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+      everything(),
+      -starts_with("ord"),
+      "Total"
+    ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = " ")
+      )
     ),
     page_plan = page_plan(
-      page_structure(group_val = ".default")
+      page_structure(
+        group_val = ".default"
+      )
     ),
-    big_n = big_n_structure(param_val = c("big_N"), by_page = TRUE)
+    big_n = big_n_structure(
+      param_val = c("big_N"),
+      by_page = TRUE
+    )
   )
 
   expect_message(
