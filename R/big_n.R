@@ -141,7 +141,9 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
         dplyr::select(
           !!!columns,
           !!value,
-          tidyselect::where(~sum(is.na(.x)) == 0),
+          tidyselect::where(
+            ~sum(is.na(.x)) == 0
+          ),
           -!!param
         )
     } else {
@@ -188,7 +190,9 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
     by_var <- setdiff(grp_vars, purrr::map_chr(columns, as_label))
 
     data_out <- frmtted_vals |>
-      dplyr::mutate(`_tfrmt______id` = row_number()) |>
+      dplyr::mutate(
+        `_tfrmt______id` = row_number()
+      ) |>
       tidyr::pivot_longer(
         -c(
           "_tfrmt______id",
