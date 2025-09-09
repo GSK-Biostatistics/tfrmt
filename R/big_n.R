@@ -121,11 +121,6 @@ remove_big_ns <- function(.data, param, big_n_structure) {
 #' @param mock boolean if it is T/F
 #' @return tibble of the formatted big n's and expressions for where each goes
 #'
-#' @importFrom dplyr slice_tail filter select group_by group_split
-#' @importFrom tidyr unite
-#' @importFrom tidyselect where
-#' @importFrom purrr map
-#' @importFrom forcats fct_inorder
 #' @noRd
 get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
 
