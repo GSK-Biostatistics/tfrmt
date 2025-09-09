@@ -190,18 +190,18 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
 
     by_var <- setdiff(grp_vars, map_chr(columns, as_label))
 
-    data_out <- frmtted_vals %>%
-      mutate(`_tfrmt______id` = row_number()) %>%
+    data_out <- frmtted_vals |>
+      mutate(`_tfrmt______id` = row_number()) |>
       pivot_longer(
         -c("_tfrmt______id", !!value, all_of(by_var)),
         names_to = "__tfrmt_big_n_names__",
         values_to = "__tfrmt_big_n_values__"
-      ) %>%
+      ) |>
       filter(
         !is.na(.data$`__tfrmt_big_n_values__`) &
           .data$`__tfrmt_big_n_values__` != ""
-      ) %>%
-      group_by(.data$`_tfrmt______id`) %>%
+      ) |>
+      group_by(.data$`_tfrmt______id`) |>
       mutate(
         exp = paste0(
           .data$`__tfrmt_big_n_names__`,
@@ -214,9 +214,9 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
           "__tfrmt_new_name__",
           .data$`__tfrmt_big_n_names__`
         )
-      ) %>%
-      slice_tail() %>%
-      ungroup()%>%
+      ) |>
+      slice_tail() |>
+      ungroup()|>
       select(-"_tfrmt______id")
 
     if (big_n_structure$by_page ){
@@ -229,12 +229,12 @@ get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
             "..tfrmt_big_n_order..",
             all_of(by_var),
             remove = FALSE
-          ) %>%
+          ) |>
           mutate(
             `..tfrmt_big_n_order..` = fct_inorder(.data$`..tfrmt_big_n_order..`)
-          ) %>%
-          group_by(.data$`..tfrmt_big_n_order..`) %>%
-          group_split() %>%
+          ) |>
+          group_by(.data$`..tfrmt_big_n_order..`) |>
+          group_split() |>
           map(
             ~select(.x, -"..tfrmt_big_n_order..")
           )
