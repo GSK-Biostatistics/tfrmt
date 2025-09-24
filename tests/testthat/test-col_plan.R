@@ -1330,9 +1330,11 @@ test_that("Tidyselect subtraction with span_structure",{
           frmt_combine(
             "{count} {percent}",
             count = frmt("XXX"),
-            percent = frmt_when("==100"~ frmt(""),
-            "==0"~ "",
-            "TRUE" ~ frmt("(XX.X%)"))
+            percent = frmt_when(
+              "==100"~ frmt(""),
+              "==0"~ "",
+              "TRUE" ~ frmt("(XX.X%)")
+            )
           )
         )
       ),
