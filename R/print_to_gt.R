@@ -218,7 +218,8 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
   rowname_col <- NULL
 
-  if (!rlang::quo_is_missing(tfrmt$label)) {
+  if (!rlang::quo_is_missing(tfrmt$label) &&
+        rlang::as_label(tfrmt$label) %in% names(.data)) {
     rowname_col <- rlang::as_label(tfrmt$label)
   }
 
