@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.3.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,36 @@
       <small>Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="tfrmt-development-version">tfrmt (development version)<a class="anchor" aria-label="anchor" href="#tfrmt-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="tfrmt-020">tfrmt 0.2.0<a class="anchor" aria-label="anchor" href="#tfrmt-020"></a></h2><p class="text-muted">CRAN release: 2025-09-06</p>
+<div class="section level3">
+<h3 id="improvements-0-2-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-2-0"></a></h3>
+<ul><li>Working with ARDs created from the {cards} package:
+<ul><li>Added <code><a href="../reference/shuffle_card.html">shuffle_card()</a></code>, which prepares a <code>card</code> ARD object for analysis.</li>
+<li>Added <code>prep_...()</code> functions to reduce the manual processing required for a <code>card</code> ARD object once it has been shuffled. (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/509" class="external-link">#509</a>, <a href="https://github.com/dragosmg" class="external-link">@dragosmg</a>)
+<ul><li>
+<code><a href="../reference/prep_combine_vars.html">prep_combine_vars()</a></code>: useful for combining sparsely populated columns into a single one.</li>
+<li>
+<code><a href="../reference/prep_big_n.html">prep_big_n()</a></code>: useful when the tfrmt contains a bigN structure. It recodes the <code>"n"</code> <code>stat_name</code> into <code>"bigN"</code> for the desired variables.</li>
+<li>
+<code><a href="../reference/prep_label.html">prep_label()</a></code>: combines <code>stat_label</code> and <code>variable_level</code> for categorical (or categorical-like) variables.</li>
+<li>
+<code><a href="../reference/prep_hierarchical_fill.html">prep_hierarchical_fill()</a></code>: does a pair-wise replacement of missing values (<code>NAs</code>) in one column based on another column. It can replace <code>NA</code> either with a predetermined value, with the value of the other column in the pair, or with a {glue} expression.</li>
+</ul></li>
+</ul></li>
+<li>Updated RTF footnotes so they go in the document footer by default.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
+<ul><li>Fix issue where <code>*_structure</code> functions did not correctly parse strings containing quotes in some cases. (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/466" class="external-link">#466</a>)</li>
+<li>Fix issue where page_plan doesn’t work if there is only one level in your paging variable. (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/506" class="external-link">#506</a>)</li>
+<li>Fix issues where an error is thrown instead of a message if: (1) levels of page-specific big Ns do not align with levels of pagination (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/505" class="external-link">#505</a>) or (2) the pagination levels are sorted non-alphabetically. (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/516" class="external-link">#516</a>)</li>
+<li>Fix issue where the big_n_structure doesn’t work when the column name used for page_plan/grouping has a space in it. (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/522" class="external-link">#522</a>)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3" id="tfrmt-013">tfrmt 0.1.3<a class="anchor" aria-label="anchor" href="#tfrmt-013"></a></h2><p class="text-muted">CRAN release: 2024-10-15</p>
 <div class="section level3">
