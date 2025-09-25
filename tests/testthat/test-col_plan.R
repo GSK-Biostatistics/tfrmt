@@ -1324,14 +1324,19 @@ test_that("Tidyselect subtraction with span_structure",{
       sorting_cols = c(ord1),
       # Specify body plan
       body_plan = body_plan(
-        frmt_structure(group_val = ".default", label_val = ".default",
-                       frmt_combine(
-                         "{count} {percent}",
-                         count = frmt("XXX"),
-                         percent = frmt_when("==100"~ frmt(""),
-                                             "==0"~ "",
-                                             "TRUE" ~ frmt("(XX.X%)"))
-                       ))
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt_combine(
+            "{count} {percent}",
+            count = frmt("XXX"),
+            percent = frmt_when(
+              "==100"~ frmt(""),
+              "==0"~ "",
+              "TRUE" ~ frmt("(XX.X%)")
+            )
+          )
+        )
       ),
       # Remove extra cols and create spans
       col_plan = col_plan(
@@ -1348,7 +1353,8 @@ test_that("Tidyselect subtraction with span_structure",{
 
   mock_gt <- print_mock_gt(tfrmt_minus_selection, df)
 
-  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  # keeps the spanners & original cols other than ones that start with "ord".
+  # renaming occurs as needed
   expect_equal(
     names(mock_gt$`_data`),
     c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
@@ -1359,7 +1365,8 @@ test_that("Tidyselect subtraction with span_structure",{
 
   real_gt <- print_to_gt(tfrmt_minus_selection, df_fake_values)
 
-  ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
+  # keeps the spanners & original cols other than ones that start with "ord".
+  # renaming occurs as needed
   expect_equal(
     names(real_gt$`_data`),
     c("label", "Placebo___tlang_delim___PL", "Treatment___tlang_delim___T1",
@@ -1383,8 +1390,7 @@ test_that("Tidyselect subtraction with span_structure",{
       )
     )
 
-  mock_gt2 <- tfrmt_minus_selection_2 %>%
-    print_mock_gt(df)
+  mock_gt2 <- print_mock_gt(tfrmt_minus_selection_2, df)
 
 
   ## keeps only the spanners, label is dropped
