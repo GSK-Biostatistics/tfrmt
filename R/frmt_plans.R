@@ -202,7 +202,7 @@ frmt_combine <- function(expression, ..., missing = NULL){
     TRUE ~ vars_to_fmt)
 
   exp_new <- expression
-  for(i in 1:length(replace_val)){
+  for(i in seq_along(replace_val)){
     exp_new <- str_replace(exp_new, vars_to_fmt[i], replace_val[i])
   }
 

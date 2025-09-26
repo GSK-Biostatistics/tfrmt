@@ -215,9 +215,18 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     attr(.data,".footnote_locs") <- attr_footnote
     attr(.data,".stub_header") <- attr_stub_header
   }
+
+  rowname_col <- NULL
+
+  if (!rlang::quo_is_missing(tfrmt$label) &&
+        rlang::as_label(tfrmt$label) %in% names(.data)) {
+    rowname_col <- rlang::as_label(tfrmt$label)
+  }
+
   gt_out <- .data %>%
     gt(
-      rowname_col = as_label(tfrmt$label)) %>%
+      rowname_col = rowname_col
+    )  %>%
     sub_missing(
       rows = .data$..tfrmt_row_grp_lbl==TRUE,
       missing_text = ""
