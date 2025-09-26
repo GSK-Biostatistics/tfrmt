@@ -192,14 +192,23 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws){
 #'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
+  existing_grp <- tfrmt$group %>%
+    keep(function(x){
+      as_label(x) %in% names(.data)
+    })
+  rowname_col <- NULL
 
-  if((is.null(tfrmt$row_grp_plan) ||(!inherits(.data, "grouped_df"))) && length(tfrmt$group) > 0){
-    existing_grp <- tfrmt$group %>%
-      keep(function(x){
-        as_label(x) %in% names(.data)
-      })
-    .data <- .data %>%
-      group_by(!!!existing_grp)
+  if (length(existing_grp)>0){
+    if (!is.null(tfrmt$row_grp_plan) && !tfrmt$row_grp_plan$label_loc$location=="column") {
+
+      .data <- .data %>%
+        group_by(!!!existing_grp)
+
+    } else {
+
+      # drop groups into row names
+      rowname_col <- existing_grp
+    }
   }
 
   if (!is.null(tfrmt$col_style_plan)){
@@ -207,6 +216,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
   } else {
     align <- NULL
   }
+
   if (!"..tfrmt_row_grp_lbl" %in% names(.data)) {
     # keep attribute for footnotes
     attr_footnote <- attr(.data,".footnote_locs")
@@ -216,12 +226,14 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     attr(.data,".stub_header") <- attr_stub_header
   }
 
-  rowname_col <- NULL
-
   if (!rlang::quo_is_missing(tfrmt$label) &&
         rlang::as_label(tfrmt$label) %in% names(.data)) {
-    rowname_col <- rlang::as_label(tfrmt$label)
+
+    rowname_col <- c(rowname_col, tfrmt$label)
   }
+
+  # convert to character if not null
+  rowname_col <- if (!is.null(rowname_col)) map_chr(rowname_col, rlang::as_label)
 
   gt_out <- .data %>%
     gt(

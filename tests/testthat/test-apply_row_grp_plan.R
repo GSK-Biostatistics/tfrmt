@@ -704,7 +704,13 @@ test_that("row order is retained for all selections",{
     print_to_gt(dat)
 
   gt_column_dat <- gt_column$`_data`
-  expect_equal(gt_column_dat, gt_spanning_man)
+  gt_column_man <- tibble::tribble(
+    ~ grp1,  ~grp2,  ~lbl, ~`1`, ~..tfrmt_row_grp_lbl,
+    "d",   "c",     "n",     "1",     FALSE,
+    "a",   "b",     "m",     "2",     FALSE,
+    "q",   "v",     "s",     "3",     FALSE,
+    "b",   "p",     "e",     "4",     FALSE  )
+  expect_equal(gt_column_dat, gt_column_man, ignore_attr = TRUE)
 
   # original order also respected if no order variable supplied
   tfrmt(
@@ -798,7 +804,7 @@ test_that("Row group plans with col style plan",{
         group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
         element_block = element_block(post_space = "----")
       ),
-      label_loc = element_row_grp_loc(location = "column")
+      label_loc = element_row_grp_loc(location = "spanning")
     ),
     col_style_plan =  col_style_plan(
       col_style_structure(align = "right", col = g1), # col must be the top lebel group

@@ -13,6 +13,7 @@
 #' @noRd
 apply_footnote_meta <- function(.data, footnote_plan, col_plan_vars, element_row_grp_loc,
                                 group, label, columns){
+
   footnote_locs <- footnote_plan$struct_list %>%
     map(locate_fn, .data = .data,
         col_plan_vars = col_plan_vars, element_row_grp_loc = element_row_grp_loc,
@@ -172,7 +173,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
        #Will the footnote be in the label column
        lb_col_test <- !is.null(loc_info$label_val) | #label level so in label col
          row_grp == "indented" | #indented so in label column
-         (!highest_grp & !row_grp %in% c("", "gtdefault")) #there is a row_grp_plan and this isn't the highest group so indented
+         (!highest_grp & !row_grp %in% c("", "gtdefault", "column")) #there is a row_grp_plan and this isn't the highest group so indented
 
        if(lb_col_test){
          grp_expr <- expr_to_filter(group, loc_info$group_val)
@@ -209,11 +210,32 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
          col_info$col <- ifelse(is.null(col_info$col), first(group_str),
                                      col_info$col)
        } else if(row_grp %in% c("", "gtdefault")){
+
          filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
            parse_expr()
          col_info$row<-.data %>%
            group_by(!!first(group)) %>%
            mutate(`___tfrmt_grp_n` = cur_group_id(),
+                  `___tfrmt_test` = !!filter_expr) %>%
+           filter(.data$`___tfrmt_test`) %>%
+           pull(.data$`___tfrmt_grp_n`) %>%
+           unique()
+
+         lowest_grp <- group_str %in% names(loc_info$group_val) %>%
+           which() %>%
+           max() %>%
+           group_str[.]
+
+         col_info$col <- ifelse(is.null(col_info$col), lowest_grp,
+                                col_info$col)
+
+       } else if(row_grp=="column"){
+
+         filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
+           parse_expr()
+         col_info$row<-.data %>%
+           # group_by(!!first(group)) %>%
+           mutate(`___tfrmt_grp_n` = row_number(), #cur_group_id(),
                   `___tfrmt_test` = !!filter_expr) %>%
            filter(.data$`___tfrmt_test`) %>%
            pull(.data$`___tfrmt_grp_n`) %>%
