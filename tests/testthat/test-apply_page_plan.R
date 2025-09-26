@@ -436,16 +436,16 @@ test_that("Page plan with max_rows", {
   auto_split <- apply_tfrmt(df, mytfrmt)
   man_split <- list(
       tibble::tribble(
-        ~grp, ~ lbl, ~ trt, ~`..tfrmt_row_grp_lbl`,
-        "A" ,  "a" , '22', FALSE,
-        "A" ,  "b" , '11', FALSE,
-        "B" ,  "a" , '24', FALSE
+        ~grp, ~ lbl, ~ trt,
+        "A" ,  "a" , '22',
+        "A" ,  "b" , '11',
+        "B" ,  "a" , '24',
       ),
       tibble::tribble(
-        ~grp, ~ lbl, ~ trt, ~`..tfrmt_row_grp_lbl`,
-        "B" ,  "b" , '55', FALSE,
-        "C" ,  "a" , '12', FALSE,
-        "C" ,  "b" , '19', FALSE
+        ~grp, ~ lbl, ~ trt,
+        "B" ,  "b" , '55',
+        "C" ,  "a" , '12',
+        "C" ,  "b" , '19',
       )
     )
   expect_equal(auto_split, man_split, ignore_attr = TRUE)

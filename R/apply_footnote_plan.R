@@ -96,7 +96,7 @@ apply_cells_column_labels <- function(gt,loc){
 #' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_spanners <- function(gt,loc){
   # check row is empty - therefore a column footnote
-  if(is.null(loc$row) && loc$spanning ==TRUE){
+  if(!is.null(loc) && is.null(loc$row) && loc$spanning ==TRUE){
 
     gt<- gt %>%
       tab_footnote(
@@ -125,12 +125,22 @@ apply_cells_column_spanners <- function(gt,loc){
 #' @importFrom rlang quo_get_expr
 apply_cells_stub <-  function(gt,tfrmt,loc){
   if(length(loc$col)>0){
-  if(all(loc$col == as_label(tfrmt$label))){
+
+  in_stub <- (
+    #column row grp label (all stubs)
+    (!is.null(tfrmt$row_grp_plan) &&
+                tfrmt$row_grp_plan$label_loc$location=="column") &&
+    all(loc$col %in% map_chr(c(tfrmt$group, tfrmt$label), as_label)) ||
+      # in the label
+      (all(loc$col==as_label(tfrmt$label)))
+    )
+
+  if(in_stub){
 
     gt<- gt %>%
       tab_footnote(
         footnote = loc$note,
-        locations = cells_stub(rows = all_of(loc$row))
+        locations = cells_stub(rows = all_of(loc$row), columns = loc$col)
       )
 
 
@@ -160,9 +170,8 @@ apply_cells_row_groups <- function(gt,tfrmt,loc){
       gt<- gt %>%
         tab_footnote(
           footnote = loc$note,
-          locations = cells_row_groups(groups = all_of(all_of(loc$row))
+          locations = cells_row_groups(groups = all_of(loc$row))
           )
-        )
 
      }
 
@@ -185,7 +194,7 @@ apply_cells_body<- function(gt,loc){
     gt<- gt %>%
       tab_footnote(
         footnote = loc$note,
-        locations = cells_body(columns = all_of(loc$col), rows = all_of(all_of(loc$row))
+        locations = cells_body(columns = all_of(loc$col), rows = all_of(loc$row)
         )
       )
   }

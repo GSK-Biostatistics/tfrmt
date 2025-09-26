@@ -326,14 +326,12 @@ test_that("incomplete body_plan where params share label",{
       )
 
   man_tfrmt <- tibble::tribble(
-    ~rowlbl1,  ~rowlbl2,    ~ A   ,       ~..tfrmt_row_grp_lbl,
-    "topgrp", "lowergrp1", NA_character_, TRUE,
-    "topgrp", "  n pct"  ,c("1","50"),   FALSE,
-    "topgrp", "  mean"   , " 2.0",        FALSE,
-    "topgrp", "lowergrp2", NA_character_, TRUE,
-    "topgrp", "  n pct"  , c("2","40"),   FALSE,
-    "topgrp", "  mean"   , " 5.0",        FALSE
-  ) %>% group_by(rowlbl1)
+    ~rowlbl1, ~grp,  ~rowlbl2,    ~ A   ,
+    "topgrp", "lowergrp1", "n pct"  , c("1","50"),
+    "topgrp", "lowergrp1", "mean"   , " 2.0",
+    "topgrp", "lowergrp2", "n pct"  , c("2","40"),
+    "topgrp", "lowergrp2", "mean"   , " 5.0"
+  )
 
   expect_equal(auto_tfrmt, man_tfrmt,
                ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
