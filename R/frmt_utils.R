@@ -388,3 +388,5 @@ as.character.span_structure <- function(x, ...){
          ")"
   )
 }
+
+f_lhs <- function(x) as.character(rlang::f_lhs(x))

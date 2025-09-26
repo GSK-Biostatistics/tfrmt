@@ -278,7 +278,7 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, value, mock = FALSE, param,
 }
 
 #' @export
-#' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
+#' @importFrom rlang as_label f_rhs parse_exprs eval_tidy
 #' @importFrom dplyr pull if_else mutate
 #' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
@@ -313,6 +313,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...){
         out
       })
 
+    
     left <- frmt_def$frmt_ls %>%
       map_chr(f_lhs) %>%
       if_else(. == "TRUE", ., paste0(values_str, .)) %>%
