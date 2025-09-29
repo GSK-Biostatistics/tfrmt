@@ -211,7 +211,7 @@ test_that("Check apply_tfrmt for mock data",{
   expect_equal(
     mock_dat,
     expected_dat,
-    ignore_attr = c("class",".col_plan_vars",".footnote_locs")
+    ignore_attr = c("class",".col_plan_vars",".footnote_locs", ".stub_header")
   )
 
   # duplicate params for a single group/label combo
@@ -255,7 +255,7 @@ test_that("Check apply_tfrmt for mock data",{
                  "grp1_2", "my_label_2", "xxx" ,  "xxx"  ,
                  "grp1_2", "my_label_2", "xx.x",  "xx.x" ,
                ),
-               ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
+               ignore_attr = c("class",".col_plan_vars",".footnote_locs", ".stub_header"))
 
 })
 
@@ -286,7 +286,7 @@ test_that("Test body_plan missing", {
                  select(-param) %>%
                  mutate(val = as.character(val)) %>%
                  pivot_wider(names_from = column, values_from = val),
-               ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
+               ignore_attr = c("class",".col_plan_vars",".footnote_locs", ".stub_header"))
 })
 
 
@@ -334,7 +334,7 @@ test_that("incomplete body_plan where params share label",{
   )
 
   expect_equal(auto_tfrmt, man_tfrmt,
-               ignore_attr = c("class",".col_plan_vars",".footnote_locs"))
+               ignore_attr = c("class",".col_plan_vars",".footnote_locs", ".stub_header"))
 })
 
 
@@ -439,7 +439,7 @@ test_that("struct utils quote escaping",{
   expect_equal(
     auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |> dplyr::select(rowlbl2:A),
     man_tfrmt,
-    ignore_attr = c("class",".col_plan_vars",".footnote_locs")
+    ignore_attr = c("class",".col_plan_vars",".footnote_locs", ".stub_header")
   )
 
 })

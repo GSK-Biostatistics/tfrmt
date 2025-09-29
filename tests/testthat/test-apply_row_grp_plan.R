@@ -627,6 +627,25 @@ test_that("Summary rows are not indented", {
     ) %>% group_by(grp1)
   )
 
+
+  plan_with_column <- row_grp_plan(label_loc= element_row_grp_loc(location = "column"))
+
+  expect_equal(
+    apply_row_grp_lbl(mock_multi_grp, plan_with_column$label_loc, vars(grp1, grp2), sym("my_label")) %>%
+      remove_grp_cols(plan_with_column$label_loc, vars(grp1, grp2)),
+    tibble::tribble(
+      ~grp1,   ~grp2,        ~my_label ,     ~trtA       , ~trtB       , ~trtC,
+      "cat_1", "cat_1",      "cat_1"          ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_2", "cat_2",      "cat_2"         ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_2", "sub_cat_2",  "sub_cat_2"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_2", "sub_cat_2",  "sub_cat_3"     ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_3", "cat_3",      "cat_3"         ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_3", "sub_cat_3a", "sub_cat_3a"    ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_3", "sub_cat_3b", "sub_cat_3b_1"  ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+      "cat_3", "sub_cat_3b", "sub_cat_3b_3"  ,"xx (xx%)" ,"xx (xx%)" ,"xx (xx%)",
+    )
+  )
+
 })
 
 test_that("row order is retained for all selections",{
@@ -675,7 +694,7 @@ test_that("row order is retained for all selections",{
     "  p"    ,NA , TRUE,
     "    e"  ,"4", FALSE )
 
-  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars",".footnote_locs"))
+  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars",".footnote_locs", ".stub_header"))
 
 
   gt_spanning <-  tfrmt_temp %>%
@@ -742,7 +761,7 @@ test_that("row order is retained for all selections",{
     "b"      ,NA , TRUE,
     "  p"    ,NA , TRUE,
     "    e"  ,"4",  FALSE)
-  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars",".footnote_locs"))
+  expect_equal(gt_indented_dat, gt_indented_man, ignore_attr = c(".col_plan_vars",".footnote_locs", ".stub_header"))
 })
 
 
@@ -833,40 +852,82 @@ test_that("Row group plans with col style plan",{
       )
   )
 
-
-})
-
-test_that("Row group plans with col style plan - error checks against group",{
-
-  expect_error({
-      tfrmt(
-        group = c(g1,g2),
-        row_grp_plan = row_grp_plan(
-          row_grp_structure(
-            group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
-            element_block = element_block(post_space = "----")
-          ),
-          label_loc = element_row_grp_loc(location = "column")
-        ),
-        col_style_plan =  col_style_plan(
-          col_style_structure(align = "right", col = g2), # col must be the top lebel group
-          col_style_structure(align = "right", col = one), # always bueno
-          col_style_structure(align = "right", width = 200, col = vars(starts_with("trt"))),
-          col_style_structure(align = c(" "), col = trt1),
-          col_style_structure(width = 100, col = four)
+  # label_loc = "column"
+  raw_dat <- tibble::tribble(
+    ~g1,  ~g2,       ~one,   ~param, ~column, ~ value,
+    "G1", "g3_long", "n (%)",  "n",    "trt1",      12,
+    "G1", "g3"     , "n (%)",  "pct",  "trt1",      34,
+    "G2_", "g3_long","mean",   "mean", "trt1",    12.3,
+    "G2_", "g3"     ,"sd",     "sd",   "trt1",    4.34,
+    "G1", "g_long",  "n (%)",  "n",    "trt2",      24,
+    "G1", "g3"  ,    "n (%)",  "pct",  "trt2",      58,
+    "G2_", "g3_long","mean",   "mean", "trt2",    15.4,
+    "G2_", "g3",     "sd",     "sd",   "trt2",    8.25
+  )
+  plan <- tfrmt(
+    label = one,
+    group = c(g1,g2),
+    column = vars(column),
+    value = value,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        frmt("xx.xx")
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "n (%)",
+        frmt_combine("{n} ({pct}%)",
+                     n = frmt("x"),
+                     pct = frmt("xx.x"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = "(q1, q3)",
+        frmt_combine("({q1}, {q3})",
+                     q1 = frmt("xx"),
+                     q3 = frmt("xx"))
+      ),
+      frmt_structure(
+        group_val = ".default",label_val = ".default",
+        pval = frmt_when(
+          "<.001" ~ "<.001",
+          TRUE ~ frmt("x.xxx")
         )
       )
-    },
-    paste(
-      "Invalid col_style_structure in row_grp_plan at position `1`:",
-      "  `col` value: g2",
-      "  When row_grp_plan label location is `column`, only the only valid group col to style is `g1`",
-      sep = "\n"
     ),
-    fixed = TRUE
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
+        element_block = element_block(post_space = "----")
+      ),
+      label_loc = element_row_grp_loc(location = "column")
+    ),
+    col_style_plan =  col_style_plan(
+      col_style_structure(align = "right", col = g1), # col must be the top label group
+      col_style_structure(align = "right", col = g2), # col must be the top label group
+      col_style_structure(align = "right", col = one), # always bueno
+      col_style_structure(align = "right", width = 4, col = vars(starts_with("trt"))),
+      col_style_structure(align = "left", col = trt1)
+    )
+  )
+  tfrmt_gt <- print_to_gt(plan, raw_dat)
+
+  expect_equal(
+    tfrmt_gt$`_data` %>%
+      select(-`..tfrmt_row_grp_lbl`) %>%
+      as.list(),
+    list(
+      g1 = c(" G1", " G1", " G1", " G1", "G2_", "G2_", "G2_", "G2_", " G1", " G1"),
+      g2 = c("g3_long", "g3_long", "     g3", "     g3", "g3_long", "g3_long", "     g3", "     g3", " g_long", " g_long"),
+      one = c( "n (%)", "-----", "n (%)", "-----", " mean", "-----", "   sd", "-----", "n (%)", "-----"),
+      trt1 = c("12.00", "-----", "34.00", "-----", "12.30", "-----", " 4.34", "-----", "     ", "-----"),
+      trt2 = c("     " ,"-----", "58.00", "-----", "15.40", "-----", " 8.25", "-----", "24.00", "-----")
+    ),
+    ignore_attr = TRUE
   )
 
 })
+
 
 test_that("Suppress printing of groups", {
 

@@ -56,14 +56,13 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
   #
   #      - "gtdefault": +1
   #      - "spanning" / "indented" : # of grouping vars
-  #      - "column": # of grouping vars - 1
-  #      - "noprint": +0
+  #      - "noprint", "column": +0
   n_grp_vars <- length(group)
   n_grp_rows <- switch(row_grp_plan_label_loc,
                        gtdefault = 1,
                        spanning = n_grp_vars,
                        indented = n_grp_vars,
-                       column = n_grp_vars-1,
+                       column = 0,
                        noprint = 0)
 
   if (!n_grp_rows<max_rows){
@@ -99,9 +98,17 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
     }
 
     # if this row is added, how many rows will be in table
-    cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
-      combine_group_cols_mod(group, label, row_grp_plan_label_loc)
+    # cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
+    #   combine_group_cols_mod(group, label, row_grp_plan_label_loc)
 
+    if(length(group)==0 || is_empty(label) || row_grp_plan_label_loc %in% c("gtdefault", "noprint", "column")){
+      cur_dat_new <- bind_rows(cur_dat, next_dat)
+    } else{
+      #  combine any grouping columns that need combining into label
+      cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
+        combine_group_cols_mod(group, label, row_grp_plan_label_loc)
+
+    }
 
     # if the table is within our limit, keep it
     if (nrow(cur_dat_new) <= max_rows){
@@ -270,8 +277,7 @@ combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NU
            ..tfrmt_row_grp_lbl = FALSE)%>%
     mutate(`..tfrmt_summary_row` = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
 
-
-  if(element_row_grp_loc %in% c("spanning", "column") & length(group) > 0){
+  if(element_row_grp_loc %in% c("spanning") & length(group) > 0){
     group = group[-1]
   }
 
