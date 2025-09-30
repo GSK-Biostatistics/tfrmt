@@ -66,6 +66,11 @@ The development version of tfrmt can be installed with:
 devtools::install_github("GSK-Biostatistics/tfrmt")
 ```
 
+The tfrmt package can also be installed from CRAN with following code:
+```r
+install.packages("tfrmt")
+```
+
 # Input data structure
 
 We expect an input dataset that is long, with 1 record per computed
