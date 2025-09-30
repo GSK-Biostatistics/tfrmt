@@ -1,5 +1,7 @@
 # tfrmt (development version)
 
+Patch release for latest {gt} release and upcoming {purrr} and {stringr} releases.
+
 # tfrmt 0.2.0
 
 ## Improvements
