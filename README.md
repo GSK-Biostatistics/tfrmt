@@ -117,12 +117,12 @@ alt="Example GT Demography Table" />
 
 | Venue | Presenters | Title | Slides | Video |
 |:---|:---|:---|:---|:---|
-| 2022 R/Pharma | Christina Fillmore | Why do I spend all my life formatting tables? |  | [Video](%5Bhttps://www.youtube.com/watch?v=00lGhuANUJw%5D(https://www.youtube.com/watch?v=00lGhuANUJw)) |
-| 2023 R/Pharma | Becca Krouse | Everyone’s Invited: A Case Study on Bridging the Usability Gap |  | [Video](%5Bhttps://www.youtube.com/watch?v=Zg1LPJSO0kQ%5D(https://www.youtube.com/watch?v=Zg1LPJSO0kQ)) |
-| 2022 R/Pharma Workshop | Christina Fillmore, Ellis Hughes and Thomas Neitmann | Clinical Reporting in R (Day 2) |  | [Video](%5Bhttps://www.youtube.com/watch?v=rYflZhFDSZQ%5D(https://www.youtube.com/watch?v=rYflZhFDSZQ)) |
-| 2023 R/Pharma Workshop | Thomas Neitmann, Pawel Rucki and Ellis Hughes | Leveraging and contributing to the the pharmaverse for clinical trial reporting in R | [Slides](%5Bhttps://github.com/posit-conf-2023/r-pharma%5D(https://github.com/posit-conf-2023/r-pharma)) |  |
-| Posit conf 2024 | Daniel D. Sjoberg, Becca Krouse, Ellis Hughes, Andrew Bates and Casey Aguilar-Gervase | Flavors of the pharmaverse | [Slides](%5Bhttps://posit-conf-2024.github.io/pharmaverse/%5D(https://posit-conf-2024.github.io/pharmaverse/)) |  |
-| Posit conf 2024 | Becca Krouse | Stitch by Stitch: The Art of Engaging New Users |  | [Video](%5Bhttps://www.youtube.com/watch?v=R3VMij_1aSE%5D(https://www.youtube.com/watch?v=R3VMij_1aSE)) |
-| R in Pharma 2024 | Daniel D. Sjoberg, Becca Krouse and Jack Talboys | Unlocking Analysis Results Datasets (ARDs) | [Slides](%5Bhttps://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/%5D(https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/)) |  |
-| PHUSE US Connect 2025 | Daniel D. Sjoberg and Becca Krouse | Analysis Results Datasets Using Open-Source Tools from the {pharmaverse} | [Slides](%5Bhttps://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/%5D(https://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/)) |  |
-| Posit conf 2025 | Daniel D. Sjoberg, Becca Krouse, Ben Straub and Rammprasad Ganapathy | End-to-End Submissions in R with the Pharmaverse | [Slides](%5Bhttps://posit-conf-2025.github.io/pharmaverse/%5D(https://posit-conf-2025.github.io/pharmaverse/)) |  |
+| 2022 R/Pharma | Christina Fillmore | Why do I spend all my life formatting tables? |  | [Video](https://www.youtube.com/watch?v=00lGhuANUJw) |
+| 2023 R/Pharma | Becca Krouse | Everyone’s Invited: A Case Study on Bridging the Usability Gap |  | [Video](https://www.youtube.com/watch?v=Zg1LPJSO0kQ) |
+| 2022 R/Pharma Workshop | Christina Fillmore, Ellis Hughes and Thomas Neitmann | Clinical Reporting in R (Day 2) |  | [Video](https://www.youtube.com/watch?v=rYflZhFDSZQ) |
+| 2023 R/Pharma Workshop | Thomas Neitmann, Pawel Rucki and Ellis Hughes | Leveraging and contributing to the the pharmaverse for clinical trial reporting in R | [Slides](https://github.com/posit-conf-2023/r-pharma) |  |
+| Posit conf 2024 | Daniel D. Sjoberg, Becca Krouse, Ellis Hughes, Andrew Bates and Casey Aguilar-Gervase | Flavors of the pharmaverse | [Slides](https://posit-conf-2024.github.io/pharmaverse/) |  |
+| Posit conf 2024 | Becca Krouse | Stitch by Stitch: The Art of Engaging New Users |  | [Video](https://www.youtube.com/watch?v=R3VMij_1aSE) |
+| R in Pharma 2024 | Daniel D. Sjoberg, Becca Krouse and Jack Talboys | Unlocking Analysis Results Datasets (ARDs) | [Slides](https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/) |  |
+| PHUSE US Connect 2025 | Daniel D. Sjoberg and Becca Krouse | Analysis Results Datasets Using Open-Source Tools from the {pharmaverse} | [Slides](https://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/) |  |
+| Posit conf 2025 | Daniel D. Sjoberg, Becca Krouse, Ben Straub and Rammprasad Ganapathy | End-to-End Submissions in R with the Pharmaverse | [Slides](https://posit-conf-2025.github.io/pharmaverse/) |  |
