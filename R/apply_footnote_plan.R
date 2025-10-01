@@ -130,7 +130,9 @@ apply_cells_stub <-  function(gt,tfrmt,loc){
     gt<- gt %>%
       tab_footnote(
         footnote = loc$note,
-        locations = cells_stub(rows = all_of(loc$row))
+        locations = cells_stub(
+          rows = loc$row
+        )
       )
 
 
