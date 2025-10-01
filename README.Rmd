@@ -48,6 +48,12 @@ By design, tfrmt is more of the latter, as it is intended to be used after the r
 
 # Installation
 
+The tfrmt package can be installed from CRAN with:
+
+```{r, eval=FALSE}
+install.packages("tfrmt")
+```
+
 The development version of tfrmt can be installed with:
 
 ```{r eval =FALSE}
