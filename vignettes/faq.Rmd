@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message=FALSE, warning=FALSE, echo=FALSE}
 library(tfrmt)
-library(dplyr)
-library(gt)
 ```
 
 ### Can you format a column header?

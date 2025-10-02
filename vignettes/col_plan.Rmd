@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(tibble)
-library(dplyr)
 ```
 
 The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labels and ordering. Similar to the column styling plan (`col_style_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like an advanced version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion, as well as preferentially selecting the _last_ instance a column is selected. For column spanning, multiple column columns need to exist in the input dataset. 

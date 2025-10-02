@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r message=FALSE}
 library(tfrmt)
-library(dplyr)
-library(tidyr)
 ```
 
 Mock tables are useful for visualising how future generated data may be 

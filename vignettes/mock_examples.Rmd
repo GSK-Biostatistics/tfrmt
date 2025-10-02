@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r message=FALSE}
 library(tfrmt)
-library(dplyr)
-library(tidyr)
 ```
 
 ## AE Mocks
@@ -198,15 +196,15 @@ fmt_spec <- tfrmt(
 
 #
 data_ae2 <- data_ae %>% 
-  group_by(AEBODSYS, AETERM) %>% 
-  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
-  ungroup %>% 
-  filter(pct_high >10) %>% 
-  select(-pct_high)
+  dplyr::group_by(AEBODSYS, AETERM) %>% 
+  dplyr::mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::filter(pct_high >10) %>% 
+  dplyr::select(-pct_high)
 
 data_ae2 %>%  
-  select(-value) %>% 
-  arrange(ord1, ord2 ) %>% 
+  dplyr::select(-value) %>% 
+  dplyr::arrange(ord1, ord2 ) %>% 
   print_mock_gt(fmt_spec, . )
 ```
 
@@ -254,7 +252,7 @@ tfrmt(
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
 ) %>% 
-  print_mock_gt(data_demog %>% select(-value))
+  print_mock_gt(data_demog %>% dplyr::select(-value))
 ```
 
 
@@ -299,7 +297,7 @@ tfrmt(
     contains("High")
   )
 ) %>%
-  print_mock_gt(data_efficacy %>% select(-value))
+  print_mock_gt(data_efficacy %>% dplyr::select(-value))
 ```
 
 

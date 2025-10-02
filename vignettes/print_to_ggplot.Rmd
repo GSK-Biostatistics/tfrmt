@@ -16,11 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(dplyr)
-library(tidyr)
 library(patchwork)
-library(survival)
-library(ggfortify)
 ```
 
 Print to ggplot outputs a ggplot table. This table can then be added to an existing plot to provide additional information. For this we recommend the use of the patchwork package.
@@ -31,11 +27,11 @@ A common use case of this function could be in the production of survival plots.
 
 ```{r, message=FALSE, warning=FALSE}
 # Set up survival data
-fit <- survival::survfit(survival::Surv(time,status)~rx, data=colon)
+fit <- survival::survfit(survival::Surv(time,status)~rx, data=survival::colon)
 
 # Plot kaplan meier between times 0-3000
 km_plot <- ggplot2::autoplot(fit) +
-  xlim(c(0,3000))
+  ggplot2::xlim(c(0,3000))
 ```
 
 As with `print_to_gt`, `print_to_ggplot` requires an input table with `label`, `value`,`param` and `column` variables.  The following code sets up our mock input table. 

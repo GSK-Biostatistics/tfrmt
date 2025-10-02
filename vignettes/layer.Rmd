@@ -18,9 +18,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message=FALSE}
 library(tfrmt)
-library(dplyr)
-library(tibble)
-library(gt)
 ```
 
 A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity to build template table formats that can be shared, improved, and reused across multiple projects. `tfrmt` provides a few tfrmt templates to facilitate the creation of basic tfrmts, but they require customization. This can be done through layering. 
