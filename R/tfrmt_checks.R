@@ -224,18 +224,7 @@ check_col_style_row_grp_consistency <- function(x){
         stop("Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself")
       }
 
-      if(r_grp_plan_col_loc == "column" & any(grp_in_cap[-1])){
-        is_invalid_plan <- TRUE
-        invalid_groups <- setdiff(group_as_char[grp_in_cap], group_as_char[1])
-        is_invalid_plan_message <- c(
-          is_invalid_plan_message,
-          paste0(
-            paste0("Invalid col_style_structure in row_grp_plan at position `",cap_vars_idx,"`:\n"),
-            paste0("  `col` value",ifelse(length(invalid_groups) > 1,"s",""),": ",paste0(invalid_groups, collapse = ", "),"\n"),
-            paste0("  When row_grp_plan label location is `column`, only the only valid group col to style is `",group_as_char[1],"`\n")
-          )
-        )
-      }else if(any(grp_in_cap[-1])){
+      if(any(grp_in_cap[-1]) && ! r_grp_plan_col_loc == "column" ){
         is_invalid_plan <- TRUE
         invalid_groups <- group_as_char[grp_in_cap]
         is_invalid_plan_message <- c(

@@ -78,7 +78,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE){
     as_vars()
 
   # just the stub
-  stub_header <- create_stub_head(col_plan_vars, tfrmt$group)
+  stub_header <- create_stub_head(col_plan_vars, tfrmt$group, tfrmt$label)
 
   # apply remaining processing to single table or map over list of tables (paginated)
   apply_tfrmt_subtable_mapper(tfrmt, tbl_dat_wide_processed, col_plan_vars, stub_header, big_n_df)

@@ -25,17 +25,17 @@ apply_col_plan <- function(data, col_selection, grp_lbl){
 #' create the stub header for table
 #' @importFrom purrr map_chr
 #' @noRd
-create_stub_head <- function(col_plan_vars, group){
-  grps <- map_chr(group, as_label)
+create_stub_head <- function(col_plan_vars, group, label){
+
+  grps <- map_chr(c(group, label), as_label)
   col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
 
   stub <- NULL
   if (length(grps)>0 && length(col_plan_vars_chr)>0){
     nms_grps <- col_plan_vars_chr[which(col_plan_vars_chr %in% grps)] %>% names()
-    nms_grps <- nms_grps[which(!nms_grps=="")]
 
     if (length(nms_grps)>0){
-      stub <- nms_grps[1]
+      stub <- nms_grps
     }
   }
 

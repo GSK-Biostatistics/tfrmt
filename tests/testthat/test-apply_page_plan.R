@@ -436,18 +436,57 @@ test_that("Page plan with max_rows", {
   auto_split <- apply_tfrmt(df, mytfrmt)
   man_split <- list(
       tibble::tribble(
-        ~grp, ~ lbl, ~ trt, ~`..tfrmt_row_grp_lbl`,
-        "A" ,  "a" , '22', FALSE,
-        "A" ,  "b" , '11', FALSE,
-        "B" ,  "a" , '24', FALSE
+        ~grp, ~ lbl, ~ trt,
+        "A" ,  "a" , '22',
+        "A" ,  "b" , '11',
+        "B" ,  "a" , '24',
       ),
       tibble::tribble(
-        ~grp, ~ lbl, ~ trt, ~`..tfrmt_row_grp_lbl`,
-        "B" ,  "b" , '55', FALSE,
-        "C" ,  "a" , '12', FALSE,
-        "C" ,  "b" , '19', FALSE
+        ~grp, ~ lbl, ~ trt,
+        "B" ,  "b" , '55',
+        "C" ,  "a" , '12',
+        "C" ,  "b" , '19',
       )
     )
+  expect_equal(auto_split, man_split, ignore_attr = TRUE)
+
+
+  # two groups - row_grp_plan label_loc = "column"
+  df <- tibble::tribble(
+    ~ grp1, ~grp2, ~ lbl, ~ prm, ~ trt,
+    "AA"  ,  "A", "a" , "n"  , 22,
+    "AA"  ,  "A", "b" , "n"  , 11,
+    "AA"  ,  "B", "a" , "n"  , 24,
+    "BB"  ,  "B", "b" , "n"  , 55,
+    "BB"  ,  "C", "a" , "n"  , 12,
+    "BB"  ,  "C", "b" , "n"  , 19,
+  ) %>%
+    pivot_longer(trt, names_to = "column", values_to = "value")
+  mytfrmt <- tfrmt(
+    group = c("grp1","grp2"),
+    label = "lbl",
+    param = "prm",
+    column = "column",
+    value = "value",
+    body_plan = body_plan(frmt_structure(group_val=".default", label_val=".default", frmt("xx"))),
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),
+    page_plan = page_plan(max_rows = 3)
+  )
+  auto_split <- apply_tfrmt(df, mytfrmt)
+  man_split <- list(
+    tibble::tribble(
+      ~grp1, ~grp2, ~ lbl, ~ trt,
+      "AA" ,  "A" ,  "a" , '22',
+      "AA" ,  "A" ,  "b" , '11',
+      "AA" ,  "B" ,  "a" , '24',
+    ),
+    tibble::tribble(
+      ~grp1, ~grp2, ~ lbl, ~ trt,
+      "BB" ,  "B" ,  "b" , '55',
+      "BB" ,  "C" ,  "a" , '12',
+      "BB" ,  "C" ,  "b" , '19',
+    )
+  )
   expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
 })
