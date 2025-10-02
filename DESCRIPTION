@@ -30,7 +30,7 @@ Imports:
     forcats,
     ggplot2,
     glue,
-    gt (>= 0.6.0),
+    gt (>= 1.1.0),
     jsonlite,
     magrittr,
     purrr,
