@@ -30,7 +30,7 @@ It is not all that unusual for listings (and some tables) to have multiple row l
 To make this table the values will be long with "Pooled Id" and "Site Id" in their own columns, as if they were group or label variables. We also will need a column for the parameters even though they are all the same. 
 
 ```{r}
-data <- tribble(
+data <- tibble::tribble(
   ~`Pooled Id`,  ~`Site Id`,
 "701",  "701",
 "703",  "703",
@@ -50,12 +50,12 @@ data <- tribble(
 "900",  "715",
 "900",  "717",
 "Total", " ") %>%
-  crossing(col1 = c("Placebo (N=86)",
+  tidyr::crossing(col1 = c("Placebo (N=86)",
                    "Xanomeline Low Dose (N=84)",
                    "Xanomeline High Dose (N=84)",
                    "Total (N=254)"),
            col2 = factor(c("ITT", "Eff", "Com"), levels = c("ITT", "Eff", "Com"))) %>%
-  mutate(val = rpois(216, 15), # Here I am just faking the data for display purposes 
+  dplyr::mutate(val = rpois(216, 15), # Here I am just faking the data for display purposes 
          param = "val")
 
 ```

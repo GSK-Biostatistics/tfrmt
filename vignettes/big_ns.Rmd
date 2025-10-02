@@ -29,7 +29,7 @@ To dynamically add big N's to column labels, the information needs to be include
 Below is our ARD prior to incorporating the big Ns:
 ```{r}
 
-data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+data <- tibble::tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
                Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
                Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
                Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
@@ -37,22 +37,22 @@ data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12))
                )
 ) %>%
   # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-  mutate(Value = case_when(Param == "pct" ~ Value * 100,
+  dplyr::mutate(Value = dplyr::case_when(Param == "pct" ~ Value * 100,
                            TRUE ~ Value),
-         ord1 = if_else(Group == "Age (y)", 1, 2),
-         ord2 = if_else(Label == "n", 1, 2))
+         ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+         ord2 = dplyr::if_else(Label == "n", 1, 2))
 data
 ```
 
 
 In this study we have 30 subjects per treatment arm for a total of 60 subjects. Because the ARD is 1 row per unique value, our Ns will contribute 3 rows to the ARD. To make the N's go to the right place, we need to supply information about the `column` column values. The `column` column values should map to those already available in the ARD. Then we can combine this information with the data above to make the full ARD for this table.  
 ```{r}
-big_ns <- tibble(Column = c("Placebo", "Treatment", "Total"),
+big_ns <- tibble::tibble(Column = c("Placebo", "Treatment", "Total"),
                  Param = "bigN",
                  Value = c(30,30,60))
 
 
-data <- bind_rows(data, big_ns)
+data <- dplyr::bind_rows(data, big_ns)
 ```
 
 
@@ -93,7 +93,7 @@ tfrmt(
 No matter how complicated the table, this feature will work as long as the ARD is set up appropriately with the correct `column` column values on the big N rows. For tables with spanning columns (i.e. multiple `column` columns), the big N will be appended to the lowest level `column` column value that is supplied (based on the order of the column variables supplied to the `tfrmt`).
  Let's look at this table, which has 3 layers of column spanning:
 ```{r}
-  data <- tribble(
+  data <- tibble::tribble(
     ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~val,
     "g1", "rowlabel1",  "column cols", "cols 1,2", "col1"  ,  "value",    1,
     "g1", "rowlabel1",  "column cols", "cols 1,2", "col2"  ,  "value",    1,
@@ -135,11 +135,11 @@ print_to_gt(spanning_tfrmt, data)
  
  If we just want to put the big N on the highest "column cols", we need to add a row to the ARD where `span2` equals `"column cols"` and all other `column` columns are missing. 
 ```{r}
-with_big_n_data <- tribble(
+with_big_n_data <- tibble::tribble(
   ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~val,
       NA,        NA,  "column cols",     NA,       NA  ,  "bigN",    18,
 ) %>% 
-  bind_rows(data)
+  dplyr::bind_rows(data)
 
 #Now we can add the big_n to the tfrmt from before 
 n_span_tfrmt <- spanning_tfrmt %>% 
@@ -150,13 +150,13 @@ print_to_gt(n_span_tfrmt, .data = with_big_n_data)
  
  If we also want big N's on `col 1,2`, `col4`, and `mycol3`, we will need Add 3 more rows to our ARD. One that goes down to the `span1` level of specificity and two that go all the way down to `my_col` level of specificity. (Note: because we are keeping the `parm` values the same we can use the same tfrmt)
 ```{r}
-with_more_big_n_data <- tribble(
+with_more_big_n_data <- tibble::tribble(
   ~group,     ~label,        ~span2,  ~span1,     ~my_col,    ~parm,   ~val,
     NA,         NA,  "column cols",  "cols 1,2",   NA  ,      "bigN",    12,
     NA,         NA,  "column cols",  "col 4"   ,   "col4"  ,  "bigN",    6,
     NA,         NA,             NA,          NA,   "mycol3",  "bigN",    6
 ) %>% 
-  bind_rows(with_big_n_data)
+  dplyr::bind_rows(with_big_n_data)
 
 print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
 ```
@@ -174,21 +174,21 @@ Because our subtables contain different populations, we want the big Ns displaye
 
 For example, let's take the following data, where we have calculated big Ns for each level of the grouping variable `grp`. NOTE: the bigN rows should be in the same order as the rest of the data (i.e. A, B rather than B, A for the `grp` variable).
 ```{r}
-dat <- crossing(
+dat <- tidyr::crossing(
   grp = c("A","B"),
   lbl = c("a","b"),
   col = c("Placebo","Treatment"),
   param = "mean"
 ) %>% 
-  mutate(val = c(1.254, 3.483, 5.123, 4.239,4.364, 8.435, 7.645, 2.312))
+  dplyr::mutate(val = c(1.254, 3.483, 5.123, 4.239,4.364, 8.435, 7.645, 2.312))
 
-big_ns <- tibble(col = c("Placebo","Placebo","Treatment","Treatment"),
+big_ns <- tibble::tibble(col = c("Placebo","Placebo","Treatment","Treatment"),
                  grp = c("A", "B", "A", "B"),
                  param = "bigN",
                  val = c(34, 36, 42, 39))
 
 
-dat <- bind_rows(dat, big_ns)
+dat <- dplyr::bind_rows(dat, big_ns)
 tail(dat)
 ``` 
 
