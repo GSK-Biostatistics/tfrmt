@@ -71,12 +71,8 @@ apply_cells_column_labels <- function(gt,loc){
       gt<- gt %>%
         tab_footnote(
           footnote = loc$note,
-          locations = cells_column_labels(columns = all_of(
-            as.character(loc$col)))
+          locations = cells_column_labels(columns = as.character(loc$col))
         )
-
-
-
 
   }
   gt
