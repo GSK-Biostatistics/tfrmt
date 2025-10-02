@@ -18,9 +18,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(dplyr)
-library(gt)
-library(tidyr)
 ```
 
 # Demography Table
@@ -76,8 +73,8 @@ tfrmt(
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
 ) %>% 
-  print_mock_gt(data_demog %>% select(-value)) %>% 
-  tab_options(
+  print_mock_gt(data_demog %>% dplyr::select(-value)) %>% 
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -96,7 +93,7 @@ tfrmt(
   value = value,
   sorting_cols = c(ord1, ord2)) %>% 
   print_to_gt(data_demog) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -129,7 +126,7 @@ tfrmt(
                                                                                  TRUE ~ frmt("x.xxx", missing = "")))
   )) %>% 
   print_to_gt(data_demog) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -164,7 +161,7 @@ tfrmt(
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )) %>% 
   print_to_gt(data_demog) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -173,7 +170,7 @@ Now this table looks just about right. There are two problems, (1) alignment and
 
 ```{r}
 data_demog %>% 
-  distinct(rowlbl1,grp)
+  dplyr::distinct(rowlbl1,grp)
 ```
 
 This means that we can use a `row_grp_plan` with just a `".default"` as the group value and it should handle all of the spacing. In addition to the spacing, `row_grp_plan` will let us move the spanning group labels to a separate column by changing the `label_loc` to "column".
@@ -220,7 +217,7 @@ tfrmt(
   
   ) %>% 
   print_to_gt(data_demog) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -235,11 +232,11 @@ For the adverse events (AE) table, we will use the `data_ae` analysis results da
 
 ```{r}
 data_ae2 <- data_ae %>% 
-  group_by(AEBODSYS, AETERM) %>% 
-  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
-  ungroup %>% 
-  filter(pct_high >10) %>% 
-  select(-pct_high)
+  dplyr::group_by(AEBODSYS, AETERM) %>% 
+  dplyr::mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::filter(pct_high >10) %>% 
+  dplyr::select(-pct_high)
 ```
 
 </details>
@@ -277,10 +274,10 @@ fmt_spec <- tfrmt(
   ), col_plan = col_plan(-starts_with("ord")))
 
 data_ae2 %>%  
-  select(-value) %>% 
-  arrange(ord1, ord2 ) %>% 
+  dplyr::select(-value) %>% 
+  dplyr::arrange(ord1, ord2 ) %>% 
   print_mock_gt(fmt_spec, . )  %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
@@ -335,7 +332,7 @@ tfrmt(
                                     TRUE ~ frmt("x.xxx", missing ="--")))
   )) %>% 
   print_to_gt(., data_ae2) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
@@ -373,7 +370,7 @@ tfrmt(
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
   ) %>% 
   print_to_gt(data_ae2) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
@@ -417,7 +414,7 @@ tfrmt(
   )
   ) %>% 
   print_to_gt(data_ae2) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
@@ -465,7 +462,7 @@ tfrmt(
   )
   ) %>% 
   print_to_gt(data_ae2)  %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
@@ -531,7 +528,7 @@ tfrmt(
     ))
   ) %>% 
   print_to_gt(data_ae2)  %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
@@ -591,7 +588,7 @@ tfrmt(
   )
 ) %>%
   print_mock_gt(data_efficacy %>% select(-value))%>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   )
 
@@ -608,7 +605,7 @@ tfrmt(
   value = value 
 ) %>%
   print_to_gt(data_efficacy) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   ) 
   
@@ -635,7 +632,7 @@ tfrmt(
   )
 ) %>%
   print_to_gt(data_efficacy) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   )
 
@@ -677,7 +674,7 @@ tfrmt(
   )
 ) %>%
   print_to_gt(data_efficacy) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   )
 
@@ -723,7 +720,7 @@ tfrmt(
   )
 ) %>%
   print_to_gt(data_efficacy) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   )
 
@@ -772,7 +769,7 @@ tfrmt(
   )
 ) %>%
   print_to_gt(data_efficacy) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   )
 ```
@@ -826,7 +823,7 @@ tfrmt(
   )
 ) %>%
   print_to_gt(data_efficacy) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 800
   )
 ```
