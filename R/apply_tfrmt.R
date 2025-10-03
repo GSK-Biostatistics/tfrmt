@@ -387,8 +387,18 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
     map_chr(as_name)
   tbl_dat_wide <- data %>%
     select(-!!tfrmt$param) %>%
-    mutate(across(all_of(column_cols), ~as.character(.x))) %>%
-    mutate(across(all_of(column_cols), ~na_if(.x, ""))) %>%
+    mutate(
+      across(
+        tidyselect::all_of(column_cols),
+        ~as.character(.x)
+      )
+    ) %>%
+    mutate(
+      across(
+        tidyselect::all_of(column_cols),
+        ~na_if(.x, "")
+      )
+    ) %>%
     quietly(pivot_wider)(
       names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
       names_sep = .tlang_delim,
@@ -491,7 +501,16 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt){
   if (!is.null(big_n_df) && tfrmt$big_n$by_page) {
       expected_pops <- length(data_wide)
       expected_grp_vars <- attr(data_wide, ".page_grp_vars")
-      expected_grp_levs <- map_dfr(data_wide, ~ select(.x, all_of(expected_grp_vars)) %>% distinct())
+      expected_grp_levs <- map_dfr(
+        data_wide,
+        ~ select(
+          .x,
+          tidyselect::all_of(
+            expected_grp_vars
+          )
+        ) %>%
+        distinct()
+      )
       actual_pops <- length(big_n_df)
       actual_grp_levs <- map_dfr(big_n_df, ~ select(.x, any_of(expected_grp_vars)) %>% distinct())
 

@@ -411,11 +411,16 @@ format_gt_column_labels <- function(gt_table, .data){
       mutate(set = map(.data$set, ~pull(.,.data$cols))) %>%
       filter(.data$value != "NA")
 
-    for(i in 1:nrow(spans_to_apply)){
+    for(i in 1:nrow(spans_to_apply)) {
 
       # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
-        tab_spanner(md(spans_to_apply$value[i]), columns = all_of(spans_to_apply$set[[i]]))
+        tab_spanner(
+          md(spans_to_apply$value[i]),
+          columns = tidyselect::all_of(
+            spans_to_apply$set[[i]]
+          )
+        )
     }
 
     # ensure all columns are represented

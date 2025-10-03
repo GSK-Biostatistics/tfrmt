@@ -255,7 +255,11 @@ tfrmt_sigdig <- function(sigdig_df,
 
   if (length(groups_in_data)>0){
     data_ord <- sigdig_df %>%
-      unite("def_ord", all_of(groups_in_data), remove = FALSE) %>%
+      unite(
+        "def_ord",
+        tidyselect::all_of(groups_in_data),
+        remove = FALSE
+      ) %>%
       mutate(def_ord = str_count(.data$def_ord, ".default"))
   } else {
     data_ord <- sigdig_df %>%

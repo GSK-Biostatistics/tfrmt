@@ -26,7 +26,13 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
       grping <- expr_to_grouping(struct, group)
 
       split_dat <- .data %>%
-        group_by(across(all_of(grping))) %>%
+        group_by(
+          across(
+            tidyselect::all_of(
+              grping
+            )
+          )
+        ) %>%
         group_split()
       map(split_dat, function(dat) struct_val_idx(struct, dat, group, label)) %>% list_flatten()
     })

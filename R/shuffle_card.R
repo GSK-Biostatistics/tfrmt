@@ -279,7 +279,7 @@ shuffle_card <- function(x,
     x <- x |>
       dplyr::mutate(
         dplyr::across(
-          dplyr::all_of(
+          tidyselect::all_of(
             id_vars
           ),
           ~ ifelse(
@@ -296,7 +296,7 @@ shuffle_card <- function(x,
   output <- x |>
     dplyr::mutate(
       dplyr::across(
-        dplyr::all_of(
+        tidyselect::all_of(
           c(
             grp_vars,
             setdiff(

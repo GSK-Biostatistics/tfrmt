@@ -174,8 +174,13 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     grping <- expr_to_grouping(page_struct_list[[struct_defaults_idx]], group, label)
 
     dat_split_1 <- .data %>%
-      nest(`..tfrmt_data` = everything(), .by = (all_of(grping))) %>%
-      mutate(`..tfrmt_split_num` = row_number())
+      nest(
+        `..tfrmt_data` = tidyselect::everything(),
+        .by = (tidyselect::all_of(grping))
+      ) %>%
+      mutate(
+        `..tfrmt_split_num` = row_number()
+      )
 
   } else {
     # no default - just nest to get in same structure for next step
@@ -328,8 +333,14 @@ add_summary_rows <- function(next_dat, prev_summ, group, label){
     mutate(`..tfrmt_summ_grp_num` = which(.data$`..tfrmt_summ_grp_num`==map_chr(group, as_label))) %>%
     pull(.data$`..tfrmt_summ_grp_num`)
 
-  prev_summ_top_grp_vars <- map(seq_len(nrow(prev_summ)),
-                                ~prev_summ[.x,] %>% select(c(!!!group)) %>% select(1:all_of(prev_summ_top_grp[.x])))
+  prev_summ_top_grp_vars <- map(
+    seq_len(nrow(prev_summ)),
+    ~prev_summ[.x,] %>%
+      select(c(!!!group)) %>%
+      select(
+        1:tidyselect::all_of(prev_summ_top_grp[.x])
+      )
+  )
 
   # get the grouping values from the next row
   next_summ_top_grp_vars <- map(prev_summ_top_grp_vars,
@@ -348,4 +359,3 @@ add_summary_rows <- function(next_dat, prev_summ, group, label){
   }
   next_dat
 }
-

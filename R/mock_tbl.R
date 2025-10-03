@@ -59,12 +59,25 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
   # & replace .default's
   all_frmt_vals <- bind_cols(all_frmt_spec,
                              map(cols_to_add, function(x) tibble(!!x := NA_character_))) %>%
-    mutate(..grp = replace_na(.data$..grp, ".default"),
-           across(all_of(grp_vars), ~ coalesce(.x, .data$..grp))) %>%
+    mutate(
+      ..grp = replace_na(.data$..grp, ".default"),
+      across(
+        tidyselect::all_of(grp_vars),
+        ~ coalesce(.x, .data$..grp)
+      )
+    ) %>%
     select(-"..grp")  %>%
     rowwise()  %>%
-    mutate(across(!!tfrmt$param, ~ process_for_mock(.x, cur_column(), 1)),
-           across(all_of(grp_vars), ~ process_for_mock(.x, cur_column(), .default)))
+    mutate(
+      across(
+        !!tfrmt$param,
+        ~ process_for_mock(.x, cur_column(), 1)
+      ),
+      across(
+        tidyselect::all_of(grp_vars),
+        ~ process_for_mock(.x, cur_column(), .default)
+      )
+    )
 
   expand_cols <- c(tfrmt$group)
 
