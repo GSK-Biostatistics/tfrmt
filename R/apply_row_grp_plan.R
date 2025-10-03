@@ -272,7 +272,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
       group_split()
 
     .data<- split_dat %>%
-      map_dfr(function(lone_dat){
+      map_dfr(function(lone_dat) {
 
         lone_dat_summ <- lone_dat %>%
           mutate(..tfrmt_summary_row = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
@@ -290,10 +290,20 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
           # next all of the other variables (as missing)
           new_row <- lone_dat %>%
-            select(-c(any_of(names(new_row)))) %>%
+            select(
+              -tidyselect::any_of(
+                names(new_row)
+              )
+            ) %>%
             slice(0) %>%
             add_row()  %>%
-            mutate(across(vars_select_helpers$where(is.list), ~map(.x, ~if (is.null(.)) NA_character_ else .)))  %>%  #convert NULL to NA in list-cols
+            mutate(
+              across(
+                #convert NULL to NA in list-cols
+                tidyselect::where(is.list),
+                ~map(.x, ~if (is.null(.)) NA_character_ else .)
+              )
+            )  %>%
             bind_cols(new_row, .)%>%
             mutate(..tfrmt_row_grp_lbl = TRUE)
 
@@ -314,7 +324,14 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   }
 
   .data%>%
-    mutate(across(any_of(orig_group_names), ~as.character(.x)))
+    mutate(
+      across(
+        tidyselect::any_of(
+          orig_group_names
+        ),
+        ~as.character(.x)
+      )
+    )
 
 
 }

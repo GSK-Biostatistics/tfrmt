@@ -312,7 +312,11 @@ combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NU
   }
 
   .data %>%
-    select(-any_of("..tfrmt_summary_row_cur"))
+    select(
+      -tidyselect::any_of(
+        "..tfrmt_summary_row_cur"
+      )
+    )
 }
 
 #' add any related summary rows from previous tbl to next tbl

@@ -557,7 +557,16 @@ test_that("shuffle_card() sorting option", {
   ard_unnest <- ard_mixed |>
     cards::rename_ard_columns(fill = "Overall {colname}") |>
     cards::unlist_ard_columns() |>
-    dplyr::select(-any_of(c("fmt_fn", "fmt_fun", "warning", "error")))
+    dplyr::select(
+      -tidyselect::any_of(
+        c(
+          "fmt_fn",
+          "fmt_fun",
+          "warning",
+          "error"
+        )
+      )
+    )
 
   expect_equal(
     ard_unnest,

@@ -512,7 +512,16 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt){
         distinct()
       )
       actual_pops <- length(big_n_df)
-      actual_grp_levs <- map_dfr(big_n_df, ~ select(.x, any_of(expected_grp_vars)) %>% distinct())
+      actual_grp_levs <- map_dfr(
+        big_n_df,
+        ~ select(
+          .x,
+          tidyselect::any_of(
+            expected_grp_vars
+          )
+        ) %>%
+        distinct()
+      )
 
       if (!identical(expected_pops,actual_pops) |
           (!is_empty(actual_grp_levs) &&

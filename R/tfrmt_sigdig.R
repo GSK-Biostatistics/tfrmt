@@ -220,7 +220,16 @@ tfrmt_sigdig <- function(sigdig_df,
 
   # if group param is provided, figure out which group/label variables are present in data and only keep those
   if (length(group_names)>0){
-    sigdig_df <- sigdig_df %>% select(any_of(c(group_names, label_name, "sigdig")))
+    sigdig_df <- sigdig_df %>%
+      select(
+        tidyselect::any_of(
+          c(
+            group_names,
+            label_name,
+            "sigdig"
+          )
+        )
+      )
 
     # error if mismatch between provided group (and label, if it exists) & data columns
     data_names <- sigdig_df %>% select(-"sigdig") %>% names()
