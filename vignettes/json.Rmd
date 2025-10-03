@@ -31,12 +31,15 @@ template_tfrmt <- tfrmt(
   label = label,
   column = column,
   param = param,
-  value=value,
+  value = value,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", 
-                        label_val = ".default", 
-                        frmt("xx.x")))
-  ) 
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt("xx.x")
+    )
+  )
+)
 template_tfrmt %>% print_mock_gt()
 ```
 
@@ -54,12 +57,15 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  value=value,
+  value = value,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", 
-                        label_val = ".default", 
-                        frmt("xx.x")))
-  ) %>%
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt("xx.x")
+    )
+  )
+) %>%
   tfrmt_to_json(path = "template.JSON")
 ```
 
@@ -74,13 +80,16 @@ template_json <- tfrmt(
   label = label,
   column = column,
   param = param,
-  value=value,
-  title= 'mytitle',
+  value = value,
+  title = "mytitle",
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", 
-                        label_val = ".default", 
-                        frmt("xx.x")))
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt("xx.x")
+    )
   )
+)
 ```
 
 ```{r eval = FALSE}
@@ -90,10 +99,10 @@ template_json <- json_to_tfrmt(path = "template.JSON")
 
 Once available in the R session, users can optionally build on this template as needed.
 ```{r}
-template_json %>% 
+template_json %>%
   layer_tfrmt(
     tfrmt(title = "Custom title")
-  ) %>% 
+  ) %>%
   print_mock_gt()
 ```
 

@@ -60,19 +60,25 @@ the desired outcome is:
 tfrmt_spec <- tfrmt(
   # Specify columns in the data
   label = label,
-  column = c(treatment, column), 
+  column = c(treatment, column),
   param = param,
-  
+
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine(
-                     "{count} {percent}",
-                     count = frmt("xxx"),
-                     percent = frmt_when("==100"~ frmt(""),
-                                         "==0"~ "",
-                                         "TRUE" ~ frmt("(xx.x%)"))))
-    ))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine(
+        "{count} {percent}",
+        count = frmt("xxx"),
+        percent = frmt_when(
+          "==100" ~ frmt(""),
+          "==0" ~ "",
+          "TRUE" ~ frmt("(xx.x%)")
+        )
+      )
+    )
+  )
+)
 ```
 
 First, we will explore how to create a mock table using this tfrmt object 
@@ -100,12 +106,14 @@ may also wish to add an integer column specifying order layer for complex tables
 Here is an example:
 
 ```{r}
-df <- crossing(label = c("label 1", "label 2", "label 3"),
-               treatment = c("Treatment","Treatment","Treatment","Placebo"),
-               column = c("trt1", "trt2", "trt1&trt2", "pl"),
-               param = c("count", "percent")) %>%
+df <- crossing(
+  label = c("label 1", "label 2", "label 3"),
+  treatment = c("Treatment", "Treatment", "Treatment", "Placebo"),
+  column = c("trt1", "trt2", "trt1&trt2", "pl"),
+  param = c("count", "percent")
+) %>%
   # Assign numerical order (optional - keep if using `sorting_cols` parameter)
-  mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
+  mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.) / length(unique(.$label))))
 
 df
 ```
@@ -125,15 +133,15 @@ can select `everything()` and remove columns that `-starts_with("ord")`.
 You can also use `span_structure()` provide specific information when trying to order across multiple columns. 
 
 ```{r}
-tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
   tfrmt(
-  # Specify columns in the data
-  label = label,
-  column = c(treatment, column), 
-  param = param,
-  value = value,
-  
-  # Specify column structure
+    # Specify columns in the data
+    label = label,
+    column = c(treatment, column),
+    param = param,
+    value = value,
+
+    # Specify column structure
     col_plan = col_plan(
       -starts_with("ord"),
       span_structure(
@@ -141,16 +149,16 @@ tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
         column = c(
           T1 = trt1,
           T2 = trt2,
-          `T1&T2`= `trt1&trt2`
+          `T1&T2` = `trt1&trt2`
         )
       ),
       span_structure(
         treatment = "Placebo",
         column = c(PL = pl)
-        )
       )
+    )
   )
-  
+
 print_mock_gt(tfrmt_spec, df)
 ```
 
@@ -159,16 +167,15 @@ print_mock_gt(tfrmt_spec, df)
 To add a title or subtitle, pass arguments to their respective parameters.
 
 ```{r}
-
-tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
   tfrmt(
-    # Specify title, subtitle 
+    # Specify title, subtitle
     title = "Table Name",
-    subtitle = "Study ID: GSK12345", 
-    
+    subtitle = "Study ID: GSK12345",
+
     # Specify columns in the data
     label = label,
-    column = c(treatment, column), 
+    column = c(treatment, column),
     param = param,
     value = value,
     # Specify column structure
@@ -176,16 +183,19 @@ tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
       -starts_with("ord"),
       span_structure(
         treatment = "Treatment",
-        column = c(T1 = trt1,
-                   T2 = trt2,
-                   `T1&T2` = `trt1&trt2`)
+        column = c(
+          T1 = trt1,
+          T2 = trt2,
+          `T1&T2` = `trt1&trt2`
+        )
       ),
       span_structure(
         treatment = "Placebo",
-        column = c(PL = pl))
+        column = c(PL = pl)
+      )
     )
   )
-  
+
 print_mock_gt(tfrmt_spec, df)
 ```
 
@@ -203,12 +213,17 @@ bound them using `bind_rows()`.
 
 ```{r}
 df <- bind_rows(
-  crossing(label = c("label 1", "label 2", "label 3"),
-           column = c("T1", "T2", "PL"),
-           param = c("count", "percent")),
-  crossing(label = c("label 1", "label 2", "label 3"),
-           column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
-           param = c("num", "lower", "upper"))) %>%
+  crossing(
+    label = c("label 1", "label 2", "label 3"),
+    column = c("T1", "T2", "PL"),
+    param = c("count", "percent")
+  ),
+  crossing(
+    label = c("label 1", "label 2", "label 3"),
+    column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
+    param = c("num", "lower", "upper")
+  )
+) %>%
   arrange_all()
 
 df
@@ -219,29 +234,37 @@ additional `frmt_structure` which accounts for the value formatting we'd like
 to apply to the the new columns.
 
 ```{r}
-tfrmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_n_pct(n = "count", pct = "percent") %>%
   tfrmt(
-  # Specify columns in the data
-  label = "label",
-  param = "param",
-  column = "column",
-  value = value,
-  
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine(
-                     "{num} ({lower}, {upper})",
-                     num = frmt("xx.x"),
-                     lower = frmt_when("==100"~ frmt(""),
-                                       "==0"~ "",
-                                       "TRUE" ~ frmt("xx.x%")),
-                     upper = frmt_when("==100"~ frmt(""),
-                                       "==0"~ "",
-                                       "TRUE" ~ frmt("xx.x%"))))
+    # Specify columns in the data
+    label = "label",
+    param = "param",
+    column = "column",
+    value = value,
+
+    # Specify body plan
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine(
+          "{num} ({lower}, {upper})",
+          num = frmt("xx.x"),
+          lower = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("xx.x%")
+          ),
+          upper = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("xx.x%")
+          )
+        )
+      )
     ),
-  col_plan = col_plan(
-    -starts_with("ord"))
+    col_plan = col_plan(
+      -starts_with("ord")
+    )
   ) %>%
   print_mock_gt(df)
 ```
@@ -256,29 +279,36 @@ columns you would and wouldn't like to display. Here we have decided to
 select only the placebo and treatment columns.
 
 ```{r}
-tfrmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_n_pct(n = "count", pct = "percent") %>%
   tfrmt(
-  # Specify columns in the data
-  label = "label",
-  param = "param",
-  column = "column",
-  value = value,
-  
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine(
-                     "{num} ({lower}, {upper})",
-                     num = frmt("xx.x"),
-                     lower = frmt_when("==100"~ frmt(""),
-                                       "==0"~ "",
-                                       "TRUE" ~ frmt("xx.x%")),
-                     upper = frmt_when("==100"~ frmt(""),
-                                       "==0"~ "",
-                                       "TRUE" ~ frmt("xx.x%"))))
+    # Specify columns in the data
+    label = "label",
+    param = "param",
+    column = "column",
+    value = value,
+
+    # Specify body plan
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default", label_val = ".default",
+        frmt_combine(
+          "{num} ({lower}, {upper})",
+          num = frmt("xx.x"),
+          lower = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("xx.x%")
+          ),
+          upper = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("xx.x%")
+          )
+        )
+      )
     ),
-  col_plan = col_plan(
-    label, PL, T1, T2
+    col_plan = col_plan(
+      label, PL, T1, T2
     )
   ) %>%
   print_mock_gt(df)
@@ -295,19 +325,24 @@ df <- crossing(
   group = c("group 1", "group 2"),
   label = c("label 1", "label 2"),
   column = c("PL", "T1", "T2"),
-  param = c("count", "percent")) %>%
+  param = c("count", "percent")
+) %>%
   arrange_all()
 
-tfrmt_n_pct(n = "count", pct = "percent") %>% 
+tfrmt_n_pct(n = "count", pct = "percent") %>%
   tfrmt(
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) )) %>%
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = ".default",
+        element_block(post_space = "   ")
+      )
+    )
+  ) %>%
   print_mock_gt(df)
 ```
 
@@ -329,18 +364,25 @@ labels could be.
 
 ```{r}
 df <- bind_rows(
-  crossing(group = c("group 1", "group 2"),
-           label = c("n"),
-           column = c("PL", "T1", "T2"),
-           param = c("count")),
-  crossing(group = c("group 1", "group 2"),
-           label = c("Mean (SD)"),
-           column = c("PL", "T1", "T2"),
-           param = c("mean", "sd")),
-  crossing(group = c("group 1", "group 2"),
-           label = c("Median (Range)"),
-           column = c("PL", "T1", "T2"),
-           param = c("min", "max", "median"))) %>%
+  crossing(
+    group = c("group 1", "group 2"),
+    label = c("n"),
+    column = c("PL", "T1", "T2"),
+    param = c("count")
+  ),
+  crossing(
+    group = c("group 1", "group 2"),
+    label = c("Mean (SD)"),
+    column = c("PL", "T1", "T2"),
+    param = c("mean", "sd")
+  ),
+  crossing(
+    group = c("group 1", "group 2"),
+    label = c("Median (Range)"),
+    column = c("PL", "T1", "T2"),
+    param = c("min", "max", "median")
+  )
+) %>%
   arrange_all()
 
 tfrmt(
@@ -351,22 +393,32 @@ tfrmt(
   param = param,
   value = value,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
+  ),
 
   # Specify body plan
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = "n", frmt("xx")),
-    frmt_structure(group_val = ".default", label_val = "Median (Range)",
-                   frmt_combine("{median} ({min},{max})",
-                                median = frmt("xx.x"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Mean (SD)",
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.xx"), missing = " "))
-  )) %>%
+    frmt_structure(
+      group_val = ".default", label_val = "Median (Range)",
+      frmt_combine("{median} ({min},{max})",
+        median = frmt("xx.x"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Mean (SD)",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"), missing = " "
+      )
+    )
+  )
+) %>%
   print_mock_gt(df)
 ```
 
@@ -381,14 +433,19 @@ the groups to be indented. For more information on this please see the
 
 ```{r}
 df <- bind_rows(
-  crossing(group = c("group 1"),
-           label = c("label 1", "label 2"),
-           column = c("PL", "T1", "T2"),
-           param = c("mean", "sd")),
-  crossing(group = c("group 2"),
-           label = c("label 1", "label 2"),
-           column = c("PL", "T1", "T2"),
-           param = c("median", "min", "max"))) %>%
+  crossing(
+    group = c("group 1"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2"),
+    param = c("mean", "sd")
+  ),
+  crossing(
+    group = c("group 2"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2"),
+    param = c("median", "min", "max")
+  )
+) %>%
   arrange_all()
 
 tfrmt(
@@ -399,21 +456,31 @@ tfrmt(
   param = param,
   value = value,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
-                      element_block(post_space = "   ")) ),
+    row_grp_structure(
+      group_val = list("group" = c("group 1", "group 2")),
+      element_block(post_space = "   ")
+    )
+  ),
 
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = "group 1", label_val = ".default",
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.x"))),
-    frmt_structure(group_val = "group 2", label_val = ".default",
-                   frmt_combine("{median} ({min},{max})",
-                                median = frmt("xx"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " "))
-  )) %>%
+    frmt_structure(
+      group_val = "group 1", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.x")
+      )
+    ),
+    frmt_structure(
+      group_val = "group 2", label_val = ".default",
+      frmt_combine("{median} ({min},{max})",
+        median = frmt("xx"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    )
+  )
+) %>%
   print_mock_gt(df)
 ```
 
@@ -430,7 +497,6 @@ apply the formatting to more than one label you can supply the label names
 within `c()`.
 
 ```{r}
-
 tfrmt(
   # Specify columns in the data
   group = group,
@@ -439,25 +505,38 @@ tfrmt(
   param = param,
   value = value,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = list("group" = c("group 1", "group 2")),
-                      element_block(post_space = "   ")) ),
+    row_grp_structure(
+      group_val = list("group" = c("group 1", "group 2")),
+      element_block(post_space = "   ")
+    )
+  ),
 
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = "group 1", label_val = "label 1",
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx"),
-                                sd = frmt("xx"))),
-    frmt_structure(group_val = "group 1", label_val = "label 2",
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.x"))),
-    frmt_structure(group_val = "group 2", label_val = c("label 1", "label 2"),
-                   frmt_combine("{median} ({min},{max})",
-                                median = frmt("xx"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " "))
-  )) %>%
+    frmt_structure(
+      group_val = "group 1", label_val = "label 1",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx"),
+        sd = frmt("xx")
+      )
+    ),
+    frmt_structure(
+      group_val = "group 1", label_val = "label 2",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.x")
+      )
+    ),
+    frmt_structure(
+      group_val = "group 2", label_val = c("label 1", "label 2"),
+      frmt_combine("{median} ({min},{max})",
+        median = frmt("xx"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    )
+  )
+) %>%
   print_mock_gt(df)
 ```
 
@@ -472,16 +551,21 @@ parameter in `c()`.
 
 ```{r}
 df <- bind_rows(
-  crossing(grp1 = c("group 1.1"),
-           grp2 = c("group 2.1", "group 2.2"),
-           label = c("label 1", "label 2"),
-           column = c("PL", "T1", "T2"),
-           param = c("count")),
-  crossing(grp1 = c("group 1.2"),
-           grp2 = c("group 2.1", "group 2.2"),
-           label = c("label 1", "label 2"),
-           column = c("PL", "T1", "T2"),
-           param = c("mean", "sd"))) %>%
+  crossing(
+    grp1 = c("group 1.1"),
+    grp2 = c("group 2.1", "group 2.2"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2"),
+    param = c("count")
+  ),
+  crossing(
+    grp1 = c("group 1.2"),
+    grp2 = c("group 2.1", "group 2.2"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2"),
+    param = c("mean", "sd")
+  )
+) %>%
   arrange_all()
 
 tfrmt(
@@ -491,19 +575,31 @@ tfrmt(
   param = param,
   value = value,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
-
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
+  ),
   body_plan = body_plan(
-    frmt_structure(group_val = list("grp1" = "group 1.1",
-                                    "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
-                   frmt("xx")),
-    frmt_structure(group_val = list("grp1" = "group 1.2",
-                                    "grp2" = c("group 2.1", "group 2.2")), label_val = ".default",
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.x")))
-    )) %>%
+    frmt_structure(
+      group_val = list(
+        "grp1" = "group 1.1",
+        "grp2" = c("group 2.1", "group 2.2")
+      ), label_val = ".default",
+      frmt("xx")
+    ),
+    frmt_structure(
+      group_val = list(
+        "grp1" = "group 1.2",
+        "grp2" = c("group 2.1", "group 2.2")
+      ), label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.x")
+      )
+    )
+  )
+) %>%
   print_mock_gt(df)
 ```
 

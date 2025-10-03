@@ -40,23 +40,22 @@ To add a post space after all groups of values based on the variable "grp1" (our
 my_tfrmt <- tfrmt(
   group = grp1,
   label = label,
-  param = param, 
+  param = param,
   value = value,
   column = column,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = "   "))
-    ),
+  ),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2)%>%
-    tab_style(
-      style = cell_text(whitespace = "pre", align = "left"),
-      locations = cells_stub()
-    )
-
+print_mock_gt(my_tfrmt, .default = 1:2) %>%
+  tab_style(
+    style = cell_text(whitespace = "pre", align = "left"),
+    locations = cells_stub()
+  )
 ```
 
 To add a post space after values where grp1 = "grp1_1" only we do the following:
@@ -65,23 +64,22 @@ To add a post space after values where grp1 = "grp1_1" only we do the following:
 my_tfrmt <- tfrmt(
   group = grp1,
   label = label,
-  param = param, 
+  param = param,
   value = value,
   column = column,
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = "grp1_1", element_block(post_space = "   "))
-    ),
+  ),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2)%>%
-    tab_style(
-      style = cell_text(whitespace = "pre", align = "left"),
-      locations = cells_stub()
-    )
-
+print_mock_gt(my_tfrmt, .default = 1:2) %>%
+  tab_style(
+    style = cell_text(whitespace = "pre", align = "left"),
+    locations = cells_stub()
+  )
 ```
 
 As `group_val = "grp1_1"` in this table rather than `group_val = "default"` previously, the post space after grp1_2 is removed.
@@ -103,7 +101,7 @@ tfrmt will combine group and label variables into a single column, using indenta
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
-  param = param, 
+  param = param,
   value = value,
   column = column,
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
@@ -112,11 +110,11 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2)%>%
-    tab_style(
-      style = cell_text(whitespace = "pre", align = "left"),
-      locations = cells_stub()
-    )
+print_mock_gt(my_tfrmt, .default = 1:2) %>%
+  tab_style(
+    style = cell_text(whitespace = "pre", align = "left"),
+    locations = cells_stub()
+  )
 ```
 
 ## spanning
@@ -127,7 +125,7 @@ This is the default option from gt: group labels become spanning headers over th
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
-  param = param, 
+  param = param,
   value = value,
   column = column,
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "spanning")),
@@ -136,11 +134,11 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2)%>%
-    tab_style(
-      style = cell_text(whitespace = "pre", align = "left"),
-      locations = cells_stub()
-    )
+print_mock_gt(my_tfrmt, .default = 1:2) %>%
+  tab_style(
+    style = cell_text(whitespace = "pre", align = "left"),
+    locations = cells_stub()
+  )
 ```
 
 ## column
@@ -151,7 +149,7 @@ In this case, group labels become a separate column to the left. Note that in th
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
-  param = param, 
+  param = param,
   value = value,
   column = column,
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),
@@ -160,11 +158,11 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2)%>%
-    tab_style(
-      style = cell_text(whitespace = "pre", align = "left"),
-      locations = cells_stub()
-    )
+print_mock_gt(my_tfrmt, .default = 1:2) %>%
+  tab_style(
+    style = cell_text(whitespace = "pre", align = "left"),
+    locations = cells_stub()
+  )
 ```
 
 ## noprint
@@ -175,7 +173,7 @@ A user may also suppress the printing of any group variable by specifying the "n
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
-  param = param, 
+  param = param,
   value = value,
   column = column,
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
