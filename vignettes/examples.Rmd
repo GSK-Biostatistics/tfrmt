@@ -297,7 +297,7 @@ tfrmt(
   value = value,
   sorting_cols = c(ord1, ord2)) %>% 
   print_to_gt(data_ae2) %>% 
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 
