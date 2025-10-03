@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(dplyr)
 ```
 
 Aside from R code, `tfrmt` objects can be represented as machine-readable metadata in `JSON` format. This enables users to save formatting metadata to a database, or alternatively import templates stored as `JSON` files. There are several utilities available for seamless translation between `tfrmt` and `JSON`. 
