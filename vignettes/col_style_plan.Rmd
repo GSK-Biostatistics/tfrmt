@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(tibble)
-library(dplyr)
 ```
 
 tfrmt offers the ability to align value and set column widths. Columns can be aligned in the following ways:
@@ -53,7 +51,7 @@ Let's take a look at how alignment can be applied to the example below, which co
 <details>
   <summary>Expand for the code used to produce the example data</summary>
 ```{r}
-dat <- tribble(
+dat <- tibble::tribble(
   ~label     , ~param, ~column    , ~ value,   ~ord, 
   "n"        ,"n"     , "trt1"     ,12,        1, 
   "mean (sd)","mean"  , "trt1"     ,12.332837, 2,
