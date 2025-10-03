@@ -1,0 +1,39 @@
+---
+output: github_document
+---
+
+```{r child='../README.Rmd'}
+```
+
+## Other Resources
+
+```{r, echo=FALSE}
+dplyr::tribble(
+  ~venue, ~presenters, ~title, ~url_slides, ~url_video,
+  "2022 R/Pharma", "Christina Fillmore", "Why do I spend all my life formatting tables?", NA_character_, "https://www.youtube.com/watch?v=00lGhuANUJw",
+  "2023 R/Pharma", "Becca Krouse", "Everyone's Invited: A Case Study on Bridging the Usability Gap", NA_character_, "https://www.youtube.com/watch?v=Zg1LPJSO0kQ",
+  "2022 R/Pharma Workshop", "Christina Fillmore, Ellis Hughes and Thomas Neitmann", "Clinical Reporting in R (Day 2)", NA_character_, "https://www.youtube.com/watch?v=rYflZhFDSZQ",
+  "2023 R/Pharma Workshop", "Thomas Neitmann, Pawel Rucki and Ellis Hughes", "Leveraging and contributing to the the pharmaverse for clinical trial reporting in R", "https://github.com/posit-conf-2023/r-pharma", NA_character_,
+  "Posit conf 2024", "Daniel D. Sjoberg, Becca Krouse, Ellis Hughes, Andrew Bates and Casey Aguilar-Gervase", "Flavors of the pharmaverse", "https://posit-conf-2024.github.io/pharmaverse/", NA_character_,
+   "Posit conf 2024", "Becca Krouse", "Stitch by Stitch: The Art of Engaging New Users", NA_character_, "https://www.youtube.com/watch?v=R3VMij_1aSE",
+   "R in Pharma 2024", "Daniel D. Sjoberg, Becca Krouse and Jack Talboys", "Unlocking Analysis Results Datasets (ARDs)", "https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/", NA_character_,
+  "PHUSE US Connect 2025", "Daniel D. Sjoberg and Becca Krouse", "Analysis Results Datasets Using Open-Source Tools from the {pharmaverse}", "https://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/",  NA_character_,
+   "Posit conf 2025", "Daniel D. Sjoberg, Becca Krouse, Ben Straub and Rammprasad Ganapathy", "End-to-End Submissions in R with the Pharmaverse", "https://posit-conf-2025.github.io/pharmaverse/", NA_character_
+) |>
+  gt::gt() |>
+  # Apply markdown only to venue and title (presenters is typically plain text)
+  gt::fmt_markdown(columns = c(venue, title)) |>
+  gt::fmt_url(
+    columns = url_slides,
+    rows = !is.na(url_slides),
+    label = fontawesome::fa("display", fill = "#808080")
+  ) |>
+  gt::fmt_url(
+    columns = url_video,
+    rows = !is.na(url_video),
+    label = fontawesome::fa("youtube", fill = "#808080")
+  ) |>
+  gt::sub_missing(missing_text = "") |>
+  gt::cols_align(align = "center", columns = dplyr::contains("url")) |>
+  gt::tab_options(column_labels.hidden = TRUE)
+```
