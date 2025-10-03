@@ -1,5 +1,5 @@
 
-# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="man/figures/tfrmt.png" align="right" alt = "tfrmt logo" style="height:139px;"/></a>
+# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/man/figures/tfrmt.png" align="right" alt = "tfrmt logo" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
@@ -60,6 +60,12 @@ of output formats in the future.
 
 # Installation
 
+The tfrmt package can be installed from CRAN with:
+
+``` r
+install.packages("tfrmt")
+```
+
 The development version of tfrmt can be installed with:
 
 ``` r
@@ -102,23 +108,8 @@ For more information about how to build your own tfrmt mocks/tables
 [vignettes](https://gsk-biostatistics.github.io/tfrmt/articles/examples.html).
 
 <figure>
-<img src="man/figures/gt_readme.png"
+<img
+src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/man/figures/gt_readme.png"
 alt="Example GT Demography Table" />
 <figcaption aria-hidden="true">Example GT Demography Table</figcaption>
 </figure>
-
-# Recorded Presentations and Shared Materials
-
-[R/Pharma 2022 Day 1: Christina Fillmore - Why do I spend all my life
-formatting tables?](https://www.youtube.com/watch?v=00lGhuANUJw)
-
-[R/Pharma 2023: Becca Krouse - Everyone’s Invited: A Case Study on
-Bridging the Usability Gap](https://www.youtube.com/watch?v=Zg1LPJSO0kQ)
-
-[R/Pharma 2022 Workshop: Christina Fillmore, Ellis Hughes, Thomas
-Neitmann - Clinical Reporting in R (Day
-2)](https://www.youtube.com/watch?v=rYflZhFDSZQ)
-
-[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Hughes -
-Leveraging and contributing to the the pharmaverse for clinical trial
-reporting in R](https://github.com/posit-conf-2023/r-pharma)

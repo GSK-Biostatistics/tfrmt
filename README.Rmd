@@ -14,7 +14,7 @@ library(tfrmt)
 library(gt)
 ```
 
-# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="man/figures/tfrmt.png" align="right" alt = "tfrmt logo" style="height:139px;"/></a>
+# tfrmt <a href='https://gsk-biostatistics.github.io/tfrmt/'><img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/man/figures/tfrmt.png" align="right" alt = "tfrmt logo" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
@@ -47,6 +47,12 @@ While there are many existing table-making packages in the R ecosystem, they typ
 By design, tfrmt is more of the latter, as it is intended to be used after the results have been computed. What makes tfrmt unique, however, is that it offers an intuitive interface for defining and layering standard or custom formats that are often specific to clinical trials. It also offers the novel ability to easily generate mock displays using metadata that will be used for the actual displays. tfrmt is built on top of the powerful gt package, which is intended to support a variety of output formats in the future.
 
 # Installation
+
+The tfrmt package can be installed from CRAN with:
+
+```{r, eval=FALSE}
+install.packages("tfrmt")
+```
 
 The development version of tfrmt can be installed with:
 
@@ -135,13 +141,4 @@ gt_out <- print_mock_gt(tfrmt, data_demog)
 invisible(gtsave(gt_out, "man/figures/gt_readme.png", vwidth = 999))
 ```
 
-![Example GT Demography Table](man/figures/gt_readme.png)
-
-# Recorded Presentations and Shared Materials 
-[R/Pharma 2022 Day 1: Christina Fillmore - Why do I spend all my life formatting tables?](https://www.youtube.com/watch?v=00lGhuANUJw)   
-
-[R/Pharma 2023: Becca Krouse - Everyone's Invited: A Case Study on Bridging the Usability Gap](https://www.youtube.com/watch?v=Zg1LPJSO0kQ) 
-
-[R/Pharma 2022 Workshop: Christina Fillmore, Ellis Hughes, Thomas Neitmann - Clinical Reporting in R (Day 2)](https://www.youtube.com/watch?v=rYflZhFDSZQ) 
-
-[R/Pharma 2023 Workshop: Thomas Neitmann, Pawel Rucki, Ellis Hughes - Leveraging and contributing to the the pharmaverse for clinical trial reporting in R](https://github.com/posit-conf-2023/r-pharma) 
+![Example GT Demography Table](https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/man/figures/gt_readme.png)
