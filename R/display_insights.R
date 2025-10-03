@@ -183,10 +183,20 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
 
   tbl_dat_wide <- tbl_dat %>%
     pivot_wider_tfrmt(tfrmt, mock) %>%
-    select(-any_of(c(
-      map_chr(tfrmt$group, as_name),
-      as_name(tfrmt$label)))) %>%
-    mutate(across(everything(), ~str_replace_all(., "[0-9]","x")))
+    select(
+      -tidyselect::any_of(
+        c(
+          map_chr(tfrmt$group, as_name),
+          as_name(tfrmt$label)
+        )
+      )
+    ) %>%
+    mutate(
+      across(
+        everything(),
+        ~str_replace_all(., "[0-9]","x")
+      )
+    )
 
   col_plan_vars <- as_vars.character(colnames(tbl_dat_wide))
   if(is_empty(tfrmt$column)){
@@ -203,7 +213,11 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
   col_selection <- col_style_selections(selection, column_names, col_plan_vars)
 
   vec_prep <- tbl_dat_wide%>%
-    select(any_of(col_selection)) %>%
+    select(
+      tidyselect::any_of(
+        col_selection
+      )
+    ) %>%
     pivot_longer(everything()) %>%
     arrange(nchar(.data$value)) %>%
     filter(!is.na(.data$value)) %>%

@@ -202,7 +202,11 @@ test_that("column spanners and labels are appropriately aligned", {
 
   # original data - keep tfrmt spec cols
   orig_cols <- dat %>%
-    dplyr::select(all_of(chr_cols)) %>%
+    dplyr::select(
+      tidyselect::all_of(
+        chr_cols
+      )
+    ) %>%
     unique
 
   expect_equal(gt_cols,
