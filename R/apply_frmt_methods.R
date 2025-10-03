@@ -250,7 +250,9 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, value, mock = FALSE, param,
       )
     ) %>%
     select(
-      -tidyselect::all_of(fmt_param_vals_uq),
+      -tidyselect::all_of(
+        fmt_param_vals_uq
+      ),
       -".is_all_missing"
     )
 

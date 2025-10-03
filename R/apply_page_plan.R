@@ -338,7 +338,9 @@ add_summary_rows <- function(next_dat, prev_summ, group, label){
     ~prev_summ[.x,] %>%
       select(c(!!!group)) %>%
       select(
-        1:tidyselect::all_of(prev_summ_top_grp[.x])
+        1:tidyselect::all_of(
+          prev_summ_top_grp[.x]
+        )
       )
   )
 
