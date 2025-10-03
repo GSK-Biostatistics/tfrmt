@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
 library(patchwork)
+library(ggfortify)
 ```
 
 Print to ggplot outputs a ggplot table. This table can then be added to an existing plot to provide additional information. For this we recommend the use of the patchwork package.
@@ -30,7 +31,7 @@ A common use case of this function could be in the production of survival plots.
 fit <- survival::survfit(survival::Surv(time,status)~rx, data=survival::colon)
 
 # Plot kaplan meier between times 0-3000
-km_plot <- ggplot2::autoplot(fit) +
+km_plot <- autoplot(fit) +
   ggplot2::xlim(c(0,3000))
 ```
 
