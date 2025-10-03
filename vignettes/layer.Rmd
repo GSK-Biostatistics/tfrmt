@@ -40,20 +40,19 @@ The second tfrmt defines the table specific information, including title, specif
 The output tfrmt generates a table with the subset `data_labs`.
 
 ```{r, results = "asis"}
-
-data_labs_subset <- data_labs %>% 
+data_labs_subset <- data_labs %>%
   filter(
-    group2 %in% c("ALANINE AMINOTRANSFERASE" ,"ALBUMIN" ,"ALKALINE PHOSPHATASE","ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
+    group2 %in% c("ALANINE AMINOTRANSFERASE", "ALBUMIN", "ALKALINE PHOSPHATASE", "ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
   )
 
 data_input <- tribble(
-  ~group1,   ~group2, ~sigdig,
-  "CHEMISTRY",   ".default", 3,
-  "CHEMISTRY",   "ALBUMIN",  1,
-  "CHEMISTRY",   "CALCIUM",   1,
-  ".default",    ".default",  2
-  )
+  ~group1, ~group2, ~sigdig,
+  "CHEMISTRY", ".default", 3,
+  "CHEMISTRY", "ALBUMIN", 1,
+  "CHEMISTRY", "CALCIUM", 1,
+  ".default", ".default", 2
+)
 
 
 labs_tfrmt_template <- tfrmt_sigdig(
@@ -61,7 +60,7 @@ labs_tfrmt_template <- tfrmt_sigdig(
   group = vars(group1, group2),
   label = rowlbl,
   param_defaults = param_set("[{n}]" = NA)
-  ) 
+)
 
 labs_tfrmt <- labs_tfrmt_template %>%
   tfrmt(
@@ -79,15 +78,14 @@ labs_tfrmt <- labs_tfrmt_template %>%
       "Change From Baseline" = cbl,
       n,
       -starts_with("ord")
-      )
+    )
   )
 
-labs_tfrmt %>% 
-  print_to_gt(data_labs_subset) %>% 
+labs_tfrmt %>%
+  print_to_gt(data_labs_subset) %>%
   tab_options(
     container.width = 1000
   )
-
 ```
 
 ## Conflicting Layers
@@ -100,19 +98,18 @@ Similar to the `rename()` function, here we provide the new group name and which
 For example, this is useful when a template tfrmt needs references updated. This could happen when the input data set has a slightly different naming convention than expected.
 
 ```{r}
-
 ## provided data had different column names for groups
-alternate_data_labs_subset <- data_labs_subset %>% 
+alternate_data_labs_subset <- data_labs_subset %>%
   rename(
     `Lab Type` = group1,
     `Lab Test` = group2,
   )
 
-labs_tfrmt %>% 
+labs_tfrmt %>%
   update_group(
     `Lab Type` = group1,
     `Lab Test` = group2,
-  ) %>% 
+  ) %>%
   tfrmt(
     col_plan = col_plan(
       `Lab Type`, `Lab Test`,
@@ -121,12 +118,10 @@ labs_tfrmt %>%
       "Change From Baseline" = cbl,
       n,
       -starts_with("ord")
-      )
-  ) %>% 
-  print_to_gt(alternate_data_labs_subset) %>% 
+    )
+  ) %>%
+  print_to_gt(alternate_data_labs_subset) %>%
   tab_options(
     container.width = 1000
   )
-
-
 ```

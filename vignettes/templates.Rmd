@@ -48,21 +48,20 @@ Next, because our data is standardized as an analysis results dataset, we can pr
 With this information we can construct a template AE `tfrmt`:
   
 ```{r basic-template-tfrmt}
-
 ae_tfrmt_template <- tfrmt(
-    group = AEBODSYS,
-    label = AETERM,
-    param = param,
-    column = c(treatment, col),
-    value = value,
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = c(treatment, col),
+  value = value,
   body_plan = body_plan(
     ## All entries where the param column is `AEs` (representing total counts)
     frmt_structure(
       group_val = ".default",
       label_val = ".default",
       AEs = frmt("[XXX]")
-      ),
-    
+    ),
+
     ## Combine entries where param column is `n` and `pct` to create a cell for
     ## that population
     frmt_structure(
@@ -75,25 +74,23 @@ ae_tfrmt_template <- tfrmt(
           "==100" ~ "",
           "==0" ~ "",
           TRUE ~ frmt("(xx.x %)")
-          )
         )
-      ),
-    
+      )
+    ),
+
     ## All entries where param column is `pval`, format conditionally.
     ## When the value is missing, replace the NA with "--".
     frmt_structure(
-       group_val = ".default", 
-       label_val = ".default",
-       pval = frmt_when(
-         ">0.99" ~ ">0.99",
-         "<0.001" ~ "<0.001",
-         TRUE ~ frmt("x.xxx", missing = "--")
-         )
+      group_val = ".default",
+      label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
     )
   )
 )
-
-
 ```
 
 ## Functionalising the Template
@@ -105,9 +102,7 @@ Now that we have our tfrmt, we can wrap it into a function to form a template. T
 See below for an example of creating a template based on a function for layering `tfrmt` together. In this scenario the base AE template only has body_plan values for handling total counts, case counts, and percents, but not p-values. We create another template for p-values, and then finally layer it with the study specific tfrmt.
 
 ```{r tfrmt-template-functions}
-
-ae_base_tfrmt_template <- function(tfrmt_obj){
-  
+ae_base_tfrmt_template <- function(tfrmt_obj) {
   ae_base <- tfrmt(
     group = AEBODSYS,
     label = AETERM,
@@ -120,8 +115,8 @@ ae_base_tfrmt_template <- function(tfrmt_obj){
         group_val = ".default",
         label_val = ".default",
         AEs = frmt("[XXX]")
-        ),
-      
+      ),
+
       ## Combine entries where param column is `n` and `pct` to create a cell for
       ## that population
       frmt_structure(
@@ -134,61 +129,56 @@ ae_base_tfrmt_template <- function(tfrmt_obj){
             "==100" ~ "",
             "==0" ~ "",
             TRUE ~ frmt("(xx.x %)")
-            )
           )
         )
+      )
     )
-  ) 
-  
+  )
+
   layer_tfrmt(x = tfrmt_obj, y = ae_base)
-  
 }
 
-ae_pval_tfrmt_template <- function(tfrmt_obj){
-  
+ae_pval_tfrmt_template <- function(tfrmt_obj) {
   ae_pval_template <- tfrmt(
     body_plan = body_plan(
       ## All entries where param column is `pval`, format conditionally.
       ## When the value is missing, replace the NA with "--".
       frmt_structure(
-         group_val = ".default", 
-         label_val = ".default",
-         pval = frmt_when(
-           ">0.99" ~ ">0.99",
-           "<0.001" ~ "<0.001",
-           TRUE ~ frmt("x.xxx", missing = "--")
-           )
+        group_val = ".default",
+        label_val = ".default",
+        pval = frmt_when(
+          ">0.99" ~ ">0.99",
+          "<0.001" ~ "<0.001",
+          TRUE ~ frmt("x.xxx", missing = "--")
+        )
       )
     )
   )
-  
-  layer_tfrmt(tfrmt_obj, ae_pval_template)
-  
-}
 
+  layer_tfrmt(tfrmt_obj, ae_pval_template)
+}
 ```
 
 Using these templates and what we learned from the layering vignette, we can apply multiple templates cleanly within a pipe:
 
 ```{r layer-tfrmt-templates}
-
-study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>% 
-  ae_pval_tfrmt_template() %>% 
+study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>%
+  ae_pval_tfrmt_template() %>%
   tfrmt(
     title = "Adverse Events for CDISC Pilot Study",
     subtitle = "Data subset to AEs with >10% prevalence in the High Dose group",
-    
+
     ## Sorting columns of rows
     sorting_cols = c(ord1, ord2),
-    
+
     ## Nest Preferred terms under SOC
     row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
-    
+
     ## alisgnment of columns
     col_style_plan = col_style_plan(
-      col_style_structure(align = c(".",","," "), col = vars(starts_with("p_")))
+      col_style_structure(align = c(".", ",", " "), col = vars(starts_with("p_")))
     ),
-    
+
     ## remove order columns from final table
     col_plan = col_plan(
       span_structure(
@@ -198,48 +188,44 @@ study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>%
           "Placebo (N=86)" = Placebo
         ),
         col = c(
-          `n (%)` = `n_pct` ,
+          `n (%)` = `n_pct`,
           `[AEs]` = `AEs`
-          )
+        )
       ),
       span_structure(
         treatment = c(
           "Fisher's Exact p-values" = fisher_pval
         ),
         col = c(
-          `Placebo vs. Low Dose` = `p_low` ,
+          `Placebo vs. Low Dose` = `p_low`,
           `Placebo vs. High Dose` = `p_high`
         )
       ),
-      - starts_with("ord")
+      -starts_with("ord")
     )
   )
-
-
 ```
 
 See how this results in the same table as above:
 
 ```{r tfrmt-template-table}
-
 ## filter to keep only AEs with >10% prevalence in the High Dose group
-data_ae2 <- data_ae %>% 
-  group_by(AEBODSYS, AETERM) %>% 
-  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
-  ungroup %>% 
-  filter(pct_high >10) %>% 
-  select(-pct_high) %>% 
+data_ae2 <- data_ae %>%
+  group_by(AEBODSYS, AETERM) %>%
+  mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
+  ungroup() %>%
+  filter(pct_high > 10) %>%
+  select(-pct_high) %>%
   rename(
     treatment = col2,
     col = col1
   )
 
-study_ae_tfrmt_multi_layer %>% 
-  print_to_gt(data_ae2) %>% 
+study_ae_tfrmt_multi_layer %>%
+  print_to_gt(data_ae2) %>%
   tab_options(
     container.width = 1000
   )
-
 ```
 
 ## Alternatives to Full Templates 
@@ -249,100 +235,91 @@ In addition to defining full tfrmt templates, users can also create reusable frm
 Some common pre-defined frmts may include p-value displays, integers, `n (%)`, among other things. 
 
 ```{r frmt-templates, re}
-
 # defined frmts
 
 int_frmt <- frmt("[XXX]")
 
 pval_frmt <- frmt_when(
-           ">0.99" ~ ">0.99",
-           "<0.001" ~ "<0.001",
-           TRUE ~ frmt("x.xxx", missing = "--")
-           )
+  ">0.99" ~ ">0.99",
+  "<0.001" ~ "<0.001",
+  TRUE ~ frmt("x.xxx", missing = "--")
+)
 
 n_pct_frmt <- frmt_combine(
-          "{n} {pct}",
-          n = frmt("XXX"),
-          pct = frmt_when(
-            "==100" ~ "",
-            "==0" ~ "",
-            TRUE ~ frmt("(xx.x %)")
-            )
-          )
+  "{n} {pct}",
+  n = frmt("XXX"),
+  pct = frmt_when(
+    "==100" ~ "",
+    "==0" ~ "",
+    TRUE ~ frmt("(xx.x %)")
+  )
+)
 
 ## frmts as functions
 
-int_frmt_func <- function(ints = 2){
+int_frmt_func <- function(ints = 2) {
   str_exp <- paste0("[", paste0(rep("X", ints), collapse = ""), "]")
   frmt(str_exp)
 }
-
-
 ```
  
 Now that there are defined frmts, we can use them in our tfrmt to generate our table too.
 
 
 ```{r}
-
 tfrmt(
-    group = AEBODSYS,
-    label = AETERM,
-    param = param,
-    column = c(treatment,col),
-    value = value,
-    
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        AEs = int_frmt_func(3)
-        ),
-      
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        n_pct_frmt
-        ),
-      
-      frmt_structure(
-         group_val = ".default", 
-         label_val = ".default",
-         pval = pval_frmt
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = c(treatment, col),
+  value = value,
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      AEs = int_frmt_func(3)
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      n_pct_frmt
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      pval = pval_frmt
+    )
+  ),
+
+  ## remove order columns from final table
+  col_plan = col_plan(
+    span_structure(
+      treatment = c(
+        "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
+        "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
+        "Placebo (N=86)" = Placebo
+      ),
+      col = c(
+        `n (%)` = `n_pct`,
+        `[AEs]` = `AEs`
       )
     ),
-    
-    ## remove order columns from final table
-    col_plan = col_plan(
-      span_structure(
-        treatment = c(
-          "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
-          "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
-          "Placebo (N=86)" = Placebo
-        ),
-        col = c(
-          `n (%)` = `n_pct` ,
-          `[AEs]` = `AEs`
-          )
+    span_structure(
+      treatment = c(
+        "Fisher's Exact p-values" = fisher_pval
       ),
-      span_structure(
-        treatment = c(
-          "Fisher's Exact p-values" = fisher_pval
-        ),
-        col = c(
-          `Placebo vs. Low Dose` = `p_low` ,
-          `Placebo vs. High Dose` = `p_high`
-        )
-      ),
-      - starts_with("ord")
-    )
-    
-  ) %>% 
-  print_to_gt(data_ae2) %>% 
+      col = c(
+        `Placebo vs. Low Dose` = `p_low`,
+        `Placebo vs. High Dose` = `p_high`
+      )
+    ),
+    -starts_with("ord")
+  )
+) %>%
+  print_to_gt(data_ae2) %>%
   tab_options(
     container.width = 1000
   )
-
 ```
 
 

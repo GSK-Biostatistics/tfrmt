@@ -31,20 +31,22 @@ A common use case of this function could be in the production of survival plots.
 
 ```{r, message=FALSE, warning=FALSE}
 # Set up survival data
-fit <- survfit(Surv(time,status)~rx, data=colon)
+fit <- survfit(Surv(time, status) ~ rx, data = colon)
 
 # Plot kaplan meier between times 0-3000
 km_plot <- autoplot(fit) +
-  xlim(c(0,3000))
+  xlim(c(0, 3000))
 ```
 
 As with `print_to_gt`, `print_to_ggplot` requires an input table with `label`, `value`,`param` and `column` variables.  The following code sets up our mock input table. 
 
 ```{r, message=FALSE, warning=FALSE}
-risk <- tibble(time=c(rep(c(0,1000,2000,3000),3)),
-               label=c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),
-               value=c(630,372,256,11,620,360,266,8,608,425,328,14),
-               param=rep("n",12))
+risk <- tibble(
+  time = c(rep(c(0, 1000, 2000, 3000), 3)),
+  label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
+  value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
+  param = rep("n", 12)
+)
 ```
 
 A tfrmt object is required to specify the formatting of the ggplot table. This can then be piped out to `print_to_ggplot` as seen below. 
@@ -52,14 +54,17 @@ A tfrmt object is required to specify the formatting of the ggplot table. This c
 ```{r, message=FALSE, warning=FALSE}
 table <- tfrmt(
   # specify columns in the data
-  label = label ,
+  label = label,
   column = time,
   param = param,
   value = value,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt("X"))
-  )) %>%
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("X")
+    )
+  )
+) %>%
   print_to_ggplot(risk)
 
 table
@@ -68,7 +73,7 @@ table
 Now using the patchwork package we can combine the original plot, and our ggplot table. Since we want the table below the plot, we use `/`. For more information on using patchwork, refer to the documentation [here](https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html).
 
 ```{r, fig.width=7, message=FALSE, warning=FALSE}
-km_plot/table
+km_plot / table
 ```
 
 Because we don't have to duplicate the time points, we can just remove the x-axis labels using the theme
@@ -76,7 +81,7 @@ Because we don't have to duplicate the time points, we can just remove the x-axi
 table2 <- table +
   theme(axis.text.x = NULL)
 
-km_plot/table2
+km_plot / table2
 ```
 
 ### Using grouping
@@ -85,11 +90,13 @@ You can also apply groups to your ggplot table. The code below adds groupings to
 
 ```{r, message=FALSE, warning=FALSE}
 riska <- risk %>%
-  mutate(group="A")
+  mutate(group = "A")
 
 riskb <- risk %>%
-  mutate(group="B",
-         value=value+10)
+  mutate(
+    group = "B",
+    value = value + 10
+  )
 
 risk_group <- riska %>%
   rbind(riskb)
@@ -101,18 +108,21 @@ Now we need to add group to our tfrmt specification and patch together:
 group_table <- tfrmt(
   # specify columns in the data
   group = group,
-  label = label ,
+  label = label,
   column = time,
   param = param,
   value = value,
-   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt("X"))
-  )) %>% 
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("X")
+    )
+  )
+) %>%
   print_to_ggplot(risk_group) +
   theme(axis.text.x = NULL)
 
-km_plot/group_table
+km_plot / group_table
 ```
 
 ## Forest Plots
@@ -121,7 +131,8 @@ The same logic used in the survival plots can also be used to create forest plot
 
 ```{r}
 aes <- factor(c("Fever", "Malaise", "Local Allergic Reaction"),
-              levels = c("Fever", "Malaise", "Local Allergic Reaction"))
+  levels = c("Fever", "Malaise", "Local Allergic Reaction")
+)
 
 tbl_dat <- tibble(
   grp = "1 to 7 days after treatment",
@@ -131,12 +142,14 @@ tbl_dat <- tibble(
   value = c(60, 7.7, 26, 3.3, 183, 23.5, 89, 11.4, 94, 12, 55, 7)
 )
 
-tbl_p <- tfrmt_n_pct() %>% 
-  tfrmt(label = ae,
-        group = grp,
-        column = trt,
-        param = param, 
-        value = "value") %>% 
+tbl_p <- tfrmt_n_pct() %>%
+  tfrmt(
+    label = ae,
+    group = grp,
+    column = trt,
+    param = param,
+    value = "value"
+  ) %>%
   print_to_ggplot(tbl_dat)
 
 tbl_p
@@ -150,20 +163,22 @@ plot_dat <- tibble(
   mean = c(3, 2.3, 2),
   lower = c(1.95, 1.9, 1.2),
   upper = c(4, 3.5, 3.4)
-  ) %>% 
+) %>%
   bind_rows(c(ae = "1 to 7 days after treatment"))
 
-plot_p <- ggplot(data=plot_dat, aes(x=ae, y=mean, ymin=lower, ymax=upper)) +
-  geom_pointrange() + 
-  geom_hline(yintercept=1, lty=2) +  # add a dotted line at x=1 after flip
+plot_p <- ggplot(data = plot_dat, aes(x = ae, y = mean, ymin = lower, ymax = upper)) +
+  geom_pointrange() +
+  geom_hline(yintercept = 1, lty = 2) + # add a dotted line at x=1 after flip
   coord_flip() +
   xlab("") +
-  ylab("Adjusted Rate Ratio (95% CI)")+
-  scale_x_discrete(limits=rev)+
-  scale_y_discrete(position = "right") + 
+  ylab("Adjusted Rate Ratio (95% CI)") +
+  scale_x_discrete(limits = rev) +
+  scale_y_discrete(position = "right") +
   theme_minimal() +
-  theme(axis.text.y=element_blank(), # remove x axis labels
-        axis.ticks.y=element_blank())
+  theme(
+    axis.text.y = element_blank(), # remove x axis labels
+    axis.ticks.y = element_blank()
+  )
 plot_p
 ```
 
@@ -177,12 +192,14 @@ tbl_p + plot_p
 
 A final note about the ggplot tables - most styling can be adjusted with `theme` once the table is create. But, the table body needs to be adjusted in the `print_to_ggplot` call, by supplying the requirements to the `...`. So if you need to change the size table boy you just add that to the `print_to_ggplot`. 
 ```{r}
-tfrmt_n_pct() %>% 
-  tfrmt(label = ae,
-        group = grp,
-        column = trt,
-        param = param, 
-        value = "value") %>% 
+tfrmt_n_pct() %>%
+  tfrmt(
+    label = ae,
+    group = grp,
+    column = trt,
+    param = param,
+    value = "value"
+  ) %>%
   print_to_ggplot(tbl_dat, size = 8)
 ```
 
