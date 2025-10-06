@@ -226,7 +226,10 @@ test_that("Test applying a col_plan - tidyselect",{
   )
 
   cp_drop <- col_plan(
-    span_structure(col1 = starts_with("test"), col2 = c(val2,everything())),
+    span_structure(
+      col1 = starts_with("test"),
+      col2 = c(val2, everything())
+    ),
     everything(),
     first_col,
     .drop = TRUE
@@ -782,7 +785,9 @@ test_that("Order is kept for multi-col columns",{
     names()
 
   new_name_ord_in_dat <- test %>%
-    select(starts_with("col")) %>%
+    select(
+      tidyselect::starts_with("col")
+    ) %>%
     unite("new", sep=.tlang_delim) %>%
     pull(new)
 

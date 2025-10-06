@@ -366,12 +366,30 @@ unite_df_to_data_names <- function(split_data_names, preselected_cols, column_na
                                    return_only_selected = FALSE){
 
   new_preselected_cols_full <- split_data_names %>%
-    unite("original",-c(starts_with("__tfrmt_new_name__"), "subtraction_status"),
-          sep = .tlang_delim) %>%
-    unite("new_name",
-          starts_with("__tfrmt_new_name__"),
-          sep = .tlang_delim) %>%
-    mutate(across(c("original", "new_name"), ~remove_empty_layers(.x, length(column_names) -1)))
+    unite(
+      "original",
+      -c(
+        tidyselect::starts_with(
+          "__tfrmt_new_name__"
+        ),
+        "subtraction_status"
+      ),
+      sep = .tlang_delim
+    ) %>%
+    unite(
+      "new_name",
+      tidyselect::starts_with("__tfrmt_new_name__"),
+      sep = .tlang_delim
+    ) %>%
+    mutate(
+      across(
+        c("original", "new_name"),
+        ~remove_empty_layers(
+          .x,
+          length(column_names) - 1
+        )
+      )
+    )
 
   selected <- new_preselected_cols_full %>%
     mutate(

@@ -80,7 +80,12 @@ apply_table_frmt_plan <- function(.data, table_frmt_plan, group, label, param, v
       out
     }) %>%
     arrange(.data$TEMP_row) %>%
-    select(-starts_with("TEMP_")) ## drop TEMP_row values
+    select(
+      # drop TEMP_row values
+      -tidyselect::starts_with(
+        "TEMP_"
+      )
+    )
 
 }
 

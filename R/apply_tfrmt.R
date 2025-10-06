@@ -400,11 +400,16 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
       )
     ) %>%
     quietly(pivot_wider)(
-      names_from = c(starts_with(.tlang_struct_col_prefix), !!!tfrmt$column),
+      names_from = c(
+        tidyselect::starts_with(
+          .tlang_struct_col_prefix
+        ),
+        !!!tfrmt$column
+      ),
       names_sep = .tlang_delim,
       values_from = !!tfrmt$value,
       values_fill = val_fill
-      )
+    )
 
   if (mock == TRUE && length(tbl_dat_wide$warnings)>0 &&
       any(str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$value), "` are not uniquely identified")))){

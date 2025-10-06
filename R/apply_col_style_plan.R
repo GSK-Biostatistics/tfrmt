@@ -272,7 +272,13 @@ apply_col_alignment_pos <- function(col, align){
   col_with_pos <- col_with_align %>%
     mutate(col_idx= row_number()) %>%
     separate("align", into = paste0("col_split_",1:n_split_levs_max), sep = "(?<!\\\\)[\\|]", remove = FALSE, fill = "right") %>%
-    pivot_longer(starts_with("col_split_"), names_to = "col_split_lev", values_to = "col_split_val") %>%
+    pivot_longer(
+      tidyselect::starts_with(
+        "col_split_"
+      ),
+      names_to = "col_split_lev",
+      values_to = "col_split_val"
+    ) %>%
     arrange(.data$col_idx, .data$col_split_lev) %>%
     group_by(.data$col_idx) %>%
     mutate(col_split_end = nchar(.data$col_split_val) %>% cumsum(),

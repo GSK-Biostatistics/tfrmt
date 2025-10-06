@@ -997,8 +997,12 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
       ),
       col_plan = col_plan(
         -starts_with("ord")
-      )) %>%
-      print_to_gt(., data_ae2) %>% tab_options(container.width = 1000)
+      )
+    ) %>%
+      print_to_gt(data_ae2) %>%
+      tab_options(
+        container.width = 1000
+      )
 
   },
   paste("Unable to to apply apply_row_grp_lbl.",

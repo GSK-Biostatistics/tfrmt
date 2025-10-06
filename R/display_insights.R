@@ -82,7 +82,11 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
                                  tfrmt$label,
                                  tfrmt$param) %>%
       rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-      select(-starts_with("TEMP")) %>%
+      select(
+        -tidyselect::starts_with(
+          "TEMP"
+        )
+      ) %>%
       mutate(frmt_type = map_chr(.data$frmt_applied, function(x) unlist(class(x)[1])))
 
   } else if (convert_to_txt == TRUE) {
@@ -92,7 +96,11 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
                                  tfrmt$label,
                                  tfrmt$param) %>%
       rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-      select(-starts_with("TEMP")) %>%
+      select(
+        -tidyselect::starts_with(
+          "TEMP"
+        )
+      ) %>%
       mutate(frmt_type = map_chr(.data$frmt_applied, function(x) unlist(class(x)[1])),
              frmt_details = map_chr(.data$frmt_applied, format)) %>%
       select(-"frmt_applied")
