@@ -133,7 +133,11 @@ tfrmt_efficacy <- tfrmt(
                                 diff_ucl = frmt("xx.x"), missing = " "))
   ),
   col_plan = col_plan(
-    group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
+    group, label,
+    Placebo,
+    contains("Low"),
+    contains("High"),
+    -starts_with("ord")
   ),
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = list(group="Change from Baseline"),
