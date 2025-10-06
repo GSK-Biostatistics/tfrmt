@@ -410,7 +410,9 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock){
       any(str_detect(tbl_dat_wide$warnings, paste0("Values from `", as_label(tfrmt$value), "` are not uniquely identified")))){
     message("Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.")
     tbl_dat_wide <- tbl_dat_wide$result %>%
-      unnest(cols = everything()) %>%
+      unnest(
+        cols = tidyselect::everything()
+      ) %>%
       clean_spanning_col_names()
   } else {
     tbl_dat_wide <- tbl_dat_wide$result %>%

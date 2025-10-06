@@ -221,8 +221,20 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
 
   ## create order df
   ords <- do.call("crossing",col_selections) %>%
-    mutate(across(everything(), ~factor(.x, levels = col_selections[[cur_column()]]))) %>%
-    arrange(across(everything())) %>%
+    mutate(
+      across(
+        tidyselect::everything(),
+        ~factor(
+          .x,
+          levels = col_selections[[cur_column()]]
+        )
+      )
+    ) %>%
+    arrange(
+      across(
+        tidyselect::everything()
+      )
+    ) %>%
     mutate(ord_col = seq_len(n()))
 
   split_data_names %>%

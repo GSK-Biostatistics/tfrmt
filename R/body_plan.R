@@ -75,7 +75,9 @@ body_plan_builder <- function(data, group, label, param_defaults, missing = NULL
            single_glue_to_frmt = pmap_chr(list(.data$contains_glue, .data$param, .data$param_display), function(a,b,c){
              if(a==TRUE & length(b) == 1) c else NA_character_
            } )) %>%
-    unnest(everything()) %>%
+    unnest(
+      tidyselect::everything()
+    ) %>%
     mutate(frmt_string = map2_chr(.data$sigdig, .data$single_glue_to_frmt, sigdig_frmt_string))
 
   frmt_vec <- param_tbl %>%

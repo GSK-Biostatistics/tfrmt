@@ -164,7 +164,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
 #'
 #'  display_val_frmts(tf_spec, data_demog, col = vars(everything()))
 #'  display_val_frmts(tf_spec, data_demog, col = "p-value")
-display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
+display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
 
 
   tbl_dat <- .data %>%
@@ -193,7 +193,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
     ) %>%
     mutate(
       across(
-        everything(),
+        tidyselect::everything(),
         ~str_replace_all(., "[0-9]","x")
       )
     )
@@ -218,7 +218,9 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
         col_selection
       )
     ) %>%
-    pivot_longer(everything()) %>%
+    pivot_longer(
+      tidyselect::everything()
+    ) %>%
     arrange(nchar(.data$value)) %>%
     filter(!is.na(.data$value)) %>%
     pull(.data$value) %>%

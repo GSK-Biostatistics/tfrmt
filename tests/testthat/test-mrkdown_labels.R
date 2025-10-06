@@ -182,11 +182,15 @@ test_that("column spanners and labels are appropriately aligned", {
  # get spanner labels
   spans <-  gt_out$`_spanners` %>%
     select(var = vars, spanner_label, spanner_level ) %>%
-    unnest(everything())
+    unnest(
+      tidyselect::everything()
+    )
   # get lower labels
   lower <- gt_out$`_boxhead` %>%
     select(var, column_label) %>%
-    unnest(everything())
+    unnest(
+      tidyselect::everything()
+    )
 
   # get tfrmt cols from spec
   chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev
