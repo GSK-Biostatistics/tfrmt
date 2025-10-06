@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,9 +56,13 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/0.2.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.1" id="tfrmt-021">tfrmt 0.2.1<a class="anchor" aria-label="anchor" href="#tfrmt-021"></a></h2><p class="text-muted">CRAN release: 2025-10-04</p>
+<p>Patch release for latest {gt} release and upcoming {purrr} and {stringr} releases: * Ensure <code>rowname_col = NULL</code> in <code><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt()</a></code> within <code><a href="../reference/print_to_gt.html">print_to_gt()</a></code> if no row label exists. * Use of <code>seq_along(x)</code> in lieu of <code>1:length(x)</code> prior to <code>str_replace()</code> as it no longer accepts NA patterns. * Ensure values are character before processing via <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_chr()</a></code> as it no longer coerces to character.</p>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="tfrmt-020">tfrmt 0.2.0<a class="anchor" aria-label="anchor" href="#tfrmt-020"></a></h2><p class="text-muted">CRAN release: 2025-09-06</p>
 <div class="section level3">
