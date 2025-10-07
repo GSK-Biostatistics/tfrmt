@@ -183,11 +183,22 @@ apply_grp_block <- function(.data, group, element_block, widths){
     # utilize TEMP_row to retain the ordering
     grp_row_add <- .data %>%
       slice(n()) %>%
-      mutate(across(c(-map_chr(group, as_name), -vars_select_helpers$where(is.numeric)),
-                    ~replace(.x, values = fill_post_space(post_space = element_block$post_space,
-                                                         fill = element_block$fill,
-                                                         width = widths[[cur_column()]]))),
-             TEMP_row = .data$TEMP_row + 0.1)
+      mutate(
+        across(
+          c(
+            - map_chr(group, as_name),
+            - tidyselect::where(is.numeric)),
+          ~ replace(
+            .x,
+            values = fill_post_space(
+              post_space = element_block$post_space,
+              fill = element_block$fill,
+              width = widths[[cur_column()]]
+            )
+          )
+        ),
+        TEMP_row = .data$TEMP_row + 0.1
+      )
 
 
     # combine with original data
