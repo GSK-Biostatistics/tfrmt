@@ -150,21 +150,20 @@ and finally “pval” is the p-value.</li>
 <p>With this information we can construct a template AE
 <code>tfrmt</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">ae_tfrmt_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>    group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
-<span>    label <span class="op">=</span> <span class="va">AETERM</span>,</span>
-<span>    param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treatment</span>, <span class="va">col</span><span class="op">)</span>,</span>
-<span>    value <span class="op">=</span> <span class="va">value</span>,</span>
+<code class="sourceCode R"><span><span class="va">ae_tfrmt_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">AETERM</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treatment</span>, <span class="va">col</span><span class="op">)</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>    <span class="co">## All entries where the param column is `AEs` (representing total counts)</span></span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
 <span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>      AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>    </span>
+<span>    <span class="op">)</span>,</span>
+<span></span>
 <span>    <span class="co">## Combine entries where param column is `n` and `pct` to create a cell for</span></span>
 <span>    <span class="co">## that population</span></span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
@@ -177,20 +176,20 @@ and finally “pval” is the p-value.</li>
 <span>          <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
 <span>          <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
 <span>          <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
-<span>          <span class="op">)</span></span>
 <span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>    </span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span></span>
 <span>    <span class="co">## All entries where param column is `pval`, format conditionally.</span></span>
 <span>    <span class="co">## When the value is missing, replace the NA with "--".</span></span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>       group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>       label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>       pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
-<span>         <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
-<span>         <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
-<span>         <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
-<span>         <span class="op">)</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>        <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>        <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>        <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -215,9 +214,7 @@ template only has body_plan values for handling total counts, case
 counts, and percents, but not p-values. We create another template for
 p-values, and then finally layer it with the study specific tfrmt.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">ae_base_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span></span>
-<span>  </span>
+<code class="sourceCode R"><span><span class="va">ae_base_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">ae_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>    group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
 <span>    label <span class="op">=</span> <span class="va">AETERM</span>,</span>
@@ -230,8 +227,8 @@ p-values, and then finally layer it with the study specific tfrmt.</p>
 <span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>        AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      </span>
+<span>      <span class="op">)</span>,</span>
+<span></span>
 <span>      <span class="co">## Combine entries where param column is `n` and `pct` to create a cell for</span></span>
 <span>      <span class="co">## that population</span></span>
 <span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
@@ -244,58 +241,54 @@ p-values, and then finally layer it with the study specific tfrmt.</p>
 <span>            <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
 <span>            <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
 <span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
-<span>            <span class="op">)</span></span>
 <span>          <span class="op">)</span></span>
 <span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> </span>
-<span>  </span>
+<span>  <span class="op">)</span></span>
+<span></span>
 <span>  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tfrmt_obj</span>, y <span class="op">=</span> <span class="va">ae_base</span><span class="op">)</span></span>
-<span>  </span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">ae_pval_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span><span class="op">{</span></span>
-<span>  </span>
+<span><span class="va">ae_pval_tfrmt_template</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tfrmt_obj</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">ae_pval_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>      <span class="co">## All entries where param column is `pval`, format conditionally.</span></span>
 <span>      <span class="co">## When the value is missing, replace the NA with "--".</span></span>
 <span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>         group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>         label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>         pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
-<span>           <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
-<span>           <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
-<span>           <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
-<span>           <span class="op">)</span></span>
+<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>        pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>          <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>          <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>          <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span><span class="va">tfrmt_obj</span>, <span class="va">ae_pval_template</span><span class="op">)</span></span>
-<span>  </span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Using these templates and what we learned from the layering vignette,
 we can apply multiple templates cleanly within a pipe:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op">&lt;-</span> <span class="fu">ae_base_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">ae_pval_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op">&lt;-</span> <span class="fu">ae_base_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">ae_pval_tfrmt_template</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Adverse Events for CDISC Pilot Study"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="st">"Data subset to AEs with &gt;10% prevalence in the High Dose group"</span>,</span>
-<span>    </span>
+<span></span>
 <span>    <span class="co">## Sorting columns of rows</span></span>
 <span>    sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span><span class="op">)</span>,</span>
-<span>    </span>
+<span></span>
 <span>    <span class="co">## Nest Preferred terms under SOC</span></span>
 <span>    row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"indented"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    </span>
+<span></span>
 <span>    <span class="co">## alisgnment of columns</span></span>
 <span>    col_style_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_style_plan.html">col_style_plan</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">","</span>,<span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"p_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="../reference/theme_element.html">col_style_structure</a></span><span class="op">(</span>align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">","</span>, <span class="st">" "</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"p_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    </span>
+<span></span>
 <span>    <span class="co">## remove order columns from final table</span></span>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
@@ -305,39 +298,38 @@ we can apply multiple templates cleanly within a pipe:</p>
 <span>          <span class="st">"Placebo (N=86)"</span> <span class="op">=</span> <span class="va">Placebo</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          `n (%)` <span class="op">=</span> <span class="va">`n_pct`</span> ,</span>
+<span>          `n (%)` <span class="op">=</span> <span class="va">`n_pct`</span>,</span>
 <span>          `[AEs]` <span class="op">=</span> <span class="va">`AEs`</span></span>
-<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
 <span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
 <span>        treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>          <span class="st">"Fisher's Exact p-values"</span> <span class="op">=</span> <span class="va">fisher_pval</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`p_low`</span> ,</span>
+<span>          `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`p_low`</span>,</span>
 <span>          `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`p_high`</span></span>
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      <span class="op">-</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span></span>
+<span>      <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>See how this results in the same table as above:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co">## filter to keep only AEs with &gt;10% prevalence in the High Dose group</span></span>
-<span><span class="va">data_ae2</span> <span class="op">&lt;-</span> <span class="va">data_ae</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">AEBODSYS</span>, <span class="va">AETERM</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_high <span class="op">=</span> <span class="va">value</span><span class="op">[</span><span class="va">col2</span><span class="op">==</span><span class="st">"Xanomeline High Dose"</span> <span class="op">&amp;</span> <span class="va">param</span><span class="op">==</span><span class="st">"pct"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="va">ungroup</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pct_high</span> <span class="op">&gt;</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pct_high</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="co">## filter to keep only AEs with &gt;10% prevalence in the High Dose group</span></span>
+<span><span class="va">data_ae2</span> <span class="op">&lt;-</span> <span class="va">data_ae</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">AEBODSYS</span>, <span class="va">AETERM</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_high <span class="op">=</span> <span class="va">value</span><span class="op">[</span><span class="va">col2</span> <span class="op">==</span> <span class="st">"Xanomeline High Dose"</span> <span class="op">&amp;</span> <span class="va">param</span> <span class="op">==</span> <span class="st">"pct"</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pct_high</span> <span class="op">&gt;</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pct_high</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
 <span>    treatment <span class="op">=</span> <span class="va">col2</span>,</span>
 <span>    col <span class="op">=</span> <span class="va">col1</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_ae2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">study_ae_tfrmt_multi_layer</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_ae2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -1004,91 +996,85 @@ with the value presentation expected of their organization.</p>
 <p>Some common pre-defined frmts may include p-value displays, integers,
 <code>n (%)</code>, among other things.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># defined frmts</span></span>
+<code class="sourceCode R"><span><span class="co"># defined frmts</span></span>
 <span></span>
 <span><span class="va">int_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pval_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
-<span>           <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
-<span>           <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
-<span>           <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
-<span>           <span class="op">)</span></span>
+<span>  <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
+<span>  <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
+<span>  <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xxx"</span>, missing <span class="op">=</span> <span class="st">"--"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">n_pct_frmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
-<span>          <span class="st">"{n} {pct}"</span>,</span>
-<span>          n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
-<span>          pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
-<span>            <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
-<span>            <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
-<span>            <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
-<span>            <span class="op">)</span></span>
-<span>          <span class="op">)</span></span>
+<span>  <span class="st">"{n} {pct}"</span>,</span>
+<span>  n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
+<span>  pct <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
+<span>    <span class="st">"==100"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>    <span class="st">"==0"</span> <span class="op">~</span> <span class="st">""</span>,</span>
+<span>    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"(xx.x %)"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## frmts as functions</span></span>
 <span></span>
-<span><span class="va">int_frmt_func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="va">int_frmt_func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">str_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"["</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="va">ints</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, <span class="st">"]"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="va">str_exp</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Now that there are defined frmts, we can use them in our tfrmt to
 generate our table too.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>    group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
-<span>    label <span class="op">=</span> <span class="va">AETERM</span>,</span>
-<span>    param <span class="op">=</span> <span class="va">param</span>,</span>
-<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treatment</span>,<span class="va">col</span><span class="op">)</span>,</span>
-<span>    value <span class="op">=</span> <span class="va">value</span>,</span>
-<span>    </span>
-<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>        AEs <span class="op">=</span> <span class="fu">int_frmt_func</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      </span>
-<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>        group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>        label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>        <span class="va">n_pct_frmt</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      </span>
-<span>      <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>         group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>         label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>         pval <span class="op">=</span> <span class="va">pval_frmt</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="va">AEBODSYS</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">AETERM</span>,</span>
+<span>  param <span class="op">=</span> <span class="va">param</span>,</span>
+<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">treatment</span>, <span class="va">col</span><span class="op">)</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">value</span>,</span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      AEs <span class="op">=</span> <span class="fu">int_frmt_func</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="va">n_pct_frmt</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      pval <span class="op">=</span> <span class="va">pval_frmt</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span></span>
+<span>  <span class="co">## remove order columns from final table</span></span>
+<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>      treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Xanomeline High Dose (N=84)"</span> <span class="op">=</span> <span class="va">`Xanomeline High Dose`</span>,</span>
+<span>        <span class="st">"Xanomeline Low Dose (N=84)"</span> <span class="op">=</span> <span class="va">`Xanomeline Low Dose`</span>,</span>
+<span>        <span class="st">"Placebo (N=86)"</span> <span class="op">=</span> <span class="va">Placebo</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        `n (%)` <span class="op">=</span> <span class="va">`n_pct`</span>,</span>
+<span>        `[AEs]` <span class="op">=</span> <span class="va">`AEs`</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    </span>
-<span>    <span class="co">## remove order columns from final table</span></span>
-<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
-<span>        treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          <span class="st">"Xanomeline High Dose (N=84)"</span> <span class="op">=</span> <span class="va">`Xanomeline High Dose`</span>,</span>
-<span>          <span class="st">"Xanomeline Low Dose (N=84)"</span> <span class="op">=</span> <span class="va">`Xanomeline Low Dose`</span>,</span>
-<span>          <span class="st">"Placebo (N=86)"</span> <span class="op">=</span> <span class="va">Placebo</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>        col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          `n (%)` <span class="op">=</span> <span class="va">`n_pct`</span> ,</span>
-<span>          `[AEs]` <span class="op">=</span> <span class="va">`AEs`</span></span>
-<span>          <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>      treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Fisher's Exact p-values"</span> <span class="op">=</span> <span class="va">fisher_pval</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
-<span>        treatment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          <span class="st">"Fisher's Exact p-values"</span> <span class="op">=</span> <span class="va">fisher_pval</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>        col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`p_low`</span> ,</span>
-<span>          `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`p_high`</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="op">-</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>    </span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_ae2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>      col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        `Placebo vs. Low Dose` <span class="op">=</span> <span class="va">`p_low`</span>,</span>
+<span>        `Placebo vs. High Dose` <span class="op">=</span> <span class="va">`p_high`</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_ae2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>

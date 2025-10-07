@@ -124,20 +124,19 @@ well as the col_plan.</p>
 <p>The output tfrmt generates a table with the subset
 <code>data_labs</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">data_labs_subset</span> <span class="op">&lt;-</span> <span class="va">data_labs</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">data_labs_subset</span> <span class="op">&lt;-</span> <span class="va">data_labs</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>    <span class="va">group2</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ALANINE AMINOTRANSFERASE"</span> ,<span class="st">"ALBUMIN"</span> ,<span class="st">"ALKALINE PHOSPHATASE"</span>,<span class="st">"ASPARTATE AMINOTRANSFERASE"</span>, <span class="st">"BASOPHILS"</span><span class="op">)</span>,</span>
+<span>    <span class="va">group2</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ALANINE AMINOTRANSFERASE"</span>, <span class="st">"ALBUMIN"</span>, <span class="st">"ALKALINE PHOSPHATASE"</span>, <span class="st">"ASPARTATE AMINOTRANSFERASE"</span>, <span class="st">"BASOPHILS"</span><span class="op">)</span>,</span>
 <span>    <span class="va">rowlbl</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Bsln"</span>, <span class="st">"End[1]"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">data_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>  <span class="op">~</span><span class="va">group1</span>,   <span class="op">~</span><span class="va">group2</span>, <span class="op">~</span><span class="va">sigdig</span>,</span>
-<span>  <span class="st">"CHEMISTRY"</span>,   <span class="st">".default"</span>, <span class="fl">3</span>,</span>
-<span>  <span class="st">"CHEMISTRY"</span>,   <span class="st">"ALBUMIN"</span>,  <span class="fl">1</span>,</span>
-<span>  <span class="st">"CHEMISTRY"</span>,   <span class="st">"CALCIUM"</span>,   <span class="fl">1</span>,</span>
-<span>  <span class="st">".default"</span>,    <span class="st">".default"</span>,  <span class="fl">2</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="op">~</span><span class="va">group1</span>, <span class="op">~</span><span class="va">group2</span>, <span class="op">~</span><span class="va">sigdig</span>,</span>
+<span>  <span class="st">"CHEMISTRY"</span>, <span class="st">".default"</span>, <span class="fl">3</span>,</span>
+<span>  <span class="st">"CHEMISTRY"</span>, <span class="st">"ALBUMIN"</span>, <span class="fl">1</span>,</span>
+<span>  <span class="st">"CHEMISTRY"</span>, <span class="st">"CALCIUM"</span>, <span class="fl">1</span>,</span>
+<span>  <span class="st">".default"</span>, <span class="st">".default"</span>, <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">labs_tfrmt_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig</a></span><span class="op">(</span></span>
@@ -145,7 +144,7 @@ well as the col_plan.</p>
 <span>  group <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">group1</span>, <span class="va">group2</span><span class="op">)</span>,</span>
 <span>  label <span class="op">=</span> <span class="va">rowlbl</span>,</span>
 <span>  param_defaults <span class="op">=</span> <span class="fu"><a href="../reference/param_set.html">param_set</a></span><span class="op">(</span><span class="st">"[{n}]"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> </span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">labs_tfrmt</span> <span class="op">&lt;-</span> <span class="va">labs_tfrmt_template</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
@@ -163,11 +162,11 @@ well as the col_plan.</p>
 <span>      <span class="st">"Change From Baseline"</span> <span class="op">=</span> <span class="va">cbl</span>,</span>
 <span>      <span class="va">n</span>,</span>
 <span>      <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">labs_tfrmt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_labs_subset</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">labs_tfrmt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">data_labs_subset</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -871,19 +870,18 @@ old group name to the new one.</p>
 updated. This could happen when the input data set has a slightly
 different naming convention than expected.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co">## provided data had different column names for groups</span></span>
-<span><span class="va">alternate_data_labs_subset</span> <span class="op">&lt;-</span> <span class="va">data_labs_subset</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="co">## provided data had different column names for groups</span></span>
+<span><span class="va">alternate_data_labs_subset</span> <span class="op">&lt;-</span> <span class="va">data_labs_subset</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
 <span>    `Lab Type` <span class="op">=</span> <span class="va">group1</span>,</span>
 <span>    `Lab Test` <span class="op">=</span> <span class="va">group2</span>,</span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">labs_tfrmt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">labs_tfrmt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/update_group.html">update_group</a></span><span class="op">(</span></span>
 <span>    `Lab Type` <span class="op">=</span> <span class="va">group1</span>,</span>
 <span>    `Lab Test` <span class="op">=</span> <span class="va">group2</span>,</span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
 <span>      <span class="va">`Lab Type`</span>, <span class="va">`Lab Test`</span>,</span>
@@ -892,9 +890,9 @@ different naming convention than expected.</p>
 <span>      <span class="st">"Change From Baseline"</span> <span class="op">=</span> <span class="va">cbl</span>,</span>
 <span>      <span class="va">n</span>,</span>
 <span>      <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">alternate_data_labs_subset</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">alternate_data_labs_subset</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options</a></span><span class="op">(</span></span>
 <span>    container.width <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>

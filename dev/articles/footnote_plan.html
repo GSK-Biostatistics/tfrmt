@@ -125,14 +125,18 @@ extended (set of 6 distinct symbols)
 <p>Here is some mock data we’re going to use.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create mock data</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"group 1"</span>, <span class="st">"group 2"</span><span class="op">)</span>,</span>
-<span>               label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"label 1"</span>, <span class="st">"label 2"</span><span class="op">)</span>,</span>
-<span>               column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PL"</span>, <span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span>,</span>
-<span>               param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"percent"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span></span>
+<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"group 1"</span>, <span class="st">"group 2"</span><span class="op">)</span>,</span>
+<span>  label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"label 1"</span>, <span class="st">"label 2"</span><span class="op">)</span>,</span>
+<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PL"</span>, <span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span>,</span>
+<span>  param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"percent"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># This one is used for examples 5 and 6</span></span>
-<span><span class="va">span_df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">column</span> <span class="op">==</span> <span class="st">"PL"</span> <span class="op">~</span> <span class="st">"Placebo"</span>,</span>
-<span>                                          <span class="va">column</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span> <span class="op">==</span> <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Treatment"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">span_df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>  <span class="va">column</span> <span class="op">==</span> <span class="st">"PL"</span> <span class="op">~</span> <span class="st">"Placebo"</span>,</span>
+<span>  <span class="va">column</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span> <span class="op">==</span> <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Treatment"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="example-1-one-footnote-per-groupcolumn">Example 1 (one footnote per group/column)<a class="anchor" aria-label="anchor" href="#example-1-one-footnote-per-groupcolumn"></a>
 </h3>
@@ -146,23 +150,28 @@ extended (set of 6 distinct symbols)
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
-<span>  </span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
-<span>                                count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>                                percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
+<span>        count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>        percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span></span>
 <span>  <span class="co"># Add footnotes here</span></span>
 <span>  footnote_plan <span class="op">=</span> <span class="fu"><a href="../reference/footnote_plan.html">footnote_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Source Note"</span>, group_val <span class="op">=</span> <span class="st">"group 1"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Placebo"</span>, column_val <span class="op">=</span> <span class="st">"PL"</span><span class="op">)</span>,</span>
-<span>    marks <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span>,</span>
-<span>  </span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    marks <span class="op">=</span> <span class="st">"standard"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -712,21 +721,26 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
-<span>  </span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
-<span>                                count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>                                percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
+<span>        count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>        percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span></span>
 <span>  <span class="co"># Add footnotes here</span></span>
 <span>  footnote_plan <span class="op">=</span> <span class="fu"><a href="../reference/footnote_plan.html">footnote_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"All Treatments"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>,<span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    marks <span class="op">=</span> <span class="st">"numbers"</span><span class="op">)</span>,</span>
-<span>  </span>
+<span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"All Treatments"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    marks <span class="op">=</span> <span class="st">"numbers"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
@@ -1269,21 +1283,26 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
-<span>  </span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
-<span>                                count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>                                percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
+<span>        count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>        percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span></span>
 <span>  <span class="co"># Add footnotes here</span></span>
 <span>  footnote_plan <span class="op">=</span> <span class="fu"><a href="../reference/footnote_plan.html">footnote_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Footnote goes here"</span>, label_val <span class="op">=</span> <span class="st">"label 1"</span><span class="op">)</span>,</span>
-<span>    marks <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span>,</span>
-<span>  </span>
+<span>    marks <span class="op">=</span> <span class="st">"standard"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
@@ -1822,21 +1841,26 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  column <span class="op">=</span> <span class="va">column</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
-<span>  </span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
-<span>                                count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>                                percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  </span>
+<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
+<span>        count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>        percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span></span>
 <span>  <span class="co"># Add footnotes here</span></span>
 <span>  footnote_plan <span class="op">=</span> <span class="fu"><a href="../reference/footnote_plan.html">footnote_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Footnote goes here"</span>, group_val <span class="op">=</span> <span class="st">"group 1"</span>, label_val <span class="op">=</span> <span class="st">"label 1"</span><span class="op">)</span>,</span>
-<span>    marks <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span>,</span>
-<span>  </span>
+<span>    marks <span class="op">=</span> <span class="st">"standard"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
@@ -2374,22 +2398,32 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"span"</span>, <span class="st">"column"</span><span class="op">)</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
-<span>                                count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>                                percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
+<span>        count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>        percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
 <span>    <span class="va">group</span>, <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span><span class="op">)</span>,</span>
-<span>                   column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PL"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span><span class="op">)</span>,</span>
-<span>                   column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>      span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span><span class="op">)</span>,</span>
+<span>      column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PL"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>      span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span><span class="op">)</span>,</span>
+<span>      column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Add footnote here</span></span>
 <span>  footnote_plan <span class="op">=</span> <span class="fu"><a href="../reference/footnote_plan.html">footnote_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Footnote goes here"</span>, column_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>span <span class="op">=</span> <span class="st">"Treatment"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -2945,22 +2979,32 @@ your column variable.</p>
 <span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"span"</span>, <span class="st">"column"</span><span class="op">)</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/row_grp_structure.html">row_grp_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"   "</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                   <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
-<span>                                count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>                                percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span><span class="st">"{count} ({percent})"</span>,</span>
+<span>        count <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>        percent <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
 <span>    <span class="va">group</span>, <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span><span class="op">)</span>,</span>
-<span>                   column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PL"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span><span class="op">)</span>,</span>
-<span>                   column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>      span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Placebo"</span><span class="op">)</span>,</span>
+<span>      column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PL"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>      span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span><span class="op">)</span>,</span>
+<span>      column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Add footnote here</span></span>
 <span>  footnote_plan <span class="op">=</span> <span class="fu"><a href="../reference/footnote_plan.html">footnote_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/footnote_structure.html">footnote_structure</a></span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Footnote goes here"</span>, column_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>span <span class="op">=</span> <span class="st">"Treatment"</span>, column <span class="op">=</span> <span class="st">"T1&amp;T2"</span><span class="op">)</span><span class="op">)</span>,</span>
