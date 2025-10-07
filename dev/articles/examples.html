@@ -10946,6 +10946,13 @@ complexity in that multiple analyses are stacked together - summary
 statistics of different values at different time points, and the results
 of several different ANCOVA models. Multiple treatment groups as well as
 the contrasts between groups are included.</p>
+<p><em>NOTE:</em> Pay attention that <code>label</code> in the
+<code>data_efficacy</code> must be matching the <code>label_val</code>
+in the <code>label_val</code> for the <code><a href="../reference/frmt.html">frmt_combine()</a></code> to
+work. For example, for <code>Mean (SD)</code>, each variable has
+different <code>param</code> (<code>mean</code> and <code>sd</code>
+respectively), but they have the same <code>label</code>
+(<code>Mean (SD</code>)).</p>
 <pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;   group    label     column               param value  ord1  ord2</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
