@@ -16,10 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(dplyr)
-library(tidyr)
 library(patchwork)
-library(survival)
 library(ggfortify)
 ```
 
@@ -31,17 +28,17 @@ A common use case of this function could be in the production of survival plots.
 
 ```{r, message=FALSE, warning=FALSE}
 # Set up survival data
-fit <- survfit(Surv(time, status) ~ rx, data = colon)
+fit <- survival::survfit(survival::Surv(time, status) ~ rx, data = survival::colon)
 
 # Plot kaplan meier between times 0-3000
 km_plot <- autoplot(fit) +
-  xlim(c(0, 3000))
+  ggplot2::xlim(c(0, 3000))
 ```
 
 As with `print_to_gt`, `print_to_ggplot` requires an input table with `label`, `value`,`param` and `column` variables.  The following code sets up our mock input table. 
 
 ```{r, message=FALSE, warning=FALSE}
-risk <- tibble(
+risk <- tibble::tibble(
   time = c(rep(c(0, 1000, 2000, 3000), 3)),
   label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
   value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
@@ -79,7 +76,7 @@ km_plot / table
 Because we don't have to duplicate the time points, we can just remove the x-axis labels using the theme
 ```{r, warning=FALSE}
 table2 <- table +
-  theme(axis.text.x = NULL)
+  ggplot2::theme(axis.text.x = NULL)
 
 km_plot / table2
 ```
@@ -90,10 +87,10 @@ You can also apply groups to your ggplot table. The code below adds groupings to
 
 ```{r, message=FALSE, warning=FALSE}
 riska <- risk %>%
-  mutate(group = "A")
+  dplyr::mutate(group = "A")
 
 riskb <- risk %>%
-  mutate(
+  dplyr::mutate(
     group = "B",
     value = value + 10
   )
@@ -120,7 +117,7 @@ group_table <- tfrmt(
   )
 ) %>%
   print_to_ggplot(risk_group) +
-  theme(axis.text.x = NULL)
+  ggplot2::theme(axis.text.x = NULL)
 
 km_plot / group_table
 ```
@@ -134,7 +131,7 @@ aes <- factor(c("Fever", "Malaise", "Local Allergic Reaction"),
   levels = c("Fever", "Malaise", "Local Allergic Reaction")
 )
 
-tbl_dat <- tibble(
+tbl_dat <- tibble::tibble(
   grp = "1 to 7 days after treatment",
   ae = rep(aes, each = 4),
   trt = rep(rep(c("TRT A", "Placebo"), each = 2), 3),
@@ -158,24 +155,24 @@ tbl_p
 Next we need to plot the rate ratios. This plot requires a bit more refining because we need to remove the y-axis label so it can be combined with the table plot. We also need to add a row in the data for the group value to make the plots match up correctly. 
 
 ```{r, warning=FALSE}
-plot_dat <- tibble(
+plot_dat <- tibble::tibble(
   ae = aes,
   mean = c(3, 2.3, 2),
   lower = c(1.95, 1.9, 1.2),
   upper = c(4, 3.5, 3.4)
 ) %>%
-  bind_rows(c(ae = "1 to 7 days after treatment"))
+  dplyr::bind_rows(c(ae = "1 to 7 days after treatment"))
 
-plot_p <- ggplot(data = plot_dat, aes(x = ae, y = mean, ymin = lower, ymax = upper)) +
-  geom_pointrange() +
-  geom_hline(yintercept = 1, lty = 2) + # add a dotted line at x=1 after flip
-  coord_flip() +
-  xlab("") +
-  ylab("Adjusted Rate Ratio (95% CI)") +
-  scale_x_discrete(limits = rev) +
-  scale_y_discrete(position = "right") +
-  theme_minimal() +
-  theme(
+plot_p <- ggplot2::ggplot(data = plot_dat, aes(x = ae, y = mean, ymin = lower, ymax = upper)) +
+  ggplot2::geom_pointrange() +
+  ggplot2::geom_hline(yintercept = 1, lty = 2) + # add a dotted line at x=1 after flip
+  ggplot2::coord_flip() +
+  ggplot2::xlab("") +
+  ggplot2::ylab("Adjusted Rate Ratio (95% CI)") +
+  ggplot2::scale_x_discrete(limits = rev) +
+  ggplot2::scale_y_discrete(position = "right") +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     axis.text.y = element_blank(), # remove x axis labels
     axis.ticks.y = element_blank()
   )

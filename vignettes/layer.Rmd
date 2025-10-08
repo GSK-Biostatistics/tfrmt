@@ -18,9 +18,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message=FALSE}
 library(tfrmt)
-library(dplyr)
-library(tibble)
-library(gt)
 ```
 
 A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity to build template table formats that can be shared, improved, and reused across multiple projects. `tfrmt` provides a few tfrmt templates to facilitate the creation of basic tfrmts, but they require customization. This can be done through layering. 
@@ -41,12 +38,12 @@ The output tfrmt generates a table with the subset `data_labs`.
 
 ```{r, results = "asis"}
 data_labs_subset <- data_labs %>%
-  filter(
+  dplyr::filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE", "ALBUMIN", "ALKALINE PHOSPHATASE", "ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
   )
 
-data_input <- tribble(
+data_input <- tibble::tribble(
   ~group1, ~group2, ~sigdig,
   "CHEMISTRY", ".default", 3,
   "CHEMISTRY", "ALBUMIN", 1,
@@ -83,7 +80,7 @@ labs_tfrmt <- labs_tfrmt_template %>%
 
 labs_tfrmt %>%
   print_to_gt(data_labs_subset) %>%
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 ```
@@ -100,7 +97,7 @@ For example, this is useful when a template tfrmt needs references updated. This
 ```{r}
 ## provided data had different column names for groups
 alternate_data_labs_subset <- data_labs_subset %>%
-  rename(
+  dplyr::rename(
     `Lab Type` = group1,
     `Lab Test` = group2,
   )
@@ -121,7 +118,7 @@ labs_tfrmt %>%
     )
   ) %>%
   print_to_gt(alternate_data_labs_subset) %>%
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 ```

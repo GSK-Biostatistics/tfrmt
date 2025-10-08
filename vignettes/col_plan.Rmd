@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(tibble)
-library(dplyr)
 ```
 
 The purpose of the column plan (`col_plan`) is to allow the user to specify how columns in the final table should appear in regards to their labels and ordering. Similar to the column styling plan (`col_style_plan`), `col_plan` refers to the final columns of the table, i.e., the values found in the `column` variable(s) from the input dataset. The `col_plan` is like an advanced version of dplyr's `select` function; just like `select`, the user can add, drop, order, and/or rename columns all in one step. What sets the `col_plan` apart, however, is the ability to also specify column spanners and labels in a hierarchical fashion, as well as preferentially selecting the _last_ instance a column is selected. For column spanning, multiple column columns need to exist in the input dataset. 
@@ -25,7 +23,7 @@ The purpose of the column plan (`col_plan`) is to allow the user to specify how 
 Let's look at the workflow in more detail with the following dataset which includes a single `column` variable:
 
 ```{r}
-dat <- tribble(
+dat <- tibble::tribble(
   ~group, ~label, ~my_col, ~parm, ~val,
   "g1", "rowlabel1", "col1", "value", 1,
   "g1", "rowlabel1", "col2", "value", 1,
@@ -167,7 +165,7 @@ Multiple `column` variables are used to form the hierarchy of column spanners an
 Let's consider an example dataset with multiple `column` variables. This dataset has three tiers, `span2` with one unique value, `span1` with two unique values and `my_col` which has 4 unique values. The `NA`'s indicate there should be no spanning over those values. 
 
 ```{r}
-dat <- tribble(
+dat <- tibble::tribble(
   ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
   "g1", "rowlabel1", "column cols", "cols 1,2", "col1", "value", 1,
   "g1", "rowlabel1", "column cols", "cols 1,2", "col2", "value", 1,
@@ -270,7 +268,7 @@ tfrmt(
 Reordering with multiple `column` variables is simplest when the lowest level column variable contains unique values (i.e., there is 1 value per column in the final table), like in the example above. But, that isn't always the case take the following example:
 
 ```{r}
-dat <- tribble(
+dat <- tibble::tribble(
   ~group, ~label, ~span, ~my_col, ~parm, ~val,
   "g1", "stats", "Placebo", "sd", "sd", 1.435,
   "g1", "stats", "Placebo", "mean", "mean", 2.843,

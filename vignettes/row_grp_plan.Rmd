@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(dplyr)
-library(gt)
 ```
 
 Performing many calculations within a group is easier than ever due to tools in the tidyverse. tfrmt's expectation of a standard, long data format is not only in alignment with tidy data principles and workflows, but it allows for the user to easily specify group-wise aesthetic formatting. tfrmt also allows the user to display row labels in a variety of ways.
@@ -52,9 +50,9 @@ my_tfrmt <- tfrmt(
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) %>%
-  tab_style(
-    style = cell_text(whitespace = "pre", align = "left"),
-    locations = cells_stub()
+  gt::tab_style(
+    style = gt::cell_text(whitespace = "pre", align = "left"),
+    locations = gt::cells_stub()
   )
 ```
 
@@ -76,9 +74,9 @@ my_tfrmt <- tfrmt(
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) %>%
-  tab_style(
-    style = cell_text(whitespace = "pre", align = "left"),
-    locations = cells_stub()
+  gt::tab_style(
+    style = gt::cell_text(whitespace = "pre", align = "left"),
+    locations = gt::cells_stub()
   )
 ```
 
@@ -111,9 +109,9 @@ my_tfrmt <- tfrmt(
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) %>%
-  tab_style(
-    style = cell_text(whitespace = "pre", align = "left"),
-    locations = cells_stub()
+  gt::tab_style(
+    style = gt::cell_text(whitespace = "pre", align = "left"),
+    locations = gt::cells_stub()
   )
 ```
 
@@ -135,9 +133,9 @@ my_tfrmt <- tfrmt(
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) %>%
-  tab_style(
-    style = cell_text(whitespace = "pre", align = "left"),
-    locations = cells_stub()
+  gt::tab_style(
+    style = gt::cell_text(whitespace = "pre", align = "left"),
+    locations = gt::cells_stub()
   )
 ```
 
@@ -159,9 +157,9 @@ my_tfrmt <- tfrmt(
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) %>%
-  tab_style(
-    style = cell_text(whitespace = "pre", align = "left"),
-    locations = cells_stub()
+  gt::tab_style(
+    style = gt::cell_text(whitespace = "pre", align = "left"),
+    locations = gt::cells_stub()
   )
 ```
 

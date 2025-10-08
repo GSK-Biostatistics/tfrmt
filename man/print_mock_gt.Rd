@@ -52,7 +52,7 @@ Print mock table to GT
 \if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png" alt = "Simple 3 by 3 table without values" style="width:50\%;"> }}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{  # Create mock data
-  df <- crossing(label = c("label 1", "label 2",
+  df <- tidyr::crossing(label = c("label 1", "label 2",
   "label 3"), column = c("placebo", "trt1", "trt2"), param = c("count",
   "percent"))
 

@@ -28,15 +28,15 @@ Preparing analysis results in a tidy ARD format is a prerequisite for a {tfrmt} 
 Demographics tables commonly contain a mix of categorical and continuous summaries by treatment group. We can perform these summaries using the following {cards} code:
 
 ```{r}
-ard_demog <- ard_stack(
+ard_demog <- cards::ard_stack(
   data = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
-  ard_categorical(
+  cards::ard_categorical(
     variables = "AGEGR1",
     statistic = ~ c("p")
   ),
-  ard_continuous(
+  cards::ard_continuous(
     variables = "AGE",
-    statistic = ~ continuous_summary_fns(c("mean", "sd"))
+    statistic = ~ cards::continuous_summary_fns(c("mean", "sd"))
   ),
   .by = "ARM"
 )
@@ -144,7 +144,7 @@ adae <- pharmaverseadam::adae |>
   dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
   dplyr::ungroup()
 
-ard_ae <- ard_stack_hierarchical(
+ard_ae <- cards::ard_stack_hierarchical(
   data = adae,
   variables = c(AESOC, AEDECOD),
   by = ARM,

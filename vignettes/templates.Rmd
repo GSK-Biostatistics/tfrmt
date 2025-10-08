@@ -16,9 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup , message=FALSE, warning=FALSE}
 library(tfrmt)
-library(dplyr)
-library(gt)
-library(tidyr)
 ```
 
 A core design element of `tfrmt` is to offer the ability to layer tfrmts together. This ability provides an opportunity for organizations to build template table formats that can be shared, improved, and reused across multiple projects. Through layering, the users can customize the templates to create a specific table. 
@@ -211,19 +208,19 @@ See how this results in the same table as above:
 ```{r tfrmt-template-table}
 ## filter to keep only AEs with >10% prevalence in the High Dose group
 data_ae2 <- data_ae %>%
-  group_by(AEBODSYS, AETERM) %>%
-  mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
-  ungroup() %>%
-  filter(pct_high > 10) %>%
-  select(-pct_high) %>%
-  rename(
+  dplyr::group_by(AEBODSYS, AETERM) %>%
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(pct_high > 10) %>%
+  dplyr::select(-pct_high) %>%
+  dplyr::rename(
     treatment = col2,
     col = col1
   )
 
 study_ae_tfrmt_multi_layer %>%
   print_to_gt(data_ae2) %>%
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 ```
@@ -317,7 +314,7 @@ tfrmt(
   )
 ) %>%
   print_to_gt(data_ae2) %>%
-  tab_options(
+  gt::tab_options(
     container.width = 1000
   )
 ```

@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r message=FALSE}
 library(tfrmt)
-library(dplyr)
-library(tidyr)
 ```
 
 Mock tables are useful for visualising how future generated data may be 
@@ -106,14 +104,14 @@ may also wish to add an integer column specifying order layer for complex tables
 Here is an example:
 
 ```{r}
-df <- crossing(
+df <- tidyr::crossing(
   label = c("label 1", "label 2", "label 3"),
   treatment = c("Treatment", "Treatment", "Treatment", "Placebo"),
   column = c("trt1", "trt2", "trt1&trt2", "pl"),
   param = c("count", "percent")
 ) %>%
   # Assign numerical order (optional - keep if using `sorting_cols` parameter)
-  mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.) / length(unique(.$label))))
+  dplyr::mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.) / length(unique(.$label))))
 
 df
 ```
@@ -212,19 +210,19 @@ Here we have used the `crossing()` function twice with differing columns and
 bound them using `bind_rows()`.
 
 ```{r}
-df <- bind_rows(
-  crossing(
+df <- dplyr::bind_rows(
+  tidyr::crossing(
     label = c("label 1", "label 2", "label 3"),
     column = c("T1", "T2", "PL"),
     param = c("count", "percent")
   ),
-  crossing(
+  tidyr::crossing(
     label = c("label 1", "label 2", "label 3"),
     column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
     param = c("num", "lower", "upper")
   )
 ) %>%
-  arrange_all()
+  dplyr::arrange_all()
 
 df
 ```
@@ -321,13 +319,13 @@ In this example you can see that the dataset contains one group variable
 group column into the `group` parameter for `tfrmt()`.
 
 ```{r}
-df <- crossing(
+df <- tidyr::crossing(
   group = c("group 1", "group 2"),
   label = c("label 1", "label 2"),
   column = c("PL", "T1", "T2"),
   param = c("count", "percent")
 ) %>%
-  arrange_all()
+  dplyr::arrange_all()
 
 tfrmt_n_pct(n = "count", pct = "percent") %>%
   tfrmt(
@@ -363,27 +361,27 @@ generic "label \#" names - this is just an illustration of what these row
 labels could be.
 
 ```{r}
-df <- bind_rows(
-  crossing(
+df <- dplyr::bind_rows(
+  tidyr::crossing(
     group = c("group 1", "group 2"),
     label = c("n"),
     column = c("PL", "T1", "T2"),
     param = c("count")
   ),
-  crossing(
+  tidyr::crossing(
     group = c("group 1", "group 2"),
     label = c("Mean (SD)"),
     column = c("PL", "T1", "T2"),
     param = c("mean", "sd")
   ),
-  crossing(
+  tidyr::crossing(
     group = c("group 1", "group 2"),
     label = c("Median (Range)"),
     column = c("PL", "T1", "T2"),
     param = c("min", "max", "median")
   )
 ) %>%
-  arrange_all()
+  dplyr::arrange_all()
 
 tfrmt(
   # Specify columns in the data
@@ -432,21 +430,21 @@ the groups to be indented. For more information on this please see the
 "Row group plan" article.
 
 ```{r}
-df <- bind_rows(
-  crossing(
+df <- dplyr::bind_rows(
+  tidyr::crossing(
     group = c("group 1"),
     label = c("label 1", "label 2"),
     column = c("PL", "T1", "T2"),
     param = c("mean", "sd")
   ),
-  crossing(
+  tidyr::crossing(
     group = c("group 2"),
     label = c("label 1", "label 2"),
     column = c("PL", "T1", "T2"),
     param = c("median", "min", "max")
   )
 ) %>%
-  arrange_all()
+  dplyr::arrange_all()
 
 tfrmt(
   # Specify columns in the data
@@ -550,15 +548,15 @@ When using more than one grouping level you add the group names to the `group`
 parameter in `c()`.
 
 ```{r}
-df <- bind_rows(
-  crossing(
+df <- dplyr::bind_rows(
+  tidyr::crossing(
     grp1 = c("group 1.1"),
     grp2 = c("group 2.1", "group 2.2"),
     label = c("label 1", "label 2"),
     column = c("PL", "T1", "T2"),
     param = c("count")
   ),
-  crossing(
+  tidyr::crossing(
     grp1 = c("group 1.2"),
     grp2 = c("group 2.1", "group 2.2"),
     label = c("label 1", "label 2"),
@@ -566,7 +564,7 @@ df <- bind_rows(
     param = c("mean", "sd")
   )
 ) %>%
-  arrange_all()
+  dplyr::arrange_all()
 
 tfrmt(
   group = c(grp1, grp2),
