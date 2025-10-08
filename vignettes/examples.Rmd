@@ -628,6 +628,8 @@ For this example, we will use the `data_efficacy` dataset, an example analysis r
 
 This data is relatively simple in that it contains only 1 `group` column and `column` column, but it adds complexity in that multiple analyses are stacked together - summary statistics of different values at different time points, and the results of several different ANCOVA models. Multiple treatment groups as well as the contrasts between groups are included.
 
+*NOTE:* Pay attention that `label` in the `data_efficacy` must be matching the `label_val` in the `label_val` for the `frmt_combine()` to work. For example, for `Mean (SD)`, each variable has different 
+`param` (`mean` and `sd` respectively), but they have the same `label` (`Mean (SD`)).
 ```{r, echo = FALSE}
 head(data_efficacy)
 ```

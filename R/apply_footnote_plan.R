@@ -67,16 +67,11 @@ apply_cells_column_labels <- function(gt,loc){
 
   if(is.null(loc$row) && loc$spanning ==FALSE){
 
-
       gt<- gt %>%
         tab_footnote(
           footnote = loc$note,
-          locations = cells_column_labels(columns = all_of(
-            as.character(loc$col)))
+          locations = cells_column_labels(columns = loc$col)
         )
-
-
-
 
   }
   gt
@@ -101,9 +96,8 @@ apply_cells_column_spanners <- function(gt,loc){
     gt<- gt %>%
       tab_footnote(
         footnote = loc$note,
-        locations = cells_column_spanners(spanners = all_of(
-          loc$col
-        ))
+        locations = cells_column_spanners(spanners = loc$col
+        )
       )
 
 
@@ -130,7 +124,7 @@ apply_cells_stub <-  function(gt,tfrmt,loc){
     gt<- gt %>%
       tab_footnote(
         footnote = loc$note,
-        locations = cells_stub(rows = all_of(loc$row))
+        locations = cells_stub(rows = loc$row)
       )
 
 
@@ -160,9 +154,8 @@ apply_cells_row_groups <- function(gt,tfrmt,loc){
       gt<- gt %>%
         tab_footnote(
           footnote = loc$note,
-          locations = cells_row_groups(groups = all_of(all_of(loc$row))
+          locations = cells_row_groups(groups = loc$row)
           )
-        )
 
      }
 
@@ -185,7 +178,7 @@ apply_cells_body<- function(gt,loc){
     gt<- gt %>%
       tab_footnote(
         footnote = loc$note,
-        locations = cells_body(columns = all_of(loc$col), rows = all_of(all_of(loc$row))
+        locations = cells_body(columns = loc$col, rows = loc$row
         )
       )
   }
