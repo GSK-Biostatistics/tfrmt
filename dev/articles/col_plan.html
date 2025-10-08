@@ -90,9 +90,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span></span></code></pre></div>
 <p>The purpose of the column plan (<code>col_plan</code>) is to allow
 the user to specify how columns in the final table should appear in
 regards to their labels and ordering. Similar to the column styling plan
@@ -109,7 +107,7 @@ multiple column columns need to exist in the input dataset.</p>
 <p>Let’s look at the workflow in more detail with the following dataset
 which includes a single <code>column</code> variable:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group</span>, <span class="op">~</span><span class="va">label</span>, <span class="op">~</span><span class="va">my_col</span>, <span class="op">~</span><span class="va">parm</span>, <span class="op">~</span><span class="va">val</span>,</span>
 <span>  <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>, <span class="st">"col1"</span>, <span class="st">"value"</span>, <span class="fl">1</span>,</span>
 <span>  <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>, <span class="st">"col2"</span>, <span class="st">"value"</span>, <span class="fl">1</span>,</span>
@@ -2754,7 +2752,7 @@ unique value, <code>span1</code> with two unique values and
 <code>my_col</code> which has 4 unique values. The <code>NA</code>’s
 indicate there should be no spanning over those values.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group</span>, <span class="op">~</span><span class="va">label</span>, <span class="op">~</span><span class="va">span2</span>, <span class="op">~</span><span class="va">span1</span>, <span class="op">~</span><span class="va">my_col</span>, <span class="op">~</span><span class="va">parm</span>, <span class="op">~</span><span class="va">val</span>,</span>
 <span>  <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>, <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col1"</span>, <span class="st">"value"</span>, <span class="fl">1</span>,</span>
 <span>  <span class="st">"g1"</span>, <span class="st">"rowlabel1"</span>, <span class="st">"column cols"</span>, <span class="st">"cols 1,2"</span>, <span class="st">"col2"</span>, <span class="st">"value"</span>, <span class="fl">1</span>,</span>
@@ -4408,7 +4406,7 @@ when the lowest level column variable contains unique values (i.e.,
 there is 1 value per column in the final table), like in the example
 above. But, that isn’t always the case take the following example:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">group</span>, <span class="op">~</span><span class="va">label</span>, <span class="op">~</span><span class="va">span</span>, <span class="op">~</span><span class="va">my_col</span>, <span class="op">~</span><span class="va">parm</span>, <span class="op">~</span><span class="va">val</span>,</span>
 <span>  <span class="st">"g1"</span>, <span class="st">"stats"</span>, <span class="st">"Placebo"</span>, <span class="st">"sd"</span>, <span class="st">"sd"</span>, <span class="fl">1.435</span>,</span>
 <span>  <span class="st">"g1"</span>, <span class="st">"stats"</span>, <span class="st">"Placebo"</span>, <span class="st">"mean"</span>, <span class="st">"mean"</span>, <span class="fl">2.843</span>,</span>

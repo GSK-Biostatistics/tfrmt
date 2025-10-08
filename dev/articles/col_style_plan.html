@@ -90,9 +90,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/tfrmt/" class="external-link">tfrmt</a></span><span class="op">)</span></span></code></pre></div>
 <p>tfrmt offers the ability to align value and set column widths.
 Columns can be aligned in the following ways:</p>
 <ul>
@@ -149,7 +147,7 @@ formatted differently.</p>
 <details><summary>
 Expand for the code used to produce the example data
 </summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">label</span>, <span class="op">~</span><span class="va">param</span>, <span class="op">~</span><span class="va">column</span>, <span class="op">~</span><span class="va">value</span>, <span class="op">~</span><span class="va">ord</span>,</span>
 <span>  <span class="st">"n"</span>, <span class="st">"n"</span>, <span class="st">"trt1"</span>, <span class="fl">12</span>, <span class="fl">1</span>,</span>
 <span>  <span class="st">"mean (sd)"</span>, <span class="st">"mean"</span>, <span class="st">"trt1"</span>, <span class="fl">12.332837</span>, <span class="fl">2</span>,</span>
