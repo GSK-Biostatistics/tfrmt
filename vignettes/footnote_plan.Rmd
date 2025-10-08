@@ -43,15 +43,18 @@ Here is some mock data we're going to use.
 
 ```{r}
 # Create mock data
-df <- tidyr::crossing(group = c("group 1", "group 2"),
-               label = c("label 1", "label 2"),
-               column = c("PL", "T1", "T2", "T1&T2"),
-               param = c("count", "percent"))
+df <- tidyr::crossing(
+  group = c("group 1", "group 2"),
+  label = c("label 1", "label 2"),
+  column = c("PL", "T1", "T2", "T1&T2"),
+  param = c("count", "percent")
+)
 
 # This one is used for examples 5 and 6
-span_df <- df %>% dplyr::mutate(span = dplyr::case_when(column == "PL" ~ "Placebo",
-                                          column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"))
-
+span_df <- df %>% dplyr::mutate(span = dplyr::case_when(
+  column == "PL" ~ "Placebo",
+  column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
+))
 ```
 
 
@@ -67,23 +70,28 @@ tfrmt(
   column = column,
   param = param,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
-  
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{count} ({percent})",
-                                count = frmt("xx"),
-                                percent = frmt("xx.x")))
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
   ),
-  
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{count} ({percent})",
+        count = frmt("xx"),
+        percent = frmt("xx.x")
+      )
+    )
+  ),
+
   # Add footnotes here
   footnote_plan = footnote_plan(
     footnote_structure(footnote_text = "Source Note", group_val = "group 1"),
     footnote_structure(footnote_text = "Placebo", column_val = "PL"),
-    marks = "standard"),
-  
-  ) %>%
+    marks = "standard"
+  ),
+) %>%
   print_mock_gt(df)
 ```
 
@@ -103,21 +111,26 @@ tfrmt(
   column = column,
   param = param,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
-  
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{count} ({percent})",
-                                count = frmt("xx"),
-                                percent = frmt("xx.x")))
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
   ),
-  
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{count} ({percent})",
+        count = frmt("xx"),
+        percent = frmt("xx.x")
+      )
+    )
+  ),
+
   # Add footnotes here
   footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "All Treatments", list(column = c("T1","T2", "T1&T2"))),
-    marks = "numbers"),
-  
+    footnote_structure(footnote_text = "All Treatments", list(column = c("T1", "T2", "T1&T2"))),
+    marks = "numbers"
+  ),
 ) %>%
   print_mock_gt(df)
 ```
@@ -133,21 +146,26 @@ tfrmt(
   column = column,
   param = param,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
-  
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{count} ({percent})",
-                                count = frmt("xx"),
-                                percent = frmt("xx.x")))
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
   ),
-  
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{count} ({percent})",
+        count = frmt("xx"),
+        percent = frmt("xx.x")
+      )
+    )
+  ),
+
   # Add footnotes here
   footnote_plan = footnote_plan(
     footnote_structure(footnote_text = "Footnote goes here", label_val = "label 1"),
-    marks = "standard"),
-  
+    marks = "standard"
+  ),
 ) %>%
   print_mock_gt(df)
 ```
@@ -163,24 +181,28 @@ tfrmt(
   column = column,
   param = param,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
-  
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{count} ({percent})",
-                                count = frmt("xx"),
-                                percent = frmt("xx.x")))
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
   ),
-  
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{count} ({percent})",
+        count = frmt("xx"),
+        percent = frmt("xx.x")
+      )
+    )
+  ),
+
   # Add footnotes here
   footnote_plan = footnote_plan(
     footnote_structure(footnote_text = "Footnote goes here", group_val = "group 1", label_val = "label 1"),
-    marks = "standard"),
-  
+    marks = "standard"
+  ),
 ) %>%
   print_mock_gt(df)
-
 ```
 
 
@@ -194,22 +216,32 @@ tfrmt(
   column = c("span", "column"),
   param = param,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
+  ),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{count} ({percent})",
-                                count = frmt("xx"),
-                                percent = frmt("xx.x")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{count} ({percent})",
+        count = frmt("xx"),
+        percent = frmt("xx.x")
+      )
+    )
   ),
   col_plan = col_plan(
     group, label,
-    span_structure(span = c("Placebo"),
-                   column = c("PL")),
-    span_structure(span = c("Treatment"),
-                   column = c("T1", "T2", "T1&T2"))
+    span_structure(
+      span = c("Placebo"),
+      column = c("PL")
+    ),
+    span_structure(
+      span = c("Treatment"),
+      column = c("T1", "T2", "T1&T2")
+    )
   ),
-  
+
   # Add footnote here
   footnote_plan = footnote_plan(
     footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment")),
@@ -217,7 +249,6 @@ tfrmt(
   )
 ) %>%
   print_mock_gt(span_df)
-
 ```
 
 
@@ -234,22 +265,32 @@ tfrmt(
   column = c("span", "column"),
   param = param,
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default",
-                      element_block(post_space = "   ")) ),
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = "   ")
+    )
+  ),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{count} ({percent})",
-                                count = frmt("xx"),
-                                percent = frmt("xx.x")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{count} ({percent})",
+        count = frmt("xx"),
+        percent = frmt("xx.x")
+      )
+    )
   ),
   col_plan = col_plan(
     group, label,
-    span_structure(span = c("Placebo"),
-                   column = c("PL")),
-    span_structure(span = c("Treatment"),
-                   column = c("T1", "T2", "T1&T2"))
+    span_structure(
+      span = c("Placebo"),
+      column = c("PL")
+    ),
+    span_structure(
+      span = c("Treatment"),
+      column = c("T1", "T2", "T1&T2")
+    )
   ),
-  
+
   # Add footnote here
   footnote_plan = footnote_plan(
     footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment", column = "T1&T2")),
@@ -257,6 +298,5 @@ tfrmt(
   )
 ) %>%
   print_mock_gt(span_df)
-
 ```
 
