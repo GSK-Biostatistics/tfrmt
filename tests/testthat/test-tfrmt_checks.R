@@ -101,7 +101,11 @@ test_that("Testing error message for invalid input to big_n parameter",{
         ),
         frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
       ),
-      col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+      col_plan = col_plan(
+        everything(),
+        -starts_with("ord"),
+        "Total"
+      ),
       row_grp_plan = row_grp_plan(
         row_grp_structure(group_val = ".default", element_block(post_space = " "))
       ),

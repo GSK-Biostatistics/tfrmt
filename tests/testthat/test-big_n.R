@@ -298,7 +298,7 @@ test_that("Test with spanning headers", {
   dat_blank <- dat |>
     dplyr::mutate(
       dplyr::across(
-        dplyr::where(is.character),
+        tidyselect::where(is.character),
         ~ tidyr::replace_na(.x, "")
       )
     )

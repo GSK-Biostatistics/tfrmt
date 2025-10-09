@@ -101,7 +101,11 @@ shuffle_card <- function(x,
       .after = "context"
     ) |>
     cards::rename_ard_columns(fill = "..cards_overall..") |>
-    dplyr::select(-any_of(c("..ard_total_n..", "..ard_hierarchical_overall..")))
+    dplyr::select(
+      -tidyselect::any_of(
+        c("..ard_total_n..", "..ard_hierarchical_overall..")
+      )
+    )
 
   dat_cards_out <- dat_cards_grps_processed |>
     # unlist the list-columns
@@ -139,7 +143,16 @@ shuffle_card <- function(x,
   .detect_msgs(x, "warning", "error")
   # flatten ard table for easier viewing
   x |>
-    dplyr::select(-any_of(c("fmt_fun", "fmt_fn","warning", "error")))
+    dplyr::select(
+      -tidyselect::any_of(
+        c(
+          "fmt_fun",
+          "fmt_fn",
+          "warning",
+          "error"
+        )
+      )
+    )
 }
 
 
@@ -253,7 +266,7 @@ shuffle_card <- function(x,
                 )
               ) |>
               dplyr::select(
-                -dplyr::any_of(
+                -tidyselect::any_of(
                   c(
                     setdiff(
                       names(x),
@@ -279,7 +292,7 @@ shuffle_card <- function(x,
     x <- x |>
       dplyr::mutate(
         dplyr::across(
-          dplyr::all_of(
+          tidyselect::all_of(
             id_vars
           ),
           ~ ifelse(
@@ -296,7 +309,7 @@ shuffle_card <- function(x,
   output <- x |>
     dplyr::mutate(
       dplyr::across(
-        dplyr::all_of(
+        tidyselect::all_of(
           c(
             grp_vars,
             setdiff(

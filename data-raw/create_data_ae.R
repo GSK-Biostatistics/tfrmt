@@ -144,7 +144,9 @@ create_tbl_data_ae <- function(){
   # Make long & prep for tlang ----------------------------------------------------------
 
   tab_data_ae <- combined %>%
-    select(-contains("no_event_")) %>%
+    select(
+      -tidyselect::contains("no_event_")
+    ) %>%
     pivot_longer(-c(AEBODSYS, AETERM, ord1, ord2, p_low, p_high)) %>%
     separate(name, c("stat", "col2"), sep = "_") %>%
     pivot_wider(names_from = stat, values_from = value) %>%

@@ -78,7 +78,12 @@ test_summary <- function(x, df_=NULL) {
 
   # Build the display string
   df <- full_join(res, chgbl) %>%
-    mutate(across(where(is.numeric), ~ ifelse(is.nan(.x), NA, .x)))
+    mutate(
+      across(
+        tidyselect::where(is.numeric),
+        ~ ifelse(is.nan(.x), NA, .x)
+      )
+    )
 
 }
 
@@ -93,16 +98,37 @@ hema <- map_dfr(sort(unique(adlbh$PARAM)), test_summary, adlbh) %>%
 
 # combine
 data_labs <- bind_rows(chem, hema) %>%
-  pivot_longer(c(n, contains("mean"), contains("sd")), names_to = "name", values_to = "value") %>%
+  pivot_longer(
+    c(
+      n,
+      tidyselect::contains("mean"),
+      tidyselect::contains("sd")
+    ),
+    names_to = "name",
+    values_to = "value"
+  ) %>%
   separate(name, c("param_val", "column"), sep= "_", remove = FALSE, fill = "right") %>%
   mutate(column = coalesce(column, name)) %>%
-  select(group1 = group, group2 = PARAM, rowlbl = AVISIT, col1 = TRTP, col2 = column, param = param_val, value) %>%
+  select(
+    group1 = group,
+    group2 = PARAM,
+    rowlbl = AVISIT,
+    col1 = TRTP,
+    col2 = column,
+    param = param_val,
+    value
+  ) %>%
   na.omit() %>%
   arrange(group1, group2, rowlbl) %>%
   mutate(ord1 = fct_inorder(group1) %>% as.numeric,
          ord2 = fct_inorder(group2) %>% as.numeric,
          ord3 = as.numeric(rowlbl)) %>%
-  mutate(across(where(is.factor), as.character))
+  mutate(
+    across(
+      tidyselect::where(is.factor),
+      as.character
+    )
+  )
 
 levels(data_labs$rowlbl) <- c("Bsln", "Wk 2", "Wk 4", "Wk 6", "Wk 8", "Wk 12",
                               "Wk 16", "Wk 20", "Wk 24", "Wk 26", "End[1]")

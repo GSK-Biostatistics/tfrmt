@@ -5,7 +5,6 @@
 #' @param col_plan_vars the planned renaming of columns
 #' @importFrom dplyr mutate across select tibble group_by slice n filter cur_column pull ungroup
 #' @importFrom tidyr unnest
-#' @importFrom tidyselect everything
 #' @importFrom purrr map map_dfr discard
 #' @importFrom rlang as_name
 #' @importFrom tibble as_tibble_row
@@ -233,7 +232,6 @@ apply_col_alignment_char <- function(col, align){
 #'
 #' @importFrom dplyr lag left_join tibble mutate group_by summarise arrange row_number select filter
 #' @importFrom tidyr separate pivot_longer replace_na
-#' @importFrom tidyselect starts_with
 #' @importFrom stringr str_replace_all str_count str_dup str_extract str_detect str_c
 #'
 #' @noRd
@@ -272,7 +270,13 @@ apply_col_alignment_pos <- function(col, align){
   col_with_pos <- col_with_align %>%
     mutate(col_idx= row_number()) %>%
     separate("align", into = paste0("col_split_",1:n_split_levs_max), sep = "(?<!\\\\)[\\|]", remove = FALSE, fill = "right") %>%
-    pivot_longer(starts_with("col_split_"), names_to = "col_split_lev", values_to = "col_split_val") %>%
+    pivot_longer(
+      tidyselect::starts_with(
+        "col_split_"
+      ),
+      names_to = "col_split_lev",
+      values_to = "col_split_val"
+    ) %>%
     arrange(.data$col_idx, .data$col_split_lev) %>%
     group_by(.data$col_idx) %>%
     mutate(col_split_end = nchar(.data$col_split_val) %>% cumsum(),
@@ -376,6 +380,3 @@ wrap_string <- function(x, width, pad_left, pad_right){
   word_list <- stri_wrap(x, width = width, normalize = FALSE)
   paste0(pad_left, word_list, pad_right,collapse = "\n")
 }
-
-
-

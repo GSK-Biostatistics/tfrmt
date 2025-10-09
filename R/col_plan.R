@@ -189,7 +189,6 @@ is_valid_span_structure_call <- function(x){
   as.character(as.list(x)[[1]]) %in% c("span_structure")
 }
 
-#' @importFrom tidyselect vars_select_helpers
 is_valid_tidyselect_call <- function(x){
   ## drop - from determining if
   if(as.character(as.list(x)[[1]]) == "-"){
@@ -198,7 +197,7 @@ is_valid_tidyselect_call <- function(x){
       return(TRUE)
     }
   }
-  as.character(as.list(x)[[1]]) %in% c(names(vars_select_helpers))
+  as.character(as.list(x)[[1]]) %in% c(names(tidyselect::vars_select_helpers))
 }
 
 is_valid_quo_call <- function(x){
@@ -244,4 +243,3 @@ check_col_plan_dots <- function(x){
     }
   })
 }
-

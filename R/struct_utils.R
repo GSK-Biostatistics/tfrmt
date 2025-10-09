@@ -96,7 +96,14 @@ struct_val_idx <- function(cur_struct, .data, group, label){
 
     .data %>%
       filter(!!filter_expr) %>%
-      select(any_of(c(map_chr(keep_vars, as_label), "TEMP_row"))) %>%
+      select(
+        tidyselect::any_of(
+          c(
+            map_chr(keep_vars, as_label),
+            "TEMP_row"
+          )
+        )
+      ) %>%
       # split only after non-consecutive sequence
       mutate(breaks = .data$TEMP_row==lag(.data$TEMP_row, default = 0)+1,
              breaks = cumsum(!.data$breaks)) %>%

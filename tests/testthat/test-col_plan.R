@@ -1,4 +1,3 @@
-
 test_that("Defining the spanning structure", {
 
   s1 <- span_structure(
@@ -226,7 +225,10 @@ test_that("Test applying a col_plan - tidyselect",{
   )
 
   cp_drop <- col_plan(
-    span_structure(col1 = starts_with("test"), col2 = c(val2,everything())),
+    span_structure(
+      col1 = starts_with("test"),
+      col2 = c(val2, everything())
+    ),
     everything(),
     first_col,
     .drop = TRUE
@@ -782,7 +784,9 @@ test_that("Order is kept for multi-col columns",{
     names()
 
   new_name_ord_in_dat <- test %>%
-    select(starts_with("col")) %>%
+    select(
+      tidyselect::starts_with("col")
+    ) %>%
     unite("new", sep=.tlang_delim) %>%
     pull(new)
 
@@ -1461,7 +1465,10 @@ test_that("Build simple tfrmt with stub header",{
   )
 
   suppressMessages({
-    processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+    processed_gt <- print_to_gt(
+      tfrmt = basic_multi_column_template,
+      .data = basic_example_dataset
+    )
   })
 
   expect_equal(
