@@ -46,7 +46,6 @@
 #'
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom tidyselect everything eval_select
 #' @importFrom rlang quo_is_missing sym quo is_empty
 #' @importFrom dplyr vars
 #' @importFrom purrr quietly safely
@@ -81,7 +80,7 @@ print_mock_gt <- function(tfrmt,
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }else{
     ## check that if value column exists in data, remove it for mocking
-    select_try <- safely(quietly(eval_select))(tfrmt$value, data = .data)
+    select_try <- safely(quietly(tidyselect::eval_select))(tfrmt$value, data = .data)
     if(!is.null(select_try$result)){
       message(" Removing `",as_label(tfrmt$value),"` from input data for mocking.")
       .data <- .data[,-select_try$result$result]
@@ -136,7 +135,6 @@ print_mock_gt <- function(tfrmt,
 #' }}
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
-#' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
   if(!is_tfrmt(tfrmt)){
     stop("Requires a tfrmt object")

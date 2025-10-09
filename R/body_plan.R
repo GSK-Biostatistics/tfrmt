@@ -59,7 +59,6 @@ body_plan <- function(...){
 #' @importFrom purrr map_dfr map map_chr quietly pmap_chr
 #' @importFrom dplyr mutate group_by filter group_split select across
 #' @importFrom tidyr unnest
-#' @importFrom tidyselect everything
 #' @importFrom rlang as_name quo_is_missing
 body_plan_builder <- function(data, group, label, param_defaults, missing = NULL){
 

@@ -9,7 +9,6 @@
 #' @importFrom dplyr tibble mutate group_by arrange slice group_map case_when left_join row_number select summarise across
 #' @importFrom purrr map map2_dfr
 #' @importFrom tidyr unnest nest unnest_longer
-#' @importFrom tidyselect everything
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
 apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
@@ -171,7 +170,6 @@ grp_row_test_data <- function(cur_block, .data, group){
 #' @importFrom dplyr slice n mutate across bind_rows cur_column
 #' @importFrom tidyr fill
 #' @importFrom purrr map_chr
-#' @importFrom tidyselect vars_select_helpers
 #' @importFrom rlang !!!
 #'
 #' @noRd
@@ -255,7 +253,6 @@ fill_post_space <- function(post_space, fill, width){
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr
-#' @importFrom tidyselect vars_select_helpers
 #' @importFrom forcats fct_inorder
 #' @importFrom tibble add_row
 combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){

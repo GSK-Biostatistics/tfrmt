@@ -140,7 +140,6 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
 #'
 #' @importFrom glue glue glue_collapse
 #' @importFrom dplyr select mutate across arrange pull
-#' @importFrom tidyselect everything any_of
 #' @importFrom rlang is_empty as_name as_label
 #' @importFrom stringr str_replace_all
 #' @importFrom purrr map_chr map
