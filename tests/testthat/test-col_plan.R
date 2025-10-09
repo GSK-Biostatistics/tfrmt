@@ -1,4 +1,4 @@
-
+library(tidyselect)
 test_that("Defining the spanning structure", {
 
   s1 <- span_structure(
