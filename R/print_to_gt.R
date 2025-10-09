@@ -81,7 +81,7 @@ print_mock_gt <- function(tfrmt,
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }else{
     ## check that if value column exists in data, remove it for mocking
-    select_try <- safely(quietly(eval_select))(tfrmt$value, data = .data)
+    select_try <- safely(quietly(tidyselect::eval_select))(tfrmt$value, data = .data)
     if(!is.null(select_try$result)){
       message(" Removing `",as_label(tfrmt$value),"` from input data for mocking.")
       .data <- .data[,-select_try$result$result]
