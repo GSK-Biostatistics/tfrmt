@@ -176,7 +176,7 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     dat_split_1 <- .data %>%
       nest(
         `..tfrmt_data` = tidyselect::everything(),
-        .by = (tidyselect::all_of(grping))
+        .by = tidyselect::all_of(grping)
       ) %>%
       mutate(
         `..tfrmt_split_num` = row_number()
