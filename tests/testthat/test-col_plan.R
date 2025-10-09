@@ -1,4 +1,3 @@
-library(tidyselect)
 test_that("Defining the spanning structure", {
 
   s1 <- span_structure(
@@ -1466,7 +1465,10 @@ test_that("Build simple tfrmt with stub header",{
   )
 
   suppressMessages({
-    processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+    processed_gt <- print_to_gt(
+      tfrmt = basic_multi_column_template,
+      .data = basic_example_dataset
+    )
   })
 
   expect_equal(

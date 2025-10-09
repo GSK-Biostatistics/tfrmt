@@ -233,7 +233,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     format_gt_column_labels(.data) %>%
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = align),
-      locations = cells_body(columns = everything())
+      locations = cells_body(
+        columns = tidyselect::everything()
+      )
     )
 
   # group label in its own column
@@ -288,10 +290,12 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       ),
       locations= list(
         cells_body(
-          columns = everything(),
-          rows = everything()
+          columns = tidyselect::everything(),
+          rows = tidyselect::everything()
         ),
-        cells_stub(), cells_row_groups())
+        cells_stub(),
+        cells_row_groups()
+      )
     )  %>%
 
     tab_style(
