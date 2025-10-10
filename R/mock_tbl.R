@@ -59,12 +59,25 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
   # & replace .default's
   all_frmt_vals <- bind_cols(all_frmt_spec,
                              map(cols_to_add, function(x) tibble(!!x := NA_character_))) %>%
-    mutate(..grp = replace_na(.data$..grp, ".default"),
-           across(all_of(grp_vars), ~ coalesce(.x, .data$..grp))) %>%
+    mutate(
+      ..grp = replace_na(.data$..grp, ".default"),
+      across(
+        tidyselect::all_of(grp_vars),
+        ~ coalesce(.x, .data$..grp)
+      )
+    ) %>%
     select(-"..grp")  %>%
     rowwise()  %>%
-    mutate(across(!!tfrmt$param, ~ process_for_mock(.x, cur_column(), 1)),
-           across(all_of(grp_vars), ~ process_for_mock(.x, cur_column(), .default)))
+    mutate(
+      across(
+        !!tfrmt$param,
+        ~ process_for_mock(.x, cur_column(), 1)
+      ),
+      across(
+        tidyselect::all_of(grp_vars),
+        ~ process_for_mock(.x, cur_column(), .default)
+      )
+    )
 
   expand_cols <- c(tfrmt$group)
 
@@ -79,7 +92,9 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL){
   expand_cols <- c(expand_cols, tfrmt$param)
 
   output_dat <- all_frmt_vals %>%
-    unnest(everything()) %>%
+    unnest(
+      tidyselect::everything()
+    ) %>%
     group_by(.data$frmt_num) %>%
     expand(!!!expand_cols) %>%
     ungroup() %>%
@@ -199,11 +214,13 @@ make_col_df <- function(column, group, label, sorting_cols, col_plan, col_style_
       # creates a df for each span structure
       span_df <- col_plan$dots %>%
         keep(is.list) %>%
-        map_dfr(function(x){
+        map_dfr(function(x) {
           span_df <- x %>%
             map(~clean_col_names(., c())) %>%
             reduce(crossing) %>%
-            unnest(cols = everything())
+            unnest(
+              cols = tidyselect::everything()
+            )
           names(span_df) <- names(x)
           span_df
         })

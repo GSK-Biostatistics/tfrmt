@@ -1,5 +1,6 @@
 #' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate last_col
+#' @importFrom dplyr as_tibble relocate
+#' @importFrom tidyselect last_col
 #' @importFrom stringr str_remove str_detect
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
@@ -221,8 +222,20 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
 
   ## create order df
   ords <- do.call("crossing",col_selections) %>%
-    mutate(across(everything(), ~factor(.x, levels = col_selections[[cur_column()]]))) %>%
-    arrange(across(everything())) %>%
+    mutate(
+      across(
+        tidyselect::everything(),
+        ~factor(
+          .x,
+          levels = col_selections[[cur_column()]]
+        )
+      )
+    ) %>%
+    arrange(
+      across(
+        tidyselect::everything()
+      )
+    ) %>%
     mutate(ord_col = seq_len(n()))
 
   split_data_names %>%
@@ -354,12 +367,30 @@ unite_df_to_data_names <- function(split_data_names, preselected_cols, column_na
                                    return_only_selected = FALSE){
 
   new_preselected_cols_full <- split_data_names %>%
-    unite("original",-c(starts_with("__tfrmt_new_name__"), "subtraction_status"),
-          sep = .tlang_delim) %>%
-    unite("new_name",
-          starts_with("__tfrmt_new_name__"),
-          sep = .tlang_delim) %>%
-    mutate(across(c("original", "new_name"), ~remove_empty_layers(.x, length(column_names) -1)))
+    unite(
+      "original",
+      -c(
+        tidyselect::starts_with(
+          "__tfrmt_new_name__"
+        ),
+        "subtraction_status"
+      ),
+      sep = .tlang_delim
+    ) %>%
+    unite(
+      "new_name",
+      tidyselect::starts_with("__tfrmt_new_name__"),
+      sep = .tlang_delim
+    ) %>%
+    mutate(
+      across(
+        c("original", "new_name"),
+        ~remove_empty_layers(
+          .x,
+          length(column_names) - 1
+        )
+      )
+    )
 
   selected <- new_preselected_cols_full %>%
     mutate(

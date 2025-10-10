@@ -26,7 +26,13 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
       grping <- expr_to_grouping(struct, group)
 
       split_dat <- .data %>%
-        group_by(across(all_of(grping))) %>%
+        group_by(
+          across(
+            tidyselect::all_of(
+              grping
+            )
+          )
+        ) %>%
         group_split()
       map(split_dat, function(dat) struct_val_idx(struct, dat, group, label)) %>% list_flatten()
     })
@@ -52,16 +58,21 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
 
   # get max character width for each column in the full data
   dat_max_widths <- .data %>%
-    summarise(across(everything(), function(x) {
-      if (is.character(x)) {
-        str_split(x, "\\n") %>%
-          unlist() %>%
-          nchar() %>%
-          max(na.rm = TRUE)
-      } else{
-        max(nchar(x), na.rm = TRUE)
-      }
-    }))
+    summarise(
+      across(
+        tidyselect::everything(),
+        function(x) {
+          if (is.character(x)) {
+            str_split(x, "\\n") %>%
+              unlist() %>%
+              nchar() %>%
+              max(na.rm = TRUE)
+          } else{
+            max(nchar(x), na.rm = TRUE)
+          }
+        }
+      )
+    )
 
   # apply group block function to data subsets
   add_ln_df <- map2_dfr(dat_plus_block$data,
@@ -172,11 +183,22 @@ apply_grp_block <- function(.data, group, element_block, widths){
     # utilize TEMP_row to retain the ordering
     grp_row_add <- .data %>%
       slice(n()) %>%
-      mutate(across(c(-map_chr(group, as_name), -vars_select_helpers$where(is.numeric)),
-                    ~replace(.x, values = fill_post_space(post_space = element_block$post_space,
-                                                         fill = element_block$fill,
-                                                         width = widths[[cur_column()]]))),
-             TEMP_row = .data$TEMP_row + 0.1)
+      mutate(
+        across(
+          c(
+            - map_chr(group, as_name),
+            - tidyselect::where(is.numeric)),
+          ~ replace(
+            .x,
+            values = fill_post_space(
+              post_space = element_block$post_space,
+              fill = element_block$fill,
+              width = widths[[cur_column()]]
+            )
+          )
+        ),
+        TEMP_row = .data$TEMP_row + 0.1
+      )
 
 
     # combine with original data
@@ -266,7 +288,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
       group_split()
 
     .data<- split_dat %>%
-      map_dfr(function(lone_dat){
+      map_dfr(function(lone_dat) {
 
         lone_dat_summ <- lone_dat %>%
           mutate(..tfrmt_summary_row = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
@@ -284,10 +306,20 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
           # next all of the other variables (as missing)
           new_row <- lone_dat %>%
-            select(-c(any_of(names(new_row)))) %>%
+            select(
+              -tidyselect::any_of(
+                names(new_row)
+              )
+            ) %>%
             slice(0) %>%
             add_row()  %>%
-            mutate(across(vars_select_helpers$where(is.list), ~map(.x, ~if (is.null(.)) NA_character_ else .)))  %>%  #convert NULL to NA in list-cols
+            mutate(
+              across(
+                #convert NULL to NA in list-cols
+                tidyselect::where(is.list),
+                ~map(.x, ~if (is.null(.)) NA_character_ else .)
+              )
+            )  %>%
             bind_cols(new_row, .)%>%
             mutate(..tfrmt_row_grp_lbl = TRUE)
 
@@ -308,7 +340,14 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   }
 
   .data%>%
-    mutate(across(any_of(orig_group_names), ~as.character(.x)))
+    mutate(
+      across(
+        tidyselect::any_of(
+          orig_group_names
+        ),
+        ~as.character(.x)
+      )
+    )
 
 
 }
