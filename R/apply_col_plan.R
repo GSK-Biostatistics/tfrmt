@@ -235,7 +235,9 @@ col_plan_span_structure_to_vars <- function(x, column_names, data_names, presele
         tidyselect::everything()
       )
     ) %>%
-    mutate(ord_col = seq_len(n()))
+    mutate(
+      ord_col = seq_len(n())
+    )
 
   split_data_names %>%
     left_join(ords, by = names(col_selections)) %>%
