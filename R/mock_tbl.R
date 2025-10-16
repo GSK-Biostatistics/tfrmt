@@ -14,7 +14,6 @@
 #'   across cur_column
 #' @importFrom purrr map map_dfr map_chr map_dfc reduce
 #' @importFrom rlang as_name is_empty
-#' @importFrom tidyselect everything all_of
 #'
 #' @export
 #' @examples

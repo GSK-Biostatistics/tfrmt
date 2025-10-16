@@ -331,7 +331,6 @@ remove_empty_layers <- function(x, nlayers = 1){
 #' @noRd
 #'
 #' @importFrom purrr quietly
-#' @importFrom tidyselect starts_with everything
 #' @importFrom dplyr group_by across summarise n tally pull na_if all_of reframe
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest

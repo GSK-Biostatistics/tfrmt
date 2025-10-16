@@ -43,7 +43,6 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
 #'
 #' @noRd
 #' @importFrom dplyr  slice bind_rows filter pull
-#' @importFrom tidyselect contains
 #' @importFrom tibble tibble
 #' @importFrom forcats fct_inorder
 apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_label_loc){
@@ -263,7 +262,6 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 #' @importFrom dplyr mutate select across group_by group_split distinct last bind_rows
 #' @importFrom tibble tibble
 #' @importFrom stringr str_trim
-#' @importFrom tidyselect any_of
 combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NULL){
 
   top_grouping <- group #used for splitting in case of spanning label
@@ -324,7 +322,6 @@ combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NU
 #' @importFrom dplyr mutate slice pull filter across select bind_rows
 #' @importFrom purrr map_chr map map2_lgl
 #' @importFrom tidyr pivot_longer
-#' @importFrom tidyselect all_of
 add_summary_rows <- function(next_dat, prev_summ, group, label){
 
   #get grouping values from the summary row

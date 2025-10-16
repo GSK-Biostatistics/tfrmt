@@ -46,7 +46,6 @@
 #'
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom tidyselect everything eval_select
 #' @importFrom rlang quo_is_missing sym quo is_empty
 #' @importFrom dplyr vars
 #' @importFrom purrr quietly safely
@@ -136,7 +135,6 @@ print_mock_gt <- function(tfrmt,
 #' }}
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
-#' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
   if(!is_tfrmt(tfrmt)){
     stop("Requires a tfrmt object")
@@ -295,7 +293,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
           columns = tidyselect::everything(),
           rows = tidyselect::everything()
         ),
-        cells_stub(), cells_row_groups())
+        cells_stub(),
+        cells_row_groups()
+      )
     )  %>%
 
     tab_style(
