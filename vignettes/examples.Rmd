@@ -18,9 +18,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(dplyr)
-library(gt)
-library(tidyr)
 ```
 
 # Demography Table
@@ -36,48 +33,57 @@ The mock we are going to match looks like this:
 ```{r echo = FALSE}
 tfrmt(
   # specify columns in the data
-  group = c(rowlbl1,grp),
+  group = c(rowlbl1, grp),
   label = rowlbl2,
-  column = column, 
+  column = column,
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  
+
   # Specify body plan
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+      n = frmt("xxx"),
+      pct = frmt_when(
+        "==100" ~ "",
+        "==0" ~ "",
+        TRUE ~ frmt("(xx.x %)")
+      )
+    )),
     frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
     frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
     frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                 "<0.001" ~ "<0.001",
-                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
+    frmt_structure(group_val = ".default", label_val = c("n", "<65 yrs", "<12 months", "<25"), p = frmt_when(
+      ">0.99" ~ ">0.99",
+      "<0.001" ~ "<0.001",
+      TRUE ~ frmt("x.xxx", missing = "")
+    ))
   ),
-  
+
   # Specify row group plan
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   ),
-  
+
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = c("Placebo", "Xanomeline Low Dose",
-                                                        "Xanomeline High Dose", "Total", "p-value")),
-    col_style_structure(align = "left", col = c("rowlbl1","rowlbl2"))
+    col_style_structure(align = c(".", ",", " "), col = c(
+      "Placebo", "Xanomeline Low Dose",
+      "Xanomeline High Dose", "Total", "p-value"
+    )),
+    col_style_structure(align = "left", col = c("rowlbl1", "rowlbl2"))
   ),
-  
+
   # remove extra cols
-  col_plan = col_plan(-grp, 
-                      -starts_with("ord") )
-) %>% 
-  print_mock_gt(data_demog %>% select(-value)) %>% 
-  tab_options(
+  col_plan = col_plan(
+    -grp,
+    -starts_with("ord")
+  )
+) %>%
+  print_mock_gt(data_demog %>% dplyr::select(-value)) %>%
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -89,14 +95,15 @@ The first thing we are going to do when building out the `tfrmt` is specify all 
 ```{r, warning=FALSE, message=FALSE}
 tfrmt(
   # specify columns in the data
-  group = c(rowlbl1,grp),
+  group = c(rowlbl1, grp),
   label = rowlbl2,
-  column = column, 
+  column = column,
   param = param,
   value = value,
-  sorting_cols = c(ord1, ord2)) %>% 
-  print_to_gt(data_demog) %>% 
-  tab_options(
+  sorting_cols = c(ord1, ord2)
+) %>%
+  print_to_gt(data_demog) %>%
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -110,26 +117,30 @@ To start, we are going to use all the rows that are "n (%)" as the default. This
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = c(rowlbl1,grp),
+  group = c(rowlbl1, grp),
   label = rowlbl2,
-  column = column, 
+  column = column,
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} ({pct} %)", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt("xx.x"))),
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} ({pct} %)",
+      n = frmt("xxx"),
+      pct = frmt("xx.x")
+    )),
     frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
     frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt_when(">0.99" ~ ">0.99",
-                                                                                 "<0.001" ~ "<0.001",
-                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
-  )) %>% 
-  print_to_gt(data_demog) %>% 
-  tab_options(
+    frmt_structure(group_val = ".default", label_val = ".default", p = frmt_when(
+      ">0.99" ~ ">0.99",
+      "<0.001" ~ "<0.001",
+      TRUE ~ frmt("x.xxx", missing = "")
+    ))
+  )
+) %>%
+  print_to_gt(data_demog) %>%
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -139,32 +150,40 @@ Now that all the numbers look correct, we can drop the order columns and the `gr
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = c(rowlbl1,grp),
+  group = c(rowlbl1, grp),
   label = rowlbl2,
-  column = column, 
+  column = column,
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+      n = frmt("xxx"),
+      pct = frmt_when(
+        "==100" ~ "",
+        "==0" ~ "",
+        TRUE ~ frmt("(xx.x %)")
+      )
+    )),
     frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
     frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
     frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                 "<0.001" ~ "<0.001",
-                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
+    frmt_structure(group_val = ".default", label_val = c("n", "<65 yrs", "<12 months", "<25"), p = frmt_when(
+      ">0.99" ~ ">0.99",
+      "<0.001" ~ "<0.001",
+      TRUE ~ frmt("x.xxx", missing = "")
+    ))
   ),
   # remove extra cols
-  col_plan = col_plan(-grp, 
-                      -starts_with("ord") )) %>% 
-  print_to_gt(data_demog) %>% 
-  tab_options(
+  col_plan = col_plan(
+    -grp,
+    -starts_with("ord")
+  )
+) %>%
+  print_to_gt(data_demog) %>%
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -172,8 +191,8 @@ tfrmt(
 Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `col_style_structure`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `col_style_structure` looks like `col_style_structure(align = c(".",","," "), col = vars(everything()))`. After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change.
 
 ```{r}
-data_demog %>% 
-  distinct(rowlbl1,grp)
+data_demog %>%
+  dplyr::distinct(rowlbl1, grp)
 ```
 
 This means that we can use a `row_grp_plan` with just a `".default"` as the group value and it should handle all of the spacing. In addition to the spacing, `row_grp_plan` will let us move the spanning group labels to a separate column by changing the `label_loc` to "column".
@@ -181,46 +200,54 @@ This means that we can use a `row_grp_plan` with just a `".default"` as the grou
 ```{r}
 tfrmt(
   # specify columns in the data
-  group = c(rowlbl1,grp),
+  group = c(rowlbl1, grp),
   label = rowlbl2,
-  column = column, 
+  column = column,
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}", 
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
+    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+      n = frmt("xxx"),
+      pct = frmt_when(
+        "==100" ~ "",
+        "==0" ~ "",
+        TRUE ~ frmt("(xx.x %)")
+      )
+    )),
     frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
+    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
     frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
     frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                 "<0.001" ~ "<0.001",
-                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
+    frmt_structure(group_val = ".default", label_val = c("n", "<65 yrs", "<12 months", "<25"), p = frmt_when(
+      ">0.99" ~ ">0.99",
+      "<0.001" ~ "<0.001",
+      TRUE ~ frmt("x.xxx", missing = "")
+    ))
   ),
   # remove extra cols
-  col_plan = col_plan(-grp, 
-                      -starts_with("ord") ),
+  col_plan = col_plan(
+    -grp,
+    -starts_with("ord")
+  ),
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = c("Placebo", "Xanomeline Low Dose",
-                                                        "Xanomeline High Dose", "Total", "p-value")),
-    col_style_structure(align = "left", col = c("rowlbl1","rowlbl2"))
+    col_style_structure(align = c(".", ",", " "), col = c(
+      "Placebo", "Xanomeline Low Dose",
+      "Xanomeline High Dose", "Total", "p-value"
+    )),
+    col_style_structure(align = "left", col = c("rowlbl1", "rowlbl2"))
   ),
-  
-    # Specify row group plan
+
+  # Specify row group plan
   row_grp_plan = row_grp_plan(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   )
-  
-  ) %>% 
-  print_to_gt(data_demog) %>% 
-  tab_options(
+) %>%
+  print_to_gt(data_demog) %>%
+  gt::tab_options(
     container.width = 900
   )
 ```
@@ -234,12 +261,12 @@ For the adverse events (AE) table, we will use the `data_ae` analysis results da
 <summary>Expand for the code used to produce this subset</summary>
 
 ```{r}
-data_ae2 <- data_ae %>% 
-  group_by(AEBODSYS, AETERM) %>% 
-  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
-  ungroup %>% 
-  filter(pct_high >10) %>% 
-  select(-pct_high)
+data_ae2 <- data_ae %>%
+  dplyr::group_by(AEBODSYS, AETERM) %>%
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(pct_high > 10) %>%
+  dplyr::select(-pct_high)
 ```
 
 </details>
@@ -251,7 +278,6 @@ head(data_ae2)
 The mock we are going to match looks like this:
 
 ```{r echo = FALSE}
-
 fmt_spec <- tfrmt(
   group = AEBODSYS,
   label = AETERM,
@@ -260,30 +286,40 @@ fmt_spec <- tfrmt(
   value = value,
   row_grp_plan = row_grp_plan(),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-            frmt_combine("{n} {pct}",
-                        n = frmt("XXX"),
-                        pct = frmt_when(
-                          "==100" ~ "",
-                          "==0" ~ "",
-                          TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   AEs = frmt("[XXX]")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "--")))
-  ), col_plan = col_plan(-starts_with("ord")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
+  ), col_plan = col_plan(-starts_with("ord"))
+)
 
-data_ae2 %>%  
-  select(-value) %>% 
-  arrange(ord1, ord2 ) %>% 
-  print_mock_gt(fmt_spec, . )  %>% 
-  tab_options(
+data_ae2 %>%
+  dplyr::select(-value) %>%
+  dplyr::arrange(ord1, ord2) %>%
+  print_mock_gt(fmt_spec, .) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 For this table we have three treatment group columns (Placebo, Low, and High Dose) which each have the following values reported: \# of subjects with at least one AE (n), percent of subjects with at least one AE (pct), and \# of AEs (AEs). We also have two p-value columns (Low Dose vs. Placebo, High Dose vs. Placebo).
@@ -295,15 +331,15 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col2, col1), 
+  column = c(col2, col1),
   param = param,
   value = value,
-  sorting_cols = c(ord1, ord2)) %>% 
-  print_to_gt(data_ae2) %>% 
-  tab_options(
+  sorting_cols = c(ord1, ord2)
+) %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 Next, we need to format the values using the `body_plan`. Recall that our body plan will be made up of a series of `frmt_stucture`s where each `frmt_stucture` represents the formatting of a cell within the table. Our AE table boils down to the following values: \# of subjects with at least one AE (n), percent of subjects with at least one AE (pct), \# of AEs (AEs), and p-value (pval). Because our n and pct will be combined using `frmt_combine`, we will have 3 `frmt_structure` objects. Note the use of `frmt_when` to format the p-values.
@@ -313,32 +349,42 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col2, col1), 
+  column = c(col2, col1),
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{n} {pct}",
-                                n = frmt("XXX"),
-                                pct = frmt_when(
-                                  "==100" ~ "",
-                                  "==0" ~ "",
-                                  TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   AEs = frmt("[XXX]")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing ="--")))
-  )) %>% 
-  print_to_gt(., data_ae2) %>% 
-  tab_options(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
+  )
+) %>%
+  print_to_gt(., data_ae2) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 Almost there! Our AE table contains data for both Preferred Terms and System Organ Classes. Therefore, we do not want a typical group-level header. Instead, we want to display the System Organ Class label inline with its data, and nest the Preferred Term data underneath. Fortunately, we are able to achieve this formatting with a `row_grp_plan`:
@@ -348,35 +394,44 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col2, col1), 
+  column = c(col2, col1),
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{n} {pct}",
-                                n = frmt("XXX"),
-                                pct = frmt_when(
-                                  "==100" ~ "",
-                                  "==0" ~ "",
-                                  TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   AEs = frmt("[XXX]")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing ="--")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
-  ) %>% 
-  print_to_gt(data_ae2) %>% 
-  tab_options(
+) %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 Our column alignment looks good as-is, except for the p-values. We can use the `col_style_plan` to tweak those.
@@ -386,128 +441,154 @@ tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col2, col1), 
+  column = c(col2, col1),
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{n} {pct}",
-                                n = frmt("XXX"),
-                                pct = frmt_when(
-                                  "==100" ~ "",
-                                  "==0" ~ "",
-                                  TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   AEs = frmt("[XXX]")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing ="--")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
   # alignment
-  
+
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(starts_with("p_")))
+    col_style_structure(align = c(".", ",", " "), col = vars(starts_with("p_")))
   )
-  ) %>% 
-  print_to_gt(data_ae2) %>% 
-  tab_options(
+) %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 Notice that we still have our order columns and the column labels could benefit from some renaming. We can add a `col_plan` to help with the ordering:
 
 ```{r }
-
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col2, col1), 
+  column = c(col2, col1),
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{n} {pct}",
-                                n = frmt("XXX"),
-                                pct = frmt_when(
-                                  "==100" ~ "",
-                                  "==0" ~ "",
-                                  TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   AEs = frmt("[XXX]")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing ="--")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
 
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(p_low, p_high))
+    col_style_structure(align = c(".", ",", " "), col = vars(p_low, p_high))
   ),
   # columns
   col_plan = col_plan(
     -starts_with("ord")
   )
-  ) %>% 
-  print_to_gt(data_ae2)  %>% 
-  tab_options(
+) %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 For better control over our column labels, we can make use of `col_plan`'s `span_structure`s to define the column labels and spanners order and names:
 
 ```{r }
-
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
   label = AETERM,
-  column = c(col2, col1), 
+  column = c(col2, col1),
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2),
-  # specify value formatting 
+  # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine("{n} {pct}",
-                                n = frmt("XXX"),
-                                pct = frmt_when(
-                                  "==100" ~ "",
-                                  "==0" ~ "",
-                                  TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   AEs = frmt("[XXX]")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing ="--")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
-  
+
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = c(p_low, p_high))
+    col_style_structure(align = c(".", ",", " "), col = c(p_low, p_high))
   ),
-  
+
   # columns
   col_plan = col_plan(
     ## defines the spanning column order, and then beneath them the order of their contents
@@ -518,23 +599,25 @@ tfrmt(
         "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
         "Placebo (N=86)" = Placebo
       ),
-      col1 = c(`n (%)` = `n_pct` ,
-               `[AEs]` = `AEs`)
+      col1 = c(
+        `n (%)` = `n_pct`,
+        `[AEs]` = `AEs`
+      )
     ),
     span_structure(
       col2 = c("Fisher's Exact p-values" = fisher_pval),
       col1 = c(
         # add a line break to help with table formatting
-        `Placebo vs.\n Low Dose` = `p_low` ,
-       `Placebo vs.\n High Dose` = `p_high` 
+        `Placebo vs.\n Low Dose` = `p_low`,
+        `Placebo vs.\n High Dose` = `p_high`
       )
-    ))
-  ) %>% 
-  print_to_gt(data_ae2)  %>% 
-  tab_options(
+    )
+  )
+) %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
     container.width = 1000
   )
-
 ```
 
 Our AE table is now complete!
@@ -545,6 +628,8 @@ For this example, we will use the `data_efficacy` dataset, an example analysis r
 
 This data is relatively simple in that it contains only 1 `group` column and `column` column, but it adds complexity in that multiple analyses are stacked together - summary statistics of different values at different time points, and the results of several different ANCOVA models. Multiple treatment groups as well as the contrasts between groups are included.
 
+*NOTE:* Pay attention that `label` in the `data_efficacy` must be matching the `label_val` in the `label_val` for the `frmt_combine()` to work. For example, for `Mean (SD)`, each variable has different 
+`param` (`mean` and `sd` respectively), but they have the same `label` (`Mean (SD`)).
 ```{r, echo = FALSE}
 head(data_efficacy)
 ```
@@ -560,28 +645,34 @@ tfrmt(
   value = value,
   sorting_cols = c(ord1, ord2),
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = list(group="Change from Baseline"), element_block(post_space = " ")),
-    row_grp_structure(group_val = list(group="p-value (Dose Response)"), element_block(post_space = " ")),
-    row_grp_structure(group_val = list(group="p-value (Xan - Placebo)"), element_block(post_space = " "))
+    row_grp_structure(group_val = list(group = "Change from Baseline"), element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group = "p-value (Dose Response)"), element_block(post_space = " ")),
+    row_grp_structure(group_val = list(group = "p-value (Xan - Placebo)"), element_block(post_space = " "))
   ),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")), 
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")),
     frmt_structure(group_val = ".default", label_val = "Median (Range)", frmt_combine("{median} ({min};{max})",
-                                                                                      median = frmt("xx.x"),
-                                                                                      min = frmt("xx"),
-                                                                                      max = frmt("xx"), missing = " ")),
+      median = frmt("xx.x"),
+      min = frmt("xx"),
+      max = frmt("xx"), missing = " "
+    )),
     frmt_structure(group_val = ".default", label_val = "Mean (SD)", frmt_combine("{mean} ({sd})",
-                                                                                      mean = frmt("xx.x"),
-                                                                                      sd = frmt("xx.xx"), missing = " ")),
+      mean = frmt("xx.x"),
+      sd = frmt("xx.xx"), missing = " "
+    )),
     frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", frmt_combine("{diff} ({diff_se})",
-                                                                                 diff = frmt("xx.x"),
-                                                                                 diff_se = frmt("xx.xx"), missing = " ")),
+      diff = frmt("xx.x"),
+      diff_se = frmt("xx.xx"), missing = " "
+    )),
     frmt_structure(group_val = ".default", label_val = "95% CI", frmt_combine("({diff_lcl};{diff_ucl})",
-                                                                              diff_lcl = frmt("xx.x"),
-                                                                              diff_ucl = frmt("xx.x"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", p.value = frmt_when("<0.001" ~ "<0.001",
-                                                                                       ">0.99" ~ ">0.99",
-                                                                                       TRUE ~ frmt("x.xxx", missing = " ")))
+      diff_lcl = frmt("xx.x"),
+      diff_ucl = frmt("xx.x"), missing = " "
+    )),
+    frmt_structure(group_val = ".default", label_val = ".default", p.value = frmt_when(
+      "<0.001" ~ "<0.001",
+      ">0.99" ~ ">0.99",
+      TRUE ~ frmt("x.xxx", missing = " ")
+    ))
   ),
   col_plan = col_plan(
     group, label,
@@ -590,11 +681,10 @@ tfrmt(
     contains("High")
   )
 ) %>%
-  print_mock_gt(data_efficacy %>% select(-value))%>% 
-  tab_options(
+  print_mock_gt(data_efficacy %>% dplyr::select(-value)) %>%
+  gt::tab_options(
     container.width = 800
   )
-
 ```
 
 Let's first see how the table looks without any special formatting.
@@ -605,13 +695,12 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  value = value 
+  value = value
 ) %>%
-  print_to_gt(data_efficacy) %>% 
-  tab_options(
+  print_to_gt(data_efficacy) %>%
+  gt::tab_options(
     container.width = 800
-  ) 
-  
+  )
 ```
 
 Through judicious use of `body_plan`'s `frmt`, `frmt_combine`, and `frmt_when`, we can conditionally format each of the different pieces of results. For the summary statistics, we have the number of observations (n), the mean and standard deviation (mean, sd), and the median and range (median, min, max). For the models, we have the p-value (p.value) and the least squares mean difference (diff) as well as its associated standard error (diff_se) and 95% confidence interval (diff_lcl, diff_ucl).
@@ -624,21 +713,26 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  value = value, 
+  value = value,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", 
-                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   p.value = frmt_when("<0.001" ~ "<0.001",
-                                       ">0.99" ~ ">0.99",
-                                       TRUE ~ frmt("x.xxx", missing = " ")))
+    frmt_structure(
+      group_val = ".default", label_val = "n",
+      frmt("xx")
+    ), # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      p.value = frmt_when(
+        "<0.001" ~ "<0.001",
+        ">0.99" ~ ">0.99",
+        TRUE ~ frmt("x.xxx", missing = " ")
+      )
+    )
   )
 ) %>%
-  print_to_gt(data_efficacy) %>% 
-  tab_options(
+  print_to_gt(data_efficacy) %>%
+  gt::tab_options(
     container.width = 800
   )
-
 ```
 
 Next, the remaining param values are combined in twos or threes. Therefore, we use the `frmt_combine` utility to achieve desired formatting:
@@ -649,38 +743,55 @@ tfrmt(
   label = label,
   column = column,
   param = param,
-  value = value, 
+  value = value,
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", 
-                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   p.value = frmt_when("<0.001" ~ "<0.001",
-                                       ">0.99" ~ ">0.99",
-                                       TRUE ~ frmt("x.xxx", missing = " "))),
-    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
-                   frmt_combine("{median} ({min};{max})",
-                                median = frmt("xx.x"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Mean (SD)",
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
-                   frmt_combine("{diff} ({diff_se})",
-                                diff = frmt("xx.x"),
-                                diff_se = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "95% CI", 
-                   frmt_combine("({diff_lcl};{diff_ucl})",
-                                diff_lcl = frmt("xx.x"),
-                                diff_ucl = frmt("xx.x"), missing = " "))
+    frmt_structure(
+      group_val = ".default", label_val = "n",
+      frmt("xx")
+    ), # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      p.value = frmt_when(
+        "<0.001" ~ "<0.001",
+        ">0.99" ~ ">0.99",
+        TRUE ~ frmt("x.xxx", missing = " ")
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Median (Range)",
+      frmt_combine("{median} ({min};{max})",
+        median = frmt("xx.x"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Mean (SD)",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Diff of LS Means (SE)",
+      frmt_combine("{diff} ({diff_se})",
+        diff = frmt("xx.x"),
+        diff_se = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "95% CI",
+      frmt_combine("({diff_lcl};{diff_ucl})",
+        diff_lcl = frmt("xx.x"),
+        diff_ucl = frmt("xx.x"), missing = " "
+      )
+    )
   )
 ) %>%
-  print_to_gt(data_efficacy) %>% 
-  tab_options(
+  print_to_gt(data_efficacy) %>%
+  gt::tab_options(
     container.width = 800
   )
-
 ```
 
 Now that our values are all formatted correctly, we can make sure the table is sorted appropriately by passing our order columns to `sorting_cols`. We can also drop these order columns from the final display using `col_plan`.
@@ -694,39 +805,56 @@ tfrmt(
   value = value,
   sorting_cols = c(ord1, ord2),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", 
-                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   p.value = frmt_when("<0.001" ~ "<0.001",
-                                       ">0.99" ~ ">0.99",
-                                       TRUE ~ frmt("x.xxx", missing = " "))),
-    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
-                   frmt_combine("{median} ({min};{max})",
-                                median = frmt("xx.x"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Mean (SD)", 
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
-                   frmt_combine("{diff} ({diff_se})",
-                                diff = frmt("xx.x"),
-                                diff_se = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "95% CI", 
-                   frmt_combine("({diff_lcl};{diff_ucl})",
-                                diff_lcl = frmt("xx.x"),
-                                diff_ucl = frmt("xx.x"), missing = " "))
+    frmt_structure(
+      group_val = ".default", label_val = "n",
+      frmt("xx")
+    ), # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      p.value = frmt_when(
+        "<0.001" ~ "<0.001",
+        ">0.99" ~ ">0.99",
+        TRUE ~ frmt("x.xxx", missing = " ")
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Median (Range)",
+      frmt_combine("{median} ({min};{max})",
+        median = frmt("xx.x"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Mean (SD)",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Diff of LS Means (SE)",
+      frmt_combine("{diff} ({diff_se})",
+        diff = frmt("xx.x"),
+        diff_se = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "95% CI",
+      frmt_combine("({diff_lcl};{diff_ucl})",
+        diff_lcl = frmt("xx.x"),
+        diff_ucl = frmt("xx.x"), missing = " "
+      )
+    )
   ),
   col_plan = col_plan(
     group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   )
 ) %>%
-  print_to_gt(data_efficacy) %>% 
-  tab_options(
+  print_to_gt(data_efficacy) %>%
+  gt::tab_options(
     container.width = 800
   )
-
 ```
 
 Notice that our row labels are not quite right. First, we have a bit of a hierarchy with the `label` values nested under the `group` values, and it would be nice to add some indentation to make the nesting more obvious. Also, in some cases, the `group` values also contain summary data, which means the ARD contains a matching `group` and `label` value. For summary rows, we want to suppress the printing of the extra group-level header, and display the summary data in-line. The `row_grp_plan` can help us with both via the `row_grp_loc` argument:
@@ -740,29 +868,47 @@ tfrmt(
   value = value,
   sorting_cols = c(ord1, ord2),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", 
-                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   p.value = frmt_when("<0.001" ~ "<0.001",
-                                       ">0.99" ~ ">0.99",
-                                       TRUE ~ frmt("x.xxx", missing = " "))),
-    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
-                   frmt_combine("{median} ({min};{max})",
-                                median = frmt("xx.x"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Mean (SD)", 
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
-                   frmt_combine("{diff} ({diff_se})",
-                                diff = frmt("xx.x"),
-                                diff_se = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "95% CI", 
-                   frmt_combine("({diff_lcl};{diff_ucl})",
-                                diff_lcl = frmt("xx.x"),
-                                diff_ucl = frmt("xx.x"), missing = " "))
+    frmt_structure(
+      group_val = ".default", label_val = "n",
+      frmt("xx")
+    ), # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      p.value = frmt_when(
+        "<0.001" ~ "<0.001",
+        ">0.99" ~ ">0.99",
+        TRUE ~ frmt("x.xxx", missing = " ")
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Median (Range)",
+      frmt_combine("{median} ({min};{max})",
+        median = frmt("xx.x"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Mean (SD)",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Diff of LS Means (SE)",
+      frmt_combine("{diff} ({diff_se})",
+        diff = frmt("xx.x"),
+        diff_se = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "95% CI",
+      frmt_combine("({diff_lcl};{diff_ucl})",
+        diff_lcl = frmt("xx.x"),
+        diff_ucl = frmt("xx.x"), missing = " "
+      )
+    )
   ),
   col_plan = col_plan(
     group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
@@ -771,8 +917,8 @@ tfrmt(
     label_loc = element_row_grp_loc(location = "indented")
   )
 ) %>%
-  print_to_gt(data_efficacy) %>% 
-  tab_options(
+  print_to_gt(data_efficacy) %>%
+  gt::tab_options(
     container.width = 800
   )
 ```
@@ -788,45 +934,69 @@ tfrmt(
   value = value,
   sorting_cols = c(ord1, ord2),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", 
-                   frmt("xx")),  # we could also do: label_val = ".default", n = frmt("xx")
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   p.value = frmt_when("<0.001" ~ "<0.001",
-                                       ">0.99" ~ ">0.99",
-                                       TRUE ~ frmt("x.xxx", missing = " "))),
-    frmt_structure(group_val = ".default", label_val = "Median (Range)", 
-                   frmt_combine("{median} ({min};{max})",
-                                median = frmt("xx.x"),
-                                min = frmt("xx"),
-                                max = frmt("xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Mean (SD)", 
-                   frmt_combine("{mean} ({sd})",
-                                mean = frmt("xx.x"),
-                                sd = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "Diff of LS Means (SE)", 
-                   frmt_combine("{diff} ({diff_se})",
-                                diff = frmt("xx.x"),
-                                diff_se = frmt("xx.xx"), missing = " ")),
-    frmt_structure(group_val = ".default", label_val = "95% CI", 
-                   frmt_combine("({diff_lcl};{diff_ucl})",
-                                diff_lcl = frmt("xx.x"),
-                                diff_ucl = frmt("xx.x"), missing = " "))
+    frmt_structure(
+      group_val = ".default", label_val = "n",
+      frmt("xx")
+    ), # we could also do: label_val = ".default", n = frmt("xx")
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      p.value = frmt_when(
+        "<0.001" ~ "<0.001",
+        ">0.99" ~ ">0.99",
+        TRUE ~ frmt("x.xxx", missing = " ")
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Median (Range)",
+      frmt_combine("{median} ({min};{max})",
+        median = frmt("xx.x"),
+        min = frmt("xx"),
+        max = frmt("xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Mean (SD)",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "Diff of LS Means (SE)",
+      frmt_combine("{diff} ({diff_se})",
+        diff = frmt("xx.x"),
+        diff_se = frmt("xx.xx"), missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = "95% CI",
+      frmt_combine("({diff_lcl};{diff_ucl})",
+        diff_lcl = frmt("xx.x"),
+        diff_ucl = frmt("xx.x"), missing = " "
+      )
+    )
   ),
   col_plan = col_plan(
     group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   ),
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = list(group="Change from Baseline"), 
-                      element_block(post_space = " ")),
-    row_grp_structure(group_val = list(group="p-value (Dose Response)"),
-                      element_block(post_space = " ")),
-    row_grp_structure(group_val = list(group="p-value (Xan - Placebo)"), 
-                      element_block(post_space = " ")),
+    row_grp_structure(
+      group_val = list(group = "Change from Baseline"),
+      element_block(post_space = " ")
+    ),
+    row_grp_structure(
+      group_val = list(group = "p-value (Dose Response)"),
+      element_block(post_space = " ")
+    ),
+    row_grp_structure(
+      group_val = list(group = "p-value (Xan - Placebo)"),
+      element_block(post_space = " ")
+    ),
     label_loc = element_row_grp_loc(location = "indented")
   )
 ) %>%
-  print_to_gt(data_efficacy) %>% 
-  tab_options(
+  print_to_gt(data_efficacy) %>%
+  gt::tab_options(
     container.width = 800
   )
 ```
