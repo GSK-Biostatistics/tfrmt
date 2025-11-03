@@ -34,7 +34,7 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...){
 }
 
 
-#' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
+#' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect str_replace_all
 #' @importFrom dplyr case_when tibble pull mutate
 #' @importFrom rlang := as_function
 #' @export
@@ -140,6 +140,9 @@ apply_frmt.frmt <- function( frmt_def, .data, value, mock = FALSE, ...){
     } else {
       fmt_val_output <- frmt_def$expression
     }
+
+    # replace spaces with invisible unicode characters
+    fmt_val_output <- str_replace_all(fmt_val_output, pattern = " ", replacement = "\u00A0")
 
     out <- .data %>%
       mutate(

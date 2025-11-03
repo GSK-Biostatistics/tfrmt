@@ -28,17 +28,17 @@ test_that("applying frmt", {
 
   expect_equal(
     sample_df_no_dec_frmted$x,
-    c("1235", "346", " 57", "4568", "  9")
+    c("1235", "346", "\u00A057", "4568", "\u00A0\u00A09")
   )
 
   expect_equal(
     sample_df_single_dec_frmted$x,
-    c("1234.6", "345.7", " 56.8", "4567.9", "  8.9")
+    c("1234.6", "345.7", "\u00A056.8", "4567.9", "\u00A0\u00A08.9")
   )
 
   expect_equal(
     sample_df_double_dec_frmted$x,
-    c("1234.57", "345.68", " 56.79", "4567.89", "  8.91")
+    c("1234.57", "345.68", "\u00A056.79", "4567.89", "\u00A0\u00A08.91")
   )
 
 })
@@ -80,22 +80,22 @@ test_that("applying frmt - scientific", {
 
   expect_equal(
     sample_df_frmted_10x$x,
-    c("  1.2 x10^3",
-      "  3.5 x10^2",
-      "  5.7 x10^1",
-      "  4.6 x10^3",
-      "  8.9 x10^0",
-      "  6.8 x10^-2")
+    c("\u00A0\u00A01.2\u00A0x10^3",
+      "\u00A0\u00A03.5\u00A0x10^2",
+      "\u00A0\u00A05.7\u00A0x10^1",
+      "\u00A0\u00A04.6\u00A0x10^3",
+      "\u00A0\u00A08.9\u00A0x10^0",
+      "\u00A0\u00A06.8\u00A0x10^-2")
   )
 
   expect_equal(
     sample_df_frmted_10xx$x,
-    c("  1.2 x10^ 3",
-      "  3.5 x10^ 2",
-      "  5.7 x10^ 1",
-      "  4.6 x10^ 3",
-      "  8.9 x10^ 0",
-      "  6.8 x10^-2")
+    c("\u00A0\u00A01.2\u00A0x10^\u00A03",
+      "\u00A0\u00A03.5\u00A0x10^\u00A02",
+      "\u00A0\u00A05.7\u00A0x10^\u00A01",
+      "\u00A0\u00A04.6\u00A0x10^\u00A03",
+      "\u00A0\u00A08.9\u00A0x10^\u00A00",
+      "\u00A0\u00A06.8\u00A0x10^-2")
   )
 
   expect_equal(
