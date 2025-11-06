@@ -14,11 +14,7 @@ test_that("convert_ws_unicode works as expected",{
   expect_equal(gt_with_unicode$`_transforms`[[1]]$resolved$rows,1)
 
   # function to apply
-  expected_function <- function(x) {
-    str_replace_all(x, pattern = "\\s", replacement = "\u00A0")
-  }
-  # match environments
-  environment(expected_function) <- environment(gt_with_unicode$`_transforms`[[1]]$fn)
-  expect_equal(gt_with_unicode$`_transforms`[[1]]$fn,expected_function)
+  whitespace_function <- gt_with_unicode$`_transforms`[[1]]$fn
+  expect_equal(whitespace_function(" test test2 "), "\u00A0test\u00A0test2\u00A0")
 
 })
