@@ -15,6 +15,19 @@ test_that("convert_ws_unicode works as expected",{
 
   # function to apply
   whitespace_function <- gt_with_unicode$`_transforms`[[1]]$fn
-  expect_equal(whitespace_function(" test test2 "), "\u00A0test\u00A0test2\u00A0")
+
+  test_strings <- c(
+    "nospaces",
+    " single spaces ",
+    "  multiple   spaces  "
+  )
+
+  unicode_strings <- c(
+    "nospaces",
+    "\u00A0single\u00A0spaces\u00A0",
+    "\u00A0\u00A0multiple\u00A0\u00A0\u00A0spaces\u00A0\u00A0"
+  )
+
+  expect_equal(whitespace_function(test_strings), unicode_strings)
 
 })
