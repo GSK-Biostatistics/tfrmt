@@ -60,25 +60,30 @@ ae_mock_table <- function(tfrmt_obj){
 Example 1: mock table with no groups
 
 ```{r}
-df <- bind_rows(
-  crossing(label = c("label 1", "label 2", "label 3"),
+df1 <- crossing(label = c("label 1", "label 2", "label 3"),
            column = c("T1", "T2", "T1&T2", "PL"),
-           param = c("count", "percent")) %>%
-    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) )),
-  crossing(label = c("label 1", "label 2", "label 3"),
+           param = c("count", "percent")) 
+df11 <- df1 |>
+    mutate(ord1 = rep(seq(1:length(unique(df1$label))), each = nrow(df1)/length(unique(df1$label)) ))
+  
+  
+df2 <- crossing(label = c("label 1", "label 2", "label 3"),
            column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
-           param = c("num", "lower", "upper")) %>%
-    mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.)/length(unique(.$label)) ))
-  ) %>% arrange_all()
+           param = c("num", "lower", "upper")) 
+df22<- df2 |>
+    mutate(ord1 = rep(seq(1:length(unique(df2$label))), each = nrow(df2)/length(unique(df2$label)) ))
 
-ae_mock_table() %>%
+df <- bind_rows(df11, df22)  |>
+  arrange_all()
+
+ae_mock_table() |>
   tfrmt(
     label = "label",
     param = "param",
     column = "column",
     value = value,
     sorting_cols = vars(ord1)
-    ) %>%
+    ) |>
   print_mock_gt(df)
 ```
 
@@ -94,9 +99,9 @@ df <- bind_rows(
            label = c("label 1", "label 2", "label 3"),
            column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
            param = c("num", "lower", "upper"))
-  ) %>% arrange_all()
+  ) |> arrange_all()
 
-ae_mock_table() %>%
+ae_mock_table() |>
   tfrmt(
     group = group,
     label = "label",
@@ -109,7 +114,7 @@ ae_mock_table() %>%
       T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
       everything(),
       -starts_with("ord"))
-    ) %>%
+    ) |>
   print_mock_gt(df)
 
 ```
@@ -128,9 +133,9 @@ df <- bind_rows(
            label = c("label 1", "label 2"),
            column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
            param = c("num", "lower", "upper"))
-  ) %>% arrange_all()
+  ) |> arrange_all()
 
-ae_mock_table() %>%
+ae_mock_table() |>
   tfrmt(
     group = c(grp1, grp2),
     label = "label",
@@ -143,7 +148,7 @@ ae_mock_table() %>%
       T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
       everything(),
       -starts_with("ord"))
-    ) %>%
+    ) |>
   print_mock_gt(df)
 
 ```
@@ -151,7 +156,7 @@ ae_mock_table() %>%
 Example 4: mock table with two levels of grouping, column separated labels
 
 ```{r}
-ae_mock_table() %>%
+ae_mock_table() |>
   tfrmt(
     group = c(grp1, grp2),
     label = "label",
@@ -164,7 +169,7 @@ ae_mock_table() %>%
       T1, T2, `T1&T2`, PL, `risk T1-PL`, `risk T2-PL`, `risk T1&T2-PL`,
       everything(),
       -starts_with("ord"))
-    ) %>%
+    ) |>
   print_mock_gt(df)
 
 ```
@@ -196,18 +201,18 @@ fmt_spec <- tfrmt(
                                     TRUE ~ frmt("x.xxx", missing = "--")))
   ), col_plan = col_plan(-starts_with("ord")))
 
-#
-data_ae2 <- data_ae %>% 
-  group_by(AEBODSYS, AETERM) %>% 
-  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) %>% 
-  ungroup %>% 
-  filter(pct_high >10) %>% 
+
+data_ae2 <- data_ae |> 
+  group_by(AEBODSYS, AETERM) |> 
+  mutate(pct_high = value[col2=="Xanomeline High Dose" & param=="pct"]) |> 
+  ungroup() |> 
+  filter(pct_high >10) |> 
   select(-pct_high)
 
-data_ae2 %>%  
-  select(-value) %>% 
-  arrange(ord1, ord2 ) %>% 
-  print_mock_gt(fmt_spec, . )
+data_ae2 |>  
+  select(-value) |> 
+  arrange(ord1, ord2 ) |> 
+  print_mock_gt(fmt_spec, .data=_ )
 ```
 
 
@@ -253,8 +258,8 @@ tfrmt(
   # remove extra cols
   col_plan = col_plan(-grp, 
                       -starts_with("ord") )
-) %>% 
-  print_mock_gt(data_demog %>% select(-value))
+) |> 
+  print_mock_gt(data_demog |> select(-value))
 ```
 
 
@@ -298,8 +303,8 @@ tfrmt(
     contains("Low"),
     contains("High")
   )
-) %>%
-  print_mock_gt(data_efficacy %>% select(-value))
+) |>
+  print_mock_gt(data_efficacy |> select(-value))
 ```
 
 
