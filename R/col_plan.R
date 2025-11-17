@@ -92,6 +92,16 @@
 #'    )
 #'  )
 #'
+#' ## To add a stub header rename the group variable in the column plan
+#' ## If multiple group variables exist, any of them can be renamed.
+#' ## If more than one is renamed, {tfrmt} will use the highest level group name available.
+#'
+#'  renaming_group <- col_plan(
+#'     my_grp = group, # rename group
+#'     label,
+#'     starts_with("col")
+#'   )
+#'
 ##' @section Images:
 #' Here are some example outputs:
 #'
