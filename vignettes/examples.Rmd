@@ -381,7 +381,7 @@ tfrmt(
     )
   )
 ) |>
-  print_to_gt(., data_ae2) |>
+  print_to_gt(tfrmt=_, data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
