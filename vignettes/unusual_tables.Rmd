@@ -47,7 +47,7 @@ data <- tibble::tribble(
   "900", "715",
   "900", "717",
   "Total", " "
-) %>%
+) |>
   tidyr::crossing(
     col1 = c(
       "Placebo (N=86)",
@@ -56,7 +56,7 @@ data <- tibble::tribble(
       "Total (N=254)"
     ),
     col2 = factor(c("ITT", "Eff", "Com"), levels = c("ITT", "Eff", "Com"))
-  ) %>%
+  ) |>
   dplyr::mutate(
     val = rpois(216, 15), # Here I am just faking the data for display purposes
     param = "val"
@@ -80,7 +80,7 @@ tfrmt(
     contains("Low Dose"),
     everything()
   )
-) %>%
+) |>
   print_to_gt(data)
 ```
 
