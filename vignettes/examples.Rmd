@@ -81,8 +81,8 @@ tfrmt(
     -grp,
     -starts_with("ord")
   )
-) %>%
-  print_mock_gt(data_demog %>% dplyr::select(-value)) %>%
+) |>
+  print_mock_gt(data_demog |> dplyr::select(-value)) |>
   gt::tab_options(
     container.width = 900
   )
@@ -101,8 +101,8 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2)
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -138,8 +138,8 @@ tfrmt(
       TRUE ~ frmt("x.xxx", missing = "")
     ))
   )
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -181,8 +181,8 @@ tfrmt(
     -grp,
     -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -191,7 +191,7 @@ tfrmt(
 Now this table looks just about right. There are two problems, (1) alignment and (2) spacing between the continuous and categorical values. To take care of the alignment we are going to add a `col_style_plan` which accepts a series of `col_style_structure`s. This allows columns to be aligned differently if needed. For this table, we want all the columns to align on either ".", "," or " " so our `col_style_structure` looks like `col_style_structure(align = c(".",","," "), col = vars(everything()))`. After the alignment is sorted we can move on to the spacing. In order to match the spacing of the mock we need to use the extra `grp` column from our data. If we look at our data, we can see we want a space any time either of the groups change.
 
 ```{r}
-data_demog %>%
+data_demog |>
   dplyr::distinct(rowlbl1, grp)
 ```
 
@@ -245,8 +245,8 @@ tfrmt(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   )
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -261,11 +261,11 @@ For the adverse events (AE) table, we will use the `data_ae` analysis results da
 <summary>Expand for the code used to produce this subset</summary>
 
 ```{r}
-data_ae2 <- data_ae %>%
-  dplyr::group_by(AEBODSYS, AETERM) %>%
-  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
-  dplyr::ungroup() %>%
-  dplyr::filter(pct_high > 10) %>%
+data_ae2 <- data_ae |>
+  dplyr::group_by(AEBODSYS, AETERM) |>
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) |>
+  dplyr::ungroup() |>
+  dplyr::filter(pct_high > 10) |>
   dplyr::select(-pct_high)
 ```
 
@@ -313,10 +313,10 @@ fmt_spec <- tfrmt(
   ), col_plan = col_plan(-starts_with("ord"))
 )
 
-data_ae2 %>%
-  dplyr::select(-value) %>%
-  dplyr::arrange(ord1, ord2) %>%
-  print_mock_gt(fmt_spec, .) %>%
+data_ae2 |>
+  dplyr::select(-value) |>
+  dplyr::arrange(ord1, ord2) |>
+  print_mock_gt(fmt_spec, .data=_) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -335,8 +335,8 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2)
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -380,8 +380,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(., data_ae2) %>%
+) |>
+  print_to_gt(., data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -427,8 +427,8 @@ tfrmt(
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -480,8 +480,8 @@ tfrmt(
   col_style_plan = col_style_plan(
     col_style_structure(align = c(".", ",", " "), col = vars(starts_with("p_")))
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -536,8 +536,8 @@ tfrmt(
   col_plan = col_plan(
     -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -613,8 +613,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -680,8 +680,8 @@ tfrmt(
     contains("Low"),
     contains("High")
   )
-) %>%
-  print_mock_gt(data_efficacy %>% dplyr::select(-value)) %>%
+) |>
+  print_mock_gt(data_efficacy |> dplyr::select(-value)) |>
   gt::tab_options(
     container.width = 800
   )
@@ -696,8 +696,8 @@ tfrmt(
   column = column,
   param = param,
   value = value
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -728,8 +728,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -787,8 +787,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -850,8 +850,8 @@ tfrmt(
   col_plan = col_plan(
     group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -916,8 +916,8 @@ tfrmt(
   row_grp_plan = row_grp_plan(
     label_loc = element_row_grp_loc(location = "indented")
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -994,8 +994,8 @@ tfrmt(
     ),
     label_loc = element_row_grp_loc(location = "indented")
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
