@@ -1,0 +1,320 @@
+# Big N's
+
+``` r
+library(tfrmt)
+```
+
+Displaying subject totals (“Big N’s”) at the top of a table is a very
+common and necessary part of building tables for clinical trials.
+{tfrmt} allows you to do this via the `big_n` argument, which allows you
+to use a `big_n_structure` object to specify which values in the ARD
+should be added to the columns and how they should be formatted.
+
+## Overall Big Ns
+
+To dynamically add big N’s to column labels, the information needs to be
+included in the ARD. As a simple example, let’s take a small
+demographics table that just has Age and Sex for Placebo, Treatment and
+Total. Below is our ARD prior to incorporating the big Ns:
+
+``` r
+data <- tibble::tibble(
+  Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
+  Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
+  Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+  Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"), c(6, 3, 3, 3, 3, 3, 3)),
+  Value = c(15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
+  8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27)
+) %>%
+  # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
+  dplyr::mutate(
+    Value = dplyr::case_when(
+      Param == "pct" ~ Value * 100,
+      TRUE ~ Value
+    ),
+    ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+    ord2 = dplyr::if_else(Label == "n", 1, 2)
+  )
+data
+#> # A tibble: 24 × 7
+#>    Group   Label     Column    Param Value  ord1  ord2
+#>    <chr>   <chr>     <chr>     <chr> <dbl> <dbl> <dbl>
+#>  1 Age (y) n         Placebo   n     15        1     1
+#>  2 Age (y) n         Treatment n     13        1     1
+#>  3 Age (y) n         Total     n     28        1     1
+#>  4 Sex     n         Placebo   n     14        2     1
+#>  5 Sex     n         Treatment n     13        2     1
+#>  6 Sex     n         Total     n     27        2     1
+#>  7 Age (y) Mean (SD) Placebo   mean  73.6      1     2
+#>  8 Age (y) Mean (SD) Treatment mean  74.2      1     2
+#>  9 Age (y) Mean (SD) Total     mean  71.8      1     2
+#> 10 Age (y) Mean (SD) Placebo   sd     9.35     1     2
+#> # ℹ 14 more rows
+```
+
+In this study we have 30 subjects per treatment arm for a total of 60
+subjects. Because the ARD is 1 row per unique value, our Ns will
+contribute 3 rows to the ARD. To make the N’s go to the right place, we
+need to supply information about the `column` column values. The
+`column` column values should map to those already available in the ARD.
+Then we can combine this information with the data above to make the
+full ARD for this table.
+
+``` r
+big_ns <- tibble::tibble(
+  Column = c("Placebo", "Treatment", "Total"),
+  Param = "bigN",
+  Value = c(30, 30, 60)
+)
+
+data <- dplyr::bind_rows(data, big_ns)
+```
+
+Now we can make our `tfrmt` as normal, but this time we are going to add
+a `big_n_structure` to `big_n`. Here we will specify that values with
+the parameter of `"bigN"` should be appended to the column labels and
+they should be formatted as `"N = XX"` and on a separate line.
+
+``` r
+tfrmt(
+  group = Group,
+  label = Label,
+  column = Column,
+  value = Value,
+  param = Param,
+  sorting_cols = c(ord1, ord2),
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine("{n} {pct}",
+        n = frmt("X"),
+        pct = frmt("(xx.x%)", missing = " ")
+      )
+    ),
+    frmt_structure(
+      group_val = "Age (y)", label_val = "Mean (SD)",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("XX.X"),
+        sd = frmt("x.xx")
+      )
+    ),
+    frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+  ),
+  col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = " "))
+  ),
+  big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
+) %>%
+  print_to_gt(data)
+```
+
+[TABLE]
+
+No matter how complicated the table, this feature will work as long as
+the ARD is set up appropriately with the correct `column` column values
+on the big N rows. For tables with spanning columns (i.e. multiple
+`column` columns), the big N will be appended to the lowest level
+`column` column value that is supplied (based on the order of the column
+variables supplied to the `tfrmt`). Let’s look at this table, which has
+3 layers of column spanning:
+
+``` r
+data <- tibble::tribble(
+  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
+  "g1", "rowlabel1", "column cols", "cols 1,2", "col1", "value", 1,
+  "g1", "rowlabel1", "column cols", "cols 1,2", "col2", "value", 1,
+  "g1", "rowlabel1", NA, NA, "mycol3", "value", 1,
+  "g1", "rowlabel1", "column cols", "col 4", "col4", "value", 1,
+  "g1", "rowlabel1", NA, NA, "mycol5", "value", 1,
+  "g1", "rowlabel2", "column cols", "cols 1,2", "col1", "value", 2,
+  "g1", "rowlabel2", "column cols", "cols 1,2", "col2", "value", 2,
+  "g1", "rowlabel2", NA, NA, "mycol3", "value", 2,
+  "g1", "rowlabel2", "column cols", "col 4", "col4", "value", 2,
+  "g1", "rowlabel2", NA, NA, "mycol5", "value", 2,
+  "g2", "rowlabel3", "column cols", "cols 1,2", "col1", "value", 3,
+  "g2", "rowlabel3", "column cols", "cols 1,2", "col2", "value", 3,
+  "g2", "rowlabel3", NA, NA, "mycol3", "value", 3,
+  "g2", "rowlabel3", "column cols", "col 4", "col4", "value", 3,
+  "g2", "rowlabel3", NA, NA, "mycol5", "value", 3,
+)
+
+
+
+spanning_tfrmt <- tfrmt(
+  group = group,
+  label = label,
+  param = parm,
+  value = val,
+  column = c(span2, span1, my_col),
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+  ),
+  col_plan = col_plan(
+    group,
+    label,
+    starts_with("col")
+  )
+)
+
+print_to_gt(spanning_tfrmt, data)
+```
+
+[TABLE]
+
+If we just want to put the big N on the highest “column cols”, we need
+to add a row to the ARD where `span2` equals `"column cols"` and all
+other `column` columns are missing.
+
+``` r
+with_big_n_data <- tibble::tribble(
+  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
+  NA, NA, "column cols", NA, NA, "bigN", 18,
+) %>%
+  dplyr::bind_rows(data)
+
+# Now we can add the big_n to the tfrmt from before
+n_span_tfrmt <- spanning_tfrmt %>%
+  tfrmt(big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx")))
+
+print_to_gt(n_span_tfrmt, .data = with_big_n_data)
+```
+
+[TABLE]
+
+If we also want big N’s on `col 1,2`, `col4`, and `mycol3`, we will need
+Add 3 more rows to our ARD. One that goes down to the `span1` level of
+specificity and two that go all the way down to `my_col` level of
+specificity. (Note: because we are keeping the `parm` values the same we
+can use the same tfrmt)
+
+``` r
+with_more_big_n_data <- tibble::tribble(
+  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
+  NA, NA, "column cols", "cols 1,2", NA, "bigN", 12,
+  NA, NA, "column cols", "col 4", "col4", "bigN", 6,
+  NA, NA, NA, NA, "mycol3", "bigN", 6
+) %>%
+  dplyr::bind_rows(with_big_n_data)
+
+print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
+```
+
+[TABLE]
+
+## Page-Level Big Ns
+
+The `page_plan` allows users to split up large tables in many ways.
+Let’s suppose our `page_plan` splits our table so that each subtable
+represents a different subpopulation defined by the `group` variable in
+the ARD.
+
+In this case, our page_plan looks something like this:
+
+``` r
+page_structure(group_val = ".default")
+```
+
+Because our subtables contain different populations, we want the big Ns
+displayed in the headers to be table-specific. To achieve this, we can
+supply multiple sets of big Ns in the ARD. We just need to specify the
+specific values of the `group` parameter that each big N belongs to.
+This functionality can be enabled via the `by_page` argument in
+`big_n_structure`.
+
+For example, let’s take the following data, where we have calculated big
+Ns for each level of the grouping variable `grp`. NOTE: the bigN rows
+should be in the same order as the rest of the data (i.e. A, B rather
+than B, A for the `grp` variable).
+
+``` r
+
+dat <- tidyr::crossing(
+  grp = c("A", "B"),
+  lbl = c("a", "b"),
+  col = c("Placebo", "Treatment"),
+  param = "mean"
+) %>%
+  dplyr::mutate(val = c(1.254, 3.483, 5.123, 4.239, 4.364, 8.435, 7.645, 2.312))
+
+big_ns <- tibble::tibble(
+  col = c("Placebo", "Placebo", "Treatment", "Treatment"),
+  grp = c("A", "B", "A", "B"),
+  param = "bigN",
+  val = c(34, 36, 42, 39)
+)
+
+dat <- dplyr::bind_rows(dat, big_ns)
+tail(dat)
+#> # A tibble: 6 × 5
+#>   grp   lbl   col       param   val
+#>   <chr> <chr> <chr>     <chr> <dbl>
+#> 1 B     b     Placebo   mean   7.64
+#> 2 B     b     Treatment mean   2.31
+#> 3 A     NA    Placebo   bigN  34   
+#> 4 B     NA    Placebo   bigN  36   
+#> 5 A     NA    Treatment bigN  42   
+#> 6 B     NA    Treatment bigN  39
+```
+
+Now that we have all big Ns represented in the ARD, we can make sure of
+the `by_page` argument in the `big_n_structure` to ensure the various
+big Ns are assigned to the relevant pages defined by the `page_plan`.
+
+``` r
+gts <- tfrmt(
+  group = grp,
+  label = lbl,
+  column = col,
+  param = param,
+  value = val,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x.x"))
+  ),
+  page_plan = page_plan(
+    page_structure(group_val = ".default")
+  ),
+  big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"), by_page = TRUE)
+) %>%
+  print_to_gt(dat)
+```
+
+``` r
+gts %>% gt::grp_pull(1)
+```
+
+[TABLE]
+
+``` r
+gts %>% gt::grp_pull(2)
+```
+
+[TABLE]
+
+## Final note
+
+As a final note, column names for the big N’s should match the ARD
+column names, rather than any future names. Regardless of any renaming
+that happens in the `col_plan`, the column name for the big N’s should
+be consistent with column values in the ARD. The big N’s will still be
+added if names do get updated in the `col_plan`.
+
+``` r
+n_span_tfrmt %>%
+  tfrmt(col_plan = col_plan(
+    group,
+    label,
+    starts_with("col"),
+    new_col_3 = mycol3,
+    -mycol5
+  )) %>%
+  print_to_gt(.data = with_more_big_n_data)
+```
+
+[TABLE]
+
+`big_n_structure`s provide a straightforward way of adding big N’s from
+the ARD into the column labels. The functionality allows for big N’s at
+any level of column spanning depending on how it is parameterized in the
+ARD.

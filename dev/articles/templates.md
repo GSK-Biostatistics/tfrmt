@@ -1,0 +1,381 @@
+# Creating Template tfrmts
+
+``` r
+library(tfrmt)
+```
+
+A core design element of `tfrmt` is to offer the ability to layer tfrmts
+together. This ability provides an opportunity for organizations to
+build template table formats that can be shared, improved, and reused
+across multiple projects. Through layering, the users can customize the
+templates to create a specific table.
+
+A template is a function that, given a set of inputs (or none), creates
+a standard `tfrmt`. We will go through their applications below.  
+We will create an Adverse Events table template in this vignette to
+demonstrate the ideas behind developing a template tfrmt.
+
+## Creating a Standard tfrmt
+
+The first step to creating an Adverse Events table template is to
+determine the constants in the format. This requires there to be some
+standards that can be expected that allows the construction of the basic
+`tfrmt`:
+
+First, we can provide instructions on cell formatting via the
+`body_plan`. We know that the cells should be consistently formatted as
+follows:
+
+- Total counts should be whole numbers
+- Cells within each treatment group column should be a combination of a
+  count and percent of that population. When percent is 100 or zero,
+  value should be blank.
+- p-values should be formatted where: \>.99 is displayed as “\>0.99”,
+  \<0.001 is displayed as “\<0.001”, and any values between should be
+  displayed to three decimal places. Missing p-values should be replaced
+  with “–”.
+
+Next, because our data is standardized as an analysis results dataset,
+we can pre-fill the expected column names. This also ensures that the
+data abides to the standard and names are set consistently:
+
+- `AEBODYSYS` defines the body systems and overall grouping of the data.
+- `AETERM` defines the labels to display in the table.
+- `value` defines the values to present in the table.
+- `treatment` defines the treatment for each value. This defines the
+  column span.
+- `col` defines the column for each value.
+- `param` is the column that describes the params of the `value` column.
+  “AEs” indicates that the number in `value` represents the total
+  counts, “n” represents the count for the specific AE, “pct” is the
+  percent of the treatment population, and finally “pval” is the
+  p-value.
+
+With this information we can construct a template AE `tfrmt`:
+
+``` r
+ae_tfrmt_template <- tfrmt(
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = c(treatment, col),
+  value = value,
+  body_plan = body_plan(
+    ## All entries where the param column is `AEs` (representing total counts)
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      AEs = frmt("[XXX]")
+    ),
+
+    ## Combine entries where param column is `n` and `pct` to create a cell for
+    ## that population
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine(
+        "{n} {pct}",
+        n = frmt("XXX"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    ),
+
+    ## All entries where param column is `pval`, format conditionally.
+    ## When the value is missing, replace the NA with "--".
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        TRUE ~ frmt("x.xxx", missing = "--")
+      )
+    )
+  )
+)
+```
+
+## Functionalising the Template
+
+Now that we have our tfrmt, we can wrap it into a function to form a
+template. This allows us to have as many layers as we’d like. For
+example, we can have an organization-level template to be used across
+all tables, a domain-level template to be used across all tables in a
+given domain, and a project-level template to be used for study-specific
+tables.
+
+`tfrmt` offers the function
+[`layer_tfrmt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/layer_tfrmt.md),
+which provides the ability for layering `tfrmt` together. The first two
+arguments are the `tfrmt` objects to be layered. By default the
+body_plans of the tfrmt are joined together. We will leverage this
+function in the creation of our template.
+
+See below for an example of creating a template based on a function for
+layering `tfrmt` together. In this scenario the base AE template only
+has body_plan values for handling total counts, case counts, and
+percents, but not p-values. We create another template for p-values, and
+then finally layer it with the study specific tfrmt.
+
+``` r
+ae_base_tfrmt_template <- function(tfrmt_obj) {
+  ae_base <- tfrmt(
+    group = AEBODSYS,
+    label = AETERM,
+    param = param,
+    column = c(treatment, col),
+    value = value,
+    body_plan = body_plan(
+      ## All entries where the param column is `AEs` (representing total counts)
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        AEs = frmt("[XXX]")
+      ),
+
+      ## Combine entries where param column is `n` and `pct` to create a cell for
+      ## that population
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{n} {pct}",
+          n = frmt("XXX"),
+          pct = frmt_when(
+            "==100" ~ "",
+            "==0" ~ "",
+            TRUE ~ frmt("(xx.x %)")
+          )
+        )
+      )
+    )
+  )
+
+  layer_tfrmt(x = tfrmt_obj, y = ae_base)
+}
+
+ae_pval_tfrmt_template <- function(tfrmt_obj) {
+  ae_pval_template <- tfrmt(
+    body_plan = body_plan(
+      ## All entries where param column is `pval`, format conditionally.
+      ## When the value is missing, replace the NA with "--".
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        pval = frmt_when(
+          ">0.99" ~ ">0.99",
+          "<0.001" ~ "<0.001",
+          TRUE ~ frmt("x.xxx", missing = "--")
+        )
+      )
+    )
+  )
+
+  layer_tfrmt(tfrmt_obj, ae_pval_template)
+}
+```
+
+Using these templates and what we learned from the layering vignette, we
+can apply multiple templates cleanly within a pipe:
+
+``` r
+study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>%
+  ae_pval_tfrmt_template() %>%
+  tfrmt(
+    title = "Adverse Events for CDISC Pilot Study",
+    subtitle = "Data subset to AEs with >10% prevalence in the High Dose group",
+
+    ## Sorting columns of rows
+    sorting_cols = c(ord1, ord2),
+
+    ## Nest Preferred terms under SOC
+    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+
+    ## alisgnment of columns
+    col_style_plan = col_style_plan(
+      col_style_structure(align = c(".", ",", " "), col = vars(starts_with("p_")))
+    ),
+
+    ## remove order columns from final table
+    col_plan = col_plan(
+      span_structure(
+        treatment = c(
+          "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
+          "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
+          "Placebo (N=86)" = Placebo
+        ),
+        col = c(
+          `n (%)` = `n_pct`,
+          `[AEs]` = `AEs`
+        )
+      ),
+      span_structure(
+        treatment = c(
+          "Fisher's Exact p-values" = fisher_pval
+        ),
+        col = c(
+          `Placebo vs. Low Dose` = `p_low`,
+          `Placebo vs. High Dose` = `p_high`
+        )
+      ),
+      -starts_with("ord")
+    )
+  )
+```
+
+See how this results in the same table as above:
+
+``` r
+## filter to keep only AEs with >10% prevalence in the High Dose group
+data_ae2 <- data_ae %>%
+  dplyr::group_by(AEBODSYS, AETERM) %>%
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(pct_high > 10) %>%
+  dplyr::select(-pct_high) %>%
+  dplyr::rename(
+    treatment = col2,
+    col = col1
+  )
+
+study_ae_tfrmt_multi_layer %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
+    container.width = 1000
+  )
+```
+
+[TABLE]
+
+## Alternatives to Full Templates
+
+In addition to defining full tfrmt templates, users can also create
+reusable frmt templates. The benefit of this is that teams can use these
+frmts in their tfrmt directly and can be sure their table will comply
+with the value presentation expected of their organization.
+
+Some common pre-defined frmts may include p-value displays, integers,
+`n (%)`, among other things.
+
+``` r
+# defined frmts
+
+int_frmt <- frmt("[XXX]")
+
+pval_frmt <- frmt_when(
+  ">0.99" ~ ">0.99",
+  "<0.001" ~ "<0.001",
+  TRUE ~ frmt("x.xxx", missing = "--")
+)
+
+n_pct_frmt <- frmt_combine(
+  "{n} {pct}",
+  n = frmt("XXX"),
+  pct = frmt_when(
+    "==100" ~ "",
+    "==0" ~ "",
+    TRUE ~ frmt("(xx.x %)")
+  )
+)
+
+## frmts as functions
+
+int_frmt_func <- function(ints = 2) {
+  str_exp <- paste0("[", paste0(rep("X", ints), collapse = ""), "]")
+  frmt(str_exp)
+}
+```
+
+Now that there are defined frmts, we can use them in our tfrmt to
+generate our table too.
+
+``` r
+tfrmt(
+  group = AEBODSYS,
+  label = AETERM,
+  param = param,
+  column = c(treatment, col),
+  value = value,
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      AEs = int_frmt_func(3)
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      n_pct_frmt
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      pval = pval_frmt
+    )
+  ),
+
+  ## remove order columns from final table
+  col_plan = col_plan(
+    span_structure(
+      treatment = c(
+        "Xanomeline High Dose (N=84)" = `Xanomeline High Dose`,
+        "Xanomeline Low Dose (N=84)" = `Xanomeline Low Dose`,
+        "Placebo (N=86)" = Placebo
+      ),
+      col = c(
+        `n (%)` = `n_pct`,
+        `[AEs]` = `AEs`
+      )
+    ),
+    span_structure(
+      treatment = c(
+        "Fisher's Exact p-values" = fisher_pval
+      ),
+      col = c(
+        `Placebo vs. Low Dose` = `p_low`,
+        `Placebo vs. High Dose` = `p_high`
+      )
+    ),
+    -starts_with("ord")
+  )
+) %>%
+  print_to_gt(data_ae2) %>%
+  gt::tab_options(
+    container.width = 1000
+  )
+```
+
+[TABLE]
+
+## Best Practices
+
+Here we list some of the ideas about best practices when it comes to
+defining tfrmt templates for use across organization. This comes from
+experience writing and using `tfrmt` and has the potential to change.
+
+A template tfrmt is intended to provide an interface for creating
+complex tfrmts more easily. When creating the function, it is helpful to
+differentiate the aspects of the display that will remain constant from
+those which are likely to change across tables or studies. These changes
+can be captured as arguments in the function. These functions should
+serve to provide a way to interact with and create tfrmts for standard
+tables in such a way that customization for a specific table’s `tfrmt`
+is simplified.
+
+However, as with normal function development, this should be balanced
+with limiting the number of arguments necessary to pass and get a
+functional tfrmt. For example, `tfrmt_sigdig` accepts a minimal set of
+arguments, including a data.frame or tibble, to define a complex
+body_plan. Simplifying the way users may enter this complex set of
+instructions without having to manually type it is part of its strength.
+
+In addition to minimizing the arguments to a tfrmt template, it is
+generally simpler to define and enforce standards around things people
+can see in a table. For example, the grouping, labels, and value formats
+are easy to see and understand. Standardizing around meta information
+that impacts a table but may not as easily be seen, such as value
+context (params), is more difficult.

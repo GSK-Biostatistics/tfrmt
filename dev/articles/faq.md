@@ -1,0 +1,72 @@
+# FAQ
+
+### Can you format a column header?
+
+To format your column header, just use markdown syntax within your
+character strings. Examples of this could be a newline, or bolding
+certain words. To add a newline to your column header you need to
+include the markdown syntax `<br>` or `\n` in your character string. For
+bolding, surround your text with `**` on either side. Some example code
+is provided below:
+
+``` r
+es_data <- tibble::tibble(
+  rowlbl1 = c(rep("Completion Status", 12), rep("Primary reason for withdrawal", 28)),
+  rowlbl2 = c(rep("Completed", 4), rep("Prematurely Withdrawn", 4), rep("Unknown", 4), rep("Adverse Event", 4), rep("Lost to follow-up", 4), rep("Protocol violation", 4), rep("Subject decided to withdraw", 4), rep("Protocol Violation", 4), rep("Pre-Operative Dose[1]", 4), rep("Other", 4)),
+  param = c(rep(c("n", "n", "pct", "pct"), 10)),
+  column = c(rep(c("Placebo<br>(N=48)", "Treatment\n**(N=38)**"), 20)), # newline and bold syntax
+  value = c(24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18, 1900 / 48, 1800 / 38, 1, 1, 100 / 48, 100 / 38, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 100 / 48, 100 / 38, 1, 4, 100 / 48, 400 / 38, 1, 0, 100 / 48, 0, 2, 3, 200 / 48, 300 / 38)
+)
+
+tfrmt(
+  # specify columns in the data
+  group = c(rowlbl1),
+  label = rowlbl2,
+  column = column,
+  param = param,
+  value = value,
+  # set formatting for values
+  body_plan = body_plan(
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine(
+        "{n} {pct}",
+        n = frmt("xxx"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
+      )
+    )
+  ),
+
+  # Specify row group plan
+  # Indent the rowlbl2
+  row_grp_plan = row_grp_plan(
+    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+    label_loc = element_row_grp_loc(location = "indented")
+  )
+) %>%
+  print_to_gt(es_data) %>%
+  gt::tab_options(container.width = 1000)
+```
+
+[TABLE]
+
+### How do I output my table?
+
+In order to share your table with others, you will likely want to output
+it to a document. You can view your table in R using `tfrmt`’s
+`print_to_gt` and `print_mock_gt` functions, which create `gt` table
+objects. However, `tfrmt` does not offer functionality to save the table
+directly to a document. To save and share your table, we recommend
+leveraging the export capabilities provided by the {gt} package. {gt}
+offers a range of export options for various document types, including
+HTML, LaTeX, and Word. For more information on exporting, see [the gt
+package documentation](https://gt.rstudio.com/reference/gtsave.html).
+
+In summary, the `print_to_gt` and `print_mock_gt` functions create a
+`gt` table object that can be viewed in R, while exporting the table to
+a document is handled through `gt`’s export functions.
