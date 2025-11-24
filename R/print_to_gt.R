@@ -475,17 +475,7 @@ convert_ws_unicode <- function(gt_table){
     text_transform(
       locations = locations,
       fn = function(x) {
-
-        x_trimmed <- str_trim(x)
-        space_left <- str_match(x, "^\\s*") %>% nchar()
-        space_right <- str_match(x, "\\s*$") %>% nchar()
-        space_right[x_trimmed == ""] <- 0
-
-        str_c(
-          str_dup("\U00A0", space_left),
-          x_trimmed,
-          str_dup("\U00A0", space_right)
-        )
+        str_replace_all(x, pattern = "\\s", replacement = "\u00A0")
       }
     )
 }
