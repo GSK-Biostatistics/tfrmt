@@ -119,8 +119,8 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2)
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -180,8 +180,8 @@ tfrmt(
       TRUE ~ frmt("x.xxx", missing = "")
     ))
   )
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -229,8 +229,8 @@ tfrmt(
     -grp,
     -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -252,7 +252,7 @@ our data. If we look at our data, we can see we want a space any time
 either of the groups change.
 
 ``` r
-data_demog %>%
+data_demog |>
   dplyr::distinct(rowlbl1, grp)
 #> # A tibble: 12 × 2
 #> # Groups:   rowlbl1 [9]
@@ -325,8 +325,8 @@ tfrmt(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "column")
   )
-) %>%
-  print_to_gt(data_demog) %>%
+) |>
+  print_to_gt(data_demog) |>
   gt::tab_options(
     container.width = 900
   )
@@ -420,11 +420,11 @@ prevalence in the High Dose group.
 Expand for the code used to produce this subset
 
 ``` r
-data_ae2 <- data_ae %>%
-  dplyr::group_by(AEBODSYS, AETERM) %>%
-  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
-  dplyr::ungroup() %>%
-  dplyr::filter(pct_high > 10) %>%
+data_ae2 <- data_ae |>
+  dplyr::group_by(AEBODSYS, AETERM) |>
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) |>
+  dplyr::ungroup() |>
+  dplyr::filter(pct_high > 10) |>
   dplyr::select(-pct_high)
 ```
 
@@ -462,8 +462,8 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord1, ord2)
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -528,8 +528,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(., data_ae2) %>%
+) |>
+  print_to_gt(tfrmt=_, data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -581,8 +581,8 @@ tfrmt(
   ),
   # Nest Preferred terms under SOC
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented"))
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -637,8 +637,8 @@ tfrmt(
   col_style_plan = col_style_plan(
     col_style_structure(align = c(".", ",", " "), col = vars(starts_with("p_")))
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -697,8 +697,8 @@ tfrmt(
   col_plan = col_plan(
     -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -778,8 +778,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -833,8 +833,8 @@ tfrmt(
   column = column,
   param = param,
   value = value
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -890,8 +890,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -964,8 +964,8 @@ tfrmt(
       )
     )
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -1032,8 +1032,8 @@ tfrmt(
   col_plan = col_plan(
     group, label, Placebo, contains("Low"), contains("High"), -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -1107,8 +1107,8 @@ tfrmt(
   row_grp_plan = row_grp_plan(
     label_loc = element_row_grp_loc(location = "indented")
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )
@@ -1192,8 +1192,8 @@ tfrmt(
     ),
     label_loc = element_row_grp_loc(location = "indented")
   )
-) %>%
-  print_to_gt(data_efficacy) %>%
+) |>
+  print_to_gt(data_efficacy) |>
   gt::tab_options(
     container.width = 800
   )

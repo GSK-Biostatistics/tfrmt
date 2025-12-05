@@ -42,7 +42,7 @@ well as the col_plan.
 The output tfrmt generates a table with the subset `data_labs`.
 
 ``` r
-data_labs_subset <- data_labs %>%
+data_labs_subset <- data_labs |>
   dplyr::filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE", "ALBUMIN", "ALKALINE PHOSPHATASE", "ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
     rowlbl %in% c("Bsln", "End[1]")
@@ -64,7 +64,7 @@ labs_tfrmt_template <- tfrmt_sigdig(
   param_defaults = param_set("[{n}]" = NA)
 )
 
-labs_tfrmt <- labs_tfrmt_template %>%
+labs_tfrmt <- labs_tfrmt_template |>
   tfrmt(
     column = vars(col1, col2),
     param = param,
@@ -83,8 +83,8 @@ labs_tfrmt <- labs_tfrmt_template %>%
     )
   )
 
-labs_tfrmt %>%
-  print_to_gt(data_labs_subset) %>%
+labs_tfrmt |>
+  print_to_gt(data_labs_subset) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -114,17 +114,17 @@ different naming convention than expected.
 
 ``` r
 ## provided data had different column names for groups
-alternate_data_labs_subset <- data_labs_subset %>%
+alternate_data_labs_subset <- data_labs_subset |>
   dplyr::rename(
     `Lab Type` = group1,
     `Lab Test` = group2,
   )
 
-labs_tfrmt %>%
+labs_tfrmt |>
   update_group(
     `Lab Type` = group1,
     `Lab Test` = group2,
-  ) %>%
+  ) |>
   tfrmt(
     col_plan = col_plan(
       `Lab Type`, `Lab Test`,
@@ -134,8 +134,8 @@ labs_tfrmt %>%
       n,
       -starts_with("ord")
     )
-  ) %>%
-  print_to_gt(alternate_data_labs_subset) %>%
+  ) |>
+  print_to_gt(alternate_data_labs_subset) |>
   gt::tab_options(
     container.width = 1000
   )

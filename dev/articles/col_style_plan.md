@@ -127,7 +127,7 @@ tfrmt(
       )
     )
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -185,7 +185,7 @@ tfrmt(
   col_style_plan = col_style_plan(
     col_style_structure(col = `p-value`, align = "left", type = "char")
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -241,7 +241,7 @@ tfrmt(
   col_style_plan = col_style_plan(
     col_style_structure(col = `p-value`, align = c("."), type = "char")
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -299,7 +299,7 @@ tfrmt(
     col_style_structure(col = `p-value`, align = c("."), type = "char"),
     col_style_structure(col = starts_with("trt"), align = c(".", ",", " "), type = "char")
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -358,7 +358,7 @@ tfrmt(
     col_style_structure(col = trt1, align = "left", type = "char"),
     col_style_structure(col = trt2, align = "right", type = "char")
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -435,7 +435,7 @@ tf <- tfrmt(
   )
 )
 
-tf %>% print_to_gt(dat)
+tf |> print_to_gt(dat)
 ```
 
 |            | trt1            | trt2            | p-value |
@@ -550,7 +550,7 @@ tfrmt(
     col_style_structure(col = trt1, align = "left", width = "5"),
     col_style_structure(col = trt2, align = "right", width = "5")
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 

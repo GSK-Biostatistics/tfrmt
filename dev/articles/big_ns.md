@@ -25,7 +25,7 @@ data <- tibble::tibble(
   Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"), c(6, 3, 3, 3, 3, 3, 3)),
   Value = c(15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
   8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27)
-) %>%
+) |>
   # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
   dplyr::mutate(
     Value = dplyr::case_when(
@@ -106,7 +106,7 @@ tfrmt(
     row_grp_structure(group_val = ".default", element_block(post_space = " "))
   ),
   big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
-) %>%
+) |>
   print_to_gt(data)
 ```
 
@@ -171,11 +171,11 @@ other `column` columns are missing.
 with_big_n_data <- tibble::tribble(
   ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
   NA, NA, "column cols", NA, NA, "bigN", 18,
-) %>%
+) |>
   dplyr::bind_rows(data)
 
 # Now we can add the big_n to the tfrmt from before
-n_span_tfrmt <- spanning_tfrmt %>%
+n_span_tfrmt <- spanning_tfrmt |>
   tfrmt(big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx")))
 
 print_to_gt(n_span_tfrmt, .data = with_big_n_data)
@@ -195,7 +195,7 @@ with_more_big_n_data <- tibble::tribble(
   NA, NA, "column cols", "cols 1,2", NA, "bigN", 12,
   NA, NA, "column cols", "col 4", "col4", "bigN", 6,
   NA, NA, NA, NA, "mycol3", "bigN", 6
-) %>%
+) |>
   dplyr::bind_rows(with_big_n_data)
 
 print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
@@ -235,7 +235,7 @@ dat <- tidyr::crossing(
   lbl = c("a", "b"),
   col = c("Placebo", "Treatment"),
   param = "mean"
-) %>%
+) |>
   dplyr::mutate(val = c(1.254, 3.483, 5.123, 4.239, 4.364, 8.435, 7.645, 2.312))
 
 big_ns <- tibble::tibble(
@@ -276,18 +276,18 @@ gts <- tfrmt(
     page_structure(group_val = ".default")
   ),
   big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"), by_page = TRUE)
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
 ``` r
-gts %>% gt::grp_pull(1)
+gts |> gt::grp_pull(1)
 ```
 
 [TABLE]
 
 ``` r
-gts %>% gt::grp_pull(2)
+gts |> gt::grp_pull(2)
 ```
 
 [TABLE]
@@ -301,14 +301,14 @@ be consistent with column values in the ARD. The big N’s will still be
 added if names do get updated in the `col_plan`.
 
 ``` r
-n_span_tfrmt %>%
+n_span_tfrmt |>
   tfrmt(col_plan = col_plan(
     group,
     label,
     starts_with("col"),
     new_col_3 = mycol3,
     -mycol5
-  )) %>%
+  )) |>
   print_to_gt(.data = with_more_big_n_data)
 ```
 

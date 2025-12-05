@@ -51,7 +51,7 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2) %>%
+print_mock_gt(my_tfrmt, .default = 1:2) |>
   gt::tab_style(
     style = gt::cell_text(whitespace = "pre", align = "left"),
     locations = gt::cells_stub()
@@ -78,7 +78,7 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2) %>%
+print_mock_gt(my_tfrmt, .default = 1:2) |>
   gt::tab_style(
     style = gt::cell_text(whitespace = "pre", align = "left"),
     locations = gt::cells_stub()
@@ -121,7 +121,7 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2) %>%
+print_mock_gt(my_tfrmt, .default = 1:2) |>
   gt::tab_style(
     style = gt::cell_text(whitespace = "pre", align = "left"),
     locations = gt::cells_stub()
@@ -150,7 +150,7 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2) %>%
+print_mock_gt(my_tfrmt, .default = 1:2) |>
   gt::tab_style(
     style = gt::cell_text(whitespace = "pre", align = "left"),
     locations = gt::cells_stub()
@@ -179,7 +179,7 @@ my_tfrmt <- tfrmt(
   )
 )
 
-print_mock_gt(my_tfrmt, .default = 1:2) %>%
+print_mock_gt(my_tfrmt, .default = 1:2) |>
   gt::tab_style(
     style = gt::cell_text(whitespace = "pre", align = "left"),
     locations = gt::cells_stub()

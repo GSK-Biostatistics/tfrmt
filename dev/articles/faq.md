@@ -48,8 +48,8 @@ tfrmt(
     row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     label_loc = element_row_grp_loc(location = "indented")
   )
-) %>%
-  print_to_gt(es_data) %>%
+) |>
+  print_to_gt(es_data) |>
   gt::tab_options(container.width = 1000)
 ```
 

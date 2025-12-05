@@ -118,7 +118,7 @@ using the <code>tfrmt_to_json</code> function. Suppose we have a basic
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">template_tfrmt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">template_tfrmt</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -654,7 +654,7 @@ using the <code>tfrmt_to_json</code> function. Suppose we have a basic
 <p>We can pass this through <code>tfrmt_to_json</code> to convert to
 <code>JSON</code> metadata.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">template_tfrmt</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">template_tfrmt</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt_to_json.html">tfrmt_to_json</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "group": ["grp"],</span></span>
@@ -692,7 +692,7 @@ a file path as the second argument to the function:</p>
 <span>      <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt_to_json.html">tfrmt_to_json</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"template.JSON"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -705,10 +705,10 @@ into R.</p>
 <p>Once available in the R session, users can optionally build on this
 template as needed.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">template_json</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">template_json</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/layer_tfrmt.html">layer_tfrmt</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Custom title"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div id="ubqtxvafbs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ubqtxvafbs table {

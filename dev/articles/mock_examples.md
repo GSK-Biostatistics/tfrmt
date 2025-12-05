@@ -56,29 +56,31 @@ ae_mock_table <- function(tfrmt_obj) {
 Example 1: mock table with no groups
 
 ``` r
-df <- dplyr::bind_rows(
-  tidyr::crossing(
-    label = c("label 1", "label 2", "label 3"),
-    column = c("T1", "T2", "T1&T2", "PL"),
-    param = c("count", "percent")
-  ) %>%
-    dplyr::mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.) / length(unique(.$label)))),
-  tidyr::crossing(
-    label = c("label 1", "label 2", "label 3"),
-    column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
-    param = c("num", "lower", "upper")
-  ) %>%
-    dplyr::mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.) / length(unique(.$label))))
-) %>% dplyr::arrange_all()
+df1 <- tidyr::crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("T1", "T2", "T1&T2", "PL"),
+           param = c("count", "percent")) 
+df11 <- df1 |>
+    dplyr::mutate(ord1 = rep(seq(1:length(unique(df1$label))), each = nrow(df1)/length(unique(df1$label)) ))
+  
+  
+df2 <- tidyr::crossing(label = c("label 1", "label 2", "label 3"),
+           column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
+           param = c("num", "lower", "upper")) 
+df22<- df2 |>
+    dplyr::mutate(ord1 = rep(seq(1:length(unique(df2$label))), each = nrow(df2)/length(unique(df2$label)) ))
 
-ae_mock_table() %>%
+df <- dplyr::bind_rows(df11, df22)  |>
+  dplyr::arrange_all()
+
+
+ae_mock_table() |>
   tfrmt(
     label = "label",
     param = "param",
     column = "column",
     value = value,
     sorting_cols = vars(ord1)
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -106,9 +108,9 @@ df <- dplyr::bind_rows(
     column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
     param = c("num", "lower", "upper")
   )
-) %>% dplyr::arrange_all()
+) |> dplyr::arrange_all()
 
-ae_mock_table() %>%
+ae_mock_table() |>
   tfrmt(
     group = group,
     label = "label",
@@ -121,7 +123,7 @@ ae_mock_table() %>%
       everything(),
       -starts_with("ord")
     )
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -145,9 +147,9 @@ df <- dplyr::bind_rows(
     column = c("risk T1-PL", "risk T2-PL", "risk T1&T2-PL"),
     param = c("num", "lower", "upper")
   )
-) %>% dplyr::arrange_all()
+) |> dplyr::arrange_all()
 
-ae_mock_table() %>%
+ae_mock_table() |>
   tfrmt(
     group = c(grp1, grp2),
     label = "label",
@@ -160,7 +162,7 @@ ae_mock_table() %>%
       everything(),
       -starts_with("ord")
     )
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -170,7 +172,7 @@ Example 4: mock table with two levels of grouping, column separated
 labels
 
 ``` r
-ae_mock_table() %>%
+ae_mock_table() |>
   tfrmt(
     group = c(grp1, grp2),
     label = "label",
@@ -183,7 +185,7 @@ ae_mock_table() %>%
       everything(),
       -starts_with("ord")
     )
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -228,17 +230,17 @@ fmt_spec <- tfrmt(
 )
 
 #
-data_ae2 <- data_ae %>%
-  dplyr::group_by(AEBODSYS, AETERM) %>%
-  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
-  dplyr::ungroup() %>%
-  dplyr::filter(pct_high > 10) %>%
+data_ae2 <- data_ae |>
+  dplyr::group_by(AEBODSYS, AETERM) |>
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) |>
+  dplyr::ungroup() |>
+  dplyr::filter(pct_high > 10) |>
   dplyr::select(-pct_high)
 
-data_ae2 %>%
-  dplyr::select(-value) %>%
-  dplyr::arrange(ord1, ord2) %>%
-  print_mock_gt(fmt_spec, .)
+data_ae2 |>
+  dplyr::select(-value) |>
+  dplyr::arrange(ord1, ord2) |>
+  print_mock_gt(fmt_spec, .data=_)
 ```
 
 [TABLE]
@@ -292,8 +294,8 @@ tfrmt(
     -grp,
     -starts_with("ord")
   )
-) %>%
-  print_mock_gt(data_demog %>% dplyr::select(-value))
+) |>
+  print_mock_gt(data_demog |> dplyr::select(-value))
 ```
 
 |                     |                    | Placebo      | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -415,8 +417,8 @@ tfrmt(
     contains("Low"),
     contains("High")
   )
-) %>%
-  print_mock_gt(data_efficacy %>% dplyr::select(-value))
+) |>
+  print_mock_gt(data_efficacy |> dplyr::select(-value))
 ```
 
 [TABLE]

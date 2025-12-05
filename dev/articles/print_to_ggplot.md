@@ -54,7 +54,7 @@ table <- tfrmt(
       frmt("X")
     )
   )
-) %>%
+) |>
   print_to_ggplot(risk)
 
 table
@@ -91,16 +91,16 @@ You can also apply groups to your ggplot table. The code below adds
 groupings to the risk table above for a mock example.
 
 ``` r
-riska <- risk %>%
+riska <- risk |>
   dplyr::mutate(group = "A")
 
-riskb <- risk %>%
+riskb <- risk |>
   dplyr::mutate(
     group = "B",
     value = value + 10
   )
 
-risk_group <- riska %>%
+risk_group <- riska |>
   rbind(riskb)
 ```
 
@@ -120,7 +120,7 @@ group_table <- tfrmt(
       frmt("X")
     )
   )
-) %>%
+) |>
   print_to_ggplot(risk_group) +
   ggplot2::theme(axis.text.x = NULL)
 
@@ -148,14 +148,14 @@ tbl_dat <- tibble::tibble(
   value = c(60, 7.7, 26, 3.3, 183, 23.5, 89, 11.4, 94, 12, 55, 7)
 )
 
-tbl_p <- tfrmt_n_pct() %>%
+tbl_p <- tfrmt_n_pct() |>
   tfrmt(
     label = ae,
     group = grp,
     column = trt,
     param = param,
     value = "value"
-  ) %>%
+  ) |>
   print_to_ggplot(tbl_dat)
 
 tbl_p
@@ -174,7 +174,7 @@ plot_dat <- tibble::tibble(
   mean = c(3, 2.3, 2),
   lower = c(1.95, 1.9, 1.2),
   upper = c(4, 3.5, 3.4)
-) %>%
+) |>
   dplyr::bind_rows(c(ae = "1 to 7 days after treatment"))
 
 plot_p <- ggplot2::ggplot(data = plot_dat, aes(x = ae, y = mean, ymin = lower, ymax = upper)) +
@@ -212,14 +212,14 @@ the `...`. So if you need to change the size table boy you just add that
 to the `print_to_ggplot`.
 
 ``` r
-tfrmt_n_pct() %>%
+tfrmt_n_pct() |>
   tfrmt(
     label = ae,
     group = grp,
     column = trt,
     param = param,
     value = "value"
-  ) %>%
+  ) |>
   print_to_ggplot(tbl_dat, size = 8)
 ```
 

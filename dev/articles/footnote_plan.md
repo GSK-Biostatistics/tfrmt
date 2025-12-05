@@ -34,7 +34,7 @@ df <- tidyr::crossing(
 )
 
 # This one is used for examples 5 and 6
-span_df <- df %>% dplyr::mutate(span = dplyr::case_when(
+span_df <- df |> dplyr::mutate(span = dplyr::case_when(
   column == "PL" ~ "Placebo",
   column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
 ))
@@ -73,7 +73,7 @@ tfrmt(
     footnote_structure(footnote_text = "Placebo", column_val = "PL"),
     marks = "standard"
   ),
-) %>%
+) |>
   print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
 ```
@@ -116,7 +116,7 @@ tfrmt(
     footnote_structure(footnote_text = "All Treatments", list(column = c("T1", "T2", "T1&T2"))),
     marks = "numbers"
   ),
-) %>%
+) |>
   print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
 ```
@@ -153,7 +153,7 @@ tfrmt(
     footnote_structure(footnote_text = "Footnote goes here", label_val = "label 1"),
     marks = "standard"
   ),
-) %>%
+) |>
   print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
 ```
@@ -190,7 +190,7 @@ tfrmt(
     footnote_structure(footnote_text = "Footnote goes here", group_val = "group 1", label_val = "label 1"),
     marks = "standard"
   ),
-) %>%
+) |>
   print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
 ```
@@ -238,7 +238,7 @@ tfrmt(
     footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment")),
     marks = "extended"
   )
-) %>%
+) |>
   print_mock_gt(span_df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
 ```
@@ -289,7 +289,7 @@ tfrmt(
     footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment", column = "T1&T2")),
     marks = "extended"
   )
-) %>%
+) |>
   print_mock_gt(span_df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
 ```

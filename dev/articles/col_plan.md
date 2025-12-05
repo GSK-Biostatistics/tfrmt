@@ -53,7 +53,7 @@ tfrmt(
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -80,7 +80,7 @@ tfrmt(
   col_plan = col_plan(
     -mycol5
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -111,7 +111,7 @@ tfrmt(
     # removing
     -mycol5
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -139,7 +139,7 @@ tfrmt(
     everything(),
     col1 # moved to end
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -171,7 +171,7 @@ tfrmt(
     everything(),
     col1
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -239,7 +239,7 @@ tfrmt(
     new_col_3 = mycol3,
     -mycol5
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -277,7 +277,7 @@ tfrmt(
     new_col_3 = mycol3,
     -mycol5
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -311,7 +311,7 @@ tfrmt(
     new_col_3 = mycol3,
     -mycol5
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 
@@ -355,7 +355,7 @@ tfrmt(
       my_col = c("mean", "sd")
     )
   )
-) %>%
+) |>
   print_to_gt(dat)
 ```
 

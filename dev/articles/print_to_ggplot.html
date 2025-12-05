@@ -136,7 +136,7 @@ seen below.</p>
 <span>      <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"X"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_ggplot.html">print_to_ggplot</a></span><span class="op">(</span><span class="va">risk</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">table</span></span></code></pre></div>
@@ -162,16 +162,16 @@ remove the x-axis labels using the theme</p>
 <p>You can also apply groups to your ggplot table. The code below adds
 groupings to the risk table above for a mock example.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">riska</span> <span class="op">&lt;-</span> <span class="va">risk</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">riska</span> <span class="op">&lt;-</span> <span class="va">risk</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">riskb</span> <span class="op">&lt;-</span> <span class="va">risk</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">riskb</span> <span class="op">&lt;-</span> <span class="va">risk</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    group <span class="op">=</span> <span class="st">"B"</span>,</span>
 <span>    value <span class="op">=</span> <span class="va">value</span> <span class="op">+</span> <span class="fl">10</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">risk_group</span> <span class="op">&lt;-</span> <span class="va">riska</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">risk_group</span> <span class="op">&lt;-</span> <span class="va">riska</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">riskb</span><span class="op">)</span></span></code></pre></div>
 <p>Now we need to add group to our tfrmt specification and patch
 together:</p>
@@ -189,7 +189,7 @@ together:</p>
 <span>      <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"X"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_ggplot.html">print_to_ggplot</a></span><span class="op">(</span><span class="va">risk_group</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -217,14 +217,14 @@ side by side. First we can make the table using
 <span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">7.7</span>, <span class="fl">26</span>, <span class="fl">3.3</span>, <span class="fl">183</span>, <span class="fl">23.5</span>, <span class="fl">89</span>, <span class="fl">11.4</span>, <span class="fl">94</span>, <span class="fl">12</span>, <span class="fl">55</span>, <span class="fl">7</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tbl_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt_n_pct.html">tfrmt_n_pct</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">tbl_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tfrmt_n_pct.html">tfrmt_n_pct</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>    label <span class="op">=</span> <span class="va">ae</span>,</span>
 <span>    group <span class="op">=</span> <span class="va">grp</span>,</span>
 <span>    column <span class="op">=</span> <span class="va">trt</span>,</span>
 <span>    param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>    value <span class="op">=</span> <span class="st">"value"</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_ggplot.html">print_to_ggplot</a></span><span class="op">(</span><span class="va">tbl_dat</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tbl_p</span></span></code></pre></div>
@@ -239,7 +239,7 @@ the group value to make the plots match up correctly.</p>
 <span>  mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2.3</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.95</span>, <span class="fl">1.9</span>, <span class="fl">1.2</span><span class="op">)</span>,</span>
 <span>  upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3.5</span>, <span class="fl">3.4</span><span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ae <span class="op">=</span> <span class="st">"1 to 7 days after treatment"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">plot_p</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plot_dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ae</span>, y <span class="op">=</span> <span class="va">mean</span>, ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -273,14 +273,14 @@ supplying the requirements to the <code>...</code>. So if you need to
 change the size table boy you just add that to the
 <code>print_to_ggplot</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt_n_pct.html">tfrmt_n_pct</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt_n_pct.html">tfrmt_n_pct</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>    label <span class="op">=</span> <span class="va">ae</span>,</span>
 <span>    group <span class="op">=</span> <span class="va">grp</span>,</span>
 <span>    column <span class="op">=</span> <span class="va">trt</span>,</span>
 <span>    param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>    value <span class="op">=</span> <span class="st">"value"</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_ggplot.html">print_to_ggplot</a></span><span class="op">(</span><span class="va">tbl_dat</span>, size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 <p><img src="print_to_ggplot_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="700"></p>
 </div>

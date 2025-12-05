@@ -75,7 +75,7 @@ Let’s take a subset of our example demography data.
 Expand for the code used to produce this subset
 
 ``` r
-data_demog2 <- data_demog %>%
+data_demog2 <- data_demog |>
   filter(rowlbl1 %in% unique(rowlbl1)[1:3])
 ```
 
@@ -140,7 +140,7 @@ base_tfrmt <- tfrmt(
   )
 )
 
-base_tfrmt %>%
+base_tfrmt |>
   print_to_gt(data_demog2)
 ```
 
@@ -226,7 +226,7 @@ the [`gt::grp_pull()`](https://gt.rstudio.com/reference/grp_pull.html)
 function to print the individual tables nicely in the vignette.
 
 ``` r
-gts <- base_tfrmt %>%
+gts <- base_tfrmt |>
   layer_tfrmt(
     tfrmt(
       # page plan
@@ -235,12 +235,12 @@ gts <- base_tfrmt %>%
         note_loc = "source_note"
       )
     )
-  ) %>%
+  ) |>
   print_to_gt(data_demog2)
 ```
 
 ``` r
-gts %>% gt::grp_pull(1)
+gts |> gt::grp_pull(1)
 ```
 
 |                  |           | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -259,7 +259,7 @@ gts %>% gt::grp_pull(1)
 | rowlbl1: Age (y) |           |             |                     |                      |              |         |
 
 ``` r
-gts %>% gt::grp_pull(2)
+gts |> gt::grp_pull(2)
 ```
 
 |              |        | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -271,7 +271,7 @@ gts %>% gt::grp_pull(2)
 | rowlbl1: Sex |        |             |                     |                      |              |         |
 
 ``` r
-gts %>% gt::grp_pull(3)
+gts |> gt::grp_pull(3)
 ```
 
 |                        |                 | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -290,7 +290,7 @@ We could also choose to split on both grouping variables as such
 (showing first 3 tables only):
 
 ``` r
-gts <- base_tfrmt %>%
+gts <- base_tfrmt |>
   layer_tfrmt(
     tfrmt(
       # page plan
@@ -299,12 +299,12 @@ gts <- base_tfrmt %>%
         note_loc = "source_note"
       )
     )
-  ) %>%
+  ) |>
   print_to_gt(data_demog2)
 ```
 
 ``` r
-gts %>% gt::grp_pull(1)
+gts |> gt::grp_pull(1)
 ```
 
 |                             |        | Placebo | Xanomeline Low Dose | Xanomeline High Dose | Total  | p-value |
@@ -319,7 +319,7 @@ gts %>% gt::grp_pull(1)
 | rowlbl1: Age (y), grp: cont |        |         |                     |                      |        |         |
 
 ``` r
-gts %>% gt::grp_pull(2)
+gts |> gt::grp_pull(2)
 ```
 
 |                            |           | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -331,7 +331,7 @@ gts %>% gt::grp_pull(2)
 | rowlbl1: Age (y), grp: cat |           |             |                     |                      |              |         |
 
 ``` r
-gts %>% gt::grp_pull(3)
+gts |> gt::grp_pull(3)
 ```
 
 |                        |        | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -348,7 +348,7 @@ Finally, we could split on a specific value observed in the data. For
 example, rowlbl1 = “Age (y)”.
 
 ``` r
-gts <- base_tfrmt %>%
+gts <- base_tfrmt |>
   layer_tfrmt(
     tfrmt(
       # page plan
@@ -357,12 +357,12 @@ gts <- base_tfrmt %>%
         note_loc = "source_note"
       )
     )
-  ) %>%
+  ) |>
   print_to_gt(data_demog2)
 ```
 
 ``` r
-gts %>% gt::grp_pull(1)
+gts |> gt::grp_pull(1)
 ```
 
 |         |           | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -380,7 +380,7 @@ gts %>% gt::grp_pull(1)
 |         |           |             |                     |                      |              |         |
 
 ``` r
-gts %>% gt::grp_pull(2)
+gts |> gt::grp_pull(2)
 ```
 
 |                     |                 | Placebo      | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -451,7 +451,7 @@ To instead limit the number of rows per page, we can set the `max_rows`
 argument as such (showing first 3 tables only):
 
 ``` r
-gts <- base_tfrmt %>%
+gts <- base_tfrmt |>
   layer_tfrmt(
     tfrmt(
       # page plan
@@ -459,12 +459,12 @@ gts <- base_tfrmt %>%
         max_rows = 20
       )
     )
-  ) %>%
+  ) |>
   print_to_gt(data_demog2)
 ```
 
 ``` r
-gts %>% gt::grp_pull(1)
+gts |> gt::grp_pull(1)
 ```
 
 |               |           | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -487,7 +487,7 @@ gts %>% gt::grp_pull(1)
 | Race (Origin) | n         | 86          | 84                  | 84                   | 254          | 0.648   |
 
 ``` r
-gts %>% gt::grp_pull(2)
+gts |> gt::grp_pull(2)
 ```
 
 |                     |                 | Placebo     | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
@@ -511,7 +511,7 @@ gts %>% gt::grp_pull(2)
 |                     | Min             |  7.2        |  7.8                |  2.2                 |   2.2        |         |
 
 ``` r
-gts %>% gt::grp_pull(3)
+gts |> gt::grp_pull(3)
 ```
 
 |                     |              | Placebo      | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |

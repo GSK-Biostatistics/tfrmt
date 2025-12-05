@@ -183,8 +183,8 @@ Using these templates and what we learned from the layering vignette, we
 can apply multiple templates cleanly within a pipe:
 
 ``` r
-study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() %>%
-  ae_pval_tfrmt_template() %>%
+study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() |>
+  ae_pval_tfrmt_template() |>
   tfrmt(
     title = "Adverse Events for CDISC Pilot Study",
     subtitle = "Data subset to AEs with >10% prevalence in the High Dose group",
@@ -231,19 +231,19 @@ See how this results in the same table as above:
 
 ``` r
 ## filter to keep only AEs with >10% prevalence in the High Dose group
-data_ae2 <- data_ae %>%
-  dplyr::group_by(AEBODSYS, AETERM) %>%
-  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) %>%
-  dplyr::ungroup() %>%
-  dplyr::filter(pct_high > 10) %>%
-  dplyr::select(-pct_high) %>%
+data_ae2 <- data_ae |>
+  dplyr::group_by(AEBODSYS, AETERM) |>
+  dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) |>
+  dplyr::ungroup() |>
+  dplyr::filter(pct_high > 10) |>
+  dplyr::select(-pct_high) |>
   dplyr::rename(
     treatment = col2,
     col = col1
   )
 
-study_ae_tfrmt_multi_layer %>%
-  print_to_gt(data_ae2) %>%
+study_ae_tfrmt_multi_layer |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )
@@ -342,8 +342,8 @@ tfrmt(
     ),
     -starts_with("ord")
   )
-) %>%
-  print_to_gt(data_ae2) %>%
+) |>
+  print_to_gt(data_ae2) |>
   gt::tab_options(
     container.width = 1000
   )

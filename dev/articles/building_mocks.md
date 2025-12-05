@@ -105,14 +105,15 @@ tables.
 Here is an example:
 
 ``` r
-df <- tidyr::crossing(
+df1 <- tidyr::crossing(
   label = c("label 1", "label 2", "label 3"),
   treatment = c("Treatment", "Treatment", "Treatment", "Placebo"),
   column = c("trt1", "trt2", "trt1&trt2", "pl"),
   param = c("count", "percent")
-) %>%
+) 
+df <- df1 |>
   # Assign numerical order (optional - keep if using `sorting_cols` parameter)
-  dplyr::mutate(ord1 = rep(seq(1:length(unique(.$label))), each = nrow(.) / length(unique(.$label))))
+  dplyr::mutate(ord1 = rep(seq(1:length(unique(df1$label))), each = nrow(df1) / length(unique(df1$label))))
 
 df
 #> # A tibble: 48 × 5
@@ -157,7 +158,7 @@ provide specific information when trying to order across multiple
 columns.
 
 ``` r
-tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
+tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify columns in the data
     label = label,
@@ -200,7 +201,7 @@ To add a title or subtitle, pass arguments to their respective
 parameters.
 
 ``` r
-tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") %>%
+tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify title, subtitle
     title = "Table Name",
@@ -260,7 +261,7 @@ df <- dplyr::bind_rows(
     column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
     param = c("num", "lower", "upper")
   )
-) %>%
+) |>
   dplyr::arrange_all()
 
 df
@@ -285,7 +286,7 @@ additional `frmt_structure` which accounts for the value formatting we’d
 like to apply to the the new columns.
 
 ``` r
-tfrmt_n_pct(n = "count", pct = "percent") %>%
+tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify columns in the data
     label = "label",
@@ -316,7 +317,7 @@ tfrmt_n_pct(n = "count", pct = "percent") %>%
     col_plan = col_plan(
       -starts_with("ord")
     )
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -330,7 +331,7 @@ Note that if you’d like to print a select few columns from your dataset
 you can simply filter `df` as you normally would within the
 [`print_mock_gt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/print_mock_gt.md)
 function. For example,
-`df %>% filter(!stringr::str_detect(column, "^Risk Diff")` could be used
+`df |> filter(!stringr::str_detect(column, "^Risk Diff")` could be used
 to remove values that start with “Risk Diff”.
 
 Alternatively, you can make use of
@@ -339,7 +340,7 @@ and directly specify the columns you would and wouldn’t like to display.
 Here we have decided to select only the placebo and treatment columns.
 
 ``` r
-tfrmt_n_pct(n = "count", pct = "percent") %>%
+tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify columns in the data
     label = "label",
@@ -370,7 +371,7 @@ tfrmt_n_pct(n = "count", pct = "percent") %>%
     col_plan = col_plan(
       label, PL, T1, T2
     )
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -395,10 +396,10 @@ df <- tidyr::crossing(
   label = c("label 1", "label 2"),
   column = c("PL", "T1", "T2"),
   param = c("count", "percent")
-) %>%
+) |>
   dplyr::arrange_all()
 
-tfrmt_n_pct(n = "count", pct = "percent") %>%
+tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     group = group,
     label = label,
@@ -411,7 +412,7 @@ tfrmt_n_pct(n = "count", pct = "percent") %>%
         element_block(post_space = "   ")
       )
     )
-  ) %>%
+  ) |>
   print_mock_gt(df)
 ```
 
@@ -455,7 +456,7 @@ df <- dplyr::bind_rows(
     column = c("PL", "T1", "T2"),
     param = c("min", "max", "median")
   )
-) %>%
+) |>
   dplyr::arrange_all()
 
 tfrmt(
@@ -491,7 +492,7 @@ tfrmt(
       )
     )
   )
-) %>%
+) |>
   print_mock_gt(df)
 ```
 
@@ -520,7 +521,7 @@ df <- dplyr::bind_rows(
     column = c("PL", "T1", "T2"),
     param = c("median", "min", "max")
   )
-) %>%
+) |>
   dplyr::arrange_all()
 
 tfrmt(
@@ -555,7 +556,7 @@ tfrmt(
       )
     )
   )
-) %>%
+) |>
   print_mock_gt(df)
 ```
 
@@ -613,7 +614,7 @@ tfrmt(
       )
     )
   )
-) %>%
+) |>
   print_mock_gt(df)
 ```
 
@@ -645,7 +646,7 @@ df <- dplyr::bind_rows(
     column = c("PL", "T1", "T2"),
     param = c("mean", "sd")
   )
-) %>%
+) |>
   dplyr::arrange_all()
 
 tfrmt(
@@ -679,7 +680,7 @@ tfrmt(
       )
     )
   )
-) %>%
+) |>
   print_mock_gt(df)
 ```
 

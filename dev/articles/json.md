@@ -30,7 +30,7 @@ template_tfrmt <- tfrmt(
     )
   )
 )
-template_tfrmt %>% print_mock_gt()
+template_tfrmt |> print_mock_gt()
 ```
 
 [TABLE]
@@ -38,7 +38,7 @@ template_tfrmt %>% print_mock_gt()
 We can pass this through `tfrmt_to_json` to convert to `JSON` metadata.
 
 ``` r
-template_tfrmt %>%
+template_tfrmt |>
   tfrmt_to_json()
 #> {
 #>   "group": ["grp"],
@@ -79,7 +79,7 @@ tfrmt(
       frmt("xx.x")
     )
   )
-) %>%
+) |>
   tfrmt_to_json(path = "template.JSON")
 ```
 
@@ -95,10 +95,10 @@ Once available in the R session, users can optionally build on this
 template as needed.
 
 ``` r
-template_json %>%
+template_json |>
   layer_tfrmt(
     tfrmt(title = "Custom title")
-  ) %>%
+  ) |>
   print_mock_gt()
 ```
 
