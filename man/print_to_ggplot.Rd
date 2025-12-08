@@ -33,7 +33,7 @@ table<-tfrmt(
  label = label ,
  column = time,
  param = param,
- value = value) \%>\%
+ value = value) |>
   print_to_ggplot(risk)
 
 table
