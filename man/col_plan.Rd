@@ -110,6 +110,16 @@ renaming_col_plan_ex2 <- col_plan(
    )
  )
 
+## To add a stub header rename the group variable in the column plan
+## If multiple group variables exist, any of them can be renamed.
+## If more than one is renamed, {tfrmt} will use the highest level group name available.
+
+ renaming_group <- col_plan(
+    my_grp = group, # rename group
+    label,
+    starts_with("col")
+  )
+
 }
 \seealso{
 \href{https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html}{Link to related article}
