@@ -28,15 +28,16 @@ Preparing analysis results in a tidy ARD format is a prerequisite for a {tfrmt} 
 Demographics tables commonly contain a mix of categorical and continuous summaries by treatment group. We can perform these summaries using the following {cards} code:
 
 ```{r}
-ard_demog <- ard_stack(
+ard_demog <- cards::ard_stack(
   data = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
-  ard_categorical(
-    variables = "AGEGR1", 
+  cards::ard_categorical(
+    variables = "AGEGR1",
     statistic = ~ c("p")
   ),
-  ard_continuous(
-    variables = "AGE", 
-    statistic = ~ continuous_summary_fns(c("mean","sd"))),
+  cards::ard_continuous(
+    variables = "AGE",
+    statistic = ~ cards::continuous_summary_fns(c("mean", "sd"))
+  ),
   .by = "ARM"
 )
 
@@ -46,7 +47,7 @@ ard_demog
 The first step in preparing the data for {tfrmt} is calling `shuffle_card()` which performs general operations to get the results in a tidy data frame without list-columns and extra metadata. 
 
 ```{r}
-ard_demog_shuffled <- ard_demog |> 
+ard_demog_shuffled <- ard_demog |>
   shuffle_card()
 
 ard_demog_shuffled
@@ -57,8 +58,8 @@ Note that the variables have been transformed wide and renamed. NULL values have
 For our {tfrmt} table, `AGEGR1` and `AGE` need to be combined into a single variable. We can use the `prep_combine_vars()` helper for this:
 
 ```{r}
-ard_demog_shuffled <- ard_demog_shuffled |> 
-  prep_combine_vars(vars = c("AGEGR1","AGE"))
+ard_demog_shuffled <- ard_demog_shuffled |>
+  prep_combine_vars(vars = c("AGEGR1", "AGE"))
 
 ard_demog_shuffled
 ```
@@ -66,7 +67,7 @@ ard_demog_shuffled
 Next, we want to make a row label column that is the variable level for categorical `AGEGR1` and the stat label for continuous `AGE`. We can use the `prep_label()` helper for this:
 
 ```{r}
-ard_demog_shuffled <- ard_demog_shuffled |> 
+ard_demog_shuffled <- ard_demog_shuffled |>
   prep_label()
 
 ard_demog_shuffled
@@ -81,20 +82,20 @@ tail(ard_demog_shuffled)
 Commonly we only want to display the `n` in the column headers for treatment group. To distinguish these as big N's, we need to relabel the stat, and drop the unnecessary `N` and `p`. The `prep_big_n()` helper takes care of this for us:
 
 ```{r}
-ard_demog_shuffled <- ard_demog_shuffled |> 
-  prep_big_n(vars = "ARM")  # the grouping variable we want to prepare big N's for
+ard_demog_shuffled <- ard_demog_shuffled |>
+  prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
 
 ard_demog_shuffled
 ```
 
 Finally, we can do any additional table-specific manipulations and we're ready for our tfrmt!
 ```{r}
-ard_final <- ard_demog_shuffled |> 
+ard_final <- ard_demog_shuffled |>
   # drop unneeded variables
-  dplyr::select(-c(variable_level, context, stat_label)) |> 
+  dplyr::select(-c(variable_level, context, stat_label)) |>
   # add sorting
   dplyr::mutate(ord1 = dplyr::case_when(
-    label == "18-64" ~ 1, 
+    label == "18-64" ~ 1,
     label == ">64" ~ 2,
     TRUE ~ 3
   ))
@@ -106,26 +107,26 @@ Create the {tfrmt}
 ```{r}
 tfrmt(
   group = stat_variable,
-  label = label ,
+  label = label,
   param = stat_name,
   value = stat,
   column = ARM,
   sorting_cols = ord1,
   body_plan = body_plan(
     frmt_structure(
-      group_val = ".default", 
-      label_val = ".default", 
+      group_val = ".default",
+      label_val = ".default",
       frmt("xx.x")
     ),
     frmt_structure(
-      group_val = ".default", 
-      label_val = ".default", 
-      p = frmt("xx%", transform = ~.*100)
+      group_val = ".default",
+      label_val = ".default",
+      p = frmt("xx%", transform = ~ . * 100)
     )
   ),
   big_n = big_n_structure(param_val = "bigN"),
   col_plan = col_plan(-ord1)
-) |> 
+) |>
   print_to_gt(ard_final)
 ```
 
@@ -136,20 +137,20 @@ tfrmt(
 AE tables contain hierarchical summaries. We can perform these summaries using the following {cards} code:
 
 ```{r}
-adae <- pharmaverseadam::adae |> 
-  dplyr::filter(SAFFL=="Y") |> 
-  dplyr::filter(AESOC %in% unique(AESOC)[1:2])|> 
-  dplyr::group_by(AESOC) |> 
-  dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |> 
+adae <- pharmaverseadam::adae |>
+  dplyr::filter(SAFFL == "Y") |>
+  dplyr::filter(AESOC %in% unique(AESOC)[1:2]) |>
+  dplyr::group_by(AESOC) |>
+  dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
   dplyr::ungroup()
 
-ard_ae <- ard_stack_hierarchical(
+ard_ae <- cards::ard_stack_hierarchical(
   data = adae,
   variables = c(AESOC, AEDECOD),
   by = ARM,
-  denominator = pharmaverseadam::adsl |> dplyr::filter(SAFFL=="Y"),
+  denominator = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
   id = USUBJID,
-  statistic = ~ c("n","p")
+  statistic = ~ c("n", "p")
 )
 
 ard_ae
@@ -158,7 +159,7 @@ ard_ae
 Like the demog table example, the first step in preparing the data for {tfrmt} is calling `shuffle_card()` which performs general operations to get the results in a tidy data frame without list-columns and extra metadata. 
 
 ```{r}
-ard_ae_shuffled <- ard_ae |> 
+ard_ae_shuffled <- ard_ae |>
   shuffle_card()
 
 ard_ae_shuffled
@@ -167,20 +168,20 @@ ard_ae_shuffled
 Notice that our calculations of any AE by system organ class (AESOC) have a missing value for preferred term (AEDECOD):
 
 ```{r}
-ard_ae_shuffled |> 
+ard_ae_shuffled |>
   dplyr::filter(!is.na(AESOC) & is.na(AEDECOD))
 ```
 
 We need to populate these missing values for our table. In order to display these as group summaries, the value for AEDECOD must match the value for AESOC. We can use the `prep_hierarchical_fill()` helper to fill the value from AESOC into AEDECOD:
 
 ```{r}
-ard_ae_shuffled <- ard_ae_shuffled |> 
+ard_ae_shuffled <- ard_ae_shuffled |>
   prep_hierarchical_fill(
-    vars = c("AESOC","AEDECOD"), 
+    vars = c("AESOC", "AEDECOD"),
     fill_from_left = TRUE
   )
 
-ard_ae_shuffled |> 
+ard_ae_shuffled |>
   dplyr::filter(AESOC == AEDECOD)
 ```
 
@@ -189,24 +190,24 @@ ard_ae_shuffled |>
 Note that if we take a peek at our stats for the treatment groups, we have `n`, `N`, `p` from the `ard_stack()` call: 
 
 ```{r}
-ard_ae_shuffled |> 
+ard_ae_shuffled |>
   dplyr::filter(is.na(AESOC))
 ```
 
 Commonly we only want to display the `n` in the column headers for treatment group. To distinguish these as big N's, we need to relabel the stat, and drop the unnecessary `N` and `p`. The `prep_big_n()` helper takes care of this for us:
 
 ```{r}
-ard_ae_shuffled <- ard_ae_shuffled |> 
-  prep_big_n(vars = "ARM")  # the grouping variable we want to prepare big N's for
+ard_ae_shuffled <- ard_ae_shuffled |>
+  prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
 
 ard_ae_shuffled
 ```
 
 Finally, we can do any additional table-specific manipulations and we're ready for our tfrmt!
 ```{r}
-ard_final <- ard_ae_shuffled |> 
+ard_final <- ard_ae_shuffled |>
   # drop uneeded variables
-  dplyr::select(-c(context, stat_label, stat_variable)) 
+  dplyr::select(-c(context, stat_label, stat_variable))
 
 ard_final
 ```
@@ -221,18 +222,18 @@ tfrmt(
   column = ARM,
   body_plan = body_plan(
     frmt_structure(
-      group_val = ".default", 
-      label_val = ".default", 
+      group_val = ".default",
+      label_val = ".default",
       frmt_combine(
         "{n} ({p}%)",
         n = frmt("xx"),
-        p = frmt("xx", transform = ~ . *100)
+        p = frmt("xx", transform = ~ . * 100)
       )
     )
   ),
   big_n = big_n_structure(
     param_val = "bigN"
-  ) 
-) |> 
+  )
+) |>
   print_to_gt(ard_final)
 ```

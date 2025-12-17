@@ -249,7 +249,12 @@ apply_frmt.frmt_combine <- function(frmt_def, .data, value, mock = FALSE, param,
         TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
       )
     ) %>%
-    select(-all_of(fmt_param_vals_uq), -".is_all_missing")
+    select(
+      -tidyselect::all_of(
+        fmt_param_vals_uq
+      ),
+      -".is_all_missing"
+    )
 
   ## if not mock remove
   if(!mock){
@@ -314,7 +319,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...){
       })
 
     left <- frmt_def$frmt_ls %>%
-      map_chr(f_lhs) %>%
+      map_chr(f_lhs_as_char) %>%
       if_else(. == "TRUE", ., paste0(values_str, .)) %>%
       parse_exprs() %>%
       map(eval_tidy, .data)

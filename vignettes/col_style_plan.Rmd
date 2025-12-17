@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup, message = FALSE, warning = FALSE}
 library(tfrmt)
-library(tibble)
-library(dplyr)
 ```
 
 tfrmt offers the ability to align value and set column widths. Columns can be aligned in the following ways:
@@ -53,24 +51,25 @@ Let's take a look at how alignment can be applied to the example below, which co
 <details>
   <summary>Expand for the code used to produce the example data</summary>
 ```{r}
-dat <- tribble(
-  ~label     , ~param, ~column    , ~ value,   ~ord, 
-  "n"        ,"n"     , "trt1"     ,12,        1, 
-  "mean (sd)","mean"  , "trt1"     ,12.332837, 2,
-  "mean (sd)","sd"    , "trt1"     ,4.3454547, 2,
-  "median"   ,"median", "trt1"     ,14,        3, 
-  "[q1, q3]" ,"q1"    , "trt1"     ,10,        4,
-  "[q1, q3]" ,"q3"    , "trt1"     ,20,        4,
-  "n"        ,"n"     , "trt2"     ,24,        1,
-  "mean (sd)","mean"  , "trt2"     ,15.438737, 2,
-  "mean (sd)","sd"    , "trt2"     ,6.723827,  2, 
-  "median"   ,"median", "trt2"     ,16,        3, 
-  "[q1, q3]" ,"q1"    , "trt2"     ,11,        4, 
-  "[q1, q3]" ,"q3"    , "trt2"     ,22,        4,
-  "n"        ,"pval"  , "p-value"  ,NA,        1, 
-  "mean (sd)","pval"  , "p-value"  ,0.00002,   2, 
-  "median"   ,"pval"  , "p-value"  ,0.051211,  3, 
-  "[q1, q3]" ,"pval"  , "p-value"  ,NA,        4)
+dat <- tibble::tribble(
+  ~label, ~param, ~column, ~value, ~ord,
+  "n", "n", "trt1", 12, 1,
+  "mean (sd)", "mean", "trt1", 12.332837, 2,
+  "mean (sd)", "sd", "trt1", 4.3454547, 2,
+  "median", "median", "trt1", 14, 3,
+  "[q1, q3]", "q1", "trt1", 10, 4,
+  "[q1, q3]", "q3", "trt1", 20, 4,
+  "n", "n", "trt2", 24, 1,
+  "mean (sd)", "mean", "trt2", 15.438737, 2,
+  "mean (sd)", "sd", "trt2", 6.723827, 2,
+  "median", "median", "trt2", 16, 3,
+  "[q1, q3]", "q1", "trt2", 11, 4,
+  "[q1, q3]", "q3", "trt2", 22, 4,
+  "n", "pval", "p-value", NA, 1,
+  "mean (sd)", "pval", "p-value", 0.00002, 2,
+  "median", "pval", "p-value", 0.051211, 3,
+  "[q1, q3]", "pval", "p-value", NA, 4
+)
 ```
 </details>
 
@@ -85,27 +84,39 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
   )
-) %>% 
+) |>
   print_to_gt(dat)
 ```
 
@@ -118,30 +129,42 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
-  ), 
-  col_style_plan =  col_style_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
+  ),
+  col_style_plan = col_style_plan(
     col_style_structure(col = `p-value`, align = "left", type = "char")
   )
-  ) %>% 
+) |>
   print_to_gt(dat)
 ```
 
@@ -154,29 +177,42 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
-  ), 
-  col_style_plan =  col_style_plan(
-    col_style_structure(col = `p-value`, align = c("."), type = "char"))
-  ) %>% 
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
+  ),
+  col_style_plan = col_style_plan(
+    col_style_structure(col = `p-value`, align = c("."), type = "char")
+  )
+) |>
   print_to_gt(dat)
 ```
 
@@ -189,31 +225,43 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
-  ), 
-  col_style_plan =  col_style_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
+  ),
+  col_style_plan = col_style_plan(
     col_style_structure(col = `p-value`, align = c("."), type = "char"),
     col_style_structure(col = starts_with("trt"), align = c(".", ",", " "), type = "char")
-    )
-  ) %>% 
+  )
+) |>
   print_to_gt(dat)
 ```
 
@@ -226,31 +274,44 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
-  ), 
-  col_style_plan =  col_style_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
+  ),
+  col_style_plan = col_style_plan(
     col_style_structure(col = `p-value`, align = c("."), type = "char"),
     col_style_structure(col = trt1, align = "left", type = "char"),
-    col_style_structure(col = trt2, align = "right", type = "char"))
-  ) %>% 
+    col_style_structure(col = trt2, align = "right", type = "char")
+  )
+) |>
   print_to_gt(dat)
 ```
 
@@ -266,37 +327,53 @@ tf <- tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
-  ), 
-  col_style_plan =  col_style_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
+  ),
+  col_style_plan = col_style_plan(
     col_style_structure(col = `p-value`, align = c("."), type = "char"),
-    col_style_structure(col = starts_with("trt"), 
-                        align = c("xx|",
-                                  "xx|.x ( x|.xx)",
-                                  "[xx|.x, xx|.x]"), 
-                        type = "pos")
+    col_style_structure(
+      col = starts_with("trt"),
+      align = c(
+        "xx|",
+        "xx|.x ( x|.xx)",
+        "[xx|.x, xx|.x]"
+      ),
+      type = "pos"
+    )
   )
-) 
+)
 
-tf %>%  print_to_gt(dat)
+tf |> print_to_gt(dat)
 ```
 
 Behind the scenes, {tfrmt} makes a few assumptions about how these vertical bars translate to alignment:
@@ -336,32 +413,44 @@ tfrmt(
   param = param,
   value = value,
   sorting_cols = c(ord),
-  col_plan = col_plan(-ord), 
+  col_plan = col_plan(-ord),
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt("xx", missing = " ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("{mean} ({sd})", 
-                                mean = frmt("xx.x"), 
-                                sd = frmt("xx.xx"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   frmt_combine("[{q1}, {q3}]", 
-                                q1 = frmt("xx.x"), 
-                                q3 = frmt("xx.x"),
-                                missing=" ")),
-    frmt_structure(group_val = ".default", label_val = ".default", 
-                   pval = frmt_when(">0.99" ~ ">0.99",
-                                    "<0.001" ~ "<0.001",
-                                    "<0.05" ~ frmt("x.xxx*"),
-                                    TRUE ~ frmt("x.xxx", missing = "")))
-  ), 
-  col_style_plan =  col_style_plan(
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt("xx", missing = " ")
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("{mean} ({sd})",
+        mean = frmt("xx.x"),
+        sd = frmt("xx.xx"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      frmt_combine("[{q1}, {q3}]",
+        q1 = frmt("xx.x"),
+        q3 = frmt("xx.x"),
+        missing = " "
+      )
+    ),
+    frmt_structure(
+      group_val = ".default", label_val = ".default",
+      pval = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        "<0.05" ~ frmt("x.xxx*"),
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
+  ),
+  col_style_plan = col_style_plan(
     col_style_structure(col = label, width = "10"),
     col_style_structure(col = `p-value`, align = c("."), width = "10"),
     col_style_structure(col = trt1, align = "left", width = "5"),
-    col_style_structure(col = trt2, align = "right", width = "5"))
-  ) %>% 
+    col_style_structure(col = trt2, align = "right", width = "5")
+  )
+) |>
   print_to_gt(dat)
-
 ```

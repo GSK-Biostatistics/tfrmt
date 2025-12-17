@@ -33,7 +33,7 @@
 #'
 #'```r
 #'   # Create mock data
-#'   df <- crossing(label = c("label 1", "label 2",
+#'   df <- tidyr::crossing(label = c("label 1", "label 2",
 #'   "label 3"), column = c("placebo", "trt1", "trt2"), param = c("count",
 #'   "percent"))
 #'
@@ -46,7 +46,6 @@
 #'
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom tidyselect everything eval_select
 #' @importFrom rlang quo_is_missing sym quo is_empty
 #' @importFrom dplyr vars
 #' @importFrom purrr quietly safely
@@ -81,7 +80,7 @@ print_mock_gt <- function(tfrmt,
     .data <- make_mock_data(tfrmt, .default, n_cols)
   }else{
     ## check that if value column exists in data, remove it for mocking
-    select_try <- safely(quietly(eval_select))(tfrmt$value, data = .data)
+    select_try <- safely(quietly(tidyselect::eval_select))(tfrmt$value, data = .data)
     if(!is.null(select_try$result)){
       message(" Removing `",as_label(tfrmt$value),"` from input data for mocking.")
       .data <- .data[,-select_try$result$result]
@@ -123,10 +122,10 @@ print_mock_gt <- function(tfrmt,
 #'   ))
 #'
 #' # Create data
-#' df <- crossing(label = c("label 1", "label 2"),
+#' df <- tidyr::crossing(label = c("label 1", "label 2"),
 #'                column = c("placebo", "trt1"),
-#'                param = c("count", "percent")) %>%
-#'       mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'                param = c("count", "percent")) |>
+#'       dplyr::mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
 #'
 #' print_to_gt(tfrmt_spec,df)
 #'
@@ -136,7 +135,6 @@ print_mock_gt <- function(tfrmt,
 #' }}
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
-#' @importFrom tidyselect everything
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
   if(!is_tfrmt(tfrmt)){
     stop("Requires a tfrmt object")
@@ -247,7 +245,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     format_gt_column_labels(.data) %>%
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = align),
-      locations = cells_body(columns = everything())
+      locations = cells_body(
+        columns = tidyselect::everything()
+      )
     )
 
   # group label in its own column
@@ -302,10 +302,12 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       ),
       locations= list(
         cells_body(
-          columns = everything(),
-          rows = everything()
+          columns = tidyselect::everything(),
+          rows = tidyselect::everything()
         ),
-        cells_stub(), cells_row_groups())
+        cells_stub(),
+        cells_row_groups()
+      )
     )  %>%
 
     tab_style(
@@ -423,11 +425,16 @@ format_gt_column_labels <- function(gt_table, .data){
       mutate(set = map(.data$set, ~pull(.,.data$cols))) %>%
       filter(.data$value != "NA")
 
-    for(i in 1:nrow(spans_to_apply)){
+    for(i in 1:nrow(spans_to_apply)) {
 
       # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
-        tab_spanner(md(spans_to_apply$value[i]), columns = all_of(spans_to_apply$set[[i]]))
+        tab_spanner(
+          md(spans_to_apply$value[i]),
+          columns = tidyselect::all_of(
+            spans_to_apply$set[[i]]
+          )
+        )
     }
 
     # ensure all columns are represented
@@ -480,17 +487,7 @@ convert_ws_unicode <- function(gt_table){
     text_transform(
       locations = locations,
       fn = function(x) {
-
-        x_trimmed <- str_trim(x)
-        space_left <- str_match(x, "^\\s*") %>% nchar()
-        space_right <- str_match(x, "\\s*$") %>% nchar()
-        space_right[x_trimmed == ""] <- 0
-
-        str_c(
-          str_dup("\U00A0", space_left),
-          x_trimmed,
-          str_dup("\U00A0", space_right)
-        )
+        str_replace_all(x, pattern = "\\s", replacement = "\u00A0")
       }
     )
 }

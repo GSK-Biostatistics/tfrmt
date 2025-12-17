@@ -165,12 +165,12 @@ param_set <- function(...){
 #' tfrmt_sigdig(sigdig_df = sig_input,
 #'              group = vars(group1, group2),
 #'              label = rowlbl,
-#'              param_defaults = param_set("[{n}]" = NA)) %>%
+#'              param_defaults = param_set("[{n}]" = NA)) |>
 #'   tfrmt(column = vars(col1, col2),
 #'         param = param,
 #'         value = value,
 #'         sorting_cols = vars(ord1, ord2, ord3),
-#'         col_plan = col_plan(-starts_with("ord"))) %>%
+#'         col_plan = col_plan(-starts_with("ord"))) |>
 #'   print_to_gt(.data = data)
 #' ```
 #' \if{html}{\out{
@@ -220,7 +220,16 @@ tfrmt_sigdig <- function(sigdig_df,
 
   # if group param is provided, figure out which group/label variables are present in data and only keep those
   if (length(group_names)>0){
-    sigdig_df <- sigdig_df %>% select(any_of(c(group_names, label_name, "sigdig")))
+    sigdig_df <- sigdig_df %>%
+      select(
+        tidyselect::any_of(
+          c(
+            group_names,
+            label_name,
+            "sigdig"
+          )
+        )
+      )
 
     # error if mismatch between provided group (and label, if it exists) & data columns
     data_names <- sigdig_df %>% select(-"sigdig") %>% names()
@@ -255,7 +264,11 @@ tfrmt_sigdig <- function(sigdig_df,
 
   if (length(groups_in_data)>0){
     data_ord <- sigdig_df %>%
-      unite("def_ord", all_of(groups_in_data), remove = FALSE) %>%
+      unite(
+        "def_ord",
+        tidyselect::all_of(groups_in_data),
+        remove = FALSE
+      ) %>%
       mutate(def_ord = str_count(.data$def_ord, ".default"))
   } else {
     data_ord <- sigdig_df %>%

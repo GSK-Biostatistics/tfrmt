@@ -542,7 +542,8 @@ test_that("Using col_plan to get column names", {
       "Placebo",
       new_name = "Low",
       contains("High")
-    ))
+    )
+  )
 
   col_names <- make_mock_data(basic_cols) %>%
     pull(column) %>%

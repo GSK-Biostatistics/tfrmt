@@ -99,7 +99,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
     ) |>
     tidyr::unite(
       col = "var_level_untd",
-      dplyr::all_of(vars),
+      tidyselect::all_of(vars),
       na.rm = TRUE,
       remove = remove
     ) |>

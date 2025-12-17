@@ -87,12 +87,12 @@ data <- dplyr::filter(data_labs, group2 == "BASOPHILS", col1 \%in\% c("Placebo",
 tfrmt_sigdig(sigdig_df = sig_input,
              group = vars(group1, group2),
              label = rowlbl,
-             param_defaults = param_set("[\{n\}]" = NA)) \%>\%
+             param_defaults = param_set("[\{n\}]" = NA)) |>
   tfrmt(column = vars(col1, col2),
         param = param,
         value = value,
         sorting_cols = vars(ord1, ord2, ord3),
-        col_plan = col_plan(-starts_with("ord"))) \%>\%
+        col_plan = col_plan(-starts_with("ord"))) |>
   print_to_gt(.data = data)
 }\if{html}{\out{</div>}}
 

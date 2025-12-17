@@ -142,7 +142,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
 #' @param element_row_grp_loc row group location element
 #' @param group group quosures
 #' @param label label quosure
-#' @param col_info list of column information from [get_col_loc()]
+#' @param col_info list of column information from `get_col_loc()`
 #'
 #' @return a list with all column information, row, col, and spanning
 #' @noRd

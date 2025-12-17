@@ -43,7 +43,6 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
 #'
 #' @noRd
 #' @importFrom dplyr  slice bind_rows filter pull
-#' @importFrom tidyselect contains
 #' @importFrom tibble tibble
 #' @importFrom forcats fct_inorder
 apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_label_loc){
@@ -181,8 +180,13 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     grping <- expr_to_grouping(page_struct_list[[struct_defaults_idx]], group, label)
 
     dat_split_1 <- .data %>%
-      nest(`..tfrmt_data` = everything(), .by = (all_of(grping))) %>%
-      mutate(`..tfrmt_split_num` = row_number())
+      nest(
+        `..tfrmt_data` = tidyselect::everything(),
+        .by = tidyselect::all_of(grping)
+      ) %>%
+      mutate(
+        `..tfrmt_split_num` = row_number()
+      )
 
   } else {
     # no default - just nest to get in same structure for next step
@@ -265,7 +269,6 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 #' @importFrom dplyr mutate select across group_by group_split distinct last bind_rows
 #' @importFrom tibble tibble
 #' @importFrom stringr str_trim
-#' @importFrom tidyselect any_of
 combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NULL){
 
   top_grouping <- group #used for splitting in case of spanning label
@@ -313,7 +316,11 @@ combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NU
   }
 
   .data %>%
-    select(-any_of("..tfrmt_summary_row_cur"))
+    select(
+      -tidyselect::any_of(
+        "..tfrmt_summary_row_cur"
+      )
+    )
 }
 
 #' add any related summary rows from previous tbl to next tbl
@@ -321,7 +328,6 @@ combine_group_cols_mod <- function(.data, group, label, element_row_grp_loc = NU
 #' @importFrom dplyr mutate slice pull filter across select bind_rows
 #' @importFrom purrr map_chr map map2_lgl
 #' @importFrom tidyr pivot_longer
-#' @importFrom tidyselect all_of
 add_summary_rows <- function(next_dat, prev_summ, group, label){
 
   #get grouping values from the summary row
@@ -334,8 +340,16 @@ add_summary_rows <- function(next_dat, prev_summ, group, label){
     mutate(`..tfrmt_summ_grp_num` = which(.data$`..tfrmt_summ_grp_num`==map_chr(group, as_label))) %>%
     pull(.data$`..tfrmt_summ_grp_num`)
 
-  prev_summ_top_grp_vars <- map(seq_len(nrow(prev_summ)),
-                                ~prev_summ[.x,] %>% select(c(!!!group)) %>% select(1:all_of(prev_summ_top_grp[.x])))
+  prev_summ_top_grp_vars <- map(
+    seq_len(nrow(prev_summ)),
+    ~prev_summ[.x,] %>%
+      select(c(!!!group)) %>%
+      select(
+        1:tidyselect::all_of(
+          prev_summ_top_grp[.x]
+        )
+      )
+  )
 
   # get the grouping values from the next row
   next_summ_top_grp_vars <- map(prev_summ_top_grp_vars,
@@ -354,4 +368,3 @@ add_summary_rows <- function(next_dat, prev_summ, group, label){
   }
   next_dat
 }
-

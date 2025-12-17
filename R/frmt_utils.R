@@ -102,7 +102,7 @@ print.frmt_combine <- function(x,...){
 
 #' @export
 format.frmt_when <- function(x, ...){
-  lhs <- map_chr(x$frmt_ls, f_lhs)
+  lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
   rhs <- map(x$frmt_ls, f_rhs) %>% map_chr(format)
 
   frmt_str <- paste(
@@ -388,3 +388,8 @@ as.character.span_structure <- function(x, ...){
          ")"
   )
 }
+
+#' helper for rlang::f_lhs with character conversion, in accordance with
+#' purrr::map_chr no longer coercing to character
+#' @noRd
+f_lhs_as_char <- function(x) as.character(rlang::f_lhs(x))

@@ -1,4 +1,14 @@
-# tfrmt (development version)
+# tfrmt development version
+
+## Improvements
+ * Replace all spaces in the cell body of an output gt with unicode whitespace to ensure formatting is retained when going to pdf
+
+# tfrmt 0.2.1
+
+Patch release for latest {gt} release and upcoming {purrr} and {stringr} releases:
+  * Ensure `rowname_col = NULL` in `gt()` within `print_to_gt()` if no row label exists.
+  * Use of `seq_along(x)` in lieu of `1:length(x)` prior to `str_replace()` as it no longer accepts NA patterns.
+  * Ensure values are character before processing via `map_chr()` as it no longer coerces to character.
 
 # tfrmt 0.2.0
 

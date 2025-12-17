@@ -68,10 +68,10 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param){
 #'  ))
 #'
 #'  # Create data
-#'  df <- crossing(label = c("label 1", "label 2"),
+#'  df <- tidyr::crossing(label = c("label 1", "label 2"),
 #'                 column = c("placebo", "trt1"),
-#'                 param = c("count", "percent")) %>%
-#'    mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'                 param = c("count", "percent")) |>
+#'    dplyr::mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
 #'
 #'  display_row_frmts(tfrmt_spec,df)
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
@@ -82,7 +82,11 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
                                  tfrmt$label,
                                  tfrmt$param) %>%
       rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-      select(-starts_with("TEMP")) %>%
+      select(
+        -tidyselect::starts_with(
+          "TEMP"
+        )
+      ) %>%
       mutate(frmt_type = map_chr(.data$frmt_applied, function(x) unlist(class(x)[1])))
 
   } else if (convert_to_txt == TRUE) {
@@ -92,7 +96,11 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
                                  tfrmt$label,
                                  tfrmt$param) %>%
       rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-      select(-starts_with("TEMP")) %>%
+      select(
+        -tidyselect::starts_with(
+          "TEMP"
+        )
+      ) %>%
       mutate(frmt_type = map_chr(.data$frmt_applied, function(x) unlist(class(x)[1])),
              frmt_details = map_chr(.data$frmt_applied, format)) %>%
       select(-"frmt_applied")
@@ -132,7 +140,6 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
 #'
 #' @importFrom glue glue glue_collapse
 #' @importFrom dplyr select mutate across arrange pull
-#' @importFrom tidyselect everything any_of
 #' @importFrom rlang is_empty as_name as_label
 #' @importFrom stringr str_replace_all
 #' @importFrom purrr map_chr map
@@ -164,7 +171,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE){
 #'
 #'  display_val_frmts(tf_spec, data_demog, col = vars(everything()))
 #'  display_val_frmts(tf_spec, data_demog, col = "p-value")
-display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
+display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
 
 
   tbl_dat <- .data %>%
@@ -183,10 +190,20 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
 
   tbl_dat_wide <- tbl_dat %>%
     pivot_wider_tfrmt(tfrmt, mock) %>%
-    select(-any_of(c(
-      map_chr(tfrmt$group, as_name),
-      as_name(tfrmt$label)))) %>%
-    mutate(across(everything(), ~str_replace_all(., "[0-9]","x")))
+    select(
+      -tidyselect::any_of(
+        c(
+          map_chr(tfrmt$group, as_name),
+          as_name(tfrmt$label)
+        )
+      )
+    ) %>%
+    mutate(
+      across(
+        tidyselect::everything(),
+        ~str_replace_all(., "[0-9]","x")
+      )
+    )
 
   col_plan_vars <- as_vars.character(colnames(tbl_dat_wide))
   if(is_empty(tfrmt$column)){
@@ -203,8 +220,14 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL){
   col_selection <- col_style_selections(selection, column_names, col_plan_vars)
 
   vec_prep <- tbl_dat_wide%>%
-    select(any_of(col_selection)) %>%
-    pivot_longer(everything()) %>%
+    select(
+      tidyselect::any_of(
+        col_selection
+      )
+    ) %>%
+    pivot_longer(
+      tidyselect::everything()
+    ) %>%
     arrange(nchar(.data$value)) %>%
     filter(!is.na(.data$value)) %>%
     pull(.data$value) %>%
