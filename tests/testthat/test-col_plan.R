@@ -1478,7 +1478,7 @@ test_that("Build simple tfrmt with stub header",{
   )
   expect_equal(
     processed_gt[["_stubhead"]]$label,
-    c("grp", "")
+    c("grp")
   )
 
 
