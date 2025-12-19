@@ -28,6 +28,20 @@ test_that("apply_col_plan() works", {
     processed_df1,
     dplyr::select(df1, -ord)
   )
+
+  # col_selection can be either character or a list of quosures
+  expect_identical(
+    apply_col_plan(
+      df1,
+      col_selection = "-ord",
+      grp_lbl = rlang::quos(grp2, lbl)
+    ),
+    apply_col_plan(
+      df1,
+      col_selection = rlang::quos(-ord),
+      grp_lbl = rlang::quos(grp2, lbl)
+    )
+  )
 })
 
 test_that("apply_col_plan() group and label vars are excluded from renaming", {
