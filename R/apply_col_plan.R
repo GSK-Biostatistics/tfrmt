@@ -3,10 +3,10 @@
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
-apply_col_plan <- function(data, col_selection, grp_lbl){
+apply_col_plan <- function(data, col_selection, grp_lbl) {
 
   if(is.character(col_selection)){
-    quo_col_selections <- map(col_selection, ~char_as_quo(.x))
+    quo_col_selections <- purrr::map(col_selection, ~char_as_quo(.x))
     col_selection <- do.call(vars, quo_col_selections)
   }
 
@@ -16,8 +16,7 @@ apply_col_plan <- function(data, col_selection, grp_lbl){
     names(col_selection)[col_selection_grp_lbl] <- ""
   }
 
-  select(data, !!!col_selection)
-
+  dplyr::select(data, !!!col_selection)
 }
 
 
