@@ -12,7 +12,7 @@ test_that("apply_col_pla() works", {
 
   expect_snapshot(
     apply_col_plan(
-      dat1,
+      df1,
       col_selection = "-ord",
       grp_lbl = rlang::new_quosures(
         list(
@@ -24,7 +24,7 @@ test_that("apply_col_pla() works", {
   )
 
   processed_df1 <- apply_col_plan(
-    dat1,
+    df1,
     col_selection = "-ord",
     grp_lbl = rlang::new_quosures(
       list(
@@ -54,13 +54,24 @@ test_that("apply_col_plan() group and label vars are excluded from renaming", {
 
   expect_snapshot(
     apply_col_plan(
-      dat1,
+      df1,
       col_selection = c("-ord", "lbl"),
       grp_lbl = rlang::new_quosures(
         list(
           quo(grp2),
           quo(lbl)
         )
+      )
+    )
+  )
+
+  processed_df1 <- apply_col_plan(
+    df1,
+    col_selection = c("-ord", "lbl"),
+    grp_lbl = rlang::new_quosures(
+      list(
+        quo(grp2),
+        quo(lbl)
       )
     )
   )

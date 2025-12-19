@@ -1,5 +1,4 @@
 #' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate
 #' @importFrom stringr str_remove str_detect
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
