@@ -39,7 +39,7 @@ create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc
       stub <- nms_grps
 
       # only row_grp_plan "column" option gets >1 stub label
-      if (!row_grp_plan_label_loc=="column"){
+      if (row_grp_plan_label_loc != "column") {
         stub <- stub[1]
       }
 
