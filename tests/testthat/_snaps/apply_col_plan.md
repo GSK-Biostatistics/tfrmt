@@ -47,3 +47,22 @@
     Output
       [1] "" ""
 
+# create_col_order() works
+
+    Code
+      purrr::map(create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(
+        column), cp = col_plan(-ord)), rlang::quo_get_expr)
+    Output
+      [[1]]
+      -ord
+      
+      [[2]]
+      grp2
+      
+      [[3]]
+      lbl
+      
+      [[4]]
+      `1`
+      
+
