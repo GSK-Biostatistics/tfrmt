@@ -104,3 +104,34 @@
       `1`
       
 
+# create_col_order() with span_structure()
+
+    Code
+      purrr::map(create_col_order(data_names = c("group", "label",
+        "cols 1,2___tlang_delim___col1", "cols 1,2___tlang_delim___col2", "mycol3",
+        "col 4___tlang_delim___col4", "mycol5"), columns = rlang::quos(span1, my_col),
+      cp = col_plan(span_structure(span1 = c(`first cols` = "cols 1,2")), group,
+      label, starts_with("col"), new_col_3 = mycol3, -mycol5)), rlang::quo_get_expr)
+    Output
+      [[1]]
+      group
+      
+      [[2]]
+      label
+      
+      $`first cols___tlang_delim___col1`
+      `cols 1,2___tlang_delim___col1`
+      
+      $`first cols___tlang_delim___col2`
+      `cols 1,2___tlang_delim___col2`
+      
+      [[5]]
+      `col 4___tlang_delim___col4`
+      
+      $new_col_3
+      mycol3
+      
+      [[7]]
+      -mycol5
+      
+

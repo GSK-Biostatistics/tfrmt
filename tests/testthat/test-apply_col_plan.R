@@ -235,3 +235,84 @@ test_that("create_col_order() with empty columns arg & cp not NULL", {
     )
   )
 })
+
+test_that("create_col_order() with span_structure()", {
+  dat <- tibble::tribble(
+    ~group , ~label      , ~span1     , ~my_col  , ~parm   , ~val ,
+    "g1"   , "rowlabel1" , "cols 1,2" , "col1"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "cols 1,2" , "col2"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , NA         , "mycol3" , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "col 4"    , "col4"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , NA         , "mycol5" , "value" ,    1 ,
+    "g1"   , "rowlabel2" , "cols 1,2" , "col1"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "cols 1,2" , "col2"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , NA         , "mycol3" , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "col 4"    , "col4"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , NA         , "mycol5" , "value" ,    2 ,
+    "g2"   , "rowlabel3" , "cols 1,2" , "col1"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "cols 1,2" , "col2"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , NA         , "mycol3" , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "col 4"    , "col4"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , NA         , "mycol5" , "value" ,    3 ,
+  )
+
+  expect_snapshot(
+    create_col_order(
+      data_names = c(
+        "group",
+        "label",
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "mycol3",
+        "col 4___tlang_delim___col4",
+        "mycol5"
+      ),
+      columns = rlang::quos(span1, my_col),
+      cp = col_plan(
+        # rename column spanner in same level
+        span_structure(span1 = c("first cols" = "cols 1,2")),
+        group,
+        label,
+        starts_with("col"),
+        new_col_3 = mycol3,
+        -mycol5
+      )
+    ) |>
+      purrr::map(rlang::quo_get_expr)
+  )
+
+  expect_identical(
+    create_col_order(
+      # data_names = c("group", "label", "span2", "span1", "my_col", "parm", "val"),
+      data_names = c(
+        "group",
+        "label",
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "mycol3",
+        "col 4___tlang_delim___col4",
+        "mycol5"
+      ),
+      columns = rlang::quos(span1, my_col),
+      cp = col_plan(
+        # rename column spanner in same level
+        span_structure(span1 = c("first cols" = "cols 1,2")),
+        group,
+        label,
+        starts_with("col"),
+        new_col_3 = mycol3,
+        -mycol5
+      )
+    ) |>
+      purrr::map(rlang::quo_get_expr),
+    rlang::exprs(
+      group,
+      label,
+      `first cols___tlang_delim___col1` = `cols 1,2___tlang_delim___col1`,
+      `first cols___tlang_delim___col2` = `cols 1,2___tlang_delim___col2`,
+      `col 4___tlang_delim___col4`,
+      new_col_3 = mycol3,
+      -mycol5
+    )
+  )
+})
