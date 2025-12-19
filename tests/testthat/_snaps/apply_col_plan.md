@@ -1,7 +1,7 @@
 # apply_col_pla() works
 
     Code
-      apply_col_plan(dat1, col_selection = "-ord", grp_lbl = rlang::new_quosures(list(
+      apply_col_plan(df1, col_selection = "-ord", grp_lbl = rlang::new_quosures(list(
         quo(grp2), quo(lbl))))
     Output
       # A tibble: 7 x 5
@@ -18,7 +18,7 @@
 # apply_col_plan() group and label vars are excluded from renaming
 
     Code
-      apply_col_plan(dat1, col_selection = c("-ord", "lbl"), grp_lbl = rlang::new_quosures(
+      apply_col_plan(df1, col_selection = c("-ord", "lbl"), grp_lbl = rlang::new_quosures(
         list(quo(grp2), quo(lbl))))
     Output
       # A tibble: 7 x 5
