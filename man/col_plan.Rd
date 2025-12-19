@@ -110,9 +110,11 @@ renaming_col_plan_ex2 <- col_plan(
    )
  )
 
-## To add a stub header rename the group variable in the column plan
+## To one or more stub headers rename the corresponding group/label variables in the column plan.
 ## If multiple group variables exist, any of them can be renamed.
-## If more than one is renamed, {tfrmt} will use the highest level group name available.
+## Note: Multiple stub headers are only possible if the `row_grp_plan` label
+## location is set to "column". Otherwise, if more than one group/label column is renamed,
+## {tfrmt} will use the highest level group name available.
 
  renaming_group <- col_plan(
     my_grp = group, # rename group
