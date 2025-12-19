@@ -160,3 +160,41 @@ test_that("create_col_order() works", {
     )
   )
 })
+
+test_that("create_col_order() with NULL col plan", {
+  # the output is a list of the data_names as quosures
+  expect_s3_class(
+    create_col_order(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      columns = rlang::quos(column),
+      cp = NULL
+    ),
+    c("quosures", "list")
+  )
+
+  # we don't need to snapshot the environment names, we're only interested in
+  # the expressions
+  expect_snapshot(
+    create_col_order(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      columns = rlang::quos(column),
+      cp = NULL
+    ) |>
+      purrr::map(rlang::quo_get_expr)
+  )
+
+  expect_identical(
+    create_col_order(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      columns = rlang::quos(column),
+      cp = NULL
+    ) |>
+      purrr::map(rlang::quo_get_expr),
+    rlang::exprs(
+      grp2,
+      lbl,
+      ord,
+      `1`
+    )
+  )
+})
