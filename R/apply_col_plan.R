@@ -21,14 +21,13 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
 
 
 #' create the stub header for table
-#' @importFrom purrr map_chr
 #' @noRd
 create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc){
 
   # all group/label vars
-  grps <- map_chr(c(group, label), as_label)
+  grps <- purrr::map_chr(c(group, label), as_label)
   # all column labels
-  col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
+  col_plan_vars_chr <- purrr::map_chr(col_plan_vars, as_label)
 
   # subset the column labels to just group/label vars
   stub <- NULL
