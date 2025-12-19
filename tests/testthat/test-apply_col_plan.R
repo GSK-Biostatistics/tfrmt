@@ -1,4 +1,4 @@
-test_that("apply_col_pla() works", {
+test_that("apply_col_plan() works", {
   df1 <- tibble::tribble(
     ~grp2 , ~lbl , ~prm  , ~column , ~val , ~ord ,
     "c"   , "n"  , "n"   ,       1 , 1    ,    1 ,
@@ -14,24 +14,14 @@ test_that("apply_col_pla() works", {
     apply_col_plan(
       df1,
       col_selection = "-ord",
-      grp_lbl = rlang::new_quosures(
-        list(
-          quo(grp2),
-          quo(lbl)
-        )
-      )
+      grp_lbl = rlang::quos(grp2, lbl)
     )
   )
 
   processed_df1 <- apply_col_plan(
     df1,
     col_selection = "-ord",
-    grp_lbl = rlang::new_quosures(
-      list(
-        quo(grp2),
-        quo(lbl)
-      )
-    )
+    grp_lbl = rlang::quos(grp2, lbl)
   )
 
   expect_identical(
@@ -56,28 +46,66 @@ test_that("apply_col_plan() group and label vars are excluded from renaming", {
     apply_col_plan(
       df1,
       col_selection = c("-ord", "lbl"),
-      grp_lbl = rlang::new_quosures(
-        list(
-          quo(grp2),
-          quo(lbl)
-        )
-      )
+      grp_lbl = rlang::quos(grp2, lbl)
     )
   )
 
   processed_df1 <- apply_col_plan(
     df1,
     col_selection = c("-ord", "lbl"),
-    grp_lbl = rlang::new_quosures(
-      list(
-        quo(grp2),
-        quo(lbl)
-      )
-    )
+    grp_lbl = rlang::quos(grp2, lbl)
   )
 
   expect_identical(
     processed_df1,
     dplyr::select(df1, -ord)
+  )
+})
+
+test_that("create_stub_head() works", {
+  col_plan_vars <- rlang::quos(-ord, grp2, lbl, `1`)
+
+  group <- rlang::quos(grp2)
+
+  label <- rlang::quos(lbl)
+
+  row_grp_plan_label_loc <- "indented"
+
+  expect_snapshot(
+    create_stub_head(
+      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
+      group = rlang::quos(grp2),
+      label = rlang::quos(lbl),
+      row_grp_plan_label_loc = "indented"
+    )
+  )
+
+  expect_identical(
+    create_stub_head(
+      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
+      group = rlang::quos(grp2),
+      label = rlang::quos(lbl),
+      row_grp_plan_label_loc = "indented"
+    ),
+    ""
+  )
+
+  expect_snapshot(
+    create_stub_head(
+      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
+      group = rlang::quos(grp2),
+      label = rlang::quos(lbl),
+      row_grp_plan_label_loc = "column"
+    )
+  )
+
+  expect_identical(
+    create_stub_head(
+      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
+      group = rlang::quos(grp2),
+      label = rlang::quos(lbl),
+      row_grp_plan_label_loc = "column"
+    ),
+    c("", "")
   )
 })
