@@ -319,6 +319,57 @@ test_that("create_col_order() with span_structure()", {
   )
 })
 
+test_that("col_plan_quo_to_vars() works", {
+  # base case
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(ord),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = NULL
+    ),
+    rlang::set_names("ord", "")
+  )
+
+  # negative selection
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(-ord),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = NULL
+    ),
+    # the output is a named vector with empty names
+    rlang::set_names("-ord", "")
+  )
+
+  # names are propagated if x contains named quosures
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(new_order = ord),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = NULL
+    ),
+    c(new_order = "ord")
+  )
+
+  # when x is a named list of quosures the output is a named vector with unique
+  # names derived from the tidyselect expression
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(starts_with("ord")) |> rlang::quos_auto_name(),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "order_new", "1"),
+      preselected_cols = NULL
+    ),
+    c(
+      `starts_with("ord")1` = "ord",
+      `starts_with("ord")2` = "order_new"
+    )
+  )
+})
+
 test_that("col_plan_span_structure_to_vars() works", {
   expect_equal(1 + 1, 2)
 })
