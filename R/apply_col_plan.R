@@ -41,7 +41,7 @@ create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc
       stub <- nms_grps
 
       # only row_grp_plan "column" option gets >1 stub label
-      if (!row_grp_plan_label_loc=="column") {
+      if (!row_grp_plan_label_loc=="column"){
         stub <- stub[1]
       }
 
@@ -337,21 +337,21 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
     }
   }
 
-  tibble::tibble(
+  tibble(
     original = data_names,
     new_name = names(data_names)
    ) %>%
-    dplyr::mutate(
+    mutate(
       subtraction_status = stringr::str_detect(.data$original ,"^-"),
       original = stringr::str_remove(.data$original,"^-")
     ) %>%
-    tidyr::separate(
+    separate(
       .data$original,
       into = column_names,
       sep = .tlang_delim,
       fill = "left"
     ) %>%
-    tidyr::separate(
+    separate(
       .data$new_name,
       into = paste0("__tfrmt_new_name__", column_names),
       sep = .tlang_delim,
