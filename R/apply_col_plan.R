@@ -290,13 +290,10 @@ char_as_quo <- function(x) {
 #' @importFrom rlang quo_get_expr as_label is_empty
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
-  if(identical(as_label(x), "everything()") & !default_everything_behavior){
+  if(identical(as_label(x), "everything()") && !default_everything_behavior && !is_empty(preselected_vals)){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
-
-    if(!is_empty(preselected_vals)){
-      data_names <- setdiff(data_names, preselected_vals)
-    }
+    data_names <- setdiff(data_names, preselected_vals)
   }
 
   eval_tidyselect_on_colvec(x, data_names)
