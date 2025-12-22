@@ -295,7 +295,7 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
     # the default behavior of everything().
 
     if(!is_empty(preselected_vals)){
-      data_names <- data_names[-seq_along(preselected_vals)]
+      data_names <- setdiff(data_names, preselected_vals)
     }
   }
 
