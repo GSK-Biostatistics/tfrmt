@@ -3,7 +3,7 @@
 strip_env_label <- function(x) {
   stringr::str_replace_all(
     x,
-    pattern = "(0[xX]){1}[A-Fa-f0-9]{9}",
+    pattern = "(0[xX]){1}[A-Fa-f0-9]{9,11}",
     replacement = "<env-address>"
   )
 }
