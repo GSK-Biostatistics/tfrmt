@@ -315,12 +315,8 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
 #' @param column_names the original ARD column names as a character vector
 #'
 #' @noRd
-#'
-#' @importFrom dplyr mutate
-#' @importFrom tidyr separate
-#' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
-
+  # data_names <- union(data_names, preselected_cols)
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
   if(is.null(names(data_names))){
@@ -331,21 +327,21 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
     }
   }
 
-  tibble(
+  tibble::tibble(
     original = data_names,
     new_name = names(data_names)
    ) %>%
-    mutate(
-      subtraction_status = str_detect(.data$original ,"^-"),
-      original = str_remove(.data$original,"^-")
+    dplyr::mutate(
+      subtraction_status = stringr::str_detect(.data$original ,"^-"),
+      original = stringr::str_remove(.data$original,"^-")
     ) %>%
-    separate(
+    tidyr::separate(
       .data$original,
       into = column_names,
       sep = .tlang_delim,
       fill = "left"
     ) %>%
-    separate(
+    tidyr::separate(
       .data$new_name,
       into = paste0("__tfrmt_new_name__", column_names),
       sep = .tlang_delim,
