@@ -342,8 +342,8 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
     new_name = names(data_names)
    ) %>%
     mutate(
-      subtraction_status = stringr::str_detect(.data$original ,"^-"),
-      original = stringr::str_remove(.data$original,"^-")
+      subtraction_status = str_detect(.data$original ,"^-"),
+      original = str_remove(.data$original,"^-")
     ) %>%
     separate(
       .data$original,
