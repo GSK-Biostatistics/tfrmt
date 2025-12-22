@@ -370,6 +370,97 @@ test_that("col_plan_quo_to_vars() works", {
   )
 })
 
+test_that("char_as_quo() works", {
+  expect_s3_class(
+    char_as_quo("x"),
+    "quosure"
+  )
+
+  expect_identical(
+    char_as_quo("x") |>
+      rlang::quo_get_expr(),
+    rlang::expr(x)
+  )
+
+  expect_s3_class(
+    char_as_quo(
+      "starts_with('foo')"
+    ),
+    "quosure"
+  )
+
+  expect_identical(
+    char_as_quo(
+      "starts_with('foo')"
+    ) |>
+      rlang::quo_get_expr(),
+    rlang::expr(
+      starts_with("foo")
+    )
+  )
+
+  # when x is a valid(ish) tidyselect expression the output is a call
+  expect_true(
+    char_as_quo("starts_with('foo')") |>
+      rlang::quo_is_call()
+  )
+
+  expect_false(
+    char_as_quo("starts_with('foo')") |>
+      rlang::quo_is_symbol()
+  )
+
+  # exception: valid tidyselect expression, but the output is noa a call
+  # this unit tests should be reviewed as part of
+  # https://github.com/GSK-Biostatistics/tfrmt/issues/578
+  expect_false(
+    char_as_quo("foo:bar") |>
+      rlang::quo_is_call()
+  )
+
+  # backticks are added when x is not a valid tidyselect call and the output
+  # expression is a symbol and not a call
+  expect_identical(
+    rlang::quo_get_expr(char_as_quo("like('foo')")),
+    rlang::expr(`like('foo')`)
+  )
+
+  expect_true(
+    char_as_quo("like('foo')") |>
+      rlang::quo_is_symbol()
+  )
+
+  expect_false(
+    char_as_quo("like('foo')") |>
+      rlang::quo_is_call()
+  )
+
+  # char_as_quo() uses parse()
+  # parse errors are converted to symbols
+  expect_error(
+    parse(
+      text = "foo12-3bar"
+    )
+  )
+
+  expect_true(
+    char_as_quo(
+      "foo12-3bar"
+    ) |>
+      rlang::quo_is_symbol()
+  )
+
+  expect_identical(
+    char_as_quo(
+      "foo12-3bar"
+    ) |>
+      rlang::quo_get_expr(),
+    rlang::expr(
+      `foo12-3bar`
+    )
+  )
+})
+
 test_that("col_plan_span_structure_to_vars() works", {
   expect_equal(1 + 1, 2)
 })
