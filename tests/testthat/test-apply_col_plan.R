@@ -327,6 +327,7 @@ test_that("col_plan_quo_to_vars() works", {
       data_names = c("grp2", "lbl", "ord", "1"),
       preselected_cols = NULL
     ),
+    # the output is a named vector with empty names
     rlang::set_names("ord", "")
   )
 
