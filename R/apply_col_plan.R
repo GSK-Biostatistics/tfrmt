@@ -1,9 +1,10 @@
 #' @importFrom tidyr unite
+#' @importFrom dplyr as_tibble relocate
 #' @importFrom stringr str_remove str_detect
 #' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
-apply_col_plan <- function(data, col_selection, grp_lbl) {
+apply_col_plan <- function(data, col_selection, grp_lbl){
 
   if(is.character(col_selection)){
     quo_col_selections <- map(col_selection, ~char_as_quo(.x))
@@ -17,10 +18,12 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
   }
 
   select(data, !!!col_selection)
+
 }
 
 
 #' create the stub header for table
+#' @importFrom purrr map_chr
 #' @noRd
 create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc){
 
