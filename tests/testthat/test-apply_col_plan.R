@@ -125,7 +125,7 @@ test_that("create_stub_head() works", {
 })
 
 test_that("create_col_order() works", {
-  skip()
+  skip("temp skip")
   expect_s3_class(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
@@ -135,15 +135,14 @@ test_that("create_col_order() works", {
     c("quosures", "list")
   )
 
-  # we don't need to snapshot the environment names, we're only interested in
-  # the expressions
+  # we strip out the environment memory address (aka the label)
   expect_snapshot(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(column),
       cp = col_plan(-ord)
-    ) |>
-      purrr::map(rlang::quo_get_expr)
+    ),
+    transform = strip_env_label
   )
 
   expect_equal(
@@ -217,8 +216,8 @@ test_that("create_col_order() with empty columns arg & cp not NULL", {
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(),
       cp = col_plan(-ord)
-    ) |>
-      purrr::map(rlang::quo_get_expr)
+    ),
+    transform = strip_env_label
   )
 
   expect_identical(
@@ -226,19 +225,19 @@ test_that("create_col_order() with empty columns arg & cp not NULL", {
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(),
       cp = col_plan(-ord)
-    ) |>
-      purrr::map(rlang::quo_get_expr),
-    rlang::exprs(
+    ),
+    rlang::quos(
       -ord,
       grp2,
       lbl,
       `1`
-    )
+    ),
+    ignore_formula_env = TRUE
   )
 })
 
 test_that("create_col_order() with span_structure()", {
-  skip()
+  skip("temp skip")
   dat <- tibble::tribble(
     ~group , ~label      , ~span1     , ~my_col  , ~parm   , ~val ,
     "g1"   , "rowlabel1" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -279,8 +278,8 @@ test_that("create_col_order() with span_structure()", {
         new_col_3 = mycol3,
         -mycol5
       )
-    ) |>
-      purrr::map(rlang::quo_get_expr)
+    ),
+    transform = strip_env_label
   )
 
   expect_identical(
@@ -305,9 +304,8 @@ test_that("create_col_order() with span_structure()", {
         new_col_3 = mycol3,
         -mycol5
       )
-    ) |>
-      purrr::map(rlang::quo_get_expr),
-    rlang::exprs(
+    ),
+    rlang::quos(
       group,
       label,
       `first cols___tlang_delim___col1` = `cols 1,2___tlang_delim___col1`,
@@ -315,7 +313,8 @@ test_that("create_col_order() with span_structure()", {
       `col 4___tlang_delim___col4`,
       new_col_3 = mycol3,
       -mycol5
-    )
+    ),
+    ignore_formula_env = TRUE
   )
 })
 
@@ -377,9 +376,9 @@ test_that("char_as_quo() works", {
   )
 
   expect_identical(
-    char_as_quo("x") |>
-      rlang::quo_get_expr(),
-    rlang::expr(x)
+    char_as_quo("x"),
+    rlang::quo(x),
+    ignore_formula_env = TRUE
   )
 
   expect_s3_class(
@@ -392,11 +391,11 @@ test_that("char_as_quo() works", {
   expect_identical(
     char_as_quo(
       "starts_with('foo')"
-    ) |>
-      rlang::quo_get_expr(),
-    rlang::expr(
+    ),
+    rlang::quo(
       starts_with("foo")
-    )
+    ),
+    ignore_formula_env = TRUE
   )
 
   # when x is a valid(ish) tidyselect expression the output is a call
@@ -413,8 +412,9 @@ test_that("char_as_quo() works", {
   # backticks are added when x is not a valid tidyselect call and the output
   # expression is a symbol and not a call
   expect_identical(
-    rlang::quo_get_expr(char_as_quo("like('foo')")),
-    rlang::expr(`like('foo')`)
+    char_as_quo("like('foo')"),
+    rlang::quo(`like('foo')`),
+    ignore_formula_env = TRUE
   )
 
   expect_true(
@@ -443,13 +443,9 @@ test_that("char_as_quo() works", {
   )
 
   expect_identical(
-    char_as_quo(
-      "foo12-3bar"
-    ) |>
-      rlang::quo_get_expr(),
-    rlang::expr(
-      `foo12-3bar`
-    )
+    char_as_quo("foo12-3bar"),
+    rlang::quo(`foo12-3bar`),
+    ignore_formula_env = TRUE
   )
 
   # exception: valid tidyselect expression, but the output is not a call
@@ -532,7 +528,7 @@ test_that("col_plan_span_structure_to_vars() works", {
 })
 
 test_that("split_data_names_to_df() works", {
-  skip()
+  skip("temp skip")
   # simple case
   expect_snapshot(
     split_data_names_to_df(
@@ -599,7 +595,7 @@ test_that("split_data_names_to_df() works", {
 })
 
 test_that("unite_df_to_data_names() works", {
-  skip()
+  skip("temp skip")
   expect_identical(
     split_data_names_to_df(
       data_names = c("grp2", "lbl", "ord", "1"),
