@@ -146,19 +146,19 @@ test_that("create_col_order() works", {
       purrr::map(rlang::quo_get_expr)
   )
 
-  expect_identical(
+  expect_equal(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(column),
       cp = col_plan(-ord)
-    ) |>
-      purrr::map(rlang::quo_get_expr),
-    rlang::exprs(
+    ),
+    rlang::quos(
       -ord,
       grp2,
       lbl,
       `1`
-    )
+    ),
+    ignore_formula_env = TRUE
   )
 })
 
@@ -180,23 +180,23 @@ test_that("create_col_order() with NULL col plan", {
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(column),
       cp = NULL
-    ) |>
-      purrr::map(rlang::quo_get_expr)
+    ),
+    transform = strip_env_label
   )
 
-  expect_identical(
+  expect_equal(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(column),
       cp = NULL
-    ) |>
-      purrr::map(rlang::quo_get_expr),
-    rlang::exprs(
+    ),
+    rlang::quos(
       grp2,
       lbl,
       ord,
       `1`
-    )
+    ),
+    ignore_formula_env = TRUE
   )
 })
 
@@ -596,4 +596,71 @@ test_that("split_data_names_to_df() works", {
       subtraction_status = c(TRUE, FALSE, FALSE, FALSE, FALSE)
     )
   )
+})
+
+test_that("unite_df_to_data_names() works", {
+  skip()
+  expect_identical(
+    split_data_names_to_df(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = NULL,
+      column_names = "column"
+    ) |>
+      unite_df_to_data_names(
+        preselected_cols = NULL,
+        column_names = "column",
+        return_only_selected = FALSE
+      ),
+    rlang::set_names(
+      c("grp2", "lbl", "ord", "1"),
+      ""
+    )
+  )
+
+  expect_identical(
+    split_data_names_to_df(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "ord",
+      column_names = "column"
+    ) |>
+      unite_df_to_data_names(
+        preselected_cols = "ord",
+        column_names = "column",
+        return_only_selected = TRUE
+      ),
+    rlang::set_names(
+      c("grp2", "lbl", "ord", "1"),
+      ""
+    )
+  )
+
+  split_data_names_to_df(
+    data_names = c("grp2", "lbl", "ord", "1"),
+    preselected_cols = "-ord",
+    column_names = "column"
+  ) |>
+    unite_df_to_data_names(
+      preselected_cols = "-ord",
+      column_names = "column"
+    )
+
+  tibble::tibble(
+    column = c("ord", "grp2", "lbl", "1"),
+    `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "1"),
+    subtraction_status = c(TRUE, FALSE, FALSE, FALSE)
+  ) |>
+    unite_df_to_data_names(
+      preselected_cols = "-ord",
+      column_names = "column"
+    )
+
+  split_data_names_to_df(
+    data_names = c("grp2", "lbl", "ord", "1"),
+    preselected_cols = "ord",
+    column_names = "column"
+  ) |>
+    unite_df_to_data_names(
+      preselected_cols = "ord",
+      column_names = "column"
+    )
 })
