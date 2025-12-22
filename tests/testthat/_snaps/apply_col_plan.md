@@ -50,89 +50,135 @@
 # create_col_order() works
 
     Code
-      purrr::map(create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(
-        column), cp = col_plan(-ord)), rlang::quo_get_expr)
+      create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(
+        column), cp = col_plan(-ord))
     Output
+      <list_of<quosure>>
+      
       [[1]]
-      -ord
+      <quosure>
+      expr: ^-ord
+      env:  <env-address>
       
       [[2]]
-      grp2
+      <quosure>
+      expr: ^grp2
+      env:  <env-address>
       
       [[3]]
-      lbl
+      <quosure>
+      expr: ^lbl
+      env:  <env-address>
       
       [[4]]
-      `1`
+      <quosure>
+      expr: ^`1`
+      env:  <env-address>
       
 
 # create_col_order() with NULL col plan
 
     Code
-      purrr::map(create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(
-        column), cp = NULL), rlang::quo_get_expr)
+      create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(
+        column), cp = NULL)
     Output
+      <list_of<quosure>>
+      
       [[1]]
-      grp2
+      <quosure>
+      expr: ^grp2
+      env:  <env-address>
       
       [[2]]
-      lbl
+      <quosure>
+      expr: ^lbl
+      env:  <env-address>
       
       [[3]]
-      ord
+      <quosure>
+      expr: ^ord
+      env:  <env-address>
       
       [[4]]
-      `1`
+      <quosure>
+      expr: ^`1`
+      env:  <env-address>
       
 
 # create_col_order() with empty columns arg & cp not NULL
 
     Code
-      purrr::map(create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(),
-      cp = col_plan(-ord)), rlang::quo_get_expr)
+      create_col_order(data_names = c("grp2", "lbl", "ord", "1"), columns = rlang::quos(),
+      cp = col_plan(-ord))
     Output
+      <list_of<quosure>>
+      
       [[1]]
-      -ord
+      <quosure>
+      expr: ^-ord
+      env:  <env-address>
       
       [[2]]
-      grp2
+      <quosure>
+      expr: ^grp2
+      env:  <env-address>
       
       [[3]]
-      lbl
+      <quosure>
+      expr: ^lbl
+      env:  <env-address>
       
       [[4]]
-      `1`
+      <quosure>
+      expr: ^`1`
+      env:  <env-address>
       
 
 # create_col_order() with span_structure()
 
     Code
-      purrr::map(create_col_order(data_names = c("group", "label",
+      create_col_order(data_names = c("group", "label",
         "cols 1,2___tlang_delim___col1", "cols 1,2___tlang_delim___col2", "mycol3",
         "col 4___tlang_delim___col4", "mycol5"), columns = rlang::quos(span1, my_col),
       cp = col_plan(span_structure(span1 = c(`first cols` = "cols 1,2")), group,
-      label, starts_with("col"), new_col_3 = mycol3, -mycol5)), rlang::quo_get_expr)
+      label, starts_with("col"), new_col_3 = mycol3, -mycol5))
     Output
+      <list_of<quosure>>
+      
       [[1]]
-      group
+      <quosure>
+      expr: ^group
+      env:  <env-address>
       
       [[2]]
-      label
+      <quosure>
+      expr: ^label
+      env:  <env-address>
       
       $`first cols___tlang_delim___col1`
-      `cols 1,2___tlang_delim___col1`
+      <quosure>
+      expr: ^`cols 1,2___tlang_delim___col1`
+      env:  <env-address>
       
       $`first cols___tlang_delim___col2`
-      `cols 1,2___tlang_delim___col2`
+      <quosure>
+      expr: ^`cols 1,2___tlang_delim___col2`
+      env:  <env-address>
       
       [[5]]
-      `col 4___tlang_delim___col4`
+      <quosure>
+      expr: ^`col 4___tlang_delim___col4`
+      env:  <env-address>
       
       $new_col_3
-      mycol3
+      <quosure>
+      expr: ^mycol3
+      env:  <env-address>
       
       [[7]]
-      -mycol5
+      <quosure>
+      expr: ^-mycol5
+      env:  <env-address>
       
 
 # split_data_names_to_df() works
@@ -176,4 +222,19 @@
       2 <NA>  grp2  <NA>                    grp2                    FALSE             
       3 <NA>  lbl   <NA>                    lbl                     FALSE             
       4 <NA>  1     <NA>                    1                       FALSE             
+
+---
+
+    Code
+      split_data_names_to_df(data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "-ord", column_names = "column")
+    Output
+      # A tibble: 5 x 3
+        column `__tfrmt_new_name__column` subtraction_status
+        <chr>  <chr>                      <lgl>             
+      1 ord    -ord                       TRUE              
+      2 grp2   grp2                       FALSE             
+      3 lbl    lbl                        FALSE             
+      4 ord    ord                        FALSE             
+      5 1      1                          FALSE             
 
