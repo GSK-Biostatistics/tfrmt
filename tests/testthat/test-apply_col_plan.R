@@ -410,14 +410,6 @@ test_that("char_as_quo() works", {
       rlang::quo_is_symbol()
   )
 
-  # exception: valid tidyselect expression, but the output is noa a call
-  # this unit tests should be reviewed as part of
-  # https://github.com/GSK-Biostatistics/tfrmt/issues/578
-  expect_false(
-    char_as_quo("foo:bar") |>
-      rlang::quo_is_call()
-  )
-
   # backticks are added when x is not a valid tidyselect call and the output
   # expression is a symbol and not a call
   expect_identical(
@@ -457,6 +449,80 @@ test_that("char_as_quo() works", {
       rlang::quo_get_expr(),
     rlang::expr(
       `foo12-3bar`
+    )
+  )
+
+  # exception: valid tidyselect expression, but the output is not a call
+  # this unit tests should be reviewed as part of
+  # https://github.com/GSK-Biostatistics/tfrmt/issues/578
+  skip("https://github.com/GSK-Biostatistics/tfrmt/issues/578")
+  expect_true(
+    char_as_quo("foo:bar") |>
+      rlang::quo_is_call()
+  )
+
+  # same issue with namespaced calls
+  expect_true(
+    char_as_quo("tidyselect::starts_with('foo')") |>
+      rlang::quo_is_call()
+  )
+})
+
+test_that("eval_col_plan_quo() works", {
+  expect_identical(
+    eval_col_plan_quo(
+      x = rlang::quo(ord),
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_vals = NULL,
+      default_everything_behavior = FALSE
+    ),
+    "ord"
+  )
+
+  # not really clear, but eval_col_plan_quo only works when x is a single
+  # quosure (and not a list of quosures)
+  expect_identical(
+    eval_col_plan_quo(
+      x = rlang::quo(everything()),
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_vals = NULL,
+      default_everything_behavior = TRUE
+    ),
+    c("grp2", "lbl", "ord", "1")
+  )
+
+  # default_everything_behavior produces effects only in a very narrow case:
+  # - when preselected_vars is not empty, and
+  # - x is everything()
+  # the behaviour is likely incorrect, the below drops "grp2" (the first
+  # variable in the data_names vector, due to ...[-seq_along(preselected_vals)])
+  #
+  # data_names <- data_names[-seq_along(preselected_vals)] should be replaced with
+  # data_names <- setdiff(data_names, preselected_vals)
+  expect_identical(
+    eval_col_plan_quo(
+      x = rlang::quo(everything()),
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_vals = "ord",
+      default_everything_behavior = FALSE
+    ),
+    c("grp2", "lbl", "1")
+  )
+
+  # the below should produce identical results, but they do not
+  skip("https://github.com/GSK-Biostatistics/tfrmt/issues/578")
+  expect_identical(
+    eval_col_plan_quo(
+      x = rlang::quo(everything()),
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_vals = "ord",
+      default_everything_behavior = FALSE
+    ),
+    eval_col_plan_quo(
+      x = rlang::quo(tidyselect::everything()),
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_vals = "ord",
+      default_everything_behavior = FALSE
     )
   )
 })
