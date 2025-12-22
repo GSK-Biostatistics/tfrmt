@@ -293,13 +293,16 @@ char_as_quo <- function(x) {
 #' @importFrom rlang quo_get_expr as_label is_empty
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
-  if(identical(as_label(x), "everything()") && !default_everything_behavior && !is_empty(preselected_vals)){
+  if(identical(as_label(x), "everything()") & !default_everything_behavior){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
-    # new behaviour
-    # data_names <- setdiff(data_names, preselected_vals)
-    # old behaviour
-    data_names <- data_names[-seq_along(preselected_vals)]
+
+    if(!is_empty(preselected_vals)){
+      # new behaviour
+      # data_names <- setdiff(data_names, preselected_vals)
+      # old behaviour
+      data_names <- data_names[-seq_along(preselected_vals)]
+    }
   }
 
   eval_tidyselect_on_colvec(x, data_names)
@@ -318,6 +321,10 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
 #' @param column_names the original ARD column names as a character vector
 #'
 #' @noRd
+#'
+#' @importFrom dplyr mutate
+#' @importFrom tidyr separate
+#' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
   # data_names <- union(data_names, preselected_cols)
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
