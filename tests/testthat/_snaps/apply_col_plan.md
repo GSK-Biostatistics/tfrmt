@@ -135,3 +135,45 @@
       -mycol5
       
 
+# split_data_names_to_df() works
+
+    Code
+      split_data_names_to_df(data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = NULL, column_names = "column")
+    Output
+      # A tibble: 4 x 3
+        column `__tfrmt_new_name__column` subtraction_status
+        <chr>  <chr>                      <lgl>             
+      1 grp2   grp2                       FALSE             
+      2 lbl    lbl                        FALSE             
+      3 ord    ord                        FALSE             
+      4 1      1                          FALSE             
+
+---
+
+    Code
+      split_data_names_to_df(data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = c(order = "ord"), column_names = "column")
+    Output
+      # A tibble: 4 x 3
+        column `__tfrmt_new_name__column` subtraction_status
+        <chr>  <chr>                      <lgl>             
+      1 ord    order                      FALSE             
+      2 grp2   grp2                       FALSE             
+      3 lbl    lbl                        FALSE             
+      4 1      1                          FALSE             
+
+---
+
+    Code
+      split_data_names_to_df(data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = c(order = "ord"), column_names = c("foo", "bar"))
+    Output
+      # A tibble: 4 x 5
+        foo   bar   `__tfrmt_new_name__foo` `__tfrmt_new_name__bar` subtraction_status
+        <chr> <chr> <chr>                   <chr>                   <lgl>             
+      1 <NA>  ord   <NA>                    order                   FALSE             
+      2 <NA>  grp2  <NA>                    grp2                    FALSE             
+      3 <NA>  lbl   <NA>                    lbl                     FALSE             
+      4 <NA>  1     <NA>                    1                       FALSE             
+
