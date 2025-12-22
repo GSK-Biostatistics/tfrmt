@@ -6,7 +6,7 @@
 apply_col_plan <- function(data, col_selection, grp_lbl) {
 
   if(is.character(col_selection)){
-    quo_col_selections <- purrr::map(col_selection, ~char_as_quo(.x))
+    quo_col_selections <- map(col_selection, ~char_as_quo(.x))
     col_selection <- do.call(vars, quo_col_selections)
   }
 
@@ -16,7 +16,7 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
     names(col_selection)[col_selection_grp_lbl] <- ""
   }
 
-  dplyr::select(data, !!!col_selection)
+  select(data, !!!col_selection)
 }
 
 
@@ -25,9 +25,9 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
 create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc){
 
   # all group/label vars
-  grps <- purrr::map_chr(c(group, label), as_label)
+  grps <- map_chr(c(group, label), as_label)
   # all column labels
-  col_plan_vars_chr <- purrr::map_chr(col_plan_vars, as_label)
+  col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
 
   # subset the column labels to just group/label vars
   stub <- NULL
@@ -38,7 +38,7 @@ create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc
       stub <- nms_grps
 
       # only row_grp_plan "column" option gets >1 stub label
-      if (row_grp_plan_label_loc != "column") {
+      if (!row_grp_plan_label_loc=="column") {
         stub <- stub[1]
       }
 
@@ -293,7 +293,10 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
   if(identical(as_label(x), "everything()") && !default_everything_behavior && !is_empty(preselected_vals)){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
-    data_names <- setdiff(data_names, preselected_vals)
+    # new behaviour
+    # data_names <- setdiff(data_names, preselected_vals)
+    # old behaviour
+    data_names <- data_names[-seq_along(preselected_vals)]
   }
 
   eval_tidyselect_on_colvec(x, data_names)
