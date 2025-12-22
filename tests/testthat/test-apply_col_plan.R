@@ -542,6 +542,19 @@ test_that("split_data_names_to_df() works", {
     )
   )
 
+  expect_identical(
+    split_data_names_to_df(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = NULL,
+      column_names = "column"
+    ),
+    tibble::tibble(
+      column = c("grp2", "lbl", "ord", "1"),
+      `__tfrmt_new_name__column` = c("grp2", "lbl", "ord", "1"),
+      subtraction_status = c(FALSE, FALSE, FALSE, FALSE)
+    )
+  )
+
   # preselected_cols renames
   expect_snapshot(
     split_data_names_to_df(
@@ -557,6 +570,30 @@ test_that("split_data_names_to_df() works", {
       data_names = c("grp2", "lbl", "ord", "1"),
       preselected_cols = c(order = "ord"),
       column_names = c("foo", "bar")
+    )
+  )
+
+  # negative selection
+  # doesn't really work (ord appears twice in the output)
+  expect_snapshot(
+    split_data_names_to_df(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "-ord",
+      column_names = "column"
+    )
+  )
+
+  # it should be
+  expect_identical(
+    split_data_names_to_df(
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "-ord",
+      column_names = "column"
+    ),
+    tibble::tibble(
+      column = c("ord", "grp2", "lbl", "ord", "1"),
+      `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "ord", "1"),
+      subtraction_status = c(TRUE, FALSE, FALSE, FALSE, FALSE)
     )
   )
 })
