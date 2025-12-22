@@ -3,8 +3,8 @@
 strip_env_label <- function(x) {
   stringr::str_replace_all(
     x,
-    # memory addresses have between 9 (macOS), 12(linux) or 15(windows) chars
-    pattern = "(0[xX]){1}[A-Fa-f0-9]{9,12}",
+    # memory addresses have 9 (macOS), 12(linux) or 16(windows) characters
+    pattern = "(0[xX]){1}[A-Fa-f0-9]{9,16}",
     replacement = "<env-address>"
   )
 }
