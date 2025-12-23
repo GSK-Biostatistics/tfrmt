@@ -381,6 +381,34 @@ test_that("col_plan_quo_to_vars() works", {
       ""
     )
   )
+
+  # impact of return_only_selected == TRUE
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(ord),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "lbl",
+      return_only_selected = TRUE
+    ),
+    rlang::set_names("ord", "")
+  )
+
+  # when return_only_selected is FALSE then both preselected and selected cols
+  # are returned
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(ord),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "lbl",
+      return_only_selected = FALSE
+    ),
+    rlang::set_names(
+      c("lbl", "ord"),
+      ""
+    )
+  )
 })
 
 test_that("char_as_quo() works", {
