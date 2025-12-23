@@ -368,6 +368,19 @@ test_that("col_plan_quo_to_vars() works", {
       `starts_with("ord")2` = "order_new"
     )
   )
+
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(ord),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = "lbl"
+    ),
+    rlang::set_names(
+      c("lbl", "ord"),
+      ""
+    )
+  )
 })
 
 test_that("char_as_quo() works", {
