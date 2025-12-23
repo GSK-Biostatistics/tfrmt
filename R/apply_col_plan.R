@@ -293,11 +293,13 @@ char_as_quo <- function(x) {
 #' @importFrom rlang quo_get_expr as_label is_empty
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
+  # TODO move all conditions into a single if() statement and use `&&`
   if(identical(as_label(x), "everything()") & !default_everything_behavior){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
 
     if(!is_empty(preselected_vals)){
+      # TODO decide which one is the correct behaviour
       # new behaviour
       # data_names <- setdiff(data_names, preselected_vals)
       # old behaviour

@@ -410,8 +410,8 @@ test_that("col_plan_quo_to_vars() works", {
     )
   )
 
-  # skip("I don't think this test is ok")
-  # default_everything_behavior = FALSE
+  # default_everything_behavior = FALSE results in a reordering of the output
+  # (preselected_cols come first)
   expect_identical(
     col_plan_quo_to_vars(
       x = rlang::quos(everything()),
@@ -426,7 +426,17 @@ test_that("col_plan_quo_to_vars() works", {
     )
   )
 
-  # default_everything_behavior = TRUE
+  # TODO clarify
+  # I'd say the expectation is that is should not be possible for the output of
+  # col_plan_quo_to_vars() to return more column than available in the data
+  # (i.e. it should not contain duplicates). At most we should return data_names
+  # without any additional elements
+
+  skip("Incorrect behaviour?")
+
+  # default_everything_behavior = TRUE with preselected columns results in a
+  # duplication of the preselected_cols (which are also moved to the beginning
+  # of the column names vector)
   expect_identical(
     col_plan_quo_to_vars(
       x = rlang::quos(everything()),
@@ -569,6 +579,8 @@ test_that("eval_col_plan_quo() works", {
   # data_names <- data_names[-seq_along(preselected_vals)] should be replaced with
   # data_names <- setdiff(data_names, preselected_vals)
   skip("incorrect behaviour")
+  # correct behaviour should be to return all columns but the preselected ones
+  # when default_everything_behaviour is FALSE, but that is not the case
   expect_identical(
     eval_col_plan_quo(
       x = rlang::quo(everything()),
