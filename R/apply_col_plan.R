@@ -302,7 +302,7 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
       # TODO decide which one is the correct behaviour
       # new behaviour
       # data_names <- setdiff(data_names, preselected_vals)
-      # old behaviour
+      # old behaviour (which I think is incorrect - see unit tests)
       data_names <- data_names[-seq_along(preselected_vals)]
     }
   }
@@ -328,6 +328,7 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
 #' @importFrom tidyr separate
 #' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
+  # TODO switch to this more robust approach
   # data_names <- union(data_names, preselected_cols)
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
