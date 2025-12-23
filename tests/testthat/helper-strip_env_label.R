@@ -1,5 +1,8 @@
-# x <- "<list_of<quosure>>\n\n[[1]]\n<quosure>\nexpr: ^grp2\nenv:  0x72db165b8\n\n[[2]]\n<quosure>\nexpr: ^lbl\nenv:  0x72db31118\n\n[[3]]\n<quosure>\nexpr: ^ord\nenv:  0x72db403f8\n\n[[4]]\n<quosure>\nexpr: ^`1`\nenv:  0x72db5f4d0\n"
-
+# helper function to be used with the `expect_snapshot()` `transform` argument
+# it takes a string and replaces the memory address of an environment (which is
+# {rlang} uses as the environment label) with `"<env-address>"`. The memory
+# address usually starts with "0x" or "0X" (as an indication that what follows
+# is in hexadecimal) followed by 9, 12 or 16 characters (depending on the OS)
 strip_env_label <- function(x) {
   stringr::str_replace_all(
     x,
