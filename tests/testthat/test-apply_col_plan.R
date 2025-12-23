@@ -833,7 +833,14 @@ test_that("unite_df_to_data_names() works", {
         preselected_cols = "-ord",
         column_names = "column"
       ),
-    c("-ord", `-ord` = "-ord", "grp2", "lbl", "ord", "1")
+    c(
+      "-ord",
+      `-ord` = "-ord", # TODO clarify
+      "grp2",
+      "lbl",
+      "ord",
+      "1"
+    )
   )
 
   expect_identical(
@@ -846,7 +853,13 @@ test_that("unite_df_to_data_names() works", {
         preselected_cols = "-ord",
         column_names = "column"
       ),
-    c("-ord", `-ord` = "-ord", "grp2", "lbl", "1")
+    c(
+      "-ord",
+      `-ord` = "-ord", # TODO clarify
+      "grp2",
+      "lbl",
+      "1"
+    )
   )
 
   expect_identical(
@@ -860,6 +873,7 @@ test_that("unite_df_to_data_names() works", {
         column_names = "column"
       ),
     rlang::set_names(
+      # TODO clarify
       c("ord", "ord", "grp2", "lbl", "1"),
       ""
     )
