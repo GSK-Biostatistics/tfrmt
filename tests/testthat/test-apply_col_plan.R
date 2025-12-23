@@ -409,6 +409,37 @@ test_that("col_plan_quo_to_vars() works", {
       ""
     )
   )
+
+  # skip("I don't think this test is ok")
+  # default_everything_behavior = FALSE
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(everything()),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = c("lbl", "1"),
+      default_everything_behavior = FALSE
+    ),
+    rlang::set_names(
+      c("lbl", "1", "grp2", "ord"),
+      ""
+    )
+  )
+
+  # default_everything_behavior = TRUE
+  expect_identical(
+    col_plan_quo_to_vars(
+      x = rlang::quos(everything()),
+      column_names = "column",
+      data_names = c("grp2", "lbl", "ord", "1"),
+      preselected_cols = c("lbl", "1"),
+      default_everything_behavior = TRUE
+    ),
+    rlang::set_names(
+      c("lbl", "1", "lbl", "1", "grp2", "ord"),
+      ""
+    )
+  )
 })
 
 test_that("char_as_quo() works", {
