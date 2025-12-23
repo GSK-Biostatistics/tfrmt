@@ -135,13 +135,13 @@ test_that("create_col_order() works", {
     c("quosures", "list")
   )
 
-  # we strip out the environment memory address (aka the label)
   expect_snapshot(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(column),
       cp = col_plan(-ord)
     ),
+    # we strip out the environment memory address (aka the label)
     transform = strip_env_label
   )
 
@@ -151,12 +151,7 @@ test_that("create_col_order() works", {
       columns = rlang::quos(column),
       cp = col_plan(-ord)
     ),
-    rlang::quos(
-      -ord,
-      grp2,
-      lbl,
-      `1`
-    ),
+    rlang::quos(-ord, grp2, lbl, `1`),
     ignore_formula_env = TRUE
   )
 })
@@ -172,14 +167,13 @@ test_that("create_col_order() with NULL col plan", {
     c("quosures", "list")
   )
 
-  # we don't need to snapshot the environment names, we're only interested in
-  # the expressions
   expect_snapshot(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(column),
       cp = NULL
     ),
+    # we strip out the environment memory address (aka the label)
     transform = strip_env_label
   )
 
@@ -209,14 +203,13 @@ test_that("create_col_order() with empty columns arg & cp not NULL", {
     c("quosures", "list")
   )
 
-  # we don't need to snapshot the environment names, we're only interested in
-  # the expressions
   expect_snapshot(
     create_col_order(
       data_names = c("grp2", "lbl", "ord", "1"),
       columns = rlang::quos(),
       cp = col_plan(-ord)
     ),
+    # we strip out the environment memory address (aka the label)
     transform = strip_env_label
   )
 
@@ -226,12 +219,7 @@ test_that("create_col_order() with empty columns arg & cp not NULL", {
       columns = rlang::quos(),
       cp = col_plan(-ord)
     ),
-    rlang::quos(
-      -ord,
-      grp2,
-      lbl,
-      `1`
-    ),
+    rlang::quos(-ord, grp2, lbl, `1`),
     ignore_formula_env = TRUE
   )
 })
@@ -271,7 +259,11 @@ test_that("create_col_order() with span_structure()", {
       columns = rlang::quos(span1, my_col),
       cp = col_plan(
         # rename column spanner in same level
-        span_structure(span1 = c("first cols" = "cols 1,2")),
+        span_structure(
+          span1 = c(
+            "first cols" = "cols 1,2"
+          )
+        ),
         group,
         label,
         starts_with("col"),
@@ -284,7 +276,6 @@ test_that("create_col_order() with span_structure()", {
 
   expect_identical(
     create_col_order(
-      # data_names = c("group", "label", "span2", "span1", "my_col", "parm", "val"),
       data_names = c(
         "group",
         "label",
@@ -297,7 +288,11 @@ test_that("create_col_order() with span_structure()", {
       columns = rlang::quos(span1, my_col),
       cp = col_plan(
         # rename column spanner in same level
-        span_structure(span1 = c("first cols" = "cols 1,2")),
+        span_structure(
+          span1 = c(
+            "first cols" = "cols 1,2"
+          )
+        ),
         group,
         label,
         starts_with("col"),
@@ -610,7 +605,96 @@ test_that("eval_col_plan_quo() works", {
 })
 
 test_that("col_plan_span_structure_to_vars() works", {
-  expect_equal(1 + 1, 2)
+  # 1
+  expect_identical(
+    col_plan_span_structure_to_vars(
+      x = span_structure(
+        span1 = c("first cols" = "cols 1,2")
+      ),
+      column_names = c("span1", "my_col"),
+      data_names = c(
+        "group",
+        "label",
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "mycol3",
+        "col 4___tlang_delim___col4",
+        "mycol5"
+      ),
+      preselected_cols = NULL
+    ),
+    rlang::set_names(
+      c(
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "col 4___tlang_delim___col4"
+      ),
+      ""
+    )
+  )
+
+  # 2
+  # trigger the col_id %in% names(x[[1]]) condition inside
+  # col_plan_span_structure_to_vars() by having span1 as the name
+  # of the first element of x (don't ask)
+  expect_identical(
+    col_plan_span_structure_to_vars(
+      x = list(
+        span1 = span_structure(
+          span1 = c(
+            "first cols" = "cols 1,2"
+          )
+        )
+      ),
+      column_names = c("span1", "my_col"),
+      data_names = c(
+        "group",
+        "label",
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "mycol3",
+        "col 4___tlang_delim___col4",
+        "mycol5"
+      ),
+      preselected_cols = NULL
+    ),
+    c(
+      `first cols___tlang_delim___col1` = "cols 1,2___tlang_delim___col1",
+      `first cols___tlang_delim___col2` = "cols 1,2___tlang_delim___col2"
+    )
+  )
+
+  # 3
+  expect_identical(
+    col_plan_span_structure_to_vars(
+      x = list(
+        span1 = span_structure(
+          "first cols" = "cols 1,2"
+        )
+      ),
+      column_names = c("span1", "my_col"),
+      data_names = c(
+        "group",
+        "label",
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "mycol3",
+        "col 4___tlang_delim___col4",
+        "mycol5"
+      ),
+      preselected_cols = NULL
+    ),
+    rlang::set_names(
+      c(
+        "cols 1,2___tlang_delim___col1",
+        "cols 1,2___tlang_delim___col2",
+        "col 4___tlang_delim___col4"
+      ),
+      ""
+    )
+  )
+
+  # TODO understand why 2 is not identical with 1 and 3
 })
 
 test_that("split_data_names_to_df() works", {
