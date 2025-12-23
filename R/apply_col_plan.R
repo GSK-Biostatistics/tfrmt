@@ -339,6 +339,9 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
     }
   }
 
+  # TODO we should probably use tibble::enframe() here
+  # the current approach results in `original` and `subtraction_status` columns
+  # being named vectors
   tibble(
     original = data_names,
     new_name = names(data_names)
