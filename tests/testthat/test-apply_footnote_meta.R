@@ -20,7 +20,6 @@ test_that("applying footnote meta column val", {
     ),
     param = c(rep(c("n", "n", "pct", "pct"), 10)),
     trt = c(rep(c("Placebo", "Treatment"), 20)),
-    # fmt: skip
     value = c(
       24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18, 1900 / 48,
       1800 / 38, 1, 1, 100 / 48, 100 / 38, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -253,7 +252,6 @@ test_that("applying footnote meta group val", {
     ),
     param = c(rep(c("n", "n", "pct", "pct"), 10)),
     trt = c(rep(c("Placebo", "Treatment"), 20)),
-    # fmt: skip
     value = c(
       24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18, 1900 / 48,
       1800 / 38, 1, 1, 100 / 48, 100 / 38, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -626,7 +624,6 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
       trt = c("Placebo", "Trt1", "Trt2", "Trt3")
     ) %>%
     dplyr::bind_cols(
-      # fmt: skip
       value = c(
         24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18,
         1900 / 48, 1800 / 38, 1, 1, 100 / 48, 100 / 38, 0, 0, 0, 0, 0, 0, 0, 0,
