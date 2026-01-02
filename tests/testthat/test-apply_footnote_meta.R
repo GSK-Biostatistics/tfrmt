@@ -68,12 +68,17 @@ test_that("applying footnote meta column val", {
   )
 
   expect_equal(
-    attr(apply_tfrmt(es_data, tfrmt), ".footnote_locs"),
-    list(list(
-      "col" = "Placebo",
-      "spanning" = FALSE,
-      "note" = "Test footnote 1"
-    ))
+    attr(
+      apply_tfrmt(es_data, tfrmt),
+      ".footnote_locs"
+    ),
+    list(
+      list(
+        "col" = "Placebo",
+        "spanning" = FALSE,
+        "note" = "Test footnote 1"
+      )
+    )
   )
   # named column vals
   tfrmt2 <- tfrmt(
@@ -91,31 +96,44 @@ test_that("applying footnote meta column val", {
         frmt_combine(
           "{n} {pct}",
           n = frmt("xxx"),
-          pct = frmt_when("==100" ~ "", "==0" ~ "", TRUE ~ frmt("(xx.x %)"))
+          pct = frmt_when(
+            "==100" ~ "",
+            "==0" ~ "",
+            TRUE ~ frmt("(xx.x %)")
+          )
         )
       )
     ),
     footnote_plan = footnote_plan(
       footnote_structure(
         "Test footnote 1",
-        column_val = list(trt = "Placebo")
+        column_val = list(
+          trt = "Placebo"
+        )
       ),
       marks = "letters"
     )
   )
 
   expect_equal(
-    attr(apply_tfrmt(es_data, tfrmt2), ".footnote_locs"),
-    list(list(
-      "col" = "Placebo",
-      "spanning" = FALSE,
-      "note" = "Test footnote 1"
-    ))
+    attr(
+      apply_tfrmt(es_data, tfrmt2),
+      ".footnote_locs"
+    ),
+    list(
+      list(
+        "col" = "Placebo",
+        "spanning" = FALSE,
+        "note" = "Test footnote 1"
+      )
+    )
   )
 
   # spanning
   es_data2 <- es_data %>%
-    mutate(col2 = "Treatment column")
+    dplyr::mutate(
+      col2 = "Treatment column"
+    )
 
   tfrmt3 <- tfrmt(
     # specify columns in the data
@@ -164,17 +182,24 @@ test_that("applying footnote meta column val", {
   )
 
   expect_equal(
-    attr(apply_tfrmt(es_data2, tfrmt3), ".footnote_locs"),
-    list(list(
-      "col" = "Treatment column",
-      "spanning" = TRUE,
-      "note" = "Test footnote 3"
-    ))
+    attr(
+      apply_tfrmt(es_data2, tfrmt3),
+      ".footnote_locs"
+    ),
+    list(
+      list(
+        "col" = "Treatment column",
+        "spanning" = TRUE,
+        "note" = "Test footnote 3"
+      )
+    )
   )
 
   # spanned
   es_data3 <- es_data2 %>%
-    mutate(col2 = "Treatment column 2") %>%
+    dplyr::mutate(
+      col2 = "Treatment column 2"
+    ) %>%
     rbind(es_data2)
 
   tfrmt3 <- tfrmt(
@@ -192,7 +217,11 @@ test_that("applying footnote meta column val", {
         frmt_combine(
           "{n} {pct}",
           n = frmt("xxx"),
-          pct = frmt_when("==100" ~ "", "==0" ~ "", TRUE ~ frmt("(xx.x %)"))
+          pct = frmt_when(
+            "==100" ~ "",
+            "==0" ~ "",
+            TRUE ~ frmt("(xx.x %)")
+          )
         )
       )
     ),
@@ -202,9 +231,13 @@ test_that("applying footnote meta column val", {
     row_grp_plan = row_grp_plan(
       row_grp_structure(
         group_val = ".default",
-        element_block(post_space = " ")
+        element_block(
+          post_space = " "
+        )
       ),
-      label_loc = element_row_grp_loc(location = "column")
+      label_loc = element_row_grp_loc(
+        location = "column"
+      )
     ),
     footnote_plan = footnote_plan(
       footnote_structure(
@@ -218,7 +251,10 @@ test_that("applying footnote meta column val", {
   )
 
   expect_equal(
-    attr(apply_tfrmt(es_data2, tfrmt3), ".footnote_locs"),
+    attr(
+      apply_tfrmt(es_data2, tfrmt3),
+      ".footnote_locs"
+    ),
     list(
       list(
         "col" = "Treatment column___tlang_delim___Placebo",
@@ -262,7 +298,9 @@ test_that("applying footnote meta group val", {
 
   # spanning
   es_data2 <- es_data %>%
-    mutate(col2 = "Treatment column")
+    dplyr::mutate(
+      col2 = "Treatment column"
+    )
 
   # test warnings
 
@@ -295,7 +333,9 @@ test_that("applying footnote meta group val", {
     row_grp_plan = row_grp_plan(
       row_grp_structure(
         group_val = ".default",
-        element_block(post_space = " ")
+        element_block(
+          post_space = " "
+        )
       ),
       label_loc = element_row_grp_loc(
         location = "column"
@@ -416,7 +456,10 @@ test_that("applying footnote meta group val", {
   )
 
   expect_equal(
-    attr(apply_tfrmt(es_data2, tfrmt3), ".footnote_locs"),
+    attr(
+      apply_tfrmt(es_data2, tfrmt3),
+      ".footnote_locs"
+    ),
     list(
       list(
         "col" = "rowlbl1",
@@ -517,7 +560,6 @@ test_that("applying footnote meta group val", {
         )
       )
     ),
-
     # Specify row group plan
     row_grp_plan = row_grp_plan(
       row_grp_structure(
@@ -588,7 +630,9 @@ test_that("applying footnote meta group val", {
       )
     ),
     footnote_plan = footnote_plan(
-      footnote_structure("Test footnote")
+      footnote_structure(
+        "Test footnote"
+      )
     )
   )
   expect_equal(
@@ -613,8 +657,8 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
     rowlbl1 = "Completion Status",
     rowlbl2 = c("Completed", "Ongoing", "Unknown")
   ) %>%
-    bind_rows(
-      tibble(
+    dplyr::bind_rows(
+      tibble::tibble(
         rowlbl1 = "Primary reason for withdrawal",
         rowlbl2 = c("Other", "Lost to follow-up")
       )
