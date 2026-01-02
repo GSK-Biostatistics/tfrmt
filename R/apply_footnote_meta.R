@@ -65,75 +65,128 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
 #'
 #' @return list with column locations (col) and if they are spanning or not (spanning)
 #' @noRd
-get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
+get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
 
-  loc_info <- footnote_structure %>%
-    purrr::discard(is.null) %>%
-    .[names(.) != "footnote_text"]
+  loc_info <- footnote_structure |>
+    purrr::discard(is.null) |>
+    purrr::discard_at("footnote_text")
+
+  # remove one layer from the conditional logic by surfacing the default
+  # output values
+  col_loc <- NULL
+  spanning <- FALSE
+  # alternatively, we can build the default `out` here
+  # out <- list(col = NULL, spanning = FALSE)
 
   # Get column information
-  if( "column_val" %in% names(loc_info)){
-    col_str <- columns %>% map_chr(as_label)
+  if ("column_val" %in% names(loc_info)) {
+    col_str <- purrr::map_chr(columns, as_label)
 
-    if(is_empty(names(loc_info$column_val))){
+    # TODO something feels inconsistent here. if `column_val` is not named (NB
+    # can be any length) then the info in it is all dumped into the same column
+    # (in theory, columns, but in practice the code below only works if
+    # `col_str` is a scalar)
+    # what happens when column_val has multiple unnamed elements?
+    if (is_empty(names(loc_info$column_val))) {
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
+      # should we use as_tibble_row() here? much clearer about its intention
+      # compared to expand.grid
       loc_col_df <- loc_info$column_val %>%
         expand.grid(stringsAsFactors = FALSE)
       col_val_nm <- names(loc_info$column_val)
     }
 
-    col_loc_df <- split_data_names_to_df(NULL, col_plan_vars%>%
-                                           map_chr(as_label), col_str) %>%
-      inner_join(loc_col_df, by = col_val_nm)
+    col_loc_df <- split_data_names_to_df(
+      data_names = NULL,
+      preselected_cols = purrr::map_chr(col_plan_vars, as_label),
+      column_names = col_str
+    ) %>%
+      dplyr::inner_join(
+        loc_col_df,
+        by = col_val_nm
+      )
 
-    if(nrow(col_loc_df) == 0){
+    if (nrow(col_loc_df) == 0) {
+      # TODO this branch of the conditional logic is not tested
+      # it doesn't not seem to be used -> I don't think we need it
+      # if we do, we should test it
+      # it feels like we are doing a lot above to ensure col_loc_df is not
+      # empty
+      # this logic was added in https://github.com/GSK-Biostatistics/tfrmt/pull/333
+      # if it is important we should test it (we don't know it's working)
 
       message_text <- c(
-       paste0(
-        "The provided column location does not exist in the provided data for the footnote",
-        "\"",
-        footnote_structure$footnote_text,
-        "\""
+        paste0(
+          "The provided column location does not exist in the provided data for the footnote",
+          "\"",
+          footnote_structure$footnote_text,
+          "\""
         ),
         "Provided column location:"
-        )
+      )
 
-      for(col_var in col_val_nm){
+      for (col_var in col_val_nm) {
         message_text <- c(
           message_text,
-          paste0(col_var,": ",paste0("`",loc_info$column_val[[col_var]],"`", collapse = ","))
+          paste0(
+            col_var,
+            ": ",
+            paste0("`", loc_info$column_val[[col_var]], "`", collapse = ",")
+          )
         )
       }
 
       message(paste0(message_text, collapse = "\n"))
 
-      out <- list(col = NULL, spanning = FALSE)
-
-    }else{
+      # these are the default values for col_loc and spanning
+      # out <- list(col = NULL, spanning = FALSE)
+    } else {
       # if not a column return the spanning column name
       span_lvl <- col_str %in% col_val_nm %>%
         which() %>%
         max() %>%
         col_str[.]
 
-      if(last(col_str) == span_lvl){
-        col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
-        if(!is.null(names(col_loc))){
-          col_loc <- if_else(names(col_loc) != "", names(col_loc), unname(col_loc))
+      if (last(col_str) == span_lvl) {
+        col_loc <- unite_df_to_data_names(
+          col_loc_df,
+          preselected_cols = c(),
+          column_names = col_str
+        )
+        # TODO could we simply replace this conditional with a slightly
+        # different logic?
+        # I think what we are doing is keeping the names if they are non-empty
+        # strings and dropping them if they are empty.
+        # probably the best option would be to write our own helper (wrapping
+        # rlang::set_names)
+        # another option would be for unite_df_to_data_names to get allow control
+        # of how the output is named / how the naming happens
+        if (!is.null(names(col_loc))) {
+          col_loc <- dplyr::if_else(
+            names(col_loc) == "",
+            unname(col_loc),
+            names(col_loc)
+          )
         }
-        out <- list(col = col_loc, spanning = FALSE)
+        # only col_loc changes, spanning remains FALSE
+        # out <- list(col = col_loc, spanning = FALSE)
       } else {
         col_loc <- col_loc_df %>%
-          pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
+          dplyr::pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
           unique()
-        out <- list(col = col_loc, spanning = TRUE)
+        # out <- list(col = col_loc, spanning = TRUE)
+        spanning <- TRUE
       }
     }
-  } else {
-    out <- list(col = NULL, spanning = FALSE)
   }
+
+  out <- list(
+    col = col_loc,
+    spanning = spanning
+  )
+
   out
 }
 
