@@ -52,7 +52,6 @@ test_that("applying footnote meta column val", {
         )
       )
     ),
-
     # Specify row group plan
     # Indent the rowlbl2
     # row_grp_plan = row_grp_plan(
