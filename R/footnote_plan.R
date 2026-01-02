@@ -103,6 +103,4 @@ footnote_structure <- function(footnote_text, column_val = NULL, group_val = NUL
       footnote_text = footnote_text),
     class = c("footnote_structure","structure")
   )
-
-
 }
