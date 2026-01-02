@@ -328,6 +328,9 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
 #' @importFrom tidyr separate
 #' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
+  # TODO data_names can be NULL. not clear
+
+
   # TODO switch to this more robust approach
   # data_names <- union(data_names, preselected_cols)
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
@@ -343,21 +346,21 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
   # TODO we should probably use tibble::enframe() here
   # the current approach results in `original` and `subtraction_status` columns
   # being named vectors
-  tibble(
+  tibble::tibble(
     original = data_names,
     new_name = names(data_names)
    ) %>%
-    mutate(
-      subtraction_status = str_detect(.data$original ,"^-"),
-      original = str_remove(.data$original,"^-")
+    dplyr::mutate(
+      subtraction_status = stringr::str_detect(.data$original ,"^-"),
+      original = stringr::str_remove(.data$original,"^-")
     ) %>%
-    separate(
+    tidyr::separate(
       .data$original,
       into = column_names,
       sep = .tlang_delim,
       fill = "left"
     ) %>%
-    separate(
+    tidyr::separate(
       .data$new_name,
       into = paste0("__tfrmt_new_name__", column_names),
       sep = .tlang_delim,
