@@ -22,22 +22,22 @@ which includes a single `column` variable:
 
 ``` r
 dat <- tibble::tribble(
-  ~group, ~label, ~my_col, ~parm, ~val,
-  "g1", "rowlabel1", "col1", "value", 1,
-  "g1", "rowlabel1", "col2", "value", 1,
-  "g1", "rowlabel1", "mycol3", "value", 1,
-  "g1", "rowlabel1", "col4", "value", 1,
-  "g1", "rowlabel1", "mycol5", "value", 1,
-  "g1", "rowlabel2", "col1", "value", 2,
-  "g1", "rowlabel2", "col2", "value", 2,
-  "g1", "rowlabel2", "mycol3", "value", 2,
-  "g1", "rowlabel2", "col4", "value", 2,
-  "g1", "rowlabel2", "mycol5", "value", 2,
-  "g2", "rowlabel3", "col1", "value", 3,
-  "g2", "rowlabel3", "col2", "value", 3,
-  "g2", "rowlabel3", "mycol3", "value", 3,
-  "g2", "rowlabel3", "col4", "value", 3,
-  "g2", "rowlabel3", "mycol5", "value", 3
+  ~group , ~label      , ~my_col  , ~parm   , ~val ,
+  "g1"   , "rowlabel1" , "col1"   , "value" ,    1 ,
+  "g1"   , "rowlabel1" , "col2"   , "value" ,    1 ,
+  "g1"   , "rowlabel1" , "mycol3" , "value" ,    1 ,
+  "g1"   , "rowlabel1" , "col4"   , "value" ,    1 ,
+  "g1"   , "rowlabel1" , "mycol5" , "value" ,    1 ,
+  "g1"   , "rowlabel2" , "col1"   , "value" ,    2 ,
+  "g1"   , "rowlabel2" , "col2"   , "value" ,    2 ,
+  "g1"   , "rowlabel2" , "mycol3" , "value" ,    2 ,
+  "g1"   , "rowlabel2" , "col4"   , "value" ,    2 ,
+  "g1"   , "rowlabel2" , "mycol5" , "value" ,    2 ,
+  "g2"   , "rowlabel3" , "col1"   , "value" ,    3 ,
+  "g2"   , "rowlabel3" , "col2"   , "value" ,    3 ,
+  "g2"   , "rowlabel3" , "mycol3" , "value" ,    3 ,
+  "g2"   , "rowlabel3" , "col4"   , "value" ,    3 ,
+  "g2"   , "rowlabel3" , "mycol5" , "value" ,    3
 )
 ```
 
@@ -147,12 +147,46 @@ tfrmt(
 
 ## Naming the Group-Label Header
 
-It is also possible to provide a combined header for the group and label
-columns - this is termed the “stub” in {gt}. To achieve this, rename the
-`group` variable in the column plan, just as you would with other
+It is also possible to headers for the group and label columns - this is
+termed the “stub” in {gt}. To achieve this, rename the `group` and/or
+`label` variable(s) in the column plan, just as you would with other
 columns. If multiple `group` variables exist, any of them can be
-renamed. If more than one is renamed, {tfrmt} will use the highest level
-`group` name available.
+renamed.
+
+``` r
+tfrmt(
+  group = group,
+  label = label,
+  param = parm,
+  value = val,
+  column = my_col,
+  body_plan = body_plan(
+    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+  ),
+  row_grp_plan = row_grp_plan(
+    label_loc = element_row_grp_loc(location = "column")
+  ),
+  col_plan = col_plan(
+    my_grp = group, # rename group
+    my_lbl = label, # rename label
+    starts_with("col"),
+    everything(),
+    col1
+  )
+) |>
+  print_to_gt(dat)
+```
+
+| my_grp | my_lbl    | col2 | col4 | mycol3 | mycol5 | col1 |
+|:-------|-----------|------|------|--------|--------|------|
+| g1     | rowlabel1 | 1    | 1    | 1      | 1      | 1    |
+|        | rowlabel2 | 2    | 2    | 2      | 2      | 2    |
+| g2     | rowlabel3 | 3    | 3    | 3      | 3      | 3    |
+
+Note: Multiple stub headers are only possible if the `row_grp_plan`
+label location is set to “column”. Otherwise, if more than one
+group/label column is renamed, like below, {tfrmt} will use the highest
+level group name available.
 
 ``` r
 tfrmt(
@@ -177,9 +211,6 @@ tfrmt(
 
 [TABLE]
 
-Note that it is not currently possible to provide individual column
-headers if there are multiple group/label columns.
-
 ## Editing and Moving Column Spanners
 
 Multiple `column` variables are used to form the hierarchy of column
@@ -195,22 +226,22 @@ indicate there should be no spanning over those values.
 
 ``` r
 dat <- tibble::tribble(
-  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
-  "g1", "rowlabel1", "column cols", "cols 1,2", "col1", "value", 1,
-  "g1", "rowlabel1", "column cols", "cols 1,2", "col2", "value", 1,
-  "g1", "rowlabel1", NA, NA, "mycol3", "value", 1,
-  "g1", "rowlabel1", "column cols", "col 4", "col4", "value", 1,
-  "g1", "rowlabel1", NA, NA, "mycol5", "value", 1,
-  "g1", "rowlabel2", "column cols", "cols 1,2", "col1", "value", 2,
-  "g1", "rowlabel2", "column cols", "cols 1,2", "col2", "value", 2,
-  "g1", "rowlabel2", NA, NA, "mycol3", "value", 2,
-  "g1", "rowlabel2", "column cols", "col 4", "col4", "value", 2,
-  "g1", "rowlabel2", NA, NA, "mycol5", "value", 2,
-  "g2", "rowlabel3", "column cols", "cols 1,2", "col1", "value", 3,
-  "g2", "rowlabel3", "column cols", "cols 1,2", "col2", "value", 3,
-  "g2", "rowlabel3", NA, NA, "mycol3", "value", 3,
-  "g2", "rowlabel3", "column cols", "col 4", "col4", "value", 3,
-  "g2", "rowlabel3", NA, NA, "mycol5", "value", 3,
+  ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
+  "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
+  "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col2"   , "value" ,    1 ,
+  "g1"   , "rowlabel1" , NA            , NA         , "mycol3" , "value" ,    1 ,
+  "g1"   , "rowlabel1" , "column cols" , "col 4"    , "col4"   , "value" ,    1 ,
+  "g1"   , "rowlabel1" , NA            , NA         , "mycol5" , "value" ,    1 ,
+  "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col1"   , "value" ,    2 ,
+  "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col2"   , "value" ,    2 ,
+  "g1"   , "rowlabel2" , NA            , NA         , "mycol3" , "value" ,    2 ,
+  "g1"   , "rowlabel2" , "column cols" , "col 4"    , "col4"   , "value" ,    2 ,
+  "g1"   , "rowlabel2" , NA            , NA         , "mycol5" , "value" ,    2 ,
+  "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col1"   , "value" ,    3 ,
+  "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col2"   , "value" ,    3 ,
+  "g2"   , "rowlabel3" , NA            , NA         , "mycol3" , "value" ,    3 ,
+  "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
+  "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
 )
 ```
 
@@ -265,10 +296,12 @@ tfrmt(
   ),
   col_plan = col_plan(
     # rename column spanner in same level
-    span_structure(span1 = c(
-      "first cols" = "cols 1,2",
-      "just col4" = "col 4"
-    )),
+    span_structure(
+      span1 = c(
+        "first cols" = "cols 1,2",
+        "just col4" = "col 4"
+      )
+    ),
     # rename column spanner in different level
     span_structure(span2 = c("most columns" = "column cols")),
     group,
@@ -324,11 +357,11 @@ always the case take the following example:
 
 ``` r
 dat <- tibble::tribble(
-  ~group, ~label, ~span, ~my_col, ~parm, ~val,
-  "g1", "stats", "Placebo", "sd", "sd", 1.435,
-  "g1", "stats", "Placebo", "mean", "mean", 2.843,
-  "g1", "stats", "Treatment", "mean", "mean", 1.234,
-  "g1", "stats", "Treatment", "sd", "sd", 2.123,
+  ~group , ~label  , ~span       , ~my_col , ~parm  , ~val  ,
+  "g1"   , "stats" , "Placebo"   , "sd"    , "sd"   , 1.435 ,
+  "g1"   , "stats" , "Placebo"   , "mean"  , "mean" , 2.843 ,
+  "g1"   , "stats" , "Treatment" , "mean"  , "mean" , 1.234 ,
+  "g1"   , "stats" , "Treatment" , "sd"    , "sd"   , 2.123 ,
 )
 ```
 

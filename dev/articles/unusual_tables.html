@@ -94,6 +94,8 @@
 <div class="section level2">
 <h2 id="multiple-columns-of-row-labels">Multiple columns of Row Labels<a class="anchor" aria-label="anchor" href="#multiple-columns-of-row-labels"></a>
 </h2>
+<p><em>Note: {tfrmt} version 0.3.0 brings support for multiple row label
+columns! See the Row Group Plan vignette for details</em></p>
 <p>It is not all that unusual for listings (and some tables) to have
 multiple row label columns. When this happens, it is often easier to
 avoid using gt’s out-of-the box stub functions/formatting. An example of
@@ -105,25 +107,25 @@ also will need a column for the parameters even though they are all the
 same.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>  <span class="op">~</span><span class="va">`Pooled Id`</span>, <span class="op">~</span><span class="va">`Site Id`</span>,</span>
-<span>  <span class="st">"701"</span>, <span class="st">"701"</span>,</span>
-<span>  <span class="st">"703"</span>, <span class="st">"703"</span>,</span>
-<span>  <span class="st">"704"</span>, <span class="st">"704"</span>,</span>
-<span>  <span class="st">"705"</span>, <span class="st">"705"</span>,</span>
-<span>  <span class="st">"708"</span>, <span class="st">"708"</span>,</span>
-<span>  <span class="st">"709"</span>, <span class="st">"709"</span>,</span>
-<span>  <span class="st">"710"</span>, <span class="st">"710"</span>,</span>
-<span>  <span class="st">"713"</span>, <span class="st">"713"</span>,</span>
-<span>  <span class="st">"716"</span>, <span class="st">"716"</span>,</span>
-<span>  <span class="st">"718"</span>, <span class="st">"718"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"702"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"706"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"707"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"711"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"714"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"715"</span>,</span>
-<span>  <span class="st">"900"</span>, <span class="st">"717"</span>,</span>
-<span>  <span class="st">"Total"</span>, <span class="st">" "</span></span>
+<span>  <span class="op">~</span><span class="va">`Pooled Id`</span> , <span class="op">~</span><span class="va">`Site Id`</span> ,</span>
+<span>  <span class="st">"701"</span>        , <span class="st">"701"</span>      ,</span>
+<span>  <span class="st">"703"</span>        , <span class="st">"703"</span>      ,</span>
+<span>  <span class="st">"704"</span>        , <span class="st">"704"</span>      ,</span>
+<span>  <span class="st">"705"</span>        , <span class="st">"705"</span>      ,</span>
+<span>  <span class="st">"708"</span>        , <span class="st">"708"</span>      ,</span>
+<span>  <span class="st">"709"</span>        , <span class="st">"709"</span>      ,</span>
+<span>  <span class="st">"710"</span>        , <span class="st">"710"</span>      ,</span>
+<span>  <span class="st">"713"</span>        , <span class="st">"713"</span>      ,</span>
+<span>  <span class="st">"716"</span>        , <span class="st">"716"</span>      ,</span>
+<span>  <span class="st">"718"</span>        , <span class="st">"718"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"702"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"706"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"707"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"711"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"714"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"715"</span>      ,</span>
+<span>  <span class="st">"900"</span>        , <span class="st">"717"</span>      ,</span>
+<span>  <span class="st">"Total"</span>      , <span class="st">" "</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span></span>
 <span>    col1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -158,7 +160,8 @@ used a factor for the populations.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span>label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span><span class="st">"column"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="va">`Pooled Id`</span>, <span class="va">`Site Id`</span>,</span>
+<span>    <span class="va">`Pooled Id`</span>,</span>
+<span>    <span class="va">`Site Id`</span>,</span>
 <span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"Placebo"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"High Dose"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"Low Dose"</span><span class="op">)</span>,</span>
@@ -947,7 +950,7 @@ used a factor for the populations.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah <a href="mailto:alanah.x.jonas@gsk.com" class="email">alanah.x.jonas@gsk.com</a> Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">

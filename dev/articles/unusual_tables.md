@@ -6,6 +6,9 @@ library(tfrmt)
 
 ## Multiple columns of Row Labels
 
+*Note: {tfrmt} version 0.3.0 brings support for multiple row label
+columns! See the Row Group Plan vignette for details*
+
 It is not all that unusual for listings (and some tables) to have
 multiple row label columns. When this happens, it is often easier to
 avoid using gt’s out-of-the box stub functions/formatting. An example of
@@ -21,25 +24,25 @@ same.
 
 ``` r
 data <- tibble::tribble(
-  ~`Pooled Id`, ~`Site Id`,
-  "701", "701",
-  "703", "703",
-  "704", "704",
-  "705", "705",
-  "708", "708",
-  "709", "709",
-  "710", "710",
-  "713", "713",
-  "716", "716",
-  "718", "718",
-  "900", "702",
-  "900", "706",
-  "900", "707",
-  "900", "711",
-  "900", "714",
-  "900", "715",
-  "900", "717",
-  "Total", " "
+  ~`Pooled Id` , ~`Site Id` ,
+  "701"        , "701"      ,
+  "703"        , "703"      ,
+  "704"        , "704"      ,
+  "705"        , "705"      ,
+  "708"        , "708"      ,
+  "709"        , "709"      ,
+  "710"        , "710"      ,
+  "713"        , "713"      ,
+  "716"        , "716"      ,
+  "718"        , "718"      ,
+  "900"        , "702"      ,
+  "900"        , "706"      ,
+  "900"        , "707"      ,
+  "900"        , "711"      ,
+  "900"        , "714"      ,
+  "900"        , "715"      ,
+  "900"        , "717"      ,
+  "Total"      , " "
 ) |>
   tidyr::crossing(
     col1 = c(
@@ -80,7 +83,8 @@ tfrmt(
   ),
   row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("column")),
   col_plan = col_plan(
-    `Pooled Id`, `Site Id`,
+    `Pooled Id`,
+    `Site Id`,
     contains("Placebo"),
     contains("High Dose"),
     contains("Low Dose"),

@@ -99,8 +99,9 @@ group variable. As such, tfrmt offers multiple objects for display.
 Let’s see how they differ for the following options:
 
 - **indented:** Combined group/label variables
-- **spanning:** Group label as row spanning header
-- **column:** Group label in separate column
+- **spanning:** Top-level group label as row spanning header, remaining
+  group/label columns indented
+- **column:** All group/label columns in separate column
 - **noprint:** Drop group labels
 
 ### indented
@@ -115,7 +116,9 @@ my_tfrmt <- tfrmt(
   param = param,
   value = value,
   column = column,
-  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "indented")),
+  row_grp_plan = row_grp_plan(
+    label_loc = element_row_grp_loc(location = "indented")
+  ),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
@@ -144,7 +147,9 @@ my_tfrmt <- tfrmt(
   param = param,
   value = value,
   column = column,
-  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "spanning")),
+  row_grp_plan = row_grp_plan(
+    label_loc = element_row_grp_loc(location = "spanning")
+  ),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
@@ -173,7 +178,9 @@ my_tfrmt <- tfrmt(
   param = param,
   value = value,
   column = column,
-  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "column")),
+  row_grp_plan = row_grp_plan(
+    label_loc = element_row_grp_loc(location = "column")
+  ),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )
@@ -181,12 +188,21 @@ my_tfrmt <- tfrmt(
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
   gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
+    style = gt::cell_text(v_align = "top"),
+    locations = gt::cells_stub(columns = c(1:3))
   )
 ```
 
-[TABLE]
+|        |        |         | column1 | column2 | column3 |
+|:-------|--------|---------|---------|---------|---------|
+| grp1_1 | grp2_1 | label_1 | xx      | xx      | xx      |
+|        |        | label_2 | xx      | xx      | xx      |
+|        | grp2_2 | label_1 | xx      | xx      | xx      |
+|        |        | label_2 | xx      | xx      | xx      |
+| grp1_2 | grp2_1 | label_1 | xx      | xx      | xx      |
+|        |        | label_2 | xx      | xx      | xx      |
+|        | grp2_2 | label_1 | xx      | xx      | xx      |
+|        |        | label_2 | xx      | xx      | xx      |
 
 ### noprint
 
@@ -200,7 +216,9 @@ my_tfrmt <- tfrmt(
   param = param,
   value = value,
   column = column,
-  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
+  row_grp_plan = row_grp_plan(
+    label_loc = element_row_grp_loc(location = "noprint")
+  ),
   body_plan = body_plan(
     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
   )

@@ -189,9 +189,11 @@ the positive-selection.</p>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## To add a stub header rename the group variable in the column plan</span></span></span>
+<span class="r-in"><span><span class="co">## To one or more stub headers rename the corresponding group/label variables in the column plan.</span></span></span>
 <span class="r-in"><span><span class="co">## If multiple group variables exist, any of them can be renamed.</span></span></span>
-<span class="r-in"><span><span class="co">## If more than one is renamed, {tfrmt} will use the highest level group name available.</span></span></span>
+<span class="r-in"><span><span class="co">## Note: Multiple stub headers are only possible if the `row_grp_plan` label</span></span></span>
+<span class="r-in"><span><span class="co">## location is set to "column". Otherwise, if more than one group/label column is renamed,</span></span></span>
+<span class="r-in"><span><span class="co">## {tfrmt} will use the highest level group name available.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">renaming_group</span> <span class="op">&lt;-</span> <span class="fu">col_plan</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    my_grp <span class="op">=</span> <span class="va">group</span>, <span class="co"># rename group</span></span></span>
@@ -206,7 +208,7 @@ the positive-selection.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah <a href="mailto:alanah.x.jonas@gsk.com" class="email">alanah.x.jonas@gsk.com</a> Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">
