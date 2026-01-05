@@ -1478,7 +1478,7 @@ test_that("Build simple tfrmt with stub header",{
   )
   expect_equal(
     processed_gt[["_stubhead"]]$label,
-    "grp"
+    c("grp")
   )
 
 
@@ -1528,8 +1528,62 @@ test_that("Build simple tfrmt with stub header",{
   )
   expect_equal(
     processed_gt[["_stubhead"]]$label,
-    NULL
+    ""
   )
 
+
+  # multi group stub header
+  basic_multi_column_template <- tfrmt(
+    group = c(grp1, grp2),
+    label = quo(label),
+    param = parm,
+    value = val,
+    column = c(test1,test2),
+    col_plan = col_plan(
+      `Group 1` = grp1,
+      `Group 2` = grp2,
+      `Row label` =label,
+      tst = col4,
+      col3,
+      col1,
+      -col5,
+      -col2
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "column"))
+  )
+
+  basic_example_dataset <- tibble::tribble(
+    ~grp1, ~grp2,     ~label,    ~test1, ~test2,    ~parm, ~val,
+    "G1", "g1", "rowlabel1",  "span 1", "col1",  "value",    1,
+    "G1", "g1", "rowlabel1",  "span 1", "col2",  "value",    1,
+    "G1", "g1", "rowlabel1",        NA, "col3",  "value",    1,
+    "G1", "g1", "rowlabel1",        NA, "col4",  "value",    1,
+    "G1", "g1", "rowlabel1",        NA, "col5",  "value",    1,
+    "G1", "g1", "rowlabel2",  "span 1", "col1",  "value",    2,
+    "G1", "g1", "rowlabel2",  "span 1", "col2",  "value",    2,
+    "G1", "g1", "rowlabel2",        NA, "col3",  "value",    2,
+    "G1", "g1", "rowlabel2",        NA, "col4",  "value",    2,
+    "G1", "g1", "rowlabel2",        NA, "col5",  "value",    2,
+    "G1", "g2", "rowlabel3",  "span 1", "col1",  "value",    3,
+    "G1", "g2", "rowlabel3",  "span 1", "col2",  "value",    3,
+    "G1", "g2", "rowlabel3",        NA, "col3",  "value",    3,
+    "G1", "g2", "rowlabel3",        NA, "col4",  "value",    3,
+    "G1", "g2", "rowlabel3",        NA, "col5",  "value",    3,
+  )
+
+  suppressMessages({
+    processed_gt <- print_to_gt(tfrmt = basic_multi_column_template, .data = basic_example_dataset)
+  })
+
+  expect_equal(
+    processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+    c("grp1", "grp2", "label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl"
+    )
+  )
+  expect_equal(
+    processed_gt[["_stubhead"]]$label,
+    c("Group 1", "Group 2", "Row label")
+  )
 
 })

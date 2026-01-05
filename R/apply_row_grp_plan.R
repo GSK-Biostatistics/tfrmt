@@ -119,7 +119,7 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
 
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint")){
+  if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint", "column")){
     add_ln_df <- .data
   } else{
       #  combine any grouping columns that need combining into label
@@ -128,7 +128,6 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
                                                 element_row_grp_loc)
 
   }
-
   add_ln_df
 }
 
@@ -271,7 +270,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   if(is.null(element_row_grp_loc)){
     indent = "  "
-  } else if(element_row_grp_loc$location %in% c("spanning", "column") & length(group) > 0){
+  } else if(element_row_grp_loc$location=="spanning" & length(group) > 0){
     group = group[-1]
     indent = element_row_grp_loc$indent
   } else {
@@ -362,7 +361,7 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
   # check which group/label columns are available
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if(length(grps_avail)==0 || element_row_grp_loc$location=="gtdefault"){
+  if(length(grps_avail)==0 || element_row_grp_loc$location %in% c("gtdefault", "column")){
     add_ln_df <- .data
   } else{
 

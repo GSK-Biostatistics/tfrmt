@@ -11,7 +11,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8784-1712")),
     person("Shannon", "Haughton", , "shannon.l.haughton@gsk.com", role = "aut"),
     person("Dragoș", "Moldovan-Grünfeld", , "dragos.v.moldovan-grunfeld@gsk.com", role = "aut"),
-    person("Alanah", "Jonas",  "alanah.x.jonas@gsk.com", role = "aut"),
+    person("Alanah", "Jonas", , "alanah.x.jonas@gsk.com", role = "aut"),
     person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")),
     person("Atorus Research LLC", role = c("cph", "fnd"))
   )
@@ -31,7 +31,7 @@ Imports:
     forcats,
     ggplot2,
     glue,
-    gt (>= 0.6.0),
+    gt (>= 1.1.0),
     jsonlite,
     magrittr,
     purrr,
