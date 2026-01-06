@@ -483,21 +483,22 @@ convert_ws_unicode <- function(gt_table){
 }
 
 # split duplicate space characters with unicode whitespace ones
-#' @param x whitespace string of length >1
+#' @param x whitespace vector of strings of length >1
 #' @importFrom stringr str_sub
 #' @noRd
 break_duplicate_whitespace <- function(x){
-  n_spaces <- nchar(x)
 
-  if(n_spaces < 2){
-    return(x)
+  for(i in 1:length(x)){
+    n_spaces <- nchar(x[i])
+    if(n_spaces > 1){
+      #want to swap every even indice for a unicode character
+      even_chars <- seq(from = 2, to = n_spaces, by = 2)
+      for(j in even_chars){
+        stringr::str_sub(x[i], j, j) <- "\u00A0"
+      }
+    }
   }
 
-  #want to swap every even indice for a unicode character
-  even_chars <- seq(from = 2, to = n_spaces, by = 2)
-  for(i in even_chars){
-    stringr::str_sub(x, i, i) <- "\u00A0"
-  }
 
   x
 }
