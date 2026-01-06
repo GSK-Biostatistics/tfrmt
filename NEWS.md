@@ -1,7 +1,7 @@
 # tfrmt development version
 
 ## Improvements
- * Replace all spaces in the cell body of an output gt with unicode whitespace to ensure formatting is retained when going to pdf
+ * Replace duplicate spaces in the cell body of an output gt with unicode whitespace to ensure formatting is retained when going to pdf
 
 # tfrmt 0.2.1
 

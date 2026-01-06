@@ -475,7 +475,29 @@ convert_ws_unicode <- function(gt_table){
     text_transform(
       locations = locations,
       fn = function(x) {
-        str_replace_all(x, pattern = "\\s", replacement = "\u00A0")
+        # 2 or more spaces, split are split into a combination of unicode whitespaces and
+        # regular spaces for latex collapsing
+        str_replace_all(x, pattern = "\\s{2,}", break_duplicate_whitespace)
       }
     )
+}
+
+# split duplicate space characters with unicode whitespace ones
+#' @param x whitespace string of length >1
+#' @importFrom stringr str_sub
+#' @noRd
+break_duplicate_whitespace <- function(x){
+  n_spaces <- nchar(x)
+
+  if(n_spaces < 2){
+    return(x)
+  }
+
+  #want to swap every even indice for a unicode character
+  even_chars <- seq(from = 2, to = n_spaces, by = 2)
+  for(i in even_chars){
+    stringr::str_sub(x, i, i) <- "\u00A0"
+  }
+
+  x
 }
