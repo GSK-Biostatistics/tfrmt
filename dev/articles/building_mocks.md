@@ -323,9 +323,9 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
 
 |         | PL        | Risk Diff T1-PL     | Risk Diff T2-PL     | T1        | T2        |
 |:--------|-----------|---------------------|---------------------|-----------|-----------|
-| label 1 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
-| label 2 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
-| label 3 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
+| label 1 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
+| label 2 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
+| label 3 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
 
 Note that if you’d like to print a select few columns from your dataset
 you can simply filter `df` as you normally would within the
@@ -377,9 +377,9 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
 
 |         | PL        | T1        | T2        | Risk Diff T1-PL     | Risk Diff T2-PL     |
 |:--------|-----------|-----------|-----------|---------------------|---------------------|
-| label 1 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
-| label 2 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
-| label 3 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
+| label 1 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
+| label 2 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
+| label 3 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
 
 ### Same value formatting but 1 grouping level
 
