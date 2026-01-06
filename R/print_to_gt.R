@@ -475,7 +475,7 @@ convert_ws_unicode <- function(gt_table){
     text_transform(
       locations = locations,
       fn = function(x) {
-        # 2 or more spaces, split are split into a combination of unicode whitespaces and
+        # 2 or more spaces are split into a combination of unicode whitespaces and
         # regular spaces for latex collapsing
         str_replace_all(x, pattern = "\\s{2,}", break_duplicate_whitespace)
       }
