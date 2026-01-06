@@ -155,8 +155,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
           preselected_cols = c(),
           column_names = col_str
         )
-        # TODO could we simply replace this conditional with a slightly
-        # different logic?
+        # TODO could we simplify this conditional?
         # I think what we are doing is keeping the names if they are non-empty
         # strings and dropping them if they are empty.
         # probably the best option would be to write our own helper (wrapping
