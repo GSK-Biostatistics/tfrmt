@@ -75,8 +75,6 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
   # output values
   col_loc <- NULL
   spanning <- FALSE
-  # alternatively, we can build the default `out` here
-  # out <- list(col = NULL, spanning = FALSE)
 
   # Get column information
   if ("column_val" %in% names(loc_info)) {
@@ -140,7 +138,8 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
 
       message(paste0(message_text, collapse = "\n"))
 
-      # these are the default values for col_loc and spanning
+      # these are the default values for col_loc and spanning so we can get away
+      # without modifying them
       # out <- list(col = NULL, spanning = FALSE)
     } else {
       # if not a column return the spanning column name
@@ -159,7 +158,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
         # I think what we are doing is keeping the names if they are non-empty
         # strings and dropping them if they are empty.
         # probably the best option would be to write our own helper (wrapping
-        # rlang::set_names)
+        # rlang::set_names) - e.g. drop_empty_names
         # another option would be for unite_df_to_data_names to get allow control
         # of how the output is named / how the naming happens
         if (!is.null(names(col_loc))) {
