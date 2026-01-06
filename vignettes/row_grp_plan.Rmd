@@ -145,7 +145,8 @@ print_mock_gt(my_tfrmt, .default = 1:2) |>
 
 ## column
 
-In this case, group labels become a separate column to the left. Note that in the case of multiple group variables, only the top level group variable will be in the column, and the rest will combine with the label variable using indentation:
+In this case, group and row labels become separate columns on the left (forming the table "stub" in {gt}). 
+*Note: in {tfrmt} 0.2.1 and earlier, only a maximum of 2 grouping columns was possible. If multiple grouping variables were present, the top level group variable appeared in the left-most column, and the remaining grouping variables were combined with the label variable using indentation.*
 
 ```{r}
 my_tfrmt <- tfrmt(
