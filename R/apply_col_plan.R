@@ -299,7 +299,10 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
     # the default behavior of everything().
 
     if(!is_empty(preselected_vals)){
+      browser()
       # TODO decide which one is the correct behaviour
+      # setdiff works with NULL too so we could potentially remove !is_empty(preselected_vals)
+      #
       # new behaviour
       # data_names <- setdiff(data_names, preselected_vals)
       # old behaviour (which I think is incorrect - see unit tests)
