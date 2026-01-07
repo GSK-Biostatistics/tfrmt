@@ -1,3 +1,21 @@
+# print_to_gt() works
+
+    Code
+      print_to_gt(tfrmt_spec, .data = dat)[["_data"]]
+    Output
+      # A tibble: 2 x 8
+        label     span01___tlang_delim~1 span01___tlang_delim~2 span01___tlang_delim~3
+        <chr>     <chr>                  <chr>                  <chr>                 
+      1 "mygrp"   <NA>                   <NA>                   <NA>                  
+      2 "  mylbl" 1.00                   1.00                   1.00                  
+      # i abbreviated names:
+      #   1: span01___tlang_delim___span1___tlang_delim___lower1_a,
+      #   2: span01___tlang_delim___span1___tlang_delim___lower1_b,
+      #   3: span01___tlang_delim___span2___tlang_delim___lower2_a
+      # i 4 more variables:
+      #   span01___tlang_delim___span2___tlang_delim___lower2_b <chr>,
+      #   span02___tlang_delim___span3___tlang_delim___lower2_a <chr>, ...
+
 # print_to_gt() complains with incorrect inputs
 
     Code

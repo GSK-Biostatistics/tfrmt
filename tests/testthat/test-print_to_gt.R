@@ -42,6 +42,47 @@ test_that("convert_ws_unicode works as expected", {
   )
 })
 
+test_that("print_to_gt() works", {
+  dat <- tibble::tribble(
+    ~group  , ~label  , ~span1   , ~span2  , ~lower     , ~param , ~val ,
+    "mygrp" , "mylbl" , "span01" , "span1" , "lower1_a" , "prm"  ,    1 ,
+    "mygrp" , "mylbl" , "span01" , "span1" , "lower1_b" , "prm"  ,    1 ,
+    "mygrp" , "mylbl" , "span01" , "span2" , "lower2_a" , "prm"  ,    1 ,
+    "mygrp" , "mylbl" , "span01" , "span2" , "lower2_b" , "prm"  ,    1 ,
+    "mygrp" , "mylbl" , "span02" , "span3" , "lower2_a" , "prm"  ,    1 ,
+    "mygrp" , "mylbl" , "span02" , "span3" , "lower2_b" , "prm"  ,    1
+  )
+
+  tfrmt_spec <- tfrmt(
+    group = "group",
+    label = "label",
+    param = "param",
+    column = c("span1", "span2", "lower"),
+    value = "val",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x.xx")
+      )
+    )
+  )
+
+  expect_no_error(
+    print_to_gt(
+      tfrmt_spec,
+      .data = dat
+    )
+  )
+
+  expect_snapshot(
+    print_to_gt(
+      tfrmt_spec,
+      .data = dat
+    )[["_data"]]
+  )
+})
+
 test_that("print_to_gt() complains with incorrect inputs", {
   # complains when the first argument is not `tfrmt`
   expect_snapshot(
