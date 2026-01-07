@@ -422,6 +422,6 @@ test_that("print_mock_data() removes `value` when it exists in the input data", 
     print_mock_gt(
       plan,
       data
-    )
+    )["_data"]
   )
 })

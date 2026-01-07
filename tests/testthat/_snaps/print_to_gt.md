@@ -90,7 +90,21 @@
 # print_mock_data() removes `value` when it exists in the input data
 
     Code
-      print_mock_gt(plan, data)
+      print_mock_gt(plan, data)["_data"]
     Message
        Removing `value_to_remove` from input data for mocking.
+    Output
+      $`_data`
+      # A tibble: 5 x 6
+        label                `Placebo\n(N=XX)` `Total\n(N=XXX)` Xanomeline\nHigh Dos~1
+        <chr>                <chr>             <chr>            <chr>                 
+      1 Complete Study       xx (xxx%)         xx (xxx%)        xx (xxx%)             
+      2 Complete Week 24     xx (xxx%)         xx (xxx%)        xx (xxx%)             
+      3 Efficacy             xx (xxx%)         xx (xxx%)        xx (xxx%)             
+      4 Intent-To-Treat (IT~ xx (xxx%)         xx (xxx%)        xx (xxx%)             
+      5 Safety               xx (xxx%)         xx (xxx%)        xx (xxx%)             
+      # i abbreviated name: 1: `Xanomeline\nHigh Dose\n(N=XX)`
+      # i 2 more variables: `Xanomeline\nLow Dose\n(N=XX)` <chr>,
+      #   ..tfrmt_row_grp_lbl <lgl>
+      
 
