@@ -37,17 +37,8 @@ test_that("applying footnote meta column val",{
   )
 
   expect_equal(
-    attr(
-      apply_tfrmt(es_data, tfrmt),
-      ".footnote_locs"
-    ),
-    list(
-      list(
-        "col" = "Placebo",
-        "spanning" = FALSE,
-        "note" = "Test footnote 1"
-      )
-    )
+    attr(apply_tfrmt(es_data,tfrmt),".footnote_locs"),
+    list(list("col"="Placebo","spanning"=FALSE,"note"="Test footnote 1"))
   )
   # named column vals
   tfrmt2 <- tfrmt(
