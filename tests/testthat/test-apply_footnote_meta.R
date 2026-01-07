@@ -8,7 +8,7 @@ test_that("applying footnote meta column val",{
                            trt=c(rep(c("Placebo","Treatment"),20)),
                            value=c(24,19,2400/48,1900/38,5,1,500/48,100/38,19,18,1900/48,1800/38,1,1,100/48,100/38,0,0,0,0,0,0,0,0,1,1,100/48,100/38,1,4,100/48,400/38,1,0,100/48,0,2,3,200/48,300/38)
 
-    )
+  )
 
   # tfrmt with column val
   tfrmt<-tfrmt(
@@ -31,11 +31,8 @@ test_that("applying footnote meta column val",{
     #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
     #   label_loc = element_row_grp_loc(location = "column")),
     footnote_plan = footnote_plan(
-      footnote_structure(
-        "Test footnote 1",
-        column_val = "Placebo"
-      ),
-      marks = "letters"
+      footnote_structure("Test footnote 1",column_val ="Placebo"),
+      marks="letters"
     )
   )
 
