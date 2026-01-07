@@ -141,7 +141,7 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
   }
 
   if(!is.data.frame(.data)){
-    stop("Requires data, if not avaliable please use `print_mock_gt()`")
+    stop("Requires data, if not available please use `print_mock_gt()`")
   }
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     cleaned_data_to_gt(tfrmt, .unicode_ws)
