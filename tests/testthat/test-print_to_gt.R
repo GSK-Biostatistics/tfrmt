@@ -324,3 +324,63 @@ test_that("print_mock_gt() with missing body_plan", {
     ignore_attr = ".col_plan_vars"
   )
 })
+
+test_that("print_mock_data() removes `value` when it exists in the input data", {
+  data <- tidyr::crossing(
+    label = c(
+      "Intent-To-Treat (ITT)",
+      "Safety",
+      "Efficacy",
+      "Complete Week 24",
+      "Complete Study"
+    ),
+    column = c(
+      "Placebo\n(N=XX)",
+      "Xanomeline\nLow Dose\n(N=XX)",
+      "Xanomeline\nHigh Dose\n(N=XX)",
+      "Total\n(N=XXX)"
+    ),
+    param = c(
+      "n",
+      "percent"
+    )
+  ) |>
+    dplyr::mutate(
+      value_to_remove = 1
+    )
+
+  plan <- tfrmt(
+    label = "label",
+    column = "column",
+    param = "param",
+    value = "value_to_remove",
+    title = "Summary of Populations",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{n} ({percent}%)",
+          n = frmt("xx"),
+          percent = frmt("xxx")
+        )
+      )
+    )
+  )
+
+  expect_message(
+    print_mock_gt(
+      plan,
+      data
+    ),
+    "Removing `value_to_remove` from input data for mocking.",
+    fixed = TRUE
+  )
+
+  expect_snapshot(
+    print_mock_gt(
+      plan,
+      data
+    )
+  )
+})

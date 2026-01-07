@@ -69,3 +69,10 @@
       2 label_2 X.X     X.X     X.X     FALSE              
       3 label_3 X.X     X.X     X.X     FALSE              
 
+# print_mock_data() removes `value` when it exists in the input data
+
+    Code
+      print_mock_gt(plan, data)
+    Message
+       Removing `value_to_remove` from input data for mocking.
+
