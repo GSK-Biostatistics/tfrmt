@@ -25,6 +25,7 @@ test_that("applying footnote meta column val",{
                                                                                   pct = frmt_when("==100" ~ "",
                                                                                                   "==0" ~ "",
                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
+
     # Specify row group plan
     # Indent the rowlbl2
     # row_grp_plan = row_grp_plan(
@@ -40,8 +41,9 @@ test_that("applying footnote meta column val",{
     attr(apply_tfrmt(es_data,tfrmt),".footnote_locs"),
     list(list("col"="Placebo","spanning"=FALSE,"note"="Test footnote 1"))
   )
+
   # named column vals
-  tfrmt2 <- tfrmt(
+  tfrmt2<-tfrmt(
     # specify columns in the data
     group = c(rowlbl1),
     label = rowlbl2,
