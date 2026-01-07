@@ -313,17 +313,14 @@ test_that("print_mock_gt() with missing body_plan", {
     )[["_data"]]
   )
 
-  a <- print_mock_gt(
-    tfrmt_spec_no_body_plan
-  )
-  b <- print_mock_gt(
-    tfrmt_spec_default_body_plan
-  )
-
   expect_identical(
-    a[["_data"]],
-    b[["_data"]],
-    # .col_plan_vars is a list of quosures and their environments do not match
+    print_mock_gt(
+      tfrmt_spec_no_body_plan
+    )[["_data"]],
+    print_mock_gt(
+      tfrmt_spec_default_body_plan
+    )[["_data"]],
+    # .col_plan_vars is a list of quosures and their environments would not match
     ignore_attr = ".col_plan_vars"
   )
 })
