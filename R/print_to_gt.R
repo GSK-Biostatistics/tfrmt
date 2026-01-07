@@ -502,7 +502,7 @@ break_duplicate_whitespace <- function(x){
 
   for(i in 1:length(x)){
     n_spaces <- nchar(x[i])
-    if(n_spaces > 1 & !is.na(x[i])){
+    if(n_spaces > 1 && !is.na(x[i])){
       #want to swap every even indice for a unicode character
       even_chars <- seq(from = 2, to = n_spaces, by = 2)
       for(j in even_chars){
