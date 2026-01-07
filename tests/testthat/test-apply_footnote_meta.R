@@ -34,12 +34,14 @@ test_that("applying footnote meta column val",{
     footnote_plan = footnote_plan(
       footnote_structure("Test footnote 1",column_val ="Placebo"),
       marks="letters"
+
     )
   )
 
   expect_equal(
     attr(apply_tfrmt(es_data,tfrmt),".footnote_locs"),
     list(list("col"="Placebo","spanning"=FALSE,"note"="Test footnote 1"))
+
   )
 
   # named column vals
@@ -52,20 +54,13 @@ test_that("applying footnote meta column val",{
     value = value,
     # set formatting for value
     body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        frmt_combine(
-          "{n} {pct}",
-          n = frmt("xxx"),
-          pct = frmt_when(
-            "==100" ~ "",
-            "==0" ~ "",
-            TRUE ~ frmt("(xx.x %)")
-          )
-        )
-      )
-    ),
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                   n = frmt("xxx"),
+
+
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
     footnote_plan = footnote_plan(
       footnote_structure(
         "Test footnote 1",
