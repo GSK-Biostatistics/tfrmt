@@ -831,9 +831,9 @@ test_that("Test big n with footnotes", {
         "Treatment___tlang_delim___T1\nN = xx",
         "Treatment___tlang_delim___T1\nN = xx",
         "Treatment___tlang_delim___T1\nN = xx",
-        NA,
-        NA,
-        NA,
+        "label",
+        "label",
+        "label",
         "Treatment___tlang_delim___T2\nN = xx",
         "Treatment___tlang_delim___T2\nN = xx"
       ),
