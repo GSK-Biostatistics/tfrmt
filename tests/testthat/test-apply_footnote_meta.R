@@ -61,51 +61,34 @@ test_that("applying footnote meta column val",{
     footnote_plan = footnote_plan(
       footnote_structure("Test footnote 1",column_val =list(trt="Placebo")),
       marks="letters"
+
+    )
   )
 
   expect_equal(
-    attr(
-      apply_tfrmt(es_data, tfrmt2),
-      ".footnote_locs"
-    ),
-    list(
-      list(
-        "col" = "Placebo",
-        "spanning" = FALSE,
-        "note" = "Test footnote 1"
-      )
-    )
+    attr(apply_tfrmt(es_data,tfrmt2),".footnote_locs"),
+    list(list("col"="Placebo","spanning"=FALSE,"note"="Test footnote 1"))
+
   )
 
   # spanning
-  es_data2 <- es_data %>%
-    dplyr::mutate(
-      col2 = "Treatment column"
-    )
+  es_data2<- es_data %>%
+    mutate(col2 = "Treatment column")
 
-  tfrmt3 <- tfrmt(
+  tfrmt3<-tfrmt(
     # specify columns in the data
     group = c(rowlbl1),
     label = rowlbl2,
-    column = c(col2, trt),
+    column = c(col2,trt),
     param = param,
     value = value,
     # set formatting for value
     body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        frmt_combine(
-          "{n} {pct}",
-          n = frmt("xxx"),
-          pct = frmt_when(
-            "==100" ~ "",
-            "==0" ~ "",
-            TRUE ~ frmt("(xx.x %)")
-          )
-        )
-      )
-    ),
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when("==100" ~ "",
+                                                                                                  "==0" ~ "",
+                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
 
     # Specify row group plan
     # Indent the rowlbl2
