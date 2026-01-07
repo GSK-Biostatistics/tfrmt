@@ -43,7 +43,6 @@ test_that("applying footnote meta column val",{
     list(list("col"="Placebo","spanning"=FALSE,"note"="Test footnote 1"))
 
   )
-
   # named column vals
   tfrmt2<-tfrmt(
     # specify columns in the data
@@ -55,9 +54,7 @@ test_that("applying footnote meta column val",{
     # set formatting for value
     body_plan = body_plan(
       frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-                                                                                   n = frmt("xxx"),
-
-
+                                                                                  n = frmt("xxx"),
                                                                                   pct = frmt_when("==100" ~ "",
                                                                                                   "==0" ~ "",
                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
