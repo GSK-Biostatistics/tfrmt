@@ -59,14 +59,8 @@ test_that("applying footnote meta column val",{
                                                                                                   "==0" ~ "",
                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
     footnote_plan = footnote_plan(
-      footnote_structure(
-        "Test footnote 1",
-        column_val = list(
-          trt = "Placebo"
-        )
-      ),
-      marks = "letters"
-    )
+      footnote_structure("Test footnote 1",column_val =list(trt="Placebo")),
+      marks="letters"
   )
 
   expect_equal(
