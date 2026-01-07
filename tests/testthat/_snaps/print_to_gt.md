@@ -57,3 +57,15 @@
       2 label_2 xxx (xx.x%) xxx (xx.x%) xxx (xx.x%) FALSE              
       3 label_3 xxx (xx.x%) xxx (xx.x%) xxx (xx.x%) FALSE              
 
+# print_mock_gt() with missing body_plan
+
+    Code
+      print_mock_gt(tfrmt_spec_no_body_plan)[["_data"]]
+    Output
+      # A tibble: 3 x 5
+        label   column1 column2 column3 ..tfrmt_row_grp_lbl
+        <chr>   <chr>   <chr>   <chr>   <lgl>              
+      1 label_1 X.X     X.X     X.X     FALSE              
+      2 label_2 X.X     X.X     X.X     FALSE              
+      3 label_3 X.X     X.X     X.X     FALSE              
+

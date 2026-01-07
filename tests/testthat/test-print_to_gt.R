@@ -277,3 +277,53 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
     )[["_data"]]
   })
 })
+
+test_that("print_mock_gt() with missing body_plan", {
+  # when tfrmt$body_plan is missing, one is made up on the fly
+  tfrmt_spec_no_body_plan <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    value = value
+  )
+
+  expect_no_message(
+    print_mock_gt(
+      tfrmt_spec_no_body_plan
+    )
+  )
+
+  tfrmt_spec_default_body_plan <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("X.X")
+      )
+    )
+  )
+
+  expect_snapshot(
+    print_mock_gt(
+      tfrmt_spec_no_body_plan
+    )[["_data"]]
+  )
+
+  a <- print_mock_gt(
+    tfrmt_spec_no_body_plan
+  )
+  b <- print_mock_gt(
+    tfrmt_spec_default_body_plan
+  )
+
+  expect_identical(
+    a[["_data"]],
+    b[["_data"]],
+    # .col_plan_vars is a list of quosures and their environments do not match
+    ignore_attr = ".col_plan_vars"
+  )
+})
