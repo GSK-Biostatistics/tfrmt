@@ -88,27 +88,16 @@ test_that("applying footnote meta column val",{
                                                                                   n = frmt("xxx"),
                                                                                   pct = frmt_when("==100" ~ "",
                                                                                                   "==0" ~ "",
-                                                                                                   TRUE ~ frmt("(xx.x %)"))))),
+                                                                                                  TRUE ~ frmt("(xx.x %)"))))),
 
     # Specify row group plan
     # Indent the rowlbl2
     row_grp_plan = row_grp_plan(
-      row_grp_structure(
-        group_val = ".default",
-        element_block(post_space = " ")
-      ),
-      label_loc = element_row_grp_loc(
-        location = "column"
-      )
-    ),
+      row_grp_structure(group_val = ".default", element_block(post_space = " ")),
+       label_loc = element_row_grp_loc(location = "column")),
     footnote_plan = footnote_plan(
-      footnote_structure(
-        "Test footnote 3",
-        column_val = list(
-          col2 = "Treatment column"
-        )
-      ),
-      marks = "numbers"
+      footnote_structure("Test footnote 3",column_val=list(col2 = "Treatment column")),
+      marks="numbers"
     )
   )
 
