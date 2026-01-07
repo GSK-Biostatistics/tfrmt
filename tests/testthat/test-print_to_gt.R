@@ -31,3 +31,40 @@ test_that("convert_ws_unicode works as expected",{
   expect_equal(whitespace_function(test_strings), unicode_strings)
 
 })
+
+test_that("print_to_gt() complains with incorrect inputs", {
+  # complains when the first argument is not `tfrmt`
+  expect_snapshot(
+    error = TRUE,
+    print_to_gt(mtcars)
+  )
+
+  # complains when the `.data` argument is not a data.frame
+  tfrmt_spec <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    value=value,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{count} {percent}",
+          count = frmt("xxx"),
+          percent = frmt_when(
+            "==100"~ frmt(""),
+            "==0"~ "",
+            "TRUE" ~ frmt("(xx.x%)")
+          )
+        )
+      )
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    print_to_gt(tfrmt_spec, "foo")
+  )
+
+})
