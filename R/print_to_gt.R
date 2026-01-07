@@ -487,9 +487,21 @@ convert_ws_unicode <- function(gt_table){
     text_transform(
       locations = locations,
       fn = function(x) {
-        # 2 or more spaces are split into a combination of unicode whitespaces and
-        # regular spaces for latex collapsing
-        str_replace_all(x, pattern = "\\s{2,}", break_duplicate_whitespace)
+        # leading and trailing whitespace is nonbreaking unicode whitespace to preserve alignment
+        x_trimmed <- str_trim(x)
+        space_left <- str_match(x, "^\\s*") %>% nchar()
+        space_right <- str_match(x, "\\s*$") %>% nchar()
+        space_right[x_trimmed == ""] <- 0
+
+        str_c(
+          str_dup("\U00A0", space_left),
+          # 2 or more spaces are split into a combination of unicode whitespaces and
+          # regular spaces for latex collapsing
+          str_replace_all(x_trimmed, pattern = "\\s{2,}", break_duplicate_whitespace),
+          str_dup("\U00A0", space_right)
+        )
+
+
       }
     )
 }
