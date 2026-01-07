@@ -57,16 +57,16 @@ print_mock_gt <- function(tfrmt,
 
   # fill param, column if not provided
   if (quo_is_missing(tfrmt$param)){
-    message("`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable")
+    message("`tfrmt` will need a `param` value to `print_to_gt` when data is available")
     tfrmt$param <- quo(!!sym("__tfrmt__param"))
   }
   if (is_empty(tfrmt$column)){
-    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable")
+    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is available")
     tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
   if(quo_is_missing(tfrmt$value)){
-    message("Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
+    message("Message: `tfrmt` will need `value` value to `print_to_gt` when data is available")
     tfrmt$value <- quo(!!sym("__tfrmt__val"))
   }
 
