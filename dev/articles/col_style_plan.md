@@ -191,10 +191,10 @@ tfrmt(
 
 |            | trt1           | trt2           | p-value |
 |:-----------|:---------------|:---------------|:--------|
-| n          | 12             | 24             |         |
+| n          | 12             | 24             |         |
 | mean (sd)  | 12.3 ( 4.35)   | 15.4 ( 6.72)   | \<0.001 |
-| median     | 14             | 16             | 0.051   |
-| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
+| median     | 14             | 16             | 0.051   |
+| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
 
 This alignment isn’t quite right as we have the `<` in one value but not
 the other. Applying a decimal alignment would be a better fit:
@@ -247,10 +247,10 @@ tfrmt(
 
 |            | trt1           | trt2           | p-value |
 |:-----------|:---------------|:---------------|:--------|
-| n          | 12             | 24             |         |
+| n          | 12             | 24             |         |
 | mean (sd)  | 12.3 ( 4.35)   | 15.4 ( 6.72)   | \<0.001 |
-| median     | 14             | 16             | 0.051   |
-| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
+| median     | 14             | 16             |  0.051  |
+| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
 
 For our other two columns, we have a mix of values represented. In this
 case, we want to align on the first set of digits. In other words, we
@@ -303,12 +303,12 @@ tfrmt(
   print_to_gt(dat)
 ```
 
-|            | trt1           | trt2           | p-value |
-|:-----------|:---------------|:---------------|:--------|
-| n          | 12             | 24             |         |
-| mean (sd)  | 12.3 ( 4.35)   | 15.4 ( 6.72)   | \<0.001 |
-| median     | 14             | 16             | 0.051   |
-| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
+|            | trt1            | trt2            | p-value |
+|:-----------|:----------------|:----------------|:--------|
+| n          |  12             |  24             |         |
+| mean (sd)  |  12.3 ( 4.35)   |  15.4 ( 6.72)   | \<0.001 |
+| median     |  14             |  16             |  0.051  |
+| \[q1, q3\] | \[10.0, 20.0\]  | \[11.0, 22.0\]  |         |
 
 Finally, for the purpose of demonstrating our options, we can align each
 column differently (left, right, character for the three columns
@@ -364,10 +364,10 @@ tfrmt(
 
 |            | trt1           | trt2           | p-value |
 |:-----------|:---------------|:---------------|:--------|
-| n          | 12             |          24    |         |
+| n          | 12             |           24   |         |
 | mean (sd)  | 12.3 ( 4.35)   | 15.4 ( 6.72)   | \<0.001 |
-| median     | 14             |          16    | 0.051   |
-| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
+| median     | 14             |           16   |  0.051  |
+| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
 
 ### Alignment Examples - Positional
 
@@ -438,12 +438,12 @@ tf <- tfrmt(
 tf |> print_to_gt(dat)
 ```
 
-|            | trt1           | trt2           | p-value |
-|:-----------|:---------------|:---------------|:--------|
-| n          | 12             | 24             |         |
-| mean (sd)  | 12.3 ( 4.35)   | 15.4 ( 6.72)   | \<0.001 |
-| median     | 14             | 16             | 0.051   |
-| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
+|            | trt1            | trt2            | p-value |
+|:-----------|:----------------|:----------------|:--------|
+| n          |  12             |  24             |         |
+| mean (sd)  |  12.3 ( 4.35)   |  15.4 ( 6.72)   | \<0.001 |
+| median     |  14             |  16             |  0.051  |
+| \[q1, q3\] | \[10.0, 20.0\]  | \[11.0, 22.0\]  |         |
 
 Behind the scenes, {tfrmt} makes a few assumptions about how these
 vertical bars translate to alignment:
@@ -556,7 +556,7 @@ tfrmt(
 
 |            | trt1           | trt2           | p-value |
 |:-----------|:---------------|:---------------|:--------|
-| n          | 12             |          24    |         |
+| n          | 12             |           24   |         |
 | mean (sd)  | 12.3 ( 4.35)   | 15.4 ( 6.72)   | \<0.001 |
-| median     | 14             |          16    | 0.051   |
-| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |
+| median     | 14             |           16   |  0.051  |
+| \[q1, q3\] | \[10.0, 20.0\] | \[11.0, 22.0\] |         |

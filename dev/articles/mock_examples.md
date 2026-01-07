@@ -309,78 +309,78 @@ tfrmt(
   print_mock_gt(data_demog |> dplyr::select(-value))
 ```
 
-|                       |                   | Placebo      | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
-|:----------------------|:------------------|:-------------|:--------------------|:---------------------|:-------------|---------|
-|     Age (y)           |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-|                       |      \<65 yrs     | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) | x.xxx   |
-|                       |    65-80 yrs      | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |      \>80 yrs     | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |                   |              |                     |                      |              |         |
-|     Sex               |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Male          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |   Female          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |                   |              |                     |                      |              |         |
-|    Race (Origin)      |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       | Caucasian         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |  African Descent  | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       | Hispanic          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |    Other          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |                   |              |                     |                      |              |         |
-|    MMSE               |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-| Duration of disease   |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-|                       |      \<12 months  | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) | x.xxx   |
-|                       |     \>=12 months  | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |                   |              |                     |                      |              |         |
-|   Years of education  |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-| Baseline weight(kg)   |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-| Baseline height(cm)   |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-| Baseline BMI          |        n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
-|                       |     Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |       SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
-|                       |   Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |      Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
-|                       |                   |              |                     |                      |              |         |
-|                       |      \<25         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) | x.xxx   |
-|                       |   25-\<30         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |     \>=30         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
-|                       |                   |              |                     |                      |              |         |
+|                       |                    | Placebo      | Xanomeline Low Dose | Xanomeline High Dose | Total        | p-value |
+|:----------------------|:-------------------|:-------------|:--------------------|:---------------------|:-------------|---------|
+|      Age (y)          |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+|                       |       \<65 yrs     | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) | x.xxx   |
+|                       |     65-80 yrs      | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |       \>80 yrs     | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |                    |              |                     |                      |              |         |
+|      Sex              |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Male          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |    Female          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |                    |              |                     |                      |              |         |
+|     Race (Origin)     |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       | Caucasian          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |   African Descent  | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |  Hispanic          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |     Other          | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |                    |              |                     |                      |              |         |
+|     MMSE              |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+| Duration of disease   |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+|                       |       \<12 months  | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) | x.xxx   |
+|                       |      \>=12 months  | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |                    |              |                     |                      |              |         |
+|    Years of education |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+| Baseline weight(kg)   |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+| Baseline height(cm)   |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+| Baseline BMI          |         n          | xxx          | xxx                 | xxx                  | xxx          | x.xxx   |
+|                       |      Mean          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |        SD          | xxx.xx       | xxx.xx              | xxx.xx               | xxx.xx       |         |
+|                       |    Median          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Min          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |       Max          | xxx.x        | xxx.x               | xxx.x                | xxx.x        |         |
+|                       |                    |              |                     |                      |              |         |
+|                       |       \<25         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) | x.xxx   |
+|                       |    25-\<30         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |      \>=30         | xxx (xx.x %) | xxx (xx.x %)        | xxx (xx.x %)         | xxx (xx.x %) |         |
+|                       |                    |              |                     |                      |              |         |
 
 ## Efficacy Mocks
 
