@@ -21,14 +21,16 @@ test_that("convert_ws_unicode works as expected",{
     " single spaces ",
     "  multiple   spaces  ",
     # 1 3 1 4 2 1
-    "combination of   single and    multiple  spaces "
+    "combination of   single and    multiple  spaces ",
+    NA
   )
 
   unicode_strings <- c(
     "nospaces",
     " single spaces ",
     " \u00A0multiple \u00A0 spaces \u00A0",
-    "combination of \u00A0 single and \u00A0 \u00A0multiple \u00A0spaces "
+    "combination of \u00A0 single and \u00A0 \u00A0multiple \u00A0spaces ",
+    NA
   )
 
   expect_equal(whitespace_function(test_strings), unicode_strings)
