@@ -137,6 +137,11 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
     "`tfrmt` will need a `param` value to `print_to_gt` when data is available",
     fixed = TRUE
   )
+  expect_snapshot({
+    print_mock_gt(
+      tfrmt_spec_no_param
+    )[["_data"]]
+  })
 })
 
 test_that("print_mock_gt() messages when tfrmt$column is missing", {
@@ -169,7 +174,7 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
     )
   )
 
-  # message when tfrmt$param is empty
+  # message when tfrmt$column is missing
   tfrmt_spec_no_column <- tfrmt(
     label = label,
     param = param,
@@ -198,4 +203,77 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
     "`tfrmt` will need `column` value(s) to `print_to_gt` when data is available",
     fixed = TRUE
   )
+
+  expect_snapshot({
+    print_mock_gt(
+      tfrmt_spec_no_column
+    )[["_data"]]
+  })
+})
+
+test_that("print_mock_gt() messages when tfrmt$value is missing", {
+  # no message when tfrmt$value is not missing
+  tfrmt_spec <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{count} {percent}",
+          count = frmt("xxx"),
+          percent = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("(xx.x%)")
+          )
+        )
+      )
+    )
+  )
+
+  expect_no_message(
+    print_mock_gt(
+      tfrmt_spec
+    )
+  )
+
+  # message when tfrmt$value is missing
+  tfrmt_spec_no_value <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{count} {percent}",
+          count = frmt("xxx"),
+          percent = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("(xx.x%)")
+          )
+        )
+      )
+    )
+  )
+
+  expect_message(
+    print_mock_gt(
+      tfrmt_spec_no_value
+    ),
+    "`tfrmt` will need `value` value to `print_to_gt` when data is available",
+    fixed = TRUE
+  )
+
+  expect_snapshot({
+    print_mock_gt(
+      tfrmt_spec_no_value
+    )[["_data"]]
+  })
 })
