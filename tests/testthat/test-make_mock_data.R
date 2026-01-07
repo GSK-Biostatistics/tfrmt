@@ -256,7 +256,7 @@ test_that("Test when no body_style or values is present", {
 
   expect_message(
     gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data),
-    "Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable",
+    "Message: `tfrmt` will need `value` value to `print_to_gt` when data is available",
     fixed = TRUE
   )
 
