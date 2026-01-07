@@ -1,4 +1,5 @@
-test_that("applying footnote meta column val", {
+test_that("applying footnote meta column val",{
+
   # set up data
 
   es_data <- tibble::tibble(
