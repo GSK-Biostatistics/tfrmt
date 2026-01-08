@@ -528,3 +528,351 @@ test_that("cleaned_data_to_gt.list() works", {
     cleaned_tables$gt_tbls$gt_tbl[[2]][["_data"]]
   )
 })
+
+test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
+  # Create the original data frame
+  original_data <- tibble::tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n", 6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n", 6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
+    )
+
+  # Duplicate the data and add the `by group` column
+  data_101 <- original_data |>
+    dplyr::mutate(
+      `by group` = "101"
+    )
+  data_102 <- original_data |>
+    dplyr::mutate(
+      `by group` = "102"
+    )
+
+  # Combine the two data frames
+  data <- dplyr::bind_rows(data_101, data_102)
+
+  # Create mock big Ns
+  big_ns <- data |>
+    dplyr::group_by(
+      `by group`,
+      Column
+    ) |>
+    dplyr::summarise(
+      Value = sum(Value)
+    ) |>
+    dplyr::mutate(
+      Param = "bigN"
+    ) |>
+    dplyr::filter(
+      `by group` == "101"
+    ) |>
+    dplyr::ungroup()
+
+  data <- data |>
+    dplyr::bind_rows(
+      big_ns
+    ) |>
+    dplyr::arrange(
+      dplyr::desc(
+        Group
+      )
+    )
+
+  # Define the tfrmt object with two grouping variables and a page_plan
+  # note location in subtitle
+  tfrmt_two_groups_loc_subtitle <- tfrmt(
+    group = c(`by group`, Group),
+    label = Label,
+    column = Column,
+    value = Value,
+    param = Param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xx")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = ".default",
+        element_block(
+          post_space = " "
+        )
+      )
+    ),
+    page_plan = page_plan(
+      page_structure(
+        group_val = list(
+          `by group` = ".default"
+        )
+      ),
+      note_loc = "subtitle"
+    ),
+    big_n = big_n_structure(
+      param_val = "bigN"
+    ),
+    col_plan = col_plan(
+      -`by group`
+    )
+  )
+
+  expect_no_error(
+    gt_tables <- data |>
+      apply_tfrmt(
+        tfrmt_two_groups_loc_subtitle,
+        mock = FALSE
+      ) |>
+      cleaned_data_to_gt(
+        tfrmt_two_groups_loc_subtitle,
+        .unicode_ws = TRUE
+      )
+  )
+
+  # note is located in subtitle
+  expect_identical(
+    gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$subtitle,
+    "by group: 101"
+  )
+
+  expect_identical(
+    gt_tables$gt_tbls$gt_tbl[[2]]$`_heading`$subtitle,
+    "by group: 102"
+  )
+})
+
+test_that("cleaned_data_to_gt() with page_plan & note location in preheader", {
+  # Create the original data frame
+  original_data <- tibble::tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n", 6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n", 6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
+    )
+
+  # Duplicate the data and add the `by group` column
+  data_101 <- original_data |>
+    dplyr::mutate(
+      `by group` = "101"
+    )
+  data_102 <- original_data |>
+    dplyr::mutate(
+      `by group` = "102"
+    )
+
+  # Combine the two data frames
+  data <- dplyr::bind_rows(data_101, data_102)
+
+  # Create mock big Ns
+  big_ns <- data |>
+    dplyr::group_by(
+      `by group`,
+      Column
+    ) |>
+    dplyr::summarise(
+      Value = sum(Value)
+    ) |>
+    dplyr::mutate(
+      Param = "bigN"
+    ) |>
+    dplyr::filter(
+      `by group` == "101"
+    ) |>
+    dplyr::ungroup()
+
+  data <- data |>
+    dplyr::bind_rows(
+      big_ns
+    ) |>
+    dplyr::arrange(
+      dplyr::desc(
+        Group
+      )
+    )
+
+  # Define the tfrmt object with two grouping variables and a page_plan
+  # note location in preheader
+  tfrmt_two_groups_loc_preheader <- tfrmt(
+    group = c(`by group`, Group),
+    label = Label,
+    column = Column,
+    value = Value,
+    param = Param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xx")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = ".default",
+        element_block(
+          post_space = " "
+        )
+      )
+    ),
+    page_plan = page_plan(
+      page_structure(
+        group_val = list(
+          `by group` = ".default"
+        )
+      ),
+      note_loc = "preheader"
+    ),
+    big_n = big_n_structure(
+      param_val = "bigN"
+    ),
+    col_plan = col_plan(
+      -`by group`
+    )
+  )
+
+  expect_no_error(
+    gt_tables_preheader <- data |>
+      apply_tfrmt(
+        tfrmt_two_groups_loc_preheader,
+        mock = FALSE
+      ) |>
+      cleaned_data_to_gt(
+        tfrmt_two_groups_loc_preheader,
+        .unicode_ws = TRUE
+      )
+  )
+
+  # note is located in preheader
+  expect_identical(
+    gt_tables_preheader$gt_tbls$gt_tbl[[1]]$`_heading`$preheader,
+    "by group: 101"
+  )
+
+  expect_identical(
+    gt_tables_preheader$gt_tbls$gt_tbl[[2]]$`_heading`$preheader,
+    "by group: 102"
+  )
+})
+
+test_that("cleaned_data_to_gt() with page_plan & note location in source_note", {
+  # Create the original data frame
+  original_data <- tibble::tibble(
+    Group = rep(c("Age (y)", "Sex"), c(3, 3)),
+    Label = rep("n", 6),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 2),
+    Param = rep("n", 6),
+    Value = c(12, 14, 31, 20, 32, 18)
+  ) |>
+    dplyr::mutate(
+      ord1 = dplyr::if_else(Group == "Age (y)", 1, 2)
+    )
+
+  # Duplicate the data and add the `by group` column
+  data_101 <- original_data |>
+    dplyr::mutate(
+      `by group` = "101"
+    )
+  data_102 <- original_data |>
+    dplyr::mutate(
+      `by group` = "102"
+    )
+
+  # Combine the two data frames
+  data <- dplyr::bind_rows(data_101, data_102)
+
+  # Create mock big Ns
+  big_ns <- data |>
+    dplyr::group_by(
+      `by group`,
+      Column
+    ) |>
+    dplyr::summarise(
+      Value = sum(Value)
+    ) |>
+    dplyr::mutate(
+      Param = "bigN"
+    ) |>
+    dplyr::filter(
+      `by group` == "101"
+    ) |>
+    dplyr::ungroup()
+
+  data <- data |>
+    dplyr::bind_rows(
+      big_ns
+    ) |>
+    dplyr::arrange(
+      dplyr::desc(
+        Group
+      )
+    )
+
+  # Define the tfrmt object with two grouping variables and a page_plan
+  # note location in source_note
+  tfrmt_two_groups_loc_source_note <- tfrmt(
+    group = c(`by group`, Group),
+    label = Label,
+    column = Column,
+    value = Value,
+    param = Param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xx")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = ".default",
+        element_block(
+          post_space = " "
+        )
+      )
+    ),
+    page_plan = page_plan(
+      page_structure(
+        group_val = list(
+          `by group` = ".default"
+        )
+      ),
+      note_loc = "source_note"
+    ),
+    big_n = big_n_structure(
+      param_val = "bigN"
+    ),
+    col_plan = col_plan(
+      -`by group`
+    )
+  )
+
+  expect_no_error(
+    gt_tables_source_note <- data |>
+      apply_tfrmt(
+        tfrmt_two_groups_loc_source_note,
+        mock = FALSE
+      ) |>
+      cleaned_data_to_gt(
+        tfrmt_two_groups_loc_source_note,
+        .unicode_ws = TRUE
+      )
+  )
+
+  # note is located in source_notes
+  expect_identical(
+    gt_tables_source_note$gt_tbls$gt_tbl[[1]]$`_source_notes`[[1]],
+    "by group: 101"
+  )
+
+  expect_identical(
+    gt_tables_source_note$gt_tbls$gt_tbl[[2]]$`_source_notes`[[1]],
+    "by group: 102"
+  )
+})
