@@ -108,3 +108,39 @@
       #   ..tfrmt_row_grp_lbl <lgl>
       
 
+# cleaned_data_to_gt() works
+
+    Code
+      cleaned_data_to_gt(test_data, tfrmt, .unicode_ws = TRUE)[["_data"]]
+    Output
+      # A tibble: 3 x 7
+        label   group `0`   `1000` `2000` `3000` ..tfrmt_row_grp_lbl
+        <chr>   <chr> <chr> <chr>  <chr>  <chr>  <lgl>              
+      1 Obs     A     630   372    256    11     FALSE              
+      2 Lev     A     620   360    266    8      FALSE              
+      3 Lev+5FU A     608   425    328    14     FALSE              
+
+# cleaned_data_to_gt.list() works
+
+    Code
+      cleaned_tables$gt_tbls$gt_tbl[[1]][["_data"]]
+    Output
+      # A tibble: 3 x 7
+        label   group `0`   `1000` `2000` `3000` ..tfrmt_row_grp_lbl
+        <chr>   <chr> <chr> <chr>  <chr>  <chr>  <lgl>              
+      1 Obs     A     630   372    256    11     FALSE              
+      2 Lev     A     620   360    266    8      FALSE              
+      3 Lev+5FU A     608   425    328    14     FALSE              
+
+---
+
+    Code
+      cleaned_tables$gt_tbls$gt_tbl[[2]][["_data"]]
+    Output
+      # A tibble: 3 x 7
+        label   group `0`   `1000` `2000` `3000` ..tfrmt_row_grp_lbl
+        <chr>   <chr> <chr> <chr>  <chr>  <chr>  <lgl>              
+      1 Obs2    B     631   373    257    12     FALSE              
+      2 Lev2    B     621   361    267    9      FALSE              
+      3 Lev+5FU B     609   426    329    15     FALSE              
+

@@ -425,3 +425,106 @@ test_that("print_mock_data() removes `value` when it exists in the input data", 
     )["_data"]
   )
 })
+
+test_that("cleaned_data_to_gt() works", {
+  tfrmt <- tfrmt(
+    # specify columns in the data
+    group = group,
+    label = label,
+    column = time,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(
+        "gtdefault"
+      )
+    )
+  )
+
+  test_data <- tibble::tibble(
+    label = c("Obs", "Lev", "Lev+5FU"),
+    group = c("A", "A", "A"),
+    `0` = c("630", "620", "608"),
+    `1000` = c("372", "360", "425"),
+    `2000` = c("256", "266", "328"),
+    `3000` = c("11", "8", "14")
+  )
+
+  # when the input is a data.frame the output is a `gt_tbl`
+  expect_s3_class(
+    cleaned_data_to_gt(
+      test_data,
+      tfrmt,
+      .unicode_ws = TRUE
+    ),
+    "gt_tbl"
+  )
+
+  expect_snapshot(
+    cleaned_data_to_gt(
+      test_data,
+      tfrmt,
+      .unicode_ws = TRUE
+    )[["_data"]]
+  )
+})
+
+test_that("cleaned_data_to_gt.list() works", {
+  tfrmt <- tfrmt(
+    # specify columns in the data
+    group = group,
+    label = label,
+    column = time,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(
+        "gtdefault"
+      )
+    )
+  )
+
+  test_data <- tibble::tibble(
+    label = c("Obs", "Lev", "Lev+5FU"),
+    group = c("A", "A", "A"),
+    `0` = c("630", "620", "608"),
+    `1000` = c("372", "360", "425"),
+    `2000` = c("256", "266", "328"),
+    `3000` = c("11", "8", "14")
+  )
+
+  test_data2 <- tibble::tibble(
+    label = c("Obs2", "Lev2", "Lev+5FU"),
+    group = c("B", "B", "B"),
+    `0` = c("631", "621", "609"),
+    `1000` = c("373", "361", "426"),
+    `2000` = c("257", "267", "329"),
+    `3000` = c("12", "9", "15")
+  )
+
+  # when the input is a list the output is a `gt_group`
+  expect_s3_class(
+    cleaned_tables <- cleaned_data_to_gt(
+      list(
+        test_data,
+        test_data2
+      ),
+      tfrmt,
+      .unicode_ws = TRUE
+    ),
+    "gt_group"
+  )
+
+  expect_length(
+    cleaned_tables$gt_tbls$gt_tbl,
+    2
+  )
+
+  expect_snapshot(
+    cleaned_tables$gt_tbls$gt_tbl[[1]][["_data"]]
+  )
+
+  expect_snapshot(
+    cleaned_tables$gt_tbls$gt_tbl[[2]][["_data"]]
+  )
+})
