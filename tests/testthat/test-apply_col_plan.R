@@ -400,33 +400,6 @@ test_that("col_plan_quo_to_vars() works", {
       ""
     )
   )
-
-  # TODO clarify and implement correct behaviour
-  # I'd say the expectation is that is should not be possible for the output of
-  # col_plan_quo_to_vars() to return more columns than available in the data
-  # (i.e. it should not contain duplicates). At most we should return data_names
-  # without any additional elements
-
-  skip("incorrect behaviour: default_everything_behavior = TRUE")
-
-  # default_everything_behavior = TRUE with preselected columns results in a
-  # duplication of the preselected_cols (which are also moved to the beginning
-  # of the column names vector)
-  # I believe the correct output should be
-  # c("lbl", "1", "grp2", "ord")
-  expect_identical(
-    col_plan_quo_to_vars(
-      x = rlang::quos(everything()),
-      column_names = "column",
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = c("lbl", "1"),
-      default_everything_behavior = TRUE
-    ),
-    rlang::set_names(
-      c("lbl", "1", "lbl", "1", "grp2", "ord"),
-      ""
-    )
-  )
 })
 
 test_that("char_as_quo() works", {
@@ -507,19 +480,6 @@ test_that("char_as_quo() works", {
     rlang::quo(`foo12-3bar`),
     ignore_formula_env = TRUE
   )
-
-  # TODO revisit once https://github.com/GSK-Biostatistics/tfrmt/issues/578 is solved
-  skip("valid tidyselect expressions not recognised")
-  expect_true(
-    char_as_quo("foo:bar") |>
-      rlang::quo_is_call()
-  )
-
-  # same issue with namespaced calls
-  expect_true(
-    char_as_quo("tidyselect::starts_with('foo')") |>
-      rlang::quo_is_call()
-  )
 })
 
 test_that("eval_col_plan_quo() works", {
@@ -542,49 +502,6 @@ test_that("eval_col_plan_quo() works", {
       default_everything_behavior = TRUE
     ),
     c("grp2", "lbl", "ord", "1")
-  )
-
-  # TODO correct behaviour
-  # default_everything_behavior produces effects only in a very narrow case:
-  # - when preselected_vars is not empty, and
-  # - x is everything()
-  #
-  # the behaviour is likely incorrect, the below drops "grp2" (the first
-  # variable in the data_names vector, due to ...[-seq_along(preselected_vals)])
-  #
-  # I think the correct output should be c("grp2", "lbl", "1") and not
-  # c("lbl", "ord", "1") - the current behaviour
-  #
-  # data_names <- data_names[-seq_along(preselected_vals)] should be replaced with
-  # data_names <- setdiff(data_names, preselected_vals)
-  skip("incorrect behaviour: default_everything_behavior = FALSE")
-  # correct behaviour should be to return all columns but the preselected ones
-  # when default_everything_behaviour is FALSE, but that is not the case
-  expect_identical(
-    eval_col_plan_quo(
-      x = rlang::quo(everything()),
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_vals = "ord",
-      default_everything_behavior = FALSE
-    ),
-    c("grp2", "lbl", "1")
-  )
-
-  skip("incomplete tidyselect support")
-  # TODO revisit once https://github.com/GSK-Biostatistics/tfrmt/issues/578 is solved
-  expect_identical(
-    eval_col_plan_quo(
-      x = rlang::quo(everything()),
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_vals = "ord",
-      default_everything_behavior = FALSE
-    ),
-    eval_col_plan_quo(
-      x = rlang::quo(tidyselect::everything()),
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_vals = "ord",
-      default_everything_behavior = FALSE
-    )
   )
 })
 
