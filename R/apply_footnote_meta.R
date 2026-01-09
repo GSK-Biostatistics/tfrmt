@@ -1,7 +1,6 @@
 #' Apply the footnote metadata to data
 #'
 #' Gets the location of each footnote in the footnote plan and adds it to the dataset as an attribute.
-#'
 #' @param .data formatted data
 #' @param footnote_plan footnote plan
 #' @param col_plan_vars named vector of the columns with new and old names
@@ -71,8 +70,8 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
     .[names(.) != "footnote_text"]
 
   # Get column information
-  if ("column_val" %in% names(loc_info)) {
-    col_str <- purrr::map_chr(columns, as_label)
+  if("column_val" %in% names(loc_info)) {
+    col_str <- columns %>% map_chr(as_label)
 
     if (is_empty(names(loc_info$column_val))) {
       col_val_nm <- col_str
