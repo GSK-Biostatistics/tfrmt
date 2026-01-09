@@ -86,18 +86,18 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
                                            map_chr(as_label), col_str) %>%
       inner_join(loc_col_df, by = col_val_nm)
 
-    if (nrow(col_loc_df) == 0) {
+    if (nrow(col_loc_df) == 0){
       message_text <- c(
-        paste0(
-          "The provided column location does not exist in the provided data for the footnote",
-          "\"",
-          footnote_structure$footnote_text,
-          "\""
-        ),
+       paste0(
+        "The provided column location does not exist in the provided data for the footnote",
+        "\"",
+        footnote_structure$footnote_text,
+        "\""
+       ),
         "Provided column location:"
       )
 
-      for (col_var in col_val_nm) {
+      for(col_var in col_val_nm) {
         message_text <- c(
           message_text,
           paste0(
