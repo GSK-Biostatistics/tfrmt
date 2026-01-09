@@ -86,7 +86,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
                                            map_chr(as_label), col_str) %>%
       inner_join(loc_col_df, by = col_val_nm)
 
-    if (nrow(col_loc_df) == 0){
+    if(nrow(col_loc_df) == 0){
 
       message_text <- c(
        paste0(
@@ -94,21 +94,21 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
         "\"",
         footnote_structure$footnote_text,
         "\""
-      ),
+        ),
         "Provided column location:"
-    )
+        )
 
       for(col_var in col_val_nm){
         message_text <- c(
           message_text,
-          paste0(col_var,": ",paste0("`", loc_info$column_val[[col_var]], "`", collapse = ","))
+          paste0(col_var,": ",paste0("`",loc_info$column_val[[col_var]],"`", collapse = ","))
         )
       }
 
       message(paste0(message_text, collapse = "\n"))
 
       out <- list(col = NULL, spanning = FALSE)
-    } else {
+    }else{
       # if not a column return the spanning column name
       span_lvl <- col_str %in% col_val_nm %>%
         which() %>%
@@ -116,11 +116,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
         col_str[.]
 
       if (last(col_str) == span_lvl) {
-        col_loc <- unite_df_to_data_names(
-          col_loc_df,
-          preselected_cols = c(),
-          column_names = col_str
-        )
+        col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
         if (!is.null(names(col_loc))) {
           col_loc <- dplyr::if_else(
             names(col_loc) == "",
