@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata to Analysis Results Datasets
-Version: 0.2.1.9000
+Version: 0.3.0
 Authors@R: c(
     person("Becca", "Krouse", , "becca.z.krouse@gsk.com", role = c("aut", "cre")),
     person("Christina", "Fillmore", , "christina.e.fillmore@gsk.com", role = "aut",
