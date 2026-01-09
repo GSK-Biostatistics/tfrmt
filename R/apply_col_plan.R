@@ -290,7 +290,6 @@ char_as_quo <- function(x) {
   eval(parse(text = expr_to_eval)[[1]])
 }
 
-
 #' @importFrom rlang quo_get_expr as_label is_empty
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
