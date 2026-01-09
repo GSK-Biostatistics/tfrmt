@@ -43,7 +43,7 @@ test_that("convert_ws_unicode works as expected", {
 })
 
 test_that("print_to_gt() works", {
-  dat <- tibble::tribble(
+  test_data <- tibble::tribble(
     ~group  , ~label  , ~span1   , ~span2  , ~lower     , ~param , ~val ,
     "mygrp" , "mylbl" , "span01" , "span1" , "lower1_a" , "prm"  ,    1 ,
     "mygrp" , "mylbl" , "span01" , "span1" , "lower1_b" , "prm"  ,    1 ,
@@ -53,7 +53,7 @@ test_that("print_to_gt() works", {
     "mygrp" , "mylbl" , "span02" , "span3" , "lower2_b" , "prm"  ,    1
   )
 
-  tfrmt_spec <- tfrmt(
+  tfrmt_plan <- tfrmt(
     group = "group",
     label = "label",
     param = "param",
@@ -70,15 +70,15 @@ test_that("print_to_gt() works", {
 
   expect_no_error(
     print_to_gt(
-      tfrmt_spec,
-      .data = dat
+      tfrmt_plan,
+      .data = test_data
     )
   )
 
   expect_snapshot(
     print_to_gt(
-      tfrmt_spec,
-      .data = dat
+      tfrmt_plan,
+      .data = test_data
     )[["_data"]]
   )
 })
@@ -91,7 +91,7 @@ test_that("print_to_gt() complains with incorrect inputs", {
   )
 
   # complains when the `.data` argument is not a data.frame
-  tfrmt_spec <- tfrmt(
+  tfrmt_plan <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -115,13 +115,13 @@ test_that("print_to_gt() complains with incorrect inputs", {
 
   expect_snapshot(
     error = TRUE,
-    print_to_gt(tfrmt_spec, "foo")
+    print_to_gt(tfrmt_plan, "foo")
   )
 })
 
 test_that("print_mock_gt() messages when tfrmt$param is missing", {
   # no message when tfrmt$param is not empty
-  tfrmt_spec <- tfrmt(
+  tfrmt_plan <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -145,12 +145,12 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
 
   expect_no_message(
     print_mock_gt(
-      tfrmt_spec
+      tfrmt_plan
     )
   )
 
   # message when tfrmt$param is empty
-  tfrmt_spec_no_param <- tfrmt(
+  tfrmt_plan_no_param <- tfrmt(
     label = label,
     column = column,
     value = value,
@@ -173,21 +173,21 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
 
   expect_message(
     print_mock_gt(
-      tfrmt_spec_no_param
+      tfrmt_plan_no_param
     ),
     "`tfrmt` will need a `param` value to `print_to_gt` when data is available",
     fixed = TRUE
   )
   expect_snapshot({
     print_mock_gt(
-      tfrmt_spec_no_param
+      tfrmt_plan_no_param
     )[["_data"]]
   })
 })
 
 test_that("print_mock_gt() messages when tfrmt$column is missing", {
   # no message when tfrmt$column is not missing
-  tfrmt_spec <- tfrmt(
+  tfrmt_plan <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -211,12 +211,12 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
 
   expect_no_message(
     print_mock_gt(
-      tfrmt_spec
+      tfrmt_plan
     )
   )
 
   # message when tfrmt$column is missing
-  tfrmt_spec_no_column <- tfrmt(
+  tfrmt_plan_no_column <- tfrmt(
     label = label,
     param = param,
     value = value,
@@ -239,7 +239,7 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
 
   expect_message(
     print_mock_gt(
-      tfrmt_spec_no_column
+      tfrmt_plan_no_column
     ),
     "`tfrmt` will need `column` value(s) to `print_to_gt` when data is available",
     fixed = TRUE
@@ -247,14 +247,14 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
 
   expect_snapshot({
     print_mock_gt(
-      tfrmt_spec_no_column
+      tfrmt_plan_no_column
     )[["_data"]]
   })
 })
 
 test_that("print_mock_gt() messages when tfrmt$value is missing", {
   # no message when tfrmt$value is not missing
-  tfrmt_spec <- tfrmt(
+  tfrmt_plan <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -278,12 +278,12 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
 
   expect_no_message(
     print_mock_gt(
-      tfrmt_spec
+      tfrmt_plan
     )
   )
 
   # message when tfrmt$value is missing
-  tfrmt_spec_no_value <- tfrmt(
+  tfrmt_plan_no_value <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -306,7 +306,7 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
 
   expect_message(
     print_mock_gt(
-      tfrmt_spec_no_value
+      tfrmt_plan_no_value
     ),
     "`tfrmt` will need `value` value to `print_to_gt` when data is available",
     fixed = TRUE
@@ -314,14 +314,14 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
 
   expect_snapshot({
     print_mock_gt(
-      tfrmt_spec_no_value
+      tfrmt_plan_no_value
     )[["_data"]]
   })
 })
 
 test_that("print_mock_gt() with missing body_plan", {
   # when tfrmt$body_plan is missing, one is made up on the fly
-  tfrmt_spec_no_body_plan <- tfrmt(
+  tfrmt_plan_no_body_plan <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -330,11 +330,11 @@ test_that("print_mock_gt() with missing body_plan", {
 
   expect_no_message(
     print_mock_gt(
-      tfrmt_spec_no_body_plan
+      tfrmt_plan_no_body_plan
     )
   )
 
-  tfrmt_spec_default_body_plan <- tfrmt(
+  tfrmt_plan_default_body_plan <- tfrmt(
     label = label,
     column = column,
     param = param,
@@ -350,16 +350,16 @@ test_that("print_mock_gt() with missing body_plan", {
 
   expect_snapshot(
     print_mock_gt(
-      tfrmt_spec_no_body_plan
+      tfrmt_plan_no_body_plan
     )[["_data"]]
   )
 
   expect_identical(
     print_mock_gt(
-      tfrmt_spec_no_body_plan
+      tfrmt_plan_no_body_plan
     )[["_data"]],
     print_mock_gt(
-      tfrmt_spec_default_body_plan
+      tfrmt_plan_default_body_plan
     )[["_data"]],
     # .col_plan_vars is a list of quosures and their environments would not match
     ignore_attr = ".col_plan_vars"
@@ -698,7 +698,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 })
 
 test_that("cleaned_data_to_gt() with col_style_plan", {
-  raw_dat <- tibble::tribble(
+  test_data <- tibble::tribble(
     ~g1   , ~g2  , ~one       , ~param   , ~column , ~value  ,
     "G1"  , "g3" , "n (%)"    , "n"      , "trt1"  , 12      ,
     "G1"  , "g3" , "n (%)"    , "pct"    , "trt1"  , 34      ,
@@ -802,7 +802,7 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
   # apply_col_style_plan() handles the alignment -> we snapshot the data and
   # not a gt property
   expect_snapshot(
-    raw_dat |>
+    test_data |>
       apply_tfrmt(
         plan,
         mock = FALSE
@@ -814,5 +814,50 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
       purrr::pluck(
         "_data"
       )
+  )
+})
+
+test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
+  test_data <- tibble::tribble(
+    ~grp1 , ~grp2 , ~lbl , ~prm , ~column , ~val , ~ord ,
+    "d"   , "c"   , "n"  , "n"  ,       1 ,    1 ,    1 ,
+    "a"   , "b"   , "m"  , "n"  ,       1 ,    2 ,    2 ,
+    "q"   , "v"   , "s"  , "n"  ,       1 ,    3 ,    3 ,
+    "b"   , "p"   , "e"  , "n"  ,       1 ,    4 ,    4
+  )
+
+  tfrmt_plan <- tfrmt(
+    group = c(grp1, grp2),
+    label = lbl,
+    column = column,
+    value = val,
+    param = prm,
+    sorting_cols = ord,
+    col_plan = col_plan(-ord),
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("x")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(
+        location = "column"
+      )
+    )
+  )
+
+  expect_snapshot(
+    test_data |>
+      apply_tfrmt(
+        tfrmt_plan,
+        mock = FALSE
+      ) |>
+      cleaned_data_to_gt(
+        tfrmt_plan,
+        .unicode_ws = TRUE
+      ) |>
+      purrr::pluck("_data")
   )
 })

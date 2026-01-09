@@ -1,7 +1,7 @@
 # print_to_gt() works
 
     Code
-      print_to_gt(tfrmt_spec, .data = dat)[["_data"]]
+      print_to_gt(tfrmt_plan, .data = test_data)[["_data"]]
     Output
       # A tibble: 2 x 8
         label     span01___tlang_delim~1 span01___tlang_delim~2 span01___tlang_delim~3
@@ -27,7 +27,7 @@
 ---
 
     Code
-      print_to_gt(tfrmt_spec, "foo")
+      print_to_gt(tfrmt_plan, "foo")
     Condition
       Error in `print_to_gt()`:
       ! Requires data, if not available please use `print_mock_gt()`
@@ -35,7 +35,7 @@
 # print_mock_gt() messages when tfrmt$param is missing
 
     Code
-      print_mock_gt(tfrmt_spec_no_param)[["_data"]]
+      print_mock_gt(tfrmt_plan_no_param)[["_data"]]
     Message
       `tfrmt` will need a `param` value to `print_to_gt` when data is available
     Output
@@ -49,7 +49,7 @@
 # print_mock_gt() messages when tfrmt$column is missing
 
     Code
-      print_mock_gt(tfrmt_spec_no_column)[["_data"]]
+      print_mock_gt(tfrmt_plan_no_column)[["_data"]]
     Message
       `tfrmt` will need `column` value(s) to `print_to_gt` when data is available
     Output
@@ -64,7 +64,7 @@
 # print_mock_gt() messages when tfrmt$value is missing
 
     Code
-      print_mock_gt(tfrmt_spec_no_value)[["_data"]]
+      print_mock_gt(tfrmt_plan_no_value)[["_data"]]
     Message
       Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
     Output
@@ -78,7 +78,7 @@
 # print_mock_gt() with missing body_plan
 
     Code
-      print_mock_gt(tfrmt_spec_no_body_plan)[["_data"]]
+      print_mock_gt(tfrmt_plan_no_body_plan)[["_data"]]
     Output
       # A tibble: 3 x 5
         label   column1 column2 column3 ..tfrmt_row_grp_lbl
@@ -147,8 +147,8 @@
 # cleaned_data_to_gt() with col_style_plan
 
     Code
-      purrr::pluck(cleaned_data_to_gt(apply_tfrmt(raw_dat, plan, mock = FALSE), plan,
-      .unicode_ws = TRUE), "_data")
+      purrr::pluck(cleaned_data_to_gt(apply_tfrmt(test_data, plan, mock = FALSE),
+      plan, .unicode_ws = TRUE), "_data")
     Output
       # A tibble: 11 x 6
          g1    one          trt1         trt2            four    ..tfrmt_row_grp_lbl
@@ -164,4 +164,18 @@
        9 "G2_" "  --------" "----------" "----------"    "-----" FALSE              
       10 " G3" "        g3"  <NA>         <NA>            <NA>   TRUE               
       11 " G3" "  (q1, q3)" "(10, 20)  " "  (22,\n  22)" ""      FALSE              
+
+# clean_data_to_gt() with row_grp_plan and location = 'column'
+
+    Code
+      purrr::pluck(cleaned_data_to_gt(apply_tfrmt(test_data, tfrmt_plan, mock = FALSE),
+      tfrmt_plan, .unicode_ws = TRUE), "_data")
+    Output
+      # A tibble: 4 x 5
+        grp1  grp2  lbl   `1`   ..tfrmt_row_grp_lbl
+        <chr> <chr> <chr> <chr> <lgl>              
+      1 d     c     n     1     FALSE              
+      2 a     b     m     2     FALSE              
+      3 q     v     s     3     FALSE              
+      4 b     p     e     4     FALSE              
 
