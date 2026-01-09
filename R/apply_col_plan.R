@@ -51,7 +51,7 @@ create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc
   stub
 }
 
-#' Creates a list of quosures explicitly calling all the columns
+#' Creates a named vector explicitly calling all the columns
 #'
 #' @importFrom rlang is_empty
 #' @importFrom purrr map map_chr
