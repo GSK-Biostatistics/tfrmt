@@ -696,3 +696,121 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     "by group: 102"
   )
 })
+
+test_that("cleaned_data_to_gt() with col_style_plan", {
+  raw_dat <- tibble::tribble(
+    ~g1   , ~g2  , ~one       , ~param   , ~column , ~value  ,
+    "G1"  , "g3" , "n (%)"    , "n"      , "trt1"  , 12      ,
+    "G1"  , "g3" , "n (%)"    , "pct"    , "trt1"  , 34      ,
+    "G2_" , "g3" , "mean"     , "mean"   , "trt1"  , 12.3    ,
+    "G2_" , "g3" , "sd"       , "sd"     , "trt1"  ,  4.34   ,
+    "G2_" , "g3" , "median"   , "median" , "trt1"  , 14      ,
+    "G3"  , "g3" , "(q1, q3)" , "q1"     , "trt1"  , 10      ,
+    "G3"  , "g3" , "(q1, q3)" , "q3"     , "trt1"  , 20      ,
+    "G1"  , "g3" , "n (%)"    , "n"      , "trt2"  , 24      ,
+    "G1"  , "g3" , "n (%)"    , "pct"    , "trt2"  , 58      ,
+    "G2_" , "g3" , "mean"     , "mean"   , "trt2"  , 15.4    ,
+    "G2_" , "g3" , "sd"       , "sd"     , "trt2"  ,  8.25   ,
+    "G2_" , "g3" , "median"   , "median" , "trt2"  , 16      ,
+    "G3"  , "g3" , "(q1, q3)" , "q1"     , "trt2"  , 22      ,
+    "G3"  , "g3" , "(q1, q3)" , "q3"     , "trt2"  , 22      ,
+    "G1"  , "g3" , "mean"     , "pval"   , "four"  ,  0.0001
+  )
+
+  plan <- tfrmt(
+    label = one,
+    group = c(g1, g2),
+    column = vars(column),
+    value = value,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx.xx")
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = "n (%)",
+        frmt_combine(
+          "{n} ({pct}%)",
+          n = frmt("x"),
+          pct = frmt("xx.x")
+        )
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = "(q1, q3)",
+        frmt_combine(
+          "({q1}, {q3})",
+          q1 = frmt("xx"),
+          q3 = frmt("xx")
+        )
+      ),
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        pval = frmt_when(
+          "<.001" ~ "<.001",
+          TRUE ~ frmt("x.xxx")
+        )
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(
+        group_val = list(
+          g1 = c("G1", "G2_"),
+          g2 = ".default"
+        ),
+        element_block = element_block(
+          post_space = "----"
+        )
+      ),
+      label_loc = element_row_grp_loc(
+        location = "spanning"
+      )
+    ),
+    col_style_plan = col_style_plan(
+      col_style_structure(
+        align = "right",
+        col = g1
+      ),
+      col_style_structure(
+        align = "right",
+        col = one
+      ),
+      col_style_structure(
+        align = "right",
+        width = 4,
+        col = vars(
+          starts_with(
+            "trt"
+          )
+        )
+      ),
+      col_style_structure(
+        align = "left",
+        col = trt1
+      ),
+      col_style_structure(
+        width = 10,
+        col = four
+      )
+    )
+  )
+
+  # apply_col_style_plan() handles the alignment -> we snapshot the data and
+  # not a gt property
+  expect_snapshot(
+    raw_dat |>
+      apply_tfrmt(
+        plan,
+        mock = FALSE
+      ) |>
+      cleaned_data_to_gt(
+        plan,
+        .unicode_ws = TRUE
+      ) |>
+      _[["_data"]]
+  )
+})

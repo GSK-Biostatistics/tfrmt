@@ -144,3 +144,24 @@
       2 Lev2    B     621   361    267    9      FALSE              
       3 Lev+5FU B     609   426    329    15     FALSE              
 
+# cleaned_data_to_gt() with col_style_plan
+
+    Code
+      cleaned_data_to_gt(apply_tfrmt(raw_dat, plan, mock = FALSE), plan, .unicode_ws = TRUE)[[
+        "_data"]]
+    Output
+      # A tibble: 11 x 6
+         g1    one          trt1         trt2            four    ..tfrmt_row_grp_lbl
+         <chr> <chr>        <chr>        <chr>           <chr>   <lgl>              
+       1 " G1" "        g3"  <NA>         <NA>            <NA>   TRUE               
+       2 " G1" "     n (%)" "12 (34.0%)" "24\n(58.0%)"   ""      FALSE              
+       3 " G1" "      mean" "          " "          "    "<.001" FALSE              
+       4 " G1" "  --------" "----------" "----------"    "-----" FALSE              
+       5 "G2_" "        g3"  <NA>         <NA>            <NA>   TRUE               
+       6 "G2_" "      mean" "12.30     " "     15.40"    ""      FALSE              
+       7 "G2_" "        sd" " 4.34     " "      8.25"    ""      FALSE              
+       8 "G2_" "    median" "14.00     " "     16.00"    ""      FALSE              
+       9 "G2_" "  --------" "----------" "----------"    "-----" FALSE              
+      10 " G3" "        g3"  <NA>         <NA>            <NA>   TRUE               
+      11 " G3" "  (q1, q3)" "(10, 20)  " "  (22,\n  22)" ""      FALSE              
+
