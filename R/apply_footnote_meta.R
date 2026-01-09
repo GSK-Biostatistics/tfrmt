@@ -110,9 +110,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
 
       message(paste0(message_text, collapse = "\n"))
 
-      # these are the default values for col_loc and spanning so we can get away
-      # without modifying them
-      # out <- list(col = NULL, spanning = FALSE)
+      out <- list(col = NULL, spanning = FALSE)
     } else {
       # if not a column return the spanning column name
       span_lvl <- col_str %in% col_val_nm %>%
