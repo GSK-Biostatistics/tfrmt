@@ -209,12 +209,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     }
   }
 
-  if (!is.null(tfrmt$col_style_plan)){
-    align <- "left"
-  } else {
-    align <- NULL
-  }
-
   if (!"..tfrmt_row_grp_lbl" %in% names(.data)) {
     # keep attribute for footnotes
     attr_footnote <- attr(.data,".footnote_locs")
@@ -242,13 +236,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       missing_text = ""
     ) %>%
     cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
-    format_gt_column_labels(.data) %>%
-    tab_style(
-      style = cell_text(whitespace = "pre-wrap", align = align),
-      locations = cells_body(
-        columns = tidyselect::everything()
-      )
-    )
+    format_gt_column_labels(.data)
 
   # group label in its own column
   if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
@@ -292,7 +280,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
-      locations = list(cells_column_spanners(),cells_column_labels())
+      locations = list(cells_column_spanners(),
+                       cells_column_labels(),
+                       cells_body(
+                         columns = tidyselect::everything()
+                       ))
     ) %>%
 
     tab_style(
