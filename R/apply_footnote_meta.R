@@ -1,7 +1,6 @@
 #' Apply the footnote metadata to data
 #'
-#' Gets the location of each footnote in the footnote plan and adds it to the
-#' dataset as an attribute.
+#' Gets the location of each footnote in the footnote plan and adds it to the dataset as an attribute.
 #'
 #' @param .data formatted data
 #' @param footnote_plan footnote plan
@@ -65,16 +64,11 @@ locate_fn <- function(footnote_structure, .data, col_plan_vars, element_row_grp_
 #'
 #' @return list with column locations (col) and if they are spanning or not (spanning)
 #' @noRd
-get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
+get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
 
-  loc_info <- footnote_structure |>
-    purrr::discard(is.null) |>
-    purrr::discard_at("footnote_text")
-
-  # remove one layer from the conditional logic by surfacing the default
-  # output values
-  col_loc <- NULL
-  spanning <- FALSE
+  loc_info <- footnote_structure %>%
+    discard(is.null) %>%
+    .[names(.) != "footnote_text"]
 
   # Get column information
   if ("column_val" %in% names(loc_info)) {
