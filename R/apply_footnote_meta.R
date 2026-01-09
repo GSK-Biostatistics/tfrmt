@@ -82,10 +82,8 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       col_val_nm <- names(loc_info$column_val)
     }
 
-        col_loc_df <- split_data_names_to_df(NULL, col_plan_vars%>%
+    col_loc_df <- split_data_names_to_df(NULL, col_plan_vars%>%
                                            map_chr(as_label), col_str) %>%
-
-
       inner_join(loc_col_df, by = col_val_nm)
 
     if (nrow(col_loc_df) == 0) {
