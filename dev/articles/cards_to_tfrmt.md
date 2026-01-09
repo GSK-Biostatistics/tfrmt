@@ -488,12 +488,12 @@ tfrmt(
 ```
 
 |                                                      | Placebo N = 86 | Xanomeline High Dose N = 84 | Xanomeline Low Dose N = 84 |
-|:-----------------------------------------------------|----------------|-----------------------------|----------------------------|
-| GASTROINTESTINAL DISORDERS                           | 12 (14%)       | 10 (12%)                    |  8 (10%)                   |
-|   DIARRHOEA                                          |  9 (10%)       |  4 ( 5%)                    |  5 ( 6%)                   |
-|   HIATUS HERNIA                                      |  1 ( 1%)       |  0 ( 0%)                    |  0 ( 0%)                   |
-|   VOMITING                                           |  3 ( 3%)       |  7 ( 8%)                    |  3 ( 4%)                   |
-| GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS |  9 (10%)       | 28 (33%)                    | 27 (32%)                   |
-|   APPLICATION SITE ERYTHEMA                          |  3 ( 3%)       | 15 (18%)                    | 12 (14%)                   |
-|   APPLICATION SITE PRURITUS                          |  6 ( 7%)       | 22 (26%)                    | 22 (26%)                   |
-|   FATIGUE                                            |  1 ( 1%)       |  5 ( 6%)                    |  5 ( 6%)                   |
+|:-----------------------------------------------------|:--------------:|:---------------------------:|:--------------------------:|
+| GASTROINTESTINAL DISORDERS                           |    12 (14%)    |          10 (12%)           |           8 (10%)          |
+|   DIARRHOEA                                          |     9 (10%)    |           4 ( 5%)           |           5 ( 6%)          |
+|   HIATUS HERNIA                                      |     1 ( 1%)    |           0 ( 0%)           |           0 ( 0%)          |
+|   VOMITING                                           |     3 ( 3%)    |           7 ( 8%)           |           3 ( 4%)          |
+| GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS |     9 (10%)    |          28 (33%)           |          27 (32%)          |
+|   APPLICATION SITE ERYTHEMA                          |     3 ( 3%)    |          15 (18%)           |          12 (14%)          |
+|   APPLICATION SITE PRURITUS                          |     6 ( 7%)    |          22 (26%)           |          22 (26%)          |
+|   FATIGUE                                            |     1 ( 1%)    |           5 ( 6%)           |           5 ( 6%)          |

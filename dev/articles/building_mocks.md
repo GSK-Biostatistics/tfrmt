@@ -321,8 +321,8 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
   print_mock_gt(df)
 ```
 
-|         | PL        | Risk Diff T1-PL     | Risk Diff T2-PL     | T1        | T2        |
-|:--------|-----------|---------------------|---------------------|-----------|-----------|
+|         |    PL     |   Risk Diff T1-PL   |   Risk Diff T2-PL   |    T1     |    T2     |
+|:--------|:---------:|:-------------------:|:-------------------:|:---------:|:---------:|
 | label 1 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
 | label 2 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
 | label 3 | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) | x (xx.x%) | x (xx.x%) |
@@ -375,8 +375,8 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
   print_mock_gt(df)
 ```
 
-|         | PL        | T1        | T2        | Risk Diff T1-PL     | Risk Diff T2-PL     |
-|:--------|-----------|-----------|-----------|---------------------|---------------------|
+|         |    PL     |    T1     |    T2     |   Risk Diff T1-PL   |   Risk Diff T2-PL   |
+|:--------|:---------:|:---------:|:---------:|:-------------------:|:-------------------:|
 | label 1 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
 | label 2 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |
 | label 3 | x (xx.x%) | x (xx.x%) | x (xx.x%) | xx.x (xx.x%, xx.x%) | xx.x (xx.x%, xx.x%) |

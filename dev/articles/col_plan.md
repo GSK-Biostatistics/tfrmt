@@ -177,11 +177,11 @@ tfrmt(
   print_to_gt(dat)
 ```
 
-| my_grp | my_lbl    | col2 | col4 | mycol3 | mycol5 | col1 |
-|:-------|-----------|------|------|--------|--------|------|
-| g1     | rowlabel1 | 1    | 1    | 1      | 1      | 1    |
-|        | rowlabel2 | 2    | 2    | 2      | 2      | 2    |
-| g2     | rowlabel3 | 3    | 3    | 3      | 3      | 3    |
+| my_grp |  my_lbl   | col2 | col4 | mycol3 | mycol5 | col1 |
+|:-------|:---------:|:----:|:----:|:------:|:------:|------|
+| g1     | rowlabel1 |  1   |  1   |   1    |   1    | 1    |
+|        | rowlabel2 |  2   |  2   |   2    |   2    | 2    |
+| g2     | rowlabel3 |  3   |  3   |   3    |   3    | 3    |
 
 Note: Multiple stub headers are only possible if the `row_grp_plan`
 label location is set to “column”. Otherwise, if more than one
