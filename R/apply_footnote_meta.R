@@ -124,18 +124,13 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
         out <- list(col = col_loc, spanning = FALSE)
       } else {
         col_loc <- col_loc_df %>%
-          dplyr::pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
+          pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
           unique()
-        # out <- list(col = col_loc, spanning = TRUE)
+        out <- list(col = col_loc, spanning = TRUE)
         spanning <- TRUE
       }
     }
   }
-
-  out <- list(
-    col = col_loc,
-    spanning = spanning
-  )
 
   out
 }
