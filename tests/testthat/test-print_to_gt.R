@@ -858,6 +858,8 @@ test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
         tfrmt_plan,
         .unicode_ws = TRUE
       ) |>
-      purrr::pluck("_data")
+      purrr::pluck(
+        "_data"
+      )
   )
 })
