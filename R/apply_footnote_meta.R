@@ -128,12 +128,13 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
           unique()
         out <- list(col = col_loc, spanning = TRUE)
       }
-    }  else {
+    }
+  } else {
     out <- list(col = NULL, spanning = FALSE)
   }
 
   out
-}
+  }
 
 #' Get the row location of the footnote
 #'
