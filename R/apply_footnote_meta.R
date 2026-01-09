@@ -80,17 +80,10 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
   if ("column_val" %in% names(loc_info)) {
     col_str <- purrr::map_chr(columns, as_label)
 
-    # TODO something feels inconsistent here. if `column_val` is not named (NB
-    # can be any length) then the info in it is all dumped into the same column
-    # (in theory, columns, but in practice the code below only works if
-    # `col_str` is a scalar)
-    # what happens when column_val has multiple unnamed elements?
     if (is_empty(names(loc_info$column_val))) {
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
-      # should we use as_tibble_row() here? much clearer about its intention
-      # compared to expand.grid
       loc_col_df <- loc_info$column_val %>%
         expand.grid(stringsAsFactors = FALSE)
       col_val_nm <- names(loc_info$column_val)
@@ -107,14 +100,6 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
       )
 
     if (nrow(col_loc_df) == 0) {
-      # TODO this branch of the conditional logic is not tested
-      # it doesn't not seem to be used -> I don't think we need it
-      # if we do, we should test it
-      # it feels like we are doing a lot above to ensure col_loc_df is not
-      # empty
-      # this logic was added in https://github.com/GSK-Biostatistics/tfrmt/pull/333
-      # if it is important we should test it (we don't know it's working)
-
       message_text <- c(
         paste0(
           "The provided column location does not exist in the provided data for the footnote",
@@ -154,13 +139,6 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
           preselected_cols = c(),
           column_names = col_str
         )
-        # TODO could we simplify this conditional?
-        # I think what we are doing is keeping the names if they are non-empty
-        # strings and dropping them if they are empty.
-        # probably the best option would be to write our own helper (wrapping
-        # rlang::set_names) - e.g. drop_empty_names
-        # another option would be for unite_df_to_data_names to get allow control
-        # of how the output is named / how the naming happens
         if (!is.null(names(col_loc))) {
           col_loc <- dplyr::if_else(
             names(col_loc) == "",

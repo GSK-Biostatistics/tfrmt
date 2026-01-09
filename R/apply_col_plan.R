@@ -290,21 +290,15 @@ char_as_quo <- function(x) {
   eval(parse(text = expr_to_eval)[[1]])
 }
 
+
 #' @importFrom rlang quo_get_expr as_label is_empty
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
-  # TODO move all conditions into a single if() statement and use `&&`
   if(identical(as_label(x), "everything()") & !default_everything_behavior){
     # dump any pre-selected columns from everything() call. we are _not_ using
     # the default behavior of everything().
 
     if(!is_empty(preselected_vals)){
-      # TODO decide which one is the correct behaviour
-      # setdiff works with NULL too so we could potentially remove !is_empty(preselected_vals)
-      #
-      # new behaviour
-      # data_names <- setdiff(data_names, preselected_vals)
-      # old behaviour (which I think is incorrect - see unit tests)
       data_names <- data_names[-seq_along(preselected_vals)]
     }
   }
@@ -330,11 +324,7 @@ eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everythin
 #' @importFrom tidyr separate
 #' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names){
-  # TODO data_names can be NULL. not clear
 
-
-  # TODO switch to this more robust approach
-  # data_names <- union(data_names, preselected_cols)
   data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
   if(is.null(names(data_names))){
@@ -345,9 +335,6 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
     }
   }
 
-  # TODO we should probably use tibble::enframe() here
-  # the current approach results in `original` and `subtraction_status` columns
-  # being named vectors
   tibble::tibble(
     original = data_names,
     new_name = names(data_names)
