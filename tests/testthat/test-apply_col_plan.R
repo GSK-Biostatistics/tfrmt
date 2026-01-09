@@ -224,25 +224,6 @@ test_that("create_col_order() with empty columns arg & cp not NULL", {
 })
 
 test_that("create_col_order() with span_structure()", {
-  # TODO maybe delete this tibble as it is not used
-  dat <- tibble::tribble(
-    ~group , ~label      , ~span1     , ~my_col  , ~parm   , ~val ,
-    "g1"   , "rowlabel1" , "cols 1,2" , "col1"   , "value" ,    1 ,
-    "g1"   , "rowlabel1" , "cols 1,2" , "col2"   , "value" ,    1 ,
-    "g1"   , "rowlabel1" , NA         , "mycol3" , "value" ,    1 ,
-    "g1"   , "rowlabel1" , "col 4"    , "col4"   , "value" ,    1 ,
-    "g1"   , "rowlabel1" , NA         , "mycol5" , "value" ,    1 ,
-    "g1"   , "rowlabel2" , "cols 1,2" , "col1"   , "value" ,    2 ,
-    "g1"   , "rowlabel2" , "cols 1,2" , "col2"   , "value" ,    2 ,
-    "g1"   , "rowlabel2" , NA         , "mycol3" , "value" ,    2 ,
-    "g1"   , "rowlabel2" , "col 4"    , "col4"   , "value" ,    2 ,
-    "g1"   , "rowlabel2" , NA         , "mycol5" , "value" ,    2 ,
-    "g2"   , "rowlabel3" , "cols 1,2" , "col1"   , "value" ,    3 ,
-    "g2"   , "rowlabel3" , "cols 1,2" , "col2"   , "value" ,    3 ,
-    "g2"   , "rowlabel3" , NA         , "mycol3" , "value" ,    3 ,
-    "g2"   , "rowlabel3" , "col 4"    , "col4"   , "value" ,    3 ,
-    "g2"   , "rowlabel3" , NA         , "mycol5" , "value" ,    3 ,
-  )
 
   expect_snapshot(
     create_col_order(
@@ -420,17 +401,19 @@ test_that("col_plan_quo_to_vars() works", {
     )
   )
 
-  # TODO clarify
+  # TODO clarify and implement correct behaviour
   # I'd say the expectation is that is should not be possible for the output of
-  # col_plan_quo_to_vars() to return more column than available in the data
+  # col_plan_quo_to_vars() to return more columns than available in the data
   # (i.e. it should not contain duplicates). At most we should return data_names
   # without any additional elements
 
-  skip("Incorrect behaviour?")
+  skip("incorrect behaviour: default_everything_behavior = TRUE")
 
   # default_everything_behavior = TRUE with preselected columns results in a
   # duplication of the preselected_cols (which are also moved to the beginning
   # of the column names vector)
+  # I believe the correct output should be
+  # c("lbl", "1", "grp2", "ord")
   expect_identical(
     col_plan_quo_to_vars(
       x = rlang::quos(everything()),
@@ -525,10 +508,8 @@ test_that("char_as_quo() works", {
     ignore_formula_env = TRUE
   )
 
-  # exception: valid tidyselect expression, but the output is not a call
-  # this unit tests should be reviewed as part of
-  # https://github.com/GSK-Biostatistics/tfrmt/issues/578
-  skip("https://github.com/GSK-Biostatistics/tfrmt/issues/578")
+  # TODO revisit once https://github.com/GSK-Biostatistics/tfrmt/issues/578 is solved
+  skip("valid tidyselect expressions not recognised")
   expect_true(
     char_as_quo("foo:bar") |>
       rlang::quo_is_call()
@@ -552,8 +533,7 @@ test_that("eval_col_plan_quo() works", {
     "ord"
   )
 
-  # not really clear, but eval_col_plan_quo only works when x is a single
-  # quosure (and not a list of quosures)
+  # TODO document that `eval_col_plan_quo()` expects `x` to be a single quosure (not a list of quosures)
   expect_identical(
     eval_col_plan_quo(
       x = rlang::quo(everything()),
@@ -564,15 +544,20 @@ test_that("eval_col_plan_quo() works", {
     c("grp2", "lbl", "ord", "1")
   )
 
+  # TODO correct behaviour
   # default_everything_behavior produces effects only in a very narrow case:
   # - when preselected_vars is not empty, and
   # - x is everything()
+  #
   # the behaviour is likely incorrect, the below drops "grp2" (the first
   # variable in the data_names vector, due to ...[-seq_along(preselected_vals)])
   #
+  # I think the correct output should be c("grp2", "lbl", "1") and not
+  # c("lbl", "ord", "1") - the current behaviour
+  #
   # data_names <- data_names[-seq_along(preselected_vals)] should be replaced with
   # data_names <- setdiff(data_names, preselected_vals)
-  skip("incorrect behaviour")
+  skip("incorrect behaviour: default_everything_behavior = FALSE")
   # correct behaviour should be to return all columns but the preselected ones
   # when default_everything_behaviour is FALSE, but that is not the case
   expect_identical(
@@ -585,8 +570,8 @@ test_that("eval_col_plan_quo() works", {
     c("grp2", "lbl", "1")
   )
 
-  # the below should produce identical results, but they do not
-  skip("https://github.com/GSK-Biostatistics/tfrmt/issues/578")
+  skip("incomplete tidyselect support")
+  # TODO revisit once https://github.com/GSK-Biostatistics/tfrmt/issues/578 is solved
   expect_identical(
     eval_col_plan_quo(
       x = rlang::quo(everything()),
@@ -663,6 +648,8 @@ test_that("col_plan_span_structure_to_vars() works", {
     )
   )
 
+  # TODO understand why 2 is not identical with 1 and 3
+
   # 3
   expect_identical(
     col_plan_span_structure_to_vars(
@@ -692,8 +679,6 @@ test_that("col_plan_span_structure_to_vars() works", {
       ""
     )
   )
-
-  # TODO understand why 2 is not identical with 1 and 3
 })
 
 test_that("split_data_names_to_df() works", {
@@ -717,7 +702,7 @@ test_that("split_data_names_to_df() works", {
       `__tfrmt_new_name__column` = c("grp2", "lbl", "ord", "1"),
       subtraction_status = rlang::set_names(
         c(FALSE, FALSE, FALSE, FALSE),
-        # TODO subtraction_status should not be a named column
+        # TODO investigate: subtraction_status should not be a named vector
         c("grp2", "lbl", "ord", "1")
       )
     )
@@ -751,8 +736,7 @@ test_that("split_data_names_to_df() works", {
     )
   })
 
-  skip("Incorrect behaviour")
-  # TODO subtraction status is a named column and it should not be
+  # TODO investigate: subtraction_status should not be a named vector
   expect_identical(
     split_data_names_to_df(
       data_names = c("grp2", "lbl", "ord", "1"),
@@ -762,12 +746,16 @@ test_that("split_data_names_to_df() works", {
     tibble::tibble(
       column = c("ord", "grp2", "lbl", "ord", "1"),
       `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "ord", "1"),
-      subtraction_status = c(TRUE, FALSE, FALSE, FALSE, FALSE)
+      subtraction_status = rlang::set_names(
+        c(TRUE, FALSE, FALSE, FALSE, FALSE),
+        c("-ord", "grp2", "lbl", "ord", "1")
+      )
     )
   )
 
   # it should be
   # TODO clarify where and how many times should `ord` appear in the output
+  # TODO same as above: subtraction_status should not be a named vector
   expect_identical(
     split_data_names_to_df(
       data_names = c("grp2", "lbl", "ord", "1"),
@@ -777,13 +765,15 @@ test_that("split_data_names_to_df() works", {
     tibble::tibble(
       column = c("ord", "grp2", "lbl", "ord", "1"),
       `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "ord", "1"),
-      subtraction_status = c(TRUE, FALSE, FALSE, FALSE, FALSE)
+      subtraction_status = rlang::set_names(
+        c(TRUE, FALSE, FALSE, FALSE, FALSE),
+        c("-ord", "grp2", "lbl", "ord", "1")
+      )
     )
   )
 })
 
 test_that("unite_df_to_data_names() works", {
-  # skip("temp skip")
   expect_identical(
     split_data_names_to_df(
       data_names = c("grp2", "lbl", "ord", "1"),
@@ -818,10 +808,9 @@ test_that("unite_df_to_data_names() works", {
     )
   )
 
-  # something weird is going on
-  # preselection (both with negative selection and without) result in
+  # TODO clarify the intended behaviour in the expectations below
+  # preselection (both with negative selection and without) results in
   # repetitions in the output
-  # TODO clarify
 
   expect_identical(
     split_data_names_to_df(
