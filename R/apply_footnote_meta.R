@@ -132,9 +132,8 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
   } else {
     out <- list(col = NULL, spanning = FALSE)
   }
-
   out
-  }
+}
 
 #' Get the row location of the footnote
 #'
@@ -152,7 +151,7 @@ get_row_loc <- function(footnote_structure, .data, element_row_grp_loc,
 
 
   loc_info <- footnote_structure %>%
-    purrr::discard(is.null) %>%
+    discard(is.null) %>%
     .[names(.) != "footnote_text"]
 
   row_grp <- ifelse(is.null(element_row_grp_loc$location), "",
