@@ -147,8 +147,8 @@
 # cleaned_data_to_gt() with col_style_plan
 
     Code
-      cleaned_data_to_gt(apply_tfrmt(raw_dat, plan, mock = FALSE), plan, .unicode_ws = TRUE)[[
-        "_data"]]
+      purrr::pluck(cleaned_data_to_gt(apply_tfrmt(raw_dat, plan, mock = FALSE), plan,
+      .unicode_ws = TRUE), "_data")
     Output
       # A tibble: 11 x 6
          g1    one          trt1         trt2            four    ..tfrmt_row_grp_lbl

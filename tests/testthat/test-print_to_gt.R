@@ -811,6 +811,8 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         plan,
         .unicode_ws = TRUE
       ) |>
-      _[["_data"]]
+      purrr::pluck(
+        "_data"
+      )
   )
 })
