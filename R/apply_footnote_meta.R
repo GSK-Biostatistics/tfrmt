@@ -127,9 +127,9 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
           pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
           unique()
         out <- list(col = col_loc, spanning = TRUE)
-        spanning <- TRUE
       }
-    }
+    }  else {
+    out <- list(col = NULL, spanning = FALSE)
   }
 
   out
