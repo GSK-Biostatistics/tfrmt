@@ -1,6 +1,6 @@
 #' Apply the footnote metadata to data
 #'
-#' Gets the location of each footnote in the footnote plan and adds it to the dataset as an attribute.
+#' Gets the location of each footnote in the footnote plan and adds it to the dataset as an attribute
 #' @param .data formatted data
 #' @param footnote_plan footnote plan
 #' @param col_plan_vars named vector of the columns with new and old names
@@ -70,10 +70,10 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
     .[names(.) != "footnote_text"]
 
   # Get column information
-  if("column_val" %in% names(loc_info)) {
+  if( "column_val" %in% names(loc_info)){
     col_str <- columns %>% map_chr(as_label)
 
-    if (is_empty(names(loc_info$column_val))) {
+    if(is_empty(names(loc_info$column_val))){
       col_val_nm <- col_str
       loc_col_df <- tibble(!!col_str := loc_info$column_val)
     } else {
@@ -82,15 +82,11 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       col_val_nm <- names(loc_info$column_val)
     }
 
-    col_loc_df <- split_data_names_to_df(
-      data_names = NULL,
-      preselected_cols = purrr::map_chr(col_plan_vars, as_label),
-      column_names = col_str
-    ) %>%
-      dplyr::inner_join(
-        loc_col_df,
-        by = col_val_nm
-      )
+        col_loc_df <- split_data_names_to_df(NULL, col_plan_vars%>%
+                                           map_chr(as_label), col_str) %>%
+
+
+      inner_join(loc_col_df, by = col_val_nm)
 
     if (nrow(col_loc_df) == 0) {
       message_text <- c(
