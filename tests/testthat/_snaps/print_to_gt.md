@@ -165,7 +165,7 @@
       10 " G3" "        g3"  <NA>         <NA>            <NA>   TRUE               
       11 " G3" "  (q1, q3)" "(10, 20)  " "  (22,\n  22)" ""      FALSE              
 
-# clean_data_to_gt() with row_grp_plan and location = 'column'
+# cleaned_data_to_gt() with row_grp_plan and location = 'column'
 
     Code
       purrr::pluck(cleaned_data_to_gt(apply_tfrmt(test_data, tfrmt_plan, mock = FALSE),
