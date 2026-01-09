@@ -2,7 +2,7 @@
 
 ## Improvements
  * Replace duplicate spaces in the centre of the cell body of an output gt with unicode whitespace to ensure formatting is retained when going to pdf. Leading and trailing whitespace will be non-breaking unicode whitespace
-
+ * Default to center alignment of table body values to match alignment of column headers
 # tfrmt 0.2.1
 
 Patch release for latest {gt} release and upcoming {purrr} and {stringr} releases:
