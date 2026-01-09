@@ -108,6 +108,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
       message(paste0(message_text, collapse = "\n"))
 
       out <- list(col = NULL, spanning = FALSE)
+
     }else{
       # if not a column return the spanning column name
       span_lvl <- col_str %in% col_val_nm %>%
@@ -115,17 +116,12 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns){
         max() %>%
         col_str[.]
 
-      if (last(col_str) == span_lvl) {
+      if(last(col_str) == span_lvl){
         col_loc <- unite_df_to_data_names(col_loc_df, preselected_cols = c(), column_names = col_str)
-        if (!is.null(names(col_loc))) {
-          col_loc <- dplyr::if_else(
-            names(col_loc) == "",
-            unname(col_loc),
-            names(col_loc)
-          )
+        if(!is.null(names(col_loc))){
+          col_loc <- if_else(names(col_loc) != "", names(col_loc), unname(col_loc))
         }
-        # only col_loc changes, spanning remains FALSE
-        # out <- list(col = col_loc, spanning = FALSE)
+        out <- list(col = col_loc, spanning = FALSE)
       } else {
         col_loc <- col_loc_df %>%
           dplyr::pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
