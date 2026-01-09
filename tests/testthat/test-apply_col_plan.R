@@ -726,15 +726,15 @@ test_that("split_data_names_to_df() works", {
     )
   )
 
-  # negative selection
-  # doesn't really work (ord appears twice in the output)
-  expect_snapshot({
+  # negative selection doesn't really work (ord appears twice in the output)
+  # TODO investigate
+  expect_snapshot(
     split_data_names_to_df(
       data_names = c("grp2", "lbl", "ord", "1"),
       preselected_cols = "-ord",
       column_names = "column"
     )
-  })
+  )
 
   # TODO investigate: subtraction_status should not be a named vector
   expect_identical(

@@ -178,11 +178,11 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
     "`tfrmt` will need a `param` value to `print_to_gt` when data is available",
     fixed = TRUE
   )
-  expect_snapshot({
+  expect_snapshot(
     print_mock_gt(
       tfrmt_plan_no_param
     )[["_data"]]
-  })
+  )
 })
 
 test_that("print_mock_gt() messages when tfrmt$column is missing", {
@@ -245,11 +245,11 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
     fixed = TRUE
   )
 
-  expect_snapshot({
+  expect_snapshot(
     print_mock_gt(
       tfrmt_plan_no_column
     )[["_data"]]
-  })
+  )
 })
 
 test_that("print_mock_gt() messages when tfrmt$value is missing", {
@@ -312,11 +312,11 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
     fixed = TRUE
   )
 
-  expect_snapshot({
+  expect_snapshot(
     print_mock_gt(
       tfrmt_plan_no_value
     )[["_data"]]
-  })
+  )
 })
 
 test_that("print_mock_gt() with missing body_plan", {
