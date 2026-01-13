@@ -176,11 +176,11 @@ apply_page_struct <- function(
 
   # 1. check that only 1 page_structure contains a .default, drop extras
   struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
-  if (length(struct_defaults_idx) > 1) {
+  if (length(struct_defaults_idx)>1){
     struct_defaults_idx_drop <- struct_defaults_idx[-last(struct_defaults_idx)]
     page_struct_list <- page_struct_list[-struct_defaults_idx_drop]
     message("`page_plan` contains multiple `page_structures` with values set to \".default\". \n",
-    "Only the last one specified will be used.")
+            "Only the last one specified will be used.")
   }
 
   # 2. get all the subsets of data
