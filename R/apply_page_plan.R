@@ -251,13 +251,7 @@ apply_page_struct <- function(
       group_by(.data$`..tfrmt_split_num`) %>%
       filter(!is.na(.data$grouping_val)) %>%
       unique() %>%
-      summarise(
-        `..tfrmt_page_note` = paste0(
-          .data$grouping_col,
-          ": ",
-          .data$grouping_val
-        ) %>%
-          paste0(collapse = ",\n")
+      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n")
       )
 
     page_grp_vars <- setdiff(names(dat_split_2), c("..tfrmt_data", "..tfrmt_split_num"))
@@ -271,7 +265,7 @@ apply_page_struct <- function(
   # 4. return the values
   # prep list of tbsl
   dat_out <- dat_split_2 %>%
-    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~ select(.x, -"TEMP_row"))) %>%
+    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, -"TEMP_row"))) %>%
     pull(.data$`..tfrmt_data`)
 
   # add pg_note to individual tbls as applicable
