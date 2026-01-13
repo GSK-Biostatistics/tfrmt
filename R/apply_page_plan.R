@@ -227,11 +227,7 @@ apply_page_struct <- function(
 
   # determine where the splits should occur in data
   dat_split_2 <- dat_split_2_idx %>%
-    mutate(
-      `..tfrmt_data` = map2(
-        .data$`..tfrmt_data`,
-        .data$split_idx,
-        function(x, y) {
+    mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$split_idx, function(x, y) {
           x %>%
             mutate(
               `..tfrmt_split_idx` = .data$TEMP_row %in% y,
