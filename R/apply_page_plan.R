@@ -188,13 +188,9 @@ apply_page_struct <- function(
   # a) If applicable, split by any group/label vars set to ".default"
   struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
 
-  if (length(struct_defaults_idx) > 0) {
+  if (length(struct_defaults_idx)>0){
     # split on all set to .default
-    grping <- expr_to_grouping(
-      page_struct_list[[struct_defaults_idx]],
-      group,
-      label
-    )
+    grping <- expr_to_grouping(page_struct_list[[struct_defaults_idx]], group, label)
 
     dat_split_1 <- .data %>%
       nest(
@@ -213,15 +209,12 @@ apply_page_struct <- function(
 
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
-    mutate(
-      split_idx = map(.data$`..tfrmt_data`, function(x) {
-        map(page_struct_list, function(y) {
-          struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
-            map_dbl(last) # keep just the last one to split after
-        }) %>%
-          unlist()
-      })
-    )
+    mutate(split_idx = map(.data$`..tfrmt_data`, function(x) {
+      map(page_struct_list, function(y) {
+        struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
+          map_dbl(last) # keep just the last one to split after
+        }) %>% unlist()
+      }))
 
   # determine where the splits should occur in data
   dat_split_2 <- dat_split_2_idx %>%
