@@ -37,6 +37,20 @@
 #'    max_rows = 5
 #'  )
 #'
+#'  # use of transform with a formula
+#'  page_plan(
+#'    transform = ~ stringr::str_replace(.x, "foo", "bar")
+#'  )
+#'
+#'  # use of transform with a function
+#'  transformation_function <- function(x) {
+#'    stringr::str_replace(x, "foo", "bar")
+#'  }
+#'
+#'  page_plan(
+#'    transform = transformation_function
+#'  )
+#'
 page_plan <- function(
   ...,
   note_loc = c("noprint", "preheader", "subtitle", "source_note"),

@@ -53,4 +53,18 @@ page_structure's and the row_every_n argument, respectively.
    max_rows = 5
  )
 
+ # use of transform with a formula
+ page_plan(
+   transform = ~ stringr::str_replace(.x, "foo", "bar")
+ )
+
+ # use of transform with a function
+ transformation_function <- function(x) {
+   stringr::str_replace(x, "foo", "bar")
+ }
+
+ page_plan(
+   transform = transformation_function
+ )
+
 }
