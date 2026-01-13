@@ -189,6 +189,7 @@ apply_page_struct <- function(
   struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
 
   if (length(struct_defaults_idx)>0){
+
     # split on all set to .default
     grping <- expr_to_grouping(page_struct_list[[struct_defaults_idx]], group, label)
 
@@ -200,6 +201,7 @@ apply_page_struct <- function(
       mutate(
         `..tfrmt_split_num` = row_number()
       )
+
   } else {
     # no default - just nest to get in same structure for next step
     dat_split_1 <- tibble(`..tfrmt_data` = list(!!.data))
@@ -278,6 +280,7 @@ apply_page_struct <- function(
     dat_out,
     .page_grp_vars = page_grp_vars
   )
+
 }
 
 
