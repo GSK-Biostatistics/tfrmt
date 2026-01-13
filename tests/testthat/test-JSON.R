@@ -501,9 +501,9 @@ test_that("json page plan",{
     )
   )
 
-  pp %>%
-    as_json() %>%
-    expect_snapshot()
+  expect_snapshot(
+    as_json(pp)
+  )
 
   pp %>%
     as_json() %>%
@@ -586,5 +586,3 @@ test_that("json read/write", {
   file.remove(test_loc)
 
 })
-
-
