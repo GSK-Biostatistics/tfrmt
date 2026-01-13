@@ -218,23 +218,17 @@ apply_page_struct <- function(
 
   # determine where the splits should occur in data
   dat_split_2 <- dat_split_2_idx %>%
-    mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$split_idx, function(x, y) {
-          x %>%
-            mutate(
-              `..tfrmt_split_idx` = .data$TEMP_row %in% y,
-              # carry it forward to denote start of next table,
-              `..tfrmt_start_idx` = lag(
-                .data$`..tfrmt_split_idx`,
-                default = TRUE
-              ),
-              `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)
-            ) %>%
-            select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
-            group_by(.data$`..tfrmt_split_after`) %>%
-            group_split(.keep = FALSE)
-        }
-      )
-    ) %>%
+    mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$split_idx, function(x, y){
+
+      x %>%
+        mutate(`..tfrmt_split_idx` = .data$TEMP_row %in% y,
+               # carry it forward to denote start of next table,
+               `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
+               `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
+        select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
+        group_by(.data$`..tfrmt_split_after`) %>%
+        group_split(.keep = FALSE)
+    })) %>%
     select(-"split_idx") %>%
     unnest(cols = "..tfrmt_data")
 
@@ -256,6 +250,7 @@ apply_page_struct <- function(
   } else {
     page_grp_vars <- NULL
   }
+
 
   # 4. return the values
   # prep list of tbsl
