@@ -60,10 +60,6 @@ page_plan <- function(
   page_structure_list <- list(...)
   note_loc <- match.arg(note_loc)
 
-  # if (!is.null(transform) && is.character(transform)) {
-  #   transform <- str2lang(transform)
-  # }
-
   structure(
     list(
       struct_list = page_structure_list,
