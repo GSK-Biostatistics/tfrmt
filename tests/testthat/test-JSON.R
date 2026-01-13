@@ -559,6 +559,11 @@ test_that("page_plan() roundtrip to JSON with transform", {
 
   expect_identical(
     func_pp_lambda("foo: baz"),
+    "bar: baz"
+  )
+
+  expect_identical(
+    func_pp_lambda("foo: baz"),
     func_pp_lambda_from_json("foo: baz")
   )
 
@@ -596,6 +601,11 @@ test_that("page_plan() roundtrip to JSON with transform", {
 
   func_pp_function <- rlang::as_function(page_plan_function$page_plan$transform)
   func_pp_function_from_json <- rlang::as_function(page_plan_function_from_json$page_plan$transform)
+
+  expect_identical(
+    func_pp_function("foo: baz"),
+    "bar: baz"
+  )
 
   expect_identical(
     func_pp_function("foo: baz"),
