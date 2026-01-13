@@ -822,7 +822,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
   ard_ae4 <- ard_ae |>
     # combine the ards and convert them to the format required for tfrmt
-    bind_ard(ard_ae2) |>
+    cards::bind_ard(ard_ae2) |>
     # reshape the data
     shuffle_card(
       by = c("TRT01A", "AESEV"),
