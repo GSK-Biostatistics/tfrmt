@@ -825,7 +825,7 @@
 # page_plan() roundtrip to JSON with transform
 
     Code
-      as_json(pp)
+      as_json(page_plan_lambda)
     Output
       {
         "group": [],
@@ -853,7 +853,7 @@
 ---
 
     Code
-      as_json(pp)
+      as_json(page_plan_function)
     Output
       {
         "group": [],

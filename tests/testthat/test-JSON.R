@@ -527,7 +527,7 @@ test_that("json page plan",{
 
 test_that("page_plan() roundtrip to JSON with transform", {
   # transform as formula / lambda function
-  pp <- tfrmt(
+  page_plan_lambda <- tfrmt(
     page_plan = page_plan(
       page_structure(
         group_val = ".default",
@@ -540,27 +540,26 @@ test_that("page_plan() roundtrip to JSON with transform", {
   )
 
   expect_snapshot(
-    as_json(pp)
+    as_json(page_plan_lambda)
   )
 
-  new_page_plan <- pp |>
+  page_plan_lambda_from_json <- page_plan_lambda |>
     as_json() |>
     json_to_tfrmt(json = _)
 
-
-  expect_equal(
-    new_page_plan,
-    pp,
+  expect_identical(
+    page_plan_lambda_from_json,
+    page_plan_lambda,
     # the formula environments will not be the same
     ignore_formula_env = TRUE
   )
 
-  func_pp <- rlang::as_function(pp$page_plan$transform)
-  func_new_page_plan <- rlang::as_function(new_page_plan$page_plan$transform)
+  func_pp_lambda <- rlang::as_function(page_plan_lambda$page_plan$transform)
+  func_pp_lambda_from_json <- rlang::as_function(page_plan_lambda_from_json$page_plan$transform)
 
   expect_identical(
-    func_pp("foo: baz"),
-    func_new_page_plan("foo: baz")
+    func_pp_lambda("foo: baz"),
+    func_pp_lambda_from_json("foo: baz")
   )
 
   # transform as function
@@ -568,7 +567,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
     stringr::str_replace(x, "foo", "bar")
   }
 
-  pp <- tfrmt(
+  page_plan_function <- tfrmt(
     page_plan = page_plan(
       page_structure(
         group_val = ".default",
@@ -581,26 +580,26 @@ test_that("page_plan() roundtrip to JSON with transform", {
   )
 
   expect_snapshot(
-    as_json(pp)
+    as_json(page_plan_function)
   )
 
-  new_page_plan <- pp |>
+  page_plan_function_from_json <- page_plan_function |>
     as_json() |>
     json_to_tfrmt(json = _)
 
   expect_equal(
-    new_page_plan,
-    pp,
+    page_plan_function_from_json,
+    page_plan_function,
     # the function environments will not be the same
     ignore_function_env = TRUE
   )
 
-  func_pp <- rlang::as_function(pp$page_plan$transform)
-  func_new_page_plan <- rlang::as_function(new_page_plan$page_plan$transform)
+  func_pp_function <- rlang::as_function(page_plan_function$page_plan$transform)
+  func_pp_function_from_json <- rlang::as_function(page_plan_function_from_json$page_plan$transform)
 
   expect_identical(
-    func_pp("foo: baz"),
-    func_new_page_plan("foo: baz")
+    func_pp_function("foo: baz"),
+    func_pp_function_from_json("foo: baz")
   )
 })
 
