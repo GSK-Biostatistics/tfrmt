@@ -15,7 +15,8 @@
 #'   It should take a character vector as input and return a modified character
 #'   vector as output.
 #'
-#'   A **function** is used as is.
+#'   A **function** is used as is, e.g. `function(x) {stringr::str_replace(x, "foo", "bar")}`
+#'
 #'   A **formula**, e.g. `~ .x + 2` is converted to a function. This allows you
 #'   to create more compact anonymous functions (lambdas).
 #'
