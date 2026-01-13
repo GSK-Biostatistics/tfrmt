@@ -260,10 +260,7 @@ apply_page_struct <- function(
           paste0(collapse = ",\n")
       )
 
-    page_grp_vars <- setdiff(
-      names(dat_split_2),
-      c("..tfrmt_data", "..tfrmt_split_num")
-    )
+    page_grp_vars <- setdiff(names(dat_split_2), c("..tfrmt_data", "..tfrmt_split_num"))
 
     dat_split_2 <- left_join(dat_split_2, tbl_nms, by = "..tfrmt_split_num") %>%
       select(c("..tfrmt_data", "..tfrmt_page_note"))
@@ -274,13 +271,11 @@ apply_page_struct <- function(
   # 4. return the values
   # prep list of tbsl
   dat_out <- dat_split_2 %>%
-    mutate(
-      `..tfrmt_data` = map(.data$`..tfrmt_data`, ~ select(.x, -"TEMP_row"))
-    ) %>%
+    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~ select(.x, -"TEMP_row"))) %>%
     pull(.data$`..tfrmt_data`)
 
   # add pg_note to individual tbls as applicable
-  if ("..tfrmt_page_note" %in% names(dat_split_2)) {
+  if ("..tfrmt_page_note" %in% names(dat_split_2)){
     pg_note <- dat_split_2$`..tfrmt_page_note`
 
     if (!is.null(transform)) {
