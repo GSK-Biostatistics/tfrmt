@@ -217,7 +217,7 @@ apply_page_struct <- function(
     }))
 
   # determine where the splits should occur in data
-  dat_split_2 <- dat_split_2_idx %>%
+  dat_split_2 <- dat_split_2_idx%>%
     mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$split_idx, function(x, y){
 
       x %>%
@@ -225,7 +225,7 @@ apply_page_struct <- function(
                # carry it forward to denote start of next table,
                `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
                `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
-        select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
+        select(-c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)
     })) %>%
