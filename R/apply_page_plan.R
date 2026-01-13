@@ -210,11 +210,11 @@ apply_page_struct <- function(
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
     mutate(split_idx = map(.data$`..tfrmt_data`, function(x) {
-      map(page_struct_list, function(y) {
+      map(page_struct_list, function(y){
         struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
           map_dbl(last) # keep just the last one to split after
-        }) %>% unlist()
-      }))
+      }) %>% unlist()
+    }))
 
   # determine where the splits should occur in data
   dat_split_2 <- dat_split_2_idx %>%
