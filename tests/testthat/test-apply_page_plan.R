@@ -770,3 +770,275 @@ test_that("page_plan() with transform", {
     c("group 1: category 1")
   )
 })
+
+test_that("apply_page_plan() with label transformation in a complex table", {
+  # include only subjects marked as part of the safety population
+  adsl <- pharmaverseadam::adsl |>
+    dplyr::filter(SAFFL == "Y")
+
+  # Load adverse event data
+  adae <- pharmaverseadam::adae |>
+    dplyr::filter(SAFFL == "Y" & TRTEMFL == "Y")
+
+  # limit printed rows
+  adae <- adae |>
+    dplyr::filter(AESOC %in% unique(AESOC)[1:3]) |>
+    dplyr::group_by(AESOC) |>
+    dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
+    ungroup()
+
+  # Create an ARD that stacks hierarchical data of adverse events
+  # Grouping by treatment, severity, system organ class, and preferred term
+  ard_ae <- cards::ard_stack_hierarchical(
+    data = adae,
+    # by variables must be present in the denominator dataset
+    by = c(TRT01A, AESEV),
+    variables = c(AESOC, AETERM),
+    denominator = adsl,
+    statistic = ~ c("n", "p"),
+    id = USUBJID,
+    over_variables = TRUE,
+    overall = TRUE
+  )
+
+  # create an ARD for where AESEV is "TOTAL"
+  ard_ae2 <- cards::ard_stack_hierarchical(
+    data = adae,
+    # Note: by variables must be present in the denominator dataset
+    by = TRT01A,
+    variables = c(AESOC, AETERM),
+    denominator = adsl,
+    statistic = ~ c("n", "p"),
+    id = USUBJID,
+    over_variables = TRUE,
+    overall = TRUE
+  )
+
+  # Keep required AESEV "TOTAL" rows
+  ard_ae2 <- ard_ae2 |>
+    dplyr::filter(
+      variable != "TRT01A" & group1 != "AESOC" & group1 != "AESEV"
+    )
+
+  ard_ae4 <- ard_ae |>
+    # combine the ards and convert them to the format required for tfrmt
+    bind_ard(ard_ae2) |>
+    # reshape the data
+    shuffle_card(
+      by = c("TRT01A", "AESEV"),
+      fill_overall = "Total",
+      fill_hierarchical_overall = "ANY EVENT"
+    ) |>
+    # transform group-level freqs/pcts into a singular "bigN" row
+    prep_big_n(
+      vars = "TRT01A"
+    ) |>
+    # for nested variables, fill any missing values with "ANY EVENT"
+    prep_hierarchical_fill(
+      vars = c("AESOC", "AETERM"),
+      fill = "ANY EVENT"
+    )
+
+  # create ordering variables, sort by AESOC using the total AESEV variable
+  ordering_aesoc <- ard_ae4 |>
+    dplyr::filter(
+      stat_name == "n",
+      AETERM == "ANY EVENT",
+      TRT01A == "Total",
+      AESEV == "Total"
+    ) |>
+    dplyr::arrange(
+      dplyr::desc(
+        stat
+      )
+    ) |>
+    dplyr::mutate(
+      ord1 = dplyr::row_number()
+    ) |>
+    dplyr::select(
+      AESOC,
+      ord1
+    )
+
+  # Sort by AETERM after AESOC
+  ordering_aeterm <- ard_ae4 |>
+    dplyr::filter(
+      TRT01A == "Total",
+      stat_name == "n",
+      AESEV == "Total"
+    ) |>
+    dplyr::group_by(
+      AESOC
+    ) |>
+    dplyr::arrange(
+      dplyr::desc(
+        stat
+      )
+    ) |>
+    dplyr::mutate(
+      ord2 = dplyr::row_number()
+    ) |>
+    dplyr::select(
+      AESOC,
+      AETERM,
+      ord2
+    )
+
+  # Join on ordering columns
+  ard_ae5 <- ard_ae4 |>
+    dplyr::full_join(
+      ordering_aesoc,
+      by = c("AESOC")
+    ) |>
+    dplyr::full_join(
+      ordering_aeterm,
+      by = c("AESOC", "AETERM")
+    )
+
+  # Extract N values for each treatment where stat_name == "bigN" and use them
+  # to put in names of treatment for formatting output
+  treatment_N <- ard_ae5 |>
+    dplyr::filter(
+      stat_name == "bigN"
+    ) |>
+    dplyr::select(
+      TRT01A,
+      stat
+    ) |>
+    dplyr::rename(
+      stat_N = stat
+    )
+
+  ard_ae6 <- ard_ae5 |>
+    dplyr::filter(stat_name != "bigN") |>
+    dplyr::left_join(treatment_N, by = "TRT01A", suffix = c("", "_N")) |>
+    dplyr::rename(Treatment = TRT01A) |>
+    dplyr::mutate(
+      Treatment = dplyr::case_when(
+        Treatment == "Xanomeline Low Dose" ~ paste0(
+          "Xanomeline Low Dose (N=",
+          stat_N,
+          ")"
+        ),
+        Treatment == "Xanomeline High Dose" ~ paste0(
+          "Xanomeline High Dose (N=",
+          stat_N,
+          ")"
+        ),
+        Treatment == "Placebo" ~ paste0("Placebo (N=", stat_N, ")"),
+        TRUE ~ Treatment
+      )
+    ) |>
+    # Remove extra stat column
+    dplyr::select(
+      -stat_N
+    ) |>
+    # remove total treatment column
+    dplyr::filter(
+      Treatment != "Total"
+    ) |>
+    dplyr::select(
+      Treatment,
+      AESOC,
+      AETERM,
+      stat,
+      stat_name,
+      AESEV,
+      ord1,
+      ord2
+    )
+
+  # test with transform as formula
+  test_tfrmt <- tfrmt_n_pct(
+    n = "n",
+    pct = "p",
+    pct_frmt_when = frmt_when(
+      "==1" ~ frmt("(100%)"),
+      ">=0.995" ~ frmt("(>99%)"),
+      "==0" ~ frmt(""),
+      "<=0.01" ~ frmt("(<1%)"),
+      "TRUE" ~ frmt("(xx.x%)", transform = ~ . * 100)
+    )
+  ) |>
+    tfrmt(
+      group = c(Treatment, AESOC),
+      label = AETERM,
+      param = stat_name,
+      value = stat,
+      column = AESEV,
+      sorting_cols = c(Treatment, ord1, ord2),
+      col_plan = col_plan(
+        "System Organ Class
+        Preferred Term" = AESOC,
+        -Treatment,
+        -ord1,
+        -ord2
+      ),
+      page_plan = page_plan(
+        page_structure(
+          group_val = list(
+            Treatment = ".default"
+          )
+        ),
+        note_loc = "subtitle",
+        transform = ~ stringr::str_replace(.x, "Treatment", "Group")
+      ),
+      row_grp_plan = row_grp_plan(
+        row_grp_structure(
+          group_val = ".default",
+          element_block(post_space = " ")
+        )
+      )
+    )
+
+  auto_split <- apply_tfrmt(ard_ae6, test_tfrmt)
+
+  expect_identical(
+    purrr::map_chr(
+      auto_split,
+      ~ attr(.x, ".page_note")
+    ),
+    c(
+      "Group: Placebo (N=86)",
+      "Group: Xanomeline High Dose (N=72)",
+      "Group: Xanomeline Low Dose (N=96)"
+    )
+  )
+
+  # test with transform as function
+  test_tfrmt$page_plan$transform <- function(x) {
+    stringr::str_replace(x, "Treatment", "Group")
+  }
+
+  auto_split <- apply_tfrmt(ard_ae6, test_tfrmt)
+
+    expect_identical(
+    purrr::map_chr(
+      auto_split,
+      ~ attr(.x, ".page_note")
+    ),
+    c(
+      "Group: Placebo (N=86)",
+      "Group: Xanomeline High Dose (N=72)",
+      "Group: Xanomeline Low Dose (N=96)"
+    )
+  )
+
+  # test with transform NULL -> we get the original behaviour (page labels using
+  # the variable name - Treatment)
+  test_tfrmt$page_plan$transform <- NULL
+
+  auto_split <- apply_tfrmt(ard_ae6, test_tfrmt)
+
+  expect_identical(
+    purrr::map_chr(
+      auto_split,
+      ~ attr(.x, ".page_note")
+    ),
+    c(
+      "Treatment: Placebo (N=86)",
+      "Treatment: Xanomeline High Dose (N=72)",
+      "Treatment: Xanomeline Low Dose (N=96)"
+    )
+  )
+})
