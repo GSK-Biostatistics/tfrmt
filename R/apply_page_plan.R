@@ -239,15 +239,11 @@ apply_page_struct <- function(
     unnest(cols = "..tfrmt_data")
 
   # 3. create the page_notes as applicable
-  if ("..tfrmt_split_num" %in% names(dat_split_2)) {
+  if ("..tfrmt_split_num" %in% names(dat_split_2)){
     # create the page_notes to be carried forward as names for now
     tbl_nms <- dat_split_2 %>%
       select(-"..tfrmt_data") %>%
-      pivot_longer(
-        cols = -"..tfrmt_split_num",
-        names_to = "grouping_col",
-        values_to = "grouping_val"
-      ) %>%
+      pivot_longer(cols = -"..tfrmt_split_num", names_to = "grouping_col", values_to = "grouping_val") %>%
       group_by(.data$`..tfrmt_split_num`) %>%
       filter(!is.na(.data$grouping_val)) %>%
       unique() %>%
@@ -264,7 +260,7 @@ apply_page_struct <- function(
   # 4. return the values
   # prep list of tbsl
   dat_out <- dat_split_2 %>%
-    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, -"TEMP_row"))) %>%
+    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, - "TEMP_row"))) %>%
     pull(.data$`..tfrmt_data`)
 
   # add pg_note to individual tbls as applicable
