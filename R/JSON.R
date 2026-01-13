@@ -417,7 +417,6 @@ ls_to_col_style_plan <- function(ls){
   }
 }
 
-#' @importFrom purrr map
 ls_to_page_plan <- function(ls) {
   if (!is.null(ls)) {
     struct_ls <- ls$struct_list |>
