@@ -706,3 +706,67 @@ test_that("page plan with page_structure, single level variable",{
     c("grp1: cat_1")
   )
 })
+
+test_that("page_plan() with transform", {
+  # transform as formula
+  test_data <- tibble::tribble(
+    ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
+    "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
+    "cat_1" , "cat_2"      , "cat_2"        , "pct" , "trt"   ,   43 ,
+    "cat_1" , "sub_cat_2"  , "sub_cat_2"    , "pct" , "trt"   ,   12 ,
+    "cat_1" , "sub_cat_2"  , "sub_cat_3"    , "pct" , "trt"   ,   76 ,
+    "cat_1" , "cat_3"      , "cat_3"        , "pct" , "trt"   ,   56 ,
+    "cat_1" , "sub_cat_3a" , "sub_cat_3a"   , "pct" , "trt"   ,   98 ,
+    "cat_1" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "trt"   ,   11 ,
+    "cat_1" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "trt"   ,    5
+  )
+
+  tfrmt_plan <- tfrmt(
+    group = c("grp1", "grp2"),
+    label = "my_label",
+    param = "prm",
+    column = "column",
+    value = "val",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(
+        location = "indented"
+      )
+    ),
+    page_plan = page_plan(
+      page_structure(
+        group_val = list(
+          grp1 = ".default"
+        )
+      ),
+      transform = ~ stringr::str_replace(.x, "grp1", "group 1")
+    )
+  )
+
+  auto_split <- apply_tfrmt(test_data, tfrmt_plan)
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("group 1: cat_1")
+  )
+
+  # transform as function
+  tfrmt_plan$page_plan$transform <- function(x) {
+    x |>
+      stringr::str_replace("grp1", "group 1") |>
+      stringr::str_replace("cat_", "category ")
+  }
+
+  auto_split <- apply_tfrmt(test_data, tfrmt_plan)
+
+  expect_equal(
+    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c("group 1: category 1")
+  )
+})
