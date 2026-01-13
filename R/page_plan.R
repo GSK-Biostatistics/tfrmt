@@ -17,8 +17,9 @@
 #'
 #'   A **function** is used as is, e.g. `function(x) {stringr::str_replace(x, "foo", "bar")}`
 #'
-#'   A **formula**, e.g. `~ .x + 2` is converted to a function. This allows you
-#'   to create more compact anonymous functions (lambdas).
+#'   A **formula**, e.g. `~ stringr::str_remove_all(.x, "_")` is converted to a
+#'   function. This allows you to create more compact anonymous functions
+#'   (lambdas).
 #'
 #' @return page_plan object
 #' @export

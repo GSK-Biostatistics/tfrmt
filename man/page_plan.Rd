@@ -27,10 +27,12 @@ numeric value.}
 It should take a character vector as input and return a modified character
 vector as output.
 
-A \strong{function} is used as is, e.g. \code{function(x) {stringr::str_replace(x, "foo", "bar")}}
+A \strong{function} is used as is, e.g.
+\code{function(x) {stringr::str_replace(x, "foo", "bar")}}
 
-A \strong{formula}, e.g. \code{~ .x + 2} is converted to a function. This allows you
-to create more compact anonymous functions (lambdas).}
+A \strong{formula}, e.g. \code{~ stringr::str_remove_all(.x, "_")} is converted to a
+function. This allows you to create more compact anonymous functions
+(lambdas).}
 }
 \value{
 page_plan object
