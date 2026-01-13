@@ -68,7 +68,10 @@ page_plan <- function(
       max_rows = max_rows,
       transform = transform
     ),
-    class = c("page_plan", "plan")
+    class = c(
+      "page_plan",
+      "plan"
+    )
   )
 }
 
