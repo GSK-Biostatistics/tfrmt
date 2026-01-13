@@ -14,7 +14,14 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
 
   # first apply page structures
   if (!is_empty(page_plan$struct_list)){
-    .data <- apply_page_struct(.data, page_plan$struct_list, group, label, page_plan$note_loc)
+    .data <- apply_page_struct(
+      .data,
+      page_plan$struct_list,
+      group,
+      label,
+      page_plan$note_loc,
+      transform = page_plan$transform
+    )
   }
 
   # then apply max rows splits
@@ -150,23 +157,32 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
 #' @param group symbolic list of grouping
 #' @param label symbolic label column
 #' @param note_loc location of page note
+#' @param transform optional, a function or formula to transform the page label.
 #'
 #' @noRd
 #' @importFrom purrr map map2 map_dbl
 #' @importFrom dplyr tibble row_number mutate group_by left_join select filter summarise  lag last
 #' @importFrom tidyr  pivot_longer
-apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
-
+apply_page_struct <- function(
+  .data,
+  page_struct_list,
+  group,
+  label,
+  note_loc,
+  transform
+) {
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
   # 1. check that only 1 page_structure contains a .default, drop extras
   struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
-  if (length(struct_defaults_idx)>1){
+  if (length(struct_defaults_idx) > 1) {
     struct_defaults_idx_drop <- struct_defaults_idx[-last(struct_defaults_idx)]
     page_struct_list <- page_struct_list[-struct_defaults_idx_drop]
-    message("`page_plan` contains multiple `page_structures` with values set to \".default\". \n",
-            "Only the last one specified will be used.")
+    message(
+      "`page_plan` contains multiple `page_structures` with values set to \".default\". \n",
+      "Only the last one specified will be used."
+    )
   }
 
   # 2. get all the subsets of data
@@ -174,10 +190,13 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
   # a) If applicable, split by any group/label vars set to ".default"
   struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
 
-  if (length(struct_defaults_idx)>0){
-
+  if (length(struct_defaults_idx) > 0) {
     # split on all set to .default
-    grping <- expr_to_grouping(page_struct_list[[struct_defaults_idx]], group, label)
+    grping <- expr_to_grouping(
+      page_struct_list[[struct_defaults_idx]],
+      group,
+      label
+    )
 
     dat_split_1 <- .data %>%
       nest(
@@ -187,7 +206,6 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
       mutate(
         `..tfrmt_split_num` = row_number()
       )
-
   } else {
     # no default - just nest to get in same structure for next step
     dat_split_1 <- tibble(`..tfrmt_data` = list(!!.data))
@@ -197,41 +215,68 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
 
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
-    mutate(split_idx = map(.data$`..tfrmt_data`, function(x){
-      map(page_struct_list, function(y){
-        struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
-          map_dbl(last) # keep just the last one to split after
-      }) %>% unlist()
-    }))
+    mutate(
+      split_idx = map(.data$`..tfrmt_data`, function(x) {
+        map(page_struct_list, function(y) {
+          struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
+            map_dbl(last) # keep just the last one to split after
+        }) %>%
+          unlist()
+      })
+    )
 
   # determine where the splits should occur in data
-  dat_split_2 <- dat_split_2_idx%>%
-    mutate(`..tfrmt_data` = map2(.data$`..tfrmt_data`, .data$split_idx, function(x, y){
-
-      x %>%
-        mutate(`..tfrmt_split_idx` = .data$TEMP_row %in% y,
-               # carry it forward to denote start of next table,
-               `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
-               `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
-        select(- c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
-        group_by(.data$`..tfrmt_split_after`) %>%
-        group_split(.keep = FALSE)
-    })) %>%
+  dat_split_2 <- dat_split_2_idx %>%
+    mutate(
+      `..tfrmt_data` = map2(
+        .data$`..tfrmt_data`,
+        .data$split_idx,
+        function(x, y) {
+          x %>%
+            mutate(
+              `..tfrmt_split_idx` = .data$TEMP_row %in% y,
+              # carry it forward to denote start of next table,
+              `..tfrmt_start_idx` = lag(
+                .data$`..tfrmt_split_idx`,
+                default = TRUE
+              ),
+              `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)
+            ) %>%
+            select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
+            group_by(.data$`..tfrmt_split_after`) %>%
+            group_split(.keep = FALSE)
+        }
+      )
+    ) %>%
     select(-"split_idx") %>%
     unnest(cols = "..tfrmt_data")
 
   # 3. create the page_notes as applicable
-  if ("..tfrmt_split_num" %in% names(dat_split_2)){
+  if ("..tfrmt_split_num" %in% names(dat_split_2)) {
     # create the page_notes to be carried forward as names for now
     tbl_nms <- dat_split_2 %>%
       select(-"..tfrmt_data") %>%
-      pivot_longer(cols = -"..tfrmt_split_num", names_to = "grouping_col", values_to = "grouping_val") %>%
+      pivot_longer(
+        cols = -"..tfrmt_split_num",
+        names_to = "grouping_col",
+        values_to = "grouping_val"
+      ) %>%
       group_by(.data$`..tfrmt_split_num`) %>%
       filter(!is.na(.data$grouping_val)) %>%
       unique() %>%
-      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
+      summarise(
+        `..tfrmt_page_note` = paste0(
+          .data$grouping_col,
+          ": ",
+          .data$grouping_val
+        ) %>%
+          paste0(collapse = ",\n")
+      )
 
-    page_grp_vars <- setdiff(names(dat_split_2), c("..tfrmt_data", "..tfrmt_split_num"))
+    page_grp_vars <- setdiff(
+      names(dat_split_2),
+      c("..tfrmt_data", "..tfrmt_split_num")
+    )
 
     dat_split_2 <- left_join(dat_split_2, tbl_nms, by = "..tfrmt_split_num") %>%
       select(c("..tfrmt_data", "..tfrmt_page_note"))
@@ -239,27 +284,34 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
     page_grp_vars <- NULL
   }
 
-
   # 4. return the values
   # prep list of tbsl
   dat_out <- dat_split_2 %>%
-    mutate(`..tfrmt_data` = map(.data$`..tfrmt_data`, ~select(.x, - "TEMP_row"))) %>%
+    mutate(
+      `..tfrmt_data` = map(.data$`..tfrmt_data`, ~ select(.x, -"TEMP_row"))
+    ) %>%
     pull(.data$`..tfrmt_data`)
 
   # add pg_note to individual tbls as applicable
-  if ("..tfrmt_page_note" %in% names(dat_split_2)){
+  if ("..tfrmt_page_note" %in% names(dat_split_2)) {
     pg_note <- dat_split_2$`..tfrmt_page_note`
-    dat_out <-  dat_out %>%
-      map2(., pg_note, ~ structure(.x,
-                                   .page_note = .y))
 
+    if (!is.null(transform)) {
+      transform <- rlang::as_function(transform)
+      pg_note <- transform(pg_note)
+    }
+
+    dat_out <- purrr::map2(
+      dat_out,
+      pg_note,
+      ~ structure(.x, .page_note = .y)
+    )
   }
 
   structure(
     dat_out,
     .page_grp_vars = page_grp_vars
   )
-
 }
 
 
