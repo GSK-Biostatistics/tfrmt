@@ -272,7 +272,10 @@ apply_page_struct <- function(
     dat_out <- purrr::map2(
       dat_out,
       pg_note,
-      ~ structure(.x, .page_note = .y)
+      ~ structure(
+        .x,
+        .page_note = .y
+      )
     )
   }
 
