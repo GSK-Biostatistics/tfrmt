@@ -209,7 +209,7 @@ apply_page_struct <- function(
 
   # find indices of specific values in data
   dat_split_2_idx <- dat_split_1 %>%
-    mutate(split_idx = map(.data$`..tfrmt_data`, function(x) {
+    mutate(split_idx = map(.data$`..tfrmt_data`, function(x){
       map(page_struct_list, function(y){
         struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
           map_dbl(last) # keep just the last one to split after
@@ -225,7 +225,7 @@ apply_page_struct <- function(
                # carry it forward to denote start of next table,
                `..tfrmt_start_idx` = lag(.data$`..tfrmt_split_idx`, default = TRUE),
                `..tfrmt_split_after` = cumsum(.data$`..tfrmt_start_idx`)) %>%
-        select(-c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
+        select(- c("..tfrmt_start_idx","..tfrmt_split_idx")) %>%
         group_by(.data$`..tfrmt_split_after`) %>%
         group_split(.keep = FALSE)
     })) %>%
