@@ -16,10 +16,10 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
   if (!is_empty(page_plan$struct_list)){
     .data <- apply_page_struct(
       .data,
-      page_plan$struct_list,
-      group,
-      label,
-      page_plan$note_loc,
+      page_struct_list = page_plan$struct_list,
+      group = group,
+      label = label,
+      note_loc = page_plan$note_loc,
       transform = page_plan$transform
     )
   }
