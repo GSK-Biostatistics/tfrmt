@@ -185,6 +185,15 @@ as_json.col_style_structure <- function(x){
   x
 }
 
+#' @export
+as_json.page_plan <- function(x) {
+  if (!is.null(x$transform)) {
+    x$transform <- rlang::expr_text(x$transform)
+  }
+
+  x
+}
+
 #' json to tfrmt
 #'
 #' Reader to read JSON files/objects into tfrmt objects
@@ -409,21 +418,42 @@ ls_to_col_style_plan <- function(ls){
 }
 
 #' @importFrom purrr map
-ls_to_page_plan <- function(ls){
-  if(!is.null(ls)){
-    struct_ls <- ls$struct_list %>%
-      map(function(struct){
-        group_val = simplify_group_val(struct$group_val)
-        unlisted <- struct%>%
-          map(unlist)
-        do.call(page_structure, list(group_val = group_val,
-                                     label_val = unlisted$label_val ))
+ls_to_page_plan <- function(ls) {
+  if (!is.null(ls)) {
+    struct_ls <- ls$struct_list |>
+      purrr::map(
+        function(struct) {
+          group_val <- simplify_group_val(struct$group_val)
 
-      })
+          unlisted <- purrr::map(struct, unlist)
 
-    do.call(page_plan, c(struct_ls,
-                         list(note_loc = unlist(ls$note_loc),
-                              max_rows = unlist(ls$max_rows))))
+          do.call(
+            page_structure,
+            list(
+              group_val = group_val,
+              label_val = unlisted$label_val
+            )
+          )
+        }
+      )
+
+    transform <- unlist(ls$transform)
+
+    if (!is.null(transform)) {
+      transform <- rlang::parse_expr(transform)
+    }
+
+    do.call(
+      page_plan,
+      c(
+        struct_ls,
+        list(
+          note_loc = unlist(ls$note_loc),
+          max_rows = unlist(ls$max_rows),
+          transform = transform
+        )
+      )
+    )
   }
 }
 
@@ -437,5 +467,3 @@ simplify_group_val <- function(group_ls){
   }
   group_val
 }
-
-

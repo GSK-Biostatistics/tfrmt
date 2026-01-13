@@ -525,7 +525,84 @@ test_that("json page plan",{
     expect_equal(pp_max_rows, ignore_attr = TRUE )
 })
 
+test_that("page_plan() roundtrip to JSON with transform", {
+  # transform as formula / lambda function
+  pp <- tfrmt(
+    page_plan = page_plan(
+      page_structure(
+        group_val = ".default",
+        label_val = NULL
+      ),
+      page_structure(label_val = "A"),
+      note_loc = "source_note",
+      transform = ~ stringr::str_replace(.x, "foo", "bar")
+    )
+  )
 
+  expect_snapshot(
+    as_json(pp)
+  )
+
+  new_page_plan <- pp |>
+    as_json() |>
+    json_to_tfrmt(json = _)
+
+
+  expect_equal(
+    new_page_plan,
+    pp,
+    # the formula environments will not be the same
+    ignore_formula_env = TRUE
+  )
+
+  func_pp <- rlang::as_function(pp$page_plan$transform)
+  func_new_page_plan <- rlang::as_function(new_page_plan$page_plan$transform)
+
+  expect_identical(
+    func_pp("foo: baz"),
+    func_new_page_plan("foo: baz")
+  )
+
+  # transform as function
+  transform_function <- function(x) {
+    stringr::str_replace(x, "foo", "bar")
+  }
+
+  pp <- tfrmt(
+    page_plan = page_plan(
+      page_structure(
+        group_val = ".default",
+        label_val = NULL
+      ),
+      page_structure(label_val = "A"),
+      note_loc = "source_note",
+      transform = transform_function
+    )
+  )
+
+  expect_snapshot(
+    as_json(pp)
+  )
+
+  new_page_plan <- pp |>
+    as_json() |>
+    json_to_tfrmt(json = _)
+
+  expect_equal(
+    new_page_plan,
+    pp,
+    # the function environments will not be the same
+    ignore_function_env = TRUE
+  )
+
+  func_pp <- rlang::as_function(pp$page_plan$transform)
+  func_new_page_plan <- rlang::as_function(new_page_plan$page_plan$transform)
+
+  expect_identical(
+    func_pp("foo: baz"),
+    func_new_page_plan("foo: baz")
+  )
+})
 
 test_that("json read/write", {
   test_loc <- "test.json"
