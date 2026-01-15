@@ -33,7 +33,7 @@ create_stub_head <- function(col_plan_vars, group, label, row_grp_plan_label_loc
   col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
 
   # subset the column labels to just group/label vars
-  stub <- NULL
+  stub <- ""
   if (length(grps)>0 && length(col_plan_vars_chr)>0){
     nms_grps <- col_plan_vars_chr[which(col_plan_vars_chr %in% grps)] %>%
       names() |>
