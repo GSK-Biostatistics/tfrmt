@@ -255,7 +255,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       style = list(
         cell_text(whitespace = "pre-wrap", align = "left")
       ),
-      locations = list(cells_stub(), cells_row_groups())
+      locations = list(cells_stub(columns = rowname_col), cells_row_groups())
     ) %>%
     tab_options(
       table.font.size = 14,
