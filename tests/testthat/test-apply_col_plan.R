@@ -77,14 +77,6 @@ test_that("apply_col_plan() group and label vars are excluded from renaming", {
 })
 
 test_that("create_stub_head() works", {
-  col_plan_vars <- rlang::quos(-ord, grp2, lbl, `1`)
-
-  group <- rlang::quos(grp2)
-
-  label <- rlang::quos(lbl)
-
-  row_grp_plan_label_loc <- "indented"
-
   expect_snapshot(
     create_stub_head(
       col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
