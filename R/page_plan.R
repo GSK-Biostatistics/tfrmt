@@ -40,12 +40,12 @@
 #'
 #'  # use of transform with a formula
 #'  page_plan(
-#'    transform = ~ stringr::str_replace(.x, "foo", "bar")
+#'    transform = ~ stringr::str_replace(.x, "grp", "Group")
 #'  )
 #'
 #'  # use of transform with a function
 #'  transformation_function <- function(x) {
-#'    stringr::str_replace(x, "foo", "bar")
+#'    stringr::str_replace(x, "grp", "Group")
 #'  }
 #'
 #'  page_plan(
