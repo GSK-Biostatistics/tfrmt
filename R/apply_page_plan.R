@@ -243,7 +243,7 @@ apply_page_struct <- function(
       group_by(.data$`..tfrmt_split_num`) %>%
       filter(!is.na(.data$grouping_val)) %>%
       unique() %>%
-      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
+      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ", "))
 
     page_grp_vars <- setdiff(names(dat_split_2), c("..tfrmt_data", "..tfrmt_split_num"))
 
