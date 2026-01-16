@@ -834,11 +834,9 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
       stringr::str_replace_all(": ", " (") |>
       stringr::str_replace_all(",", "),")
 
-    width_out <- nchar(interim)
-
     output <- stringr::str_pad(
       interim,
-      width = width_out,
+      width = nchar(interim),
       side = "right",
       pad = ")"
     )
