@@ -501,9 +501,9 @@ test_that("json page plan",{
     )
   )
 
-  pp %>%
-    as_json() %>%
-    expect_snapshot()
+  expect_snapshot(
+    as_json(pp)
+  )
 
   pp %>%
     as_json() %>%
@@ -525,7 +525,93 @@ test_that("json page plan",{
     expect_equal(pp_max_rows, ignore_attr = TRUE )
 })
 
+test_that("page_plan() roundtrip to JSON with transform", {
+  # transform as formula / lambda function
+  page_plan_lambda <- tfrmt(
+    page_plan = page_plan(
+      page_structure(
+        group_val = ".default",
+        label_val = NULL
+      ),
+      page_structure(label_val = "A"),
+      note_loc = "source_note",
+      transform = ~ stringr::str_replace(.x, "foo", "bar")
+    )
+  )
 
+  expect_snapshot(
+    as_json(page_plan_lambda)
+  )
+
+  page_plan_lambda_from_json <- page_plan_lambda |>
+    as_json() |>
+    json_to_tfrmt(json = _)
+
+  expect_identical(
+    page_plan_lambda_from_json,
+    page_plan_lambda,
+    # the formula environments will not be the same
+    ignore_formula_env = TRUE
+  )
+
+  func_pp_lambda <- rlang::as_function(page_plan_lambda$page_plan$transform)
+  func_pp_lambda_from_json <- rlang::as_function(page_plan_lambda_from_json$page_plan$transform)
+
+  expect_identical(
+    func_pp_lambda("foo: baz"),
+    "bar: baz"
+  )
+
+  expect_identical(
+    func_pp_lambda("foo: baz"),
+    func_pp_lambda_from_json("foo: baz")
+  )
+
+  # transform as function
+  transform_function <- function(x) {
+    stringr::str_replace(x, "foo", "bar")
+  }
+
+  page_plan_function <- tfrmt(
+    page_plan = page_plan(
+      page_structure(
+        group_val = ".default",
+        label_val = NULL
+      ),
+      page_structure(label_val = "A"),
+      note_loc = "source_note",
+      transform = transform_function
+    )
+  )
+
+  expect_snapshot(
+    as_json(page_plan_function)
+  )
+
+  page_plan_function_from_json <- page_plan_function |>
+    as_json() |>
+    json_to_tfrmt(json = _)
+
+  expect_equal(
+    page_plan_function_from_json,
+    page_plan_function,
+    # the function environments will not be the same
+    ignore_function_env = TRUE
+  )
+
+  func_pp_function <- rlang::as_function(page_plan_function$page_plan$transform)
+  func_pp_function_from_json <- rlang::as_function(page_plan_function_from_json$page_plan$transform)
+
+  expect_identical(
+    func_pp_function("foo: baz"),
+    "bar: baz"
+  )
+
+  expect_identical(
+    func_pp_function("foo: baz"),
+    func_pp_function_from_json("foo: baz")
+  )
+})
 
 test_that("json read/write", {
   test_loc <- "test.json"
@@ -586,5 +672,3 @@ test_that("json read/write", {
   file.remove(test_loc)
 
 })
-
-

@@ -778,7 +778,7 @@
 # json page plan
 
     Code
-      .
+      as_json(pp)
     Output
       {
         "group": [],
@@ -798,7 +798,8 @@
             }
           ],
           "note_loc": ["source_note"],
-          "max_rows": {}
+          "max_rows": {},
+          "transform": {}
         }
       } 
 
@@ -816,7 +817,64 @@
         "page_plan": {
           "struct_list": [],
           "note_loc": ["noprint"],
-          "max_rows": [5]
+          "max_rows": [5],
+          "transform": {}
+        }
+      } 
+
+# page_plan() roundtrip to JSON with transform
+
+    Code
+      as_json(page_plan_lambda)
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [
+            {
+              "group_val": [".default"],
+              "label_val": {}
+            },
+            {
+              "group_val": {},
+              "label_val": ["A"]
+            }
+          ],
+          "note_loc": ["source_note"],
+          "max_rows": {},
+          "transform": ["~stringr::str_replace(.x, \"foo\", \"bar\")"]
+        }
+      } 
+
+---
+
+    Code
+      as_json(page_plan_function)
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [
+            {
+              "group_val": [".default"],
+              "label_val": {}
+            },
+            {
+              "group_val": {},
+              "label_val": ["A"]
+            }
+          ],
+          "note_loc": ["source_note"],
+          "max_rows": {},
+          "transform": ["function (x) \n{\n    stringr::str_replace(x, \"foo\", \"bar\")\n}"]
         }
       } 
 
