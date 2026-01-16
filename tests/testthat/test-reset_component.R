@@ -12,7 +12,7 @@ test_that("Basic functionality: Resets a component and other components remain u
   modified_tfrmt <- reset_component(t_frmt, "title")
 
   expect_null(modified_tfrmt$title)
-  expect_equal(modified_tfrmt$group, vars(row_label1), ignore_attr = TRUE )
+  expect_equal(modified_tfrmt$group, t_tfrmt$group, ignore_attr = TRUE )
   expect_equal(modified_tfrmt$label, quo(row_label2), ignore_attr = TRUE)
   expect_equal(modified_tfrmt$param, quo(param), ignore_attr = TRUE)
   expect_equal(modified_tfrmt$value, quo(value), ignore_attr = TRUE)
