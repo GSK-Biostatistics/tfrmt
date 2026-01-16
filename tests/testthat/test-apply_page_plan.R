@@ -651,7 +651,7 @@ test_that("page plan with both page_structure and max_rows",{
   expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
   expect_equal(
-    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
     c("grp1: cat_1", "grp1: cat_2", "grp1: cat_3", "grp1: cat_3", "grp1: cat_3")
   )
 
@@ -702,7 +702,7 @@ test_that("page plan with page_structure, single level variable",{
   expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
   expect_equal(
-    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
     c("grp1: cat_1")
   )
 })
@@ -752,7 +752,7 @@ test_that("page_plan() with transform", {
   auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
   expect_equal(
-    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
     c("group 1: cat_1")
   )
 
@@ -766,8 +766,98 @@ test_that("page_plan() with transform", {
   auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
   expect_equal(
-    map_chr(auto_split, ~ attr(.x, ".page_note")),
+    purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
     c("group 1: category 1")
+  )
+})
+
+test_that("page_plan() with transform and multiple 'page by' variables", {
+  test_data <- tibble::tribble(
+    ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
+    "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
+    "cat_1" , "cat_2"      , "cat_2"        , "pct" , "trt"   ,   43 ,
+    "cat_1" , "sub_cat_2"  , "sub_cat_2"    , "pct" , "trt"   ,   12 ,
+    "cat_1" , "sub_cat_2"  , "sub_cat_3"    , "pct" , "trt"   ,   76 ,
+    "cat_1" , "cat_3"      , "cat_3"        , "pct" , "trt"   ,   56 ,
+    "cat_1" , "sub_cat_3a" , "sub_cat_3a"   , "pct" , "trt"   ,   98 ,
+    "cat_1" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "trt"   ,   11 ,
+    "cat_1" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "trt"   ,    5
+  )
+
+  tfrmt_plan <- tfrmt(
+    group = c("grp1", "grp2"),
+    label = "my_label",
+    param = "prm",
+    column = "column",
+    value = "val",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(
+        location = "indented"
+      )
+    ),
+    page_plan = page_plan(
+      page_structure(
+        group_val = ".default"
+      ),
+      transform = NULL
+    )
+  )
+
+  # without page label transformation
+  auto_split <- apply_tfrmt(test_data, tfrmt_plan)
+
+  expect_equal(
+    purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c(
+      "grp1: cat_1,\ngrp2: cat_1",
+      "grp1: cat_1,\ngrp2: cat_2",
+      "grp1: cat_1,\ngrp2: sub_cat_2",
+      "grp1: cat_1,\ngrp2: cat_3",
+      "grp1: cat_1,\ngrp2: sub_cat_3a",
+      "grp1: cat_1,\ngrp2: sub_cat_3b"
+    )
+  )
+
+  # with page label transformation
+  # we want to go from `grp1: cat_1,\ngrp2: cat_1` to `Group 1 (cat_1),\nGroup 2 (cat_1)`
+  tfrmt_plan$page_plan$transform <- function(x) {
+
+    interim <- x |>
+      stringr::str_replace_all("grp", "Group ") |>
+      stringr::str_replace_all(": ", " (") |>
+      stringr::str_replace_all(",", "),")
+
+    width_out <- nchar(interim)
+
+    output <- stringr::str_pad(
+      interim,
+      width = width_out,
+      side = "right",
+      pad = ")"
+    )
+
+    output
+  }
+
+  auto_split <- apply_tfrmt(test_data, tfrmt_plan)
+
+  expect_equal(
+    purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+    c(
+      "Group 1 (cat_1),\nGroup 2 (cat_1)",
+      "Group 1 (cat_1),\nGroup 2 (cat_2)",
+      "Group 1 (cat_1),\nGroup 2 (sub_cat_2)",
+      "Group 1 (cat_1),\nGroup 2 (cat_3)",
+      "Group 1 (cat_1),\nGroup 2 (sub_cat_3a)",
+      "Group 1 (cat_1),\nGroup 2 (sub_cat_3b)"
+    )
   )
 })
 
