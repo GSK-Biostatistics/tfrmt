@@ -158,7 +158,7 @@ test_that("Page plan with grouped split", {
 
   expect_equal(
     map_chr(auto_split, ~ attr(.x, ".page_note")),
-    c("grp1: A,\ngrp2: a", "grp1: A,\ngrp2: b", "grp1: B,\ngrp2: a", "grp1: B,\ngrp2: b")
+    c("grp1: A, grp2: a", "grp1: A, grp2: b", "grp1: B, grp2: a", "grp1: B, grp2: b")
   )
   expect_equal(
     attr(auto_split, ".page_grp_vars"),
@@ -816,12 +816,12 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
   expect_equal(
     purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
     c(
-      "grp1: cat_1,\ngrp2: cat_1",
-      "grp1: cat_1,\ngrp2: cat_2",
-      "grp1: cat_1,\ngrp2: sub_cat_2",
-      "grp1: cat_1,\ngrp2: cat_3",
-      "grp1: cat_1,\ngrp2: sub_cat_3a",
-      "grp1: cat_1,\ngrp2: sub_cat_3b"
+      "grp1: cat_1, grp2: cat_1",
+      "grp1: cat_1, grp2: cat_2",
+      "grp1: cat_1, grp2: sub_cat_2",
+      "grp1: cat_1, grp2: cat_3",
+      "grp1: cat_1, grp2: sub_cat_3a",
+      "grp1: cat_1, grp2: sub_cat_3b"
     )
   )
 
@@ -836,7 +836,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
 
     output <- stringr::str_pad(
       interim,
-      width = nchar(interim),
+      width = nchar(interim)+1,
       side = "right",
       pad = ")"
     )
@@ -849,12 +849,12 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
   expect_equal(
     purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
     c(
-      "Group 1 (cat_1),\nGroup 2 (cat_1)",
-      "Group 1 (cat_1),\nGroup 2 (cat_2)",
-      "Group 1 (cat_1),\nGroup 2 (sub_cat_2)",
-      "Group 1 (cat_1),\nGroup 2 (cat_3)",
-      "Group 1 (cat_1),\nGroup 2 (sub_cat_3a)",
-      "Group 1 (cat_1),\nGroup 2 (sub_cat_3b)"
+      "Group 1 (cat_1), Group 2 (cat_1)",
+      "Group 1 (cat_1), Group 2 (cat_2)",
+      "Group 1 (cat_1), Group 2 (sub_cat_2)",
+      "Group 1 (cat_1), Group 2 (cat_3)",
+      "Group 1 (cat_1), Group 2 (sub_cat_3a)",
+      "Group 1 (cat_1), Group 2 (sub_cat_3b)"
     )
   )
 })
