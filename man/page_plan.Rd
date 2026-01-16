@@ -22,7 +22,8 @@ variable is dropped in the col_plan. \code{preheader} only available for rtf out
 \item{max_rows}{Option to set a maximum number of rows per page. Takes a
 numeric value.}
 
-\item{transform}{optional, a function or formula to transform the page label.
+\item{transform}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} optional, a function
+or formula to transform the page label.
 
 It should take a character vector as input and return a modified character
 vector as output.
@@ -56,12 +57,12 @@ page_structure's and the row_every_n argument, respectively.
 
  # use of transform with a formula
  page_plan(
-   transform = ~ stringr::str_replace(.x, "foo", "bar")
+   transform = ~ stringr::str_replace(.x, "grp", "Group")
  )
 
  # use of transform with a function
  transformation_function <- function(x) {
-   stringr::str_replace(x, "foo", "bar")
+   stringr::str_replace(x, "grp", "Group")
  }
 
  page_plan(

@@ -10,7 +10,8 @@
 #'   variable is dropped in the col_plan. `preheader` only available for rtf output.
 #' @param max_rows Option to set a maximum number of rows per page. Takes a
 #'   numeric value.
-#' @param transform optional, a function or formula to transform the page label.
+#' @param transform `r lifecycle::badge("experimental")` optional, a function
+#'   or formula to transform the page label.
 #'
 #'   It should take a character vector as input and return a modified character
 #'   vector as output.
