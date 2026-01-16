@@ -16,7 +16,7 @@
 #'   It should take a character vector as input and return a modified character
 #'   vector as output.
 #'
-#'   A **function** is used as is, e.g. `function(x) {stringr::str_replace(x, "foo", "bar")}`
+#'   A **function** is used as is, e.g. `function(x) {stringr::str_replace(x, "grp", "Group")}`
 #'
 #'   A **formula**, e.g. `~ stringr::str_remove_all(.x, "_")` is converted to a
 #'   function. This allows you to create more compact anonymous functions
