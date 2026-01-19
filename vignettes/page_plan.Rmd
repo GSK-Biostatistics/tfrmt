@@ -209,7 +209,7 @@ gts |> gt::grp_pull(2)
 gts |> gt::grp_pull(3)
 ```
 
-Note can sometime not be very human readable. If we want to change the note (let's say from `"rowlbl1: Age (y), grp: cat"` to `"Row label 1 - Age (y), Group - cat"`), we can do that by supplying a transformation function to `page_plan()` - i.e. the `transform` argument.
+Notes can sometimes end up not being very human readable. We could change them (let's say from `"rowlbl1: Age (y), grp: cat"` to `"Row label 1 - Age (y), Group - cat"`) by supplying a transformation function to `page_plan()` - i.e. the `transform` argument.
 
 ```{r}
 transform_note <- function(x) {
