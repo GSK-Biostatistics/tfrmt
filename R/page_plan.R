@@ -41,6 +41,7 @@
 #'
 #'  # use of transform with a formula
 #'  page_plan(
+#'    page_structure(group_val = ".default"),
 #'    transform = ~ stringr::str_replace(.x, "grp", "Group")
 #'  )
 #'
