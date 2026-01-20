@@ -51,6 +51,7 @@
 #'  }
 #'
 #'  page_plan(
+#'    page_structure(group_val = ".default"),
 #'    transform = transformation_function
 #'  )
 #'
