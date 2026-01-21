@@ -49,7 +49,7 @@ Required columns are as follows:
 
 -   **Param column**: A single column that labels distinct types of values.
 
--   **Value column**: A single column containing the computed raw data values.
+-   **Value column**: A single column containing the computed raw data values. Note: these must be numeric.
 
 -   **[Optional] Sorting columns**: One or more columns with numeric values to control row ordering.
 
