@@ -27,6 +27,10 @@ articles:
   - layer
   - building_mocks
   - templates
+- title: Data Preparation
+  navbar: Data Preparation
+  contents:
+  - ard
   - cards_to_tfrmt
 - title:
   navbar: More
