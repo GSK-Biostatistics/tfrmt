@@ -9,7 +9,8 @@ page_structure's and the row_every_n argument, respectively.
 page_plan(
   ...,
   note_loc = c("noprint", "preheader", "subtitle", "source_note"),
-  max_rows = NULL
+  max_rows = NULL,
+  transform = NULL
 )
 ```
 
@@ -34,6 +35,21 @@ page_plan(
   Option to set a maximum number of rows per page. Takes a numeric
   value.
 
+- transform:
+
+  **\[experimental\]** optional, a function or formula to transform the
+  page label.
+
+  It should take a character vector as input and return a modified
+  character vector as output.
+
+  A **function** is used as is, e.g.
+  `function(x) {stringr::str_replace(x, "grp", "Group")}`
+
+  A **formula**, e.g. `~ stringr::str_remove_all(.x, "_")` is converted
+  to a function. This allows you to create more compact anonymous
+  functions (lambdas).
+
 ## Value
 
 page_plan object
@@ -43,7 +59,10 @@ page_plan object
 ``` r
  # use of page_struct
  page_plan(
-    page_structure(group_val = "grp1", label_val = "lbl1")
+   page_structure(
+     group_val = "grp1",
+     label_val = "lbl1"
+   )
  )
 #> $struct_list
 #> $struct_list[[1]]
@@ -63,12 +82,15 @@ page_plan object
 #> $max_rows
 #> NULL
 #> 
+#> $transform
+#> NULL
+#> 
 #> attr(,"class")
 #> [1] "page_plan" "plan"     
 
  # use of #  rows
  page_plan(
-    max_rows = 5
+   max_rows = 5
  )
 #> $struct_list
 #> list()
@@ -79,7 +101,76 @@ page_plan object
 #> $max_rows
 #> [1] 5
 #> 
+#> $transform
+#> NULL
+#> 
 #> attr(,"class")
 #> [1] "page_plan" "plan"     
 
+ # use of transform with a formula
+ page_plan(
+   page_structure(group_val = ".default"),
+   transform = ~ stringr::str_replace(.x, "grp", "Group")
+ )
+#> $struct_list
+#> $struct_list[[1]]
+#> $group_val
+#> [1] ".default"
+#> 
+#> $label_val
+#> NULL
+#> 
+#> attr(,"class")
+#> [1] "page_structure" "structure"     
+#> 
+#> 
+#> $note_loc
+#> [1] "noprint"
+#> 
+#> $max_rows
+#> NULL
+#> 
+#> $transform
+#> ~stringr::str_replace(.x, "grp", "Group")
+#> <environment: 0x55ad5fa3d788>
+#> 
+#> attr(,"class")
+#> [1] "page_plan" "plan"     
+
+ # use of transform with a function
+ transformation_function <- function(x) {
+   stringr::str_replace(x, "grp", "Group")
+ }
+
+ page_plan(
+   page_structure(group_val = ".default"),
+   transform = transformation_function
+ )
+#> $struct_list
+#> $struct_list[[1]]
+#> $group_val
+#> [1] ".default"
+#> 
+#> $label_val
+#> NULL
+#> 
+#> attr(,"class")
+#> [1] "page_structure" "structure"     
+#> 
+#> 
+#> $note_loc
+#> [1] "noprint"
+#> 
+#> $max_rows
+#> NULL
+#> 
+#> $transform
+#> function (x) 
+#> {
+#>     stringr::str_replace(x, "grp", "Group")
+#> }
+#> <environment: 0x55ad5fa3d788>
+#> 
+#> attr(,"class")
+#> [1] "page_plan" "plan"     
 ```

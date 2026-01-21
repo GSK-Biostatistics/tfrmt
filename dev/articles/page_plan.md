@@ -43,13 +43,14 @@ multiple `page_structure`s. For example,
 `page_structure(group_val = ".default", label_val = "n")` will split on
 every unique group_val, as well as every instance where label_val = “n”.
 
-If any of the `page_structure`s contain a “.default”, it may be desired
-to print a note indicating the grouping value for the given page at the
-time of rendering. The location of this note can be specified via the
-`note_loc` parameter in `page_plan`. The functionality for `note_loc`
-may be limited by the desired output type; for example, “preheader” is
-only available for RTF outputs, while “source_note” and “subtitle” are
-available for all output types.
+If any of the `page_structure`s contain a `".default"`, it may be
+desired to print a note indicating the grouping value for the given page
+at the time of rendering. The location of this note can be specified via
+the `note_loc` parameter in `page_plan`. The functionality for
+`note_loc` may be limited by the desired output type; for example,
+“preheader” is only available for RTF outputs, while “source_note” and
+“subtitle” are available for all output types. The content of this note
+can be modified by supplying a function via the `transform` argument.
 
 2.  **Max Rows-driven**:
 
@@ -106,23 +107,48 @@ base_tfrmt <- tfrmt(
   sorting_cols = c(ord1, ord2),
   # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-      n = frmt("xxx"),
-      pct = frmt_when(
-        "==100" ~ "",
-        "==0" ~ "",
-        TRUE ~ frmt("(xx.x %)")
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine(
+        "{n} {pct}",
+        n = frmt("xxx"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
       )
-    )),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n", "<65 yrs", "<12 months", "<25"), p = frmt_when(
-      ">0.99" ~ ">0.99",
-      "<0.001" ~ "<0.001",
-      TRUE ~ frmt("x.xxx", missing = "")
-    ))
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = "n",
+      frmt("xxx")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = c("Mean", "Median", "Min", "Max"),
+      frmt("xxx.x")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = "SD",
+      frmt("xxx.xx")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      p = frmt("")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = c("n", "<65 yrs", "<12 months", "<25"),
+      p = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
   ),
   # remove extra cols
   col_plan = col_plan(
@@ -131,12 +157,20 @@ base_tfrmt <- tfrmt(
   ),
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".", ",", " "), col = vars(Placebo, contains("Dose"), "Total", "p-value"))
+    col_style_structure(
+      align = c(".", ",", " "),
+      col = vars(Placebo, contains("Dose"), "Total", "p-value")
+    )
   ),
   # Specify row group plan
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = " ")
+    ),
+    label_loc = element_row_grp_loc(
+      location = "column"
+    )
   )
 )
 
@@ -231,7 +265,11 @@ gts <- base_tfrmt |>
     tfrmt(
       # page plan
       page_plan = page_plan(
-        page_structure(group_val = list(rowlbl1 = ".default")),
+        page_structure(
+          group_val = list(
+            rowlbl1 = ".default"
+          )
+        ),
         note_loc = "source_note"
       )
     )
@@ -342,10 +380,52 @@ gts |> gt::grp_pull(3)
 |                        |        |             |                     |                      |              |         |
 | rowlbl1: Sex, grp: cat |        |             |                     |                      |              |         |
 
+Notes can sometimes end up not being very human readable. We could
+change them (let’s say from `"rowlbl1: Age (y), grp: cat"` to
+`"Row label 1 - Age (y), Group - cat"`) by supplying a transformation
+function to
+[`page_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/page_plan.md) -
+i.e. the `transform` argument.
+
+``` r
+transform_note <- function(x) {
+  x |>
+  stringr::str_replace("rowlbl", "Row label ") |>
+  stringr::str_replace("grp", "Group") |>
+  stringr::str_replace_all(":", " -")
+}
+
+gts <- base_tfrmt |>
+  layer_tfrmt(
+    tfrmt(
+      # page plan
+      page_plan = page_plan(
+        page_structure(group_val = ".default"),
+        note_loc = "source_note",
+        transform = transform_note
+      )
+    )
+  ) |>
+  print_to_gt(data_demog2)
+
+gts |> gt::grp_pull(1)
+```
+
+|                                     |        | Placebo | Xanomeline Low Dose | Xanomeline High Dose | Total  | p-value |
+|:------------------------------------|:------:|:-------:|:-------------------:|:--------------------:|:------:|---------|
+| Age (y)                             |   n    |  86     |        84           |        84            | 254    | 0.593   |
+|                                     |  Mean  |  75.2   |        75.7         |        74.4          |  75.1  |         |
+|                                     |   SD   |   8.59  |         8.29        |         7.89         |   8.25 |         |
+|                                     | Median |  76.0   |        77.5         |        76.0          |  77.0  |         |
+|                                     |  Min   |  52.0   |        51.0         |        56.0          |  51.0  |         |
+|                                     |  Max   |  89.0   |        88.0         |        88.0          |  89.0  |         |
+|                                     |        |         |                     |                      |        |         |
+| Row label 1 - Age (y), Group - cont |        |         |                     |                      |        |         |
+
 #### Specific value of a variable
 
 Finally, we could split on a specific value observed in the data. For
-example, rowlbl1 = “Age (y)”.
+example, `rowlbl1 = "Age (y)"`.
 
 ``` r
 gts <- base_tfrmt |>
@@ -353,7 +433,11 @@ gts <- base_tfrmt |>
     tfrmt(
       # page plan
       page_plan = page_plan(
-        page_structure(group_val = list(rowlbl1 = "Age (y)")),
+        page_structure(
+          group_val = list(
+            rowlbl1 = "Age (y)"
+          )
+        ),
         note_loc = "source_note"
       )
     )
@@ -544,13 +628,16 @@ gts |> gt::grp_pull(3)
 |                     |        |         |                     |                      |        |         |
 | Baseline BMI        |   n    |  86     |        83           |         84           | 253    | 0.013   |
 
-Notice that for groups (defined by the rowlbl1 variable) that are split
-up, the group header is repeated for each table.
+Notice that for groups (defined by the `rowlbl1` variable) that are
+split up, the group header is repeated for each table.
 
 ## Page Plan outputs
 
-When Page Plan is applied, the result of the `print_to_gt` or
-`print_mock_gt` functions is a `gt_group` object (collection of
-individual `gt`s). Passing this result to the
+When Page Plan is applied, the result of the
+[`print_to_gt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/print_to_gt.md)
+or
+[`print_mock_gt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/print_mock_gt.md)
+functions is a `gt_group` object (collection of individual `gt`s).
+Passing this result to the
 [`gt::gtsave()`](https://gt.rstudio.com/reference/gtsave.html) function
 will result in a multi-paged output.

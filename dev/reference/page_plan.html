@@ -72,7 +72,8 @@ page_structure's and the row_every_n argument, respectively.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">page_plan</span><span class="op">(</span></span>
 <span>  <span class="va">...</span>,</span>
 <span>  note_loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"noprint"</span>, <span class="st">"preheader"</span>, <span class="st">"subtitle"</span>, <span class="st">"source_note"</span><span class="op">)</span>,</span>
-<span>  max_rows <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  max_rows <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  transform <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -92,7 +93,19 @@ variable is dropped in the col_plan. <code>preheader</code> only available for r
 
 
 <dt id="arg-max-rows">max_rows<a class="anchor" aria-label="anchor" href="#arg-max-rows"></a></dt>
-<dd><p>Option to set a maximum number of rows per page. Takes a numeric value.</p></dd>
+<dd><p>Option to set a maximum number of rows per page. Takes a
+numeric value.</p></dd>
+
+
+<dt id="arg-transform">transform<a class="anchor" aria-label="anchor" href="#arg-transform"></a></dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a> optional, a function
+or formula to transform the page label.</p>
+<p>It should take a character vector as input and return a modified character
+vector as output.</p>
+<p>A <strong>function</strong> is used as is, e.g. <code>function(x) {stringr::str_replace(x, "grp", "Group")}</code></p>
+<p>A <strong>formula</strong>, e.g. <code>~ stringr::str_remove_all(.x, "_")</code> is converted to a
+function. This allows you to create more compact anonymous functions
+(lambdas).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -104,7 +117,10 @@ variable is dropped in the col_plan. <code>preheader</code> only available for r
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> <span class="co"># use of page_struct</span></span></span>
 <span class="r-in"><span> <span class="fu">page_plan</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="page_structure.html">page_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">"grp1"</span>, label_val <span class="op">=</span> <span class="st">"lbl1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="page_structure.html">page_structure</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     group_val <span class="op">=</span> <span class="st">"grp1"</span>,</span></span>
+<span class="r-in"><span>     label_val <span class="op">=</span> <span class="st">"lbl1"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list[[1]]</span>
@@ -124,12 +140,15 @@ variable is dropped in the col_plan. <code>preheader</code> only available for r
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max_rows</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $transform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "page_plan" "plan"     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># use of #  rows</span></span></span>
 <span class="r-in"><span> <span class="fu">page_plan</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    max_rows <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span>   max_rows <span class="op">=</span> <span class="fl">5</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
@@ -140,9 +159,78 @@ variable is dropped in the col_plan. <code>preheader</code> only available for r
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max_rows</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $transform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "page_plan" "plan"     </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># use of transform with a formula</span></span></span>
+<span class="r-in"><span> <span class="fu">page_plan</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="page_structure.html">page_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   transform <span class="op">=</span> <span class="op">~</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"grp"</span>, <span class="st">"Group"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $group_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ".default"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $label_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "page_structure" "structure"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $note_loc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "noprint"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_rows</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $transform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ~stringr::str_replace(.x, "grp", "Group")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ad5fa3d788&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "page_plan" "plan"     </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># use of transform with a function</span></span></span>
+<span class="r-in"><span> <span class="va">transformation_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"grp"</span>, <span class="st">"Group"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="fu">page_plan</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="page_structure.html">page_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   transform <span class="op">=</span> <span class="va">transformation_function</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $struct_list[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $group_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ".default"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $label_val</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "page_structure" "structure"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $note_loc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "noprint"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $max_rows</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $transform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (x) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     stringr::str_replace(x, "grp", "Group")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ad5fa3d788&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "page_plan" "plan"     </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
