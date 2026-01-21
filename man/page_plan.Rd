@@ -57,6 +57,7 @@ page_structure's and the row_every_n argument, respectively.
 
  # use of transform with a formula
  page_plan(
+   page_structure(group_val = ".default"),
    transform = ~ stringr::str_replace(.x, "grp", "Group")
  )
 
@@ -66,6 +67,7 @@ page_structure's and the row_every_n argument, respectively.
  }
 
  page_plan(
+   page_structure(group_val = ".default"),
    transform = transformation_function
  )
 
