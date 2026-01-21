@@ -45,7 +45,7 @@ Required columns are as follows:
 
 -   **Label column**: A single column containing row label values.
 
--   **Column value columns**: One or more columns containing the values for each column in your dataset.
+-   **Column value columns**: One or more columns containing the values defining each column in your table. These are essentially additional grouping variables. 
 
 -   **Param column**: A single column that labels distinct types of values.
 
