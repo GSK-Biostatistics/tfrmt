@@ -14,7 +14,14 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
 
   # first apply page structures
   if (!is_empty(page_plan$struct_list)){
-    .data <- apply_page_struct(.data, page_plan$struct_list, group, label, page_plan$note_loc)
+    .data <- apply_page_struct(
+      .data,
+      page_struct_list = page_plan$struct_list,
+      group = group,
+      label = label,
+      note_loc = page_plan$note_loc,
+      transform = page_plan$transform
+    )
   }
 
   # then apply max rows splits
@@ -150,13 +157,20 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
 #' @param group symbolic list of grouping
 #' @param label symbolic label column
 #' @param note_loc location of page note
+#' @param transform optional, a function or formula to transform the page label.
 #'
 #' @noRd
 #' @importFrom purrr map map2 map_dbl
 #' @importFrom dplyr tibble row_number mutate group_by left_join select filter summarise  lag last
 #' @importFrom tidyr  pivot_longer
-apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
-
+apply_page_struct <- function(
+  .data,
+  page_struct_list,
+  group,
+  label,
+  note_loc,
+  transform
+) {
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
@@ -229,7 +243,7 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
       group_by(.data$`..tfrmt_split_num`) %>%
       filter(!is.na(.data$grouping_val)) %>%
       unique() %>%
-      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ",\n"))
+      summarise(`..tfrmt_page_note` = paste0(.data$grouping_col, ": ", .data$grouping_val) %>% paste0(collapse = ", "))
 
     page_grp_vars <- setdiff(names(dat_split_2), c("..tfrmt_data", "..tfrmt_split_num"))
 
@@ -249,10 +263,20 @@ apply_page_struct <- function(.data, page_struct_list, group, label, note_loc){
   # add pg_note to individual tbls as applicable
   if ("..tfrmt_page_note" %in% names(dat_split_2)){
     pg_note <- dat_split_2$`..tfrmt_page_note`
-    dat_out <-  dat_out %>%
-      map2(., pg_note, ~ structure(.x,
-                                   .page_note = .y))
 
+    if (!is.null(transform)) {
+      transform <- rlang::as_function(transform)
+      pg_note <- transform(pg_note)
+    }
+
+    dat_out <- purrr::map2(
+      dat_out,
+      pg_note,
+      ~ structure(
+        .x,
+        .page_note = .y
+      )
+    )
   }
 
   structure(
