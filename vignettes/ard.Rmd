@@ -31,7 +31,7 @@ An **Analysis Results Data (ARD)** provides statistical analysis results in a st
 
 ARDs can easily be created using the powerful **cards** package. For more details, visit the [cards documentation](https://insightsengineering.github.io/cards/latest-tag/index.html).
 
-If you’re new to ARDs or the cards package, check out [ARDs and Cards Workshop Notes](https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/slides/01-intro-cards/#/title-slide).
+If you’re new to ARDs or the cards package, check out the following [Other Resources](https://insightsengineering.github.io/cards/latest-tag/#other-resources).
 
 For information on the **Analysis Results Standard (ARS)**, visit this [CDISC Webinar on ARS](https://www.cdisc.org/events/webinar/analysis-results-standard-public-review).
 
@@ -52,15 +52,5 @@ Required columns are as follows:
 -   **Value column**: A single column containing the computed raw data values. Note: these must be numeric.
 
 -   **[Optional] Sorting columns**: One or more columns with numeric values to control row ordering.
-
-### Additional Requirements
-
--   Ensure all values in the `value` column are unformatted and type numeric.
-
--   Structure is 1 record per unique results value.
-
--   Include distinct columns for each grouping variable.
-
--   Ensure that all relevant information, particularly labels, is included.
 
 For information on transforming ARD output for use in {tfrmt} see the  [ARD-first tables using {cards}](https://gsk-biostatistics.github.io/tfrmt/articles/cards_to_tfrmt.html) vignette.
