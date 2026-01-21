@@ -266,5 +266,10 @@ Example GT Demography Table
   Mocks](https://gsk-biostatistics.github.io/tfrmt/dev/articles/building_mocks.md):
 - [Creating Template
   tfrmts](https://gsk-biostatistics.github.io/tfrmt/dev/articles/templates.md):
+
+### Data Preparation
+
+- [ARDs and expected
+  input](https://gsk-biostatistics.github.io/tfrmt/dev/articles/ard.md):
 - [ARD-first tables using
   {cards}](https://gsk-biostatistics.github.io/tfrmt/dev/articles/cards_to_tfrmt.md):

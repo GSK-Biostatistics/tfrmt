@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Building Blocks • tfrmt</title>
+<title>ARDs and expected input • tfrmt</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Building Blocks">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="ARDs and expected input">
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -83,89 +83,79 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Building Blocks</h1>
+      <h1>ARDs and expected input</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/vignettes/building_blocks.Rmd" class="external-link"><code>vignettes/building_blocks.Rmd</code></a></small>
-      <div class="d-none name"><code>building_blocks.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/vignettes/ard.Rmd" class="external-link"><code>vignettes/ard.Rmd</code></a></small>
+      <div class="d-none name"><code>ard.Rmd</code></div>
     </div>
 
     
     
-<p><strong>1. Table format:</strong> <code><a href="../reference/tfrmt.html">tfrmt()</a></code></p>
-<p>The table format (“tfrmt”) object is the most fundamental building
-block in tfrmt. tfrmt is a way to predefine the non-data components of
-your tables and how the data will be handled once added. tfrmt allows
-you to specify cell formats and labelling such as column headers,
-footnotes, etc. In addition, tfrmts can be layered.</p>
-<p><strong>2. Plans:</strong> <code>*_plan()</code></p>
-<p>Much of the tfrmt is divided into “plans” which provide the blueprint
-for how the table will look. These plans are as follows:</p>
+<div class="section level3">
+<h3 id="what-is-an-ard">What is an ARD?<a class="anchor" aria-label="anchor" href="#what-is-an-ard"></a>
+</h3>
+<p>An <strong>Analysis Results Data (ARD)</strong> provides statistical
+analysis results in a structured, machine-readable format. It provides a
+way to store analysis outcomes in a consistent manner, making it easier
+to reuse and integrate those results into reports, tables, and
+figures.</p>
+</div>
+<div class="section level3">
+<h3 id="key-features-of-an-ard">Key Features of an ARD<a class="anchor" aria-label="anchor" href="#key-features-of-an-ard"></a>
+</h3>
 <ul>
-<li>Body plan (<code>body_plan</code>): define how cells will be
-formatted</li>
-<li>Column plan (<code>col_plan</code>): define column and spanning
-headers, order columns, and drop unnecessary columns</li>
-<li>Row group plan (<code>row_grp_plan</code>): define labelling for
-groups of rows and add styling to groups of rows</li>
-<li>Column styling plan (<code>col_style_plan</code>): define how column
-values will be aligned and set their widths</li>
+<li><p><strong>Structured Data</strong>: The ARD format organizes
+statistical results, ensuring they are easily interpreted and accessible
+for further analysis.</p></li>
+<li><p><strong>Reusability</strong>: Once created, an ARD can be reused
+for future reporting needs, eliminating the need for repetitive data
+processing.</p></li>
+<li><p><strong>No Layout Description</strong>: The ARD focuses on the
+data itself, not on the visual layout of tables or figures. This means
+you can use the data to generate reports in various formats.</p></li>
 </ul>
-<p align="center">
-</p>
-<p><img src="../reference/figures/table_plans.png" width="900px"></p>
-
-<p>Additional features that use this system:</p>
+</div>
+<div class="section level3">
+<h3 id="how-to-create-an-ard">How to Create an ARD<a class="anchor" aria-label="anchor" href="#how-to-create-an-ard"></a>
+</h3>
+<p>ARDs can easily be created using the powerful <strong>cards</strong>
+package. For more details, visit the <a href="https://insightsengineering.github.io/cards/latest-tag/index.html" class="external-link">cards
+documentation</a>.</p>
+<p>If you’re new to ARDs or the cards package, check out the following
+<a href="https://insightsengineering.github.io/cards/latest-tag/#other-resources" class="external-link">Other
+Resources</a>.</p>
+<p>For information on the <strong>Analysis Results Standard
+(ARS)</strong>, visit this <a href="https://www.cdisc.org/events/webinar/analysis-results-standard-public-review" class="external-link">CDISC
+Webinar on ARS</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="dataset-structure-and-column-requirements">Dataset Structure and Column Requirements<a class="anchor" aria-label="anchor" href="#dataset-structure-and-column-requirements"></a>
+</h2>
+<p>We expect a long-format dataset, with one record per computed
+value.</p>
+<p>Required columns are as follows:</p>
 <ul>
-<li>Footnotes can be specified via footnote plan
-(<code>footnote_plan</code>) to define what footnote contents and where
-they should be applied.</li>
-<li>Pagination can be specified via a page plan (<code>page_plan</code>)
-to define where the table should be split for separating onto multiple
-pages.</li>
+<li><p><strong>[Optional] Grouping columns</strong>: One or more columns
+containing grouping values.</p></li>
+<li><p><strong>Label column</strong>: A single column containing row
+label values.</p></li>
+<li><p><strong>Column value columns</strong>: One or more columns
+containing the values defining each column in your table. These are
+essentially additional grouping variables.</p></li>
+<li><p><strong>Param column</strong>: A single column that labels
+distinct types of values.</p></li>
+<li><p><strong>Value column</strong>: A single column containing the
+computed raw data values. Note: these must be numeric.</p></li>
+<li><p><strong>[Optional] Sorting columns</strong>: One or more columns
+with numeric values to control row ordering.</p></li>
 </ul>
-<p><strong>3. Structures:</strong> <code>*_structure()</code></p>
-<p>The structure objects are for defining how the <em>location</em> of
-where a specific styling should be applied. Within a plan, one or more
-structures may be provided. Each structure specifies the layers within a
-plan. For example, in the body plan, each “frmt_structure” object
-defines how a set of values (e.g., all “p-values”) should be formatted.
-Structures are primarily row-oriented, and can range from broad (e.g.,
-apply to all relevant rows in the data) to specific (e.g., apply to all
-relevant rows within a specific grouping value). The one exception to
-this is <code>col_style_structure</code>, which specifies the colwise
-styling.</p>
-<p>In the figure below, each colour represents a different format
-structure (<code>frmt_structure</code>) to be passed in the table body
-plan (<code>body_plan</code>).</p>
-<p align="center">
-</p>
-<p><img src="../reference/figures/structure_objects.png" width="700px"></p>
-
-<p>The following structures are available:</p>
-<ul>
-<li>Format structure (<code>frmt_structure</code>) inside of body plan
-(<code>body_plan</code>)</li>
-<li>Column label spanning structure (<code>span_structure</code>) inside
-of column plan (<code>col_plan</code>)</li>
-<li>Row group structure (<code>row_grp_structure</code>) inside of row
-group plan (<code>row_grp_plan</code>)</li>
-<li>Column style structure (<code>col_style_structure</code>) inside of
-column style plan (<code>col_style_plan</code>)</li>
-<li>Footnote structure (<code>footnote_structure</code>) inside of
-footnote plan (<code>footnote_plan</code>)</li>
-<li>Page structure (<code>page_structure</code>) inside of a page plan
-(<code>page_plan</code>)</li>
-</ul>
-<p><strong>4. Elements</strong> <code>element_*()</code> <strong>and
-Formats:</strong> <code>frmt_*()</code></p>
-<p>The element and format objects are for defining the
-<em>aesthetics</em> of the table. Inspired by ggplot2, elements provide
-a mechanism for performing aesthetic modifications such as numeric
-rounding (<code><a href="../reference/frmt.html">frmt()</a></code>) or the positioning of group labels
-(<code>element_row_grp_loc</code>). These are passed through structure
-objects.</p>
-  </main>
+<p>For information on transforming ARD output for use in {tfrmt} see the
+<a href="https://gsk-biostatistics.github.io/tfrmt/articles/cards_to_tfrmt.html">ARD-first
+tables using {cards}</a> vignette.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
