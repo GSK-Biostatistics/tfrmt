@@ -328,7 +328,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     )
 
   # remove vertical line
-  if (packageVersion("gt") >= "1.3.0"){
+  if (utils::packageVersion("gt") >= "1.3.0"){
     gt_out_final <- gt_out_final %>%
       tab_options(
         stub.separate = FALSE
