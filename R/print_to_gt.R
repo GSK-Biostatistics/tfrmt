@@ -276,8 +276,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       page.numbering = TRUE,
       page.header.use_tbl_headings = FALSE,
       page.footer.use_tbl_notes = TRUE,
-      page.orientation = "landscape" ,
-      stub.separate = FALSE) %>%
+      page.orientation = "landscape") %>%
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
@@ -327,6 +326,14 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
+
+  # remove vertical line
+  if (packageVersion("gt") >= "1.3.0"){
+    gt_out_final <- gt_out_final %>%
+      tab_options(
+        stub.separate = FALSE
+      )
+  }
 
   # add page note if applicable
   if (!is.null(attr(.data, ".page_note")) &&
