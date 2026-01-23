@@ -2,8 +2,6 @@
 
 ## tfrmt 0.2.1
 
-CRAN release: 2025-10-04
-
 Patch release for latest {gt} release and upcoming {purrr} and {stringr}
 releases: \* Ensure `rowname_col = NULL` in
 [`gt()`](https://gt.rstudio.com/reference/gt.html) within
@@ -15,8 +13,6 @@ patterns. \* Ensure values are character before processing via
 longer coerces to character.
 
 ## tfrmt 0.2.0
-
-CRAN release: 2025-09-06
 
 ### Improvements
 
@@ -62,8 +58,6 @@ CRAN release: 2025-09-06
 
 ## tfrmt 0.1.3
 
-CRAN release: 2024-10-15
-
 ### Improvements
 
 - Incorporate contents of `col_style_plan` in the creation of mock data.
@@ -77,8 +71,6 @@ CRAN release: 2024-10-15
 
 ## tfrmt 0.1.2
 
-CRAN release: 2024-07-06
-
 ### Bug fixes
 
 - Fixed issue where table stub indentation does not transfer to all
@@ -87,8 +79,6 @@ CRAN release: 2024-07-06
   variable is a factor
 
 ## tfrmt 0.1.1
-
-CRAN release: 2024-03-15
 
 ### Bug fixes
 
@@ -115,8 +105,6 @@ CRAN release: 2024-03-15
 
 ## tfrmt 0.1.0
 
-CRAN release: 2023-10-17
-
 ### New features:
 
 - Improved column alignment capabilities (via `col_style_plan`).
@@ -141,15 +129,11 @@ CRAN release: 2023-10-17
 
 ## tfrmt 0.0.3
 
-CRAN release: 2023-06-22
-
 - Fixed bugs with JSON read/write
 - Added transformation capabilities to
   [`frmt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md)
 
 ## tfrmt 0.0.2
-
-CRAN release: 2023-02-13
 
 - Added a `NEWS.md` file to track changes to the package.
 - Added functionality to read/write tfrmts to JSON files
