@@ -242,10 +242,10 @@ test_that("prep_...() pipe with demographic data", {
     gt::extract_body(b)
   )
 
-  # expect_snapshot(
-  #   gt::as_raw_html(b),
-  #   transform = strip_id
-  # )
+  expect_snapshot(
+    gt::as_raw_html(b),
+    transform = strip_id
+  )
 })
 
 test_that("prep_...() pipe with adverse effects data", {
