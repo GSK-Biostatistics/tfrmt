@@ -327,6 +327,14 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
                        cells_column_labels(), cells_column_spanners())
     )
 
+  # remove vertical line
+  if (utils::packageVersion("gt") >= "1.3.0"){
+    gt_out_final <- gt_out_final %>%
+      tab_options(
+        stub.separate = FALSE
+      )
+  }
+
   # add page note if applicable
   if (!is.null(attr(.data, ".page_note")) &&
       !is.null(tfrmt$page_plan) &&
