@@ -1,4 +1,3 @@
-
 #' Print mock table to GT
 #'
 #' @param tfrmt tfrmt the mock table will be based off of
@@ -49,47 +48,64 @@
 #' @importFrom rlang quo_is_missing sym quo is_empty
 #' @importFrom dplyr vars
 #' @importFrom purrr quietly safely
-print_mock_gt <- function(tfrmt,
-                          .data = NULL,
-                          .default = 1:3,
-                          n_cols = NULL,
-                          .unicode_ws = TRUE) {
-
+print_mock_gt <- function(
+  tfrmt,
+  .data = NULL,
+  .default = 1:3,
+  n_cols = NULL,
+  .unicode_ws = TRUE
+) {
   # fill param, column if not provided
-  if (quo_is_missing(tfrmt$param)){
-    message("`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable")
+  if (quo_is_missing(tfrmt$param)) {
+    message(
+      "`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable"
+    )
     tfrmt$param <- quo(!!sym("__tfrmt__param"))
   }
-  if (is_empty(tfrmt$column)){
-    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable")
+  if (is_empty(tfrmt$column)) {
+    message(
+      "`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable"
+    )
     tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
-  if(quo_is_missing(tfrmt$value)){
-    message("Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
+  if (quo_is_missing(tfrmt$value)) {
+    message(
+      "Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable"
+    )
     tfrmt$value <- quo(!!sym("__tfrmt__val"))
   }
 
-  if(is.null(tfrmt$body_plan)){
+  if (is.null(tfrmt$body_plan)) {
     tfrmt$body_plan <- body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt("X.X"))
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("X.X")
+      )
     )
   }
 
-  if(is.null(.data)){
+  if (is.null(.data)) {
     .data <- make_mock_data(tfrmt, .default, n_cols)
-  }else{
+  } else {
     ## check that if value column exists in data, remove it for mocking
-    select_try <- safely(quietly(tidyselect::eval_select))(tfrmt$value, data = .data)
-    if(!is.null(select_try$result)){
-      message(" Removing `",as_label(tfrmt$value),"` from input data for mocking.")
-      .data <- .data[,-select_try$result$result]
+    select_try <- safely(quietly(tidyselect::eval_select))(
+      tfrmt$value,
+      data = .data
+    )
+    if (!is.null(select_try$result)) {
+      message(
+        " Removing `",
+        as_label(tfrmt$value),
+        "` from input data for mocking."
+      )
+      .data <- .data[, -select_try$result$result]
     }
   }
 
   apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
     cleaned_data_to_gt(tfrmt, .unicode_ws)
-
 }
 
 #' Print to gt
@@ -135,24 +151,23 @@ print_mock_gt <- function(tfrmt,
 #' }}
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
-print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
-  if(!is_tfrmt(tfrmt)){
+print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
+  if (!is_tfrmt(tfrmt)) {
     stop("Requires a tfrmt object")
   }
 
-  if(!is.data.frame(.data)){
+  if (!is.data.frame(.data)) {
     stop("Requires data, if not avaliable please use `print_mock_gt()`")
   }
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     cleaned_data_to_gt(tfrmt, .unicode_ws)
-
 }
 
 
 #' Do all the formatting for the GT
 #' @rdname cleaned_data_to_gt
 #' @export
-cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws){
+cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
   UseMethod("cleaned_data_to_gt", .data)
 }
 
@@ -169,9 +184,8 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws){
 #' @keywords internal
 #' @importFrom gt gt_group
 #' @importFrom purrr map2
-cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws){
-
-  map(.data, ~cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
+cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
+  map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
     gt_group(.list = .)
 }
 #' Apply formatting to a single table
@@ -188,22 +202,21 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws){
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
 #'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead
-cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
-
+cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
   existing_grp <- tfrmt$group %>%
-    keep(function(x){
+    keep(function(x) {
       as_label(x) %in% names(.data)
     })
   rowname_col <- NULL
 
-  if (length(existing_grp)>0){
-    if (!is.null(tfrmt$row_grp_plan) && !tfrmt$row_grp_plan$label_loc$location=="column") {
-
+  if (length(existing_grp) > 0) {
+    if (
+      !is.null(tfrmt$row_grp_plan) &&
+        !tfrmt$row_grp_plan$label_loc$location == "column"
+    ) {
       .data <- .data %>%
         group_by(!!!existing_grp)
-
     } else {
-
       # drop groups into row names
       rowname_col <- existing_grp
     }
@@ -211,46 +224,56 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
   if (!"..tfrmt_row_grp_lbl" %in% names(.data)) {
     # keep attribute for footnotes
-    attr_footnote <- attr(.data,".footnote_locs")
-    attr_stub_header <- attr(.data,".stub_header")
+    attr_footnote <- attr(.data, ".footnote_locs")
+    attr_stub_header <- attr(.data, ".stub_header")
     .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
-    attr(.data,".footnote_locs") <- attr_footnote
-    attr(.data,".stub_header") <- attr_stub_header
+    attr(.data, ".footnote_locs") <- attr_footnote
+    attr(.data, ".stub_header") <- attr_stub_header
   }
 
-  if (!rlang::quo_is_missing(tfrmt$label) &&
-        rlang::as_label(tfrmt$label) %in% names(.data)) {
-
+  if (
+    !rlang::quo_is_missing(tfrmt$label) &&
+      rlang::as_label(tfrmt$label) %in% names(.data)
+  ) {
     rowname_col <- c(rowname_col, tfrmt$label)
   }
 
   # convert to character if not null
-  rowname_col <- if (!is.null(rowname_col)) map_chr(rowname_col, rlang::as_label)
-
+  rowname_col <- if (!is.null(rowname_col)) {
+    map_chr(rowname_col, rlang::as_label)
+  }
   gt_out <- .data %>%
     gt(
       rowname_col = rowname_col
-    )  %>%
+    ) %>%
     sub_missing(
-      rows = .data$..tfrmt_row_grp_lbl==TRUE,
+      rows = .data$..tfrmt_row_grp_lbl == TRUE,
       missing_text = ""
     ) %>%
     cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
     format_gt_column_labels(.data)
 
   # group label in its own column
-  if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
+  if (
+    !is.null(tfrmt$row_grp_plan) &&
+      tfrmt$row_grp_plan$label_loc$location == "column"
+  ) {
     gt_out <- gt_out %>%
       tab_options(row_group.as_column = TRUE)
   }
 
   # stub header
-  if (!is.null(attr(.data, ".stub_header"))){
+  if (!is.null(attr(.data, ".stub_header"))) {
     gt_out <- gt_out %>%
-      tab_stubhead(label = attr(.data, ".stub_header"))
+      tab_stubhead(
+        label = do.call(
+          md,
+          list(attr(.data, ".stub_header"))
+        )
+      )
   }
 
-  gt_out_final  <- gt_out %>%
+  gt_out_final <- gt_out %>%
     tab_style(
       style = list(
         cell_text(whitespace = "pre-wrap", align = "left")
@@ -276,23 +299,26 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       page.numbering = TRUE,
       page.header.use_tbl_headings = FALSE,
       page.footer.use_tbl_notes = TRUE,
-      page.orientation = "landscape") %>%
+      page.orientation = "landscape"
+    ) %>%
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
-      locations = list(cells_column_spanners(),
-                       cells_column_labels(),
-                       cells_body(
-                         columns = tidyselect::everything()
-                       ))
+      locations = list(
+        cells_column_spanners(),
+        cells_column_labels(),
+        cells_body(
+          columns = tidyselect::everything()
+        )
+      )
     ) %>%
 
     tab_style(
       style = cell_borders(
-        sides = c("top","bottom"),
+        sides = c("top", "bottom"),
         color = "transparent"
       ),
-      locations= list(
+      locations = list(
         cells_body(
           columns = tidyselect::everything(),
           rows = tidyselect::everything()
@@ -300,7 +326,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
         cells_stub(),
         cells_row_groups()
       )
-    )  %>%
+    ) %>%
 
     tab_style(
       style = cell_borders(
@@ -308,9 +334,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
         color = "transparent",
         weight = px(0),
       ),
-      locations= list(
+      locations = list(
         cells_column_labels()
-      )) %>%
+      )
+    ) %>%
 
     tab_style(
       style = cell_borders(
@@ -318,17 +345,23 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
         weight = px(0),
         color = "transparent"
       ),
-      locations= list(
+      locations = list(
         cells_column_spanners()
-      )) %>%
+      )
+    ) %>%
     tab_style(
       style = cell_text(font = c("Courier", default_fonts())),
-      locations = list(cells_body(), cells_row_groups(), cells_stub(),
-                       cells_column_labels(), cells_column_spanners())
+      locations = list(
+        cells_body(),
+        cells_row_groups(),
+        cells_stub(),
+        cells_column_labels(),
+        cells_column_spanners()
+      )
     )
 
   # remove vertical line
-  if (utils::packageVersion("gt") >= "1.3.0"){
+  if (utils::packageVersion("gt") >= "1.3.0") {
     gt_out_final <- gt_out_final %>%
       tab_options(
         stub.separate = FALSE
@@ -336,55 +369,52 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
   }
 
   # add page note if applicable
-  if (!is.null(attr(.data, ".page_note")) &&
+  if (
+    !is.null(attr(.data, ".page_note")) &&
       !is.null(tfrmt$page_plan) &&
-      !tfrmt$page_plan$note_loc=="noprint"){
-
-    if (tfrmt$page_plan$note_loc=="preheader"){
-
-      gt_out_final <- gt_out_final  %>%
-        tab_header(title = tfrmt$title,
-                   subtitle = tfrmt$subtitle,
-                   preheader = attr(.data, ".page_note"))
-
-    } else if (tfrmt$page_plan$note_loc=="subtitle"){
-
+      !tfrmt$page_plan$note_loc == "noprint"
+  ) {
+    if (tfrmt$page_plan$note_loc == "preheader") {
+      gt_out_final <- gt_out_final %>%
+        tab_header(
+          title = tfrmt$title,
+          subtitle = tfrmt$subtitle,
+          preheader = attr(.data, ".page_note")
+        )
+    } else if (tfrmt$page_plan$note_loc == "subtitle") {
       title <- tfrmt$title %||% ""
-      subtitle <- paste0(tfrmt$subtitle, attr(.data, ".page_note"), collapse = "\n")
+      subtitle <- paste0(
+        tfrmt$subtitle,
+        attr(.data, ".page_note"),
+        collapse = "\n"
+      )
 
-      gt_out_final <- gt_out_final  %>%
-        tab_header(title = title,
-                   subtitle = subtitle)
-
+      gt_out_final <- gt_out_final %>%
+        tab_header(title = title, subtitle = subtitle)
     } else {
-      gt_out_final <- gt_out_final  %>%
-        tab_header(title = tfrmt$title,
-                   subtitle = tfrmt$subtitle)
+      gt_out_final <- gt_out_final %>%
+        tab_header(title = tfrmt$title, subtitle = tfrmt$subtitle)
 
-      if (tfrmt$page_plan$note_loc=="source_note"){
+      if (tfrmt$page_plan$note_loc == "source_note") {
         gt_out_final <- gt_out_final %>%
           tab_source_note(attr(.data, ".page_note"))
       }
-
     }
   } else {
-    gt_out_final <- gt_out_final  %>%
-      tab_header(title = tfrmt$title,
-                 subtitle = tfrmt$subtitle)
+    gt_out_final <- gt_out_final %>%
+      tab_header(title = tfrmt$title, subtitle = tfrmt$subtitle)
   }
 
   # convert white space to unicode
-  if (.unicode_ws){
+  if (.unicode_ws) {
     gt_out_final <- gt_out_final %>%
       convert_ws_unicode()
   }
 
   # add footnotes and output
   gt_out_final %>%
-    apply_footnote_plan(tfrmt,attr(.data,".footnote_locs"))
-
+    apply_footnote_plan(tfrmt, attr(.data, ".footnote_locs"))
 }
-
 
 
 #' Format gt column labels
@@ -403,15 +433,13 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 #' @importFrom dplyr as_tibble desc coalesce left_join mutate
 #' @importFrom purrr keep
 #'
-format_gt_column_labels <- function(gt_table, .data){
-
+format_gt_column_labels <- function(gt_table, .data) {
   spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
-  if(length(spanning) > 0){
-
-    work_df<- names(.data) %>%
+  if (length(spanning) > 0) {
+    work_df <- names(.data) %>%
       keep(str_detect, .tlang_delim) %>%
       str_split(.tlang_delim, simplify = TRUE) %>%
-      as_tibble( .name_repair = ~paste0("V", 1:length(.))) %>%
+      as_tibble(.name_repair = ~ paste0("V", 1:length(.))) %>%
       mutate(cols = spanning) %>%
       pivot_longer(-"cols")
 
@@ -422,11 +450,10 @@ format_gt_column_labels <- function(gt_table, .data){
       arrange(desc(.data$name)) %>%
       group_by(.data$value) %>%
       nest(set = "cols") %>%
-      mutate(set = map(.data$set, ~pull(.,.data$cols))) %>%
+      mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
       filter(.data$value != "NA")
 
-    for(i in 1:nrow(spans_to_apply)) {
-
+    for (i in 1:nrow(spans_to_apply)) {
       # convert column spanning labels to markdown format
       gt_table <- gt_table %>%
         tab_spanner(
@@ -445,23 +472,16 @@ format_gt_column_labels <- function(gt_table, .data){
 
     renm_vals <- lowest_lvl %>%
       pull(.data$value)
-    names(renm_vals) <-lowest_lvl %>%
+    names(renm_vals) <- lowest_lvl %>%
       pull(.data$cols)
-
-
   } else {
-
     renm_vals <- names(.data)
     names(renm_vals) <- renm_vals
-
   }
 
   # convert lowest level column labels to markdown format
   gt_table %>%
-    cols_label(.list=
-                 lapply(renm_vals,md))
-
-
+    cols_label(.list = lapply(renm_vals, md))
 }
 
 #' Convert gt whitespace to unicode text
@@ -473,14 +493,19 @@ format_gt_column_labels <- function(gt_table, .data){
 #' @importFrom gt text_transform cells_body cells_stub cells_column_labels cells_column_spanners
 #' @importFrom stringr str_match str_c str_dup str_trim
 #'
-convert_ws_unicode <- function(gt_table){
-
+convert_ws_unicode <- function(gt_table) {
   locations <- list(cells_body())
 
-  if (sum(c(!is.na(gt_table[["_stub_df"]]$row_id),!is.na(gt_table[["_stub_df"]]$group_id)) > 0)){
-
-    locations <- c(locations,
-                   list(cells_stub()))
+  if (
+    sum(
+      c(
+        !is.na(gt_table[["_stub_df"]]$row_id),
+        !is.na(gt_table[["_stub_df"]]$group_id)
+      ) >
+        0
+    )
+  ) {
+    locations <- c(locations, list(cells_stub()))
   }
 
   gt_table %>%
@@ -497,11 +522,13 @@ convert_ws_unicode <- function(gt_table){
           str_dup("\U00A0", space_left),
           # 2 or more spaces are split into a combination of unicode whitespaces and
           # regular spaces for latex collapsing
-          str_replace_all(x_trimmed, pattern = "\\s{2,}", break_duplicate_whitespace),
+          str_replace_all(
+            x_trimmed,
+            pattern = "\\s{2,}",
+            break_duplicate_whitespace
+          ),
           str_dup("\U00A0", space_right)
         )
-
-
       }
     )
 }
@@ -510,19 +537,17 @@ convert_ws_unicode <- function(gt_table){
 #' @param x whitespace vector of strings of length >1
 #' @importFrom stringr str_sub
 #' @noRd
-break_duplicate_whitespace <- function(x){
-
-  for(i in 1:length(x)){
+break_duplicate_whitespace <- function(x) {
+  for (i in 1:length(x)) {
     n_spaces <- nchar(x[i])
-    if(n_spaces > 1 && !is.na(x[i])){
+    if (n_spaces > 1 && !is.na(x[i])) {
       #want to swap every even indice for a unicode character
       even_chars <- seq(from = 2, to = n_spaces, by = 2)
-      for(j in even_chars){
+      for (j in even_chars) {
         stringr::str_sub(x[i], j, j) <- "\u00A0"
       }
     }
   }
-
 
   x
 }
