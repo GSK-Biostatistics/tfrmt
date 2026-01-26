@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,9 @@
     <li><a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a></li>
     <li><a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a></li>
     <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data Preparation</h6></li>
+    <li><a class="dropdown-item" href="../articles/ard.html">ARDs and expected input</a></li>
     <li><a class="dropdown-item" href="../articles/cards_to_tfrmt.html">ARD-first tables using {cards}</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
@@ -56,9 +59,19 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/0.2.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="tfrmt-030">tfrmt 0.3.0<a class="anchor" aria-label="anchor" href="#tfrmt-030"></a></h2><p class="text-muted">CRAN release: 2026-01-24</p>
+<div class="section level3">
+<h3 id="improvements-0-3-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/page_plan.html">page_plan()</a></code> receives a new argument, <code>transform</code>, allowing users to modify the page label (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/496" class="external-link">#496</a>, <a href="https://github.com/dragosmg" class="external-link">@dragosmg</a>).</li>
+<li>Replace duplicate spaces in the centre of the cell body of an output gt with unicode whitespace to ensure formatting is retained when going to pdf. Leading and trailing whitespace will be non-breaking unicode whitespace</li>
+<li>Default to center alignment of table body values to match alignment of column headers</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="tfrmt-021">tfrmt 0.2.1<a class="anchor" aria-label="anchor" href="#tfrmt-021"></a></h2><p class="text-muted">CRAN release: 2025-10-04</p>
 <p>Patch release for latest {gt} release and upcoming {purrr} and {stringr} releases: * Ensure <code>rowname_col = NULL</code> in <code><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt()</a></code> within <code><a href="../reference/print_to_gt.html">print_to_gt()</a></code> if no row label exists. * Use of <code>seq_along(x)</code> in lieu of <code>1:length(x)</code> prior to <code>str_replace()</code> as it no longer accepts NA patterns. * Ensure values are character before processing via <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_chr()</a></code> as it no longer coerces to character.</p>
@@ -162,11 +175,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

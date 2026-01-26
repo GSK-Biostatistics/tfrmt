@@ -13,7 +13,7 @@ opposed to preserving the first location.'><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,9 @@ opposed to preserving the first location.'><meta property="og:image" content="ht
     <li><a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a></li>
     <li><a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a></li>
     <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data Preparation</h6></li>
+    <li><a class="dropdown-item" href="../articles/ard.html">ARDs and expected input</a></li>
     <li><a class="dropdown-item" href="../articles/cards_to_tfrmt.html">ARD-first tables using {cards}</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
@@ -62,7 +65,7 @@ opposed to preserving the first location.'><meta property="og:image" content="ht
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Define the Column Plan &amp; Span Structures</h1>
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/0.2.1/R/col_plan.R" class="external-link"><code>R/col_plan.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/R/col_plan.R" class="external-link"><code>R/col_plan.R</code></a></small>
       <div class="d-none name"><code>col_plan.Rd</code></div>
     </div>
 
@@ -189,6 +192,18 @@ the positive-selection.</p>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## To one or more stub headers rename the corresponding group/label variables in the column plan.</span></span></span>
+<span class="r-in"><span><span class="co">## If multiple group variables exist, any of them can be renamed.</span></span></span>
+<span class="r-in"><span><span class="co">## Note: Multiple stub headers are only possible if the `row_grp_plan` label</span></span></span>
+<span class="r-in"><span><span class="co">## location is set to "column". Otherwise, if more than one group/label column is renamed,</span></span></span>
+<span class="r-in"><span><span class="co">## {tfrmt} will use the highest level group name available.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="va">renaming_group</span> <span class="op">&lt;-</span> <span class="fu">col_plan</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    my_grp <span class="op">=</span> <span class="va">group</span>, <span class="co"># rename group</span></span></span>
+<span class="r-in"><span>    <span class="va">label</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -196,11 +211,11 @@ the positive-selection.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

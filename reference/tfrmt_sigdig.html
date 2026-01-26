@@ -17,7 +17,7 @@ function."><meta property="og:image" content="https://gsk-biostatistics.github.i
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,9 @@ function."><meta property="og:image" content="https://gsk-biostatistics.github.i
     <li><a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a></li>
     <li><a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a></li>
     <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data Preparation</h6></li>
+    <li><a class="dropdown-item" href="../articles/ard.html">ARDs and expected input</a></li>
     <li><a class="dropdown-item" href="../articles/cards_to_tfrmt.html">ARD-first tables using {cards}</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
@@ -66,7 +69,7 @@ function."><meta property="og:image" content="https://gsk-biostatistics.github.i
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Create tfrmt object from significant digits spec</h1>
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/0.2.1/R/tfrmt_sigdig.R" class="external-link"><code>R/tfrmt_sigdig.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/R/tfrmt_sigdig.R" class="external-link"><code>R/tfrmt_sigdig.R</code></a></small>
       <div class="d-none name"><code>tfrmt_sigdig.Rd</code></div>
     </div>
 
@@ -181,12 +184,12 @@ matching <code>sigdig</code> or the supplied group/label variable) will be disre
 <span><span class="fu"><a href="../reference/tfrmt_sigdig.html">tfrmt_sigdig</a></span><span class="op">(</span>sigdig_df <span class="op">=</span> <span class="va">sig_input</span>,</span>
 <span>             group <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">group1</span>, <span class="va">group2</span><span class="op">)</span>,</span>
 <span>             label <span class="op">=</span> <span class="va">rowlbl</span>,</span>
-<span>             param_defaults <span class="op">=</span> <span class="fu"><a href="../reference/param_set.html">param_set</a></span><span class="op">(</span><span class="st">"[{n}]"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>             param_defaults <span class="op">=</span> <span class="fu"><a href="../reference/param_set.html">param_set</a></span><span class="op">(</span><span class="st">"[{n}]"</span> <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span>column <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">col1</span>, <span class="va">col2</span><span class="op">)</span>,</span>
 <span>        param <span class="op">=</span> <span class="va">param</span>,</span>
 <span>        value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>        sorting_cols <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span>, <span class="va">ord3</span><span class="op">)</span>,</span>
-<span>        col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>        col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"ord"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span></code></pre><p></p></div>
 <p><img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_sigdig.png" alt="Table of Hematology, which are rounded for visits baseline to week 26" style="width:100%;"></p>
     </div>
@@ -196,11 +199,11 @@ matching <code>sigdig</code> or the supplied group/label variable) will be disre
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,9 @@
     <li><a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a></li>
     <li><a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a></li>
     <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data Preparation</h6></li>
+    <li><a class="dropdown-item" href="../articles/ard.html">ARDs and expected input</a></li>
     <li><a class="dropdown-item" href="../articles/cards_to_tfrmt.html">ARD-first tables using {cards}</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
@@ -82,7 +85,7 @@
       <h1>ARD-first tables using {cards}</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/0.2.1/vignettes/cards_to_tfrmt.Rmd" class="external-link"><code>vignettes/cards_to_tfrmt.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/vignettes/cards_to_tfrmt.Rmd" class="external-link"><code>vignettes/cards_to_tfrmt.Rmd</code></a></small>
       <div class="d-none name"><code>cards_to_tfrmt.Rmd</code></div>
     </div>
 
@@ -111,15 +114,16 @@ table.</p>
 continuous summaries by treatment group. We can perform these summaries
 using the following {cards} code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_demog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html" class="external-link">ard_stack</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">ard_demog</span> <span class="op">&lt;-</span> <span class="fu">cards</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html" class="external-link">ard_stack</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/reference/adsl.html" class="external-link">adsl</a></span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/deprecated.html" class="external-link">ard_categorical</a></span><span class="op">(</span></span>
-<span>    variables <span class="op">=</span> <span class="st">"AGEGR1"</span>, </span>
+<span>  <span class="fu">cards</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/deprecated.html" class="external-link">ard_categorical</a></span><span class="op">(</span></span>
+<span>    variables <span class="op">=</span> <span class="st">"AGEGR1"</span>,</span>
 <span>    statistic <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/deprecated.html" class="external-link">ard_continuous</a></span><span class="op">(</span></span>
-<span>    variables <span class="op">=</span> <span class="st">"AGE"</span>, </span>
-<span>    statistic <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/summary_functions.html" class="external-link">continuous_summary_fns</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>,<span class="st">"sd"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">cards</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/deprecated.html" class="external-link">ard_continuous</a></span><span class="op">(</span></span>
+<span>    variables <span class="op">=</span> <span class="st">"AGE"</span>,</span>
+<span>    statistic <span class="op">=</span> <span class="op">~</span> <span class="fu">cards</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/summary_functions.html" class="external-link">continuous_summary_fns</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  .by <span class="op">=</span> <span class="st">"ARM"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -144,7 +148,7 @@ using the following {cards} code:</p>
 results in a tidy data frame without list-columns and extra
 metadata.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/shuffle_card.html">shuffle_card</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_demog_shuffled</span></span>
@@ -168,8 +172,8 @@ values have also been filled with “Overall <colname>”.</colname></p>
 to be combined into a single variable. We can use the
 <code><a href="../reference/prep_combine_vars.html">prep_combine_vars()</a></code> helper for this:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/prep_combine_vars.html">prep_combine_vars</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGEGR1"</span>,<span class="st">"AGE"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/prep_combine_vars.html">prep_combine_vars</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGEGR1"</span>, <span class="st">"AGE"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_demog_shuffled</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 7</span></span></span>
@@ -191,7 +195,7 @@ for categorical <code>AGEGR1</code> and the stat label for continuous
 <code>AGE</code>. We can use the <code><a href="../reference/prep_label.html">prep_label()</a></code> helper for
 this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/prep_label.html">prep_label</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_demog_shuffled</span></span>
@@ -229,8 +233,8 @@ relabel the stat, and drop the unnecessary <code>N</code> and
 <code>p</code>. The <code><a href="../reference/prep_big_n.html">prep_big_n()</a></code> helper takes care of this
 for us:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/prep_big_n.html">prep_big_n</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span>  <span class="co"># the grouping variable we want to prepare big N's for</span></span>
+<code class="sourceCode R"><span><span class="va">ard_demog_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/prep_big_n.html">prep_big_n</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="co"># the grouping variable we want to prepare big N's for</span></span>
 <span></span>
 <span><span class="va">ard_demog_shuffled</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 8</span></span></span>
@@ -254,12 +258,12 @@ for us:</p>
 <p>Finally, we can do any additional table-specific manipulations and
 we’re ready for our tfrmt!</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_final</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_final</span> <span class="op">&lt;-</span> <span class="va">ard_demog_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># drop unneeded variables</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variable_level</span>, <span class="va">context</span>, <span class="va">stat_label</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variable_level</span>, <span class="va">context</span>, <span class="va">stat_label</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># add sorting</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>ord1 <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>    <span class="va">label</span> <span class="op">==</span> <span class="st">"18-64"</span> <span class="op">~</span> <span class="fl">1</span>, </span>
+<span>    <span class="va">label</span> <span class="op">==</span> <span class="st">"18-64"</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>    <span class="va">label</span> <span class="op">==</span> <span class="st">"&gt;64"</span> <span class="op">~</span> <span class="fl">2</span>,</span>
 <span>    <span class="cn">TRUE</span> <span class="op">~</span> <span class="fl">3</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
@@ -287,26 +291,26 @@ we’re ready for our tfrmt!</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
 <span>  group <span class="op">=</span> <span class="va">stat_variable</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span> ,</span>
+<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
 <span>  param <span class="op">=</span> <span class="va">stat_name</span>,</span>
 <span>  value <span class="op">=</span> <span class="va">stat</span>,</span>
 <span>  column <span class="op">=</span> <span class="va">ARM</span>,</span>
 <span>  sorting_cols <span class="op">=</span> <span class="va">ord1</span>,</span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>      label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>      <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>      label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>      p <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx%"</span>, transform <span class="op">=</span> <span class="op">~</span><span class="va">.</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span></span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      p <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx%"</span>, transform <span class="op">=</span> <span class="op">~</span> <span class="va">.</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  big_n <span class="op">=</span> <span class="fu"><a href="../reference/big_n_structure.html">big_n_structure</a></span><span class="op">(</span>param_val <span class="op">=</span> <span class="st">"bigN"</span><span class="op">)</span>,</span>
 <span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord1</span><span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">ard_final</span><span class="op">)</span></span></code></pre></div>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
@@ -542,7 +546,7 @@ we’re ready for our tfrmt!</p>
   font-size: 100%;
   font-weight: initial;
   text-transform: inherit;
-  border-right-style: solid;
+  border-right-style: none;
   border-right-width: 0px;
   border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
@@ -555,7 +559,7 @@ we’re ready for our tfrmt!</p>
   font-size: 100%;
   font-weight: initial;
   text-transform: inherit;
-  border-right-style: solid;
+  border-right-style: none;
   border-right-width: 0px;
   border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
@@ -769,58 +773,58 @@ N = 84</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">AGEGR1</th>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">AGEGR1</th>
 <td headers="stub_1_1 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
 <td headers="stub_1_1 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
 <td headers="stub_1_1 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  18-64</th>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  18-64</th>
 <td headers="stub_1_2 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16%</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">16%</td>
 <td headers="stub_1_2 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">13%</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">13%</td>
 <td headers="stub_1_2 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">10%</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">10%</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  &gt;64</th>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  &gt;64</th>
 <td headers="stub_1_3 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">84%</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">84%</td>
 <td headers="stub_1_3 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">87%</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">87%</td>
 <td headers="stub_1_3 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">90%</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">90%</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">AGE</th>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">AGE</th>
 <td headers="stub_1_4 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
 <td headers="stub_1_4 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
 <td headers="stub_1_4 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"><br></td>
 </tr>
 <tr>
-<th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  Mean</th>
+<th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  Mean</th>
 <td headers="stub_1_5 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">75.2</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">75.2</td>
 <td headers="stub_1_5 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">74.4</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">74.4</td>
 <td headers="stub_1_5 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">75.7</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">75.7</td>
 </tr>
 <tr>
-<th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  SD</th>
+<th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  SD</th>
 <td headers="stub_1_6 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 8.6</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 8.6</td>
 <td headers="stub_1_6 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 7.9</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 7.9</td>
 <td headers="stub_1_6 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 8.3</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 8.3</td>
 </tr>
 </tbody>
 </table>
@@ -832,20 +836,20 @@ N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Couri
 <p>AE tables contain hierarchical summaries. We can perform these
 summaries using the following {cards} code:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/reference/adae.html" class="external-link">adae</a></span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span><span class="op">==</span><span class="st">"Y"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">AESOC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">AESOC</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">AESOC</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">AEDECOD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">AEDECOD</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/reference/adae.html" class="external-link">adae</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">AESOC</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">AESOC</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">AESOC</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">AEDECOD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">AEDECOD</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ard_ae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack_hierarchical.html" class="external-link">ard_stack_hierarchical</a></span><span class="op">(</span></span>
+<span><span class="va">ard_ae</span> <span class="op">&lt;-</span> <span class="fu">cards</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack_hierarchical.html" class="external-link">ard_stack_hierarchical</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">adae</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AESOC</span>, <span class="va">AEDECOD</span><span class="op">)</span>,</span>
 <span>  by <span class="op">=</span> <span class="va">ARM</span>,</span>
-<span>  denominator <span class="op">=</span> <span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/reference/adsl.html" class="external-link">adsl</a></span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span><span class="op">==</span><span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>  denominator <span class="op">=</span> <span class="fu">pharmaverseadam</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaverseadam/reference/adsl.html" class="external-link">adsl</a></span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">SAFFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span>,</span>
 <span>  id <span class="op">=</span> <span class="va">USUBJID</span>,</span>
-<span>  statistic <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>,<span class="st">"p"</span><span class="op">)</span></span>
+<span>  statistic <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"p"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_ae</span></span>
@@ -880,7 +884,7 @@ for {tfrmt} is calling <code><a href="../reference/shuffle_card.html">shuffle_ca
 general operations to get the results in a tidy data frame without
 list-columns and extra metadata.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_ae</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_ae</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/shuffle_card.html">shuffle_card</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_ae_shuffled</span></span>
@@ -901,7 +905,7 @@ list-columns and extra metadata.</p>
 <p>Notice that our calculations of any AE by system organ class (AESOC)
 have a missing value for preferred term (AEDECOD):</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">AESOC</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">AEDECOD</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 8</span></span></span>
 <span><span class="co">#&gt;    ARM          AESOC AEDECOD context stat_variable stat_name stat_label    stat</span></span>
@@ -923,13 +927,13 @@ display these as group summaries, the value for AEDECOD must match the
 value for AESOC. We can use the <code><a href="../reference/prep_hierarchical_fill.html">prep_hierarchical_fill()</a></code>
 helper to fill the value from AESOC into AEDECOD:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/prep_hierarchical_fill.html">prep_hierarchical_fill</a></span><span class="op">(</span></span>
-<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AESOC"</span>,<span class="st">"AEDECOD"</span><span class="op">)</span>, </span>
+<span>    vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AESOC"</span>, <span class="st">"AEDECOD"</span><span class="op">)</span>,</span>
 <span>    fill_from_left <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">AESOC</span> <span class="op">==</span> <span class="va">AEDECOD</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 8</span></span></span>
 <span><span class="co">#&gt;    ARM          AESOC AEDECOD context stat_variable stat_name stat_label    stat</span></span>
@@ -950,7 +954,7 @@ helper to fill the value from AESOC into AEDECOD:</p>
 have <code>n</code>, <code>N</code>, <code>p</code> from the
 <code><a href="https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html" class="external-link">ard_stack()</a></code> call:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">AESOC</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 8</span></span></span>
 <span><span class="co">#&gt;   ARM           AESOC AEDECOD context stat_variable stat_name stat_label    stat</span></span>
@@ -970,8 +974,8 @@ relabel the stat, and drop the unnecessary <code>N</code> and
 <code>p</code>. The <code><a href="../reference/prep_big_n.html">prep_big_n()</a></code> helper takes care of this
 for us:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/prep_big_n.html">prep_big_n</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span>  <span class="co"># the grouping variable we want to prepare big N's for</span></span>
+<code class="sourceCode R"><span><span class="va">ard_ae_shuffled</span> <span class="op">&lt;-</span> <span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/prep_big_n.html">prep_big_n</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="co"># the grouping variable we want to prepare big N's for</span></span>
 <span></span>
 <span><span class="va">ard_ae_shuffled</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 51 × 8</span></span></span>
@@ -991,9 +995,9 @@ for us:</p>
 <p>Finally, we can do any additional table-specific manipulations and
 we’re ready for our tfrmt!</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ard_final</span> <span class="op">&lt;-</span> <span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">ard_final</span> <span class="op">&lt;-</span> <span class="va">ard_ae_shuffled</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># drop uneeded variables</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">context</span>, <span class="va">stat_label</span>, <span class="va">stat_variable</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">context</span>, <span class="va">stat_label</span>, <span class="va">stat_variable</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_final</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 51 × 5</span></span></span>
@@ -1020,19 +1024,19 @@ we’re ready for our tfrmt!</p>
 <span>  column <span class="op">=</span> <span class="va">ARM</span>,</span>
 <span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>      group_val <span class="op">=</span> <span class="st">".default"</span>, </span>
-<span>      label_val <span class="op">=</span> <span class="st">".default"</span>, </span>
+<span>      group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>      label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>      <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>        <span class="st">"{n} ({p}%)"</span>,</span>
 <span>        n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
-<span>        p <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, transform <span class="op">=</span> <span class="op">~</span> <span class="va">.</span> <span class="op">*</span><span class="fl">100</span><span class="op">)</span></span>
+<span>        p <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, transform <span class="op">=</span> <span class="op">~</span> <span class="va">.</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  big_n <span class="op">=</span> <span class="fu"><a href="../reference/big_n_structure.html">big_n_structure</a></span><span class="op">(</span></span>
 <span>    param_val <span class="op">=</span> <span class="st">"bigN"</span></span>
-<span>  <span class="op">)</span> </span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">ard_final</span><span class="op">)</span></span></code></pre></div>
 <div id="ubqtxvafbs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ubqtxvafbs table {
@@ -1268,7 +1272,7 @@ we’re ready for our tfrmt!</p>
   font-size: 100%;
   font-weight: initial;
   text-transform: inherit;
-  border-right-style: solid;
+  border-right-style: none;
   border-right-width: 0px;
   border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
@@ -1281,7 +1285,7 @@ we’re ready for our tfrmt!</p>
   font-size: 100%;
   font-weight: initial;
   text-transform: inherit;
-  border-right-style: solid;
+  border-right-style: none;
   border-right-width: 0px;
   border-right-color: rgba(255, 255, 255, 0);
   padding-left: 5px;
@@ -1495,76 +1499,76 @@ N = 84</span></th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">GASTROINTESTINAL DISORDERS</th>
+<th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">GASTROINTESTINAL DISORDERS</th>
 <td headers="stub_1_1 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12 (14%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12 (14%)</td>
 <td headers="stub_1_1 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">10 (12%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">10 (12%)</td>
 <td headers="stub_1_1 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 8 (10%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 8 (10%)</td>
 </tr>
 <tr>
-<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  DIARRHOEA</th>
+<th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  DIARRHOEA</th>
 <td headers="stub_1_2 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 9 (10%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 9 (10%)</td>
 <td headers="stub_1_2 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 4 ( 5%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 4 ( 5%)</td>
 <td headers="stub_1_2 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 5 ( 6%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 5 ( 6%)</td>
 </tr>
 <tr>
-<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  HIATUS HERNIA</th>
+<th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  HIATUS HERNIA</th>
 <td headers="stub_1_3 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 1 ( 1%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 1 ( 1%)</td>
 <td headers="stub_1_3 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0 ( 0%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0 ( 0%)</td>
 <td headers="stub_1_3 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0 ( 0%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 0 ( 0%)</td>
 </tr>
 <tr>
-<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  VOMITING</th>
+<th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  VOMITING</th>
 <td headers="stub_1_4 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 3 ( 3%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 3 ( 3%)</td>
 <td headers="stub_1_4 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 7 ( 8%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 7 ( 8%)</td>
 <td headers="stub_1_4 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 3 ( 4%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 3 ( 4%)</td>
 </tr>
 <tr>
-<th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS</th>
+<th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS</th>
 <td headers="stub_1_5 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 9 (10%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 9 (10%)</td>
 <td headers="stub_1_5 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">28 (33%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">28 (33%)</td>
 <td headers="stub_1_5 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">27 (32%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">27 (32%)</td>
 </tr>
 <tr>
-<th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  APPLICATION SITE ERYTHEMA</th>
+<th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  APPLICATION SITE ERYTHEMA</th>
 <td headers="stub_1_6 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 3 ( 3%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 3 ( 3%)</td>
 <td headers="stub_1_6 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15 (18%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">15 (18%)</td>
 <td headers="stub_1_6 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12 (14%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12 (14%)</td>
 </tr>
 <tr>
-<th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  APPLICATION SITE PRURITUS</th>
+<th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  APPLICATION SITE PRURITUS</th>
 <td headers="stub_1_7 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 6 ( 7%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 6 ( 7%)</td>
 <td headers="stub_1_7 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">22 (26%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">22 (26%)</td>
 <td headers="stub_1_7 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">22 (26%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">22 (26%)</td>
 </tr>
 <tr>
-<th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub" style="text-align: left; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">  FATIGUE</th>
+<th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">  FATIGUE</th>
 <td headers="stub_1_8 Placebo
-N = 86" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 1 ( 1%)</td>
+N = 86" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 1 ( 1%)</td>
 <td headers="stub_1_8 Xanomeline High Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 5 ( 6%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 5 ( 6%)</td>
 <td headers="stub_1_8 Xanomeline Low Dose
-N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 5 ( 6%)</td>
+N = 84" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> 5 ( 6%)</td>
 </tr>
 </tbody>
 </table>
@@ -1577,11 +1581,11 @@ N = 84" class="gt_row gt_right" style="white-space: pre-wrap; font-family: Couri
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

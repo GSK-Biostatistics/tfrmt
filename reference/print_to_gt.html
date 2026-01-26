@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,9 @@
     <li><a class="dropdown-item" href="../articles/layer.html">Layering tfrmts</a></li>
     <li><a class="dropdown-item" href="../articles/building_mocks.html">Building Mocks</a></li>
     <li><a class="dropdown-item" href="../articles/templates.html">Creating Template tfrmts</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data Preparation</h6></li>
+    <li><a class="dropdown-item" href="../articles/ard.html">ARDs and expected input</a></li>
     <li><a class="dropdown-item" href="../articles/cards_to_tfrmt.html">ARD-first tables using {cards}</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>More</h6></li>
@@ -56,7 +59,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Print to gt</h1>
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/0.2.1/R/print_to_gt.R" class="external-link"><code>R/print_to_gt.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/tfrmt/blob/main/R/print_to_gt.R" class="external-link"><code>R/print_to_gt.R</code></a></small>
       <div class="d-none name"><code>print_to_gt.Rd</code></div>
     </div>
 
@@ -112,10 +115,10 @@
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create data</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"label 1"</span>, <span class="st">"label 2"</span><span class="op">)</span>,</span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"label 1"</span>, <span class="st">"label 2"</span><span class="op">)</span>,</span>
 <span>               column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"placebo"</span>, <span class="st">"trt1"</span><span class="op">)</span>,</span>
-<span>               param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"percent"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>value<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>,<span class="fl">19</span>,<span class="fl">2400</span><span class="op">/</span><span class="fl">48</span>,<span class="fl">1900</span><span class="op">/</span><span class="fl">38</span>,<span class="fl">5</span>,<span class="fl">1</span>,<span class="fl">500</span><span class="op">/</span><span class="fl">48</span>,<span class="fl">100</span><span class="op">/</span><span class="fl">38</span><span class="op">)</span><span class="op">)</span></span>
+<span>               param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"percent"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>value<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>,<span class="fl">19</span>,<span class="fl">2400</span><span class="op">/</span><span class="fl">48</span>,<span class="fl">1900</span><span class="op">/</span><span class="fl">38</span>,<span class="fl">5</span>,<span class="fl">1</span>,<span class="fl">500</span><span class="op">/</span><span class="fl">48</span>,<span class="fl">100</span><span class="op">/</span><span class="fl">38</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">tfrmt_spec</span>,<span class="va">df</span><span class="op">)</span></span>
 <span></span></code></pre><p></p></div>
@@ -127,11 +130,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

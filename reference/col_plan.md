@@ -1,0 +1,138 @@
+# Define the Column Plan & Span Structures
+
+Using
+\<[`tidy-select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html)\>
+expressions and a series span_structures, define the order of the
+columns. The selection follows "last selected" principals, meaning
+columns are moved to the *last* selection as opposed to preserving the
+first location.
+
+## Usage
+
+``` r
+col_plan(..., .drop = FALSE)
+
+span_structure(...)
+```
+
+## Arguments
+
+- ...:
+
+  For a col_plan and span_structure,
+  \<[`tidy-select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html)\>
+  arguments, unquoted expressions separated by commas, and
+  span_structures. span_structures must have the arguments named to
+  match the name the column in the input data has to identify the
+  correct columns. See the examples
+
+- .drop:
+
+  Boolean. Should un-listed columns be dropped from the data. Defaults
+  to FALSE.
+
+## Value
+
+col_plan object
+
+span_structure object
+
+## Details
+
+### Column Selection
+
+When col_plan gets applied and is used to create the output table, the
+underlying logic sorts out which column specifically is being selected.
+If a column is selected twice, the *last* instance in which the column
+is selected will be the location it gets rendered.
+
+Avoid beginning the `col_plan()` column selection with a deselection
+(i.e. `col_plan(-col1)`, `col_plan(-starts_with("value")))`. This will
+result in the table preserving all columns not "de-selected" in the
+statement, and the order of the columns not changed. It is preferred
+when creating the `col_plan()` to identify all the columns planned on
+preserving in the order they are wished to appear, or if
+\<[`tidy-select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html)\>
+arguments - such as
+[`everything`](https://tidyselect.r-lib.org/reference/everything.html)-
+are used, identify the de-selection after the positive-selection.
+
+Alternatively, once the gt table is produced, use the
+[`cols_hide`](https://gt.rstudio.com/reference/cols_hide.html) function
+to remove un-wanted columns.
+
+## Images
+
+Here are some example outputs:
+
+![Example of a dataset being turned into a table with spanning
+columns](https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg)
+
+## See also
+
+[Link to related
+article](https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html)
+
+## Examples
+
+``` r
+library(dplyr)
+
+## select col_1 as the first column, remove col_last, then create spanning
+## structures that have multiple levels
+##
+## examples also assume the tfrmt has the column argument set to c(c1, c2, c3)
+##
+spanning_col_plan_ex <- col_plan(
+ col_1,
+ -col_last,
+ span_structure(
+   c1 = "Top Label Level 1",
+   c2 = "Second Label Level 1.1",
+   c3 = c(col_3, col_4)
+ ),
+ span_structure(
+   c1 = "Top Label Level 1",
+   c2 = "Second Label Level 1.2",
+   c3 = starts_with("B")
+   ),
+ span_structure(
+   c1 = "Top Label Level 1",
+   c3 = col_5
+ ),
+ span_structure(
+   c2 = "Top Label Level 2",
+   c3 = c(col_6, col_7)
+ )
+)
+
+## select my_col_1 as the first column, then
+## rename col_2 to new_col_1 and put as the
+## second column, then select the rest of the columns
+renaming_col_plan_ex <- col_plan(
+   my_col_1,
+   new_col_1 = col_2,
+   everything()
+ )
+
+renaming_col_plan_ex2 <- col_plan(
+   my_col_1,
+   new_col_1 = col_2,
+   span_structure(
+    c1 = c(`My Favorite span name` = "Top Label Level 1"),
+    c3 = c(`the results column` = col_5)
+   )
+ )
+
+## To one or more stub headers rename the corresponding group/label variables in the column plan.
+## If multiple group variables exist, any of them can be renamed.
+## Note: Multiple stub headers are only possible if the `row_grp_plan` label
+## location is set to "column". Otherwise, if more than one group/label column is renamed,
+## {tfrmt} will use the highest level group name available.
+
+ renaming_group <- col_plan(
+    my_grp = group, # rename group
+    label,
+    starts_with("col")
+  )
+```

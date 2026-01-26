@@ -1,0 +1,144 @@
+# Layering tfrmts
+
+``` r
+library(tfrmt)
+```
+
+A core design element of `tfrmt` is to offer the ability to layer tfrmts
+together. This ability provides an opportunity to build template table
+formats that can be shared, improved, and reused across multiple
+projects. `tfrmt` provides a few tfrmt templates to facilitate the
+creation of basic tfrmts, but they require customization. This can be
+done through layering.
+
+To layer tfrmts, you can pipe or use the
+[`layer_tfrmt()`](https://gsk-biostatistics.github.io/tfrmt/reference/layer_tfrmt.md)
+function. Piping is the preferred method for readability.
+
+When a tfrmt gets layered, the values in the first tfrmt are coalesced
+with values in the second tfrmt. If the second tfrmt has any of the same
+parameters specified as the first tfrmt, the values from the second
+tfrmt are prioritized. The exception to this rule is the “body_plan”,
+which will stack the plans together. To change this behavior see the
+[`layer_tfrmt()`](https://gsk-biostatistics.github.io/tfrmt/reference/layer_tfrmt.md)
+documentation.
+
+## Example
+
+Here is an example of layering through piping. We create a template from
+[`tfrmt_sigdig()`](https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_sigdig.md)
+and pipe it into a separate `tfrmt`.
+
+We provide
+[`tfrmt_sigdig()`](https://gsk-biostatistics.github.io/tfrmt/reference/tfrmt_sigdig.md)
+with a data.frame detailing the groups and the significant digits the
+values are to be rounded to and it creates a `tfrmt` with a body_plan
+that supports this.
+
+The second tfrmt defines the table specific information, including
+title, specific columns to use for row labels and output columns, as
+well as the col_plan.
+
+The output tfrmt generates a table with the subset `data_labs`.
+
+``` r
+data_labs_subset <- data_labs |>
+  dplyr::filter(
+    group2 %in% c("ALANINE AMINOTRANSFERASE", "ALBUMIN", "ALKALINE PHOSPHATASE", "ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
+    rowlbl %in% c("Bsln", "End[1]")
+  )
+
+data_input <- tibble::tribble(
+  ~group1, ~group2, ~sigdig,
+  "CHEMISTRY", ".default", 3,
+  "CHEMISTRY", "ALBUMIN", 1,
+  "CHEMISTRY", "CALCIUM", 1,
+  ".default", ".default", 2
+)
+
+
+labs_tfrmt_template <- tfrmt_sigdig(
+  sigdig_df = data_input,
+  group = vars(group1, group2),
+  label = rowlbl,
+  param_defaults = param_set("[{n}]" = NA)
+)
+
+labs_tfrmt <- labs_tfrmt_template |>
+  tfrmt(
+    column = vars(col1, col2),
+    param = param,
+    value = value,
+    sorting_cols = vars(ord1, ord2, ord3),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(location = "indent")
+    ),
+    col_plan = col_plan(
+      group1, group2,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+    )
+  )
+
+labs_tfrmt |>
+  print_to_gt(data_labs_subset) |>
+  gt::tab_options(
+    container.width = 1000
+  )
+```
+
+[TABLE]
+
+## Conflicting Layers
+
+As two tfrmt are layered, there may come a case where the groups value
+is not the same across the body plan. Additionally, data may be provided
+in a slightly different group names than was expected. Addressing this
+without having to re-write the entire body_plan is able to be done with
+the
+[`update_group()`](https://gsk-biostatistics.github.io/tfrmt/reference/update_group.md)
+function.
+
+Similar to the
+[`rename()`](https://dplyr.tidyverse.org/reference/rename.html)
+function, here we provide the new group name and which old group name
+needs to be updated. The function maps across the entire tfrmt and
+updates all references of the old group name to the new one.
+
+For example, this is useful when a template tfrmt needs references
+updated. This could happen when the input data set has a slightly
+different naming convention than expected.
+
+``` r
+## provided data had different column names for groups
+alternate_data_labs_subset <- data_labs_subset |>
+  dplyr::rename(
+    `Lab Type` = group1,
+    `Lab Test` = group2,
+  )
+
+labs_tfrmt |>
+  update_group(
+    `Lab Type` = group1,
+    `Lab Test` = group2,
+  ) |>
+  tfrmt(
+    col_plan = col_plan(
+      `Lab Type`, `Lab Test`,
+      rowlbl,
+      "Residuals" = res,
+      "Change From Baseline" = cbl,
+      n,
+      -starts_with("ord")
+    )
+  ) |>
+  print_to_gt(alternate_data_labs_subset) |>
+  gt::tab_options(
+    container.width = 1000
+  )
+```
+
+[TABLE]
