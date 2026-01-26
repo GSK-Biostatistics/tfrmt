@@ -196,15 +196,15 @@ print_mock_gt(my_tfrmt, .default = 1:2) |>
 ```
 
 |        |        |         | column1 | column2 | column3 |
-|:-------|:------:|:-------:|:-------:|---------|---------|
-| grp1_1 | grp2_1 | label_1 |   xx    | xx      | xx      |
-|        |        | label_2 |   xx    | xx      | xx      |
-|        | grp2_2 | label_1 |   xx    | xx      | xx      |
-|        |        | label_2 |   xx    | xx      | xx      |
-| grp1_2 | grp2_1 | label_1 |   xx    | xx      | xx      |
-|        |        | label_2 |   xx    | xx      | xx      |
-|        | grp2_2 | label_1 |   xx    | xx      | xx      |
-|        |        | label_2 |   xx    | xx      | xx      |
+|:-------|:-------|:--------|:-------:|:-------:|:-------:|
+| grp1_1 | grp2_1 | label_1 |   xx    |   xx    |   xx    |
+|        |        | label_2 |   xx    |   xx    |   xx    |
+|        | grp2_2 | label_1 |   xx    |   xx    |   xx    |
+|        |        | label_2 |   xx    |   xx    |   xx    |
+| grp1_2 | grp2_1 | label_1 |   xx    |   xx    |   xx    |
+|        |        | label_2 |   xx    |   xx    |   xx    |
+|        | grp2_2 | label_1 |   xx    |   xx    |   xx    |
+|        |        | label_2 |   xx    |   xx    |   xx    |
 
 ### noprint
 
@@ -230,7 +230,7 @@ print_mock_gt(my_tfrmt, .default = 1:2)
 ```
 
 |         | column1 | column2 | column3 |
-|:--------|:-------:|:-------:|:-------:|
+|---------|:-------:|:-------:|:-------:|
 | label_1 |   xx    |   xx    |   xx    |
 | label_2 |   xx    |   xx    |   xx    |
 | label_1 |   xx    |   xx    |   xx    |

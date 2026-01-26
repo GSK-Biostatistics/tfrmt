@@ -29,13 +29,13 @@ Source:
 
 Krouse B, Fillmore C, Hughes E, Ahmad K, Haughton S, Moldovan-Grünfeld
 D, Jonas A (2026). *tfrmt: Applies Display Metadata to Analysis Results
-Datasets*. R package version 0.2.1.9000,
+Datasets*. R package version 0.3.0.9000,
 <https://GSK-Biostatistics.github.io/tfrmt/>.
 
     @Manual{,
       title = {tfrmt: Applies Display Metadata to Analysis Results Datasets},
       author = {Becca Krouse and Christina Fillmore and Ellis Hughes and Karima Ahmad and Shannon Haughton and Dragoș Moldovan-Grünfeld and Alanah Jonas},
       year = {2026},
-      note = {R package version 0.2.1.9000},
+      note = {R package version 0.3.0.9000},
       url = {https://GSK-Biostatistics.github.io/tfrmt/},
     }
