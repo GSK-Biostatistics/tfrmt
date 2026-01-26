@@ -25,7 +25,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/GSK-Biostatistics/tfrmt/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/GSK-Biostatistics/tfrmt/blob/0.3.0/DESCRIPTION)
 
 Krouse B, Fillmore C, Hughes E, Ahmad K, Haughton S, Moldovan-Grünfeld
 D, Jonas A (2026). *tfrmt: Applies Display Metadata to Analysis Results
