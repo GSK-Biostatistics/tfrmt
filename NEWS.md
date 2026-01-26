@@ -1,4 +1,4 @@
-# tfrmt development version
+# tfrmt 0.3.0
 
 ## Improvements
  * `page_plan()` receives a new argument, `transform`, allowing users to modify the page label (#496, @dragosmg).
