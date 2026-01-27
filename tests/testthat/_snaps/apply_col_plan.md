@@ -1,3 +1,19 @@
+# create_stub_head() works
+
+    Code
+      create_stub_head(col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`), group = rlang::quos(
+        grp2), label = rlang::quos(lbl), row_grp_plan_label_loc = "indented")
+    Output
+      [1] ""
+
+---
+
+    Code
+      create_stub_head(col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`), group = rlang::quos(
+        grp2), label = rlang::quos(lbl), row_grp_plan_label_loc = "column")
+    Output
+      [1] "" ""
+
 # apply_col_plan() works
 
     Code
@@ -30,22 +46,6 @@
       5 v     s     n          1   3  
       6 v     s     n_3        1   3.3
       7 p     e     n          1   4  
-
-# create_stub_head() works
-
-    Code
-      create_stub_head(col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`), group = rlang::quos(
-        grp2), label = rlang::quos(lbl), row_grp_plan_label_loc = "indented")
-    Output
-      [1] ""
-
----
-
-    Code
-      create_stub_head(col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`), group = rlang::quos(
-        grp2), label = rlang::quos(lbl), row_grp_plan_label_loc = "column")
-    Output
-      [1] "" ""
 
 # create_col_order() works
 
