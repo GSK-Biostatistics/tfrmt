@@ -607,7 +607,6 @@ test_that("eval_col_plan_quo() works", {
     "ord"
   )
 
-  # TODO document that `eval_col_plan_quo()` expects `x` to be a single quosure (not a list of quosures)
   expect_identical(
     eval_col_plan_quo(
       x = rlang::quo(everything()),
