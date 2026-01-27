@@ -563,8 +563,8 @@ test_that("char_as_quo() works", {
       rlang::quo_is_symbol()
   )
 
-  # backticks are added when x is not a valid tidyselect call and the output
-  # expression is a symbol and not a call
+  # when x is not a valid tidyselect call the output is a symbol (enclosed
+  # in backticks) and not a call
   expect_identical(
     char_as_quo("like('foo')"),
     rlang::quo(`like('foo')`),
@@ -581,14 +581,7 @@ test_that("char_as_quo() works", {
       rlang::quo_is_call()
   )
 
-  # char_as_quo() uses parse()
   # parse errors are converted to symbols
-  expect_error(
-    parse(
-      text = "foo12-3bar"
-    )
-  )
-
   expect_true(
     char_as_quo(
       "foo12-3bar"
