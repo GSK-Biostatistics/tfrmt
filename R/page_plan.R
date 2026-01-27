@@ -8,7 +8,19 @@
 #'   Useful if the `page_structure` contains only ".default" values (meaning the
 #'   table is split by every unique level of a grouping variable), and that
 #'   variable is dropped in the col_plan. `preheader` only available for rtf output.
-#' @param max_rows Option to set a maximum number of rows per page. Takes a numeric value.
+#' @param max_rows Option to set a maximum number of rows per page. Takes a
+#'   numeric value.
+#' @param transform `r lifecycle::badge("experimental")` optional, a function
+#'   or formula to transform the page label.
+#'
+#'   It should take a character vector as input and return a modified character
+#'   vector as output.
+#'
+#'   A **function** is used as is, e.g. `function(x) {stringr::str_replace(x, "grp", "Group")}`
+#'
+#'   A **formula**, e.g. `~ stringr::str_remove_all(.x, "_")` is converted to a
+#'   function. This allows you to create more compact anonymous functions
+#'   (lambdas).
 #'
 #' @return page_plan object
 #' @export
@@ -16,25 +28,53 @@
 #' @examples
 #'  # use of page_struct
 #'  page_plan(
-#'     page_structure(group_val = "grp1", label_val = "lbl1")
+#'    page_structure(
+#'      group_val = "grp1",
+#'      label_val = "lbl1"
+#'    )
 #'  )
 #'
 #'  # use of #  rows
 #'  page_plan(
-#'     max_rows = 5
+#'    max_rows = 5
 #'  )
 #'
+#'  # use of transform with a formula
+#'  page_plan(
+#'    page_structure(group_val = ".default"),
+#'    transform = ~ stringr::str_replace(.x, "grp", "Group")
+#'  )
 #'
-page_plan <- function(...,
-                      note_loc = c("noprint","preheader","subtitle","source_note"),
-                      max_rows = NULL){
-
+#'  # use of transform with a function
+#'  transformation_function <- function(x) {
+#'    stringr::str_replace(x, "grp", "Group")
+#'  }
+#'
+#'  page_plan(
+#'    page_structure(group_val = ".default"),
+#'    transform = transformation_function
+#'  )
+#'
+page_plan <- function(
+  ...,
+  note_loc = c("noprint", "preheader", "subtitle", "source_note"),
+  max_rows = NULL,
+  transform = NULL
+) {
   page_structure_list <- list(...)
   note_loc <- match.arg(note_loc)
 
   structure(
-    list(struct_list = page_structure_list, note_loc=note_loc, max_rows=max_rows),
-    class = c("page_plan", "plan")
+    list(
+      struct_list = page_structure_list,
+      note_loc = note_loc,
+      max_rows = max_rows,
+      transform = transform
+    ),
+    class = c(
+      "page_plan",
+      "plan"
+    )
   )
 }
 
@@ -78,8 +118,11 @@ page_structure <- function(group_val = NULL, label_val = NULL){
   structure(
     list(
       group_val = group_val,
-      label_val = label_val),
-    class = c("page_structure","structure")
+      label_val = label_val
+    ),
+    class = c(
+      "page_structure",
+      "structure"
+    )
   )
-
 }

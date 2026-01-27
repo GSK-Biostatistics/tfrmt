@@ -209,12 +209,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
     }
   }
 
-  if (!is.null(tfrmt$col_style_plan)){
-    align <- "left"
-  } else {
-    align <- NULL
-  }
-
   if (!"..tfrmt_row_grp_lbl" %in% names(.data)) {
     # keep attribute for footnotes
     attr_footnote <- attr(.data,".footnote_locs")
@@ -242,13 +236,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       missing_text = ""
     ) %>%
     cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
-    format_gt_column_labels(.data) %>%
-    tab_style(
-      style = cell_text(whitespace = "pre-wrap", align = align),
-      locations = cells_body(
-        columns = tidyselect::everything()
-      )
-    )
+    format_gt_column_labels(.data)
 
   # group label in its own column
   if(!is.null(tfrmt$row_grp_plan) && tfrmt$row_grp_plan$label_loc$location == "column"){
@@ -267,7 +255,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       style = list(
         cell_text(whitespace = "pre-wrap", align = "left")
       ),
-      locations = list(cells_stub(), cells_row_groups())
+      locations = list(cells_stub(columns = rowname_col), cells_row_groups())
     ) %>%
     tab_options(
       table.font.size = 14,
@@ -292,7 +280,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
-      locations = list(cells_column_spanners(),cells_column_labels())
+      locations = list(cells_column_spanners(),
+                       cells_column_labels(),
+                       cells_body(
+                         columns = tidyselect::everything()
+                       ))
     ) %>%
 
     tab_style(
@@ -334,6 +326,14 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       locations = list(cells_body(), cells_row_groups(), cells_stub(),
                        cells_column_labels(), cells_column_spanners())
     )
+
+  # remove vertical line
+  if (utils::packageVersion("gt") >= "1.3.0"){
+    gt_out_final <- gt_out_final %>%
+      tab_options(
+        stub.separate = FALSE
+      )
+  }
 
   # add page note if applicable
   if (!is.null(attr(.data, ".page_note")) &&
@@ -487,7 +487,42 @@ convert_ws_unicode <- function(gt_table){
     text_transform(
       locations = locations,
       fn = function(x) {
-        str_replace_all(x, pattern = "\\s", replacement = "\u00A0")
+        # leading and trailing whitespace is nonbreaking unicode whitespace to preserve alignment
+        x_trimmed <- str_trim(x)
+        space_left <- str_match(x, "^\\s*") %>% nchar()
+        space_right <- str_match(x, "\\s*$") %>% nchar()
+        space_right[x_trimmed == ""] <- 0
+
+        str_c(
+          str_dup("\U00A0", space_left),
+          # 2 or more spaces are split into a combination of unicode whitespaces and
+          # regular spaces for latex collapsing
+          str_replace_all(x_trimmed, pattern = "\\s{2,}", break_duplicate_whitespace),
+          str_dup("\U00A0", space_right)
+        )
+
+
       }
     )
+}
+
+# split duplicate space characters with unicode whitespace ones
+#' @param x whitespace vector of strings of length >1
+#' @importFrom stringr str_sub
+#' @noRd
+break_duplicate_whitespace <- function(x){
+
+  for(i in 1:length(x)){
+    n_spaces <- nchar(x[i])
+    if(n_spaces > 1 && !is.na(x[i])){
+      #want to swap every even indice for a unicode character
+      even_chars <- seq(from = 2, to = n_spaces, by = 2)
+      for(j in even_chars){
+        stringr::str_sub(x[i], j, j) <- "\u00A0"
+      }
+    }
+  }
+
+
+  x
 }

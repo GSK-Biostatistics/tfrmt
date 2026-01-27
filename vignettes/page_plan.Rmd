@@ -22,9 +22,9 @@ library(tidyr)
 library(purrr)
 ```
 
-The purpose of the page plan is to provide the option to split tables onto multiple pages. Currently, the page plan splits tables horizontally (i.e. row-wise), but in the future it is also planned to allow vertical (i.e. column-wise) splitting. 
+The purpose of the page plan is to provide the option to split tables onto multiple pages. Currently, the page plan splits tables horizontally (i.e. row-wise), but in the future it is also planned to allow vertical (i.e. column-wise) splitting.
 
-## Page Plan rules 
+## Page Plan rules
 
 The rules for how to split the table fall into 2 categories:
 
@@ -32,26 +32,26 @@ The rules for how to split the table fall into 2 categories:
 
 This feature involves splitting by the values of `group` and/or `label` variables. It is specified via one or more `page_structure` objects. Within the `page_structure`, there are two possible methods for defining the splits:
 
-  - Split by every unique value of a `group` or `label` variable. This can be done by passing the value ".default" as such: `page_structure(group_val = ".default")`. 
-  
-  - Split by a specific value of a `group` or `label` variable. This can be done by passing the specific value as such: `page_structure(label_val = "n")`. This will split after rows where label_val = "n". If there are consecutive rows with label_val = "n", it will split after the final row of that section of rows. This logic extends to instances where there are multiple sections with consecutive rows with label_val = "n"; there will be a split at the bottom of each section. Note: There can only be one `page_structure` that includes this level of specificity.
-  
-These methods can also be combined with a `page_structure` or across multiple `page_structure`s. For example, `page_structure(group_val = ".default", label_val = "n")` will split on every unique group_val, as well as every instance where label_val = "n". 
+  - Split by every unique value of a `group` or `label` variable. This can be done by passing the value ".default" as such: `page_structure(group_val = ".default")`.
 
-If any of the `page_structure`s contain a ".default", it may be desired to print a note indicating the grouping value for the given page at the time of rendering. The location of this note can be specified via the `note_loc` parameter in `page_plan`. The functionality for `note_loc` may be limited by the desired output type; for example, "preheader" is only available for RTF outputs, while "source_note" and "subtitle" are available for all output types. 
-  
+  - Split by a specific value of a `group` or `label` variable. This can be done by passing the specific value as such: `page_structure(label_val = "n")`. This will split after rows where label_val = "n". If there are consecutive rows with label_val = "n", it will split after the final row of that section of rows. This logic extends to instances where there are multiple sections with consecutive rows with label_val = "n"; there will be a split at the bottom of each section. Note: There can only be one `page_structure` that includes this level of specificity.
+
+These methods can also be combined with a `page_structure` or across multiple `page_structure`s. For example, `page_structure(group_val = ".default", label_val = "n")` will split on every unique group_val, as well as every instance where label_val = "n".
+
+If any of the `page_structure`s contain a `".default"`, it may be desired to print a note indicating the grouping value for the given page at the time of rendering. The location of this note can be specified via the `note_loc` parameter in `page_plan`. The functionality for `note_loc` may be limited by the desired output type; for example, "preheader" is only available for RTF outputs, while "source_note" and "subtitle" are available for all output types. The content of this note can be modified by supplying a function via the `transform` argument.
+
 2) **Max Rows-driven**:
 
-This feature, available via the `max_rows` argument in `page_plan`, involves splitting based on the maximum number of rows per table. Rows dedicated to group labels (without data) are included in the row counts. If a set of rows within a single `group` value are split apart, the group label will be repeated for each page. 
+This feature, available via the `max_rows` argument in `page_plan`, involves splitting based on the maximum number of rows per table. Rows dedicated to group labels (without data) are included in the row counts. If a set of rows within a single `group` value are split apart, the group label will be repeated for each page.
 
 **NOTE**: If both `max_rows` and `page_structure` are provided to the `page_plan`, the table will first be split according to the `page_structure`, follwed by the `max_rows`.
 
 
-Examples of each of these approaches are below. To reduce the amount of code displayed in the examples, following the initial table, `tfrmt`'s layering functionality will be used to add the `page_plan`.  For more information about this, see the "Layering tfrmts" vignette. 
+Examples of each of these approaches are below. To reduce the amount of code displayed in the examples, following the initial table, `tfrmt`'s layering functionality will be used to add the `page_plan`.  For more information about this, see the "Layering tfrmts" vignette.
 
 ### Values-driven splitting
 
-Let's take a subset of our example demography data. 
+Let's take a subset of our example demography data.
 <details>
 
 <summary>Expand for the code used to produce this subset</summary>
@@ -79,23 +79,48 @@ base_tfrmt <- tfrmt(
   sorting_cols = c(ord1, ord2),
   # specify value formatting
   body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-      n = frmt("xxx"),
-      pct = frmt_when(
-        "==100" ~ "",
-        "==0" ~ "",
-        TRUE ~ frmt("(xx.x %)")
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      frmt_combine(
+        "{n} {pct}",
+        n = frmt("xxx"),
+        pct = frmt_when(
+          "==100" ~ "",
+          "==0" ~ "",
+          TRUE ~ frmt("(xx.x %)")
+        )
       )
-    )),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n", "<65 yrs", "<12 months", "<25"), p = frmt_when(
-      ">0.99" ~ ">0.99",
-      "<0.001" ~ "<0.001",
-      TRUE ~ frmt("x.xxx", missing = "")
-    ))
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = "n",
+      frmt("xxx")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = c("Mean", "Median", "Min", "Max"),
+      frmt("xxx.x")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = "SD",
+      frmt("xxx.xx")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = ".default",
+      p = frmt("")
+    ),
+    frmt_structure(
+      group_val = ".default",
+      label_val = c("n", "<65 yrs", "<12 months", "<25"),
+      p = frmt_when(
+        ">0.99" ~ ">0.99",
+        "<0.001" ~ "<0.001",
+        TRUE ~ frmt("x.xxx", missing = "")
+      )
+    )
   ),
   # remove extra cols
   col_plan = col_plan(
@@ -104,12 +129,20 @@ base_tfrmt <- tfrmt(
   ),
   # Specify column styling plan
   col_style_plan = col_style_plan(
-    col_style_structure(align = c(".", ",", " "), col = vars(Placebo, contains("Dose"), "Total", "p-value"))
+    col_style_structure(
+      align = c(".", ",", " "),
+      col = vars(Placebo, contains("Dose"), "Total", "p-value")
+    )
   ),
   # Specify row group plan
   row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
+    row_grp_structure(
+      group_val = ".default",
+      element_block(post_space = " ")
+    ),
+    label_loc = element_row_grp_loc(
+      location = "column"
+    )
   )
 )
 
@@ -119,14 +152,18 @@ base_tfrmt |>
 
 #### Every unique value of 1 variable
 
-Suppose we want to split the table by every unique value of `rowlbl1` and add a footnote indicating the table grouping. We can drop `rowlbl1` from the tables since its value will be printed in the note. We will use the `gt::grp_pull()` function to print the individual tables nicely in the vignette. 
+Suppose we want to split the table by every unique value of `rowlbl1` and add a footnote indicating the table grouping. We can drop `rowlbl1` from the tables since its value will be printed in the note. We will use the `gt::grp_pull()` function to print the individual tables nicely in the vignette.
 ```{r  }
 gts <- base_tfrmt |>
   layer_tfrmt(
     tfrmt(
       # page plan
       page_plan = page_plan(
-        page_structure(group_val = list(rowlbl1 = ".default")),
+        page_structure(
+          group_val = list(
+            rowlbl1 = ".default"
+          )
+        ),
         note_loc = "source_note"
       )
     )
@@ -172,16 +209,46 @@ gts |> gt::grp_pull(2)
 gts |> gt::grp_pull(3)
 ```
 
+Notes can sometimes end up not being very human readable. We could change them (let's say from `"rowlbl1: Age (y), grp: cat"` to `"Row label 1 - Age (y), Group - cat"`) by supplying a transformation function to `page_plan()` - i.e. the `transform` argument.
+
+```{r}
+transform_note <- function(x) {
+  x |>
+  stringr::str_replace("rowlbl", "Row label ") |>
+  stringr::str_replace("grp", "Group") |>
+  stringr::str_replace_all(":", " -")
+}
+
+gts <- base_tfrmt |>
+  layer_tfrmt(
+    tfrmt(
+      # page plan
+      page_plan = page_plan(
+        page_structure(group_val = ".default"),
+        note_loc = "source_note",
+        transform = transform_note
+      )
+    )
+  ) |>
+  print_to_gt(data_demog2)
+
+gts |> gt::grp_pull(1)
+```
+
 #### Specific value of a variable
 
-Finally, we could split on a specific value observed in the data. For example, rowlbl1 = "Age (y)".
+Finally, we could split on a specific value observed in the data. For example, `rowlbl1 = "Age (y)"`.
 ```{r}
 gts <- base_tfrmt |>
   layer_tfrmt(
     tfrmt(
       # page plan
       page_plan = page_plan(
-        page_structure(group_val = list(rowlbl1 = "Age (y)")),
+        page_structure(
+          group_val = list(
+            rowlbl1 = "Age (y)"
+          )
+        ),
         note_loc = "source_note"
       )
     )
@@ -195,7 +262,7 @@ gts |> gt::grp_pull(1)
 ```
 ```{r}
 gts |> gt::grp_pull(2)
-``` 
+```
 
 ### Splitting based on maximum rows
 
@@ -219,14 +286,14 @@ gts |> gt::grp_pull(1)
 ```
 ```{r}
 gts |> gt::grp_pull(2)
-```  
+```
 ```{r}
 gts |> gt::grp_pull(3)
-``` 
+```
 
 
-Notice that for groups (defined by the rowlbl1 variable) that are split up, the group header is repeated for each table. 
+Notice that for groups (defined by the `rowlbl1` variable) that are split up, the group header is repeated for each table.
 
 ## Page Plan outputs
 
-When Page Plan is applied, the result of the `print_to_gt` or `print_mock_gt` functions is a `gt_group` object (collection of individual `gt`s). Passing this result to the `gt::gtsave()` function will result in a multi-paged output.
+When Page Plan is applied, the result of the `print_to_gt()` or `print_mock_gt()` functions is a `gt_group` object (collection of individual `gt`s). Passing this result to the `gt::gtsave()` function will result in a multi-paged output.

@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata to Analysis Results Datasets
-Version: 0.2.1.9000
+Version: 0.3.0.9000
 Authors@R: c(
     person("Becca", "Krouse", , "becca.z.krouse@gsk.com", role = c("aut", "cre")),
     person("Christina", "Fillmore", , "christina.e.fillmore@gsk.com", role = "aut",
@@ -11,7 +11,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8784-1712")),
     person("Shannon", "Haughton", , "shannon.l.haughton@gsk.com", role = "aut"),
     person("Dragoș", "Moldovan-Grünfeld", , "dragos.v.moldovan-grunfeld@gsk.com", role = "aut"),
-    person("Alanah", "Jonas",  "alanah.x.jonas@gsk.com", role = "aut"),
+    person("Alanah", "Jonas", , "alanah.x.jonas@gsk.com", role = "aut"),
     person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")),
     person("Atorus Research LLC", role = c("cph", "fnd"))
   )
@@ -37,7 +37,7 @@ Imports:
     purrr,
     rlang,
     stringi,
-    stringr,
+    stringr (>= 1.6.0),
     tibble,
     tidyr,
     tidyselect

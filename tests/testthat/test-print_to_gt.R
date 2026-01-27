@@ -27,13 +27,22 @@ test_that("convert_ws_unicode works as expected", {
   test_strings <- c(
     "nospaces",
     " single spaces ",
-    "  multiple   spaces  "
+    "  multiple   spaces  ",
+    # 1 3 1 4 2 1
+    "combination of   single and    multiple  spaces ",
+    NA,
+    "     leading    whitespace",
+    'trailing  whitespace     '
   )
 
   unicode_strings <- c(
     "nospaces",
-    "\u00A0single\u00A0spaces\u00A0",
-    "\u00A0\u00A0multiple\u00A0\u00A0\u00A0spaces\u00A0\u00A0"
+    "\u00A0single spaces\u00A0",
+    "\u00A0\u00A0multiple \u00A0 spaces\u00A0\u00A0",
+    "combination of \u00A0 single and \u00A0 \u00A0multiple \u00A0spaces\u00A0",
+    NA,
+    "\u00A0\u00A0\u00A0\u00A0\u00A0leading \u00A0 \u00A0whitespace",
+    'trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0'
   )
 
   expect_equal(
