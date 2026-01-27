@@ -101,6 +101,7 @@ test_that("create_stub_head() works", {
     ),
     "Group2"
   )
+
   expect_identical(
     create_stub_head(
       col_plan_vars = rlang::quos(
@@ -132,6 +133,7 @@ test_that("create_stub_head() works", {
     ),
     "Group2"
   )
+
   expect_identical(
     create_stub_head(
       col_plan_vars = rlang::quos(
@@ -147,6 +149,7 @@ test_that("create_stub_head() works", {
     c("Group2", "Label")
   )
 })
+
 test_that("apply_col_plan() works", {
   df1 <- tibble::tribble(
     ~grp2 , ~lbl , ~prm  , ~column , ~val , ~ord ,
@@ -235,16 +238,6 @@ test_that("create_stub_head() works", {
     )
   )
 
-  expect_identical(
-    create_stub_head(
-      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
-      group = rlang::quos(grp2),
-      label = rlang::quos(lbl),
-      row_grp_plan_label_loc = "indented"
-    ),
-    ""
-  )
-
   expect_snapshot(
     create_stub_head(
       col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
@@ -252,16 +245,6 @@ test_that("create_stub_head() works", {
       label = rlang::quos(lbl),
       row_grp_plan_label_loc = "column"
     )
-  )
-
-  expect_identical(
-    create_stub_head(
-      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
-      group = rlang::quos(grp2),
-      label = rlang::quos(lbl),
-      row_grp_plan_label_loc = "column"
-    ),
-    c("", "")
   )
 })
 
