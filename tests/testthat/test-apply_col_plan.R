@@ -148,6 +148,24 @@ test_that("create_stub_head() works", {
     ),
     c("Group2", "Label")
   )
+
+  expect_snapshot(
+    create_stub_head(
+      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
+      group = rlang::quos(grp2),
+      label = rlang::quos(lbl),
+      row_grp_plan_label_loc = "indented"
+    )
+  )
+
+  expect_snapshot(
+    create_stub_head(
+      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
+      group = rlang::quos(grp2),
+      label = rlang::quos(lbl),
+      row_grp_plan_label_loc = "column"
+    )
+  )
 })
 
 test_that("apply_col_plan() works", {
@@ -225,26 +243,6 @@ test_that("apply_col_plan() group and label vars are excluded from renaming", {
   expect_identical(
     processed_df1,
     dplyr::select(df1, -ord)
-  )
-})
-
-test_that("create_stub_head() works", {
-  expect_snapshot(
-    create_stub_head(
-      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
-      group = rlang::quos(grp2),
-      label = rlang::quos(lbl),
-      row_grp_plan_label_loc = "indented"
-    )
-  )
-
-  expect_snapshot(
-    create_stub_head(
-      col_plan_vars = rlang::quos(-ord, grp2, lbl, `1`),
-      group = rlang::quos(grp2),
-      label = rlang::quos(lbl),
-      row_grp_plan_label_loc = "column"
-    )
   )
 })
 
