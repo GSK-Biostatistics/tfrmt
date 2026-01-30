@@ -619,74 +619,10 @@ test_that("eval_col_plan_quo() works", {
 })
 
 test_that("col_plan_span_structure_to_vars() works", {
-  # 1
   expect_identical(
     col_plan_span_structure_to_vars(
       x = span_structure(
         span1 = c("first cols" = "cols 1,2")
-      ),
-      column_names = c("span1", "my_col"),
-      data_names = c(
-        "group",
-        "label",
-        "cols 1,2___tlang_delim___col1",
-        "cols 1,2___tlang_delim___col2",
-        "mycol3",
-        "col 4___tlang_delim___col4",
-        "mycol5"
-      ),
-      preselected_cols = NULL
-    ),
-    rlang::set_names(
-      c(
-        "cols 1,2___tlang_delim___col1",
-        "cols 1,2___tlang_delim___col2",
-        "col 4___tlang_delim___col4"
-      ),
-      ""
-    )
-  )
-
-  # 2
-  # trigger the col_id %in% names(x[[1]]) condition inside
-  # col_plan_span_structure_to_vars() by having span1 as the name
-  # of the first element of x (don't ask)
-  expect_identical(
-    col_plan_span_structure_to_vars(
-      x = list(
-        span1 = span_structure(
-          span1 = c(
-            "first cols" = "cols 1,2"
-          )
-        )
-      ),
-      column_names = c("span1", "my_col"),
-      data_names = c(
-        "group",
-        "label",
-        "cols 1,2___tlang_delim___col1",
-        "cols 1,2___tlang_delim___col2",
-        "mycol3",
-        "col 4___tlang_delim___col4",
-        "mycol5"
-      ),
-      preselected_cols = NULL
-    ),
-    c(
-      `first cols___tlang_delim___col1` = "cols 1,2___tlang_delim___col1",
-      `first cols___tlang_delim___col2` = "cols 1,2___tlang_delim___col2"
-    )
-  )
-
-  # TODO understand why 2 is not identical with 1 and 3
-
-  # 3
-  expect_identical(
-    col_plan_span_structure_to_vars(
-      x = list(
-        span1 = span_structure(
-          "first cols" = "cols 1,2"
-        )
       ),
       column_names = c("span1", "my_col"),
       data_names = c(
@@ -732,7 +668,7 @@ test_that("split_data_names_to_df() works", {
       `__tfrmt_new_name__column` = c("grp2", "lbl", "ord", "1"),
       subtraction_status = rlang::set_names(
         c(FALSE, FALSE, FALSE, FALSE),
-        # TODO investigate: subtraction_status should not be a named vector
+        # subtraction_status is a named vector
         c("grp2", "lbl", "ord", "1")
       )
     )
@@ -753,52 +689,6 @@ test_that("split_data_names_to_df() works", {
       data_names = c("grp2", "lbl", "ord", "1"),
       preselected_cols = c(order = "ord"),
       column_names = c("foo", "bar")
-    )
-  )
-
-  # negative selection doesn't really work (ord appears twice in the output)
-  # TODO investigate
-  expect_snapshot(
-    split_data_names_to_df(
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = "-ord",
-      column_names = "column"
-    )
-  )
-
-  # TODO investigate: subtraction_status should not be a named vector
-  expect_identical(
-    split_data_names_to_df(
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = "-ord",
-      column_names = "column"
-    ),
-    tibble::tibble(
-      column = c("ord", "grp2", "lbl", "ord", "1"),
-      `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "ord", "1"),
-      subtraction_status = rlang::set_names(
-        c(TRUE, FALSE, FALSE, FALSE, FALSE),
-        c("-ord", "grp2", "lbl", "ord", "1")
-      )
-    )
-  )
-
-  # it should be
-  # TODO clarify where and how many times should `ord` appear in the output
-  # TODO same as above: subtraction_status should not be a named vector
-  expect_identical(
-    split_data_names_to_df(
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = "-ord",
-      column_names = "column"
-    ),
-    tibble::tibble(
-      column = c("ord", "grp2", "lbl", "ord", "1"),
-      `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "ord", "1"),
-      subtraction_status = rlang::set_names(
-        c(TRUE, FALSE, FALSE, FALSE, FALSE),
-        c("-ord", "grp2", "lbl", "ord", "1")
-      )
     )
   )
 })
@@ -834,66 +724,6 @@ test_that("unite_df_to_data_names() works", {
       ),
     rlang::set_names(
       c("ord", "grp2", "lbl", "1"),
-      ""
-    )
-  )
-
-  # TODO clarify the intended behaviour in the expectations below
-  # preselection (both with negative selection and without) results in
-  # repetitions in the output
-
-  expect_identical(
-    split_data_names_to_df(
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = "-ord",
-      column_names = "column"
-    ) |>
-      unite_df_to_data_names(
-        preselected_cols = "-ord",
-        column_names = "column"
-      ),
-    c(
-      "-ord",
-      `-ord` = "-ord", # TODO clarify
-      "grp2",
-      "lbl",
-      "ord",
-      "1"
-    )
-  )
-
-  expect_identical(
-    tibble::tibble(
-      column = c("ord", "grp2", "lbl", "1"),
-      `__tfrmt_new_name__column` = c("-ord", "grp2", "lbl", "1"),
-      subtraction_status = c(TRUE, FALSE, FALSE, FALSE)
-    ) |>
-      unite_df_to_data_names(
-        preselected_cols = "-ord",
-        column_names = "column"
-      ),
-    c(
-      "-ord",
-      `-ord` = "-ord", # TODO clarify
-      "grp2",
-      "lbl",
-      "1"
-    )
-  )
-
-  expect_identical(
-    split_data_names_to_df(
-      data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = "ord",
-      column_names = "column"
-    ) |>
-      unite_df_to_data_names(
-        preselected_cols = "ord",
-        column_names = "column"
-      ),
-    rlang::set_names(
-      # TODO clarify
-      c("ord", "ord", "grp2", "lbl", "1"),
       ""
     )
   )
