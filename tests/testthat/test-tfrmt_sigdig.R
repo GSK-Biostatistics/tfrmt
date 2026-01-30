@@ -333,3 +333,45 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt",{
   expect_equal(new_tfrmt$label, quo(group2), ignore_attr = TRUE)
 
 })
+
+
+
+test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan", {
+
+  # Setup minimal input data
+  sig_input <- tibble::tribble(
+    ~group1,     ~group2,   ~sigdig,
+    "CHEMISTRY", ".default", 3,
+    "CHEMISTRY",   "ALBUMIN",  1,
+    "CHEMISTRY",   "CALCIUM",   1,
+    ".default",  ".default", 2
+  )
+
+  #  Define the missing string we want to see
+  target_missing <- "MISSING_DATA"
+
+  #  Create the tfrmt object
+  my_tfrmt <- tfrmt_sigdig(
+    sigdig_df = sig_input,
+    group = vars(group1, group2),
+    param_defaults = param_set("[{n}]" = NA),
+    missing = target_missing
+  )
+
+  bp <- my_tfrmt$body_plan
+
+  for (i in seq_along(bp)) {
+    current_frmt_obj <- bp[[i]]$frmt_to_apply
+
+    for (param_name in names(current_frmt_obj)) {
+
+      actual_missing <- current_frmt_obj[[param_name]]$missing
+
+      expect_equal(
+        actual_missing,
+        target_missing,
+        label = paste0("Structure ", i, ", Param '", param_name, "' has incorrect missing value")
+      )
+    }
+  }
+})
