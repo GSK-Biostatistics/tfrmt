@@ -294,7 +294,13 @@ char_as_quo <- function(x) {
   eval(parse(text = expr_to_eval)[[1]])
 }
 
+
+#' Evaluate a `col_plan` quosure
+#'
+#' @param x a (single) quosure to evaluate
 #' @importFrom rlang quo_get_expr as_label is_empty
+#'
+#' @noRd
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
   if(identical(as_label(x), "everything()") & !default_everything_behavior){

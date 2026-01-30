@@ -3,5 +3,5 @@
     Code
       out <- print_mock_gt(plan, data)
     Message
-      Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+      Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 
