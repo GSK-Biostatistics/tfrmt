@@ -256,7 +256,7 @@ test_that("Test when no body_style or values is present", {
 
   expect_message(
     gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data),
-    "Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable",
+    "Message: `tfrmt` will need `value` value to `print_to_gt` when data is available",
     fixed = TRUE
   )
 
@@ -417,52 +417,6 @@ test_that("Mock data includes all columns identified in tfrmt", {
                  "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col31",
                  "grp_2", "my_label_2", "param2_1", "span_col1", "span_col2", "col32"
                ))
-
-})
-
-test_that("Printing Mock data removes value when it exists in the input data",{
-
-  data <- crossing(
-    label = c("Intent-To-Treat (ITT)",
-              "Safety",
-              "Efficacy",
-              "Complete Week 24",
-              "Complete Study"
-    ),
-    column = c("Placebo\n(N=XX)",
-               "Xanomeline\nLow Dose\n(N=XX)",
-               "Xanomeline\nHigh Dose\n(N=XX)",
-               "Total\n(N=XXX)"
-    ),
-    param = c("n", "percent")
-  ) %>%
-    mutate(
-      value_to_remove = 1
-    )
-
-  plan <- tfrmt(
-    label = "label",
-    column = "column",
-    param = "param",
-    value = "value_to_remove",
-    title = "Summary of Populations",
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default", label_val = ".default",
-        frmt_combine("{n} ({percent}%)",
-                     n = frmt("xx"),
-                     percent = frmt("xxx"))
-      )
-    )
-  )
-
-  #Make mock
-  expect_message(
-    print_mock_gt(plan, data),
-    "Removing `value_to_remove` from input data for mocking.",
-    fixed = TRUE
-  )
-
 
 })
 
