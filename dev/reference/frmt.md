@@ -14,7 +14,7 @@ a single cell in the table. Each of the rows needs to have a defined
 
 `frmt_when()` is used when a rows format behaviour is dependent on the
 value itself and is written similarly to
-[`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case_when.html).
+[`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html).
 The left hand side of the equation is a `"TRUE"`for the default case or
 the right hand side of a boolean expression `">50"`.
 
@@ -89,7 +89,7 @@ frmt object
 
 - `frmt_when()`accepts a series of equations separated by commas,
   similar to
-  [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case_when.html).
+  [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html).
   The left hand side of the equation is a `"TRUE"`for the default case
   or the right hand side of a boolean expression `">50"`. The right hand
   side of the equation is the `frmt()` to apply when the left side

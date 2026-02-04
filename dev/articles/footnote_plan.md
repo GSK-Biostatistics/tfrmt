@@ -75,7 +75,7 @@ tfrmt(
   ),
 ) |>
   print_mock_gt(df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]
@@ -118,7 +118,7 @@ tfrmt(
   ),
 ) |>
   print_mock_gt(df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]
@@ -155,7 +155,7 @@ tfrmt(
   ),
 ) |>
   print_mock_gt(df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]
@@ -192,7 +192,7 @@ tfrmt(
   ),
 ) |>
   print_mock_gt(df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]
@@ -240,7 +240,7 @@ tfrmt(
   )
 ) |>
   print_mock_gt(span_df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]
@@ -291,7 +291,7 @@ tfrmt(
   )
 ) |>
   print_mock_gt(span_df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]

@@ -90,7 +90,7 @@ function.
 ``` r
 # Print table
 print_mock_gt(tfrmt_spec)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]
@@ -140,7 +140,7 @@ changed.
 ``` r
 # Print table
 print_mock_gt(tfrmt_spec, df)
-#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable
+#> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
 [TABLE]

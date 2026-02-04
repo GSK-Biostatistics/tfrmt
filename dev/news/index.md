@@ -1,5 +1,7 @@
 # Changelog
 
+## tfrmt (development version)
+
 ## tfrmt 0.3.0
 
 CRAN release: 2026-01-24
@@ -23,14 +25,17 @@ CRAN release: 2026-01-24
 CRAN release: 2025-10-04
 
 Patch release for latest {gt} release and upcoming {purrr} and {stringr}
-releases: \* Ensure `rowname_col = NULL` in
-[`gt()`](https://gt.rstudio.com/reference/gt.html) within
-[`print_to_gt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/print_to_gt.md)
-if no row label exists. \* Use of `seq_along(x)` in lieu of
-`1:length(x)` prior to `str_replace()` as it no longer accepts NA
-patterns. \* Ensure values are character before processing via
-[`map_chr()`](https://purrr.tidyverse.org/reference/map.html) as it no
-longer coerces to character.
+releases:
+
+- Ensure `rowname_col = NULL` in
+  [`gt()`](https://gt.rstudio.com/reference/gt.html) within
+  [`print_to_gt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/print_to_gt.md)
+  if no row label exists.
+- Use of `seq_along(x)` in lieu of `1:length(x)` prior to
+  `str_replace()` as it no longer accepts NA patterns.
+- Ensure values are character before processing via
+  [`map_chr()`](https://purrr.tidyverse.org/reference/map.html) as it no
+  longer coerces to character.
 
 ## tfrmt 0.2.0
 

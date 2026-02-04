@@ -90,7 +90,7 @@ and missing behaviour.</p>
 <p><code>frmt_combine()</code> is used when two or more rows need to be combined into a
 single cell in the table. Each of the rows needs to have a defined <code>frmt()</code>
 and need to share a label.</p>
-<p><code>frmt_when()</code> is used when a rows format behaviour is dependent on the value itself and is written similarly to <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">dplyr::case_when()</a></code>.
+<p><code>frmt_when()</code> is used when a rows format behaviour is dependent on the value itself and is written similarly to <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">dplyr::case_when()</a></code>.
 The left hand side of the equation is a <code>"TRUE"</code>for the default case or the right hand side of a boolean expression <code>"&gt;50"</code>.</p>
     </div>
 
@@ -164,7 +164,7 @@ empty.</p></li>
 <li><p><code>frmt_combine()</code> accepts named arguments defining the <code>frmt()</code> to
 be applied to which parameters before being combined.</p></li>
 <li><p><code>frmt_when()</code>accepts a series of equations separated by commas, similar
-to <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">dplyr::case_when()</a></code>. The left hand side of the equation is a <code>"TRUE"</code>for the
+to <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">dplyr::case_when()</a></code>. The left hand side of the equation is a <code>"TRUE"</code>for the
 default case or the right hand side of a boolean expression <code>"&gt;50"</code>. The
 right hand side of the equation is the <code>frmt()</code> to apply when the left
 side evaluates to <code>TRUE</code>.</p></li>

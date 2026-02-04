@@ -133,7 +133,7 @@ extended (set of 6 distinct symbols)
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># This one is used for examples 5 and 6</span></span>
-<span><span class="va">span_df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span><span class="va">span_df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>span <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>  <span class="va">column</span> <span class="op">==</span> <span class="st">"PL"</span> <span class="op">~</span> <span class="st">"Placebo"</span>,</span>
 <span>  <span class="va">column</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span>, <span class="st">"T1&amp;T2"</span><span class="op">)</span> <span class="op">==</span> <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Treatment"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -173,7 +173,7 @@ extended (set of 6 distinct symbols)
 <span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is available</span></span></code></pre></div>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -743,7 +743,7 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is available</span></span></code></pre></div>
 <div id="afbsnayore" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#afbsnayore table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1305,7 +1305,7 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is available</span></span></code></pre></div>
 <div id="mrewkadgwx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mrewkadgwx table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1863,7 +1863,7 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  <span class="op">)</span>,</span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is available</span></span></code></pre></div>
 <div id="vuzjcdmfnb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#vuzjcdmfnb table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2431,7 +2431,7 @@ table, and the RHS is the column header name you have selected (“T1”,
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">span_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is available</span></span></code></pre></div>
 <div id="grzauzbiyk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#grzauzbiyk table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -3012,7 +3012,7 @@ your column variable.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/print_mock_gt.html">print_mock_gt</a></span><span class="op">(</span><span class="va">span_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable</span></span></code></pre></div>
+<span><span class="co">#&gt; Message: `tfrmt` will need `value` value to `print_to_gt` when data is available</span></span></code></pre></div>
 <div id="zxcqaipjjk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#zxcqaipjjk table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
