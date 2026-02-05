@@ -333,3 +333,40 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt",{
   expect_equal(new_tfrmt$label, quo(group2), ignore_attr = TRUE)
 
 })
+
+
+test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan", {
+
+  # Setup minimal input data
+  sig_input <- tibble::tribble(
+    ~group1,   ~sigdig,
+    "CHEM",    1
+  )
+
+  target_missing <- "MISSING_DATA"
+
+  # Create the tfrmt via tfrmt_sigdig
+  my_tfrmt <- tfrmt_sigdig(
+    sigdig_df = sig_input,
+    group = group1,
+    param_defaults = param_set(),
+    missing = target_missing
+  )
+
+  bp_actual <- my_tfrmt$body_plan
+
+  # Manually construct the expected body_plan
+  bp_man <- body_plan(
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), min = frmt('x.xx', missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), max = frmt('x.xx', missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), median = frmt('x.xx', missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"),
+                   frmt_combine('{mean} ({sd})',
+                                mean = frmt('x.xx', missing = target_missing),
+                                sd = frmt('x.xxx', missing = target_missing),
+                                missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), n = frmt('x', missing = target_missing))
+  )
+
+  expect_equal(bp_actual, bp_man)
+})
