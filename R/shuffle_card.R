@@ -87,20 +87,18 @@ shuffle_card <- function(x,
   # process the data/variable info
   dat_cards_grps_processed <- dat_cards |>
     dplyr::mutate(
-      dplyr::across(
-        c(
-          cards::all_ard_groups("levels"),
-          cards::all_ard_variables("levels")
-        ),
-        ~ lapply(., \(x) if (!is.null(x)) as.character(x))
-      ),
       stat_variable = .data$variable
     ) |>
+    cards::rename_ard_columns(
+      fill='..cards_overall..') |>
+    cards::unlist_ard_columns(
+      columns = c(cards::all_ard_groups(), cards::all_ard_variables()),
+      fct_as_chr = TRUE,
+    )|>
     dplyr::relocate(
       "stat_variable",
       .after = "context"
     ) |>
-    cards::rename_ard_columns(fill = "..cards_overall..") |>
     dplyr::select(
       -tidyselect::any_of(
         c("..ard_total_n..", "..ard_hierarchical_overall..")
