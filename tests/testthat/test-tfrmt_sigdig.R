@@ -335,43 +335,38 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt",{
 })
 
 
-
 test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan", {
 
   # Setup minimal input data
   sig_input <- tibble::tribble(
-    ~group1,     ~group2,   ~sigdig,
-    "CHEMISTRY", ".default", 3,
-    "CHEMISTRY",   "ALBUMIN",  1,
-    "CHEMISTRY",   "CALCIUM",   1,
-    ".default",  ".default", 2
+    ~group1,   ~sigdig,
+    "CHEM",    1
   )
 
-  #  Define the missing string we want to see
   target_missing <- "MISSING_DATA"
 
-  #  Create the tfrmt object
+  # Create the tfrmt via tfrmt_sigdig
   my_tfrmt <- tfrmt_sigdig(
     sigdig_df = sig_input,
-    group = vars(group1, group2),
-    param_defaults = param_set("[{n}]" = NA),
+    group = group1,
+    param_defaults = param_set(),
     missing = target_missing
   )
 
-  bp <- my_tfrmt$body_plan
+  bp_actual <- my_tfrmt$body_plan
 
-  for (i in seq_along(bp)) {
-    current_frmt_obj <- bp[[i]]$frmt_to_apply
+  # Manually construct the expected body_plan
+  bp_man <- body_plan(
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), min = frmt('x.xx', missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), max = frmt('x.xx', missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), median = frmt('x.xx', missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"),
+                   frmt_combine('{mean} ({sd})',
+                                mean = frmt('x.xx', missing = target_missing),
+                                sd = frmt('x.xxx', missing = target_missing),
+                                missing = target_missing)),
+    frmt_structure(group_val = list(group1 = "CHEM"), label_val = c(".default"), n = frmt('x', missing = target_missing))
+  )
 
-    for (param_name in names(current_frmt_obj)) {
-
-      actual_missing <- current_frmt_obj[[param_name]]$missing
-
-      expect_equal(
-        actual_missing,
-        target_missing,
-        label = paste0("Structure ", i, ", Param '", param_name, "' has incorrect missing value")
-      )
-    }
-  }
+  expect_equal(bp_actual, bp_man)
 })
