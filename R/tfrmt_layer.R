@@ -278,3 +278,44 @@ append_update_group_message <- function(e, x, y){
 
   e
 }
+
+#' Reset or Remove a Component from a tfrmt Object
+#'
+#' This utility function allows users to remove a specific component (e.g., `body_plan`,
+#' `row_grp_plan`, `col_plan`) from a `tfrmt` object by setting it to `NULL`.
+#'
+#' @param tfrmt_obj A `tfrmt` object to be modified.
+#' @param component_name A character string specifying the name of the component
+#'   to reset/remove (e.g., "body_plan").
+#'
+#' @return A modified `tfrmt` object with the specified component removed.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   my_tfrmt <- tfrmt(column = "col1", label = "label1")
+#'   # Remove the column component
+#'   reset_tfrmt <- reset_component(my_tfrmt, "column")
+#' }
+reset_component <- function(tfrmt_obj, component_name) {
+  # Validate inputs
+  # check for class attribute
+  if (!inherits(tfrmt_obj, "tfrmt")) {
+    stop("The input object must be of class 'tfrmt'.")
+  }
+  if (!is.character(component_name) || length(component_name) != 1) {
+    stop("The component name must be a single string.")
+  }
+
+  # Check if the specified component exists in the list
+  if (!component_name %in% names(tfrmt_obj)) {
+    stop(paste0("component '", component_name, "' does not exist in the tfrmt object."))
+  }
+
+  # Reset the specified component by setting it to NULL
+  tfrmt_obj[[component_name]] <- NULL
+
+  # Return the modified tfrmt object
+  return(tfrmt_obj)
+}
