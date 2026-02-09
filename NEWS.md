@@ -1,5 +1,8 @@
 # tfrmt (development version)
 
+## Bug fixes
+* Fix bug in `tfrmt_sigdig` so it correctly passes the 'missing' argument to the body_plan (#621, @alanahjonas95).
+
 # tfrmt 0.3.0
 
 ## Improvements
