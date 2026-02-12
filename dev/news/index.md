@@ -2,6 +2,13 @@
 
 ## tfrmt (development version)
 
+### Bug fixes
+
+- Fix bug in `tfrmt_sigdig` so it correctly passes the ‘missing’
+  argument to the body_plan
+  ([\#621](https://github.com/GSK-Biostatistics/tfrmt/issues/621),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+
 ## tfrmt 0.3.0
 
 CRAN release: 2026-01-24
