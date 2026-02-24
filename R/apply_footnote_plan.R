@@ -7,7 +7,7 @@
 #' @return gt object
 #' @noRd
 #'
-#' @importFrom gt tab_footnote md opt_footnote_marks
+#' @importFrom gt tab_footnote md opt_footnote_marks tab_options
 apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
   if(is.null(tfrmt$footnote_plan)){
     gt
@@ -24,7 +24,8 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
 
     }
     gt %>%
-      opt_footnote_marks(marks = tfrmt$footnote_plan$marks )
+      opt_footnote_marks(marks = tfrmt$footnote_plan$marks ) %>%
+      tab_options(footnotes.order = tfrmt$footnote_plan$order)
 
   }
 }

@@ -93,7 +93,7 @@ test_that("applying footnote plan",{
 
   gt2<- apply_footnote_plan(gt_start,tfrmt2,list(list(col=NULL,spanning=FALSE,note="Source Note")))
 
-  expect_equal(gt2$`_source_notes`,list("Source Note"))
+  expect_equal(gt2$`_footnotes`$footnotes,list("Source Note"))
 
   # column footnote ##################################################################
 
@@ -290,9 +290,9 @@ test_that("applying footnote plan",{
 
 
 
-test_that("Footnotes appear in the order defined in the footnote_plan", {
+test_that("Check footnote order option works as expected", {
 
-  # 1. Define the tfrmt with specific footnote order
+  #default preserve_order
   tfrmt_ord <- tfrmt(
     label = label,
     column = column,
@@ -316,25 +316,60 @@ test_that("Footnotes appear in the order defined in the footnote_plan", {
       footnote_structure("BMI: Body Mass Index"),
       footnote_structure("Placebo drug + standard of care", column_val = "column2"),
       footnote_structure("Source Note"),
+      footnote_structure("label_1 footnote",  label_val="label_1"),
       marks = "numbers"
     )
   )
 
-  # 2. Generate the gt object
-  gt_out <- print_mock_gt(tfrmt_ord) #|>
-    #tab_options(footnotes.order="preserve.order")
+  gt_out <- print_mock_gt(tfrmt_ord)
 
-  # 3. Extract footnote text from the gt object internals
-  actual_footnotes <- gt_out$`_footnotes`$footnotes
+  current_order_opt <- gt_out[["_options"]][["value"]][[1]]
+  expect_equal(current_order_opt, "preserve_order")
 
-  # 4. Define expected order
-  expected_order <- c(
+  #check the footnotes are all printed
+  actual_fns <- gt_out$`_footnotes`$footnotes
+
+  expected_fns <- c(
     "BMI: Body Mass Index",
     "Placebo drug + standard of care",
-    "Source Note"
+    "Source Note",
+    "label_1 footnote"
   )
 
-  # 5. Assertions
-  expect_length(actual_footnotes, 3)
-  expect_equal(as.character(actual_footnotes), expected_order)
+  expect_equal(as.character(actual_fns), expected_fns)
+
+  #check marks first
+  tfrmt_ord <- tfrmt_ord |>
+    tfrmt(
+    footnote_plan = footnote_plan(
+      footnote_structure("BMI: Body Mass Index"),
+      footnote_structure("Placebo drug + standard of care", column_val = "column2"),
+      footnote_structure("Source Note"),
+      footnote_structure("label_1 footnote",  label_val="label_1"),
+      marks = "numbers",
+      order = "marks_first"
+    )
+  )
+
+  gt_out <- print_mock_gt(tfrmt_ord)
+  current_order_opt <- gt_out[["_options"]][["value"]][[1]]
+  expect_equal(current_order_opt, "marks_first")
+
+  # check marks last
+  tfrmt_ord <- tfrmt_ord |>
+    tfrmt(
+      footnote_plan = footnote_plan(
+        footnote_structure("BMI: Body Mass Index"),
+        footnote_structure("Placebo drug + standard of care", column_val = "column2"),
+        footnote_structure("Source Note"),
+        footnote_structure("label_1 footnote",  label_val="label_1"),
+        marks = "numbers",
+        order = "marks_last"
+      )
+    )
+
+  gt_out <- print_mock_gt(tfrmt_ord)
+  current_order_opt <- gt_out[["_options"]][["value"]][[1]]
+  expect_equal(current_order_opt, "marks_last")
+
 })

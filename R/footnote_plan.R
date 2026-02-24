@@ -8,6 +8,9 @@
 #'   tab_footnote in 'gt'. Available options are "numbers", "letters",
 #'   "standard" and "extended" (standard for a traditional set of 4 symbols,
 #'   extended for 6 symbols). The default option is set to "numbers".
+#' @param order how to order footnotes in the footer. Options are "preserve_order" (default),
+#'   "marks_first" (anchored notes appear first), or "marks_last" (general notes appear first).
+#'
 #'
 #' @return footnote plan object
 #' @export
@@ -16,20 +19,32 @@
 #'
 #' # Adds a footnote indicated by letters rather than numbers to Group 1
 #' footnote_plan <- footnote_plan(
-#'     footnote_structure(footnote_text = "Source Note", group_val = "Group 1"),
-#'     marks="letters")
+#'     footnote_structure(footnote_text = "footnote", group_val = "Group 1"),
+#'     marks = "letters")
 #'
 #' # Adds a footnote to the 'Placebo' column
 #' footnote_plan <- footnote_plan(
 #'     footnote_structure(footnote_text = "footnote", column_val = "Placebo"),
-#'     marks="numbers")
+#'     marks = "numbers")
 #'
-footnote_plan <- function(...,marks=c("numbers","letters","standard","extended")){
+#' # Preserve order of footnotes
+#' footnote_plan <- footnote_plan(
+#'     footnote_structure(footnote_text = "footnote 1", group_val = "Group 1"),
+#'     footnote_structure(footnote_text = "footnote 2", column_val = "Placebo"),
+#'     order = "preserve_order")
+#'
+footnote_plan <- function(...,
+                          marks = c("numbers","letters","standard","extended"),
+                          order = c("preserve_order", "marks_first", "marks_last")){
   footnote_structure_list <- list(...)
   marks = match.arg(marks)
+  order = match.arg(order)
 
   structure(
-    list(struct_list=footnote_structure_list, marks=marks),
+    list(
+      struct_list = footnote_structure_list,
+      marks = marks,
+      order = order),
     class = c("footnote_plan", "plan")
   )
 }
