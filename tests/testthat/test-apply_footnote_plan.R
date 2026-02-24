@@ -287,3 +287,54 @@ test_that("applying footnote plan",{
   gt7<- apply_footnote_plan(gt_start,tfrmt7,list(list(col="rowlbl1",spanning=FALSE,row=1,note="Test foontote")))
   expect_equal(nrow(gt7$`_footnotes`),1)
 })
+
+
+
+test_that("Footnotes appear in the order defined in the footnote_plan", {
+
+  # 1. Define the tfrmt with specific footnote order
+  tfrmt_ord <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{count} {percent}",
+          count = frmt("xxx"),
+          percent = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("(xx.x%)")
+          )
+        )
+      )
+    ),
+    footnote_plan = footnote_plan(
+      footnote_structure("BMI: Body Mass Index"),
+      footnote_structure("Placebo drug + standard of care", column_val = "column2"),
+      footnote_structure("Source Note"),
+      marks = "numbers"
+    )
+  )
+
+  # 2. Generate the gt object
+  gt_out <- print_mock_gt(tfrmt_ord) #|>
+    #tab_options(footnotes.order="preserve.order")
+
+  # 3. Extract footnote text from the gt object internals
+  actual_footnotes <- gt_out$`_footnotes`$footnotes
+
+  # 4. Define expected order
+  expected_order <- c(
+    "BMI: Body Mass Index",
+    "Placebo drug + standard of care",
+    "Source Note"
+  )
+
+  # 5. Assertions
+  expect_length(actual_footnotes, 3)
+  expect_equal(as.character(actual_footnotes), expected_order)
+})

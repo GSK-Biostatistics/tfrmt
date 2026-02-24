@@ -15,7 +15,7 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
     for (i in 1:length(tfrmt$footnote_plan$struct_list)) {
 
       gt <- gt %>%
-        apply_source_note(footnote_loc[[i]]) %>%
+        apply_general_footnote(footnote_loc[[i]]) %>%
         apply_cells_column_labels(footnote_loc[[i]]) %>%
         apply_cells_column_spanners(footnote_loc[[i]]) %>%
         apply_cells_stub(tfrmt,footnote_loc[[i]]) %>%
@@ -26,25 +26,24 @@ apply_footnote_plan <- function(gt, tfrmt,footnote_loc){
     gt %>%
       opt_footnote_marks(marks = tfrmt$footnote_plan$marks )
 
-
-
   }
 }
 
 
-#' Apply Source Note
+#' Apply footnote
 #'
-#' @param gt gt object  to potentially add a source note to
-#' @param loc  list containing source note text
+#' @param gt gt object  to potentially add a footnote to
+#' @param loc  list containing footnote text
 #'
 #' @return gt object
 #' @noRd
 #'
-#' @importFrom gt tab_source_note
-apply_source_note <- function(gt,loc){
+#' @importFrom gt tab_footnote
+apply_general_footnote <- function(gt,loc){
   if(length(loc$row)==0 && length(loc$col)==0){
     gt <- gt %>%
-      tab_source_note(loc$note)
+      tab_footnote(
+        footnote =loc$note)
 
 
   }
