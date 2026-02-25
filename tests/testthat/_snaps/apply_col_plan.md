@@ -223,18 +223,3 @@
       3 <NA>  lbl   <NA>                    lbl                     FALSE             
       4 <NA>  1     <NA>                    1                       FALSE             
 
----
-
-    Code
-      split_data_names_to_df(data_names = c("grp2", "lbl", "ord", "1"),
-      preselected_cols = "-ord", column_names = "column")
-    Output
-      # A tibble: 5 x 3
-        column `__tfrmt_new_name__column` subtraction_status
-        <chr>  <chr>                      <lgl>             
-      1 ord    -ord                       TRUE              
-      2 grp2   grp2                       FALSE             
-      3 lbl    lbl                        FALSE             
-      4 ord    ord                        FALSE             
-      5 1      1                          FALSE             
-
