@@ -187,7 +187,7 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws){
 #' @keywords internal
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead
+#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead tab_source_note
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
   existing_grp <- tfrmt$group %>%
