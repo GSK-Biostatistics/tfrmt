@@ -44,6 +44,8 @@
   : Layer tfrmt objects together
 - [`update_group()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/update_group.md)
   : Remap group values in a tfrmt
+- [`reset_component()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/reset_component.md)
+  : Reset or Remove a Component from a tfrmt Object
 
 ## Print/Export
 

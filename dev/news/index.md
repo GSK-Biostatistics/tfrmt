@@ -9,6 +9,14 @@
   ([\#621](https://github.com/GSK-Biostatistics/tfrmt/issues/621),
   [@alanahjonas95](https://github.com/alanahjonas95)).
 
+### Improvements
+
+- [`footnote_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/footnote_plan.md)
+  receives a new argument, `order`, allowing users to specify the order
+  of footnotes
+  ([\#605](https://github.com/GSK-Biostatistics/tfrmt/issues/605),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+
 ## tfrmt 0.3.0
 
 CRAN release: 2026-01-24
