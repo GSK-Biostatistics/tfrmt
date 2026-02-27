@@ -93,7 +93,7 @@ test_that("applying footnote plan",{
 
   gt2<- apply_footnote_plan(gt_start,tfrmt2,list(list(col=NULL,spanning=FALSE,note="Source Note")))
 
-  expect_equal(gt2$`_source_notes`,list("Source Note"))
+  expect_equal(gt2$`_footnotes`$footnotes,list("Source Note"))
 
   # column footnote ##################################################################
 
@@ -286,4 +286,90 @@ test_that("applying footnote plan",{
 
   gt7<- apply_footnote_plan(gt_start,tfrmt7,list(list(col="rowlbl1",spanning=FALSE,row=1,note="Test foontote")))
   expect_equal(nrow(gt7$`_footnotes`),1)
+})
+
+
+
+test_that("Check footnote order option works as expected", {
+
+  #default marks_first
+  tfrmt_ord <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+          "{count} {percent}",
+          count = frmt("xxx"),
+          percent = frmt_when(
+            "==100" ~ frmt(""),
+            "==0" ~ "",
+            "TRUE" ~ frmt("(xx.x%)")
+          )
+        )
+      )
+    ),
+    footnote_plan = footnote_plan(
+      footnote_structure("BMI: Body Mass Index"),
+      footnote_structure("Placebo drug + standard of care", column_val = "column2"),
+      footnote_structure("Source Note"),
+      footnote_structure("label_1 footnote",  label_val="label_1"),
+      marks = "numbers"
+    )
+  )
+
+  gt_out <- print_mock_gt(tfrmt_ord)
+
+  current_order_opt <- gt_out[["_options"]][["value"]][[1]]
+  expect_equal(current_order_opt, "marks_first")
+
+  #check the footnotes are all printed
+  actual_fns <- gt_out$`_footnotes`$footnotes
+
+  expected_fns <- c(
+    "BMI: Body Mass Index",
+    "Placebo drug + standard of care",
+    "Source Note",
+    "label_1 footnote"
+  )
+
+  expect_equal(as.character(actual_fns), expected_fns)
+
+  #check preserve_order
+  tfrmt_ord <- tfrmt_ord |>
+    tfrmt(
+    footnote_plan = footnote_plan(
+      footnote_structure("BMI: Body Mass Index"),
+      footnote_structure("Placebo drug + standard of care", column_val = "column2"),
+      footnote_structure("Source Note"),
+      footnote_structure("label_1 footnote",  label_val="label_1"),
+      marks = "numbers",
+      order = "preserve_order"
+    )
+  )
+
+  gt_out <- print_mock_gt(tfrmt_ord)
+  current_order_opt <- gt_out[["_options"]][["value"]][[1]]
+  expect_equal(current_order_opt, "preserve_order")
+
+  # check marks last
+  tfrmt_ord <- tfrmt_ord |>
+    tfrmt(
+      footnote_plan = footnote_plan(
+        footnote_structure("BMI: Body Mass Index"),
+        footnote_structure("Placebo drug + standard of care", column_val = "column2"),
+        footnote_structure("Source Note"),
+        footnote_structure("label_1 footnote",  label_val="label_1"),
+        marks = "numbers",
+        order = "marks_last"
+      )
+    )
+
+  gt_out <- print_mock_gt(tfrmt_ord)
+  current_order_opt <- gt_out[["_options"]][["value"]][[1]]
+  expect_equal(current_order_opt, "marks_last")
+
 })

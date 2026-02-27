@@ -350,7 +350,10 @@ ls_to_footnote_plan <- function(ls){
 
       })
 
-    do.call(footnote_plan, c(struct_ls, list(marks = unlist(ls$marks))))
+    do.call(footnote_plan, c(struct_ls, list(
+      marks = unlist(ls$marks),
+      order = unlist(ls$order)
+      )))
   }
 }
 

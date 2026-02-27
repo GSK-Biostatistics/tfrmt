@@ -464,7 +464,8 @@
               "footnote_text": ["Placebo"]
             }
           ],
-          "marks": ["standard"]
+          "marks": ["standard"],
+          "order": ["marks_first"]
         }
       } 
 
@@ -490,7 +491,8 @@
               "footnote_text": ["All Treatments"]
             }
           ],
-          "marks": ["numbers"]
+          "marks": ["numbers"],
+          "order": ["marks_first"]
         }
       } 
 
@@ -514,7 +516,8 @@
               "footnote_text": ["Footnote goes here"]
             }
           ],
-          "marks": ["numbers"]
+          "marks": ["numbers"],
+          "order": ["marks_first"]
         }
       } 
 
@@ -541,7 +544,8 @@
               "footnote_text": ["Footnote goes here"]
             }
           ],
-          "marks": ["numbers"]
+          "marks": ["numbers"],
+          "order": ["marks_first"]
         }
       } 
 
