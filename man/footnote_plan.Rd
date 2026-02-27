@@ -7,7 +7,7 @@
 footnote_plan(
   ...,
   marks = c("numbers", "letters", "standard", "extended"),
-  order = c("preserve_order", "marks_first", "marks_last")
+  order = c("marks_first", "preserve_order", "marks_last")
 )
 }
 \arguments{
@@ -18,8 +18,8 @@ tab_footnote in 'gt'. Available options are "numbers", "letters",
 "standard" and "extended" (standard for a traditional set of 4 symbols,
 extended for 6 symbols). The default option is set to "numbers".}
 
-\item{order}{how to order footnotes in the footer. Options are "preserve_order" (default),
-"marks_first" (anchored notes appear first), or "marks_last" (general notes appear first).}
+\item{order}{how to order footnotes in the footer. Options are "marks_first" (anchored notes appear first, default),
+"preserve_order" or "marks_last" (general notes appear first).}
 }
 \value{
 footnote plan object
@@ -44,6 +44,6 @@ footnote_plan <- footnote_plan(
 footnote_plan <- footnote_plan(
     footnote_structure(footnote_text = "footnote 1", group_val = "Group 1"),
     footnote_structure(footnote_text = "footnote 2", column_val = "Placebo"),
-    order = "preserve_order")
+    order = "marks_first")
 
 }
