@@ -141,7 +141,7 @@ test_that("test tentative_process",{
     stop("this function failed")
     paste0(x,y)
   }
-  
+
   rlang_abort_func <- function(x,y = "value"){
     rlang::abort("this function failed2")
     paste0(x,y)
@@ -156,19 +156,19 @@ test_that("test tentative_process",{
   passing_func_messages <- capture_messages({
     tentative_process("x",passing_func)
   })
-  
+
   expect_true(is_empty(passing_func_messages))
   expect_equal(
     passing_func_messages,
     character()
   )
-  
+
   ## function failing in tentative process
   expect_equal(
     suppressMessages(tentative_process("x",failing_func)),
     "x"
   )
-  
+
   failing_func_messages <- capture_messages({
     tentative_process("x",failing_func)
   })
@@ -178,21 +178,136 @@ test_that("test tentative_process",{
     failing_func_messages,
     "Unable to to apply failing_func.\nReason: this function failed\n"
   )
-  
+
   ## function failing in tentative process
   expect_equal(
     suppressMessages(tentative_process("x",rlang_abort_func)),
     "x"
   )
-  
+
   rlang_abort_func_messages <- capture_messages({
     tentative_process("x",rlang_abort_func)
   })
-  
+
   expect_true(!is_empty(rlang_abort_func_messages))
   expect_equal(
     rlang_abort_func_messages,
     "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"
   )
-  
+
+})
+
+test_that("check_order_vars() messages when order variables cause mismatching rows", {
+  test_data <- tibble::tibble(
+    param = c("N", "N", "n", "n", "pct", "pct"),
+    value = c(111, 222, 11, 22, 11, 22),
+    order1 = c(NA, NA, 1, 1, 1, 1),
+    order2 = c(NA, NA, 1, 2, 1, 2),
+    order3 = c(1, 2, NA, NA, NA, NA),
+    label = c(
+      "Training set",
+      "Training set",
+      "Sex, n(%)",
+      "Sex, n(%)",
+      "Sex, n(%)",
+      "Sex, n(%)"
+    ),
+    column = c(
+      "Test",
+      "Train",
+      "Test",
+      "Train",
+      "Test",
+      "Train"
+    )
+  )
+
+  tfrmt_plan <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(
+      order1,
+      order2,
+      order3
+    ),
+    col_plan = col_plan(
+      -order1,
+      -order2,
+      -order3
+    )
+  )
+
+  expect_snapshot(
+    check_order_vars(
+      test_data,
+      tfrmt_plan
+    )
+  )
+
+  test_data2 <- test_data |>
+    dplyr::bind_rows(test_data) |>
+    dplyr::mutate(
+      group = c(
+        rep("group1", 6),
+        rep("group2", 6)
+      )
+    )
+
+  tfrmt_plan2 <- tfrmt(
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(
+      order1,
+      order2,
+      order3
+    ),
+    col_plan = col_plan(
+      -order1,
+      -order2,
+      -order3
+    )
+  )
+
+  expect_snapshot(
+    check_order_vars(
+      test_data2,
+      tfrmt_plan2
+    )
+  )
+
+  test_data3 <- tibble::tibble(
+    param = c("N", "N", "n", "n", "pct", "pct"),
+    value = c(111, 222, 11, 22, 11, 22),
+    order1 = c(NA, NA, 1, 1, 1, 1),
+    order2 = c(NA, NA, 1, 1, 1, 1),
+    order3 = c(1, 1, NA, NA, NA, NA),
+    label = c(
+      "Training set",
+      "Training set",
+      "Sex, n(%)",
+      "Sex, n(%)",
+      "Sex, n(%)",
+      "Sex, n(%)"
+    ),
+    column = c(
+      "Test",
+      "Train",
+      "Test",
+      "Train",
+      "Test",
+      "Train"
+    )
+  )
+
+  expect_no_message(
+    check_order_vars(
+      test_data3,
+      tfrmt_plan
+    )
+  )
 })

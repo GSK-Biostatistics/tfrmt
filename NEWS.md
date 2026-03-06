@@ -1,3 +1,11 @@
+# tfrmt (development version)
+
+## Bug fixes
+* Fix bug in `tfrmt_sigdig` so it correctly passes the 'missing' argument to the body_plan (#621, @alanahjonas95).
+
+## Improvements
+* `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
+
 # tfrmt 0.3.0
 
 ## Improvements
@@ -8,6 +16,7 @@
 # tfrmt 0.2.1
 
 Patch release for latest {gt} release and upcoming {purrr} and {stringr} releases:
+
   * Ensure `rowname_col = NULL` in `gt()` within `print_to_gt()` if no row label exists.
   * Use of `seq_along(x)` in lieu of `1:length(x)` prior to `str_replace()` as it no longer accepts NA patterns.
   * Ensure values are character before processing via `map_chr()` as it no longer coerces to character.

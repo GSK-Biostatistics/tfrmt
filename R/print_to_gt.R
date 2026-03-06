@@ -57,16 +57,16 @@ print_mock_gt <- function(tfrmt,
 
   # fill param, column if not provided
   if (quo_is_missing(tfrmt$param)){
-    message("`tfrmt` will need a `param` value to `print_to_gt` when data is avaliable")
+    message("`tfrmt` will need a `param` value to `print_to_gt` when data is available")
     tfrmt$param <- quo(!!sym("__tfrmt__param"))
   }
   if (is_empty(tfrmt$column)){
-    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is avaliable")
+    message("`tfrmt` will need `column` value(s) to `print_to_gt` when data is available")
     tfrmt$column <- vars(!!sym("__tfrmt__column"))
   }
 
   if(quo_is_missing(tfrmt$value)){
-    message("Message: `tfrmt` will need `value` value to `print_to_gt` when data is avaliable")
+    message("Message: `tfrmt` will need `value` value to `print_to_gt` when data is available")
     tfrmt$value <- quo(!!sym("__tfrmt__val"))
   }
 
@@ -141,7 +141,7 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
   }
 
   if(!is.data.frame(.data)){
-    stop("Requires data, if not avaliable please use `print_mock_gt()`")
+    stop("Requires data, if not available please use `print_mock_gt()`")
   }
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     cleaned_data_to_gt(tfrmt, .unicode_ws)
@@ -187,7 +187,7 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws){
 #' @keywords internal
 #' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
 #'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead
+#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead tab_source_note
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
 
   existing_grp <- tfrmt$group %>%
