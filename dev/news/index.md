@@ -16,6 +16,8 @@
   of footnotes
   ([\#605](https://github.com/GSK-Biostatistics/tfrmt/issues/605),
   [@alanahjonas95](https://github.com/alanahjonas95)).
+- Add markdown processing of stub column labels
+  ([\#617](https://github.com/GSK-Biostatistics/tfrmt/issues/617))
 
 ## tfrmt 0.3.0
 
