@@ -23,8 +23,7 @@ test_that("insert post space - single grouping variable",{
       "B",  " ",  " ", " ", " ",
       "C",  "3",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",  " ",  " ", " ", " ",
-      "D",  "4",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "D",  " ",  " ", " ", " "
+      "D",  "4",  "xx (xx%)", "xx (xx%)", "xx (xx%)"
     ))
 
 
@@ -42,8 +41,7 @@ test_that("insert post space - single grouping variable",{
       "B", " ", " ", " ", " ",
       "C", "3", "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C", " ", " ", " ", " ",
-      "D", "4", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "D", " ", " ", " ", " ",
+      "D", "4", "xx (xx%)", "xx (xx%)", "xx (xx%)"
     ))
 
 })
@@ -81,8 +79,7 @@ test_that("insert post space - two grouping variables",{
       "C",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "C",  "a",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
       "C",  "b",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
-      "C",  "b",   " ", " " ," ", " ",
+      "C",  "b",   "2", "xx (xx%)" ,"xx (xx%)", "xx (xx%)"
     ))
 
   # grouping var not referenced - assumed NULL
@@ -210,8 +207,7 @@ test_that("overlapping row_grp_structures - prefers latest",{
       "B",     "b", " ",   " ", " ", " ",
       "C",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",     "a", " ",   " ", " ", " ",
-      "C",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "b", " ",   " ", " ", " ",
+      "C",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)"
     ) )
 
 })
@@ -268,8 +264,7 @@ test_that("post space is truncated to data width",{
       "B",  "--------", "--------",  "--------",
       "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "C",  "--------", "--------",  "--------",
-      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
-      "D",  "--------", "--------",  "--------"))
+      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)"))
 })
 
 
@@ -297,8 +292,7 @@ test_that("do not recycle the post space for full width",{
       "B",  "--"      , "--"      ,  "--"      ,
       "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
       "C",  "--"      , "--"      ,  "--"      ,
-      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
-      "D",  "--"      , "--"      ,  "--"      ))
+      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)"))
 })
 
 test_that("post space works when data contains NAs",{
@@ -326,8 +320,7 @@ test_that("post space works when data contains NAs",{
       "B",  "--------", "--------",  "--------", "-",
       "C",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", "b",
       "C",  "--------", "--------",  "--------", "-",
-      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", NA,
-      "D",  "--------", "--------",  "--------", "-"))
+      "D",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", NA))
 })
 
 test_that("Check combine_group_cols with a single group", {
@@ -487,8 +480,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
     "grp1_2", "grp2_1", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
     "grp1_2", "grp2_1", " ", " ", " ", " ",
     "grp1_2", "grp2_2", "my_label_1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)",
-    "grp1_2", "grp2_2", " ", " ", " ", " "
+    "grp1_2", "grp2_2", "my_label_2", "xx (xx%)", "xx (xx%)", "xx (xx%)"
   ) %>%
     mutate(across(trtA:trtC, ~as.list(.x)))
 
