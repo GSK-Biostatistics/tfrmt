@@ -5,6 +5,7 @@
 
 ## Improvements
 * `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
+* Add markdown processing of stub column labels (#617)
 
 # tfrmt 0.3.0
 
