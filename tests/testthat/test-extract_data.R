@@ -122,3 +122,76 @@ test_that("extract_data throws an error for invalid inputs", {
   expect_error(extract_data(iris), "Input must be a 'gt_tbl' or 'gt_group' object")
   expect_error(extract_data(NULL), "Input must be a 'gt_tbl' or 'gt_group' object")
 })
+
+test_that("extract_data works for a table with bigN values", {
+data <- tibble::tibble(
+    Group = c("N", "N", "N", rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12))),
+    Label = c("N", "N", "N", rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6))),
+    Column = c("Placebo", "Treatment", "Total", rep(c("Placebo", "Treatment", "Total"), times = 8)),
+    Param = c("bigN", "bigN", "bigN", rep(c("n", "mean", "sd", "n", "pct", "n", "pct"), c(6, 3, 3, 3, 3, 3, 3))),
+    Value = c(30, 40, 60, 15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
+              8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27)
+  ) |>
+    dplyr::mutate(
+      Value = dplyr::case_when(
+        Param == "pct" ~ Value * 100,
+        TRUE ~ Value
+      ),
+      ord1 = dplyr::if_else(Param == "bigN", 0, 1),
+      ord2 = dplyr::if_else(Param == "bigN", 0, 1)
+    )
+
+
+bign <- tfrmt(
+    group = Group,
+    label = Label,
+    column = Column,
+    value = Value,
+    param = Param,
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine("{n} {pct}",
+                     n = frmt("X"),
+                     pct = frmt("(xx.x%)", missing = " ")
+        )
+      ),
+      frmt_structure(
+        group_val = "Age (y)", label_val = "Mean (SD)",
+        frmt_combine("{mean} ({sd})",
+                     mean = frmt("XX.X"),
+                     sd = frmt("x.xx")
+        )
+      ),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+    ),
+    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+    ),
+    big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
+  ) |>
+    print_to_gt(data)
+
+
+extracted<-extract_data(bign)
+manual <- bign[["_data"]]
+
+#check expected data is equal to manual extraction
+expect_s3_class(extracted, "data.frame")
+expect_equal(extracted, manual)
+expect_true(nrow(extracted) > 0)
+
+#check that the bigns are present in the column names of extracted data
+column_labels <- colnames(extracted)
+
+# Define big N values
+expected_patterns <- c("N = 30", "N = 40", "N = 60")
+
+# Assert that the labels contain your expected strings
+expect_true(any(grepl("N = 30", column_labels)))
+expect_true(any(grepl("N = 40", column_labels)))
+expect_true(any(grepl("N = 60", column_labels)))
+})
