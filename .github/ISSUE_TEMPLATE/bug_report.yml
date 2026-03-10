@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Do not use this form to ask a question, or ask for assistance. Instead, ask on <https://stackoverflow.com/> using the `r-cards` tag.
+        Do not use this form to ask a question, or ask for assistance.
   - type: textarea
     id: what-happened
     attributes:
