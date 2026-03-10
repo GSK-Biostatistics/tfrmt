@@ -4,14 +4,14 @@
 \alias{extract_data}
 \title{Extract underlying data from tfrmt output}
 \usage{
-extract_data(obj)
+extract_data(x)
 }
 \arguments{
-\item{obj}{A \code{gt_tbl} or \code{gt_group} object (usually the output of \code{print_to_gt()}).}
+\item{x}{A \code{gt_tbl} or \code{gt_group} object (usually the output of \code{print_to_gt()}).}
 }
 \value{
 If \code{gt_tbl}, a single data frame. If \code{gt_group}, a list of data frames
-(one per page).
+(one per table).
 }
 \description{
 Following a call to \code{print_to_gt}, this function extracts the underlying
