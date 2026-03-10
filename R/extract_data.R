@@ -5,7 +5,7 @@
 #'
 #' @param obj A `gt_tbl` or `gt_group` object (usually the output of `print_to_gt()`).
 #' @return If `gt_tbl`, a single data frame. If `gt_group`, a list of data frames
-#'   (one per page).
+#'   (one per table).
 #' @importFrom purrr map
 #' @export
 extract_data <- function(obj) {
