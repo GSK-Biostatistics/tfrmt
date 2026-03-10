@@ -3,23 +3,23 @@
 #' Following a call to `print_to_gt`, this function extracts the underlying
 #' data frame(s) from the resulting `gt` or `gt_group` object
 #'
-#' @param obj A `gt_tbl` or `gt_group` object (usually the output of `print_to_gt()`).
+#' @param x A `gt_tbl` or `gt_group` object (usually the output of `print_to_gt()`).
 #' @return If `gt_tbl`, a single data frame. If `gt_group`, a list of data frames
 #'   (one per table).
 #' @importFrom purrr map
 #' @export
-extract_data <- function(obj) {
+extract_data <- function(x) {
 
   #  single gt table
-  if (inherits(obj, "gt_tbl")) {
-    return(obj[["_data"]])
+  if (inherits(x, "gt_tbl")) {
+    return(x[["_data"]])
   }
 
   #  Grouped gt object (created when using `page_plan`)
-  if (inherits(obj, "gt_group")) {
+  if (inherits(x, "gt_group")) {
 
     # Extract the internal list of gt_tbl objects
-    tbl_list <- obj$gt_tbls$gt_tbl
+    tbl_list <- x$gt_tbls$gt_tbl
 
     # Map over the list to pull the '_data' slot from each page
     extracted_list <- map(tbl_list, ~ .x[["_data"]])
