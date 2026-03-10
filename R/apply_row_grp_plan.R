@@ -74,7 +74,6 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
       )
     )
 
-
   # apply group block function to data subsets
   add_ln_df <- map2_dfr(dat_plus_block$data,
                         dat_plus_block$TEMP_block_to_apply,
@@ -87,8 +86,10 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
                                             element_block = y,
                                             widths = dat_max_widths)
                           }
-                        }) |>
-    arrange(across(tidyselect::any_of(map_chr(group, as_name))))
+                        }) %>%
+    #arrange(across(tidyselect::any_of(map_chr(group, as_name))))
+    arrange(.data$TEMP_row)
+
 
   # Identify the last row index
   last_row_idx <- last(add_ln_df$TEMP_row)
@@ -97,7 +98,8 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     add_ln_df <- add_ln_df %>% slice(-n())
   }
 
-  add_ln_df %>% select(-"TEMP_row")
+  add_ln_df %>%
+    select(-"TEMP_row")
 
 }
 
