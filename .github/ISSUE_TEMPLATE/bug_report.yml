@@ -10,7 +10,7 @@ body:
     id: what-happened
     attributes:
       label: What happened?
-      description: INCLUDE a *minimal* reproducible example (AKA a reprex). If you've never heard of a [reprex](https://reprex.tidyverse.org/) before, start by reading <https://www.tidyverse.org/help/#reprex>. It'll take minutes to master creating a reprex.
+      description: Include a *minimal* [reproducible example](https://www.tidyverse.org/help/) as well as a call to sessionInfo(). 
       placeholder: Tell us what you see!
       value: "Brief description of the problem."
     validations:
