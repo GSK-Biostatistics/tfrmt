@@ -86,15 +86,9 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
                                             widths = dat_max_widths)
                           }
                         }) %>%
-    #arrange(across(tidyselect::any_of(map_chr(group, as_name))))
-    arrange(.data$TEMP_row)
-
-  # Identify the last row index
-  last_row_idx <- last(add_ln_df$TEMP_row)
-
-  if (!is.null(last_row_idx) && (last_row_idx %% 1 != 0)) {
-    add_ln_df <- add_ln_df %>% slice(-n())
-  }
+    arrange(.data$TEMP_row) %>%
+    mutate(..tfrmt_post_space_row = case_when(TEMP_row %% 1 != 0 ~ TRUE,
+                                              TRUE ~ FALSE))
 
   add_ln_df %>%
     select(-"TEMP_row")
