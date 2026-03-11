@@ -1130,3 +1130,42 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     )
   )
 })
+
+test_that("page_plan handles empty string groups without Index 1 error", {
+
+  df <- tibble::tribble(
+    ~ grp, ~ lbl, ~ prm, ~ trt,
+    ""   , "summ", "n"  , 22,
+    "A"  , "a"   , "n"  , 22,
+    "A"  , "b"   , "n"  , 11,
+    "B"  , "a"   , "n"  , 24,
+    "B"  , "b"   , "n"  , 55
+  ) %>%
+    pivot_longer(trt, names_to = "column", values_to = "value")
+
+  mytfrmt <- tfrmt(
+    group = "grp",
+    label = "lbl",
+    param = "prm",
+    column = "column",
+    value = "value",
+    body_plan = body_plan(
+      frmt_structure(group_val=".default", label_val=".default", frmt("xx"))
+    ),
+    row_grp_plan = row_grp_plan(
+      row_grp_structure(group_val = ".default", element_block(post_space = " "))
+    ),
+    page_plan = page_plan(max_rows = 4)
+  )
+
+  # confirm "Unable to apply apply_page_plan" message doesnt appears
+  expect_no_error({
+    expect_no_warning({
+      expect_silent({
+        result <- print_to_gt(mytfrmt, df)
+      })
+    })
+  })
+
+  expect_s3_class(result, "gt_group")
+})
