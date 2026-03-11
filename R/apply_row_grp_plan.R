@@ -14,7 +14,6 @@
 apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
   # Locate which groups need which formatting
   # determine which rows each block applies to
-
   .data <- .data %>%
     mutate(TEMP_row = row_number())
 
@@ -90,7 +89,6 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     #arrange(across(tidyselect::any_of(map_chr(group, as_name))))
     arrange(.data$TEMP_row)
 
-
   # Identify the last row index
   last_row_idx <- last(add_ln_df$TEMP_row)
 
@@ -133,8 +131,8 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
   if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint", "column")){
     add_ln_df <- .data
   } else{
-    #  combine any grouping columns that need combining into label
-    add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
+  #  combine any grouping columns that need combining into label
+  add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
                                               label,
                                               element_row_grp_loc)
 
