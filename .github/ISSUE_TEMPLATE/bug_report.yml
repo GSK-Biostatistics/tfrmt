@@ -2,10 +2,6 @@ name: Bug Report
 description: File a bug report.
 title: 'Bug Report: <Describe bug>'
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Do not use this form to ask a question, or ask for assistance.
   - type: textarea
     id: what-happened
     attributes:
