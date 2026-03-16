@@ -2,10 +2,6 @@ name: ✨ Feature Request
 description: Request or propose a new feature
 title: 'Feature Request: <Description>'
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Do not use this form to ask a question, or ask for assistance.
   - type: textarea
     id: feature
     attributes:
