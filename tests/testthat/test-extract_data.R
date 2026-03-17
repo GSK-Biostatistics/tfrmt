@@ -195,3 +195,99 @@ expect_true(any(grepl("N = 30", column_labels)))
 expect_true(any(grepl("N = 40", column_labels)))
 expect_true(any(grepl("N = 60", column_labels)))
 })
+
+test_that("extract_data handles various spanning header depths", {
+  data <- tibble::tribble(
+    ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
+    "g1", "rowlabel1", "column cols", "cols 1,2", "col1", "value", 1,
+    "g1", "rowlabel1", "column cols", "cols 1,2", "col2", "value", 1,
+    "g1", "rowlabel1", NA, NA, "mycol3", "value", 1,
+    "g1", "rowlabel1", "column cols", "col 4", "col4", "value", 1,
+    "g1", "rowlabel1", NA, NA, "mycol5", "value", 1,
+    "g1", "rowlabel2", "column cols", "cols 1,2", "col1", "value", 2,
+    "g1", "rowlabel2", "column cols", "cols 1,2", "col2", "value", 2,
+    "g1", "rowlabel2", NA, NA, "mycol3", "value", 2,
+    "g1", "rowlabel2", "column cols", "col 4", "col4", "value", 2,
+    "g1", "rowlabel2", NA, NA, "mycol5", "value", 2,
+    "g2", "rowlabel3", "column cols", "cols 1,2", "col1", "value", 3,
+    "g2", "rowlabel3", "column cols", "cols 1,2", "col2", "value", 3,
+    "g2", "rowlabel3", NA, NA, "mycol3", "value", 3,
+    "g2", "rowlabel3", "column cols", "col 4", "col4", "value", 3,
+    "g2", "rowlabel3", NA, NA, "mycol5", "value", 3,
+  )
+
+  # 2 layers of spanning headers
+  spanning_tfrmt <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    col_plan = col_plan(
+      group,
+      label,
+      starts_with("col")
+    )
+  )|> print_to_gt(data)
+
+
+  res_layer <- extract_data(spanning_tfrmt, col_delim="_")
+
+  expect_contains(colnames(res_layer), "column cols_______cols 1,2_______col1")
+  expect_contains(colnames(res_layer), "column cols_______col 4_______col4")
+
+  # 1 layer of spanning headers
+  data2 <- data |>
+       select(-span2)
+
+  spanning_tfrmt2 <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span1, my_col),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    col_plan = col_plan(
+      group,
+      label,
+      starts_with("col")
+    )
+  )|> print_to_gt(data2)
+
+  res_layer2 <- extract_data(spanning_tfrmt2, col_delim="_")
+
+  expect_contains(colnames(res_layer2), "cols 1,2_______col1")
+  expect_contains(colnames(res_layer2), "col 4_______col4")
+
+  # 1 layer with page plan
+
+  spanning_tfrmt_page <- tfrmt(
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span1, my_col),
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
+    ),
+    col_plan = col_plan(
+      group,
+      label,
+      starts_with("col")
+    ),
+    page_plan = page_plan(
+      max_rows = 3
+    )
+  )|> print_to_gt(data2)
+
+  res_layer_page <- extract_data(spanning_tfrmt_page, col_delim="_")
+
+  expect_contains(colnames(res_layer_page[[1]]), "cols 1,2_______col1")
+  expect_contains(colnames(res_layer_page[[1]]), "col 4_______col4")
+
+})

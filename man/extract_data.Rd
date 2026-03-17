@@ -4,16 +4,18 @@
 \alias{extract_data}
 \title{Extract underlying data from tfrmt output}
 \usage{
-extract_data(x)
+extract_data(x, col_delim = NULL)
 }
 \arguments{
 \item{x}{A \code{gt_tbl} or \code{gt_group} object (usually the output of \code{print_to_gt()}).}
+
+\item{col_delim}{Character string to replace the internal "tlang_delim"
+separator in column names. Defaults to NULL (no replacement).}
 }
 \value{
-If \code{gt_tbl}, a single data frame. If \code{gt_group}, a list of data frames
-(one per table).
+If \code{gt_tbl}, a single data frame. If \code{gt_group}, a list of data frames.
 }
 \description{
 Following a call to \code{print_to_gt}, this function extracts the underlying
-data frame(s) from the resulting \code{gt} or \code{gt_group} object
+data frame(s) from the resulting \code{gt} or \code{gt_group} object.
 }
