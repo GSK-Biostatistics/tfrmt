@@ -5,17 +5,17 @@
 #'
 #' @param x A `gt_tbl` or `gt_group` object (usually the output of `print_to_gt()`).
 #' @param col_delim Character string to replace the internal "tlang_delim"
-#'   separator in column names. Defaults to NULL (no replacement).
+#'   separator in column names only for tables with spanning headers. Defaults to NULL (no replacement).
 #' @return If `gt_tbl`, a single data frame. If `gt_group`, a list of data frames.
 #' @importFrom purrr map
 #' @export
 extract_data <- function(x, col_delim = NULL) {
 
-  # Internal helper to clean names
+  # helper to clean names
   clean_names <- function(df, delim) {
     if (!is.null(delim)) {
       # Replace the internal tlang_delim pattern with user preference
-      colnames(df) <- gsub("tlang_delim", delim, colnames(df))
+      colnames(df) <- gsub("___tlang_delim___", delim, colnames(df))
     }
     return(df)
   }

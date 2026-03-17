@@ -236,8 +236,8 @@ test_that("extract_data handles various spanning header depths", {
 
   res_layer <- extract_data(spanning_tfrmt, col_delim="_")
 
-  expect_contains(colnames(res_layer), "column cols_______cols 1,2_______col1")
-  expect_contains(colnames(res_layer), "column cols_______col 4_______col4")
+  expect_contains(colnames(res_layer), "column cols_cols 1,2_col1")
+  expect_contains(colnames(res_layer), "column cols_col 4_col4")
 
   # 1 layer of spanning headers
   data2 <- data |>
@@ -261,8 +261,8 @@ test_that("extract_data handles various spanning header depths", {
 
   res_layer2 <- extract_data(spanning_tfrmt2, col_delim="_")
 
-  expect_contains(colnames(res_layer2), "cols 1,2_______col1")
-  expect_contains(colnames(res_layer2), "col 4_______col4")
+  expect_contains(colnames(res_layer2), "cols 1,2_col1")
+  expect_contains(colnames(res_layer2), "col 4_col4")
 
   # 1 layer with page plan
 
@@ -287,7 +287,7 @@ test_that("extract_data handles various spanning header depths", {
 
   res_layer_page <- extract_data(spanning_tfrmt_page, col_delim="_")
 
-  expect_contains(colnames(res_layer_page[[1]]), "cols 1,2_______col1")
-  expect_contains(colnames(res_layer_page[[1]]), "col 4_______col4")
+  expect_contains(colnames(res_layer_page[[1]]), "cols 1,2_col1")
+  expect_contains(colnames(res_layer_page[[1]]), "col 4_col4")
 
 })
