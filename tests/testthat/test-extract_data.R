@@ -29,8 +29,7 @@ tfrmt_dem <- tfrmt(
   # remove extra cols
   col_plan = col_plan(
     -grp,
-    -starts_with("ord")
-  )
+    -starts_with("ord"))
   )|>
   print_to_gt(data_demog_test)
 
@@ -40,9 +39,56 @@ tfrmt_data_manual <- tfrmt_dem[["_data"]]
 expect_s3_class(tfrmt_data_extracted, "data.frame")
 expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
 expect_true(nrow(tfrmt_data_extracted) > 0)
+
+
 })
 
+test_that("extract_data extracts updated names changed in the col_plan", {
 
+  data_demog_test <- data_demog |>
+    filter(rowlbl1 %in% c("Age (y)" , "Sex"),
+           column != "p-value")
+
+  tfrmt_dem <- tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1, grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    # specify value formatting
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when(
+                                                                                    "==100" ~ "",
+                                                                                    "==0" ~ "",
+                                                                                    TRUE ~ frmt("(xx.x %)")
+                                                                                  )
+      )),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
+      frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
+      frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx"))
+    ),
+    # remove extra cols
+    col_plan = col_plan(
+      -grp,
+      -starts_with("ord"),
+      PLACEBO = Placebo,
+      TOTAL = Total,
+      `XANOMELINE LOW DOSE` = `Xanomeline Low Dose`)
+  )|>
+    print_to_gt(data_demog_test)
+
+  tfrmt_data_extracted <- extract_data(tfrmt_dem)
+  tfrmt_data_manual <- tfrmt_dem[["_data"]]
+
+  expect_s3_class(tfrmt_data_extracted, "data.frame")
+  expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+  expect_true(nrow(tfrmt_data_extracted) > 0)
+
+})
 
 test_that("extract_data works for a gt_group object (paged tables)", {
 
