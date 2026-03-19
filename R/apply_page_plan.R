@@ -59,7 +59,9 @@ apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_labe
   group_cols <- map_chr(group, rlang::as_label)
 
   .data <- .data %>%
-    mutate(across(all_of(group_cols), ~if_else(.x == "", " ", .x))) %>%
+    mutate(across(all_of(group_cols), \(x) {
+      if (is.character(x)) if_else(x == "", " ", x) else x
+    })) %>%
     mutate(TEMP_row = row_number())
 
   # determine # of rows to be added for the group during row grp lbl formatting
