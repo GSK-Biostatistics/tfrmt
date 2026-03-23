@@ -87,9 +87,12 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
                           }
                         }) %>%
     arrange(.data$TEMP_row) %>%
+    mutate(..tfrmt_post_space_row = case_when(TEMP_row %% 1 != 0 ~ TRUE,
+                                              TRUE ~ FALSE)) %>%
     select(-"TEMP_row")
 
   add_ln_df
+
 }
 
 
@@ -122,10 +125,10 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
   if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint", "column")){
     add_ln_df <- .data
   } else{
-      #  combine any grouping columns that need combining into label
-      add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
-                                                label,
-                                                element_row_grp_loc)
+  #  combine any grouping columns that need combining into label
+  add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
+                                              label,
+                                              element_row_grp_loc)
 
   }
   add_ln_df
