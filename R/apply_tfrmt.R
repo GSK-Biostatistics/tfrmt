@@ -120,6 +120,27 @@ apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, stub_header
   }
 }
 
+#' Remove trailing post-space rows and helper column
+#' @param .data processed wide tbl
+#' @noRd
+apply_post_space_trim <- function(.data) {
+
+  target_col <- "..tfrmt_post_space_row"
+
+  if (target_col %in% names(.data)) {
+    # If the very last row was tagged as a spacer, drop it
+    if (isTRUE(last(.data[[target_col]]))) {
+      .data <- .data %>%
+        dplyr::slice(-dplyr::n())
+    }
+    # Always drop the helper column before returning
+    .data <- .data %>%
+      dplyr::select(-dplyr::all_of(target_col))
+  }
+
+  .data
+}
+
 #' Processing to apply to each table
 #'
 #' @param tfrmt tfrmt object
@@ -173,22 +194,11 @@ apply_tfrmt_subtable <- function(tfrmt, .data, col_plan_vars, stub_header, big_n
       tfrmt$row_grp_plan$label_loc,
       tfrmt$group,
       tfrmt$label
+    ) %>%
+    tentative_process(
+      apply_post_space_trim,
+      fail_desc = "Unable to trim trailing spacer rows"
     )
-
-  # Check if the tfrmt_post_space_row column exists AND if the last value is TRUE
-  if ("..tfrmt_post_space_row" %in% names(tbl_dat_wide_processed) &&
-      isTRUE(last(tbl_dat_wide_processed$..tfrmt_post_space_row))) {
-
-    #  Remove the last row
-    tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
-      slice(-n())
-  }
-
-  # remove ..tfrmt_post_space_row column
-  if ("..tfrmt_post_space_row" %in% names(tbl_dat_wide_processed)) {
-  tbl_dat_wide_processed <- tbl_dat_wide_processed %>%
-    select(-..tfrmt_post_space_row)
-  }
 
     structure(
       tbl_dat_wide_processed,
