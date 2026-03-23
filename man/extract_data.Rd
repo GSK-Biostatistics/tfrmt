@@ -4,13 +4,13 @@
 \alias{extract_data}
 \title{Extract underlying data from tfrmt output}
 \usage{
-extract_data(x, col_delim = NULL)
+extract_data(x, col_delim = "_")
 }
 \arguments{
 \item{x}{A \code{gt_tbl} or \code{gt_group} object (usually the output of \code{print_to_gt()}).}
 
 \item{col_delim}{Character string to replace the internal "tlang_delim"
-separator in column names only for tables with spanning headers. Defaults to NULL (no replacement).}
+separator in column names only for tables with spanning headers. Defaults to "_".}
 }
 \value{
 If \code{gt_tbl}, a single data frame. If \code{gt_group}, a list of data frames.
