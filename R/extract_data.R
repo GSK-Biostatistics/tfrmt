@@ -4,17 +4,20 @@
 #'
 #' @param df A data frame.
 #' @param delim Character string to replace the internal "tlang_delim".
+#' @importFrom dplyr select starts_with rename_with
+#' @importFrom stringr str_replace_all
+#' @importFrom tidyselect everything
 #' @return A data frame with updated column names.
 #' @noRd
-clean_names <- function(df, delim) {
-  #  Drop internal tfrmt columns (starting with ..tfrmt)
-  df <- df[, !grepl("^\\.\\.tfrmt", colnames(df)), drop = FALSE]
-
-  if (!is.null(delim)) {
-    # Replace the internal tlang_delim pattern with user preference
-    colnames(df) <- gsub("___tlang_delim___", delim, colnames(df))
-  }
-  return(df)
+clean_data <- function(df, delim) {
+  df %>%
+    # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
+    select(-starts_with("..tfrmt")) %>%
+    # Replace the internal tlang_delim pattern in column names
+    rename_with(
+      ~ str_replace_all(.x, "___tlang_delim___", delim),
+      .cols = everything()
+    )
 }
 
 
@@ -33,7 +36,7 @@ extract_data <- function(x, col_delim = "_") {
 
   # Single gt table
   if (inherits(x, "gt_tbl")) {
-    return(clean_names(x[["_data"]], col_delim))
+    return(clean_data(x[["_data"]], col_delim))
   }
 
   # Grouped gt object (created when using `page_plan`)
@@ -43,7 +46,7 @@ extract_data <- function(x, col_delim = "_") {
     tbl_list <- x$gt_tbls$gt_tbl
 
     # Map over the list to pull the '_data' slot and clean names
-    extracted_list <- map(tbl_list, ~ clean_names(.x[["_data"]], col_delim))
+    extracted_list <- map(tbl_list, ~ clean_data(.x[["_data"]], col_delim))
 
     return(extracted_list)
   }
