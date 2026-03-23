@@ -34,7 +34,8 @@ tfrmt_dem <- tfrmt(
   print_to_gt(data_demog_test)
 
 tfrmt_data_extracted <- extract_data(tfrmt_dem)
-tfrmt_data_manual <- tfrmt_dem[["_data"]]
+tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
+                      select(-`..tfrmt_row_grp_lbl`)
 
 expect_s3_class(tfrmt_data_extracted, "data.frame")
 expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
@@ -82,7 +83,8 @@ test_that("extract_data extracts updated names changed in the col_plan", {
     print_to_gt(data_demog_test)
 
   tfrmt_data_extracted <- extract_data(tfrmt_dem)
-  tfrmt_data_manual <- tfrmt_dem[["_data"]]
+  tfrmt_data_manual <- tfrmt_dem[["_data"]]|>
+    select(-`..tfrmt_row_grp_lbl`)
 
   expect_s3_class(tfrmt_data_extracted, "data.frame")
   expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
@@ -153,7 +155,8 @@ tfrmt_paged <- tfrmt(
 
 #  Extract using function vs manual (using purrr::map)
 gt_group_data_extracted <- extract_data(tfrmt_paged)
-gt_group_manual <- purrr::map(tfrmt_paged$gt_tbls$gt_tbl, ~ .x[["_data"]])
+gt_group_manual <- purrr::map(tfrmt_paged$gt_tbls$gt_tbl, ~ .x[["_data"]]%>%
+                                select(-starts_with("..tfrmt")))
 
 #  Assertions
 expect_type(gt_group_data_extracted, "list")
@@ -223,7 +226,8 @@ bign <- tfrmt(
 
 
 extracted<-extract_data(bign)
-manual <- bign[["_data"]]
+manual <- bign[["_data"]]|>
+  select(-`..tfrmt_row_grp_lbl`)
 
 #check expected data is equal to manual extraction
 expect_s3_class(extracted, "data.frame")
@@ -280,10 +284,15 @@ test_that("extract_data handles various spanning header depths", {
   )|> print_to_gt(data)
 
 
-  res_layer <- extract_data(spanning_tfrmt, col_delim="_")
+  res_layer <- extract_data(spanning_tfrmt)
 
   expect_contains(colnames(res_layer), "column cols_cols 1,2_col1")
   expect_contains(colnames(res_layer), "column cols_col 4_col4")
+
+  res_layer2 <- extract_data(spanning_tfrmt, col_delim="/")
+
+  expect_contains(colnames(res_layer2), "column cols/cols 1,2/col1")
+  expect_contains(colnames(res_layer2), "column cols/col 4/col4")
 
   # 1 layer of spanning headers
   data2 <- data |>
