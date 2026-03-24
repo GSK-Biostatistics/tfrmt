@@ -4,12 +4,48 @@
 #'
 #' @param df A data frame.
 #' @param delim Character string to replace the internal "tlang_delim".
-#' @importFrom dplyr select starts_with rename_with
+#' @param stubhead The _stubhead slot from the gt object.
+#' @importFrom dplyr select starts_with rename_with pull filter rename
 #' @importFrom stringr str_replace_all
 #' @importFrom tidyselect everything
 #' @return A data frame with updated column names.
 #' @noRd
-clean_data <- function(df, delim) {
+clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
+
+  # Update Stub/Group Column Names
+  # Boxhead tells us which columns are 'stub' columns
+  if (!is.null(boxhead) && !is.null(stubhead)) {
+
+    # Identify the variable names that are marked as 'stub'
+    stub_vars <- boxhead %>%
+      filter(type == "stub") %>%
+      pull(var)
+
+    # Get the new labels from stubhead
+    new_stub_labels <- as.character(unlist(stubhead$label))
+
+    if (length(stub_vars) > 0 && length(stub_vars) == length(new_stub_labels)) {
+
+      lookup <- setNames(stub_vars, new_stub_labels)
+
+      #  Filter out entries where the new name is empty or NA
+      valid_names <- names(lookup) != "" & !is.na(names(lookup))
+      lookup <- lookup[valid_names]
+
+      #Only keep names where the new name is DIFFERENT from the old name
+      lookup <- lookup[names(lookup) != lookup]
+
+      # Only keep columns that exist in the data frame
+      lookup <- lookup[lookup %in% colnames(df)]
+
+      if (length(lookup) > 0) {
+        df <- df %>% dplyr::rename(dplyr::any_of(lookup))
+      }
+    }
+  }
+
+
+
   df %>%
     # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
     select(-starts_with("..tfrmt")) %>%
@@ -36,7 +72,12 @@ extract_data <- function(x, col_delim = "_") {
 
   # Single gt table
   if (inherits(x, "gt_tbl")) {
-    return(clean_data(x[["_data"]], col_delim))
+   return(clean_data(
+      df = x[["_data"]],
+      delim = col_delim,
+      boxhead = x[["_boxhead"]],
+      stubhead = x[["_stubhead"]]
+    ))
   }
 
   # Grouped gt object (created when using `page_plan`)
@@ -46,11 +87,15 @@ extract_data <- function(x, col_delim = "_") {
     tbl_list <- x$gt_tbls$gt_tbl
 
     # Map over the list to pull the '_data' slot and clean names
-    extracted_list <- map(tbl_list, ~ clean_data(.x[["_data"]], col_delim))
+    extracted_list <- map(tbl_list, ~ clean_data(.x[["_data"]],
+                                                 delim = col_delim,
+                                                 boxhead = .x[["_boxhead"]],
+                                                 stubhead = .x[["_stubhead"]]
+    ))
 
     return(extracted_list)
   }
 
-  # Fallback
   stop("Input must be a 'gt_tbl' or 'gt_group' object.")
+
 }

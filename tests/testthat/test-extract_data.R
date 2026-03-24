@@ -44,6 +44,114 @@ expect_true(nrow(tfrmt_data_extracted) > 0)
 
 })
 
+test_that("extract_data extracts updated names changed in the col_plan including group/label vars", {
+
+  data_demog_test <- data_demog |>
+    filter(rowlbl1 %in% c("Age (y)" , "Sex"),
+           column != "p-value")
+
+  tfrmt_dem <- tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1, grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    # specify value formatting
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when(
+                                                                                    "==100" ~ "",
+                                                                                    "==0" ~ "",
+                                                                                    TRUE ~ frmt("(xx.x %)")
+                                                                                  )
+      )),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
+      frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
+      frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx"))
+    ),
+    row_grp_plan = row_grp_plan(row_grp_structure(group_val = ".default", element_block(post_space = "   ")),
+                                                  label_loc = element_row_grp_loc(location = "column")),
+    # remove extra cols
+    col_plan = col_plan(
+      -grp,
+      "rowlbl1_new" = rowlbl1,
+      "rowlbl2_new" = rowlbl2,
+      -starts_with("ord"),
+      PLACEBO = Placebo,
+      TOTAL = Total,
+      `XANOMELINE LOW DOSE` = `Xanomeline Low Dose`)
+  )|>
+    print_to_gt(data_demog_test)
+
+  tfrmt_data_extracted <- extract_data(tfrmt_dem)
+
+  tfrmt_data_manual <- tfrmt_dem[["_data"]]|>
+    rename("rowlbl1_new" = "rowlbl1",
+           "rowlbl2_new" = "rowlbl2") |>
+    select(-`..tfrmt_row_grp_lbl`)
+
+  expect_s3_class(tfrmt_data_extracted, "data.frame")
+  expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+  expect_true(nrow(tfrmt_data_extracted) > 0)
+
+})
+
+test_that("extract_data extracts updated names changed in the col_plan including 1 group/label vars", {
+
+  data_demog_test <- data_demog |>
+    filter(rowlbl1 %in% c("Age (y)" , "Sex"),
+           column != "p-value")
+
+  tfrmt_dem <- tfrmt(
+    # specify columns in the data
+    group = c(rowlbl1, grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    # specify value formatting
+    body_plan = body_plan(
+      frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
+                                                                                  n = frmt("xxx"),
+                                                                                  pct = frmt_when(
+                                                                                    "==100" ~ "",
+                                                                                    "==0" ~ "",
+                                                                                    TRUE ~ frmt("(xx.x %)")
+                                                                                  )
+      )),
+      frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
+      frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
+      frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx"))
+    ),
+    row_grp_plan = row_grp_plan(row_grp_structure(group_val = ".default", element_block(post_space = "   ")),
+                                label_loc = element_row_grp_loc(location = "column")),
+    # remove extra cols
+    col_plan = col_plan(
+      -grp,
+      "rowlbl2_new" = rowlbl2,
+      -starts_with("ord"),
+      PLACEBO = Placebo,
+      TOTAL = Total,
+      `XANOMELINE LOW DOSE` = `Xanomeline Low Dose`)
+  )|>
+    print_to_gt(data_demog_test)
+
+  tfrmt_data_extracted <- extract_data(tfrmt_dem)
+
+  tfrmt_data_manual <- tfrmt_dem[["_data"]]|>
+    rename("rowlbl2_new" = "rowlbl2") |>
+    select(-`..tfrmt_row_grp_lbl`)
+
+  expect_s3_class(tfrmt_data_extracted, "data.frame")
+  expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+  expect_true(nrow(tfrmt_data_extracted) > 0)
+
+})
+
 test_that("extract_data extracts updated names changed in the col_plan", {
 
   data_demog_test <- data_demog |>
@@ -72,6 +180,8 @@ test_that("extract_data extracts updated names changed in the col_plan", {
       frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
       frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx"))
     ),
+    row_grp_plan = row_grp_plan(row_grp_structure(group_val = ".default", element_block(post_space = "   ")),
+                                label_loc = element_row_grp_loc(location = "column")),
     # remove extra cols
     col_plan = col_plan(
       -grp,
@@ -83,6 +193,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
     print_to_gt(data_demog_test)
 
   tfrmt_data_extracted <- extract_data(tfrmt_dem)
+
   tfrmt_data_manual <- tfrmt_dem[["_data"]]|>
     select(-`..tfrmt_row_grp_lbl`)
 
