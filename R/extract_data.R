@@ -32,12 +32,6 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
       valid_names <- names(lookup) != "" & !is.na(names(lookup))
       lookup <- lookup[valid_names]
 
-      #Only keep names where the new name is DIFFERENT from the old name
-      lookup <- lookup[names(lookup) != lookup]
-
-      # Only keep columns that exist in the data frame
-      lookup <- lookup[lookup %in% colnames(df)]
-
       if (length(lookup) > 0) {
         df <- df %>% dplyr::rename(dplyr::any_of(lookup))
       }
