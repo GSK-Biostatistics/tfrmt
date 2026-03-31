@@ -70,6 +70,9 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 #' @export
 extract_data <- function(x, col_delim = "_") {
 
+  #Fallback
+  stop("Input must be a 'gt_tbl' or 'gt_group' object.")
+
   # Single gt table
   if (inherits(x, "gt_tbl")) {
    return(clean_data(
@@ -96,6 +99,5 @@ extract_data <- function(x, col_delim = "_") {
     return(extracted_list)
   }
 
-  stop("Input must be a 'gt_tbl' or 'gt_group' object.")
 
 }
