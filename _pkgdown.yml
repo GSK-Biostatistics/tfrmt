@@ -37,6 +37,7 @@ articles:
   contents:
   - json
   - print_to_ggplot
+  - extract_data
   - faq
   - mock_examples
   - unusual_tables
