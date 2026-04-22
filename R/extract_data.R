@@ -5,9 +5,6 @@
 #' @param df A data frame.
 #' @param delim Character string to replace the internal "tlang_delim".
 #' @param stubhead The _stubhead slot from the gt object.
-#' @importFrom dplyr select starts_with rename_with pull filter rename
-#' @importFrom stringr str_replace_all
-#' @importFrom tidyselect everything
 #' @return A data frame with updated column names.
 #' @noRd
 clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
@@ -18,8 +15,8 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 
     # Identify the variable names that are marked as 'stub'
     stub_vars <- boxhead %>%
-      filter(type == "stub") %>%
-      pull(var)
+      dplyr::filter(type == "stub") %>%
+      dplyr::pull(var)
 
     # Get the new labels from stubhead
     new_stub_labels <- as.character(unlist(stubhead$label))
@@ -42,11 +39,11 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 
   df %>%
     # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
-    select(-starts_with("..tfrmt")) %>%
+    dplyr::select(-dplyr::starts_with("..tfrmt")) %>%
     # Replace the internal tlang_delim pattern in column names
-    rename_with(
-      ~ str_replace_all(.x, "___tlang_delim___", delim),
-      .cols = everything()
+    dplyr::rename_with(
+      ~ stringr::str_replace_all(.x, "___tlang_delim___", delim),
+      .cols = tidyselect::everything()
     )
 }
 
