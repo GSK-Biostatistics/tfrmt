@@ -8,6 +8,10 @@
   argument to the body_plan
   ([\#621](https://github.com/GSK-Biostatistics/tfrmt/issues/621),
   [@alanahjonas95](https://github.com/alanahjonas95)).
+- Fix bug in `page_plan` where the max_rows argument was returning an
+  error if a value in the group variable was an empty string
+  ([\#539](https://github.com/GSK-Biostatistics/tfrmt/issues/539),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
 
 ### Improvements
 
