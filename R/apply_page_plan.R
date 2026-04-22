@@ -54,7 +54,14 @@ apply_page_plan <- function(.data, page_plan, group, label, row_grp_plan_label_l
 #' @importFrom forcats fct_inorder
 apply_page_max_rows <- function(.data, max_rows, group, label, row_grp_plan_label_loc){
 
+  # Ensure empty strings in grouping columns are treated as literal spaces
+  # so pagination math doesn't break
+  group_cols <- map_chr(group, rlang::as_label)
+
   .data <- .data %>%
+    mutate(across(all_of(group_cols), \(x) {
+      if (is.character(x)) if_else(x == "", " ", x) else x
+    })) %>%
     mutate(TEMP_row = row_number())
 
   # determine # of rows to be added for the group during row grp lbl formatting

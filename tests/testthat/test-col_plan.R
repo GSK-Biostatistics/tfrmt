@@ -1478,7 +1478,7 @@ test_that("Build simple tfrmt with stub header",{
   )
   expect_equal(
     processed_gt[["_stubhead"]]$label,
-    c("grp")
+    md("grp")
   )
 
 
@@ -1528,7 +1528,7 @@ test_that("Build simple tfrmt with stub header",{
   )
   expect_equal(
     processed_gt[["_stubhead"]]$label,
-    ""
+    md("")
   )
 
 
@@ -1583,7 +1583,7 @@ test_that("Build simple tfrmt with stub header",{
   )
   expect_equal(
     processed_gt[["_stubhead"]]$label,
-    c("Group 1", "Group 2", "Row label")
+    md(c("Group 1", "Group 2", "Row label"))
   )
 
 })
