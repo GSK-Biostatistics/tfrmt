@@ -22,7 +22,7 @@ library(gt)
 
 The `{tfrmt}` package is designed to create highly formatted Tables by layering formatting logic onto data. While the primary output of `print_to_gt()` is a `gt` object ready for reporting, there are times when you may need to access the "final" processed data frame—for example, to perform secondary validations, to export the data, or use in another reporting tool.
 
-The `extract_data()` function provides a clean way to pull this underlying data back out of a `gt_tbl` or `gt_group` object. `extract_data()` handles the cleanup of the data, removing internal columns and ensuring that column names reflect the labels seen in the final table.
+The `extract_data()` function provides a clean way to pull this underlying data back out of a `gt_tbl` or `gt_group` object. `extract_data()` handles the cleanup of the data, removing internal columns and ensuring that column names reflect the labels seen in the final table. The extracted data frame contains the formatted character strings as seen in the table.
 
 ## Basic Usage
 
