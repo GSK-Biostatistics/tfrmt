@@ -30,7 +30,7 @@ In this example, we take a demographic dataset, apply a tfrmt, and then extract 
 
 ```{r}
 # Subset data for a simple example
-data_demog_test <- data_demog %>%
+data_demog_test <- data_demog |>
   filter(
     rowlbl1 %in% c("Age (y)", "Sex"),
     column != "p-value"
