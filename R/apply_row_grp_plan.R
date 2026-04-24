@@ -281,7 +281,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
     split_dat <- .data %>%
       group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) %>%
-      group_split(.keep = TRUE) %>%
+      group_split() %>%
       map(~select(.x, -run_id))
 
     .data<- split_dat %>%
