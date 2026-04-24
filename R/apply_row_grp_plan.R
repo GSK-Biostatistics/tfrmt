@@ -279,7 +279,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   while(length(group) > 0 & !is.null(label)){
     split_dat <- .data %>%
-      group_by(run_id = consecutive_id(!!!top_grouping)) |>
+      group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) |>
       group_split(.keep = TRUE) |>
       map(~select(.x, -run_id))
 
