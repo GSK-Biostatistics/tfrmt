@@ -666,11 +666,7 @@ test_that("split_data_names_to_df() works", {
     tibble::tibble(
       column = c("grp2", "lbl", "ord", "1"),
       `__tfrmt_new_name__column` = c("grp2", "lbl", "ord", "1"),
-      subtraction_status = rlang::set_names(
-        c(FALSE, FALSE, FALSE, FALSE),
-        # subtraction_status is a named vector
-        c("grp2", "lbl", "ord", "1")
-      )
+      subtraction_status = c(FALSE, FALSE, FALSE, FALSE)
     )
   )
 
