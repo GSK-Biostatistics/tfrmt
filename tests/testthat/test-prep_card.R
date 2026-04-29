@@ -337,6 +337,7 @@ test_that("prep_...() pipe with adverse effects data", {
       param = stat_name,
       value = stat,
       column = c(TRT01A, AESEV),
+      sorting_cols = AEBODSYS,
       row_grp_plan = row_grp_plan(
         row_grp_structure(
           group_val = ".default",

@@ -259,10 +259,8 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   orig_group_names <- map_chr(group, as_name)
   top_grouping <- group #used for spliting in case of spanning label
 
-  # to retain the order of the data when splitting by group
   .data <- .data %>%
-    mutate(across(c(!!!group), ~fct_inorder(.x)),
-           ..tfrmt_row_grp_lbl = FALSE)
+    mutate(..tfrmt_row_grp_lbl = FALSE)
 
   # ensure label is character
   .data <- .data %>%
@@ -280,8 +278,9 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   while(length(group) > 0 & !is.null(label)){
 
     split_dat <- .data %>%
-      group_by(!!!top_grouping) %>%
-      group_split()
+      group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) %>%
+      group_split() %>%
+      map(~select(.x, -run_id))
 
     .data<- split_dat %>%
       map_dfr(function(lone_dat) {

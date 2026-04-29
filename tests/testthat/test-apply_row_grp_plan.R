@@ -790,6 +790,7 @@ test_that("Row group plans with col style plan",{
   plan <- tfrmt(
     label = one,
     group = c(g1,g2),
+    sorting_cols = c(g1, g2),
     column = vars(column),
     value = value,
     param = param,
@@ -819,10 +820,8 @@ test_that("Row group plans with col style plan",{
       )
     ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(
-        group_val = list(g1 = c("G1","G2_"), g2 = ".default"),
-        element_block = element_block(post_space = "----")
-      ),
+      row_grp_structure(group_val=list(g1="G1"), element_block(post_space="----")),
+      row_grp_structure(group_val=list(g1="G2_"), element_block(post_space="----")),
       label_loc = element_row_grp_loc(location = "spanning")
     ),
     col_style_plan =  col_style_plan(
