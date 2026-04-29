@@ -345,7 +345,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
   }
 
   tibble(
-    original = data_names,
+    original = unname(data_names),
     new_name = names(data_names)
    ) %>%
     mutate(

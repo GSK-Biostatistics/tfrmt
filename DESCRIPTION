@@ -37,7 +37,7 @@ Imports:
     purrr,
     rlang,
     stringi,
-    stringr (>= 1.6.0),
+    stringr,
     tibble,
     tidyr,
     tidyselect
