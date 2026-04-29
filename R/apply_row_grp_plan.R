@@ -259,10 +259,8 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   orig_group_names <- map_chr(group, as_name)
   top_grouping <- group #used for spliting in case of spanning label
 
-  # to retain the order of the data when splitting by group
   .data <- .data %>%
-    mutate(across(c(!!!group), ~fct_inorder(.x)),
-           ..tfrmt_row_grp_lbl = FALSE)
+    mutate(..tfrmt_row_grp_lbl = FALSE)
 
   # ensure label is character
   .data <- .data %>%
