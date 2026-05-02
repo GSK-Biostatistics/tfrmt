@@ -37,6 +37,7 @@ articles:
   contents:
   - json
   - print_to_ggplot
+  - extract_data
   - faq
   - mock_examples
   - unusual_tables
@@ -91,6 +92,7 @@ reference:
   - cleaned_data_to_gt
   - starts_with("is_")
   - make_mock_data
+  - extract_data
 - title: "ARD Helpers for {cards} to {tfrmt}"
   contents:
   - shuffle_card

@@ -7,6 +7,8 @@
 ## Improvements
 * `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
 * Add markdown processing of stub column labels (#617)
+* Added `extract_data()` function to enable data to be easily extracted from a tfrmt into a data frame.(#628, @alanahjonas95)
+
 
 # tfrmt 0.3.0
 
