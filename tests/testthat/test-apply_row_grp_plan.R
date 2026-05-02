@@ -14,7 +14,8 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1), sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1), sym("label")) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1,~label, ~trtA,      ~trtB,      ~trtC,
       "A",  "1",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -24,7 +25,7 @@ test_that("insert post space - single grouping variable",{
       "C",  "3",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",  " ",  " ", " ", " ",
       "D",  "4",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "D",  " ",  " ", " ", " "
+      "D", " ", " ", " ", " ",
     ))
 
 
@@ -33,7 +34,8 @@ test_that("insert post space - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1), sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1), sym("label")) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~label, ~trtA,      ~trtB,       ~trtC,
       "A", "1", "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -65,7 +67,8 @@ test_that("insert post space - two grouping variables",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
@@ -92,7 +95,8 @@ test_that("insert post space - two grouping variables",{
   )
 
    expect_equal(
-     apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
+     apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")) %>%
+       select(-..tfrmt_post_space_row),
      tibble::tribble(
        ~grp1, ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
        "A",  "a",   "1", "xx (xx%)" ,"xx (xx%)", "xx (xx%)",
@@ -128,7 +132,8 @@ test_that("insert mix - single grouping variable",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
@@ -161,7 +166,8 @@ test_that("insert post space after specific value",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -197,7 +203,8 @@ test_that("overlapping row_grp_structures - prefers latest",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1, grp2), label = sym("label")) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1,  ~grp2, ~label,   ~trtA,       ~trtB,     ~trtC,
       "A",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -211,7 +218,7 @@ test_that("overlapping row_grp_structures - prefers latest",{
       "C",     "a", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
       "C",     "a", " ",   " ", " ", " ",
       "C",     "b", "1",   "xx (xx%)", "xx (xx%)", "xx (xx%)",
-      "C",     "b", " ",   " ", " ", " ",
+      "C",     "b", " ",   " ", " ", " "
     ) )
 
 })
@@ -232,7 +239,8 @@ test_that("no post space added if NULL",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
@@ -259,7 +267,8 @@ test_that("post space is truncated to data width",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
@@ -288,7 +297,8 @@ test_that("do not recycle the post space for full width",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)",
@@ -317,7 +327,8 @@ test_that("post space works when data contains NAs",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
+      select(-..tfrmt_post_space_row),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,      ~other,
       "A",  "xx (xx%)", "xx (xx%)",  "xx (xx%)", "a",
@@ -473,7 +484,8 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
   expect_equal(auto_test_listcols, man_test_listcols)
 
 
-  auto_test_listcols <- apply_row_grp_struct(mock_multi_grp, sample_grp_plan$struct_list,group = vars(grp1, grp2), label = sym("my_label"))
+  auto_test_listcols <- apply_row_grp_struct(mock_multi_grp, sample_grp_plan$struct_list,group = vars(grp1, grp2), label = sym("my_label")) %>%
+    select(-..tfrmt_post_space_row)
 
   man_test_listcols <- tibble::tribble(
     ~grp1,    ~grp2,   ~my_label,      ~trtA,     ~trtB,     ~trtC,
@@ -917,11 +929,11 @@ test_that("Row group plans with col style plan",{
       select(-`..tfrmt_row_grp_lbl`) %>%
       as.list(),
     list(
-      g1 = c(" G1", " G1", " G1", " G1", "G2_", "G2_", "G2_", "G2_", " G1", " G1"),
-      g2 = c("g3_long", "g3_long", "     g3", "     g3", "g3_long", "g3_long", "     g3", "     g3", " g_long", " g_long"),
-      one = c( "n (%)", "-----", "n (%)", "-----", " mean", "-----", "   sd", "-----", "n (%)", "-----"),
-      trt1 = c("12.00", "-----", "34.00", "-----", "12.30", "-----", " 4.34", "-----", "     ", "-----"),
-      trt2 = c("     " ,"-----", "58.00", "-----", "15.40", "-----", " 8.25", "-----", "24.00", "-----")
+      g1 = c(" G1", " G1", " G1", " G1", "G2_", "G2_", "G2_", "G2_", " G1"),
+      g2 = c("g3_long", "g3_long", "     g3", "     g3", "g3_long", "g3_long", "     g3", "     g3", " g_long"),
+      one = c( "n (%)", "-----", "n (%)", "-----", " mean", "-----", "   sd", "-----", "n (%)"),
+      trt1 = c("12.00", "-----", "34.00", "-----", "12.30", "-----", " 4.34", "-----", "     "),
+      trt2 = c("     " ,"-----", "58.00", "-----", "15.40", "-----", " 8.25", "-----", "24.00")
     ),
     ignore_attr = TRUE
   )
