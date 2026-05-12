@@ -87,8 +87,6 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
                           }
                         }) %>%
     arrange(.data$TEMP_row) %>%
-    mutate(..tfrmt_post_space_row = case_when(TEMP_row %% 1 != 0 ~ TRUE,
-                                              TRUE ~ FALSE)) %>%
     select(-"TEMP_row")
 
   add_ln_df
@@ -203,7 +201,9 @@ apply_grp_block <- function(.data, group, element_block, widths){
 
     # combine with original data
     bind_rows(.data, grp_row_add) %>%
-      fill(!!!group)
+      fill(!!!group) %>%
+      mutate(..tfrmt_post_space_row = TEMP_row %% 1 != 0)
+
   } else {
     .data
   }

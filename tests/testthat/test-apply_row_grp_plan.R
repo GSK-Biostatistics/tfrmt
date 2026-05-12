@@ -239,8 +239,7 @@ test_that("no post space added if NULL",{
   )
 
   expect_equal(
-    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-      select(-..tfrmt_post_space_row),
+    apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
     tibble::tribble(
       ~grp1, ~trtA,      ~trtB,      ~trtC,
       "A",  "xx (xx%)", "xx (xx%)", "xx (xx%)",
