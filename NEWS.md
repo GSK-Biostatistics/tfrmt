@@ -7,7 +7,7 @@
 ## Improvements
 * `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
 * Add markdown processing of stub column labels (#617)
-* Add option to `row_grp_plan()`/`row_grp_structure()` to not add a blank row after the last group (#630, @alanahjonas95).
+* Update default for `row_grp_plan()`/`row_grp_structure()` to remove trailing post-space rows (#630, @alanahjonas95).
 
 # tfrmt 0.3.0
 
