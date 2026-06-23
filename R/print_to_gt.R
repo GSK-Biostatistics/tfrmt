@@ -247,7 +247,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
   # stub header
   if (!is.null(attr(.data, ".stub_header"))){
     gt_out <- gt_out %>%
-      tab_stubhead(label = attr(.data, ".stub_header"))
+      tab_stubhead(label = do.call(
+        md,
+        list(attr(.data, ".stub_header"))
+      )
+      )
   }
 
   gt_out_final  <- gt_out %>%
