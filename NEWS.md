@@ -5,15 +5,14 @@
 
 ## Improvements
 * `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
-
+* Add option to `row_grp_plan()`/`row_grp_structure()` to not add a blank row after the last group (#630, @alanahjonas95).
+   
 # tfrmt 0.3.0
 
 ## Improvements
  * `page_plan()` receives a new argument, `transform`, allowing users to modify the page label (#496, @dragosmg).
  * Replace duplicate spaces in the centre of the cell body of an output gt with unicode whitespace to ensure formatting is retained when going to pdf. Leading and trailing whitespace will be non-breaking unicode whitespace
  * Default to center alignment of table body values to match alignment of column headers
- * Add option to `row_grp_plan()`/`row_grp_structure()` to not add a blank row after the last group (#630, @alanahjonas95).
-
 
 # tfrmt 0.2.1
 
