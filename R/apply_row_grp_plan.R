@@ -389,3 +389,26 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
   }
   add_ln_df
 }
+
+
+
+#' Remove trailing post-space rows and helper column
+#' @param .data processed wide tbl
+#' @noRd
+apply_post_space_trim <- function(.data) {
+
+  target_col <- "..tfrmt_post_space_row"
+
+  if (target_col %in% names(.data)) {
+    # If the very last row was tagged as a spacer, drop it
+    if (isTRUE(last(.data[[target_col]]))) {
+      .data <- .data %>%
+        dplyr::slice(-dplyr::n())
+    }
+    # Always drop the helper column before returning
+    .data <- .data %>%
+      dplyr::select(-dplyr::all_of(target_col))
+  }
+
+  .data
+}

@@ -120,27 +120,6 @@ apply_tfrmt_subtable_mapper <- function(tfrmt, .data, col_plan_vars, stub_header
   }
 }
 
-#' Remove trailing post-space rows and helper column
-#' @param .data processed wide tbl
-#' @noRd
-apply_post_space_trim <- function(.data) {
-
-  target_col <- "..tfrmt_post_space_row"
-
-  if (target_col %in% names(.data)) {
-    # If the very last row was tagged as a spacer, drop it
-    if (isTRUE(last(.data[[target_col]]))) {
-      .data <- .data %>%
-        dplyr::slice(-dplyr::n())
-    }
-    # Always drop the helper column before returning
-    .data <- .data %>%
-      dplyr::select(-dplyr::all_of(target_col))
-  }
-
-  .data
-}
-
 #' Processing to apply to each table
 #'
 #' @param tfrmt tfrmt object
