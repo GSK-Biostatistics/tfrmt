@@ -9,8 +9,6 @@
 * Add markdown processing of stub column labels (#617)
 * Add option to `row_grp_plan()`/`row_grp_structure()` to not add a blank row after the last group (#630, @alanahjonas95).
 
-
-
 # tfrmt 0.3.0
 
 ## Improvements
