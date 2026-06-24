@@ -62,6 +62,13 @@ shuffle_card <- function(x,
     )
   }
 
+  # If a combined ARD is passed, drop stale attributes and evaluate structurally
+  if (inherits(x, "bind_ard") && !is.null(attr(x, "args"))) {
+      attr(x, "args")$by <- NULL
+      attr(x, "args")$variable <- NULL
+      attr(x, "args")$strata <- NULL
+  }
+
   ard_args <- attributes(x)$args
   by <- .process_by(x, by)
 
