@@ -672,3 +672,27 @@ test_that("json read/write", {
   file.remove(test_loc)
 
 })
+
+test_that("json col_plan span_structure roundtrip with parentheses in column names", {
+  span_parenthesis <- tfrmt(
+    group = group1,
+    label = label,
+    param = statistic,
+    value = value,
+    column = c(span, column),
+    col_plan = col_plan(
+      group1,
+      label,
+      span_structure(span = "Placebo",              column = c("n (%)", "evt")),
+      span_structure(span = "Xanomeline Low Dose",  column = c("n (%)", "evt")),
+      span_structure(span = "Xanomeline High Dose", column = c("n (%)", "evt")),
+      span_structure(span = "Total",                column = c("n (%)", "evt")),
+      .drop = TRUE
+    )
+  )
+
+  span_parenthesis |>
+    tfrmt_to_json()|>
+    json_to_tfrmt(json = _) |>
+    expect_equal(span_parenthesis, ignore_attr = TRUE)
+})
