@@ -108,6 +108,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html)
 ## Examples
 
 ``` r
+
 frmt("XXX %")
 #> < frmt | Expression: `XXX %` >
 

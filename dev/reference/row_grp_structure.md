@@ -38,6 +38,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html)
 ## Examples
 
 ``` r
+
 ## single grouping variable example
 row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
 #> $group_val

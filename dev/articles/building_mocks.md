@@ -1,6 +1,7 @@
 # Building Mocks
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -46,6 +47,7 @@ where the desired outcome is:
     decimal place
 
 ``` r
+
 tfrmt_spec <- tfrmt(
   # Specify columns in the data
   label = label,
@@ -88,6 +90,7 @@ specification when using the
 function.
 
 ``` r
+
 # Print table
 print_mock_gt(tfrmt_spec)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
@@ -105,6 +108,7 @@ tables.
 Here is an example:
 
 ``` r
+
 df1 <- tidyr::crossing(
   label = c("label 1", "label 2", "label 3"),
   treatment = c("Treatment", "Treatment", "Treatment", "Placebo"),
@@ -138,6 +142,7 @@ function, so now you can see that the label and column names have
 changed.
 
 ``` r
+
 # Print table
 print_mock_gt(tfrmt_spec, df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
@@ -158,6 +163,7 @@ provide specific information when trying to order across multiple
 columns.
 
 ``` r
+
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify columns in the data
@@ -201,6 +207,7 @@ To add a title or subtitle, pass arguments to their respective
 parameters.
 
 ``` r
+
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify title, subtitle
@@ -250,6 +257,7 @@ function twice with differing columns and bound them using
 [`bind_rows()`](https://dplyr.tidyverse.org/reference/bind_rows.html).
 
 ``` r
+
 df <- dplyr::bind_rows(
   tidyr::crossing(
     label = c("label 1", "label 2", "label 3"),
@@ -286,6 +294,7 @@ additional `frmt_structure` which accounts for the value formatting we’d
 like to apply to the the new columns.
 
 ``` r
+
 tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify columns in the data
@@ -340,6 +349,7 @@ and directly specify the columns you would and wouldn’t like to display.
 Here we have decided to select only the placebo and treatment columns.
 
 ``` r
+
 tfrmt_n_pct(n = "count", pct = "percent") |>
   tfrmt(
     # Specify columns in the data
@@ -391,6 +401,7 @@ the `group` parameter for
 [`tfrmt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/tfrmt.md).
 
 ``` r
+
 df <- tidyr::crossing(
   group = c("group 1", "group 2"),
   label = c("label 1", "label 2"),
@@ -437,6 +448,7 @@ instead of generic “label \#” names - this is just an illustration of
 what these row labels could be.
 
 ``` r
+
 df <- dplyr::bind_rows(
   tidyr::crossing(
     group = c("group 1", "group 2"),
@@ -508,6 +520,7 @@ we’d like the groups to be indented. For more information on this please
 see the “Row group plan” article.
 
 ``` r
+
 df <- dplyr::bind_rows(
   tidyr::crossing(
     group = c("group 1"),
@@ -575,6 +588,7 @@ Furthermore, to apply the formatting to more than one label you can
 supply the label names within [`c()`](https://rdrr.io/r/base/c.html).
 
 ``` r
+
 tfrmt(
   # Specify columns in the data
   group = group,
@@ -631,6 +645,7 @@ When using more than one grouping level you add the group names to the
 `group` parameter in [`c()`](https://rdrr.io/r/base/c.html).
 
 ``` r
+
 df <- dplyr::bind_rows(
   tidyr::crossing(
     grp1 = c("group 1.1"),

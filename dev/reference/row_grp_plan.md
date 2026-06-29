@@ -42,6 +42,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html)
 
 ``` r
 
+
   ## single grouping variable example
   sample_grp_plan <- row_grp_plan(
     row_grp_structure(group_val = c("A","C"), element_block(post_space = "---")),

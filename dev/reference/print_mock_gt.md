@@ -45,6 +45,7 @@ a stylized gt object
 
 ## Examples
 
+
       # Create tfrmt specification
       tfrmt_spec <- tfrmt( label = label, column =
       column, param = param, body_plan = body_plan( frmt_structure(group_val =

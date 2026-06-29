@@ -86,6 +86,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html)
 ## Examples
 
 ``` r
+
  plan <- col_style_plan(
     col_style_structure(col = "my_var",
                         align = c("xx| |(xx%)",

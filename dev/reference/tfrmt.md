@@ -156,6 +156,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/building_blocks.html
 ## Examples
 
 ``` r
+
 tfrmt_spec <- tfrmt(
   label = label,
   column = column,

@@ -1,6 +1,7 @@
 # JSON metadata
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -16,6 +17,7 @@ A `tfrmt` object can be converted to `JSON` using the `tfrmt_to_json`
 function. Suppose we have a basic `tfrmt`:
 
 ``` r
+
 template_tfrmt <- tfrmt(
   group = grp,
   label = label,
@@ -38,6 +40,7 @@ template_tfrmt |> print_mock_gt()
 We can pass this through `tfrmt_to_json` to convert to `JSON` metadata.
 
 ``` r
+
 template_tfrmt |>
   tfrmt_to_json()
 #> {
@@ -66,6 +69,7 @@ This `JSON` can optionally be saved to a file by providing a file path
 as the second argument to the function:
 
 ``` r
+
 tfrmt(
   group = grp,
   label = label,
@@ -88,6 +92,7 @@ tfrmt(
 If a `JSON` file already exists, users can import this into R.
 
 ``` r
+
 template_json <- json_to_tfrmt(path = "template.JSON")
 ```
 
@@ -95,6 +100,7 @@ Once available in the R session, users can optionally build on this
 template as needed.
 
 ``` r
+
 template_json |>
   layer_tfrmt(
     tfrmt(title = "Custom title")

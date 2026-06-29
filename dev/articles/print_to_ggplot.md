@@ -1,6 +1,7 @@
 # Print to ggplot
 
 ``` r
+
 library(tfrmt)
 library(patchwork)
 library(ggfortify)
@@ -17,6 +18,7 @@ survival plots. The following code sets up a Kaplan Meier plot using the
 colon data from the survival package.
 
 ``` r
+
 # Set up survival data
 fit <- survival::survfit(survival::Surv(time, status) ~ rx, data = survival::colon)
 
@@ -30,6 +32,7 @@ As with `print_to_gt`, `print_to_ggplot` requires an input table with
 up our mock input table.
 
 ``` r
+
 risk <- tibble::tibble(
   time = c(rep(c(0, 1000, 2000, 3000), 3)),
   label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
@@ -42,6 +45,7 @@ A tfrmt object is required to specify the formatting of the ggplot
 table. This can then be piped out to `print_to_ggplot` as seen below.
 
 ``` r
+
 table <- tfrmt(
   # specify columns in the data
   label = label,
@@ -68,6 +72,7 @@ For more information on using patchwork, refer to the documentation
 [here](https://cran.r-project.org/web/packages/patchwork/vignettes/patchwork.html).
 
 ``` r
+
 km_plot / table
 ```
 
@@ -77,6 +82,7 @@ Because we don’t have to duplicate the time points, we can just remove
 the x-axis labels using the theme
 
 ``` r
+
 table2 <- table +
   ggplot2::theme(axis.text.x = NULL)
 
@@ -91,6 +97,7 @@ You can also apply groups to your ggplot table. The code below adds
 groupings to the risk table above for a mock example.
 
 ``` r
+
 riska <- risk |>
   dplyr::mutate(group = "A")
 
@@ -107,6 +114,7 @@ risk_group <- riska |>
 Now we need to add group to our tfrmt specification and patch together:
 
 ``` r
+
 group_table <- tfrmt(
   # specify columns in the data
   group = group,
@@ -136,6 +144,7 @@ forest plots, but instead of stacking the plots we will just put them
 side by side. First we can make the table using `print_to_ggplot`.
 
 ``` r
+
 aes <- factor(c("Fever", "Malaise", "Local Allergic Reaction"),
   levels = c("Fever", "Malaise", "Local Allergic Reaction")
 )
@@ -169,6 +178,7 @@ combined with the table plot. We also need to add a row in the data for
 the group value to make the plots match up correctly.
 
 ``` r
+
 plot_dat <- tibble::tibble(
   ae = aes,
   mean = c(3, 2.3, 2),
@@ -198,6 +208,7 @@ plot_p
 Now thanks to patchwork combining the two plots is relatively easy.
 
 ``` r
+
 tbl_p + plot_p
 ```
 
@@ -212,6 +223,7 @@ the `...`. So if you need to change the size table boy you just add that
 to the `print_to_ggplot`.
 
 ``` r
+
 tfrmt_n_pct() |>
   tfrmt(
     label = ae,

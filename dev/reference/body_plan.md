@@ -36,6 +36,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html)
 ## Examples
 
 ``` r
+
   tfrmt_spec<- tfrmt(
       title = "Table Title",
       body_plan = body_plan(

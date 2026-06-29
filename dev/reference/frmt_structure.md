@@ -58,6 +58,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html)
 ## Examples
 
 ``` r
+
 sample_structure <- frmt_structure(
           group_val = c("group1"),
           label_val = ".default",

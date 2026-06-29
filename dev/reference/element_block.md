@@ -36,6 +36,7 @@ entire table or collapse.
 ## Examples
 
 ``` r
+
 tfrmt_spec <- tfrmt(
   group = grp1,
   label = label,

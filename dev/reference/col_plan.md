@@ -76,6 +76,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html)
 ## Examples
 
 ``` r
+
 library(dplyr)
 
 ## select col_1 as the first column, remove col_last, then create spanning

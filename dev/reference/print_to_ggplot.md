@@ -28,6 +28,7 @@ a stylized ggplot object
 
 ## Examples
 
+
     # Create data
     risk<-tibble(time=c(rep(c(0,1000,2000,3000),3)),
                 label=c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),

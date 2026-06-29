@@ -147,6 +147,7 @@ CDISC demographics table example, the following `frmt_structures` are
 needed to cover all values:
 
 ``` r
+
 body_plan(
   frmt_structure(
     group_val = ".default", label_val = ".default",

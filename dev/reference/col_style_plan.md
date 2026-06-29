@@ -31,6 +31,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html)
 ## Examples
 
 ``` r
+
  plan <- col_style_plan(
     col_style_structure(col = "my_var", align = "left", width = 100),
     col_style_structure(col = vars(four), align = "right"),

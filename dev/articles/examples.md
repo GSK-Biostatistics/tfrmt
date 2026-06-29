@@ -1,6 +1,7 @@
 # Examples
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -30,78 +31,78 @@ formatting.
 
 The mock we are going to match looks like this:
 
-|                     |                  |   Placebo    | Xanomeline Low Dose | Xanomeline High Dose |    Total     | p-value |
-|:--------------------|:-----------------|:------------:|:-------------------:|:--------------------:|:------------:|:-------:|
-| Age (y)             | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-|                     | \<65 yrs         | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |  x.xxx  |
-|                     | 65-80 yrs        | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     | \>80 yrs         | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     |                  |              |                     |                      |              |         |
-| Sex                 | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Male             | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     | Female           | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     |                  |              |                     |                      |              |         |
-| Race (Origin)       | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Caucasian        | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     | African Descent  | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     | Hispanic         | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     | Other            | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     |                  |              |                     |                      |              |         |
-| MMSE                | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-| Duration of disease | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-|                     | \<12 months      | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |  x.xxx  |
-|                     | \>=12 months     | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     |                  |              |                     |                      |              |         |
-| Years of education  | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-| Baseline weight(kg) | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-| Baseline height(cm) | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-| Baseline BMI        | n                | xxx          |    xxx              |     xxx              | xxx          |  x.xxx  |
-|                     | Mean             | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | SD               | xxx.xx       |    xxx.xx           |     xxx.xx           | xxx.xx       |         |
-|                     | Median           | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Min              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     | Max              | xxx.x        |    xxx.x            |     xxx.x            | xxx.x        |         |
-|                     |                  |              |                     |                      |              |         |
-|                     | \<25             | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |  x.xxx  |
-|                     | 25-\<30          | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     | \>=30            | xxx (xx.x %) |    xxx (xx.x %)     |     xxx (xx.x %)     | xxx (xx.x %) |         |
-|                     |                  |              |                     |                      |              |         |
+|  |  | Placebo | Xanomeline Low Dose | Xanomeline High Dose | Total | p-value |
+|:---|:---|:--:|:--:|:--:|:--:|:--:|
+| Age (y)             | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+|  | \<65 yrs         | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | x.xxx |
+|  | 65-80 yrs       | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  | \>80 yrs         | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  |                 |              |              |              |              |       |
+| Sex                 | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Male            | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  | Female          | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  |                 |              |              |              |              |       |
+| Race (Origin)       | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Caucasian       | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  | African Descent | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  | Hispanic        | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  | Other           | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  |                 |              |              |              |              |       |
+| MMSE                | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+| Duration of disease | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+|  | \<12 months      | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | x.xxx |
+|  | \>=12 months     | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  |                 |              |              |              |              |       |
+| Years of education  | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+| Baseline weight(kg) | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+| Baseline height(cm) | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+| Baseline BMI        | n               | xxx          | xxx          | xxx          | xxx          | x.xxx |
+|  | Mean            | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | SD              | xxx.xx       | xxx.xx       | xxx.xx       | xxx.xx       |       |
+|  | Median          | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Min             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  | Max             | xxx.x        | xxx.x        | xxx.x        | xxx.x        |       |
+|  |                 |              |              |              |              |       |
+|  | \<25             | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | x.xxx |
+|  | 25-\<30          | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  | \>=30            | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
+|  |                 |              |              |              |              |       |
 
 For this table, we have three columns for each of the treatment groups,
 a total column for all groups combined, and a p-value column. The table
@@ -111,6 +112,7 @@ The first thing we are going to do when building out the `tfrmt` is
 specify all our columns
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = c(rowlbl1, grp),
@@ -157,6 +159,7 @@ of 0 or 1. So we can use `frmt_when` to specify the formatting based on
 the value.
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = c(rowlbl1, grp),
@@ -196,6 +199,7 @@ the next step). To do this we use a `col_plan` which uses `tidy-select`
 nomenclature to drop/move columns.
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = c(rowlbl1, grp),
@@ -252,6 +256,7 @@ our data. If we look at our data, we can see we want a space any time
 either of the groups change.
 
 ``` r
+
 data_demog |>
   dplyr::distinct(rowlbl1, grp)
 #> # A tibble: 12 × 2
@@ -278,6 +283,7 @@ the spacing, `row_grp_plan` will let us move the spanning group labels
 to a separate column by changing the `label_loc` to “column”.
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = c(rowlbl1, grp),
@@ -332,78 +338,78 @@ tfrmt(
   )
 ```
 
-|                     |                  |   Placebo    | Xanomeline Low Dose | Xanomeline High Dose |    Total     | p-value |
-|:--------------------|:-----------------|:------------:|:-------------------:|:--------------------:|:------------:|:-------:|
-| Age (y)             | n                |  86          |     84              |      84              | 254          |  0.593  |
-|                     | Mean             |  75.2        |     75.7            |      74.4            |  75.1        |         |
-|                     | SD               |   8.59       |      8.29           |       7.89           |   8.25       |         |
-|                     | Median           |  76.0        |     77.5            |      76.0            |  77.0        |         |
-|                     | Min              |  52.0        |     51.0            |      56.0            |  51.0        |         |
-|                     | Max              |  89.0        |     88.0            |      88.0            |  89.0        |         |
-|                     |                  |              |                     |                      |              |         |
-|                     | \<65 yrs         |  14 (16.3 %) |      8 ( 9.5 %)     |      11 (13.1 %)     |  33 (13.0 %) |  0.144  |
-|                     | 65-80 yrs        |  42 (48.8 %) |     47 (56.0 %)     |      55 (65.5 %)     | 144 (56.7 %) |         |
-|                     | \>80 yrs         |  30 (34.9 %) |     29 (34.5 %)     |      18 (21.4 %)     |  77 (30.3 %) |         |
-|                     |                  |              |                     |                      |              |         |
-| Sex                 | n                |  86          |     84              |      84              | 254          |  0.141  |
-|                     | Male             |  33 (38.4 %) |     34 (40.5 %)     |      44 (52.4 %)     | 111 (43.7 %) |         |
-|                     | Female           |  53 (61.6 %) |     50 (59.5 %)     |      40 (47.6 %)     | 143 (56.3 %) |         |
-|                     |                  |              |                     |                      |              |         |
-| Race (Origin)       | n                |  86          |     84              |      84              | 254          |  0.648  |
-|                     | Caucasian        |  75 (87.2 %) |     72 (85.7 %)     |      71 (84.5 %)     | 218 (85.8 %) |         |
-|                     | African Descent  |   8 ( 9.3 %) |      6 ( 7.1 %)     |       9 (10.7 %)     |  23 ( 9.1 %) |         |
-|                     | Hispanic         |   3 ( 3.5 %) |      6 ( 7.1 %)     |       3 ( 3.6 %)     |  12 ( 4.7 %) |         |
-|                     | Other            |              |                     |       1 ( 1.2 %)     |   1 ( 0.4 %) |         |
-|                     |                  |              |                     |                      |              |         |
-| MMSE                | n                |  86          |     84              |      84              | 254          |  0.595  |
-|                     | Mean             |  18.0        |     17.9            |      18.5            |  18.1        |         |
-|                     | SD               |   4.27       |      4.22           |       4.16           |   4.21       |         |
-|                     | Median           |  19.5        |     18.0            |      20.0            |  19.0        |         |
-|                     | Min              |  10.0        |     10.0            |      10.0            |  10.0        |         |
-|                     | Max              |  23.0        |     24.0            |      24.0            |  24.0        |         |
-|                     |                  |              |                     |                      |              |         |
-| Duration of disease | n                |  86          |     84              |      84              | 254          |  0.153  |
-|                     | Mean             |  42.6        |     48.7            |      40.5            |  43.9        |         |
-|                     | SD               |  30.24       |     29.58           |      24.69           |  28.40       |         |
-|                     | Median           |  35.3        |     40.2            |      36.0            |  36.2        |         |
-|                     | Min              |   7.2        |      7.8            |       2.2            |   2.2        |         |
-|                     | Max              | 183.1        |    130.8            |     135.0            | 183.1        |         |
-|                     |                  |              |                     |                      |              |         |
-|                     | \<12 months      |   5 ( 5.8 %) |      3 ( 3.6 %)     |       4 ( 4.8 %)     |  12 ( 4.7 %) |  0.789  |
-|                     | \>=12 months     |  81 (94.2 %) |     81 (96.4 %)     |      80 (95.2 %)     | 242 (95.3 %) |         |
-|                     |                  |              |                     |                      |              |         |
-| Years of education  | n                |  86          |     84              |      84              | 254          |  0.388  |
-|                     | Mean             |  12.6        |     13.2            |      12.5            |  12.8        |         |
-|                     | SD               |   2.95       |      4.15           |       2.92           |   3.38       |         |
-|                     | Median           |  12.0        |     12.0            |      12.0            |  12.0        |         |
-|                     | Min              |   6.0        |      3.0            |       6.0            |   3.0        |         |
-|                     | Max              |  21.0        |     24.0            |      20.0            |  24.0        |         |
-|                     |                  |              |                     |                      |              |         |
-| Baseline weight(kg) | n                |  86          |     83              |      84              | 253          |  0.003  |
-|                     | Mean             |  62.8        |     67.3            |      70.0            |  66.6        |         |
-|                     | SD               |  12.77       |     14.12           |      14.65           |  14.13       |         |
-|                     | Median           |  60.5        |     64.9            |      69.2            |  66.7        |         |
-|                     | Min              |  34.0        |     45.4            |      41.7            |  34.0        |         |
-|                     | Max              |  86.2        |    106.1            |     108.0            | 108.0        |         |
-|                     |                  |              |                     |                      |              |         |
-| Baseline height(cm) | n                |  86          |     84              |      84              | 254          |  0.126  |
-|                     | Mean             | 162.6        |    163.4            |     165.8            | 163.9        |         |
-|                     | SD               |  11.52       |     10.42           |      10.13           |  10.76       |         |
-|                     | Median           | 162.6        |    162.6            |     165.1            | 162.8        |         |
-|                     | Min              | 137.2        |    135.9            |     146.1            | 135.9        |         |
-|                     | Max              | 185.4        |    195.6            |     190.5            | 195.6        |         |
-|                     |                  |              |                     |                      |              |         |
-| Baseline BMI        | n                |  86          |     83              |      84              | 253          |  0.013  |
-|                     | Mean             |  23.6        |     25.1            |      25.3            |  24.7        |         |
-|                     | SD               |   3.67       |      4.27           |       4.16           |   4.09       |         |
-|                     | Median           |  23.4        |     24.3            |      24.8            |  24.2        |         |
-|                     | Min              |  15.1        |     17.7            |      13.7            |  13.7        |         |
-|                     | Max              |  33.3        |     40.1            |      34.5            |  40.1        |         |
-|                     |                  |              |                     |                      |              |         |
-|                     | \<25             |  59 (68.6 %) |     47 (56.0 %)     |      44 (52.4 %)     | 150 (59.1 %) |  0.233  |
-|                     | 25-\<30          |  21 (24.4 %) |     27 (32.1 %)     |      28 (33.3 %)     |  76 (29.9 %) |         |
-|                     | \>=30            |   6 ( 7.0 %) |     10 (11.9 %)     |      12 (14.3 %)     |  28 (11.0 %) |         |
-|                     |                  |              |                     |                      |              |         |
+|  |  | Placebo | Xanomeline Low Dose | Xanomeline High Dose | Total | p-value |
+|:---|:---|:--:|:--:|:--:|:--:|:--:|
+| Age (y)             | n               |  86          |  84          |  84          | 254          | 0.593 |
+|  | Mean            |  75.2        |  75.7        |  74.4        |  75.1        |       |
+|  | SD              |   8.59       |   8.29       |   7.89       |   8.25       |       |
+|  | Median          |  76.0        |  77.5        |  76.0        |  77.0        |       |
+|  | Min             |  52.0        |  51.0        |  56.0        |  51.0        |       |
+|  | Max             |  89.0        |  88.0        |  88.0        |  89.0        |       |
+|  |                 |              |              |              |              |       |
+|  | \<65 yrs         |  14 (16.3 %) |   8 ( 9.5 %) |  11 (13.1 %) |  33 (13.0 %) | 0.144 |
+|  | 65-80 yrs       |  42 (48.8 %) |  47 (56.0 %) |  55 (65.5 %) | 144 (56.7 %) |       |
+|  | \>80 yrs         |  30 (34.9 %) |  29 (34.5 %) |  18 (21.4 %) |  77 (30.3 %) |       |
+|  |                 |              |              |              |              |       |
+| Sex                 | n               |  86          |  84          |  84          | 254          | 0.141 |
+|  | Male            |  33 (38.4 %) |  34 (40.5 %) |  44 (52.4 %) | 111 (43.7 %) |       |
+|  | Female          |  53 (61.6 %) |  50 (59.5 %) |  40 (47.6 %) | 143 (56.3 %) |       |
+|  |                 |              |              |              |              |       |
+| Race (Origin)       | n               |  86          |  84          |  84          | 254          | 0.648 |
+|  | Caucasian       |  75 (87.2 %) |  72 (85.7 %) |  71 (84.5 %) | 218 (85.8 %) |       |
+|  | African Descent |   8 ( 9.3 %) |   6 ( 7.1 %) |   9 (10.7 %) |  23 ( 9.1 %) |       |
+|  | Hispanic        |   3 ( 3.5 %) |   6 ( 7.1 %) |   3 ( 3.6 %) |  12 ( 4.7 %) |       |
+|  | Other           |              |              |   1 ( 1.2 %) |   1 ( 0.4 %) |       |
+|  |                 |              |              |              |              |       |
+| MMSE                | n               |  86          |  84          |  84          | 254          | 0.595 |
+|  | Mean            |  18.0        |  17.9        |  18.5        |  18.1        |       |
+|  | SD              |   4.27       |   4.22       |   4.16       |   4.21       |       |
+|  | Median          |  19.5        |  18.0        |  20.0        |  19.0        |       |
+|  | Min             |  10.0        |  10.0        |  10.0        |  10.0        |       |
+|  | Max             |  23.0        |  24.0        |  24.0        |  24.0        |       |
+|  |                 |              |              |              |              |       |
+| Duration of disease | n               |  86          |  84          |  84          | 254          | 0.153 |
+|  | Mean            |  42.6        |  48.7        |  40.5        |  43.9        |       |
+|  | SD              |  30.24       |  29.58       |  24.69       |  28.40       |       |
+|  | Median          |  35.3        |  40.2        |  36.0        |  36.2        |       |
+|  | Min             |   7.2        |   7.8        |   2.2        |   2.2        |       |
+|  | Max             | 183.1        | 130.8        | 135.0        | 183.1        |       |
+|  |                 |              |              |              |              |       |
+|  | \<12 months      |   5 ( 5.8 %) |   3 ( 3.6 %) |   4 ( 4.8 %) |  12 ( 4.7 %) | 0.789 |
+|  | \>=12 months     |  81 (94.2 %) |  81 (96.4 %) |  80 (95.2 %) | 242 (95.3 %) |       |
+|  |                 |              |              |              |              |       |
+| Years of education  | n               |  86          |  84          |  84          | 254          | 0.388 |
+|  | Mean            |  12.6        |  13.2        |  12.5        |  12.8        |       |
+|  | SD              |   2.95       |   4.15       |   2.92       |   3.38       |       |
+|  | Median          |  12.0        |  12.0        |  12.0        |  12.0        |       |
+|  | Min             |   6.0        |   3.0        |   6.0        |   3.0        |       |
+|  | Max             |  21.0        |  24.0        |  20.0        |  24.0        |       |
+|  |                 |              |              |              |              |       |
+| Baseline weight(kg) | n               |  86          |  83          |  84          | 253          | 0.003 |
+|  | Mean            |  62.8        |  67.3        |  70.0        |  66.6        |       |
+|  | SD              |  12.77       |  14.12       |  14.65       |  14.13       |       |
+|  | Median          |  60.5        |  64.9        |  69.2        |  66.7        |       |
+|  | Min             |  34.0        |  45.4        |  41.7        |  34.0        |       |
+|  | Max             |  86.2        | 106.1        | 108.0        | 108.0        |       |
+|  |                 |              |              |              |              |       |
+| Baseline height(cm) | n               |  86          |  84          |  84          | 254          | 0.126 |
+|  | Mean            | 162.6        | 163.4        | 165.8        | 163.9        |       |
+|  | SD              |  11.52       |  10.42       |  10.13       |  10.76       |       |
+|  | Median          | 162.6        | 162.6        | 165.1        | 162.8        |       |
+|  | Min             | 137.2        | 135.9        | 146.1        | 135.9        |       |
+|  | Max             | 185.4        | 195.6        | 190.5        | 195.6        |       |
+|  |                 |              |              |              |              |       |
+| Baseline BMI        | n               |  86          |  83          |  84          | 253          | 0.013 |
+|  | Mean            |  23.6        |  25.1        |  25.3        |  24.7        |       |
+|  | SD              |   3.67       |   4.27       |   4.16       |   4.09       |       |
+|  | Median          |  23.4        |  24.3        |  24.8        |  24.2        |       |
+|  | Min             |  15.1        |  17.7        |  13.7        |  13.7        |       |
+|  | Max             |  33.3        |  40.1        |  34.5        |  40.1        |       |
+|  |                 |              |              |              |              |       |
+|  | \<25             |  59 (68.6 %) |  47 (56.0 %) |  44 (52.4 %) | 150 (59.1 %) | 0.233 |
+|  | 25-\<30          |  21 (24.4 %) |  27 (32.1 %) |  28 (33.3 %) |  76 (29.9 %) |       |
+|  | \>=30            |   6 ( 7.0 %) |  10 (11.9 %) |  12 (14.3 %) |  28 (11.0 %) |       |
+|  |                 |              |              |              |              |       |
 
 ## AE table
 
@@ -420,6 +426,7 @@ prevalence in the High Dose group.
 Expand for the code used to produce this subset
 
 ``` r
+
 data_ae2 <- data_ae |>
   dplyr::group_by(AEBODSYS, AETERM) |>
   dplyr::mutate(pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]) |>
@@ -454,6 +461,7 @@ contains our spanning labels and `col1` contains our lower level column
 headers:
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
@@ -493,6 +501,7 @@ using `frmt_combine`, we will have 3 `frmt_structure` objects. Note the
 use of `frmt_when` to format the p-values.
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
@@ -544,6 +553,7 @@ with its data, and nest the Preferred Term data underneath. Fortunately,
 we are able to achieve this formatting with a `row_grp_plan`:
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
@@ -594,6 +604,7 @@ Our column alignment looks good as-is, except for the p-values. We can
 use the `col_style_plan` to tweak those.
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
@@ -651,6 +662,7 @@ benefit from some renaming. We can add a `col_plan` to help with the
 ordering:
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
@@ -711,6 +723,7 @@ For better control over our column labels, we can make use of
 order and names:
 
 ``` r
+
 tfrmt(
   # specify columns in the data
   group = AEBODSYS,
@@ -827,6 +840,7 @@ The mock we are going to match looks like this:
 Let’s first see how the table looks without any special formatting.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -870,6 +884,7 @@ several different label values so it is more convenient to format them
 according to their param name in the `frmt_structure`.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -915,6 +930,7 @@ Therefore, we use the `frmt_combine` utility to achieve desired
 formatting:
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -979,6 +995,7 @@ table is sorted appropriately by passing our order columns to
 display using `col_plan`.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -1051,6 +1068,7 @@ group-level header, and display the summary data in-line. The
 `row_grp_plan` can help us with both via the `row_grp_loc` argument:
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -1124,6 +1142,7 @@ to add a post space after specific blocks of data. We can reference the
 locations of each block based on the values of the `group` variable.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,

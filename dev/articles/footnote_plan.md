@@ -1,6 +1,7 @@
 # Footnote Plan
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -25,6 +26,7 @@ Let’s go through some examples!
 Here is some mock data we’re going to use.
 
 ``` r
+
 # Create mock data
 df <- tidyr::crossing(
   group = c("group 1", "group 2"),
@@ -45,6 +47,7 @@ span_df <- df |> dplyr::mutate(span = dplyr::case_when(
 Different footnotes are separated by individual `footnote_structure`s.
 
 ``` r
+
 # Create specification
 tfrmt(
   group = group,
@@ -89,6 +92,7 @@ table, and the RHS is the column header name you have selected (“T1”,
 “T2” or “T1&T2” in this case).
 
 ``` r
+
 # Create specification
 tfrmt(
   group = group,
@@ -126,6 +130,7 @@ tfrmt(
 ### Example 3 (footnote for same label in all groups)
 
 ``` r
+
 # Create specification
 tfrmt(
   group = group,
@@ -163,6 +168,7 @@ tfrmt(
 ### Example 4 (footnote for specific label in one group)
 
 ``` r
+
 # Create specification
 tfrmt(
   group = group,
@@ -200,6 +206,7 @@ tfrmt(
 ### Example 5 (footnote for spanning header)
 
 ``` r
+
 # Add specification
 tfrmt(
   group = group,
@@ -251,6 +258,7 @@ You can apply a mark to multiple headers by entering a named list for
 your column variable.
 
 ``` r
+
 # Add specification
 tfrmt(
   group = group,

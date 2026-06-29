@@ -1,6 +1,7 @@
 # ARD-first tables using {cards}
 
 ``` r
+
 library(tfrmt)
 library(cards)
 ```
@@ -26,6 +27,7 @@ summaries by treatment group. We can perform these summaries using the
 following {cards} code:
 
 ``` r
+
 ard_demog <- cards::ard_stack(
   data = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
   cards::ard_categorical(
@@ -63,6 +65,7 @@ which performs general operations to get the results in a tidy data
 frame without list-columns and extra metadata.
 
 ``` r
+
 ard_demog_shuffled <- ard_demog |>
   shuffle_card()
 
@@ -92,6 +95,7 @@ single variable. We can use the
 helper for this:
 
 ``` r
+
 ard_demog_shuffled <- ard_demog_shuffled |>
   prep_combine_vars(vars = c("AGEGR1", "AGE"))
 
@@ -119,6 +123,7 @@ the
 helper for this:
 
 ``` r
+
 ard_demog_shuffled <- ard_demog_shuffled |>
   prep_label()
 
@@ -145,6 +150,7 @@ have `n`, `N`, `p` from the
 call:
 
 ``` r
+
 tail(ard_demog_shuffled)
 #> # A tibble: 6 × 8
 #>   ARM    variable_level context stat_variable stat_name stat_label    stat label
@@ -164,6 +170,7 @@ stat, and drop the unnecessary `N` and `p`. The
 helper takes care of this for us:
 
 ``` r
+
 ard_demog_shuffled <- ard_demog_shuffled |>
   prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
 
@@ -192,6 +199,7 @@ Finally, we can do any additional table-specific manipulations and we’re
 ready for our tfrmt!
 
 ``` r
+
 ard_final <- ard_demog_shuffled |>
   # drop unneeded variables
   dplyr::select(-c(variable_level, context, stat_label)) |>
@@ -226,6 +234,7 @@ ard_final
 Create the {tfrmt}
 
 ``` r
+
 tfrmt(
   group = stat_variable,
   label = label,
@@ -259,6 +268,7 @@ AE tables contain hierarchical summaries. We can perform these summaries
 using the following {cards} code:
 
 ``` r
+
 adae <- pharmaverseadam::adae |>
   dplyr::filter(SAFFL == "Y") |>
   dplyr::filter(AESOC %in% unique(AESOC)[1:2]) |>
@@ -311,6 +321,7 @@ which performs general operations to get the results in a tidy data
 frame without list-columns and extra metadata.
 
 ``` r
+
 ard_ae_shuffled <- ard_ae |>
   shuffle_card()
 
@@ -335,6 +346,7 @@ Notice that our calculations of any AE by system organ class (AESOC)
 have a missing value for preferred term (AEDECOD):
 
 ``` r
+
 ard_ae_shuffled |>
   dplyr::filter(!is.na(AESOC) & is.na(AEDECOD))
 #> # A tibble: 12 × 8
@@ -361,6 +373,7 @@ value for AESOC. We can use the
 helper to fill the value from AESOC into AEDECOD:
 
 ``` r
+
 ard_ae_shuffled <- ard_ae_shuffled |>
   prep_hierarchical_fill(
     vars = c("AESOC", "AEDECOD"),
@@ -392,6 +405,7 @@ have `n`, `N`, `p` from the
 call:
 
 ``` r
+
 ard_ae_shuffled |>
   dplyr::filter(is.na(AESOC))
 #> # A tibble: 9 × 8
@@ -415,6 +429,7 @@ stat, and drop the unnecessary `N` and `p`. The
 helper takes care of this for us:
 
 ``` r
+
 ard_ae_shuffled <- ard_ae_shuffled |>
   prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
 
@@ -439,6 +454,7 @@ Finally, we can do any additional table-specific manipulations and we’re
 ready for our tfrmt!
 
 ``` r
+
 ard_final <- ard_ae_shuffled |>
   # drop uneeded variables
   dplyr::select(-c(context, stat_label, stat_variable))
@@ -463,6 +479,7 @@ ard_final
 Create the {tfrmt}
 
 ``` r
+
 tfrmt(
   group = AESOC,
   label = AEDECOD,
@@ -487,13 +504,13 @@ tfrmt(
   print_to_gt(ard_final)
 ```
 
-|                                                      | Placebo N = 86 | Xanomeline High Dose N = 84 | Xanomeline Low Dose N = 84 |
-|------------------------------------------------------|:--------------:|:---------------------------:|:--------------------------:|
-| GASTROINTESTINAL DISORDERS                           |    12 (14%)    |          10 (12%)           |           8 (10%)          |
-|   DIARRHOEA                                          |     9 (10%)    |           4 ( 5%)           |           5 ( 6%)          |
-|   HIATUS HERNIA                                      |     1 ( 1%)    |           0 ( 0%)           |           0 ( 0%)          |
-|   VOMITING                                           |     3 ( 3%)    |           7 ( 8%)           |           3 ( 4%)          |
-| GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS |     9 (10%)    |          28 (33%)           |          27 (32%)          |
-|   APPLICATION SITE ERYTHEMA                          |     3 ( 3%)    |          15 (18%)           |          12 (14%)          |
-|   APPLICATION SITE PRURITUS                          |     6 ( 7%)    |          22 (26%)           |          22 (26%)          |
-|   FATIGUE                                            |     1 ( 1%)    |           5 ( 6%)           |           5 ( 6%)          |
+|  | Placebo N = 86 | Xanomeline High Dose N = 84 | Xanomeline Low Dose N = 84 |
+|----|:--:|:--:|:--:|
+| GASTROINTESTINAL DISORDERS | 12 (14%) | 10 (12%) |  8 (10%) |
+|   DIARRHOEA |  9 (10%) |  4 ( 5%) |  5 ( 6%) |
+|   HIATUS HERNIA |  1 ( 1%) |  0 ( 0%) |  0 ( 0%) |
+|   VOMITING |  3 ( 3%) |  7 ( 8%) |  3 ( 4%) |
+| GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS |  9 (10%) | 28 (33%) | 27 (32%) |
+|   APPLICATION SITE ERYTHEMA |  3 ( 3%) | 15 (18%) | 12 (14%) |
+|   APPLICATION SITE PRURITUS |  6 ( 7%) | 22 (26%) | 22 (26%) |
+|   FATIGUE |  1 ( 1%) |  5 ( 6%) |  5 ( 6%) |

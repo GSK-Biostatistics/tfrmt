@@ -1,6 +1,7 @@
 # Unusual Tables
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -23,6 +24,7 @@ also will need a column for the parameters even though they are all the
 same.
 
 ``` r
+
 data <- tibble::tribble(
   ~`Pooled Id` , ~`Site Id` ,
   "701"        , "701"      ,
@@ -74,6 +76,7 @@ level columns. But, `tfrmt` respects the order things are put in, which
 is why we used a factor for the populations.
 
 ``` r
+
 tfrmt(
   param = "param",
   value = "val",

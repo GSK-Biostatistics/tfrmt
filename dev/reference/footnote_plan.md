@@ -43,6 +43,7 @@ footnote plan object
 ## Examples
 
 ``` r
+
 # Adds a footnote indicated by letters rather than numbers to Group 1
 footnote_plan <- footnote_plan(
     footnote_structure(footnote_text = "footnote", group_val = "Group 1"),
