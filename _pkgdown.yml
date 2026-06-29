@@ -66,6 +66,7 @@ reference:
   contents:
   - layer_tfrmt
   - update_group
+  - reset_component
 - title: Print/Export
   contents:
   - print_mock_gt

@@ -280,7 +280,7 @@ tfrmt_sigdig <- function(sigdig_df,
     group_by(def_ord = desc(.data$def_ord), .data$sigdig) %>%
     group_split() %>%
     map(select, -"def_ord") %>%
-    map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = NULL)
+    map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = missing)
 
   bp <- frmt_structure_list %>%
     do.call("c",.)   %>%

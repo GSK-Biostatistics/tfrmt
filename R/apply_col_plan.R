@@ -294,7 +294,13 @@ char_as_quo <- function(x) {
   eval(parse(text = expr_to_eval)[[1]])
 }
 
+
+#' Evaluate a `col_plan` quosure
+#'
+#' @param x a (single) quosure to evaluate
 #' @importFrom rlang quo_get_expr as_label is_empty
+#'
+#' @noRd
 eval_col_plan_quo <- function(x, data_names, preselected_vals, default_everything_behavior = FALSE){
 
   if(identical(as_label(x), "everything()") & !default_everything_behavior){
@@ -339,7 +345,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names){
   }
 
   tibble(
-    original = data_names,
+    original = unname(data_names),
     new_name = names(data_names)
    ) %>%
     mutate(
