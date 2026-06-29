@@ -147,19 +147,17 @@
         cards::ADSL, variables = AGEGR1), 1), dplyr::slice(cards::ard_continuous(
         cards::ADSL, by = SEX, variables = AGE), 1), dplyr::slice(cards::ard_continuous(
         cards::ADSL, variables = AGE), 1)), by = c("ARM", "SEX")))
-    Message
-      Mismatch between attributes of `x` and supplied value to `by`. Attributes will be used in lieu of `by`
     Output
-                ARM  SEX AGEGR1         AGE     context stat_variable stat_name
-      1     Placebo <NA>  65-80        <NA> categorical        AGEGR1         n
-      2 Overall ARM <NA>  65-80        <NA> categorical        AGEGR1         n
-      3        <NA> <NA>   <NA> Overall AGE  continuous           AGE         N
-      4        <NA>    F   <NA> Overall AGE  continuous           AGE         N
-        stat_label stat
-      1          n   42
-      2          n  144
-      3          N  254
-      4          N  143
+                ARM         SEX AGEGR1         AGE     context stat_variable
+      1     Placebo        <NA>  65-80        <NA> categorical        AGEGR1
+      2 Overall ARM        <NA>  65-80        <NA> categorical        AGEGR1
+      3        <NA> Overall SEX   <NA> Overall AGE  continuous           AGE
+      4        <NA>           F   <NA> Overall AGE  continuous           AGE
+        stat_name stat_label stat
+      1         n          n   42
+      2         n          n  144
+      3         N          N  254
+      4         N          N  143
 
 ---
 
@@ -169,13 +167,11 @@
         cards::ADSL, variables = AGEGR1), 1), dplyr::slice(cards::ard_continuous(
         cards::ADSL, by = SEX, variables = AGE), 1), dplyr::slice(cards::ard_continuous(
         cards::ADSL, variables = AGE), 1)), by = c("ARM", "SEX"), fill_overall = "{colname}"))
-    Message
-      Mismatch between attributes of `x` and supplied value to `by`. Attributes will be used in lieu of `by`
     Output
             ARM  SEX AGEGR1  AGE     context stat_variable stat_name stat_label stat
       1 Placebo <NA>  65-80 <NA> categorical        AGEGR1         n          n   42
       2     ARM <NA>  65-80 <NA> categorical        AGEGR1         n          n  144
-      3    <NA> <NA>   <NA>  AGE  continuous           AGE         N          N  254
+      3    <NA>  SEX   <NA>  AGE  continuous           AGE         N          N  254
       4    <NA>    F   <NA>  AGE  continuous           AGE         N          N  143
 
 ---
@@ -231,13 +227,12 @@
         adsl_new, by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns(
           "mean"))), by = "ARM")
     Message
-      Mismatch between attributes of `x` and supplied value to `by`. Attributes will be used in lieu of `by`
       i "Overall ARM" already exists in the `ARM` column. Using "Overall ARM.1".
     Output
       # A tibble: 4 x 7
         ARM                  AGE      context stat_variable stat_name stat_label  stat
         <chr>                <chr>    <chr>   <chr>         <chr>     <chr>      <dbl>
-      1 <NA>                 Overall~ contin~ AGE           mean      Mean        75.1
+      1 Overall ARM.1        Overall~ contin~ AGE           mean      Mean        75.1
       2 Overall ARM          Overall~ contin~ AGE           mean      Mean        75.2
       3 Xanomeline High Dose Overall~ contin~ AGE           mean      Mean        74.4
       4 Xanomeline Low Dose  Overall~ contin~ AGE           mean      Mean        75.7
