@@ -42,7 +42,7 @@ Imports:
     tidyr,
     tidyselect
 Suggests:
-    cards (>= 0.8.0),
+    cards (>= 0.6.0),
     covr,
     ggfortify,
     knitr,
