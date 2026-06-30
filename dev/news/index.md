@@ -12,6 +12,12 @@
   error if a value in the group variable was an empty string
   ([\#539](https://github.com/GSK-Biostatistics/tfrmt/issues/539),
   [@alanahjonas95](https://github.com/alanahjonas95)).
+- Fix bug in `as.character.span_structure` where the regex was
+  incorrectly capturing content wrapped in parentheses as an R function
+  even though it did not have a valid R function identifier immediately
+  before the `(`. i.e., “n (%)” incorrectly captured as a function
+  ([\#643](https://github.com/GSK-Biostatistics/tfrmt/issues/643),
+  [@LiamHobby](https://github.com/LiamHobby)).
 
 ### Improvements
 
