@@ -248,18 +248,20 @@ bign
 extracted <- extract_data(bign)
 
 extracted
-#> # A tibble: 9 × 4
-#>   Label         `Placebo\nN = 30` `Treatment\nN = 40` `Total\nN = 60`
-#>   <chr>         <chr>             <chr>               <chr>          
-#> 1 "Age (y)"      NA                NA                  NA            
-#> 2 "  n"         "15"              "13"                "28"           
-#> 3 "  Mean (SD)" "73.6 (9.35)"     "74.2 (7.23)"       "71.8 (8.29)"  
-#> 4 "   "         " "               " "                 " "            
-#> 5 "Sex"          NA                NA                  NA            
-#> 6 "  n"         "14"              "13"                "27"           
-#> 7 "  Male"      "8 (57.1%)"       "7 (53.8%)"         "15 (55.6%)"   
-#> 8 "  Female"    "6 (42.9%)"       "6 (46.2%)"         "12 (44.4%)"   
-#> 9 "   "         " "               " "                 " "
+#> # A tibble: 11 × 4
+#>    Label         `Placebo\nN = 30` `Treatment\nN = 40` `Total\nN = 60`
+#>    <chr>         <chr>             <chr>               <chr>          
+#>  1 "Age (y)"      NA                NA                  NA            
+#>  2 "  n"         "15"              "13"                "28"           
+#>  3 "Sex"          NA                NA                  NA            
+#>  4 "  n"         "14"              "13"                "27"           
+#>  5 "Age (y)"      NA                NA                  NA            
+#>  6 "  Mean (SD)" "73.6 (9.35)"     "74.2 (7.23)"       "71.8 (8.29)"  
+#>  7 "   "         " "               " "                 " "            
+#>  8 "Sex"          NA                NA                  NA            
+#>  9 "  Male"      "8 (57.1%)"       "7 (53.8%)"         "15 (55.6%)"   
+#> 10 "  Female"    "6 (42.9%)"       "6 (46.2%)"         "12 (44.4%)"   
+#> 11 "   "         " "               " "                 " "
 ```
 
 ## Handling Spanning Headers

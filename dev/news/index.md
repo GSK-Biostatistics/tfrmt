@@ -12,6 +12,11 @@
   error if a value in the group variable was an empty string
   ([\#539](https://github.com/GSK-Biostatistics/tfrmt/issues/539),
   [@alanahjonas95](https://github.com/alanahjonas95)).
+- Fix bug in `row_grp_plan` where identical labels repeated across
+  different groups were incorrectly forced to the top of the table
+  instead of maintaining their correct order
+  ([\#634](https://github.com/GSK-Biostatistics/tfrmt/issues/634),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
 - Fix bug in `as.character.span_structure` where the regex was
   incorrectly capturing content wrapped in parentheses as an R function
   even though it did not have a valid R function identifier immediately
