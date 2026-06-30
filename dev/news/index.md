@@ -22,6 +22,12 @@
   [@alanahjonas95](https://github.com/alanahjonas95)).
 - Add markdown processing of stub column labels
   ([\#617](https://github.com/GSK-Biostatistics/tfrmt/issues/617))
+- Added
+  [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/extract_data.md)
+  function to enable data to be easily extracted from a tfrmt into a
+  data
+  frame.([\#628](https://github.com/GSK-Biostatistics/tfrmt/issues/628),
+  [@alanahjonas95](https://github.com/alanahjonas95))
 
 ## tfrmt 0.3.0
 

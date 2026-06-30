@@ -100,6 +100,8 @@
   : Check if input is a frmt
 - [`make_mock_data()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/make_mock_data.md)
   : Make mock data for display shells
+- [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/extract_data.md)
+  : Extract underlying data from tfrmt output
 
 ## ARD Helpers for {cards} to {tfrmt}
 
