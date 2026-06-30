@@ -4,10 +4,13 @@
 * Fix bug in `tfrmt_sigdig` so it correctly passes the 'missing' argument to the body_plan (#621, @alanahjonas95).
 * Fix bug in `page_plan` where the max_rows argument was returning an error if a value in the group variable was an empty string (#539, @alanahjonas95).
 * Fix bug in `row_grp_plan` where identical labels repeated across different groups were incorrectly forced to the top of the table instead of maintaining their correct order (#634, @alanahjonas95).
-
+* Fix bug in `as.character.span_structure` where the regex was incorrectly capturing content wrapped in parentheses as an R function even though it did not have a valid R function identifier immediately before the `(`. i.e., "n (%)" incorrectly captured as a function (#643, @LiamHobby).
+  
 ## Improvements
 * `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
 * Add markdown processing of stub column labels (#617)
+* Added `extract_data()` function to enable data to be easily extracted from a tfrmt into a data frame.(#628, @alanahjonas95)
+
 
 # tfrmt 0.3.0
 
