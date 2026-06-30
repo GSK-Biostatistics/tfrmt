@@ -732,6 +732,7 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
     column = vars(column),
     value = value,
     param = param,
+    sorting_cols = c(g1, g2),
     body_plan = body_plan(
       frmt_structure(
         group_val = ".default",
@@ -766,15 +767,8 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
       )
     ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(
-        group_val = list(
-          g1 = c("G1", "G2_"),
-          g2 = ".default"
-        ),
-        element_block = element_block(
-          post_space = "----"
-        )
-      ),
+      row_grp_structure(group_val=list(g1="G1"), element_block(post_space="----")),
+      row_grp_structure(group_val=list(g1="G2_"), element_block(post_space="----")),
       label_loc = element_row_grp_loc(
         location = "spanning"
       )
