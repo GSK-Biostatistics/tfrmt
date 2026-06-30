@@ -45,7 +45,6 @@ prep_info_return <- "Unable to apply {.fn {prep_func}}."
 #' )
 prep_combine_vars <- function(df, vars, remove = TRUE) {
 
-  class_uncards <- class(df)
   if (!rlang::is_character(vars)) {
     cli::cli_abort(
       "{.arg vars} must be a character vector. You have supplied \\
@@ -131,7 +130,6 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
       "variable_level" = "var_level_untd",
     )
 
-  class(output) <- class_uncards
   output
 }
 
