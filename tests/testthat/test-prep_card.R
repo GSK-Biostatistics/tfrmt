@@ -220,7 +220,8 @@ test_that("prep_...() pipe with demographic data", {
 
   expect_identical(
     dplyr::arrange(ard_tbl, ord1, ord2),
-    dplyr::arrange(prepped_ard, ord1, ord2)
+    dplyr::arrange(prepped_ard, ord1, ord2),
+    ignore_attr = "class"
   )
 
   expect_no_error(
@@ -337,6 +338,7 @@ test_that("prep_...() pipe with adverse effects data", {
       param = stat_name,
       value = stat,
       column = c(TRT01A, AESEV),
+      sorting_cols = AEBODSYS,
       row_grp_plan = row_grp_plan(
         row_grp_structure(
           group_val = ".default",
