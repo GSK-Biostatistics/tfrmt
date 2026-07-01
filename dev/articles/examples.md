@@ -102,7 +102,6 @@ The mock we are going to match looks like this:
 |  | \<25             | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | x.xxx |
 |  | 25-\<30          | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
 |  | \>=30            | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
-|  |                 |              |              |              |              |       |
 
 For this table, we have three columns for each of the treatment groups,
 a total column for all groups combined, and a p-value column. The table
@@ -409,7 +408,6 @@ tfrmt(
 |  | \<25             |  59 (68.6 %) |  47 (56.0 %) |  44 (52.4 %) | 150 (59.1 %) | 0.233 |
 |  | 25-\<30          |  21 (24.4 %) |  27 (32.1 %) |  28 (33.3 %) |  76 (29.9 %) |       |
 |  | \>=30            |   6 ( 7.0 %) |  10 (11.9 %) |  12 (14.3 %) |  28 (11.0 %) |       |
-|  |                 |              |              |              |              |       |
 
 ## AE table
 

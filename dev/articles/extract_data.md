@@ -248,7 +248,7 @@ bign
 extracted <- extract_data(bign)
 
 extracted
-#> # A tibble: 11 × 4
+#> # A tibble: 10 × 4
 #>    Label         `Placebo\nN = 30` `Treatment\nN = 40` `Total\nN = 60`
 #>    <chr>         <chr>             <chr>               <chr>          
 #>  1 "Age (y)"      NA                NA                  NA            
@@ -260,8 +260,7 @@ extracted
 #>  7 "   "         " "               " "                 " "            
 #>  8 "Sex"          NA                NA                  NA            
 #>  9 "  Male"      "8 (57.1%)"       "7 (53.8%)"         "15 (55.6%)"   
-#> 10 "  Female"    "6 (42.9%)"       "6 (46.2%)"         "12 (44.4%)"   
-#> 11 "   "         " "               " "                 " "
+#> 10 "  Female"    "6 (42.9%)"       "6 (46.2%)"         "12 (44.4%)"
 ```
 
 ## Handling Spanning Headers

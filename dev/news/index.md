@@ -33,6 +33,11 @@
   [@alanahjonas95](https://github.com/alanahjonas95)).
 - Add markdown processing of stub column labels
   ([\#617](https://github.com/GSK-Biostatistics/tfrmt/issues/617))
+- Update default for
+  [`row_grp_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/row_grp_plan.md)/[`row_grp_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/row_grp_structure.md)
+  to remove trailing post-space rows
+  ([\#630](https://github.com/GSK-Biostatistics/tfrmt/issues/630),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
 - Added
   [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/extract_data.md)
   function to enable data to be easily extracted from a tfrmt into a

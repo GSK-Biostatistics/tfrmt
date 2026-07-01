@@ -388,7 +388,6 @@ tfrmt(
 |  |       \<25         | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | x.xxx |
 |  |    25-\<30         | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
 |  |      \>=30         | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) | xxx (xx.x %) |       |
-|  |                   |              |              |              |              |       |
 
 ## Efficacy Mocks
 

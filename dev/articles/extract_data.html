@@ -2434,15 +2434,6 @@ N = 40" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap
 <td headers="stub_1_10 Total
 N = 60" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;">12 (44.4%)</td>
 </tr>
-<tr>
-<th id="stub_1_11" scope="row" class="gt_row gt_left gt_stub" style="border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';; text-align: left; white-space: pre-wrap;">   </th>
-<td headers="stub_1_11 Placebo
-N = 30" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> </td>
-<td headers="stub_1_11 Treatment
-N = 40" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> </td>
-<td headers="stub_1_11 Total
-N = 60" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap; font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; border-top-width: 1px; border-top-style: solid; border-top-color: transparent; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: transparent;"> </td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -2451,7 +2442,7 @@ N = 60" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap
 <span><span class="va">extracted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_data.html">extract_data</a></span><span class="op">(</span><span class="va">bign</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">extracted</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
 <span><span class="co">#&gt;    Label         `Placebo\nN = 30` `Treatment\nN = 40` `Total\nN = 60`</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>Age (y)<span style="color: #949494;">"</span>      <span style="color: #BB0000;">NA</span>                <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>            </span></span>
@@ -2463,8 +2454,7 @@ N = 60" class="gt_row gt_right" style="text-align: center; white-space: pre-wrap
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>   <span style="color: #949494;">"</span>         <span style="color: #949494;">"</span> <span style="color: #949494;">"</span>               <span style="color: #949494;">"</span> <span style="color: #949494;">"</span>                 <span style="color: #949494;">"</span> <span style="color: #949494;">"</span>            </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>Sex<span style="color: #949494;">"</span>          <span style="color: #BB0000;">NA</span>                <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>            </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>  Male<span style="color: #949494;">"</span>      <span style="color: #949494;">"</span>8 (57.1%)<span style="color: #949494;">"</span>       <span style="color: #949494;">"</span>7 (53.8%)<span style="color: #949494;">"</span>         <span style="color: #949494;">"</span>15 (55.6%)<span style="color: #949494;">"</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>  Female<span style="color: #949494;">"</span>    <span style="color: #949494;">"</span>6 (42.9%)<span style="color: #949494;">"</span>       <span style="color: #949494;">"</span>6 (46.2%)<span style="color: #949494;">"</span>         <span style="color: #949494;">"</span>12 (44.4%)<span style="color: #949494;">"</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> <span style="color: #949494;">"</span>   <span style="color: #949494;">"</span>         <span style="color: #949494;">"</span> <span style="color: #949494;">"</span>               <span style="color: #949494;">"</span> <span style="color: #949494;">"</span>                 <span style="color: #949494;">"</span> <span style="color: #949494;">"</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>  Female<span style="color: #949494;">"</span>    <span style="color: #949494;">"</span>6 (42.9%)<span style="color: #949494;">"</span>       <span style="color: #949494;">"</span>6 (46.2%)<span style="color: #949494;">"</span>         <span style="color: #949494;">"</span>12 (44.4%)<span style="color: #949494;">"</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="handling-spanning-headers">Handling Spanning Headers<a class="anchor" aria-label="anchor" href="#handling-spanning-headers"></a>
