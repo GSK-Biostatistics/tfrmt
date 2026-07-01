@@ -90,6 +90,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     select(-"TEMP_row")
 
   add_ln_df
+
 }
 
 
@@ -122,10 +123,10 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
   if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint", "column")){
     add_ln_df <- .data
   } else{
-      #  combine any grouping columns that need combining into label
-      add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
-                                                label,
-                                                element_row_grp_loc)
+  #  combine any grouping columns that need combining into label
+  add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
+                                              label,
+                                              element_row_grp_loc)
 
   }
   add_ln_df
@@ -200,7 +201,9 @@ apply_grp_block <- function(.data, group, element_block, widths){
 
     # combine with original data
     bind_rows(.data, grp_row_add) %>%
-      fill(!!!group)
+      fill(!!!group) %>%
+      mutate(..tfrmt_post_space_row = TEMP_row %% 1 != 0)
+
   } else {
     .data
   }
@@ -384,4 +387,27 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
     }
   }
   add_ln_df
+}
+
+
+
+#' Remove trailing post-space rows and helper column
+#' @param .data processed wide tbl
+#' @noRd
+apply_post_space_trim <- function(.data) {
+
+  target_col <- "..tfrmt_post_space_row"
+
+  if (target_col %in% names(.data)) {
+    # If the very last row was tagged as a spacer, drop it
+    if (isTRUE(last(.data[[target_col]]))) {
+      .data <- .data %>%
+        dplyr::slice(-dplyr::n())
+    }
+    # Always drop the helper column before returning
+    .data <- .data %>%
+      dplyr::select(-dplyr::all_of(target_col))
+  }
+
+  .data
 }
