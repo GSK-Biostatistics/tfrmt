@@ -280,7 +280,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws){
       page.numbering = TRUE,
       page.header.use_tbl_headings = FALSE,
       page.footer.use_tbl_notes = TRUE,
-      page.orientation = "landscape") %>%
+      page.orientation = "landscape",
+      table_body.hlines.color = "#ffffff",
+      table_body.vlines.color = "#ffffff",
+      column_labels.vlines.color = "#ffffff"
+    ) %>%
 
     tab_style(
       style = cell_text(whitespace = "pre-wrap", align = "center"),
