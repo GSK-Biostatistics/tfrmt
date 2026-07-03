@@ -202,7 +202,7 @@ apply_grp_block <- function(.data, group, element_block, widths){
     # combine with original data
     bind_rows(.data, grp_row_add) %>%
       fill(!!!group) %>%
-      mutate(..tfrmt_post_space_row = TEMP_row %% 1 != 0)
+      mutate(..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0)
 
   } else {
     .data
