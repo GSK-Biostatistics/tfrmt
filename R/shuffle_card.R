@@ -62,6 +62,16 @@ shuffle_card <- function(x,
     )
   }
 
+  # Check if a 'by' variable is available
+  if (inherits(x, "bind_ard") && (is.null(by) || length(by) == 0)) {
+    cli::cli_abort(
+      c(
+        "The {.arg by} argument was not supplied.",
+        "i" = "When using a combined ARD ({.cls bind_ard}), you must explicitly pass a grouping variable, e.g., {.code shuffle_card(by = 'TRT01A')}."
+      )
+    )
+  }
+
   # If a combined ARD is passed, drop stale attributes and evaluate structurally
   if (inherits(x, "bind_ard") && !is.null(attr(x, "args"))) {
       attr(x, "args")$by <- NULL
@@ -71,16 +81,6 @@ shuffle_card <- function(x,
 
   ard_args <- attributes(x)$args
   by <- .process_by(x, by)
-
-  # Check if a 'by' variable is available
-  if (inherits(x, "bind_ard") && (is.null(by) || length(by) == 0)) {
-    cli::cli_abort(
-      c(
-        "The {.arg by} argument was not supplied.",
-        "i" = "When using a combined ARD ({.cls bind_ard}), you must explicitly pass a grouping variable, e.g., {.code shuffle_card(by = 'TRT01A')}."
-      )
-      )
-  }
 
   # make sure columns are in order & add index for retaining order
   if (isTRUE(order_rows)){
