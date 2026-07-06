@@ -74,7 +74,21 @@ test_that("shuffle_card notifies user about warnings/errors before dropping", {
   )
 })
 
-test_that("shuffle_card fills missing group levels if the group is meaningful", {
+test_that("shuffle_card throws an error if bind_ard is used without a supplied by argument", {
+  # Create a combined ARD
+  combined_ard <- cards::bind_ard(
+    cards::ard_continuous(cards::ADSL, by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")),
+    dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
+  )
+
+  # Verify that the function throws the exact expected error message
+  expect_error(
+    shuffle_card(combined_ard),
+    regexp = "The `by` argument was not supplied"
+  )
+})
+
+test_that("shuffle_card correctly handles a combined ARD when by is explicitly supplied", {
   # mix of missing/nonmissing group levels present before shuffle
   expect_snapshot(
     cards::bind_ard(
@@ -82,7 +96,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
       dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
     ) |>
       dplyr::filter(dplyr::row_number() <= 5L) |>
-      shuffle_card()
+      shuffle_card(by="ARM")
   )
 
   # no group levels present before shuffle
@@ -92,7 +106,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
       dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
     ) |>
       dplyr::filter(dplyr::row_number() <= 5L) |>
-      shuffle_card()
+      shuffle_card(by="ARM")
   )
 
   # mix of group variables - fills overall only if variable has been calculated by group elsewhere
