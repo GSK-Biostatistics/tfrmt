@@ -72,6 +72,13 @@ shuffle_card <- function(x,
   ard_args <- attributes(x)$args
   by <- .process_by(x, by)
 
+  # Check if a 'by' variable is available
+  if (is.null(by) || length(by) == 0) {
+    cli::cli_abort(
+       "The {.arg by} argument was not supplied."
+      )
+  }
+
   # make sure columns are in order & add index for retaining order
   if (isTRUE(order_rows)){
     x <- x |>
