@@ -73,9 +73,12 @@ shuffle_card <- function(x,
   by <- .process_by(x, by)
 
   # Check if a 'by' variable is available
-  if (is.null(by) || length(by) == 0) {
+  if (inherits(x, "bind_ard") && (is.null(by) || length(by) == 0)) {
     cli::cli_abort(
-       "The {.arg by} argument was not supplied."
+      c(
+        "The {.arg by} argument was not supplied.",
+        "i" = "When using a combined ARD ({.cls bind_ard}), you must explicitly pass a grouping variable, e.g., {.code shuffle_card(by = 'TRT01A')}."
+      )
       )
   }
 
