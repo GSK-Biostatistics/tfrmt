@@ -391,7 +391,7 @@ shuffle_card <- function(x,
   output <- dplyr::case_when(
     x == "..cards_overall.." ~ overall_val,
     x == "..hierarchical_overall.." ~ any_val,
-    TRUE ~ x
+    TRUE ~ as.character(x)
   )
 
   output
