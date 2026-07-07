@@ -594,10 +594,18 @@ test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
   ard_mismatch <- cards::ard_continuous(cards::ADSL, by = "SEX", variables = "AGE")
   attr(ard_mismatch, "args")$by <- "ARM"
 
-  # This will trigger the mismatch warning but successfully use "SEX" for processing
-  expect_snapshot(
-    res_mismatch <- shuffle_card(ard_mismatch, by = "SEX")
+  # Capture the raw console text sent to the message/stderr stream
+  msg_output <- capture.output(
+    res_mismatch <- shuffle_card(ard_mismatch, by = "SEX"),
+    type = "message"
   )
+  msg_string <- paste(msg_output, collapse = "\n")
+
+  # Programmatically verify the exact elements of your message text
+  expect_match(msg_string, "Mismatch between attributes of")
+  expect_match(msg_string, "Supplied value will be used in lieu of attributes")
+  expect_match(msg_string, "As of tfrmt v0.4.0")
+
   # Verify "SEX" was used as the column name instead of "ARM"
   expect_true("SEX" %in% names(res_mismatch))
   expect_false("ARM" %in% names(res_mismatch))
