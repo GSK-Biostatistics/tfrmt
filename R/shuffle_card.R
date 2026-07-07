@@ -200,7 +200,7 @@ shuffle_card <- function(x,
       cli::cli_inform(
         c("Mismatch between attributes of {.arg x} and supplied value to {.arg by}.",
           "i" = "Supplied value will be used in lieu of attributes.",
-          "*" = "Note: As of {.pkg tfrmt} v0.4.0, explicitly supplied {.arg by} values take priority over data frame attributes."),
+          "*" = "Note: As of {.pkg tfrmt} v0.4.0, explicitly supplied {.arg by} values take priority over the {.cls card} attributes."),
         env = rlang::caller_env()
       )
     }
