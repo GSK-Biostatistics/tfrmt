@@ -74,7 +74,7 @@ test_that("shuffle_card notifies user about warnings/errors before dropping", {
   )
 })
 
-test_that("shuffle_card throws an error if bind_ard is used without a supplied by argument", {
+test_that("shuffle_card message if bind_ard is used without a supplied by argument", {
   # Create a combined ARD
   combined_ard <- cards::bind_ard(
     cards::ard_continuous(cards::ADSL, by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")),
