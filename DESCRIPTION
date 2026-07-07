@@ -42,7 +42,7 @@ Imports:
     tidyr,
     tidyselect
 Suggests:
-    cards (>= 0.8.0),
+    cards (>= 0.8.1),
     covr,
     ggfortify,
     knitr,
@@ -52,8 +52,6 @@ Suggests:
     survival,
     testthat (>= 3.0.0),
     withr
-Remotes: 
-    insightsengineering/cards
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
