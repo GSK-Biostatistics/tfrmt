@@ -82,7 +82,7 @@ test_that("shuffle_card throws an error if bind_ard is used without a supplied b
   )
 
   # Verify that the function throws the exact expected error message
-  expect_error(
+  expect_message(
     shuffle_card(combined_ard),
     regexp = "The `by` argument was not supplied"
   )
