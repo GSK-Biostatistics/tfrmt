@@ -198,7 +198,7 @@ shuffle_card <- function(x,
 
   # 1. If 'by' is explicitly supplied, it takes absolute priority
   if (!is.null(by)) {
-    # Only warn if an attribute actually exists AND it doesn't match
+    # Only inform if an attribute actually exists AND it doesn't match
     if (!is.null(by_arg) && !identical(by_arg, by)) {
       cli::cli_inform(
         c(
