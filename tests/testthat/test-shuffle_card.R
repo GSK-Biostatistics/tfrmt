@@ -81,7 +81,7 @@ test_that("shuffle_card message if bind_ard is used without a supplied by argume
     dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
   )
 
-  # Verify that the function throws the exact expected error message
+  # Verify that the function throws the exact expected message
   expect_message(
     shuffle_card(combined_ard),
     regexp = "The `by` argument was not supplied"
