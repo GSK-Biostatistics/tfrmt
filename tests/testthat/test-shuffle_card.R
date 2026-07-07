@@ -96,7 +96,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
       dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
     ) |>
       dplyr::filter(dplyr::row_number() <= 5L) |>
-      shuffle_card(by="ARM")
+      shuffle_card()
   )
 
   # no group levels present before shuffle

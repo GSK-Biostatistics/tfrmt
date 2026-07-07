@@ -115,7 +115,11 @@
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
       by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns(
         "mean")), dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
-        stat_label = "p", stat = list(0.05))), dplyr::row_number() <= 5L), by = "ARM")
+        stat_label = "p", stat = list(0.05))), dplyr::row_number() <= 5L))
+    Message
+      The `by` argument was not supplied and cannot be inferred from objects of class <bind_ard>.
+      i When using a combined ARD (<bind_ard>) individual grouping attributes are dropped.
+      * If you want to use a grouping variable, you'll need to pass it explicitly, e.g., `shuffle_card(by = 'TRT01A')`.
     Output
       # A tibble: 4 x 7
         ARM                  AGE      context stat_variable stat_name stat_label  stat
