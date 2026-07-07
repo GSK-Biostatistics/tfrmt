@@ -60,10 +60,11 @@ shuffle_card <- function(x,
 
   # Check if a 'by' variable is available
   if (is_bind_ard_cards(x) && rlang::is_empty(by)) {
-    cli::cli_abort(
+    cli::cli_inform(
       c(
         "The {.arg by} argument was not supplied.",
-        "i" = "When using a combined ARD ({.cls bind_ard}), you must explicitly pass a grouping variable, e.g., {.code shuffle_card(by = 'TRT01A')}."
+        "i" = "When using a combined ARD ({.cls bind_ard}) individual grouping attributes are dropped.",
+        "*" = "If you want to use a grouping variable, you'll need to pass it explicitly, e.g., {.code shuffle_card(by = 'TRT01A')}."
       )
     )
   }
