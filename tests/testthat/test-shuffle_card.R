@@ -588,3 +588,30 @@ test_that("shuffle_card() sorting option", {
     ignore_attr = TRUE
   )
 })
+
+test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
+  # 1. Mismatch: Create an ARD by "SEX", but intentionally spoof the attribute to "ARM"
+  ard_mismatch <- cards::ard_continuous(cards::ADSL, by = "SEX", variables = "AGE")
+  attr(ard_mismatch, "args")$by <- "ARM"
+
+  # This will trigger the mismatch warning but successfully use "SEX" for processing
+  expect_snapshot(
+    res_mismatch <- shuffle_card(ard_mismatch, by = "SEX")
+  )
+  # Verify "SEX" was used as the column name instead of "ARM"
+  expect_true("SEX" %in% names(res_mismatch))
+  expect_false("ARM" %in% names(res_mismatch))
+
+  # 2. Match: Standard card where supplied matches attribute
+  ard_match <- cards::ard_continuous(cards::ADSL, by = "ARM", variables = "AGE")
+  expect_silent(
+    res_match <- shuffle_card(ard_match, by = "ARM")
+  )
+  expect_true("ARM" %in% names(res_match))
+
+  # 3. NULL supplied: Should remain silent and fall back to the attribute ("ARM")
+  expect_silent(
+    res_null <- shuffle_card(ard_match, by = NULL)
+  )
+  expect_true("ARM" %in% names(res_null))
+})

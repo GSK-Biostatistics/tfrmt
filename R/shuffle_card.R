@@ -44,11 +44,7 @@ shuffle_card <- function(x,
                          fill_overall = "Overall {colname}",
                          fill_hierarchical_overall = "Any {colname}") {
 
-  if (!requireNamespace("cards", quietly = TRUE)) {
-    cli::cli_abort(
-      "The {.pkg cards} package must be installed to use {.fn shuffle_card}."
-    )
-  }
+  rlang::check_installed("cards")
 
   if (!inherits(x, "card")) {
     cli::cli_abort(
@@ -63,7 +59,7 @@ shuffle_card <- function(x,
   }
 
   # Check if a 'by' variable is available
-  if (inherits(x, "bind_ard") && (is.null(by) || length(by) == 0)) {
+  if (is_bind_ard_cards(x) && rlang::is_empty(by)) {
     cli::cli_abort(
       c(
         "The {.arg by} argument was not supplied.",
@@ -72,13 +68,7 @@ shuffle_card <- function(x,
     )
   }
 
-  # If a combined ARD is passed, drop stale attributes and evaluate structurally
-  if (inherits(x, "bind_ard") && !is.null(attr(x, "args"))) {
-      attr(x, "args")$by <- NULL
-      attr(x, "args")$variable <- NULL
-      attr(x, "args")$strata <- NULL
-  }
-
+  x <- drop_bind_ard_attr(x)
   ard_args <- attributes(x)$args
   by <- .process_by(x, by)
 
@@ -207,16 +197,17 @@ shuffle_card <- function(x,
   if (!is.null(by)){
     if (!is.null(ard_args$by) && !identical(ard_args$by, by)){
       cli::cli_inform(
-        "Mismatch between attributes of {.arg x} and supplied value to \\
-        {.arg by}. Attributes will be used in lieu of {.arg by}",
-        env = rlang::caller_env())
-    } else {
-      ard_args$by <- by
+        c("Mismatch between attributes of {.arg x} and supplied value to {.arg by}.",
+          "i" = "Supplied value will be used in lieu of attributes.",
+          "*" = "Note: As of {.pkg tfrmt} v0.4.0, explicitly supplied {.arg by} values take priority over data frame attributes."),
+        env = rlang::caller_env()
+      )
     }
+    return(by)
   }
-
   ard_args$by
 }
+
 #' Fill Overall Group Variables
 #'
 #' This function fills the missing values of grouping variables with
