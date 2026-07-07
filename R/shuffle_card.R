@@ -65,7 +65,6 @@ shuffle_card <- function(x,
     cli::cli_inform(
       c(
         "The {.arg by} argument was not supplied and cannot be inferred from objects of class {.cls bind_ard}.",
-        "i" = "When using a combined ARD ({.cls bind_ard}) individual grouping attributes are dropped.",
         "*" = "If you want to use a grouping variable, you'll need to pass it explicitly, e.g., {.code shuffle_card(by = 'TRT01A')}."
       )
     )
@@ -189,7 +188,7 @@ shuffle_card <- function(x,
 #' Process `by` variable
 #'
 #' @param x a data frame
-#' @param by Grouping variable(s) used in calculations. 
+#' @param by Grouping variable(s) used in calculations.
 #'
 #' @returns character string if `by` variable present
 #' @noRd

@@ -118,7 +118,6 @@
         stat_label = "p", stat = list(0.05))), dplyr::row_number() <= 5L))
     Message
       The `by` argument was not supplied and cannot be inferred from objects of class <bind_ard>.
-      i When using a combined ARD (<bind_ard>) individual grouping attributes are dropped.
       * If you want to use a grouping variable, you'll need to pass it explicitly, e.g., `shuffle_card(by = 'TRT01A')`.
     Output
       # A tibble: 4 x 7
