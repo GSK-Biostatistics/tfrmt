@@ -189,7 +189,7 @@ shuffle_card <- function(x,
 #' Process `by` variable
 #'
 #' @param x a data frame
-#' @param by Grouping variable(s) used in calculations. Defaults to `NULL`.
+#' @param by Grouping variable(s) used in calculations. 
 #'
 #' @returns character string if `by` variable present
 #' @noRd
