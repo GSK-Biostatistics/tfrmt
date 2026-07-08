@@ -149,7 +149,8 @@ test_that("applying frmt - transform", {
                c("1524157.7", "119493.9",  "3225.0",   "20865628.2", " 79.4"  ))
 
 
-  })
+
+})
 
 
 test_that("applying frmt - preserves decimal places after rounding", {
@@ -180,6 +181,7 @@ test_that("applying frmt - preserves decimal places after rounding", {
     value = sym("x"),
     frmt_def = sample_frmt_10x
   )
+
 
   expect_equal(
     sample_df_frmted_1dec$x,
