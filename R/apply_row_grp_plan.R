@@ -370,14 +370,13 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
     group <- as_vars(grps_avail)
 
     # Either drop group columns ("no print"), or format them w/ label
-    if (element_row_grp_loc$location == "noprint"){
+    if (element_row_grp_loc$location=="noprint"){
 
       add_ln_df <- .data %>% select(-c(!!!group))
     } else if(element_row_grp_loc$location == "indented"){
       add_ln_df <- .data %>%
         select(-c(!!!group))
-    } else if (length(group) == 1) {
-      #Using the grouping in gt + a single grouping
+    } else if (length(group) == 1) { #Using the grouping in gt + a single grouping
       add_ln_df <- .data %>%
         group_by(!!group[[1]])
     } else { # Using the grouping in gt, but needs to drop all groups in label
