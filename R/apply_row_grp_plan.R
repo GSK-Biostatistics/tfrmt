@@ -221,9 +221,10 @@ apply_grp_block <- function(.data, group, element_block, widths){
 #' @noRd
 #'
 #' @importFrom stringr str_sub
-fill_post_space <- function(post_space, fill, width) {
+fill_post_space <- function(post_space, fill, width){
+
   ## if only white space, no need to make wider for visuals
-  if (grepl("^\\s*$", post_space)) {
+  if(grepl("^\\s*$", post_space)){
     return(" ")
   }
 
