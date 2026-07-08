@@ -115,20 +115,18 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
     stop(paste0("`label` column ", quo_name(label), " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."))
   }
 
+
   # check which group/label columns are available
 
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if (
-    length(grps_avail) == 0 ||
-      is_empty(label) ||
-      element_row_grp_loc$location %in% c("gtdefault", "noprint", "column")
-  ) {
+  if(length(grps_avail)==0 || is_empty(label) || element_row_grp_loc$location %in% c("gtdefault", "noprint", "column")){
     add_ln_df <- .data
-  } else {
-    #  combine any grouping columns that need combining into label
-    add_ln_df <- .data %>%
-      combine_group_cols(as_vars(grps_avail), label, element_row_grp_loc)
+  } else{
+  #  combine any grouping columns that need combining into label
+  add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
+                                              label,
+                                              element_row_grp_loc)
   }
   add_ln_df
 }
