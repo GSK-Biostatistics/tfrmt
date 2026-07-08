@@ -238,6 +238,7 @@ fill_post_space <- function(post_space, fill, width){
   }
 
   return(fill_val)
+
 }
 
 
@@ -266,15 +267,15 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
   # ensure label is character
   .data <- .data %>%
-    mutate(across(!!label, ~ as.character(.x)))
+    mutate(across(!!label, ~as.character(.x)))
 
-  if (is.null(element_row_grp_loc)) {
+  if(is.null(element_row_grp_loc)){
     indent <- "  "
-  } else if (element_row_grp_loc$location == "spanning" & length(group) > 0) {
-    group <- group[-1]
-    indent <- element_row_grp_loc$indent
+  } else if(element_row_grp_loc$location == "spanning" & length(group) > 0){
+    group = group[-1]
+    indent = element_row_grp_loc$indent
   } else {
-    indent <- element_row_grp_loc$indent
+    indent = element_row_grp_loc$indent
   }
 
   while (length(group) > 0 & !is.null(label)) {
