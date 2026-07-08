@@ -1,0 +1,160 @@
+name: Coverage summary 🦺
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+# multiple workflows might try to write to covr2gh-storage at the same time
+concurrency:
+  group: ${{ github.workflow }}-covr2gh-storage
+  cancel-in-progress: false # don't cancel, but queue jobs
+
+permissions:
+  pull-requests: write # for commenting on PR
+  contents: write # for adding badges to the covr2gh-storage branch
+
+jobs:
+  covr2gh:
+    name: Coverage & badge 🦺🎖️
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      BADGE_BRANCH: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout repo 📥
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Setup R 🏗️
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Setup R dependencies 📦
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::covr
+            dragosmg/covr2gh
+          needs: coverage
+
+      - name: Head coverage & badge 🎩🎖️
+        run: |
+          temp_path <- normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/")
+
+          head_cov <- covr::package_coverage(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(temp_path, "package_head")
+          )
+
+          saveRDS(head_cov, file.path(temp_path, "head_cov.RDS"))
+
+          badge <- head_cov |>
+            covr::percent_coverage() |>
+            covr2gh::generate_badge()
+
+          writeLines(badge, file.path(temp_path, "coverage_badge.svg"))
+        shell: Rscript {0}
+
+      - name: Configure git identity 🪪
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Actions"
+
+      - name: Storage branch (worktree) 🌳
+        if: github.event.pull_request.head.repo.fork == false || github.event_name != 'pull_request'
+        run: |
+          ORIGINAL_REF="$(git rev-parse --abbrev-ref HEAD)"
+
+          # Attach or create storage branch
+          git fetch origin covr2gh-storage || true
+
+          if git show-ref --verify --quiet refs/remotes/origin/covr2gh-storage; then
+            git worktree add storage covr2gh-storage
+          else
+            git checkout --orphan covr2gh-storage
+            git reset --hard
+
+            mkdir -p badges
+            touch badges/.gitkeep
+            git add badges/.gitkeep
+
+            echo "# Coverage badges" > README.md
+            git add README.md
+            git commit -m "Initialize covr2gh-storage branch"
+            git push origin covr2gh-storage
+
+            git checkout "$ORIGINAL_REF"
+            git worktree add storage covr2gh-storage
+          fi
+
+          cd storage
+
+          # Commit badge
+          mkdir -p "badges/$BADGE_BRANCH"
+          cp "$RUNNER_TEMP/coverage_badge.svg" "badges/$BADGE_BRANCH/coverage_badge.svg"
+          git add badges
+          git commit -m "Add/Update badge for $BADGE_BRANCH ($GITHUB_SHA)" || true
+          git push origin covr2gh-storage || true
+        shell: bash
+
+      - name: Attach base branch worktree (PR only) 🌳
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+          git worktree add base "${{ github.base_ref }}"
+
+      - name: Calculate base coverage (PR only) 🧱
+        if: github.event_name == 'pull_request'
+        working-directory: base
+        run: |
+          temp_path <- normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/")
+
+          base_cov <- covr::package_coverage(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(temp_path, "package_base")
+          )
+
+          saveRDS(base_cov, file.path(temp_path, "base_cov.RDS"))
+        shell: Rscript {0}
+
+      - name: Post coverage comment (PR only) ✍️💬
+        if: github.event_name == 'pull_request'
+        run: |
+          temp_path <- normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/")
+          head_cov <- readRDS(file.path(temp_path, "head_cov.RDS"))
+          base_cov <- readRDS(file.path(temp_path, "base_cov.RDS"))
+
+          comment <- covr2gh::compose_comment(
+            head_coverage = head_cov,
+            base_coverage = base_cov,
+            repo = "${{ github.repository }}",
+            pr_number = ${{ github.event.pull_request.number }}
+          )
+
+          covr2gh::post_comment(
+            comment,
+            repo = "${{ github.repository }}",
+            pr_number = ${{ github.event.pull_request.number }}
+          )
+
+          writeLines(comment, file.path(temp_path, "comment.md"))
+        shell: Rscript {0}
+
+      - name: Cleanup worktrees 🌳✨
+        if: always()
+        run: |
+          git worktree remove storage --force || true
+          git worktree remove base --force || true
+          git worktree prune || true
+
+      - name: Job summary 📋
+        if: github.event_name == 'pull_request'
+        run: |
+          cat "$RUNNER_TEMP/comment.md" >> $GITHUB_STEP_SUMMARY
