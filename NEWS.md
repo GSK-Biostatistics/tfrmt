@@ -4,7 +4,9 @@
 * `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
 * Add markdown processing of stub column labels (#617)
 * Update default for `row_grp_plan()`/`row_grp_structure()` to remove trailing post-space rows (#630, @alanahjonas95).
-* Added `extract_data()` function to enable data to be easily extracted from a tfrmt into a data frame.(#628, @alanahjonas95)
+* Added `extract_data()` function to enable data to be easily extracted from a tfrmt into a data frame (#628, @alanahjonas95).
+* `shuffle_card()` now automatically strips inherited ARD attributes from objects of class `bind_ard` to avoid unreliable metadata (#650).
+* `shuffle_card()` now prioritises the user-supplied `by` argument over inherited ARD attributes, giving users control to override attributes and updating the mismatch message to reflect this change (#650).
 
 ## Bug fixes
 * Fix bug in `tfrmt_sigdig` so it correctly passes the 'missing' argument to the body_plan (#621, @alanahjonas95).
