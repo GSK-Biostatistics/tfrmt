@@ -46,7 +46,7 @@ shuffle_card <- function(x,
 
   rlang::check_installed(
     pkg = "cards",
-    version = "0.8.1",
+    version = "0.8.0",
     compare = ">=",
     reason = "for compatibility with tfrmt v0.4.0"
   )
