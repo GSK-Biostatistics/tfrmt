@@ -127,9 +127,12 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
   add_ln_df <- .data %>% combine_group_cols(as_vars(grps_avail),
                                               label,
                                               element_row_grp_loc)
+
   }
   add_ln_df
 }
+
+
 
 
 #' Test of the grp rows in the data
@@ -143,12 +146,12 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
 #'
 #' @importFrom dplyr filter pull
 #' @importFrom rlang parse_expr
-grp_row_test_data <- function(cur_block, .data, group) {
+grp_row_test_data <- function(cur_block, .data, group){
   filter_expr <- expr_to_filter.quosures(group, cur_block$group_val) %>%
     parse_expr()
 
   .data %>%
-    mutate(across(c(!!!group), ~ str_trim(.x))) %>%
+    mutate(across(c(!!!group), ~str_trim(.x))) %>%
     filter(!!filter_expr) %>%
     pull(.data$TEMP_row)
 }
