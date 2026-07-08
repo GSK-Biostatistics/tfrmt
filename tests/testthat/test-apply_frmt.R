@@ -136,7 +136,7 @@ test_that("applying frmt - transform", {
     pull(x)
 
   expect_equal(formula_result,
-               c("123457", "34568", "5679", "456789", "891"))
+               c("123457", "34568",  "5679" ,  "456789", "891"))
 
   fx_result <- apply_frmt.frmt(
     frmt_def = fx_transform,
