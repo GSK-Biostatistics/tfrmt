@@ -11,7 +11,7 @@
 #' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
-apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...) {
+apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...){
   # Locate which groups need which formatting
   # determine which rows each block applies to
   .data <- .data %>%
@@ -36,21 +36,16 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
       map(split_dat, function(dat) struct_val_idx(struct, dat, group, label)) %>% list_flatten()
     })
 
-  TEMP_block_to_apply <- row_grp_struct_list %>% map(~ .$block_to_apply)
+  TEMP_block_to_apply <- row_grp_struct_list %>% map(~.$block_to_apply)
 
   # similar to frmts, only allow 1 element_block for a given row
   #   - within block-specific data, split data further by grouping vars
   dat_plus_block <- tibble(
     TEMP_appl_row,
-    TEMP_block_to_apply
-  ) %>%
+    TEMP_block_to_apply) %>%
     mutate(TEMP_block_rank = row_number()) %>%
     # unnest to 1 rec per data chunk
-    unnest_longer(
-      TEMP_appl_row,
-      indices_to = "TEMP_chunk_num",
-      transform = unlist
-    ) %>%
+    unnest_longer(TEMP_appl_row, indices_to = "TEMP_chunk_num", transform = unlist) %>%
     # unnest to 1 rec per data row, to handle where chunk >1 row
     unnest(TEMP_appl_row) %>%
     group_by(TEMP_appl_row) %>%
