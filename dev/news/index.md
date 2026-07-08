@@ -44,6 +44,15 @@
   data
   frame.([\#628](https://github.com/GSK-Biostatistics/tfrmt/issues/628),
   [@alanahjonas95](https://github.com/alanahjonas95))
+- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/shuffle_card.md)
+  now automatically strips inherited ARD attributes from objects of
+  class `bind_ard` to avoid unreliable metadata
+  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
+- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/shuffle_card.md)
+  now prioritises the user-supplied `by` argument over inherited ARD
+  attributes, giving users control to override attributes and updating
+  the mismatch message to reflect this change
+  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
 
 ## tfrmt 0.3.0
 

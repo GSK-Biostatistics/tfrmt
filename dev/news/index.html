@@ -79,6 +79,10 @@
 <li>Add markdown processing of stub column labels (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/617" class="external-link">#617</a>)</li>
 <li>Update default for <code><a href="../reference/row_grp_plan.html">row_grp_plan()</a></code>/<code><a href="../reference/row_grp_structure.html">row_grp_structure()</a></code> to remove trailing post-space rows (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/630" class="external-link">#630</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
 <li>Added <code><a href="../reference/extract_data.html">extract_data()</a></code> function to enable data to be easily extracted from a tfrmt into a data frame.(<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/628" class="external-link">#628</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>)</li>
+<li>
+<code><a href="../reference/shuffle_card.html">shuffle_card()</a></code> now automatically strips inherited ARD attributes from objects of class <code>bind_ard</code> to avoid unreliable metadata (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/650" class="external-link">#650</a>).</li>
+<li>
+<code><a href="../reference/shuffle_card.html">shuffle_card()</a></code> now prioritises the user-supplied <code>by</code> argument over inherited ARD attributes, giving users control to override attributes and updating the mismatch message to reflect this change (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/650" class="external-link">#650</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -201,7 +205,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
