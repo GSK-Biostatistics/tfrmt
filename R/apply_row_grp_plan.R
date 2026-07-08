@@ -173,9 +173,9 @@ grp_row_test_data <- function(cur_block, .data, group){
 #' @importFrom rlang !!!
 #'
 #' @noRd
-apply_grp_block <- function(.data, group, element_block, widths) {
+apply_grp_block <- function(.data, group, element_block, widths){
 
-  if (!is.null(element_block$post_space)) {
+  if (!is.null(element_block$post_space)){
     # create add-on row
     # utilize TEMP_row to retain the ordering
     grp_row_add <- .data %>%
