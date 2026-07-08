@@ -1,4 +1,5 @@
 test_that("applying frmt", {
+
   sample_df <- data.frame(
     x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101)
   )
@@ -39,7 +40,9 @@ test_that("applying frmt", {
     sample_df_double_dec_frmted$x,
     c("1234.57", "345.68", " 56.79", "4567.89", "  8.91")
   )
+
 })
+
 
 test_that("applying frmt - scientific", {
   sample_df <- data.frame(
@@ -77,14 +80,12 @@ test_that("applying frmt - scientific", {
 
   expect_equal(
     sample_df_frmted_10x$x,
-    c(
-      "  1.2 x10^3",
+    c("  1.2 x10^3",
       "  3.5 x10^2",
       "  5.7 x10^1",
       "  4.6 x10^3",
       "  8.9 x10^0",
-      "  6.8 x10^-2"
-    )
+      "  6.8 x10^-2")
   )
 
   expect_equal(
