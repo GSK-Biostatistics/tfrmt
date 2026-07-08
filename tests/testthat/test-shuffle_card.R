@@ -558,8 +558,22 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
     attributes(ard)[["args"]],
     attributes(shuffled_ard)[["args"]]
   )
-})
 
+  # ard_stack uses bind_ard under the hood - attributes will be lost
+  ard <- cards::ard_stack(
+    data = adsl,
+    cards::ard_tabulate(variables = "AGEGR1"),
+    cards::ard_summary(variables = "AGE"),
+    .by = "ARM"
+  )
+
+  expect_snapshot(
+    shuffled_ard <- shuffle_card(ard)
+  )
+
+     
+})
+ 
 
 test_that("shuffle_card() sorting option", {
   withr::local_seed(0829)
