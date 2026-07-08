@@ -209,26 +209,19 @@ test_that("applying frmt - preserves decimal places after rounding", {
       "  1.0 x10^2",
       "  1.7 x10^2")
   )
+
+
 })
 
 test_that("applying frmt_combine - 2x", {
+
   sample_df <- tibble(
     group = "group",
-    lab = rep(paste("lab", 1:5), 2),
+    lab = rep(paste("lab",1:5),2),
     col = "col",
     y = rep(c("A", "B"), each = 5),
-    x = c(
-      1234.5678,
-      2345.6789,
-      3456.7891,
-      4567.8910,
-      5678.9101,
-      1.2345678,
-      2.3456789,
-      3.4567891,
-      4.5678910,
-      5.6789101
-    )
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101)
   )
 
   sample_frmt <- frmt_combine(
