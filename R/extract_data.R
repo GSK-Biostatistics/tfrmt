@@ -8,9 +8,11 @@
 #' @return A data frame with updated column names.
 #' @noRd
 clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
+
   # Update Stub/Group Column Names
   # Boxhead tells us which columns are 'stub' columns
   if (!is.null(boxhead) && !is.null(stubhead)) {
+
     # Identify the variable names that are marked as 'stub'
     stub_vars <- boxhead %>%
       dplyr::filter(.data$type == "stub") %>%
