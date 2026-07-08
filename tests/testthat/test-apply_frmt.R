@@ -90,14 +90,12 @@ test_that("applying frmt - scientific", {
 
   expect_equal(
     sample_df_frmted_10xx$x,
-    c(
-      "  1.2 x10^ 3",
+    c("  1.2 x10^ 3",
       "  3.5 x10^ 2",
       "  5.7 x10^ 1",
       "  4.6 x10^ 3",
       "  8.9 x10^ 0",
-      "  6.8 x10^-2"
-    )
+      "  6.8 x10^-2")
   )
 
   expect_equal(
