@@ -198,6 +198,7 @@ apply_grp_block <- function(.data, group, element_block, widths){
         TEMP_row = .data$TEMP_row + 0.1
       )
 
+
     # combine with original data
     bind_rows(.data, grp_row_add) %>%
       fill(!!!group) %>%
@@ -206,6 +207,7 @@ apply_grp_block <- function(.data, group, element_block, widths){
   } else {
     .data
   }
+
 }
 
 
