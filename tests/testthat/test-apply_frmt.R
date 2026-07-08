@@ -250,27 +250,18 @@ test_that("applying frmt_combine - 2x", {
       x = c("1234.6 (1.2%)", "2345.7 (2.3%)", "3456.8 (3.5%)", "4567.9 (4.6%)", "5678.9 (5.7%)")
     )
   )
+
 })
 
-test_that("applying frmt_combine missing", {
+test_that("applying frmt_combine missing",{
   #Both missing
   sample_df <- tibble(
     group = "group",
-    lab = rep(paste("lab", 1:5), 2),
+    lab = rep(paste("lab",1:5),2),
     col = "col",
     y = rep(c("A", "B"), each = 5),
-    x = c(
-      1234.5678,
-      2345.6789,
-      3456.7891,
-      4567.8910,
-      NA,
-      1.2345678,
-      2.3456789,
-      3.4567891,
-      4.5678910,
-      NA
-    )
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, NA,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, NA)
   )
 
   sample_frmt <- frmt_combine(
