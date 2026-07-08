@@ -288,13 +288,7 @@ test_that("applying frmt_combine missing",{
       lab = paste("lab", 1:5),
       col = "col",
       y = "A",
-      x = c(
-        "1234.6 (1.2%)",
-        "2345.7 (2.3%)",
-        "3456.8 (3.5%)",
-        "4567.9 (4.6%)",
-        "Missing"
-      )
+      x = c("1234.6 (1.2%)", "2345.7 (2.3%)", "3456.8 (3.5%)", "4567.9 (4.6%)", "Missing")
     )
   )
   #One Missing
