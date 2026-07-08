@@ -42,7 +42,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
   #   - within block-specific data, split data further by grouping vars
   dat_plus_block <- tibble(
     TEMP_appl_row,
-    TEMP_block_to_apply) %>%
+    TEMP_block_to_apply)%>%
     mutate(TEMP_block_rank = row_number()) %>%
     # unnest to 1 rec per data chunk
     unnest_longer(TEMP_appl_row, indices_to = "TEMP_chunk_num", transform = unlist) %>%
@@ -51,12 +51,8 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     group_by(TEMP_appl_row) %>%
     arrange(TEMP_appl_row, desc(.data$TEMP_block_rank)) %>%
     slice(1) %>%
-    left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
-    group_by(
-      .data$TEMP_block_rank,
-      .data$TEMP_chunk_num,
-      .data$TEMP_block_to_apply
-    ) %>%
+    left_join(.data, ., by= c("TEMP_row" = "TEMP_appl_row")) %>%
+    group_by(.data$TEMP_block_rank, .data$TEMP_chunk_num, .data$TEMP_block_to_apply ) %>%
     nest()
 
   # get max character width for each column in the full data
@@ -70,7 +66,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
               unlist() %>%
               nchar() %>%
               max(na.rm = TRUE)
-          } else {
+          } else{
             max(nchar(x), na.rm = TRUE)
           }
         }
