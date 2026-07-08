@@ -287,12 +287,9 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
     .data<- split_dat %>%
       map_dfr(function(lone_dat) {
         lone_dat_summ <- lone_dat %>%
-          mutate(
-            ..tfrmt_summary_row = str_trim(!!label, side = "left") ==
-              str_trim(!!last(group), side = "left")
-          )
+          mutate(..tfrmt_summary_row = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
 
-        if (any(lone_dat_summ$..tfrmt_summary_row) == FALSE) {
+        if (any(lone_dat_summ$..tfrmt_summary_row) == FALSE){
           # if the set of rows contains NO group-level summary data, create an
           # extra row to be added
 
@@ -310,7 +307,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
               )
             ) %>%
             slice(0) %>%
-            add_row() %>%
+            add_row()  %>%
             mutate(
               across(
                 #convert NULL to NA in list-cols
