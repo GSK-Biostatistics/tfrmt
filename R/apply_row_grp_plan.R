@@ -279,6 +279,7 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
   }
 
   while(length(group) > 0 & !is.null(label)){
+
     split_dat <- .data %>%
       group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) %>%
       group_split() %>%
@@ -286,10 +287,11 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 
     .data<- split_dat %>%
       map_dfr(function(lone_dat) {
+
         lone_dat_summ <- lone_dat %>%
           mutate(..tfrmt_summary_row = str_trim(!!label, side = "left") == str_trim(!!last(group), side = "left"))
 
-        if (any(lone_dat_summ$..tfrmt_summary_row) == FALSE){
+        if (any(lone_dat_summ$..tfrmt_summary_row)==FALSE){
           # if the set of rows contains NO group-level summary data, create an
           # extra row to be added
 
@@ -312,10 +314,10 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
               across(
                 #convert NULL to NA in list-cols
                 tidyselect::where(is.list),
-                ~ map(.x, ~ if (is.null(.)) NA_character_ else .)
+                ~map(.x, ~if (is.null(.)) NA_character_ else .)
               )
-            ) %>%
-            bind_cols(new_row, .) %>%
+            )  %>%
+            bind_cols(new_row, .)%>%
             mutate(..tfrmt_row_grp_lbl = TRUE)
         } else {
           new_row <- tibble()
