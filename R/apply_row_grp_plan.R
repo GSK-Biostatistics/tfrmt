@@ -90,7 +90,9 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     select(-"TEMP_row")
 
   add_ln_df
+
 }
+
 
 
 #' Apply row group block labelled to data
