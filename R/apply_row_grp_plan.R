@@ -11,13 +11,7 @@
 #' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
-apply_row_grp_struct <- function(
-  .data,
-  row_grp_struct_list,
-  group,
-  label = NULL,
-  ...
-) {
+apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL, ...) {
   # Locate which groups need which formatting
   # determine which rows each block applies to
   .data <- .data %>%
@@ -27,7 +21,7 @@ apply_row_grp_struct <- function(
   # get nested list object:
   #  length = number of structures, each element contains list of data splits (row indices)
   TEMP_appl_row <- row_grp_struct_list %>%
-    map(function(struct) {
+    map(function(struct){
       grping <- expr_to_grouping(struct, group)
 
       split_dat <- .data %>%
@@ -39,10 +33,7 @@ apply_row_grp_struct <- function(
           )
         ) %>%
         group_split()
-      map(split_dat, function(dat) {
-        struct_val_idx(struct, dat, group, label)
-      }) %>%
-        list_flatten()
+      map(split_dat, function(dat) struct_val_idx(struct, dat, group, label)) %>% list_flatten()
     })
 
   TEMP_block_to_apply <- row_grp_struct_list %>% map(~ .$block_to_apply)
