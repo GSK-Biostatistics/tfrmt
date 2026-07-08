@@ -100,18 +100,21 @@ test_that("applying frmt - scientific", {
 
   expect_equal(
     sample_df_frmted_ex$x,
-    c("  1.2e^3", "  3.5e^2", "  5.7e^1", "  4.6e^3", "  8.9e^0", "  6.8e^-2")
+    c("  1.2e^3",
+      "  3.5e^2",
+      "  5.7e^1",
+      "  4.6e^3",
+      "  8.9e^0",
+      "  6.8e^-2")
   )
   expect_equal(
     sample_df_frmted_exxxx$x,
-    c(
-      "  1.2e^   3",
+    c("  1.2e^   3",
       "  3.5e^   2",
       "  5.7e^   1",
       "  4.6e^   3",
       "  8.9e^   0",
-      "  6.8e^  -2"
-    )
+      "  6.8e^  -2")
   )
 })
 
