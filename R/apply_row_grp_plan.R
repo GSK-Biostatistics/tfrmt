@@ -270,15 +270,15 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
     mutate(across(!!label, ~as.character(.x)))
 
   if(is.null(element_row_grp_loc)){
-    indent <- "  "
-  } else if(element_row_grp_loc$location == "spanning" & length(group) > 0){
+    indent = "  "
+  } else if(element_row_grp_loc$location=="spanning" & length(group) > 0){
     group = group[-1]
     indent = element_row_grp_loc$indent
   } else {
     indent = element_row_grp_loc$indent
   }
 
-  while (length(group) > 0 & !is.null(label)) {
+  while (length(group) > 0 & !is.null(label)){
     split_dat <- .data %>%
       group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) %>%
       group_split() %>%
