@@ -22,6 +22,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
     new_stub_labels <- as.character(unlist(stubhead$label))
 
     if (length(stub_vars) > 0 && length(stub_vars) == length(new_stub_labels)) {
+
       lookup <- setNames(stub_vars, new_stub_labels)
 
       #  Filter out entries where the new name is empty or NA
@@ -33,6 +34,8 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
       }
     }
   }
+
+
 
   df %>%
     # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
