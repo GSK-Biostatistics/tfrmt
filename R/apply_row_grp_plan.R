@@ -176,6 +176,7 @@ grp_row_test_data <- function(cur_block, .data, group){
 apply_grp_block <- function(.data, group, element_block, widths){
 
   if (!is.null(element_block$post_space)){
+
     # create add-on row
     # utilize TEMP_row to retain the ordering
     grp_row_add <- .data %>%
@@ -183,8 +184,8 @@ apply_grp_block <- function(.data, group, element_block, widths){
       mutate(
         across(
           c(
-            -map_chr(group, as_name),
-            -tidyselect::where(is.numeric)),
+            - map_chr(group, as_name),
+            - tidyselect::where(is.numeric)),
           ~ replace(
             .x,
             values = fill_post_space(
@@ -201,6 +202,7 @@ apply_grp_block <- function(.data, group, element_block, widths){
     bind_rows(.data, grp_row_add) %>%
       fill(!!!group) %>%
       mutate(..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0)
+
   } else {
     .data
   }
