@@ -8,21 +8,18 @@
 #' @return A data frame with updated column names.
 #' @noRd
 clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
-
   # Update Stub/Group Column Names
   # Boxhead tells us which columns are 'stub' columns
   if (!is.null(boxhead) && !is.null(stubhead)) {
-
     # Identify the variable names that are marked as 'stub'
     stub_vars <- boxhead %>%
-      dplyr::filter(type == "stub") %>%
+      dplyr::filter(.data$type == "stub") %>%
       dplyr::pull(var)
 
     # Get the new labels from stubhead
     new_stub_labels <- as.character(unlist(stubhead$label))
 
     if (length(stub_vars) > 0 && length(stub_vars) == length(new_stub_labels)) {
-
       lookup <- setNames(stub_vars, new_stub_labels)
 
       #  Filter out entries where the new name is empty or NA
@@ -34,8 +31,6 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
       }
     }
   }
-
-
 
   df %>%
     # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
@@ -60,7 +55,6 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 #' @importFrom purrr map
 #' @export
 extract_data <- function(x, col_delim = "_") {
-
   #Fallback
   if (!inherits(x, c("gt_tbl", "gt_group"))) {
     stop("Input must be a 'gt_tbl' or 'gt_group' object.")
@@ -68,7 +62,7 @@ extract_data <- function(x, col_delim = "_") {
 
   # Single gt table
   if (inherits(x, "gt_tbl")) {
-   return(clean_data(
+    return(clean_data(
       df = x[["_data"]],
       delim = col_delim,
       boxhead = x[["_boxhead"]],
@@ -78,19 +72,20 @@ extract_data <- function(x, col_delim = "_") {
 
   # Grouped gt object (created when using `page_plan`)
   if (inherits(x, "gt_group")) {
-
     # Extract the internal list of gt_tbl objects
     tbl_list <- x$gt_tbls$gt_tbl
 
     # Map over the list to pull the '_data' slot and clean names
-    extracted_list <- map(tbl_list, ~ clean_data(.x[["_data"]],
-                                                 delim = col_delim,
-                                                 boxhead = .x[["_boxhead"]],
-                                                 stubhead = .x[["_stubhead"]]
-    ))
+    extracted_list <- map(
+      tbl_list,
+      ~ clean_data(
+        .x[["_data"]],
+        delim = col_delim,
+        boxhead = .x[["_boxhead"]],
+        stubhead = .x[["_stubhead"]]
+      )
+    )
 
     return(extracted_list)
   }
-
-
 }
