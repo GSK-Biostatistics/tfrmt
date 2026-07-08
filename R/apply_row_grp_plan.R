@@ -105,13 +105,7 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
 #' @noRd
 #' @importFrom dplyr select group_by
 #' @importFrom rlang !!! eval_tidy
-apply_row_grp_lbl <- function(
-  .data,
-  element_row_grp_loc,
-  group,
-  label = NULL,
-  ...
-) {
+apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, ...){
   # store values of label column
   lbl_col <- eval_tidy(label, .data)
 
