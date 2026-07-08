@@ -194,12 +194,20 @@ test_that("applying frmt - preserves decimal places after rounding", {
 
   expect_equal(
     sample_df_frmted_2dec$x,
-    c(" 10.00", " 12.36", "  3.00", "100.00", "167.30")
+    c(" 10.00",
+      " 12.36",
+      "  3.00",
+      "100.00",
+      "167.30")
   )
 
   expect_equal(
     sample_df_frmted_10x$x,
-    c("  1.0 x10^1", "  1.2 x10^1", "  3.0 x10^0", "  1.0 x10^2", "  1.7 x10^2")
+    c("  1.0 x10^1",
+      "  1.2 x10^1",
+      "  3.0 x10^0",
+      "  1.0 x10^2",
+      "  1.7 x10^2")
   )
 })
 
