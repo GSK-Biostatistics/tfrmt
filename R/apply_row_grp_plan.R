@@ -333,19 +333,21 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
           select(-"..tfrmt_summary_row") %>%
           bind_rows(new_row, .)
       })
-    group <- group[-length(group)]
-    top_grouping <- top_grouping[-length(top_grouping)]
+    group = group[-length(group)]
+    top_grouping = top_grouping[-length(top_grouping)]
   }
 
-  .data %>%
+  .data%>%
     mutate(
       across(
         tidyselect::any_of(
           orig_group_names
         ),
-        ~ as.character(.x)
+        ~as.character(.x)
       )
     )
+
+
 }
 
 #' Remove row groups based on element_row_grp_loc and grouping
