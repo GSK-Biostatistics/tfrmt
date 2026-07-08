@@ -146,13 +146,15 @@ test_that("applying frmt - transform", {
     pull(x)
 
   expect_equal(fx_result,
-               c("1524157.7", "119493.9", "3225.0", "20865628.2", " 79.4"))
+               c("1524157.7", "119493.9",  "3225.0",   "20865628.2", " 79.4"  ))
 
 
-})
+  })
 
 
 test_that("applying frmt - preserves decimal places after rounding", {
+
+
   sample_df <- data.frame(
     x = c(10, 12.3647, 3, 100, 167.299)
   )
