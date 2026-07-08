@@ -120,14 +120,13 @@ test_that("applying frmt - scientific", {
 
 
 test_that("applying frmt - transform", {
+
   sample_df <- data.frame(
     x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101)
   )
 
   formula_transform <- frmt("xxx", transform = ~ . * 100)
-  fx_transform <- frmt("xxx.x", transform = function(x) {
-    x^2
-  })
+  fx_transform <- frmt("xxx.x", transform = function(x){x^2})
 
   formula_result <- apply_frmt.frmt(
     frmt_def = formula_transform,
