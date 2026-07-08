@@ -231,7 +231,7 @@ fill_post_space <- function(post_space, fill, width){
   length_post_space <- nchar(post_space)
 
   if (fill) {
-    reps <- ceiling(width / length_post_space)
+    reps <- ceiling(width/length_post_space)
     fill_val <- strrep(post_space, reps) %>% str_sub(1, width)
   } else {
     fill_val <- str_sub(post_space, 1, width) # truncate to data width if needed
@@ -256,12 +256,8 @@ fill_post_space <- function(post_space, fill, width){
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom forcats fct_inorder
 #' @importFrom tibble add_row
-combine_group_cols <- function(
-  .data,
-  group,
-  label,
-  element_row_grp_loc = NULL
-) {
+combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
+
   orig_group_names <- map_chr(group, as_name)
   top_grouping <- group #used for spliting in case of spanning label
 
