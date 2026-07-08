@@ -60,6 +60,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 #' @importFrom purrr map
 #' @export
 extract_data <- function(x, col_delim = "_") {
+
   #Fallback
   if (!inherits(x, c("gt_tbl", "gt_group"))) {
     stop("Input must be a 'gt_tbl' or 'gt_group' object.")
@@ -67,7 +68,7 @@ extract_data <- function(x, col_delim = "_") {
 
   # Single gt table
   if (inherits(x, "gt_tbl")) {
-    return(clean_data(
+     return(clean_data(
       df = x[["_data"]],
       delim = col_delim,
       boxhead = x[["_boxhead"]],
