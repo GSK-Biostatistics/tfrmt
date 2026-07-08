@@ -68,7 +68,7 @@ extract_data <- function(x, col_delim = "_") {
 
   # Single gt table
   if (inherits(x, "gt_tbl")) {
-     return(clean_data(
+   return(clean_data(
       df = x[["_data"]],
       delim = col_delim,
       boxhead = x[["_boxhead"]],
