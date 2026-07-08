@@ -78,19 +78,16 @@ extract_data <- function(x, col_delim = "_") {
 
   # Grouped gt object (created when using `page_plan`)
   if (inherits(x, "gt_group")) {
+
     # Extract the internal list of gt_tbl objects
     tbl_list <- x$gt_tbls$gt_tbl
 
     # Map over the list to pull the '_data' slot and clean names
-    extracted_list <- map(
-      tbl_list,
-      ~ clean_data(
-        .x[["_data"]],
-        delim = col_delim,
-        boxhead = .x[["_boxhead"]],
-        stubhead = .x[["_stubhead"]]
-      )
-    )
+     extracted_list <- map(tbl_list, ~ clean_data(.x[["_data"]],
+                                                 delim = col_delim,
+                                                 boxhead = .x[["_boxhead"]],
+                                                 stubhead = .x[["_stubhead"]]
+    ))
 
     return(extracted_list)
   }
