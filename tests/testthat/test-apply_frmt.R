@@ -43,8 +43,8 @@ test_that("applying frmt", {
 
 })
 
-
 test_that("applying frmt - scientific", {
+
   sample_df <- data.frame(
     x = c(1234.5678, 345.6789, 56.7891, 4567.8910, 8.9101, 0.0678)
   )
