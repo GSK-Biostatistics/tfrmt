@@ -147,6 +147,7 @@ apply_row_grp_lbl <- function(.data, element_row_grp_loc, group, label = NULL, .
 #' @importFrom dplyr filter pull
 #' @importFrom rlang parse_expr
 grp_row_test_data <- function(cur_block, .data, group){
+
   filter_expr <- expr_to_filter.quosures(group, cur_block$group_val) %>%
     parse_expr()
 
@@ -173,6 +174,7 @@ grp_row_test_data <- function(cur_block, .data, group){
 #'
 #' @noRd
 apply_grp_block <- function(.data, group, element_block, widths) {
+
   if (!is.null(element_block$post_space)) {
     # create add-on row
     # utilize TEMP_row to retain the ordering
@@ -182,8 +184,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
         across(
           c(
             -map_chr(group, as_name),
-            -tidyselect::where(is.numeric)
-          ),
+            -tidyselect::where(is.numeric)),
           ~ replace(
             .x,
             values = fill_post_space(
