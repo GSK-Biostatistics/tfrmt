@@ -74,22 +74,18 @@ apply_row_grp_struct <- function(.data, row_grp_struct_list, group, label = NULL
     )
 
   # apply group block function to data subsets
-  add_ln_df <- map2_dfr(
-    dat_plus_block$data,
-    dat_plus_block$TEMP_block_to_apply,
-    function(x, y) {
-      if (is.null(y)) {
-        x
-      } else {
-        apply_grp_block(
-          .data = x,
-          group = group,
-          element_block = y,
-          widths = dat_max_widths
-        )
-      }
-    }
-  ) %>%
+  add_ln_df <- map2_dfr(dat_plus_block$data,
+                        dat_plus_block$TEMP_block_to_apply,
+                        function(x,y) {
+                          if(is.null(y)){
+                            x
+                          } else {
+                            apply_grp_block(.data = x,
+                                            group = group,
+                                            element_block = y,
+                                            widths = dat_max_widths)
+                          }
+                        }) %>%
     arrange(.data$TEMP_row) %>%
     select(-"TEMP_row")
 
