@@ -390,10 +390,12 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
 }
 
 
+
 #' Remove trailing post-space rows and helper column
 #' @param .data processed wide tbl
 #' @noRd
 apply_post_space_trim <- function(.data) {
+
   target_col <- "..tfrmt_post_space_row"
 
   if (target_col %in% names(.data)) {
