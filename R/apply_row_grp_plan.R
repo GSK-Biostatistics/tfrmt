@@ -278,13 +278,13 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
     indent = element_row_grp_loc$indent
   }
 
-  while (length(group) > 0 & !is.null(label)){
+  while(length(group) > 0 & !is.null(label)){
     split_dat <- .data %>%
       group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) %>%
       group_split() %>%
-      map(~ select(.x, -run_id))
+      map(~select(.x, -run_id))
 
-    .data <- split_dat %>%
+    .data<- split_dat %>%
       map_dfr(function(lone_dat) {
         lone_dat_summ <- lone_dat %>%
           mutate(
