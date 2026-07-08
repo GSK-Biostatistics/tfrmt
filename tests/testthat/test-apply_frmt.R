@@ -150,7 +150,7 @@ test_that("applying frmt - transform", {
 
 
 
-})
+  })
 
 
 test_that("applying frmt - preserves decimal places after rounding", {
@@ -185,7 +185,11 @@ test_that("applying frmt - preserves decimal places after rounding", {
 
   expect_equal(
     sample_df_frmted_1dec$x,
-    c(" 10.0", " 12.4", "  3.0", "100.0", "167.3")
+    c(" 10.0",
+      " 12.4",
+      "  3.0",
+      "100.0",
+      "167.3")
   )
 
   expect_equal(
