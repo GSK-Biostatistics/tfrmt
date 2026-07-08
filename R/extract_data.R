@@ -14,7 +14,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
     # Identify the variable names that are marked as 'stub'
     stub_vars <- boxhead %>%
       dplyr::filter(.data$type == "stub") %>%
-      dplyr::pull(var)
+      dplyr::pull(.data$var)
 
     # Get the new labels from stubhead
     new_stub_labels <- as.character(unlist(stubhead$label))
