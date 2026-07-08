@@ -358,14 +358,12 @@ combine_group_cols <- function(.data, group, label, element_row_grp_loc = NULL){
 #' @param label symbolic label column
 #'
 #' @noRd
-remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL) {
+remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
+
   # check which group/label columns are available
   grps_avail <- eval_tidyselect_on_colvec(group, names(.data))
 
-  if (
-    length(grps_avail) == 0 ||
-      element_row_grp_loc$location %in% c("gtdefault", "column")
-  ) {
+  if(length(grps_avail)==0 || element_row_grp_loc$location %in% c("gtdefault", "column")){
     add_ln_df <- .data
   } else {
     group <- as_vars(grps_avail)
