@@ -365,21 +365,22 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL){
 
   if(length(grps_avail)==0 || element_row_grp_loc$location %in% c("gtdefault", "column")){
     add_ln_df <- .data
-  } else {
+  } else{
+
     group <- as_vars(grps_avail)
 
     # Either drop group columns ("no print"), or format them w/ label
-    if (element_row_grp_loc$location == "noprint") {
+    if (element_row_grp_loc$location == "noprint"){
+
       add_ln_df <- .data %>% select(-c(!!!group))
-    } else if (element_row_grp_loc$location == "indented") {
+    } else if(element_row_grp_loc$location == "indented"){
       add_ln_df <- .data %>%
         select(-c(!!!group))
     } else if (length(group) == 1) {
       #Using the grouping in gt + a single grouping
       add_ln_df <- .data %>%
         group_by(!!group[[1]])
-    } else {
-      # Using the grouping in gt, but needs to drop all groups in label
+    } else { # Using the grouping in gt, but needs to drop all groups in label
       add_ln_df <- .data %>%
         select(-c(!!!group[-1])) %>%
         group_by(!!group[[1]])
