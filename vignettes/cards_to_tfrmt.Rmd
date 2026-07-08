@@ -48,7 +48,7 @@ The first step in preparing the data for {tfrmt} is calling `shuffle_card()` whi
 
 ```{r}
 ard_demog_shuffled <- ard_demog |>
-  shuffle_card()
+  shuffle_card(by = "ARM")
 
 ard_demog_shuffled
 ```

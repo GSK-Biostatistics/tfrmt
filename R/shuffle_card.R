@@ -44,17 +44,15 @@ shuffle_card <- function(x,
                          fill_overall = "Overall {colname}",
                          fill_hierarchical_overall = "Any {colname}") {
 
-  if (!requireNamespace("cards", quietly = TRUE)) {
-    cli::cli_abort(
-      "The {.pkg cards} package must be installed to use {.fn shuffle_card}."
-    )
-  }
+  rlang::check_installed(
+    pkg = "cards",
+    version = "0.8.0",
+    compare = ">=",
+    reason = "for compatibility with tfrmt v0.4.0"
+  )
 
-  if (!inherits(x, "card")) {
-    cli::cli_abort(
-      "{.arg x} argument must be class {.cls card}, not {.obj_type_friendly {x}}"
-    )
-  }
+  check_card(x)
+
   if (!inherits(trim, "logical")) {
     cli::cli_abort(
       "{.arg trim} argument must be class {.cls logical}}, not \\
@@ -62,13 +60,17 @@ shuffle_card <- function(x,
     )
   }
 
-  # If a combined ARD is passed, drop stale attributes and evaluate structurally
-  if (inherits(x, "bind_ard") && !is.null(attr(x, "args"))) {
-      attr(x, "args")$by <- NULL
-      attr(x, "args")$variable <- NULL
-      attr(x, "args")$strata <- NULL
+  # Check if a 'by' variable is available
+  if (is_bind_ard_card(x) && rlang::is_empty(by)) {
+    cli::cli_inform(
+      c(
+        "The {.arg by} argument was not supplied and cannot be inferred from objects of class {.cls bind_ard}.",
+        "*" = "If you want to use a grouping variable, you'll need to pass it explicitly, e.g., {.code shuffle_card(by = 'TRT01A')}."
+      )
+    )
   }
 
+  x <- drop_bind_ard_args(x)
   ard_args <- attributes(x)$args
   by <- .process_by(x, by)
 
@@ -186,27 +188,34 @@ shuffle_card <- function(x,
 #' Process `by` variable
 #'
 #' @param x a data frame
-#' @param by Grouping variable(s) used in calculations. Defaults to `NULL`.
+#' @param by Grouping variable(s) used in calculations.
 #'
 #' @returns character string if `by` variable present
 #' @noRd
-.process_by <- function(x, by){
+.process_by <- function(x, by) {
+  by_arg <- get_card_attr_arg(x, "by")
 
-  ard_attributes <- attributes(x)
-  ard_args <- ard_attributes$args
-  if (!is.null(by)){
-    if (!is.null(ard_args$by) && !identical(ard_args$by, by)){
+  # 1. If 'by' is explicitly supplied, it takes absolute priority
+  if (!is.null(by)) {
+    # Only inform if an attribute actually exists AND it doesn't match
+    if (!is.null(by_arg) && !identical(by_arg, by)) {
       cli::cli_inform(
-        "Mismatch between attributes of {.arg x} and supplied value to \\
-        {.arg by}. Attributes will be used in lieu of {.arg by}",
-        env = rlang::caller_env())
-    } else {
-      ard_args$by <- by
+        c(
+          "Mismatch between attributes of {.arg x} and supplied value to {.arg by}.",
+          "i" = "Supplied value will be used in lieu of attributes.",
+          "*" = "Note: As of {.pkg tfrmt} v0.4.0, explicitly supplied {.arg by} \\
+                 values take priority over data frame attributes."
+        ),
+        env = rlang::caller_env()
+      )
     }
+    return(by)
   }
 
-  ard_args$by
+  # 2. If 'by' was NOT supplied, fall back to the attribute
+  by_arg
 }
+
 #' Fill Overall Group Variables
 #'
 #' This function fills the missing values of grouping variables with
@@ -389,7 +398,7 @@ shuffle_card <- function(x,
   output <- dplyr::case_when(
     x == "..cards_overall.." ~ overall_val,
     x == "..hierarchical_overall.." ~ any_val,
-    TRUE ~ x
+    TRUE ~ as.character(x)
   )
 
   output

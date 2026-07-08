@@ -74,7 +74,21 @@ test_that("shuffle_card notifies user about warnings/errors before dropping", {
   )
 })
 
-test_that("shuffle_card fills missing group levels if the group is meaningful", {
+test_that("shuffle_card message if bind_ard is used without a supplied by argument", {
+  # Create a combined ARD
+  combined_ard <- cards::bind_ard(
+    cards::ard_continuous(cards::ADSL, by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")),
+    dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
+  )
+
+  # Verify that the function throws the exact expected message
+  expect_message(
+    shuffle_card(combined_ard),
+    regexp = "The `by` argument was not supplied"
+  )
+})
+
+test_that("shuffle_card correctly handles a combined ARD when by is explicitly supplied", {
   # mix of missing/nonmissing group levels present before shuffle
   expect_snapshot(
     cards::bind_ard(
@@ -92,7 +106,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful", 
       dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(0.05))
     ) |>
       dplyr::filter(dplyr::row_number() <= 5L) |>
-      shuffle_card()
+      shuffle_card(by="ARM")
   )
 
   # mix of group variables - fills overall only if variable has been calculated by group elsewhere
@@ -573,4 +587,39 @@ test_that("shuffle_card() sorting option", {
     shuffle_card(ard_mixed, order_rows = FALSE) |> dplyr::select(-stat_variable),
     ignore_attr = TRUE
   )
+})
+
+test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
+  # 1. Mismatch: Create an ARD by "SEX", but intentionally spoof the attribute to "ARM"
+  ard_mismatch <- cards::ard_continuous(cards::ADSL, by = "SEX", variables = "AGE")
+  attr(ard_mismatch, "args")$by <- "ARM"
+
+  # Capture the raw console text sent to the message/stderr stream
+  msg_output <- capture.output(
+    res_mismatch <- shuffle_card(ard_mismatch, by = "SEX"),
+    type = "message"
+  )
+  msg_string <- paste(msg_output, collapse = "\n")
+
+  # Programmatically verify the exact elements of your message text
+  expect_match(msg_string, "Mismatch between attributes of")
+  expect_match(msg_string, "Supplied value will be used in lieu of attributes")
+  expect_match(msg_string, "As of tfrmt v0.4.0")
+
+  # Verify "SEX" was used as the column name instead of "ARM"
+  expect_true("SEX" %in% names(res_mismatch))
+  expect_false("ARM" %in% names(res_mismatch))
+
+  # 2. Match: Standard card where supplied matches attribute
+  ard_match <- cards::ard_continuous(cards::ADSL, by = "ARM", variables = "AGE")
+  expect_silent(
+    res_match <- shuffle_card(ard_match, by = "ARM")
+  )
+  expect_true("ARM" %in% names(res_match))
+
+  # 3. NULL supplied: Should remain silent and fall back to the attribute ("ARM")
+  expect_silent(
+    res_null <- shuffle_card(ard_match, by = NULL)
+  )
+  expect_true("ARM" %in% names(res_null))
 })
