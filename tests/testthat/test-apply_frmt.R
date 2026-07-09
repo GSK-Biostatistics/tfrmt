@@ -414,7 +414,7 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
               "lab 4", "lab 5", "lab 6", "lab 7", "lab 8", "lab 9"),
       col = "col",
       y = c("A", "B", "C", "C",
-            "C", "C", "C", "A", "A", "A", "A", "B", "B", "B", "B"),
+           "C", "C", "C", "A", "A", "A", "A", "B", "B", "B", "B"),
       x = c("1234.6 NA - NA", "NA (5.7%) - NA", "NA NA - *  10.0", "NA NA - * 111.0",
             "NA NA - *1112.0", "NA NA - *  13.0", "NA NA - * 114.0", "2345.7 NA - NA",
             "3456.8 NA - NA", "4567.9 NA - NA", "5678.9 NA - NA", "NA (1.2%) - NA",
@@ -428,21 +428,11 @@ test_that("applying frmt_when", {
   #Test frmt_when alone
   sample_df <- tibble(
     group = "group",
-    lab = rep(paste("lab", 1:5), 2),
+    lab = rep(paste("lab",1:5), 2),
     col = "col",
-    y = rep(c("A", "B"), each = 5),
-    x = c(
-      1234.5678,
-      2345.6789,
-      3456.7891,
-      4567.8910,
-      5678.9101,
-      1.2345678,
-      2.3456789,
-      3.4567891,
-      4.5678910,
-      5.6789101
-    )
+    y = rep(c("A","B"),each = 5),
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101)
   )
 
   sample_frmt <- frmt_when(
