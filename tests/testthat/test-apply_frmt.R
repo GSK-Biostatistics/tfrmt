@@ -654,7 +654,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
       Param = rep(c("mean", "sd"),  times = c(3)),
       Value = c(1, 2, 3, 4, 5, 6)
     ) %>%
-    .[-1, ] # remove first row - where a "mean" is, but is otherwise complete
+    .[-1,] # remove first row - where a "mean" is, but is otherwise complete
 
 
   test_combo <- frmt_combine(
@@ -679,9 +679,9 @@ test_that("frmt_combine fills with partially missing values where a column is mi
                  Group = rep(c("Age (y)"), c(3)),
                  Label = rep(c("Mean (SD)"), c(3)),
                  Column = c("Placebo", "Total", "Treatment"),
-                 Param = c("sd", "mean", "mean"),
+                 Param = c("sd","mean","mean"),
                  Value = c(" - ( 2)", " 5 ( 6)", " 3 ( 4)")
-                ))
+               ))
   # Test the NA still comes through when missing isn't provided
   test_combo_na <- frmt_combine(
     "{mean} {sd}",
