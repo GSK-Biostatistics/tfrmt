@@ -451,17 +451,17 @@ test_that("applying frmt_when", {
   )
 
   man_df <- tibble::tribble(
-    ~group, ~lab,        ~col,  ~y,    ~x,
-    "group", "lab 1", "col",   "A",   "1234.6",
-    "group", "lab 2", "col",   "A",   "2345.7",
-    "group", "lab 3", "col",   "A",   "3456.8",
-    "group", "lab 4", "col",   "A",   "4567.9",
-    "group", "lab 5", "col",   "A",   "5678.9",
-    "group", "lab 1", "col",   "B",   "Undectable",
-    "group", "lab 2", "col",   "B",   "Undectable",
-    "group", "lab 3", "col",   "B",   "Undectable",
-    "group", "lab 4", "col",   "B",   "Undectable",
-    "group", "lab 5", "col",   "B",   "Undectable",
+    ~group, ~lab,        ~col, ~y,     ~x,
+    "group", "lab 1", "col",   "A",    "1234.6",
+    "group", "lab 2", "col",   "A",    "2345.7",
+    "group", "lab 3", "col",   "A",    "3456.8",
+    "group", "lab 4", "col",   "A",    "4567.9",
+    "group", "lab 5", "col",   "A",    "5678.9",
+    "group", "lab 1", "col",   "B",    "Undectable",
+    "group", "lab 2", "col",   "B",    "Undectable",
+    "group", "lab 3", "col",   "B",    "Undectable",
+    "group", "lab 4", "col",   "B",    "Undectable",
+    "group", "lab 5", "col",   "B",    "Undectable",
   )
 
   expect_equal(sample_df_frmted, man_df)
