@@ -487,12 +487,12 @@ test_that("applying frmt_when", {
   )
 
   man_df_combo <- tibble::tribble(
-    ~group,  ~lab,    ~col,  ~y,  ~x,
-    "group", "lab 1", "col", "A", "1234.6 Undetectable",
-    "group", "lab 2", "col", "A", "2345.7 Undetectable",
-    "group", "lab 3", "col", "A", "3456.8 (3.5%)",
-    "group", "lab 4", "col", "A", "4567.9 (4.6%)",
-    "group", "lab 5", "col", "A", "5678.9 (5.7%)",
+    ~group,  ~lab,    ~col,   ~y,     ~x,
+    "group", "lab 1", "col",  "A",     "1234.6 Undetectable",
+    "group", "lab 2", "col",  "A",     "2345.7 Undetectable",
+    "group", "lab 3", "col",  "A",     "3456.8 (3.5%)",
+    "group", "lab 4", "col",  "A",     "4567.9 (4.6%)",
+    "group", "lab 5", "col",  "A",     "5678.9 (5.7%)",
   )
   expect_equal(sample_df_frmted, man_df_combo)
 })
