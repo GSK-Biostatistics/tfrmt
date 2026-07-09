@@ -571,9 +571,18 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
     shuffled_ard <- shuffle_card(ard)
   )
 
-     
+  # Binding two ARDs together class without a by attribute
+  ard_no_by_attr <- cards::bind_ard(
+    cards::ard_tabulate(cards::ADSL, variables = "AGEGR1"),
+    cards::ard_tabulate(cards::ADSL, variables = "SEX")
+  )
+
+  expect_snapshot(
+    shuffle_card(ard_no_by_attr)
+  )
+
 })
- 
+
 
 test_that("shuffle_card() sorting option", {
   withr::local_seed(0829)

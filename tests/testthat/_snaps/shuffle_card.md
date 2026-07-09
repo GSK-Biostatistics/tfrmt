@@ -291,3 +291,30 @@
       * A `by` value of "ARM" was found in the input object's attributes.
       * To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
 
+---
+
+    Code
+      shuffle_card(ard_no_by_attr)
+    Message
+      The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
+      * If you want to use a grouping variable, pass it explicitly via the `by` argument.
+    Output
+      # A tibble: 15 x 7
+         AGEGR1 SEX   context  stat_variable stat_name stat_label    stat
+         <chr>  <chr> <chr>    <chr>         <chr>     <chr>        <dbl>
+       1 65-80  <NA>  tabulate AGEGR1        n         n          144    
+       2 65-80  <NA>  tabulate AGEGR1        N         N          254    
+       3 65-80  <NA>  tabulate AGEGR1        p         %            0.567
+       4 <65    <NA>  tabulate AGEGR1        n         n           33    
+       5 <65    <NA>  tabulate AGEGR1        N         N          254    
+       6 <65    <NA>  tabulate AGEGR1        p         %            0.130
+       7 >80    <NA>  tabulate AGEGR1        n         n           77    
+       8 >80    <NA>  tabulate AGEGR1        N         N          254    
+       9 >80    <NA>  tabulate AGEGR1        p         %            0.303
+      10 <NA>   F     tabulate SEX           n         n          143    
+      11 <NA>   F     tabulate SEX           N         N          254    
+      12 <NA>   F     tabulate SEX           p         %            0.563
+      13 <NA>   M     tabulate SEX           n         n          111    
+      14 <NA>   M     tabulate SEX           N         N          254    
+      15 <NA>   M     tabulate SEX           p         %            0.437
+
