@@ -576,6 +576,7 @@ test_that("Space in Param", {
 
   expect_equal(mixed$expression, "{mean} ({`CV %`})")
 
+
   data <- tibble::tribble(
     ~group,	~type,	~label,	~column,	~param,	~value,
     "baseline",	"description",	"Week 12 analysis",	"Placebo",	"LM mean",	79.0,
@@ -605,45 +606,20 @@ test_that("Space in Param", {
   ) %>%
     pull(value)
 
+
   expect_equal(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
+
+
 })
 
 
 test_that("frmt_combine only applies when all parameters are in the data", {
-  data <- tibble(
-    Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
-    Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
-    Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
-    Param = rep(
-      c("n", "mean", "sd", "n", "pct", "n", "pct"),
-      c(6, 3, 3, 3, 3, 3, 3)
-    ),
-    Value = c(
-      15,
-      13,
-      28,
-      14,
-      13,
-      27,
-      73.56,
-      74.231,
-      71.84,
-      9.347,
-      7.234,
-      8.293,
-      8,
-      7,
-      15,
-      8 / 14,
-      7 / 13,
-      15 / 27,
-      6,
-      6,
-      12,
-      6 / 14,
-      6 / 13,
-      12 / 27
-    )
+    data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+                 Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
+                 Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+                 Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
+                 Value = c(15,13,28,14,13,27,73.56, 74.231,71.84,9.347,7.234,8.293,8,7,15,8/14,7/13,15/27,6,6,12,6/14,6/13,12/27
+                 )
   ) %>%
     # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
     mutate(
