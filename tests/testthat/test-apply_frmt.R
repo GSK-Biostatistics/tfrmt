@@ -705,18 +705,21 @@ test_that("frmt_combine fills with partially missing values where a column is mi
                  Group = rep(c("Age (y)"), c(3)),
                  Label = rep(c("Mean (SD)"), c(3)),
                  Column = c("Placebo", "Total", "Treatment"),
-                 Param = c("sd", "mean", "mean"),
+                 Param = c("sd","mean","mean"),
                  Value = c("NA ( 2)", " 5 ( 6)", " 3 ( 4)")
                ))
+
+
 })
 
 test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows", {
+
   dat <- tibble::tribble(
-    ~grp , ~lbl , ~param , ~column , ~val ,
-    "A"  , "n"  , "n"    , "trt1"  ,    1 ,
-    "A"  , "n"  , "n"    , "trt2"  ,    2 ,
-    "B"  , "n"  , "n"    , "trt1"  ,    3 ,
-    "B"  , "n"  , "n"    , "trt2"  ,    4
+    ~grp,   ~lbl,  ~param, ~column, ~val,
+    "A",    "n",   "n",    "trt1",  1,
+    "A",    "n",   "n",    "trt2",  2,
+    "B",    "n",   "n",    "trt1",  3,
+    "B",    "n",   "n",    "trt2",  4
   )
 
   tfrmt_spec <- tfrmt(
