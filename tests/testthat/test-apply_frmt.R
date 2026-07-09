@@ -732,10 +732,7 @@ test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows"
       frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
     ),
     row_grp_plan = row_grp_plan(
-      row_grp_structure(
-        group_val = ".default",
-        element_block(post_space = " ")
-      ),
+      row_grp_structure(group_val = ".default", element_block(post_space = " ")),
       label_loc = element_row_grp_loc(location = "indented")
     ),
     col_plan = col_plan(grp, lbl, trt1, trt2)
