@@ -374,28 +374,15 @@ test_that("applying frmt_combine - 3x", {
 })
 
 test_that("applying frmt_combine - no unique labels, so unable to frmt_combine", {
+
   sample_df <- tibble(
     group = "group",
-    lab = paste("lab", 1:15),
+    lab = paste("lab",1:15),
     col = "col",
-    y = rep(c("A", "B", "C"), each = 5),
-    x = c(
-      1234.5678,
-      2345.6789,
-      3456.7891,
-      4567.8910,
-      5678.9101,
-      1.2345678,
-      2.3456789,
-      3.4567891,
-      4.5678910,
-      5.6789101,
-      10,
-      111,
-      1112,
-      13,
-      114
-    )
+    y = rep(c("A","B","C"), each = 5),
+    x = c(1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+          1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101,
+          10,111,1112,13,114)
   )
 
   sample_frmt <- frmt_combine(
