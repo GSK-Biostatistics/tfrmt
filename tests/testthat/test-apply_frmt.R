@@ -639,7 +639,7 @@ test_that("frmt_combine only applies when all parameters are in the data", {
                 label = quo(Label), param = quo(Param) )
   expected <- data %>%
     filter(Label %in% c("Male","Female")) %>%
-    pull(.data$TEMP_row)
+    pull(TEMP_row)
 
   expect_equal(rows_to_use, expected)
 })
@@ -648,11 +648,11 @@ test_that("frmt_combine fills with partially missing values where a column is mi
 
 
   data <- tibble(
-    Group = rep(c("Age (y)"), c(6)),
-    Label = rep(c("Mean (SD)"), c(6)),
-    Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
-    Param = rep(c("mean", "sd"), times = c(3)),
-    Value = c(1, 2, 3, 4, 5, 6)
+      Group = rep(c("Age (y)"), c(6)),
+      Label = rep(c("Mean (SD)"), c(6)),
+      Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
+      Param = rep(c("mean", "sd"), times = c(3)),
+      Value = c(1, 2, 3, 4, 5, 6)
   ) %>%
     .[-1, ] # remove first row - where a "mean" is, but is otherwise complete
 
