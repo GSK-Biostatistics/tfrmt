@@ -577,17 +577,17 @@ test_that("Space in Param", {
   expect_equal(mixed$expression, "{mean} ({`CV %`})")
 
   data <- tibble::tribble(
-    ~group             , ~type            , ~label             , ~column     , ~param      , ~value ,
-    "baseline"         , "description"    , "Week 12 analysis" , "Placebo"   , "LM mean"   , 79.0   ,
-    "baseline"         , "description"    , "Week 12 analysis" , "Placebo"   , "LM stderr" ,  5.0   ,
-    "Primary analysis" , "trt comparison" , "Week 12 analysis" , "TRT - PBO" , "LM mean"   , -0.3   ,
-    "Primary analysis" , "trt comparison" , "Week 12 analysis" , "TRT - PBO" , "LM stderr" ,  0.4
+    ~group, ~type, ~label, ~column, ~param, ~value,
+    "baseline", "description", "Week 12 analysis", "Placebo", "LM mean", 79.0,
+    "baseline", "description", "Week 12 analysis", "Placebo", "LM stderr",  5.0,
+    "Primary analysis", "trt comparison", "Week 12 analysis", "TRT - PBO", "LM mean", -0.3,
+    "Primary analysis", "trt comparison", "Week 12 analysis", "TRT - PBO", "LM stderr",  0.4
   )
 
-  space_combo <- frmt_combine(
-    "{`LM mean`} ({`LM stderr`})",
-    `LM mean` = frmt("xx.x"),
-    `LM stderr` = frmt("xx.xx")
+
+  space_combo <- frmt_combine("{`LM mean`} ({`LM stderr`})",
+                              `LM mean` = frmt("xx.x"),
+                              `LM stderr` = frmt("xx.xx")
   )
 
   expect_equal(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
