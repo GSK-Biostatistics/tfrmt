@@ -555,22 +555,23 @@ test_that("mocks return correctly", {
     pull(x)
 
   expect_equal(sample_df_frmted, rep("xxx.x (X.X%)", 5))
+
 })
 
 
+
 test_that("Space in Param", {
-  no_ten <- frmt_combine(
-    "{LM mean} ({LM stderr})",
-    `LM mean` = frmt("xx.x"),
-    `LM stderr` = frmt("xx.xx")
+  no_ten <- frmt_combine("{LM mean} ({LM stderr})",
+                         `LM mean` = frmt("xx.x"),
+                         `LM stderr` = frmt("xx.xx")
   )
+
 
   expect_equal(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
 
-  mixed <- frmt_combine(
-    "{mean} ({CV %})",
-    mean = frmt("xx.x"),
-    `CV %` = frmt("xx.xx")
+  mixed <- frmt_combine("{mean} ({CV %})",
+                        mean = frmt("xx.x"),
+                        `CV %` = frmt("xx.xx")
   )
 
   expect_equal(mixed$expression, "{mean} ({`CV %`})")
