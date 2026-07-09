@@ -614,7 +614,7 @@ test_that("Space in Param", {
 
 
 test_that("frmt_combine only applies when all parameters are in the data", {
-    data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
+  data <- tibble(Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6,12)),
                  Label = rep(c("n", "Mean (SD)", "Male","Female"), c(6, 6,6,6)),
                  Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
                  Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"),  c(6, 3, 3, 3,3,3,3)),
@@ -622,11 +622,11 @@ test_that("frmt_combine only applies when all parameters are in the data", {
                  )
   ) %>%
     # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-    mutate(
-      Value = case_when(Param == "pct" ~ Value * 100, TRUE ~ Value),
-      ord1 = if_else(Group == "Age (y)", 1, 2),
-      ord2 = if_else(Label == "n", 1, 2),
-      TEMP_row = row_number()
+    mutate(Value = case_when(Param == "pct" ~ Value * 100,
+                             TRUE ~ Value),
+           ord1 = if_else(Group == "Age (y)", 1, 2),
+           ord2 = if_else(Label == "n", 1, 2),
+           TEMP_row = row_number()
     )
 
   test_combo <- frmt_structure(
