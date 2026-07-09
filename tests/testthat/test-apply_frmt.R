@@ -364,18 +364,13 @@ test_that("applying frmt_combine - 3x", {
     sample_df_frmted,
     tibble(
       group = "group",
-      lab = paste("lab", 1:5),
+      lab = paste("lab",1:5),
       col = "col",
       y = "A",
-      x = c(
-        "1234.6 (1.2%) - *  10.0",
-        "2345.7 (2.3%) - * 111.0",
-        "3456.8 (3.5%) - *1112.0",
-        "4567.9 (4.6%) - *  13.0",
-        "5678.9 (5.7%) - * 114.0"
-      )
+      x = c("1234.6 (1.2%) - *  10.0", "2345.7 (2.3%) - * 111.0", "3456.8 (3.5%) - *1112.0", "4567.9 (4.6%) - *  13.0", "5678.9 (5.7%) - * 114.0")
     )
   )
+
 })
 
 test_that("applying frmt_combine - no unique labels, so unable to frmt_combine", {
