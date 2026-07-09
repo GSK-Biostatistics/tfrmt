@@ -628,22 +628,25 @@ test_that("frmt_combine only applies when all parameters are in the data", {
            ord2 = if_else(Label == "n", 1, 2),
            TEMP_row = row_number())
 
+
   test_combo <- frmt_structure(group_val = ".default", label_val = ".default",
                                frmt_combine("{n} ({pct}%)",
                                             n = frmt("XX"),
                                             pct = frmt("x.x"))
   )
 
-  rows_to_use <- fmt_test_data(test_combo, data, group = vars(Group),
-                label = quo(Label), param = quo(Param))
+  rows_to_use <- fmt_test_data(test_combo, data, group= vars(Group),
+                label = quo(Label), param = quo(Param) )
   expected <- data %>%
-    filter(Label %in% c("Male", "Female")) %>%
+    filter(Label %in% c("Male","Female")) %>%
     pull(.data$TEMP_row)
 
   expect_equal(rows_to_use, expected)
 })
 
 test_that("frmt_combine fills with partially missing values where a column is missing the value", {
+
+
   data <- tibble(
     Group = rep(c("Age (y)"), c(6)),
     Label = rep(c("Mean (SD)"), c(6)),
