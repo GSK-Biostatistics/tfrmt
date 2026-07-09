@@ -657,9 +657,9 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     .[-1, ] # remove first row - where a "mean" is, but is otherwise complete
 
   test_combo <- frmt_combine(
-    "{mean} {sd}",
-    mean = frmt("XX", missing = " -"),
-    sd = frmt("(xx)")
+      "{mean} {sd}",
+      mean = frmt("XX", missing = " -"),
+      sd = frmt("(xx)")
   )
 
   sample_df_frmted <- apply_frmt.frmt_combine(
