@@ -60,12 +60,22 @@ shuffle_card <- function(x,
     )
   }
 
-  # Check if a 'by' variable is available
+
+  # Check if a 'by' variable is available for bind_ard objs
+  by_arg <- get_card_attr_arg(x, "by")
   if (is_bind_ard_card(x) && rlang::is_empty(by)) {
+
+    by_msg <- if (!rlang::is_empty(by_arg)) {
+      c("*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
+        "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}.")
+    } else {
+      c("*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument.")
+    }
+
     cli::cli_inform(
       c(
-        "The {.arg by} argument was not supplied and cannot be inferred from objects of class {.cls bind_ard}.",
-        "*" = "If you want to use a grouping variable, you'll need to pass it explicitly, e.g., {.code shuffle_card(by = 'TRT01A')}."
+        "The {.arg by} argument was not supplied and cannot reliably be inferred from objects of class {.cls bind_ard}.",
+        by_msg
       )
     )
   }
@@ -194,7 +204,7 @@ shuffle_card <- function(x,
 #' @noRd
 .process_by <- function(x, by) {
   by_arg <- get_card_attr_arg(x, "by")
-
+  
   # 1. If 'by' is explicitly supplied, it takes absolute priority
   if (!is.null(by)) {
     # Only inform if an attribute actually exists AND it doesn't match
