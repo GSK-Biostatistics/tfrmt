@@ -530,9 +530,9 @@ test_that("mocks return correctly", {
   #frmt_combine
   sample_df <- tibble(
     group = "group",
-    lab = rep(paste("lab", 1:5), 2),
+    lab = rep(paste("lab",1:5),2),
     col = "col",
-    y = rep(c("A", "B"), each = 5)
+    y = rep(c("A","B"),each = 5)
   )
 
   sample_frmt <- frmt_combine(
