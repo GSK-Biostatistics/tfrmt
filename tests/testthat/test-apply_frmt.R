@@ -700,16 +700,14 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     mock = FALSE
   )
 
-  expect_equal(
-    sample_df_frmted,
-    tibble(
-      Group = rep(c("Age (y)"), c(3)),
-      Label = rep(c("Mean (SD)"), c(3)),
-      Column = c("Placebo", "Total", "Treatment"),
-      Param = c("sd", "mean", "mean"),
-      Value = c("NA ( 2)", " 5 ( 6)", " 3 ( 4)")
-    )
-  )
+  expect_equal(sample_df_frmted,
+               tibble(
+                 Group = rep(c("Age (y)"), c(3)),
+                 Label = rep(c("Mean (SD)"), c(3)),
+                 Column = c("Placebo", "Total", "Treatment"),
+                 Param = c("sd", "mean", "mean"),
+                 Value = c("NA ( 2)", " 5 ( 6)", " 3 ( 4)")
+               ))
 })
 
 test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows", {
