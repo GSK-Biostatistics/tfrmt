@@ -487,7 +487,7 @@ test_that("applying frmt_when", {
   )
 
   man_df_combo <- tibble::tribble(
-    ~group,  ~lab,   ~col,   ~y,     ~x,
+    ~group, ~lab,   ~col,   ~y,     ~x,
     "group", "lab 1", "col",  "A",     "1234.6 Undetectable",
     "group", "lab 2", "col",  "A",     "2345.7 Undetectable",
     "group", "lab 3", "col",  "A",     "3456.8 (3.5%)",
@@ -501,13 +501,14 @@ test_that("applying frmt_when", {
 
 
 test_that("mocks return correctly", {
+
   #frmt
   frmt_mock <- apply_frmt.frmt(
     frmt_def = frmt("xxx.x"),
     .data = iris,
     value = quo(mock),
     mock = TRUE
-  ) %>%
+  )%>%
     pull(mock)
   expect_equal(frmt_mock, rep("xxx.x", nrow(iris)))
 
