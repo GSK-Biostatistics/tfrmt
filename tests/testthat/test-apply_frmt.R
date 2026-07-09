@@ -513,19 +513,17 @@ test_that("mocks return correctly", {
   expect_equal(frmt_mock, rep("xxx.x", nrow(iris)))
 
   # frmt_when
-  frmt_when_true <- apply_frmt.frmt_when(frmt_when("==100" ~ frmt(""),
-                                                   "==0" ~ "",
+  frmt_when_true <- apply_frmt.frmt_when(frmt_when("==100"~ frmt(""),
+                                                   "==0"~ "",
                                                    "TRUE" ~ frmt("(XXX.X%)")),
-                                        .data = iris, sym("value"), mock = TRUE) %>%
+                                         .data = iris, sym("value"),mock = TRUE) %>%
     pull(value)
   expect_equal(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
 
-  frmt_when_no_true <- apply_frmt.frmt_when(
-    frmt_when("==100" ~ frmt("Hello"), "==0" ~ ""),
-    .data = iris,
-    sym("value"),
-    mock = TRUE
-  ) %>%
+
+  frmt_when_no_true <- apply_frmt.frmt_when(frmt_when("==100" ~ frmt("Hello"),
+                                                      "==0" ~ ""),
+                                            .data = iris, sym("value"), mock = TRUE) %>%
     pull(value)
   expect_equal(frmt_when_no_true, rep("Hello", nrow(iris)))
 
