@@ -1,6 +1,7 @@
 # Big N's
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -18,6 +19,7 @@ demographics table that just has Age and Sex for Placebo, Treatment and
 Total. Below is our ARD prior to incorporating the big Ns:
 
 ``` r
+
 data <- tibble::tibble(
   Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
   Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
@@ -61,6 +63,7 @@ Then we can combine this information with the data above to make the
 full ARD for this table.
 
 ``` r
+
 big_ns <- tibble::tibble(
   Column = c("Placebo", "Treatment", "Total"),
   Param = "bigN",
@@ -76,6 +79,7 @@ the parameter of `"bigN"` should be appended to the column labels and
 they should be formatted as `"N = XX"` and on a separate line.
 
 ``` r
+
 tfrmt(
   group = Group,
   label = Label,
@@ -121,6 +125,7 @@ variables supplied to the `tfrmt`). Let’s look at this table, which has
 3 layers of column spanning:
 
 ``` r
+
 data <- tibble::tribble(
   ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
   "g1", "rowlabel1", "column cols", "cols 1,2", "col1", "value", 1,
@@ -168,6 +173,7 @@ to add a row to the ARD where `span2` equals `"column cols"` and all
 other `column` columns are missing.
 
 ``` r
+
 with_big_n_data <- tibble::tribble(
   ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
   NA, NA, "column cols", NA, NA, "bigN", 18,
@@ -190,6 +196,7 @@ specificity. (Note: because we are keeping the `parm` values the same we
 can use the same tfrmt)
 
 ``` r
+
 with_more_big_n_data <- tibble::tribble(
   ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
   NA, NA, "column cols", "cols 1,2", NA, "bigN", 12,
@@ -213,6 +220,7 @@ the ARD.
 In this case, our page_plan looks something like this:
 
 ``` r
+
 page_structure(group_val = ".default")
 ```
 
@@ -229,6 +237,7 @@ should be in the same order as the rest of the data (i.e. A, B rather
 than B, A for the `grp` variable).
 
 ``` r
+
 
 dat <- tidyr::crossing(
   grp = c("A", "B"),
@@ -263,6 +272,7 @@ the `by_page` argument in the `big_n_structure` to ensure the various
 big Ns are assigned to the relevant pages defined by the `page_plan`.
 
 ``` r
+
 gts <- tfrmt(
   group = grp,
   label = lbl,
@@ -281,12 +291,14 @@ gts <- tfrmt(
 ```
 
 ``` r
+
 gts |> gt::grp_pull(1)
 ```
 
 [TABLE]
 
 ``` r
+
 gts |> gt::grp_pull(2)
 ```
 
@@ -301,6 +313,7 @@ be consistent with column values in the ARD. The big N’s will still be
 added if names do get updated in the `col_plan`.
 
 ``` r
+
 n_span_tfrmt |>
   tfrmt(col_plan = col_plan(
     group,

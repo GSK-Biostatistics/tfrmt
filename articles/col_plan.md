@@ -1,6 +1,7 @@
 # Column Plan
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -21,6 +22,7 @@ Let’s look at the workflow in more detail with the following dataset
 which includes a single `column` variable:
 
 ``` r
+
 dat <- tibble::tribble(
   ~group , ~label      , ~my_col  , ~parm   , ~val ,
   "g1"   , "rowlabel1" , "col1"   , "value" ,    1 ,
@@ -44,6 +46,7 @@ dat <- tibble::tribble(
 This is what this data looks like formatted as a basic table.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -68,6 +71,7 @@ In the case of a single column variable with no column spanners,
 If we want to remove one of the columns we specify within a `col_plan`:
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -92,6 +96,7 @@ can also reorder, rename, and remove columns, using `tidyselect` syntax
 if we’d like:
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -123,6 +128,7 @@ though, col_plan respects the *last* time a column is defined in the
 plan. This allows for reordering/moving a column to the end very easily.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -154,6 +160,7 @@ columns. If multiple `group` variables exist, any of them can be
 renamed.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -189,6 +196,7 @@ group/label column is renamed, like below, {tfrmt} will use the highest
 level group name available.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -225,6 +233,7 @@ unique values and `my_col` which has 4 unique values. The `NA`’s
 indicate there should be no spanning over those values.
 
 ``` r
+
 dat <- tibble::tribble(
   ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
   "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -253,6 +262,7 @@ that start with “col” together, as well as rename `mycol3` and drop
 `mycol5`.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -285,6 +295,7 @@ multiple spanners *in different levels* we need to create a new
 `"most columns"` for the `span2` level in a separate `span_structure`.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -325,6 +336,7 @@ given column column, to specify the order. So can select `"col 4"` from
 the other columns.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,
@@ -356,6 +368,7 @@ column in the final table), like in the example above. But, that isn’t
 always the case take the following example:
 
 ``` r
+
 dat <- tibble::tribble(
   ~group , ~label  , ~span       , ~my_col , ~parm  , ~val  ,
   "g1"   , "stats" , "Placebo"   , "sd"    , "sd"   , 1.435 ,
@@ -371,6 +384,7 @@ make one `span_structure` that specifies both the order of the `span`
 level and the order of the `my_col` level.
 
 ``` r
+
 tfrmt(
   group = group,
   label = label,

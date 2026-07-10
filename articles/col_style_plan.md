@@ -1,6 +1,7 @@
 # Column Style Plan
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -56,6 +57,7 @@ differently.
 Expand for the code used to produce the example data
 
 ``` r
+
 dat <- tibble::tribble(
   ~label, ~param, ~column, ~value, ~ord,
   "n", "n", "trt1", 12, 1,
@@ -78,6 +80,7 @@ dat <- tibble::tribble(
 ```
 
 ``` r
+
 head(dat)
 #> # A tibble: 6 × 5
 #>   label     param  column value   ord
@@ -144,6 +147,7 @@ providing a `col_style_plan`, any variables that are not covered in the
 plan will be left-aligned by default.
 
 ``` r
+
 tfrmt(
   label = label,
   column = column,
@@ -200,6 +204,7 @@ This alignment isn’t quite right as we have the `<` in one value but not
 the other. Applying a decimal alignment would be a better fit:
 
 ``` r
+
 tfrmt(
   label = label,
   column = column,
@@ -257,6 +262,7 @@ case, we want to align on the first set of digits. In other words, we
 will align on the first instance of a decimal, comma, or space:
 
 ``` r
+
 tfrmt(
   label = label,
   column = column,
@@ -315,6 +321,7 @@ column differently (left, right, character for the three columns
 respectively):
 
 ``` r
+
 tfrmt(
   label = label,
   column = column,
@@ -383,6 +390,7 @@ In our example from above, we can use this feature to align on multiple
 decimal places:
 
 ``` r
+
 tf <- tfrmt(
   label = label,
   column = column,
@@ -467,6 +475,7 @@ is a a bit of code that can be copied and modified by adding the
 vertical bars as desired:
 
 ``` r
+
 display_val_frmts(tfrmt = tf, .data = dat, col = vars(starts_with("trt")))
 #> c("xx",
 #>   "xx.x ( x.xx)",
@@ -506,6 +515,7 @@ in the table. Because “label” is output in the table, we can apply the
 widths to that column as well.
 
 ``` r
+
 tfrmt(
   label = label,
   column = column,

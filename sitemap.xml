@@ -10,6 +10,7 @@
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_plan.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/col_style_plan.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/examples.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/extract_data.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/faq.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/footnote_plan.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/articles/index.html</loc></url>
@@ -39,6 +40,7 @@
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/display_val_frmts.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_block.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/element_row_grp_loc.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/extract_data.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/footnote_structure.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/frmt.html</loc></url>
@@ -59,6 +61,7 @@
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_mock_gt.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_ggplot.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.html</loc></url>
+<url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/reset_component.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_plan.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_structure.html</loc></url>
 <url><loc>https://gsk-biostatistics.github.io/tfrmt/reference/shuffle_card.html</loc></url>

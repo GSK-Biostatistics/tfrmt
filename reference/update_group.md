@@ -27,6 +27,7 @@ tfrmt object with updated groups#'
 ## Examples
 
 ``` r
+
 tfrmt_spec <- tfrmt(
     group = c(group1, group2),
     body_plan  = body_plan(
@@ -50,12 +51,12 @@ tfrmt_spec %>%
 #> [[1]]
 #> <quosure>
 #> expr: ^New_Group
-#> env:  0x55a09df4e468
+#> env:  0x55ec66b5fbc0
 #> 
 #> [[2]]
 #> <quosure>
 #> expr: ^group2
-#> env:  0x55a09df51188
+#> env:  0x55ec66b628e0
 #> 
 #> 
 #> $label

@@ -40,6 +40,7 @@ footnote structure object
 ## Examples
 
 ``` r
+
 # Adds a source note aka a footnote without a symbol in the table
 footnote_structure <- footnote_structure(footnote_text = "Source Note")
 

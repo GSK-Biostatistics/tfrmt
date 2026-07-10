@@ -32,6 +32,7 @@ tibble containing mock data
 ## Examples
 
 ``` r
+
 tfrmt_spec <- tfrmt(
   label = label,
   column = column,

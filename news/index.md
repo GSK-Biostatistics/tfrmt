@@ -1,5 +1,59 @@
 # Changelog
 
+## tfrmt 0.4.0
+
+### Improvements
+
+- [`footnote_plan()`](https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.md)
+  receives a new argument, `order`, allowing users to specify the order
+  of footnotes
+  ([\#605](https://github.com/GSK-Biostatistics/tfrmt/issues/605),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Add markdown processing of stub column labels
+  ([\#617](https://github.com/GSK-Biostatistics/tfrmt/issues/617))
+- Update default for
+  [`row_grp_plan()`](https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_plan.md)/[`row_grp_structure()`](https://gsk-biostatistics.github.io/tfrmt/reference/row_grp_structure.md)
+  to remove trailing post-space rows
+  ([\#630](https://github.com/GSK-Biostatistics/tfrmt/issues/630),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Added
+  [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/reference/extract_data.md)
+  function to enable data to be easily extracted from a tfrmt into a
+  data frame
+  ([\#628](https://github.com/GSK-Biostatistics/tfrmt/issues/628),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/reference/shuffle_card.md)
+  now automatically strips inherited ARD attributes from objects of
+  class `bind_ard` to avoid unreliable metadata
+  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
+- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/reference/shuffle_card.md)
+  now prioritises the user-supplied `by` argument over inherited ARD
+  attributes, giving users control to override attributes and updating
+  the mismatch message to reflect this change
+  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
+
+### Bug fixes
+
+- Fix bug in `tfrmt_sigdig` so it correctly passes the ‘missing’
+  argument to the body_plan
+  ([\#621](https://github.com/GSK-Biostatistics/tfrmt/issues/621),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Fix bug in `page_plan` where the max_rows argument was returning an
+  error if a value in the group variable was an empty string
+  ([\#539](https://github.com/GSK-Biostatistics/tfrmt/issues/539),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Fix bug in `row_grp_plan` where identical labels repeated across
+  different groups were incorrectly forced to the top of the table
+  instead of maintaining their correct order
+  ([\#634](https://github.com/GSK-Biostatistics/tfrmt/issues/634),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Fix bug in `as.character.span_structure` where the regex was
+  incorrectly capturing content wrapped in parentheses as an R function
+  even though it did not have a valid R function identifier immediately
+  before the `(`. i.e., “n (%)” incorrectly captured as a function
+  ([\#643](https://github.com/GSK-Biostatistics/tfrmt/issues/643),
+  [@LiamHobby](https://github.com/LiamHobby)).
+
 ## tfrmt 0.3.0
 
 CRAN release: 2026-01-24
@@ -23,14 +77,17 @@ CRAN release: 2026-01-24
 CRAN release: 2025-10-04
 
 Patch release for latest {gt} release and upcoming {purrr} and {stringr}
-releases: \* Ensure `rowname_col = NULL` in
-[`gt()`](https://gt.rstudio.com/reference/gt.html) within
-[`print_to_gt()`](https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.md)
-if no row label exists. \* Use of `seq_along(x)` in lieu of
-`1:length(x)` prior to `str_replace()` as it no longer accepts NA
-patterns. \* Ensure values are character before processing via
-[`map_chr()`](https://purrr.tidyverse.org/reference/map.html) as it no
-longer coerces to character.
+releases:
+
+- Ensure `rowname_col = NULL` in
+  [`gt()`](https://gt.rstudio.com/reference/gt.html) within
+  [`print_to_gt()`](https://gsk-biostatistics.github.io/tfrmt/reference/print_to_gt.md)
+  if no row label exists.
+- Use of `seq_along(x)` in lieu of `1:length(x)` prior to
+  `str_replace()` as it no longer accepts NA patterns.
+- Ensure values are character before processing via
+  [`map_chr()`](https://purrr.tidyverse.org/reference/map.html) as it no
+  longer coerces to character.
 
 ## tfrmt 0.2.0
 

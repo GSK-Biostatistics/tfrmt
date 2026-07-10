@@ -1,6 +1,7 @@
 # Creating Template tfrmts
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -54,6 +55,7 @@ data abides to the standard and names are set consistently:
 With this information we can construct a template AE `tfrmt`:
 
 ``` r
+
 ae_tfrmt_template <- tfrmt(
   group = AEBODSYS,
   label = AETERM,
@@ -122,6 +124,7 @@ percents, but not p-values. We create another template for p-values, and
 then finally layer it with the study specific tfrmt.
 
 ``` r
+
 ae_base_tfrmt_template <- function(tfrmt_obj) {
   ae_base <- tfrmt(
     group = AEBODSYS,
@@ -183,6 +186,7 @@ Using these templates and what we learned from the layering vignette, we
 can apply multiple templates cleanly within a pipe:
 
 ``` r
+
 study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() |>
   ae_pval_tfrmt_template() |>
   tfrmt(
@@ -230,6 +234,7 @@ study_ae_tfrmt_multi_layer <- ae_base_tfrmt_template() |>
 See how this results in the same table as above:
 
 ``` r
+
 ## filter to keep only AEs with >10% prevalence in the High Dose group
 data_ae2 <- data_ae |>
   dplyr::group_by(AEBODSYS, AETERM) |>
@@ -262,6 +267,7 @@ Some common pre-defined frmts may include p-value displays, integers,
 `n (%)`, among other things.
 
 ``` r
+
 # defined frmts
 
 int_frmt <- frmt("[XXX]")
@@ -294,6 +300,7 @@ Now that there are defined frmts, we can use them in our tfrmt to
 generate our table too.
 
 ``` r
+
 tfrmt(
   group = AEBODSYS,
   label = AETERM,

@@ -1,6 +1,7 @@
 # Row Group Plan
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -37,6 +38,7 @@ To add a post space after all groups of values based on the variable
 `row_grp_structure(group_val = ".default", element_block(post_space = " "))`
 
 ``` r
+
 my_tfrmt <- tfrmt(
   group = grp1,
   label = label,
@@ -64,6 +66,7 @@ To add a post space after values where grp1 = “grp1_1” only we do the
 following:
 
 ``` r
+
 my_tfrmt <- tfrmt(
   group = grp1,
   label = label,
@@ -110,6 +113,7 @@ tfrmt will combine group and label variables into a single column, using
 indentation to distinguish the hierarchies:
 
 ``` r
+
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
@@ -141,6 +145,7 @@ the top level group variable will be in the spanning row header, and the
 rest will combine with the label variable using indentation:
 
 ``` r
+
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
@@ -174,6 +179,7 @@ left-most column, and the remaining grouping variables were combined
 with the label variable using indentation.*
 
 ``` r
+
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,
@@ -212,6 +218,7 @@ A user may also suppress the printing of any group variable by
 specifying the “noprint” option.
 
 ``` r
+
 my_tfrmt <- tfrmt(
   group = c(grp1, grp2),
   label = label,

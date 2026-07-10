@@ -10,6 +10,7 @@ bolding, surround your text with `**` on either side. Some example code
 is provided below:
 
 ``` r
+
 es_data <- tibble::tibble(
   rowlbl1 = c(rep("Completion Status", 12), rep("Primary reason for withdrawal", 28)),
   rowlbl2 = c(rep("Completed", 4), rep("Prematurely Withdrawn", 4), rep("Unknown", 4), rep("Adverse Event", 4), rep("Lost to follow-up", 4), rep("Protocol violation", 4), rep("Subject decided to withdraw", 4), rep("Protocol Violation", 4), rep("Pre-Operative Dose[1]", 4), rep("Other", 4)),

@@ -44,6 +44,8 @@
   : Layer tfrmt objects together
 - [`update_group()`](https://gsk-biostatistics.github.io/tfrmt/reference/update_group.md)
   : Remap group values in a tfrmt
+- [`reset_component()`](https://gsk-biostatistics.github.io/tfrmt/reference/reset_component.md)
+  : Reset or Remove a Component from a tfrmt Object
 
 ## Print/Export
 
@@ -98,6 +100,8 @@
   : Check if input is a frmt
 - [`make_mock_data()`](https://gsk-biostatistics.github.io/tfrmt/reference/make_mock_data.md)
   : Make mock data for display shells
+- [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/reference/extract_data.md)
+  : Extract underlying data from tfrmt output
 
 ## ARD Helpers for {cards} to {tfrmt}
 

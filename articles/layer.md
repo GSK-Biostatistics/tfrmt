@@ -1,6 +1,7 @@
 # Layering tfrmts
 
 ``` r
+
 library(tfrmt)
 ```
 
@@ -42,6 +43,7 @@ well as the col_plan.
 The output tfrmt generates a table with the subset `data_labs`.
 
 ``` r
+
 data_labs_subset <- data_labs |>
   dplyr::filter(
     group2 %in% c("ALANINE AMINOTRANSFERASE", "ALBUMIN", "ALKALINE PHOSPHATASE", "ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
@@ -113,6 +115,7 @@ updated. This could happen when the input data set has a slightly
 different naming convention than expected.
 
 ``` r
+
 ## provided data had different column names for groups
 alternate_data_labs_subset <- data_labs_subset |>
   dplyr::rename(

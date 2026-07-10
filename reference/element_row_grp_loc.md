@@ -56,6 +56,7 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html)
 ## Examples
 
 ``` r
+
 tfrmt_spec <- tfrmt(
   group = c(grp1, grp2),
   label = label,

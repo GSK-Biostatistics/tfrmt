@@ -45,6 +45,7 @@ evaluation. Consider setting `join_body_plan` to `FALSE`. Only the y
 ## Examples
 
 ``` r
+
 tfrmt_1 <- tfrmt(title = "title1")
 
 tfrmt_2 <- tfrmt(title = "title2",subtitle = "subtitle2")
