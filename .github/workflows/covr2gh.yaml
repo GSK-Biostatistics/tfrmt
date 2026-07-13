@@ -141,7 +141,8 @@ jobs:
           covr2gh::post_comment(
             comment,
             repo = "${{ github.repository }}",
-            pr_number = ${{ github.event.pull_request.number }}
+            pr_number = ${{ github.event.pull_request.number }},
+            update = FALSE
           )
 
           writeLines(comment, file.path(temp_path, "comment.md"))
