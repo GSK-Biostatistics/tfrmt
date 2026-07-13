@@ -2,6 +2,8 @@
 
 ## tfrmt 0.4.0
 
+CRAN release: 2026-07-10
+
 ### Improvements
 
 - [`footnote_plan()`](https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.md)
