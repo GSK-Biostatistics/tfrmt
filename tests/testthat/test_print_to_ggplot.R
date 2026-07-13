@@ -217,21 +217,12 @@ test_that("column type has been preserved", {
         rename("month" = name) %>%
         mutate(month = substr(month, 1, 3))
 
+    # fmt: skip
     dfm$month <- factor(
         dfm$month,
         levels = c(
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
+            "Oct", "Nov", "Dec"
         )
     )
 

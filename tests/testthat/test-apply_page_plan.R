@@ -415,17 +415,20 @@ test_that("Page plan with max_rows", {
         "C"  , "b"  , "n"  ,   19 ,
     ) %>%
         pivot_longer(trt, names_to = "column", values_to = "value")
+
     mytfrmt <- tfrmt(
         group = "grp",
         label = "lbl",
         param = "prm",
         column = "column",
         value = "value",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         page_plan = page_plan(max_rows = 3)
     )
 
@@ -460,13 +463,17 @@ test_that("Page plan with max_rows", {
         param = "prm",
         column = "column",
         value = "value",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         ),
         page_plan = page_plan(max_rows = 3)
     )
@@ -498,19 +505,24 @@ test_that("Page plan with max_rows", {
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         pivot_longer(trt, names_to = "column", values_to = "value")
+
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
         label = "lbl",
         param = "prm",
         column = "column",
         value = "value",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         ),
         page_plan = page_plan(max_rows = 3)
     )
@@ -558,13 +570,17 @@ test_that("Page plan with max_rows & group-level summary rows", {
         param = "prm",
         column = "column",
         value = "val",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "indented")
+            label_loc = element_row_grp_loc(
+                location = "indented"
+            )
         ),
         page_plan = page_plan(max_rows = 3)
     )
@@ -610,13 +626,17 @@ test_that("Page plan with max_rows & group-level summary rows", {
         param = "prm",
         column = "column",
         value = "val",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "indented")
+            label_loc = element_row_grp_loc(
+                location = "indented"
+            )
         ),
         page_plan = page_plan(max_rows = 8)
     )
@@ -658,7 +678,11 @@ test_that("page plan with both page_structure and max_rows", {
     )
 
     mypp <- page_plan(
-        page_structure(group_val = list(grp1 = ".default")),
+        page_structure(
+            group_val = list(
+                grp1 = ".default"
+            )
+        ),
         max_rows = 3
     )
 
@@ -668,13 +692,17 @@ test_that("page plan with both page_structure and max_rows", {
         param = "prm",
         column = "column",
         value = "val",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "indented")
+            label_loc = element_row_grp_loc(
+                location = "indented"
+            )
         ),
         page_plan = mypp
     )
@@ -709,7 +737,11 @@ test_that("page plan with both page_structure and max_rows", {
             "    sub_cat_3b_3" , " 5" , FALSE
         )
     )
-    expect_equal(auto_split, man_split, ignore_attr = TRUE)
+    expect_equal(
+        auto_split,
+        man_split,
+        ignore_attr = TRUE
+    )
 
     expect_equal(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
@@ -737,7 +769,11 @@ test_that("page plan with page_structure, single level variable", {
     )
 
     mypp <- page_plan(
-        page_structure(group_val = list(grp1 = ".default"))
+        page_structure(
+            group_val = list(
+                grp1 = ".default"
+            )
+        )
     )
 
     mytfrmt <- tfrmt(
@@ -746,13 +782,17 @@ test_that("page plan with page_structure, single level variable", {
         param = "prm",
         column = "column",
         value = "val",
-        body_plan = body_plan(frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
-            frmt("xx")
-        )),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "indented")
+            label_loc = element_row_grp_loc(
+                location = "indented"
+            )
         ),
         page_plan = mypp
     )
@@ -1130,7 +1170,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
             sorting_cols = c(Treatment, ord1, ord2),
             col_plan = col_plan(
                 "System Organ Class
-        Preferred Term" = AESOC,
+                Preferred Term" = AESOC,
                 -Treatment,
                 -ord1,
                 -ord2

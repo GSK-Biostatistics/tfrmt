@@ -48,7 +48,11 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             frmt_structure(
                 group_val = ".default",
                 label_val = "m",
-                frmt_combine("{n}/{n_2}", n = frmt("x"), n_2 = frmt("x.x"))
+                frmt_combine(
+                    "{n}/{n_2}",
+                    n = frmt("x"),
+                    n_2 = frmt("x.x")
+                )
             )
         )
     )
@@ -202,21 +206,17 @@ test_that("check_order_vars() messages when order variables cause mismatching ro
         order1 = c(NA, NA, 1, 1, 1, 1),
         order2 = c(NA, NA, 1, 2, 1, 2),
         order3 = c(1, 2, NA, NA, NA, NA),
+        # fmt: skip
         label = c(
-            "Training set",
-            "Training set",
-            "Sex, n(%)",
-            "Sex, n(%)",
-            "Sex, n(%)",
-            "Sex, n(%)"
+            "Training set", "Training set",
+            "Sex, n(%)", "Sex, n(%)",
+            "Sex, n(%)", "Sex, n(%)"
         ),
+        # fmt: skip
         column = c(
-            "Test",
-            "Train",
-            "Test",
-            "Train",
-            "Test",
-            "Train"
+            "Test", "Train",
+            "Test", "Train",
+            "Test", "Train"
         )
     )
 
@@ -284,21 +284,17 @@ test_that("check_order_vars() messages when order variables cause mismatching ro
         order1 = c(NA, NA, 1, 1, 1, 1),
         order2 = c(NA, NA, 1, 1, 1, 1),
         order3 = c(1, 1, NA, NA, NA, NA),
+        # fmt: skip
         label = c(
-            "Training set",
-            "Training set",
-            "Sex, n(%)",
-            "Sex, n(%)",
-            "Sex, n(%)",
-            "Sex, n(%)"
+            "Training set", "Training set",
+            "Sex, n(%)", "Sex, n(%)",
+            "Sex, n(%)", "Sex, n(%)"
         ),
+        # fmt: skip
         column = c(
-            "Test",
-            "Train",
-            "Test",
-            "Train",
-            "Test",
-            "Train"
+            "Test", "Train",
+            "Test", "Train",
+            "Test", "Train"
         )
     )
 

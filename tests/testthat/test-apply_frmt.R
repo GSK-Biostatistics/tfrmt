@@ -141,7 +141,10 @@ test_that("applying frmt - transform", {
     ) %>%
         pull(x)
 
-    expect_equal(formula_result, c("123457", "34568", "5679", "456789", "891"))
+    expect_equal(
+        formula_result,
+        c("123457", "34568", "5679", "456789", "891")
+    )
 
     fx_result <- apply_frmt.frmt(
         frmt_def = fx_transform,
@@ -212,17 +215,10 @@ test_that("applying frmt_combine - 2x", {
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
         y = rep(c("A", "B"), each = 5),
+        # fmt: skip
         x = c(
-            1234.5678,
-            2345.6789,
-            3456.7891,
-            4567.8910,
-            5678.9101,
-            1.2345678,
-            2.3456789,
-            3.4567891,
-            4.5678910,
-            5.6789101
+            1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+            1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101
         )
     )
 
@@ -261,23 +257,16 @@ test_that("applying frmt_combine - 2x", {
 })
 
 test_that("applying frmt_combine missing", {
-    #Both missing
+    # Both missing
     sample_df <- tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
         y = rep(c("A", "B"), each = 5),
+        # fmt: skip
         x = c(
-            1234.5678,
-            2345.6789,
-            3456.7891,
-            4567.8910,
-            NA,
-            1.2345678,
-            2.3456789,
-            3.4567891,
-            4.5678910,
-            NA
+            1234.5678, 2345.6789, 3456.7891, 4567.8910, NA,
+            1.2345678, 2.3456789, 3.4567891, 4.5678910, NA
         )
     )
 
@@ -320,17 +309,10 @@ test_that("applying frmt_combine missing", {
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
         y = rep(c("A", "B"), each = 5),
+        # fmt: skip
         x = c(
-            1234.5678,
-            2345.6789,
-            3456.7891,
-            4567.8910,
-            NA,
-            1.2345678,
-            2.3456789,
-            3.4567891,
-            4.5678910,
-            5.6789101
+            1234.5678, 2345.6789, 3456.7891, 4567.8910, NA,
+            1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101
         )
     )
 
@@ -375,22 +357,11 @@ test_that("applying frmt_combine - 3x", {
         lab = rep(paste("lab", 1:5), 3),
         col = "col",
         y = rep(c("A", "B", "C"), each = 5),
+        # fmt: skip
         x = c(
-            1234.5678,
-            2345.6789,
-            3456.7891,
-            4567.8910,
-            5678.9101,
-            1.2345678,
-            2.3456789,
-            3.4567891,
-            4.5678910,
-            5.6789101,
-            10,
-            111,
-            1112,
-            13,
-            114
+            1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+            1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101,
+            10, 111, 1112, 13, 114
         )
     )
 
@@ -435,22 +406,11 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
         lab = paste("lab", 1:15),
         col = "col",
         y = rep(c("A", "B", "C"), each = 5),
+        # fmt: skip
         x = c(
-            1234.5678,
-            2345.6789,
-            3456.7891,
-            4567.8910,
-            5678.9101,
-            1.2345678,
-            2.3456789,
-            3.4567891,
-            4.5678910,
-            5.6789101,
-            10,
-            111,
-            1112,
-            13,
-            114
+            1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101,
+            1.2345678, 2.3456789, 3.4567891, 4.5678910, 5.6789101,
+            10, 111, 1112, 13, 114
         )
     )
 
@@ -478,40 +438,18 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
         sample_df_frmted,
         tibble(
             group = "group",
+            # fmt: skip
             lab = c(
-                "lab 1",
-                "lab 10",
-                "lab 11",
-                "lab 12",
-                "lab 13",
-                "lab 14",
-                "lab 15",
-                "lab 2",
-                "lab 3",
-                "lab 4",
-                "lab 5",
-                "lab 6",
-                "lab 7",
-                "lab 8",
-                "lab 9"
+                "lab 1", "lab 10", "lab 11", "lab 12", "lab 13",
+                "lab 14", "lab 15", "lab 2", "lab 3", "lab 4",
+                "lab 5", "lab 6", "lab 7", "lab 8", "lab 9"
             ),
             col = "col",
+            # fmt: skip
             y = c(
-                "A",
-                "B",
-                "C",
-                "C",
-                "C",
-                "C",
-                "C",
-                "A",
-                "A",
-                "A",
-                "A",
-                "B",
-                "B",
-                "B",
-                "B"
+                "A", "B", "C", "C", "C",
+                "C", "C", "A", "A", "A",
+                "A", "B", "B", "B", "B"
             ),
             x = c(
                 "1234.6 NA - NA",
@@ -591,7 +529,10 @@ test_that("applying frmt_when", {
     sample_frmt_combo <- frmt_combine(
         "{A} {B}",
         A = frmt("xxx.x"),
-        B = frmt_when(">3" ~ frmt("(X.X%)"), "<=3" ~ frmt("Undetectable"))
+        B = frmt_when(
+            ">3" ~ frmt("(X.X%)"),
+            "<=3" ~ frmt("Undetectable")
+        )
     )
 
     sample_df_frmted <- apply_frmt.frmt_combine(
@@ -735,31 +676,10 @@ test_that("frmt_combine only applies when all parameters are in the data", {
             c("n", "mean", "sd", "n", "pct", "n", "pct"),
             c(6, 3, 3, 3, 3, 3, 3)
         ),
+        # fmt: skip
         Value = c(
-            15,
-            13,
-            28,
-            14,
-            13,
-            27,
-            73.56,
-            74.231,
-            71.84,
-            9.347,
-            7.234,
-            8.293,
-            8,
-            7,
-            15,
-            8 / 14,
-            7 / 13,
-            15 / 27,
-            6,
-            6,
-            12,
-            6 / 14,
-            6 / 13,
-            12 / 27
+            15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
+            8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
         )
     ) %>%
         # Note because tfrmt only does rounding we will need to have the percents multiplied by 100

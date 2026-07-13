@@ -12,7 +12,9 @@ test_that("insert post space - single grouping variable", {
             group_val = ".default",
             element_block(post_space = " ")
         ),
-        label_loc = element_row_grp_loc(location = "spanning")
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
     )
 
     expect_equal(
@@ -79,10 +81,17 @@ test_that("insert post space - two grouping variables", {
 
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
-            group_val = list(grp1 = ".default", grp2 = "b"),
-            element_block(post_space = " ")
+            group_val = list(
+                grp1 = ".default",
+                grp2 = "b"
+            ),
+            element_block(
+                post_space = " "
+            )
         ),
-        label_loc = element_row_grp_loc(location = "spanning")
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
     )
 
     expect_equal(
@@ -119,7 +128,9 @@ test_that("insert post space - two grouping variables", {
             group_val = list(grp1 = "A"),
             element_block(post_space = " ")
         ),
-        label_loc = element_row_grp_loc(location = "spanning")
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
     )
 
     expect_equal(
@@ -163,8 +174,13 @@ test_that("insert mix - single grouping variable", {
             group_val = c("A", "C"),
             element_block(post_space = "---")
         ),
-        row_grp_structure(group_val = c("B"), element_block(post_space = " ")),
-        label_loc = element_row_grp_loc(location = "spanning")
+        row_grp_structure(
+            group_val = c("B"),
+            element_block(post_space = " ")
+        ),
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
     )
 
     expect_equal(
@@ -241,7 +257,9 @@ test_that("overlapping row_grp_structures - prefers latest", {
             group_val = list(grp1 = "A", grp2 = "b"),
             element_block(post_space = "***")
         ),
-        label_loc = element_row_grp_loc(location = "column")
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
     )
 
     expect_equal(
@@ -434,7 +452,9 @@ test_that("Check combine_group_cols with a single group", {
             mock_single_grp,
             group = vars(grp1),
             label = sym("lab"),
-            element_row_grp_loc(location = "spanning")
+            element_row_grp_loc(
+                location = "spanning"
+            )
         ) %>%
             select(-..tfrmt_row_grp_lbl),
         mock_single_grp
@@ -491,7 +511,9 @@ test_that("Check combine_group_cols with a multi groups", {
         mock_multi_grp,
         group = vars(grp1, grp2),
         label = sym("my_label"),
-        element_row_grp_loc(location = "spanning")
+        element_row_grp_loc(
+            location = "spanning"
+        )
     )
 
     #Should be the same as removing a group
@@ -506,7 +528,11 @@ test_that("Check combine_group_cols with a multi groups", {
         select(grp1, grp2, everything()) %>%
         mutate(grp1 = ifelse(grp1 == "", NA, grp1)) %>%
         fill(grp1, .direction = "up")
-    expect_equal(auto_test_with_span, man_test_with_span)
+
+    expect_equal(
+        auto_test_with_span,
+        man_test_with_span
+    )
 })
 
 
@@ -533,7 +559,9 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
             group_val = ".default",
             element_block(post_space = " ")
         ),
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     )
 
     auto_test_listcols <- apply_row_grp_lbl(
@@ -567,7 +595,10 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
     ) %>%
         mutate(across(trtA:trtC, ~ as.list(.x)))
 
-    expect_equal(auto_test_listcols, man_test_listcols)
+    expect_equal(
+        auto_test_listcols,
+        man_test_listcols
+    )
 
     auto_test_listcols <- apply_row_grp_struct(
         mock_multi_grp,
@@ -625,7 +656,10 @@ test_that("> 2 groups with and without spanner_label", {
             vars(grp1, grp2, grp3),
             sym("my_label")
         ) %>%
-            remove_grp_cols(plan_no_span$label_loc, vars(grp1, grp2, grp3)),
+            remove_grp_cols(
+                plan_no_span$label_loc,
+                vars(grp1, grp2, grp3)
+            ),
         tibble::tribble(
             ~my_label          , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "grp1_1"           , NA         , NA         , NA         , TRUE                 ,
@@ -647,7 +681,9 @@ test_that("> 2 groups with and without spanner_label", {
     )
 
     plan_with_span <- row_grp_plan(
-        label_loc = element_row_grp_loc(location = "spanning")
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
     )
 
     expect_equal(
@@ -707,7 +743,10 @@ test_that("Summary rows are not indented", {
             vars(grp1, grp2),
             sym("my_label")
         ) %>%
-            remove_grp_cols(plan_no_span$label_loc, vars(grp1, grp2)),
+            remove_grp_cols(
+                plan_no_span$label_loc,
+                vars(grp1, grp2)
+            ),
         tibble::tribble(
             ~my_label          , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "cat_1"            , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
@@ -733,7 +772,10 @@ test_that("Summary rows are not indented", {
             vars(grp1, grp2),
             sym("my_label")
         ) %>%
-            remove_grp_cols(plan_with_span$label_loc, vars(grp1, grp2)),
+            remove_grp_cols(
+                plan_with_span$label_loc,
+                vars(grp1, grp2)
+            ),
         tibble::tribble(
             ~grp1   , ~my_label        , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "cat_1" , "cat_1"          , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
@@ -750,7 +792,9 @@ test_that("Summary rows are not indented", {
     )
 
     plan_with_column <- row_grp_plan(
-        label_loc = element_row_grp_loc(location = "column")
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
     )
 
     expect_equal(
@@ -760,7 +804,10 @@ test_that("Summary rows are not indented", {
             vars(grp1, grp2),
             sym("my_label")
         ) %>%
-            remove_grp_cols(plan_with_column$label_loc, vars(grp1, grp2)),
+            remove_grp_cols(
+                plan_with_column$label_loc,
+                vars(grp1, grp2)
+            ),
         tibble::tribble(
             ~grp1   , ~grp2        , ~my_label      , ~trtA      , ~trtB      , ~trtC      ,
             "cat_1" , "cat_1"      , "cat_1"        , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -804,7 +851,9 @@ test_that("row order is retained for all selections", {
     gt_indented <- tfrmt_temp %>%
         tfrmt(
             row_grp_plan = row_grp_plan(
-                label_loc = element_row_grp_loc(location = "indented")
+                label_loc = element_row_grp_loc(
+                    location = "indented"
+                )
             )
         ) %>%
         print_to_gt(dat)
@@ -835,7 +884,9 @@ test_that("row order is retained for all selections", {
     gt_spanning <- tfrmt_temp %>%
         tfrmt(
             row_grp_plan = row_grp_plan(
-                label_loc = element_row_grp_loc(location = "spanning")
+                label_loc = element_row_grp_loc(
+                    location = "spanning"
+                )
             )
         ) %>%
         print_to_gt(dat)
@@ -857,7 +908,9 @@ test_that("row order is retained for all selections", {
     gt_column <- tfrmt_temp %>%
         tfrmt(
             row_grp_plan = row_grp_plan(
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             )
         ) %>%
         print_to_gt(dat)
@@ -870,7 +923,11 @@ test_that("row order is retained for all selections", {
         "q"   , "v"   , "s"  , "3"  , FALSE                ,
         "b"   , "p"   , "e"  , "4"  , FALSE
     )
-    expect_equal(gt_column_dat, gt_column_man, ignore_attr = TRUE)
+    expect_equal(
+        gt_column_dat,
+        gt_column_man,
+        ignore_attr = TRUE
+    )
 
     # original order also respected if no order variable supplied
     tfrmt(
@@ -911,7 +968,11 @@ test_that("row order is retained for all selections", {
     expect_equal(
         gt_indented_dat,
         gt_indented_man,
-        ignore_attr = c(".col_plan_vars", ".footnote_locs", ".stub_header")
+        ignore_attr = c(
+            ".col_plan_vars",
+            ".footnote_locs",
+            ".stub_header"
+        )
     )
 })
 
@@ -952,12 +1013,20 @@ test_that("Row group plans with col style plan", {
             frmt_structure(
                 group_val = ".default",
                 label_val = "n (%)",
-                frmt_combine("{n} ({pct}%)", n = frmt("x"), pct = frmt("xx.x"))
+                frmt_combine(
+                    "{n} ({pct}%)",
+                    n = frmt("x"),
+                    pct = frmt("xx.x")
+                )
             ),
             frmt_structure(
                 group_val = ".default",
                 label_val = "(q1, q3)",
-                frmt_combine("({q1}, {q3})", q1 = frmt("xx"), q3 = frmt("xx"))
+                frmt_combine(
+                    "({q1}, {q3})",
+                    q1 = frmt("xx"),
+                    q3 = frmt("xx")
+                )
             ),
             frmt_structure(
                 group_val = ".default",
@@ -977,7 +1046,9 @@ test_that("Row group plans with col style plan", {
                 group_val = list(g1 = "G2_"),
                 element_block(post_space = "----")
             ),
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         ),
         col_style_plan = col_style_plan(
             col_style_structure(align = "right", col = g1), # col must be the top lebel group
@@ -1001,58 +1072,24 @@ test_that("Row group plans with col style plan", {
         tfrmt_gt$`_data` %>%
             select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
+        # fmt: skip
         list(
             g1 = c(
-                " G1",
-                " G1",
-                " G1",
-                " G1",
-                "G2_",
-                "G2_",
-                "G2_",
-                "G2_",
-                "G2_",
-                " G3",
-                " G3"
+                " G1", " G1", " G1", " G1", "G2_", "G2_", "G2_", "G2_", "G2_",
+                " G3", " G3"
             ),
             one = c(
-                "        g3",
-                "     n (%)",
-                "      mean",
-                "  --------",
-                "        g3",
-                "      mean",
-                "        sd",
-                "    median",
-                "  --------",
-                "        g3",
-                "  (q1, q3)"
+                "        g3", "     n (%)", "      mean", "  --------",
+                "        g3", "      mean", "        sd", "    median",
+                "  --------", "        g3", "  (q1, q3)"
             ),
             trt1 = c(
-                NA,
-                "12 (34.0%)",
-                "          ",
-                "----------",
-                NA,
-                "12.30     ",
-                " 4.34     ",
-                "14.00     ",
-                "----------",
-                NA,
-                "(10, 20)  "
+                NA, "12 (34.0%)", "          ", "----------", NA, "12.30     ",
+                " 4.34     ", "14.00     ", "----------", NA, "(10, 20)  "
             ),
             trt2 = c(
-                NA,
-                "24\n(58.0%)",
-                "          ",
-                "----------",
-                NA,
-                "     15.40",
-                "      8.25",
-                "     16.00",
-                "----------",
-                NA,
-                "  (22,\n  22)"
+                NA, "24\n(58.0%)", "          ", "----------", NA, "     15.40",
+                "      8.25", "     16.00", "----------", NA, "  (22,\n  22)"
             ),
             four = c(NA, "", "<.001", "-----", NA, "", "", "", "-----", NA, "")
         )
@@ -1085,12 +1122,20 @@ test_that("Row group plans with col style plan", {
             frmt_structure(
                 group_val = ".default",
                 label_val = "n (%)",
-                frmt_combine("{n} ({pct}%)", n = frmt("x"), pct = frmt("xx.x"))
+                frmt_combine(
+                    "{n} ({pct}%)",
+                    n = frmt("x"),
+                    pct = frmt("xx.x")
+                )
             ),
             frmt_structure(
                 group_val = ".default",
                 label_val = "(q1, q3)",
-                frmt_combine("({q1}, {q3})", q1 = frmt("xx"), q3 = frmt("xx"))
+                frmt_combine(
+                    "({q1}, {q3})",
+                    q1 = frmt("xx"),
+                    q3 = frmt("xx")
+                )
             ),
             frmt_structure(
                 group_val = ".default",
@@ -1126,61 +1171,26 @@ test_that("Row group plans with col style plan", {
         tfrmt_gt$`_data` %>%
             select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
+        # fmt: skip
         list(
             g1 = c(
-                " G1",
-                " G1",
-                " G1",
-                " G1",
-                "G2_",
-                "G2_",
-                "G2_",
-                "G2_",
-                " G1"
+                " G1", " G1", " G1", " G1", "G2_", "G2_", "G2_", "G2_", " G1"
             ),
             g2 = c(
-                "g3_long",
-                "g3_long",
-                "     g3",
-                "     g3",
-                "g3_long",
-                "g3_long",
-                "     g3",
-                "     g3",
-                " g_long"
+                "g3_long", "g3_long", "     g3", "     g3", "g3_long",
+                "g3_long", "     g3", "     g3", " g_long"
             ),
             one = c(
-                "n (%)",
-                "-----",
-                "n (%)",
-                "-----",
-                " mean",
-                "-----",
-                "   sd",
-                "-----",
-                "n (%)"
+                "n (%)", "-----", "n (%)", "-----", " mean", "-----", "   sd",
+                "-----", "n (%)"
             ),
             trt1 = c(
-                "12.00",
-                "-----",
-                "34.00",
-                "-----",
-                "12.30",
-                "-----",
-                " 4.34",
-                "-----",
-                "     "
+                "12.00", "-----", "34.00", "-----", "12.30", "-----", " 4.34",
+                "-----", "     "
             ),
             trt2 = c(
-                "     ",
-                "-----",
-                "58.00",
-                "-----",
-                "15.40",
-                "-----",
-                " 8.25",
-                "-----",
-                "24.00"
+                "     ", "-----", "58.00", "-----", "15.40", "-----", " 8.25",
+                "-----", "24.00"
             )
         ),
         ignore_attr = TRUE
@@ -1265,45 +1275,69 @@ test_that("Row group plan indenting handles factor variables", {
 
     expect_equal(
         apply_row_grp_lbl(
-            dat %>% mutate(across(grp_span:rowlbl, as.factor)),
+            dat %>%
+                mutate(
+                    across(grp_span:rowlbl, as.factor)
+                ),
             grp_plan$label_loc,
             vars(grp_span, grp),
             sym("rowlbl")
         ) %>%
-            remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
+            remove_grp_cols(
+                grp_plan$label_loc,
+                vars(grp_span, grp)
+            ),
         expected
     )
 
     expect_equal(
         apply_row_grp_lbl(
-            dat %>% mutate(across(rowlbl, as.factor)),
+            dat %>%
+                mutate(
+                    across(rowlbl, as.factor)
+                ),
             grp_plan$label_loc,
             vars(grp_span, grp),
             sym("rowlbl")
         ) %>%
-            remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
+            remove_grp_cols(
+                grp_plan$label_loc,
+                vars(grp_span, grp)
+            ),
         expected
     )
 
     expect_equal(
         apply_row_grp_lbl(
-            dat %>% mutate(across(grp, as.factor)),
+            dat %>%
+                mutate(
+                    across(grp, as.factor)
+                ),
             grp_plan$label_loc,
             vars(grp_span, grp),
             sym("rowlbl")
         ) %>%
-            remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
+            remove_grp_cols(
+                grp_plan$label_loc,
+                vars(grp_span, grp)
+            ),
         expected
     )
 
     expect_equal(
         apply_row_grp_lbl(
-            dat %>% mutate(across(grp_span, as.factor)),
+            dat %>%
+                mutate(
+                    across(grp_span, as.factor)
+                ),
             grp_plan$label_loc,
             vars(grp_span, grp),
             sym("rowlbl")
         ) %>%
-            remove_grp_cols(grp_plan$label_loc, vars(grp_span, grp)),
+            remove_grp_cols(
+                grp_plan$label_loc,
+                vars(grp_span, grp)
+            ),
         expected
     )
 })
