@@ -16,23 +16,23 @@ check_card <- function(
     call = rlang::caller_env(),
     allow_null = FALSE
 ) {
-  if (!missing(card)) {
-    if (is_card(card)) {
-      return(invisible(NULL))
+    if (!missing(card)) {
+        if (is_card(card)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(card)) {
+            return(invisible(NULL))
+        }
     }
 
-    if (allow_null && is.null(card)) {
-      return(invisible(NULL))
-    }
-  }
-
-  rlang::stop_input_type(
-    card,
-    "a card object",
-    allow_null = allow_null,
-    arg = arg,
-    call = call
-  )
+    rlang::stop_input_type(
+        card,
+        "a card object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
 }
 
 #' Test if an object is a card
@@ -44,7 +44,7 @@ check_card <- function(
 #' @return Logical `TRUE` if the object is a card, `FALSE` otherwise.
 #' @noRd
 is_card <- function(x) {
-  inherits(x, "card")
+    inherits(x, "card")
 }
 
 #' Check if an object inherits from 'bind_ard'
@@ -53,7 +53,7 @@ is_card <- function(x) {
 #' @return `TRUE` if the object inherits from 'bind_ard', `FALSE` otherwise.
 #' @noRd
 is_bind_ard_card <- function(x) {
-  inherits(x, "bind_ard")
+    inherits(x, "bind_ard")
 }
 
 #' Extract an argument from card attributes
@@ -64,7 +64,7 @@ is_bind_ard_card <- function(x) {
 #' @returns the value of the argument, or `NULL` if not found
 #' @noRd
 get_card_attr_arg <- function(x, arg = "by") {
-  attr(x, "args")[[arg]]
+    attr(x, "args")[[arg]]
 }
 
 #' Set a specific parameter inside an object's 'args' attribute
@@ -75,8 +75,8 @@ get_card_attr_arg <- function(x, arg = "by") {
 #' @return The modified object.
 #' @noRd
 set_card_args <- function(x, name, value) {
-  attr(x, "args")[[name]] <- value
-  x
+    attr(x, "args")[[name]] <- value
+    x
 }
 
 #' Drop stale attributes from a combined ARD object
@@ -86,11 +86,11 @@ set_card_args <- function(x, name, value) {
 #'   from 'bind_ard' and contains an 'args' attribute.
 #' @noRd
 drop_bind_ard_args <- function(x) {
-  if (is_bind_ard_card(x) && !is.null(attr(x, "args"))) {
-    x <- set_card_args(x, "by", NULL)
-    x <- set_card_args(x, "variable", NULL)
-    x <- set_card_args(x, "strata", NULL)
-  }
+    if (is_bind_ard_card(x) && !is.null(attr(x, "args"))) {
+        x <- set_card_args(x, "by", NULL)
+        x <- set_card_args(x, "variable", NULL)
+        x <- set_card_args(x, "strata", NULL)
+    }
 
-  x
+    x
 }
