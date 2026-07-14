@@ -44,93 +44,92 @@ prep_info_return <- "Unable to apply {.fn {prep_func}}."
 #'   vars = c("b", "c", "d", "e", "f", "g")
 #' )
 prep_combine_vars <- function(df, vars, remove = TRUE) {
+    if (!rlang::is_character(vars)) {
+        cli::cli_abort(
+            "{.arg vars} must be a character vector. You have supplied \\
+            {.obj_type_friendly {vars}}."
+        )
+    }
 
-  if (!rlang::is_character(vars)) {
-    cli::cli_abort(
-      "{.arg vars} must be a character vector. You have supplied \\
-      {.obj_type_friendly {vars}}."
-    )
-  }
+    prep_func <- rlang::frame_call() |>
+        rlang::call_name()
 
-  prep_func <- rlang::frame_call() |>
-    rlang::call_name()
+    required_cols <- "context"
+    missing_cols <- setdiff(required_cols, names(df))
 
-  required_cols <- "context"
-  missing_cols <- setdiff(required_cols, names(df))
-
-  if (!rlang::is_empty(missing_cols)) {
-    cli::cli_inform(
-      c(
-        "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
+    if (!rlang::is_empty(missing_cols)) {
+        cli::cli_inform(
+            c(
+                "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
         the input data.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  if ("hierarchical" %in% unique(df$context)) {
-    cli::cli_inform(
-      c(
-        "i" = "The {.code context} column indicates data comes from a \\
+    if ("hierarchical" %in% unique(df$context)) {
+        cli::cli_inform(
+            c(
+                "i" = "The {.code context} column indicates data comes from a \\
         hierarchical {.code ard} stack.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  # we do cannot unite a single variable
-  if (length(vars) == 1) {
-    cli::cli_inform(
-      c(
-        "i" = "You supplied a single column in {.code vars}.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+    # we do cannot unite a single variable
+    if (length(vars) == 1) {
+        cli::cli_inform(
+            c(
+                "i" = "You supplied a single column in {.code vars}.",
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  interim <- df |>
-    dplyr::mutate(
-      var_level_coalesced = coalesce(
-        !!!rlang::syms(vars)
-      )
-    ) |>
-    tidyr::unite(
-      col = "var_level_untd",
-      tidyselect::all_of(vars),
-      na.rm = TRUE,
-      remove = remove
-    ) |>
-    dplyr::mutate(
-      var_level_untd = dplyr::if_else(
-        .data$var_level_untd == "",
-        NA_character_,
-        .data$var_level_untd
-      )
-    )
+    interim <- df |>
+        dplyr::mutate(
+            var_level_coalesced = coalesce(
+                !!!rlang::syms(vars)
+            )
+        ) |>
+        tidyr::unite(
+            col = "var_level_untd",
+            tidyselect::all_of(vars),
+            na.rm = TRUE,
+            remove = remove
+        ) |>
+        dplyr::mutate(
+            var_level_untd = dplyr::if_else(
+                .data$var_level_untd == "",
+                NA_character_,
+                .data$var_level_untd
+            )
+        )
 
-  if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
-    cli::cli_inform(
-      c(
-        "i" = "Combining the columns listed in {.code vars} would result in \\
+    if (!identical(interim$var_level_untd, interim$var_level_coalesced)) {
+        cli::cli_inform(
+            c(
+                "i" = "Combining the columns listed in {.code vars} would result in \\
         a loss of information.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  output <- interim |>
-    dplyr::select(
-      -"var_level_coalesced"
-    ) |>
-    dplyr::rename(
-      "variable_level" = "var_level_untd",
-    )
+    output <- interim |>
+        dplyr::select(
+            -"var_level_coalesced"
+        ) |>
+        dplyr::rename(
+            "variable_level" = "var_level_untd",
+        )
 
-  output
+    output
 }
 
 #' Prepare `bigN` stat variables
@@ -172,47 +171,46 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 #'   vars = c("b", "c")
 #' )
 prep_big_n <- function(df, vars) {
-
-  if (!rlang::is_character(vars)) {
-    cli::cli_abort(
-      "{.arg vars} must be a character vector. You have supplied \\
+    if (!rlang::is_character(vars)) {
+        cli::cli_abort(
+            "{.arg vars} must be a character vector. You have supplied \\
       {.obj_type_friendly {vars}}."
-    )
-  }
+        )
+    }
 
-  prep_func <- rlang::frame_call() |>
-    rlang::call_name()
+    prep_func <- rlang::frame_call() |>
+        rlang::call_name()
 
-  required_cols <- c("context", "stat_variable", "stat_name")
-  missing_cols <- setdiff(required_cols, names(df))
+    required_cols <- c("context", "stat_variable", "stat_name")
+    missing_cols <- setdiff(required_cols, names(df))
 
-  if (!rlang::is_empty(missing_cols)) {
-    cli::cli_inform(
-      c(
-        "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
+    if (!rlang::is_empty(missing_cols)) {
+        cli::cli_inform(
+            c(
+                "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
         the input data.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  output <- df |>
-    dplyr::mutate(
-      stat_name = dplyr::case_when(
-        .data$context == "total_n" ~ "bigN",
-        # we only want to keep the subgroup totals, which get recoded to bigN
-        .data$stat_variable %in% vars & .data$stat_name == "n" ~ "bigN",
-        # we only want the bigN for overall -> we remove "out"
-        .data$stat_variable %in% vars & .data$stat_name != "n" ~ "out",
-        TRUE ~ .data$stat_name
-      )
-    ) |>
-    dplyr::filter(
-      .data$stat_name != "out"
-    )
+    output <- df |>
+        dplyr::mutate(
+            stat_name = dplyr::case_when(
+                .data$context == "total_n" ~ "bigN",
+                # we only want to keep the subgroup totals, which get recoded to bigN
+                .data$stat_variable %in% vars & .data$stat_name == "n" ~ "bigN",
+                # we only want the bigN for overall -> we remove "out"
+                .data$stat_variable %in% vars & .data$stat_name != "n" ~ "out",
+                TRUE ~ .data$stat_name
+            )
+        ) |>
+        dplyr::filter(
+            .data$stat_name != "out"
+        )
 
-  output
+    output
 }
 
 #' Prepare label
@@ -240,36 +238,35 @@ prep_big_n <- function(df, vars) {
 #'
 #' prep_label(df)
 prep_label <- function(df) {
+    prep_func <- rlang::frame_call() |>
+        rlang::call_name()
 
-  prep_func <- rlang::frame_call() |>
-    rlang::call_name()
+    required_cols <- c("context", "variable_level", "stat_label", "stat_name")
+    missing_cols <- setdiff(required_cols, names(df))
 
-  required_cols <- c("context", "variable_level", "stat_label", "stat_name")
-  missing_cols <- setdiff(required_cols, names(df))
-
-  if (!rlang::is_empty(missing_cols)) {
-    cli::cli_inform(
-      c(
-        "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
+    if (!rlang::is_empty(missing_cols)) {
+        cli::cli_inform(
+            c(
+                "i" = "Required column{?s} ({.code {missing_cols}}) not present in \\
         the input data.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  output <- df |>
-    dplyr::mutate(
-      label = .data$stat_label,
-      label = dplyr::if_else(
-        !.data$context %in% c("continuous", "summary") &
-          .data$stat_name %in% c("n", "N", "p"),
-        .data$variable_level,
-        .data$label
-      )
-    )
+    output <- df |>
+        dplyr::mutate(
+            label = .data$stat_label,
+            label = dplyr::if_else(
+                !.data$context %in% c("continuous", "summary") &
+                    .data$stat_name %in% c("n", "N", "p"),
+                .data$variable_level,
+                .data$label
+            )
+        )
 
-  output
+    output
 }
 
 #' Fill missing values in hierarchical variables
@@ -326,45 +323,46 @@ prep_label <- function(df) {
 #'   vars = c("x", "y", "z"),
 #'   fill_from_left = TRUE
 #' )
-prep_hierarchical_fill <- function(df,
-                                   vars,
-                                   fill = "Any {colname}",
-                                   fill_from_left = FALSE) {
-
-  if (!rlang::is_character(vars)) {
-    cli::cli_abort(
-      "{.arg vars} must be a character vector. You have supplied \\
+prep_hierarchical_fill <- function(
+    df,
+    vars,
+    fill = "Any {colname}",
+    fill_from_left = FALSE
+) {
+    if (!rlang::is_character(vars)) {
+        cli::cli_abort(
+            "{.arg vars} must be a character vector. You have supplied \\
       {.obj_type_friendly {vars}}."
-    )
-  }
+        )
+    }
 
-  prep_func <- rlang::frame_call() |>
-    rlang::call_name()
+    prep_func <- rlang::frame_call() |>
+        rlang::call_name()
 
-  if (length(vars) < 2) {
-    cli::cli_inform(
-      c(
-        "i" = "At least 2 columns must be supplied to {.code vars}.",
-        "*" = prep_info_return
-      )
-    )
-    return(df)
-  }
+    if (length(vars) < 2) {
+        cli::cli_inform(
+            c(
+                "i" = "At least 2 columns must be supplied to {.code vars}.",
+                "*" = prep_info_return
+            )
+        )
+        return(df)
+    }
 
-  pair_list <- generate_pairs(vars)
+    pair_list <- generate_pairs(vars)
 
-  output <- df
+    output <- df
 
-  for (i in seq_along(pair_list)) {
-    output <- replace_na_pairwise(
-      output,
-      pair = pair_list[[i]],
-      fill = fill,
-      fill_from_left = fill_from_left
-    )
-  }
+    for (i in seq_along(pair_list)) {
+        output <- replace_na_pairwise(
+            output,
+            pair = pair_list[[i]],
+            fill = fill,
+            fill_from_left = fill_from_left
+        )
+    }
 
-  output
+    output
 }
 
 #' Generate pairs for pairwise filling
@@ -381,30 +379,29 @@ prep_hierarchical_fill <- function(df,
 #' @examples
 #' tfrmt:::generate_pairs(c("foo", "bar", "baz"))
 generate_pairs <- function(x, call = rlang::caller_env()) {
-
-  if (!rlang::is_character(x)) {
-    cli::cli_abort(
-      "{.arg x} must be a character vector. You have supplied \\
+    if (!rlang::is_character(x)) {
+        cli::cli_abort(
+            "{.arg x} must be a character vector. You have supplied \\
       {.obj_type_friendly {x}}.",
-      call = call
-    )
-  }
+            call = call
+        )
+    }
 
-  if (length(x) < 2) {
-    cli::cli_abort(
-      "{.arg x} must contain at least 2 column names. It contains {length(x)}.",
-      call = call
-    )
-  }
+    if (length(x) < 2) {
+        cli::cli_abort(
+            "{.arg x} must contain at least 2 column names. It contains {length(x)}.",
+            call = call
+        )
+    }
 
-  output <- tibble::tibble(x = x) |>
-    dplyr::mutate(
-      x_lead = dplyr::lead(x)
-    ) |>
-    tidyr::drop_na() |>
-    purrr::pmap(c, use.names = FALSE)
+    output <- tibble::tibble(x = x) |>
+        dplyr::mutate(
+            x_lead = dplyr::lead(x)
+        ) |>
+        tidyr::drop_na() |>
+        purrr::pmap(c, use.names = FALSE)
 
-  output
+    output
 }
 
 #' Replace `NA`s pairwise conditionally
@@ -430,54 +427,55 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
 #'   ),
 #'   pair = c("y", "z")
 #' )
-replace_na_pairwise <- function(x,
-                                pair,
-                                fill = "Any {colname}",
-                                fill_from_left = FALSE,
-                                call = rlang::caller_env()) {
-
-  if (!rlang::is_character(pair)) {
-    cli::cli_abort(
-      "{.arg pair} must be a character vector. You have supplied \\
+replace_na_pairwise <- function(
+    x,
+    pair,
+    fill = "Any {colname}",
+    fill_from_left = FALSE,
+    call = rlang::caller_env()
+) {
+    if (!rlang::is_character(pair)) {
+        cli::cli_abort(
+            "{.arg pair} must be a character vector. You have supplied \\
       {.obj_type_friendly {pair}}.",
-      call = call
-    )
-  }
+            call = call
+        )
+    }
 
-  if (length(pair) != 2) {
-    cli::cli_abort(
-      "{.arg pair} must contain exactly 2 elements. The one you supplied has \\
+    if (length(pair) != 2) {
+        cli::cli_abort(
+            "{.arg pair} must contain exactly 2 elements. The one you supplied has \\
       {length(pair)}.",
-      call = call
-    )
-  }
+            call = call
+        )
+    }
 
-  if (!rlang::is_scalar_character(fill)) {
-    cli::cli_abort(
-      "{.arg fill} must be a character vector of length 1.",
-      call = call
-    )
-  }
+    if (!rlang::is_scalar_character(fill)) {
+        cli::cli_abort(
+            "{.arg fill} must be a character vector of length 1.",
+            call = call
+        )
+    }
 
-  variables_syms <- rlang::syms(pair)
+    variables_syms <- rlang::syms(pair)
 
-  if (fill == "Any {colname}") {
-    fill <- glue::glue("Any {variables_syms[[2]]}") |>
-      as.character()
-  }
+    if (fill == "Any {colname}") {
+        fill <- glue::glue("Any {variables_syms[[2]]}") |>
+            as.character()
+    }
 
-  if (fill_from_left) {
-    fill <- rlang::quo(as.character(!!variables_syms[[1]]))
-  }
+    if (fill_from_left) {
+        fill <- rlang::quo(as.character(!!variables_syms[[1]]))
+    }
 
-  output <- x |>
-    dplyr::mutate(
-      !!variables_syms[[2]] := dplyr::if_else(
-        is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
-        !!fill,
-        !!variables_syms[[2]]
-      )
-    )
+    output <- x |>
+        dplyr::mutate(
+            !!variables_syms[[2]] := dplyr::if_else(
+                is.na(!!variables_syms[[2]]) & !is.na(!!variables_syms[[1]]),
+                !!fill,
+                !!variables_syms[[2]]
+            )
+        )
 
-  output
+    output
 }

@@ -24,53 +24,64 @@
 #' }}
 #'
 #' @importFrom rlang parse_expr
-tfrmt_n_pct <- function(n = "n",
-                       pct = "pct",
-                       pct_frmt_when = frmt_when("==100"~ frmt(""),
-                                             ">99"~ frmt("(>99%)"),
-                                             "==0"~ "",
-                                             "<1" ~ frmt("(<1%)"),
-                                             "TRUE" ~ frmt("(xx.x%)")),
-                       tfrmt_obj = NULL){
-  if(is.null(n)|is.na(n)|n==""){
-    stop("`n` value must be provided")
-  }
-  if(is.null(pct)|is.na(pct)|pct==""){
-    stop("`pct` value must be provided")
-  }
+tfrmt_n_pct <- function(
+    n = "n",
+    pct = "pct",
+    pct_frmt_when = frmt_when(
+        "==100" ~ frmt(""),
+        ">99" ~ frmt("(>99%)"),
+        "==0" ~ "",
+        "<1" ~ frmt("(<1%)"),
+        "TRUE" ~ frmt("(xx.x%)")
+    ),
+    tfrmt_obj = NULL
+) {
+    if (is.null(n) | is.na(n) | n == "") {
+        stop("`n` value must be provided")
+    }
+    if (is.null(pct) | is.na(pct) | pct == "") {
+        stop("`pct` value must be provided")
+    }
 
-  combo <- paste0(
-    "frmt_combine('{",
-    n,
-    "} {", pct, "}',",
-    n, "=frmt('x'),",
-    pct, "=pct_frmt_when)"
-  ) %>%
-    parse_expr() %>% eval()
+    combo <- paste0(
+        "frmt_combine('{",
+        n,
+        "} {",
+        pct,
+        "}',",
+        n,
+        "=frmt('x'),",
+        pct,
+        "=pct_frmt_when)"
+    ) %>%
+        parse_expr() %>%
+        eval()
 
-  if(!is.null(tfrmt_obj)){
-    ae_tbl <- tfrmt(
-      body_plan = body_plan(
-        frmt_structure(
-          group_val = ".default", label_val = ".default",
-          combo
+    if (!is.null(tfrmt_obj)) {
+        ae_tbl <- tfrmt(
+            body_plan = body_plan(
+                frmt_structure(
+                    group_val = ".default",
+                    label_val = ".default",
+                    combo
+                )
+            )
         )
-      )
-    )
-    ae_tbl <- layer_tfrmt(x = tfrmt_obj, y = ae_tbl)
-  } else {
-    ae_tbl <- tfrmt(
-      param = "param",
-      label = "row_label1",
-      column = "col1",
-      value = "value",
-      body_plan = body_plan(
-        frmt_structure(
-          group_val = ".default", label_val = ".default",
-          combo
+        ae_tbl <- layer_tfrmt(x = tfrmt_obj, y = ae_tbl)
+    } else {
+        ae_tbl <- tfrmt(
+            param = "param",
+            label = "row_label1",
+            column = "col1",
+            value = "value",
+            body_plan = body_plan(
+                frmt_structure(
+                    group_val = ".default",
+                    label_val = ".default",
+                    combo
+                )
+            )
         )
-      )
-    )
-  }
-  ae_tbl
+    }
+    ae_tbl
 }
