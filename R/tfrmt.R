@@ -205,7 +205,6 @@ tfrmt <- function(
   check_plan(new_tfrmt, "footnote_plan")
   check_plan(new_tfrmt, "page_plan")
 
-
   # check non-null big_n is supplied a big_n_structure
   check_big_n(new_tfrmt)
 
