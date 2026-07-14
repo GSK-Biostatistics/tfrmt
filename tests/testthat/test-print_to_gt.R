@@ -194,6 +194,76 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
   )
 })
 
+test_that("tfrmt() messages when required variables are missing", {
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      label = rowlbl2,
+      column = column,
+      value = value,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*param"
+  )
+
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      label = rowlbl2,
+      param = param,
+      value = value,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*column"
+  )
+
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      label = rowlbl2,
+      column = column,
+      param = param,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*value"
+  )
+
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      column = column,
+      param = param,
+      value = value,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*label"
+  )
+})
+
 test_that("print_mock_gt() messages when tfrmt$column is missing", {
   # no message when tfrmt$column is not missing
   tfrmt_plan <- tfrmt(

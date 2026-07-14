@@ -312,3 +312,27 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
 }
 
 
+#' Check that a required tfrmt input variable is supplied
+#'
+#' @param tfrmt_object tfrmt object to check
+#' @param var_name name of the variable to check (e.g. "param", "label")
+#'
+#' @noRd
+#' @importFrom rlang quo_is_missing is_empty
+check_input <- function(tfrmt_object, var_name) {
+
+  var_val <- tfrmt_object[[var_name]]
+
+  is_missing <- if (var_name == "column") {
+    is_empty(var_val)
+  } else {
+    quo_is_missing(var_val)
+  }
+
+  if (is_missing) {
+    cli::cli_inform(
+      c("!" = "No value was supplied to {.arg {var_name}} in {.fun tfrmt}. Please supply a {.arg {var_name}} column.")
+    )
+  }
+}
+
