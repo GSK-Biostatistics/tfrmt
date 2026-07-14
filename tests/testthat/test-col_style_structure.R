@@ -45,8 +45,14 @@ test_that("col_style_structure - errors", {
 })
 
 test_that("col_style_structure - advanced", {
-    element_1 <- col_style_structure(align = "left", col = c(n_tot, p, test))
-    element_2 <- col_style_structure(align = "left", col = c(n_tot, p, "test"))
+    element_1 <- col_style_structure(
+        align = "left",
+        col = c(n_tot, p, test)
+    )
+    element_2 <- col_style_structure(
+        align = "left",
+        col = c(n_tot, p, "test")
+    )
     element_3 <- col_style_structure(
         align = "right",
         col = span_structure(col = test, col2 = value)
@@ -160,8 +166,14 @@ test_that("alignment of multiple columns works", {
         column = vars(column),
         value = value,
         col_style_plan = col_style_plan(
-            col_style_structure(align = "left", col = vars(one)),
-            col_style_structure(align = "right", col = vars(four)),
+            col_style_structure(
+                align = "left",
+                col = vars(one)
+            ),
+            col_style_structure(
+                align = "right",
+                col = vars(four)
+            ),
             col_style_structure(
                 align = c(".", ",", " "),
                 col = vars(two, three)
@@ -209,8 +221,14 @@ test_that("alignment of multiple columns works", {
         column = vars(column),
         value = value,
         col_style_plan = col_style_plan(
-            col_style_structure(align = "left", col = vars(one)),
-            col_style_structure(align = "right", col = vars(two, three, four))
+            col_style_structure(
+                align = "left",
+                col = vars(one)
+            ),
+            col_style_structure(
+                align = "right",
+                col = vars(two, three, four)
+            )
         )
     )
 
@@ -280,25 +298,22 @@ test_that("tidyselect works", {
                 align = c(".", ",", " "),
                 col = vars(starts_with("trt"))
             ),
-            col_style_structure(align = "right", col = vars(four))
+            col_style_structure(
+                align = "right",
+                col = vars(four)
+            )
         )
     )
 
     dat_aligned_man <- tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
+        # fmt: skip
         trt1 = c(
-            " 12 (34%)",
-            " 12.3    ",
-            "  4.34   ",
-            " 14      ",
-            "(10, 20) "
+            " 12 (34%)", " 12.3    ", "  4.34   ", " 14      ", "(10, 20) "
         ),
+        # fmt: skip
         trt2 = c(
-            " 24 (58%)",
-            " 15.4    ",
-            "  8.25   ",
-            " 16      ",
-            "(11, 22) "
+            " 24 (58%)", " 15.4    ", "  8.25   ", " 16      ", "(11, 22) "
         ),
         four = c("      ", "<0.001", "      ", "  0.05", "      ")
     )
@@ -317,25 +332,22 @@ test_that("tidyselect works", {
         column = vars(column),
         value = value,
         col_style_plan = col_style_plan(
-            col_style_structure(align = "right", col = vars(starts_with("trt")))
+            col_style_structure(
+                align = "right",
+                col = vars(starts_with("trt"))
+            )
         )
     )
 
     dat_aligned_man <- tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
+        # fmt: skip
         trt1 = c(
-            " 12 (34%)",
-            "     12.3",
-            "     4.34",
-            "       14",
-            " (10, 20)"
+            " 12 (34%)", "     12.3", "     4.34", "       14", " (10, 20)"
         ),
+        # fmt: skip
         trt2 = c(
-            " 24 (58%)",
-            "     15.4",
-            "     8.25",
-            "       16",
-            " (11, 22)"
+            " 24 (58%)", "     15.4", "     8.25", "       16", " (11, 22)"
         ),
         four = c("", "<0.001", "", "0.05", "")
     )
@@ -347,14 +359,20 @@ test_that("tidyselect works", {
         ) %>%
         apply_col_style_plan(vars_starts_with_plan)
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_equal(
+        dat_aligned,
+        dat_aligned_man
+    )
 
     starts_with_plan <- tfrmt(
         label = one,
         column = vars(column),
         value = value,
         col_style_plan = col_style_plan(
-            col_style_structure(align = "right", col = starts_with("trt"))
+            col_style_structure(
+                align = "right",
+                col = starts_with("trt")
+            )
         )
     )
 
@@ -365,32 +383,32 @@ test_that("tidyselect works", {
         ) %>%
         apply_col_style_plan(starts_with_plan)
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_equal(
+        dat_aligned,
+        dat_aligned_man
+    )
 
     plan_everything <- tfrmt(
         label = one,
         column = vars(column),
         value = value,
         col_style_plan = col_style_plan(
-            col_style_structure(align = "right", col = everything())
+            col_style_structure(
+                align = "right",
+                col = everything()
+            )
         )
     )
 
     dat_aligned_man <- tibble(
         one = c("   n (%)", "    mean", "      sd", "  median", "(q1, q3)"),
+        # fmt: skip
         trt1 = c(
-            " 12 (34%)",
-            "     12.3",
-            "     4.34",
-            "       14",
-            " (10, 20)"
+            " 12 (34%)", "     12.3", "     4.34", "       14", " (10, 20)"
         ),
+        # fmt: skip
         trt2 = c(
-            " 24 (58%)",
-            "     15.4",
-            "     8.25",
-            "       16",
-            " (11, 22)"
+            " 24 (58%)", "     15.4", "     8.25", "       16", " (11, 22)"
         ),
         four = c("      ", "<0.001", "      ", "  0.05", "      ")
     )
@@ -435,27 +453,25 @@ test_that("span_structure works", {
         col_style_plan = col_style_plan(
             col_style_structure(
                 align = c(".", ",", " "),
-                col = span_structure(span_col = "Test Span1")
+                col = span_structure(
+                    span_col = "Test Span1"
+                )
             ),
-            col_style_structure(align = "right", col = vars(four))
+            col_style_structure(
+                align = "right",
+                col = vars(four)
+            )
         )
     )
 
+    # fmt: skip
     dat_aligned_man <- tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         `Test Span1___tlang_delim___trt1` = c(
-            " 12 (34%)",
-            " 12.3    ",
-            "  4.34   ",
-            " 14      ",
-            "(10, 20) "
+            " 12 (34%)", " 12.3    ", "  4.34   ", " 14      ", "(10, 20) "
         ),
         `Test Span2___tlang_delim___trt2` = c(
-            " 24 (58%)",
-            " 15.4",
-            "  8.25",
-            " 16",
-            "(11, 22)"
+            " 24 (58%)", " 15.4", "  8.25", " 16", "(11, 22)"
         ),
         four = c("      ", "<0.001", "      ", "  0.05", "      ")
     )
@@ -469,7 +485,10 @@ test_that("span_structure works", {
         clean_spanning_col_names() %>%
         apply_col_style_plan(plan)
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_equal(
+        dat_aligned,
+        dat_aligned_man
+    )
 })
 
 test_that("span_structure works on a renamed column", {
@@ -512,27 +531,25 @@ test_that("span_structure works on a renamed column", {
         col_style_plan = col_style_plan(
             col_style_structure(
                 align = c(".", ",", " "),
-                col = span_structure(span_col = "Test Span2")
+                col = span_structure(
+                    span_col = "Test Span2"
+                )
             ),
-            col_style_structure(align = "right", col = vars(four))
+            col_style_structure(
+                align = "right",
+                col = vars(four)
+            )
         )
     )
 
+    # fmt: skip
     dat_aligned_man <- tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         `Test Span1___tlang_delim___trt1` = c(
-            " 12 (34%)",
-            " 12.3",
-            "  4.34",
-            " 14",
-            "(10, 20)"
+            " 12 (34%)", " 12.3", "  4.34", " 14", "(10, 20)"
         ),
         `New Test Span2___tlang_delim___trt2` = c(
-            " 24 (58%)",
-            " 15.4    ",
-            "  8.25   ",
-            " 16      ",
-            "(11, 22) "
+            " 24 (58%)", " 15.4    ", "  8.25   ", " 16      ", "(11, 22) "
         ),
         four = c("      ", "<0.001", "      ", "  0.05", "      ")
     )
@@ -542,7 +559,11 @@ test_that("span_structure works on a renamed column", {
             tibble::as_tibble()
     })
 
-    expect_equal(dat_aligned, dat_aligned_man, ignore_attr = TRUE)
+    expect_equal(
+        dat_aligned,
+        dat_aligned_man,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("Overlapping col_style_structure favors last one", {
@@ -574,7 +595,10 @@ test_that("Overlapping col_style_structure favors last one", {
                 align = "right",
                 col = vars(starts_with("trt"))
             ),
-            col_style_structure(align = c(".", ",", " "), col = trt1)
+            col_style_structure(
+                align = c(".", ",", " "),
+                col = trt1
+            )
         )
     )
 
@@ -645,7 +669,10 @@ test_that("Align strings >1 in length", {
                     align = "right",
                     col = vars(starts_with("trt"))
                 ),
-                col_style_structure(align = c("...", ",,,,", " "), col = trt1)
+                col_style_structure(
+                    align = c("...", ",,,,", " "),
+                    col = trt1
+                )
             )
         )
     })
@@ -722,7 +749,10 @@ test_that("Alphanumeric align string supplied", {
                     align = "right",
                     col = vars(starts_with("trt"))
                 ),
-                col_style_structure(align = c("2", "4"), col = trt1)
+                col_style_structure(
+                    align = c("2", "4"),
+                    col = trt1
+                )
             )
         )
     })
@@ -909,7 +939,10 @@ test_that("multi-positional alignment", {
         "lbl4" , "     (10,   20)  " , "     (11,   22)  "
     )
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_equal(
+        dat_aligned,
+        dat_aligned_man
+    )
 })
 
 test_that("multi-positional alignment detects inadequate inputs", {
@@ -939,7 +972,9 @@ test_that("multi-positional alignment detects inadequate inputs", {
             values_from = val
         )
 
-    msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
+    msgs <- capture_messages(
+        apply_col_style_plan(dat_wide, tfrmt_obj)
+    )
 
     expect_equal(
         msgs,
@@ -975,7 +1010,9 @@ test_that("multi-positional alignment detects inadequate inputs", {
             values_from = val
         )
 
-    msgs <- capture_messages(apply_col_style_plan(dat_wide, tfrmt_obj))
+    msgs <- capture_messages(
+        apply_col_style_plan(dat_wide, tfrmt_obj)
+    )
 
     expect_equal(
         msgs,
@@ -1009,7 +1046,11 @@ test_that("helper for constructing positional alignment works", {
             frmt_structure(
                 group_val = ".default",
                 label_val = "lbl1",
-                frmt_combine("{n} ({pct}%)", n = frmt("x"), pct = frmt("xx"))
+                frmt_combine(
+                    "{n} ({pct}%)",
+                    n = frmt("x"),
+                    pct = frmt("xx")
+                )
             ),
             frmt_structure(
                 group_val = ".default",
@@ -1024,8 +1065,11 @@ test_that("helper for constructing positional alignment works", {
     )
 
     expect_equal(
-        display_val_frmts(tfrmt_obj, .data = dat, col = vars(everything())),
-        "c(\"xx (xx%)\",
-  \" xx (xx.x%)\")"
+        display_val_frmts(
+            tfrmt_obj,
+            .data = dat,
+            col = vars(everything())
+        ),
+        "c(\"xx (xx%)\", \" xx (xx.x%)\")"
     )
 })

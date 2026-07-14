@@ -57,7 +57,9 @@ test_that("json row group plans", {
                 group_val = c("B"),
                 element_block(post_space = " ")
             ),
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         )
     )
 
@@ -73,10 +75,17 @@ test_that("json row group plans", {
     rgp_named <- tfrmt(
         row_grp_plan = row_grp_plan(
             row_grp_structure(
-                group_val = list(grp1 = "A", grp2 = "b"),
-                element_block(post_space = " ")
+                group_val = list(
+                    grp1 = "A",
+                    grp2 = "b"
+                ),
+                element_block(
+                    post_space = " "
+                )
             ),
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
     rgp_named %>%
@@ -111,7 +120,10 @@ test_that("json body plan", {
     frmt2 <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = list(grp_col1 = "group1", grp_col2 = "subgroup"),
+                group_val = list(
+                    grp_col1 = "group1",
+                    grp_col2 = "subgroup"
+                ),
                 label_val = ".default",
                 test = frmt("XXX")
             )
@@ -315,8 +327,13 @@ test_that("json big n", {
 test_that("json footnote plan", {
     fn_simp <- tfrmt(
         footnote_plan = footnote_plan(
-            footnote_structure(footnote_text = "Source Note"),
-            footnote_structure(footnote_text = "Placebo", column_val = "PL"),
+            footnote_structure(
+                footnote_text = "Source Note"
+            ),
+            footnote_structure(
+                footnote_text = "Placebo",
+                column_val = "PL"
+            ),
             marks = "standard"
         )
     )
@@ -334,7 +351,9 @@ test_that("json footnote plan", {
         footnote_plan = footnote_plan(
             footnote_structure(
                 footnote_text = "All Treatments",
-                column_val = list(column = c("T1", "T2", "T1&T2"))
+                column_val = list(
+                    column = c("T1", "T2", "T1&T2")
+                )
             ),
             marks = "numbers"
         )
@@ -371,7 +390,10 @@ test_that("json footnote plan", {
         footnote_plan = footnote_plan(
             footnote_structure(
                 footnote_text = "Footnote goes here",
-                column_val = list(span = "Treatment", column = "T1&T2")
+                column_val = list(
+                    span = "Treatment",
+                    column = "T1&T2"
+                )
             )
         )
     )
@@ -409,7 +431,11 @@ test_that("json col_plan", {
         expect_equal(rename, ignore_attr = TRUE)
 
     #Basic tidyselect
-    base_ts <- tfrmt(col_plan = col_plan(starts_with('col')))
+    base_ts <- tfrmt(
+        col_plan = col_plan(
+            starts_with('col')
+        )
+    )
     base_ts %>%
         as_json() %>%
         expect_snapshot()
@@ -422,7 +448,11 @@ test_that("json col_plan", {
     #Basic span structure
     span <- tfrmt(
         column = c(span1, col),
-        col_plan = col_plan(span_structure(span1 = c("col 4")))
+        col_plan = col_plan(
+            span_structure(
+                span1 = c("col 4")
+            )
+        )
     )
 
     span %>%
@@ -440,8 +470,13 @@ test_that("json col_plan", {
         col_plan = col_plan(
             group,
             label,
-            span_structure(span1 = c("col 4")),
-            span_structure(span1 = c("cols 1,2"), my_col = c("col2", "col1")),
+            span_structure(
+                span1 = c("col 4")
+            ),
+            span_structure(
+                span1 = c("cols 1,2"),
+                my_col = c("col2", "col1")
+            ),
             span_structure(
                 span2 = "Top Label Level 1",
                 span1 = "Second Label Level 1.1",
@@ -479,15 +514,25 @@ test_that("json col_plan", {
 test_that("json col_style_plan", {
     csp <- tfrmt(
         col_style_plan = col_style_plan(
-            col_style_structure(align = "left", width = 100, col = "my_var"),
-            col_style_structure(align = "right", col = vars(four)),
+            col_style_structure(
+                align = "left",
+                width = 100,
+                col = "my_var"
+            ),
+            col_style_structure(
+                align = "right",
+                col = vars(four)
+            ),
             col_style_structure(
                 align = c(".", ",", " "),
                 col = vars(two, three)
             ),
             col_style_structure(
                 width = 25,
-                col = span_structure(span = value, col = val2)
+                col = span_structure(
+                    span = value,
+                    col = val2
+                )
             )
         )
     )
@@ -501,7 +546,11 @@ test_that("json col_style_plan", {
 
     csp_spaces <- tfrmt(
         col_style_plan = col_style_plan(
-            col_style_structure(align = "left", width = 100, col = "my var")
+            col_style_structure(
+                align = "left",
+                width = 100,
+                col = "my var"
+            )
         )
     )
     csp_spaces %>%
@@ -516,8 +565,13 @@ test_that("json col_style_plan", {
 test_that("json page plan", {
     pp <- tfrmt(
         page_plan = page_plan(
-            page_structure(group_val = ".default", label_val = NULL),
-            page_structure(label_val = "A"),
+            page_structure(
+                group_val = ".default",
+                label_val = NULL
+            ),
+            page_structure(
+                label_val = "A"
+            ),
             note_loc = "source_note"
         )
     )
@@ -742,7 +796,10 @@ test_that("json col_plan span_structure roundtrip with parentheses in column nam
         col_plan = col_plan(
             group1,
             label,
-            span_structure(span = "Placebo", column = c("n (%)", "evt")),
+            span_structure(
+                span = "Placebo",
+                column = c("n (%)", "evt")
+            ),
             span_structure(
                 span = "Xanomeline Low Dose",
                 column = c("n (%)", "evt")
@@ -751,7 +808,10 @@ test_that("json col_plan span_structure roundtrip with parentheses in column nam
                 span = "Xanomeline High Dose",
                 column = c("n (%)", "evt")
             ),
-            span_structure(span = "Total", column = c("n (%)", "evt")),
+            span_structure(
+                span = "Total",
+                column = c("n (%)", "evt")
+            ),
             .drop = TRUE
         )
     )

@@ -382,62 +382,32 @@ test_that("extract_data throws an error for invalid inputs", {
 })
 
 test_that("extract_data works for a table with bigN values", {
+    # fmt: skip
     data <- tibble::tibble(
         Group = c(
-            "N",
-            "N",
-            "N",
+            "N", "N", "N",
             rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12))
         ),
         Label = c(
-            "N",
-            "N",
-            "N",
+            "N", "N", "N",
             rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6))
         ),
         Column = c(
-            "Placebo",
-            "Treatment",
-            "Total",
+            "Placebo", "Treatment", "Total",
             rep(c("Placebo", "Treatment", "Total"), times = 8)
         ),
         Param = c(
-            "bigN",
-            "bigN",
-            "bigN",
+            "bigN", "bigN", "bigN",
             rep(
                 c("n", "mean", "sd", "n", "pct", "n", "pct"),
                 c(6, 3, 3, 3, 3, 3, 3)
             )
         ),
         Value = c(
-            30,
-            40,
-            60,
-            15,
-            13,
-            28,
-            14,
-            13,
-            27,
-            73.56,
-            74.231,
-            71.84,
-            9.347,
-            7.234,
-            8.293,
-            8,
-            7,
-            15,
-            8 / 14,
-            7 / 13,
-            15 / 27,
-            6,
-            6,
-            12,
-            6 / 14,
-            6 / 13,
-            12 / 27
+            30, 40, 60, 15, 13, 28, 14, 13, 27,
+            73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
+            8, 7, 15, 8 / 14, 7 / 13, 15 / 27,
+            6, 6, 12, 6 / 14, 6 / 13, 12 / 27
         )
     ) |>
         dplyr::mutate(
@@ -475,16 +445,27 @@ test_that("extract_data works for a table with bigN values", {
                     sd = frmt("x.xx")
                 )
             ),
-            frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
+            frmt_structure(
+                group_val = ".default",
+                label_val = "n",
+                frmt("xx")
+            )
         ),
-        col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+        col_plan = col_plan(
+            everything(),
+            -starts_with("ord"),
+            "Total"
+        ),
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
                 element_block(post_space = " ")
             )
         ),
-        big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
+        big_n = big_n_structure(
+            param_val = "bigN",
+            n_frmt = frmt("\nN = xx")
+        )
     ) |>
         print_to_gt(data)
 

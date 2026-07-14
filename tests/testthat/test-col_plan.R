@@ -57,7 +57,10 @@ test_that("Defining the col plan in tfrmt", {
     tfrmt_test <- tfrmt(
         column = vars(col1, col2),
         col_plan = col_plan(
-            span_structure(col1 = "test label", col2 = vars(col3))
+            span_structure(
+                col1 = "test label",
+                col2 = vars(col3)
+            )
         )
     )
 
@@ -69,7 +72,10 @@ test_that("Defining the col plan in tfrmt", {
             col_plan = col_plan(
                 group,
                 label,
-                span_structure(col1 = "test label", col2 = col3)
+                span_structure(
+                    col1 = "test label",
+                    col2 = col3
+                )
             )
         ),
         "No columns defined in the `column` argument of tfrmt but provided a span_structure() in `col_plan`.",
@@ -82,7 +88,10 @@ test_that("Defining the col plan in tfrmt", {
             col_plan = col_plan(
                 group,
                 label,
-                span_structure(col1 = "test label", col2 = col3)
+                span_structure(
+                    col1 = "test label",
+                    col2 = col3
+                )
             )
         ),
         "A single column defined in `column` argument of tfrmt but provided a span_structure() in `col_plan`.",
@@ -95,7 +104,10 @@ test_that("Defining the col plan in tfrmt", {
             col_plan = col_plan(
                 group,
                 label,
-                span_structure(col11 = "test label", col2 = col3)
+                span_structure(
+                    col11 = "test label",
+                    col2 = col3
+                )
             )
         ),
         "Columns defined in `span_structure` are not defined columns in the tfrmt\nColumn Values: `col1`, `col2`\nInvalid Column Names in Span Structure: `col11`",
@@ -108,23 +120,35 @@ test_that("Test applying a col_plan - simple", {
 
     cp_keep <- col_plan(
         first_col,
-        span_structure(col1 = c("test val"), col2 = c("val2", "val1"))
+        span_structure(
+            col1 = c("test val"),
+            col2 = c("val2", "val1")
+        )
     )
 
     cp_drop <- col_plan(
         first_col,
-        span_structure(col1 = "test val", col2 = c("val2", "val1")),
+        span_structure(
+            col1 = "test val",
+            col2 = c("val2", "val1")
+        ),
         .drop = TRUE
     )
 
     cp_subtraction <- col_plan(
         -first_col,
-        span_structure(col1 = c("test val"), col2 = c("val2", "val1"))
+        span_structure(
+            col1 = c("test val"),
+            col2 = c("val2", "val1")
+        )
     )
 
     cp_subtraction_span <- col_plan(
         -first_col,
-        span_structure(col1 = c("test val"), col2 = c(-val1))
+        span_structure(
+            col1 = c("test val"),
+            col2 = c(-val1)
+        )
     )
 
     name_col <- c(
@@ -790,7 +814,10 @@ test_that("Test applying a col_plan - ordering on multiple columns", {
             c2 = c(val2, val1)
         ),
         preserved_col,
-        span_structure(c1 = c(`another val`), c2 = c(val3)),
+        span_structure(
+            c1 = c(`another val`),
+            c2 = c(val3)
+        ),
         first_col,
         extra_col
     )
@@ -824,7 +851,10 @@ test_that("Unorthodox col_plans", {
 
     cp <- col_plan(
         val4,
-        span_structure(c1 = "test value", c2 = c(val1, val3)),
+        span_structure(
+            c1 = "test value",
+            c2 = c(val1, val3)
+        ),
         val2,
         val6,
         val3,
@@ -843,7 +873,11 @@ test_that("Unorthodox col_plans", {
     )
 
     expect_equal(
-        create_col_order(cp = cp, columns = col_vars, data_names = name_col),
+        create_col_order(
+            cp = cp,
+            columns = col_vars,
+            data_names = name_col
+        ),
         vars(
             val4,
             `test value___tlang_delim___val1`,
@@ -867,7 +901,11 @@ test_that("Unorthodox col_plans", {
     )
 
     expect_equal(
-        create_col_order(cp = cp2, columns = col_vars, data_names = name_col),
+        create_col_order(
+            cp = cp2,
+            columns = col_vars,
+            data_names = name_col
+        ),
         vars(
             val4,
             `test value___tlang_delim___val3`,
@@ -930,12 +968,17 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
             group,
             label,
             col4,
-            span_structure(test1 = `span 1`, test2 = c(col1, col2)),
+            span_structure(
+                test1 = `span 1`,
+                test2 = c(col1, col2)
+            ),
             col3,
             -col5
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
 
@@ -1006,7 +1049,9 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
             -col5
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
 
@@ -1080,7 +1125,9 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
             -col5
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
 
@@ -1183,7 +1230,9 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
             renamed_CC = CC
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
 
@@ -1296,7 +1345,9 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
             )
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
 
@@ -1395,7 +1446,9 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
             )
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         )
     )
 
@@ -1542,7 +1595,11 @@ test_that("Tidyselect subtraction with span_structure", {
             -starts_with("ord"),
             span_structure(
                 t_or_p = "Treatment",
-                column = c(T1 = trt1, T2 = trt2, `T1&T2` = `trt1&trt2`)
+                column = c(
+                    T1 = trt1,
+                    T2 = trt2,
+                    `T1&T2` = `trt1&trt2`
+                )
             ),
             span_structure(
                 t_or_p = "Placebo",
@@ -1588,7 +1645,11 @@ test_that("Tidyselect subtraction with span_structure", {
             col_plan = col_plan(
                 span_structure(
                     t_or_p = "Treatment",
-                    column = c(T1 = trt1, T2 = trt2, `T1&T2` = `trt1&trt2`)
+                    column = c(
+                        T1 = trt1,
+                        T2 = trt2,
+                        `T1&T2` = `trt1&trt2`
+                    )
                 ),
                 span_structure(
                     t_or_p = "Placebo",
@@ -1647,7 +1708,9 @@ test_that("Build simple tfrmt with stub header", {
             -col2
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "indented")
+            label_loc = element_row_grp_loc(
+                location = "indented"
+            )
         )
     )
 
@@ -1755,7 +1818,9 @@ test_that("Build simple tfrmt with stub header", {
             -col2
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         )
     )
 

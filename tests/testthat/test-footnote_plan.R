@@ -32,7 +32,9 @@ test_that("footnote structure", {
                 group_val = ".default",
                 element_block(post_space = " ")
             ),
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         ),
         footnote_plan = footnote_plan(
             footnote_structure(
@@ -76,7 +78,9 @@ test_that("footnote structure", {
                 group_val = ".default",
                 element_block(post_space = " ")
             ),
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         ),
         footnote_plan = footnote_plan(
             footnote_structure(
@@ -121,7 +125,9 @@ test_that("footnote structure", {
                     group_val = ".default",
                     element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(
@@ -166,12 +172,17 @@ test_that("footnote structure", {
                     group_val = ".default",
                     element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(
                     "Test footnote 2",
-                    column_val = list("Treatment column", trt = "Placebo")
+                    column_val = list(
+                        "Treatment column",
+                        trt = "Placebo"
+                    )
                 ),
                 marks = "letters"
             )
@@ -211,7 +222,9 @@ test_that("footnote structure", {
                     group_val = ".default",
                     element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(
@@ -256,12 +269,17 @@ test_that("footnote structure", {
                     group_val = ".default",
                     element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(
                     "Test footnote 2",
-                    group_val = c("Group", rowlbl1 = "Completion Status")
+                    group_val = c(
+                        "Group",
+                        rowlbl1 = "Completion Status"
+                    )
                 ),
                 marks = "letters"
             )
