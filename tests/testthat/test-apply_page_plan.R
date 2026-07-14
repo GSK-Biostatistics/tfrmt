@@ -1326,40 +1326,40 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
 })
 
 test_that("Page plan with max_rows and spanning label_loc", {
-  df <- tibble::tribble(
-    ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
-    "AA"  , "A"   , "a"  , "n"  ,   22 ,
-    "AA"  , "A"   , "b"  , "n"  ,   11 ,
-    "AA"  , "B"   , "a"  , "n"  ,   24 ,
-    "BB"  , "B"   , "b"  , "n"  ,   55 ,
-    "BB"  , "C"   , "a"  , "n"  ,   12 ,
-    "BB"  , "C"   , "b"  , "n"  ,   19 ,
-  ) %>%
-    pivot_longer(trt, names_to = "column", values_to = "value")
-  mytfrmt <- tfrmt(
-    group = c("grp1", "grp2"),
-    label = "lbl",
-    param = "prm",
-    column = "column",
-    value = "value",
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        frmt("xx")
-      )
-    ),
-    row_grp_plan = row_grp_plan(
-      label_loc = element_row_grp_loc(
-        location = "spanning"
-      )
-    ),
-    page_plan = page_plan(max_rows = 4)
-  )
-  result <- apply_tfrmt(df, mytfrmt)
-  # Should produce a split list (spanning with 2 groups adds rows for group labels)
-  expect_true(is.list(result))
-  expect_true(length(result) > 1)
+    df <- tibble::tribble(
+        ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
+        "AA"  , "A"   , "a"  , "n"  ,   22 ,
+        "AA"  , "A"   , "b"  , "n"  ,   11 ,
+        "AA"  , "B"   , "a"  , "n"  ,   24 ,
+        "BB"  , "B"   , "b"  , "n"  ,   55 ,
+        "BB"  , "C"   , "a"  , "n"  ,   12 ,
+        "BB"  , "C"   , "b"  , "n"  ,   19 ,
+    ) %>%
+        pivot_longer(trt, names_to = "column", values_to = "value")
+    mytfrmt <- tfrmt(
+        group = c("grp1", "grp2"),
+        label = "lbl",
+        param = "prm",
+        column = "column",
+        value = "value",
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
+        row_grp_plan = row_grp_plan(
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
+        ),
+        page_plan = page_plan(max_rows = 4)
+    )
+    result <- apply_tfrmt(df, mytfrmt)
+    # Should produce a split list (spanning with 2 groups adds rows for group labels)
+    expect_true(is.list(result))
+    expect_true(length(result) > 1)
 })
 
 test_that("Page plan with max_rows too small for group labels returns early with message", {
