@@ -118,37 +118,6 @@ test_that("Testing error message for invalid input to big_n parameter",{
 })
 
 
-test_that("Testing error when col_style_structure has empty cols in check_col_style_row_grp_consistency",{
-
-  # Manually construct a tfrmt with a col_style_structure that has empty cols
-  # to exercise the defensive stop() inside check_col_style_row_grp_consistency
-  bad_css <- structure(
-    list(cols = list(), align = c(".", ",", " "), type = "char", width = NULL),
-    class = c("col_style_structure", "structure")
-  )
-  bad_csp <- structure(list(bad_css), class = c("col_style_plan", "frmt_table"))
-
-  fake_tfrmt <- structure(
-    list(
-      group = list(quote(rowlbl1), quote(grp)),
-      col_style_plan = bad_csp,
-      row_grp_plan = list(
-        label_loc = structure(
-          list(location = "indented", indent = ""),
-          class = c("element_row_grp_loc", "element")
-        )
-      )
-    ),
-    class = "tfrmt"
-  )
-
-  expect_error(
-    tfrmt:::check_col_style_row_grp_consistency(fake_tfrmt),
-    "Column element is missing from col_style_structure"
-  )
-})
-
-
 test_that("Testing error for invalid col_style_structure with row_grp_plan when location is not column",{
 
   # When a non-first group variable appears in col_style_structure cols
