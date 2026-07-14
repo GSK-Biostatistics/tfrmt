@@ -23,20 +23,23 @@
 #'
 #' @export
 #'
-col_style_plan <- function(...){
+col_style_plan <- function(...) {
+    structure_list <- list(...)
 
-  structure_list <- list(...)
-
-  for(el_idx in seq_along(structure_list)){
-    if(!is_col_style_structure(structure_list[[el_idx]])){
-      stop(paste0("Entry number ",el_idx," is not an object of class `col_style_structure`."))
+    for (el_idx in seq_along(structure_list)) {
+        if (!is_col_style_structure(structure_list[[el_idx]])) {
+            stop(paste0(
+                "Entry number ",
+                el_idx,
+                " is not an object of class `col_style_structure`."
+            ))
+        }
     }
-  }
 
-  structure(
-    structure_list,
-    class = c("col_style_plan", "frmt_table")
-  )
+    structure(
+        structure_list,
+        class = c("col_style_plan", "frmt_table")
+    )
 }
 
 
@@ -90,73 +93,89 @@ col_style_plan <- function(...){
 #'    )
 #'
 #' @rdname theme_element
-col_style_structure <- function(col, align = NULL, type = c("char", "pos"), width = NULL, ...){
+col_style_structure <- function(
+    col,
+    align = NULL,
+    type = c("char", "pos"),
+    width = NULL,
+    ...
+) {
+    check_dots_empty0(...)
 
-  check_dots_empty0(...)
+    type <- match.arg(type)
 
-  type <- match.arg(type)
+    if (missing(col)) {
+        abort(
+            "Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself",
+            class = "missing_col_style_structure_value"
+        )
+    }
 
-  if(missing(col)){
-    abort(
-      "Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself",
-      class = "missing_col_style_structure_value"
+    cols <- as.list(substitute(substitute(col)))[-1] %>%
+        map(trim_vars_quo_c) %>%
+        do.call('c', .) %>%
+        check_col_plan_dots()
+
+    if (is.null(width) & is.null(align)) {
+        abort(
+            "`align` or `width` must be applied to create this col_style_structure",
+            class = "missing_col_style_structure_value"
+        )
+    }
+
+    if (!is.null(align)) {
+        if (type == "char") {
+            if (!is.character(align) & length(align) > 0) {
+                abort(
+                    "`align` must be a character vector",
+                    class = "invalid_col_style_structure_value"
+                )
+            }
+
+            if (!all(align %in% c("left", "right"))) {
+                if (!all(nchar(align) == 1)) {
+                    message(
+                        "Alignment specified contains strings with >1 characters. Only the first character will be used."
+                    )
+                    align <- str_sub(align, start = 1, end = 1)
+                }
+
+                if (any(str_detect(align, "[[:alnum:]]"))) {
+                    message(
+                        "Alignment specified contains one or more alphanumeric characters. Results may not be as expected."
+                    )
+                }
+            }
+        }
+    }
+
+    if (!is.null(width)) {
+        if (is.character(width)) {
+            suppressWarnings(width <- as.numeric(width))
+            if (is.na(width)) {
+                abort(
+                    "`width` must be a value that can be converted into a number greater than 0",
+                    class = "invalid_col_style_structure_value"
+                )
+            }
+        }
+        if (any(!is.numeric(width), width < 1, length(width) > 1)) {
+            abort(
+                "`width` must be a valid number greater than 0",
+                class = "invalid_col_style_structure_value"
+            )
+        }
+    }
+
+    structure(
+        list(
+            cols = cols,
+            align = align,
+            type = type,
+            width = width
+        ),
+        class = c("col_style_structure", "structure")
     )
-  }
-
-  cols <- as.list(substitute(substitute(col)))[-1] %>%
-    map(trim_vars_quo_c) %>%
-    do.call('c',.) %>%
-    check_col_plan_dots()
-
-  if(is.null(width) & is.null(align)){
-    abort("`align` or `width` must be applied to create this col_style_structure",
-          class = "missing_col_style_structure_value")
-  }
-
-  if(!is.null(align)){
-
-    if (type=="char"){
-      if(!is.character(align) & length(align) > 0){
-        abort("`align` must be a character vector", class = "invalid_col_style_structure_value")
-      }
-
-      if(!all(align %in% c("left","right"))){
-
-        if (!all(nchar(align)==1)){
-          message( "Alignment specified contains strings with >1 characters. Only the first character will be used.")
-          align <- str_sub(align, start=1, end=1)
-        }
-
-        if (any(str_detect(align, "[[:alnum:]]"))){
-          message( "Alignment specified contains one or more alphanumeric characters. Results may not be as expected.")
-        }
-      }
-    }
-
-  }
-
-  if(!is.null(width)){
-    if(is.character(width)){
-      suppressWarnings(width <- as.numeric(width))
-      if(is.na(width)){
-        abort("`width` must be a value that can be converted into a number greater than 0", class = "invalid_col_style_structure_value")
-      }
-    }
-    if(any(!is.numeric(width),width < 1, length(width) > 1)){
-      abort("`width` must be a valid number greater than 0", class = "invalid_col_style_structure_value")
-    }
-  }
-
-
-  structure(
-    list(
-      cols = cols,
-      align = align,
-      type = type,
-      width = width
-    ),
-    class = c("col_style_structure", "structure")
-  )
 }
 
 
@@ -165,8 +184,6 @@ col_style_structure <- function(col, align = NULL, type = c("char", "pos"), widt
 #' @param x Object to check
 #'
 #' @noRd
-is_col_style_structure <- function(x){
-  inherits(x, "col_style_structure")
+is_col_style_structure <- function(x) {
+    inherits(x, "col_style_structure")
 }
-
-
