@@ -117,3 +117,72 @@ test_that("Testing error message for invalid input to big_n parameter",{
   )
 })
 
+test_that("tfrmt() messages when required variables are missing", {
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      label = rowlbl2,
+      column = column,
+      value = value,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*param"
+  )
+
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      label = rowlbl2,
+      param = param,
+      value = value,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*column"
+  )
+
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      label = rowlbl2,
+      column = column,
+      param = param,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*value"
+  )
+
+  expect_message(
+    tfrmt(
+      group = rowlbl1,
+      column = column,
+      param = param,
+      value = value,
+      body_plan = body_plan(
+        frmt_structure(
+          group_val = ".default",
+          label_val = ".default",
+          frmt("")
+        )
+      )
+    ),
+    "No value was supplied to.*label"
+  )
+})

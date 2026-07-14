@@ -205,6 +205,12 @@ tfrmt <- function(
   check_plan(new_tfrmt, "footnote_plan")
   check_plan(new_tfrmt, "page_plan")
 
+  # check required input variables are supplied
+  check_input(new_tfrmt, "label")
+  check_input(new_tfrmt, "column")
+  check_input(new_tfrmt, "param")
+  check_input(new_tfrmt, "value")
+
   # check non-null big_n is supplied a big_n_structure
   check_big_n(new_tfrmt)
 
