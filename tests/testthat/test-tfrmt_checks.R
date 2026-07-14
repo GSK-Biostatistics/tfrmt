@@ -116,3 +116,4 @@ test_that("Testing error message for invalid input to big_n parameter",{
     fixed=TRUE
   )
 })
+
