@@ -143,6 +143,13 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
   if(!is.data.frame(.data)){
     stop("Requires data, if not available please use `print_mock_gt()`")
   }
+
+  # check required input variables are supplied
+  check_input(tfrmt, "label")
+  check_input(tfrmt, "column")
+  check_input(tfrmt, "param")
+  check_input(tfrmt, "value")
+
   apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
     cleaned_data_to_gt(tfrmt, .unicode_ws)
 

@@ -194,72 +194,42 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
   )
 })
 
-test_that("tfrmt() messages when required variables are missing", {
-  expect_message(
-    tfrmt(
-      group = rowlbl1,
-      label = rowlbl2,
-      column = column,
-      value = value,
-      body_plan = body_plan(
-        frmt_structure(
-          group_val = ".default",
-          label_val = ".default",
-          frmt("")
-        )
+test_that("print_to_gt() messages when required variables are missing", {
+  tfrmt_no_param <- tfrmt(
+    group = rowlbl1,
+    label = rowlbl2,
+    column = column,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("")
       )
-    ),
+    )
+  )
+
+  expect_message(
+    print_to_gt(tfrmt_no_param, data_demog),
     "No value was supplied to.*param"
   )
 
-  expect_message(
-    tfrmt(
-      group = rowlbl1,
-      label = rowlbl2,
-      param = param,
-      value = value,
-      body_plan = body_plan(
-        frmt_structure(
-          group_val = ".default",
-          label_val = ".default",
-          frmt("")
-        )
+  tfrmt_no_label <- tfrmt(
+    group = rowlbl1,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("")
       )
-    ),
-    "No value was supplied to.*column"
+    )
   )
 
   expect_message(
-    tfrmt(
-      group = rowlbl1,
-      label = rowlbl2,
-      column = column,
-      param = param,
-      body_plan = body_plan(
-        frmt_structure(
-          group_val = ".default",
-          label_val = ".default",
-          frmt("")
-        )
-      )
-    ),
-    "No value was supplied to.*value"
-  )
-
-  expect_message(
-    tfrmt(
-      group = rowlbl1,
-      column = column,
-      param = param,
-      value = value,
-      body_plan = body_plan(
-        frmt_structure(
-          group_val = ".default",
-          label_val = ".default",
-          frmt("")
-        )
-      )
-    ),
+    print_to_gt(tfrmt_no_label, data_demog),
     "No value was supplied to.*label"
   )
 })
