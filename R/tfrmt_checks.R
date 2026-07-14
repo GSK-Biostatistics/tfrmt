@@ -363,26 +363,25 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
 #' @noRd
 #' @importFrom rlang quo_is_missing is_empty caller_env
 check_inputs <- function(tfrmt_object, var_names, parent_env = caller_env()) {
-  missing_vars <- character(0)
-  for (var_name in var_names) {
-    var_val <- tfrmt_object[[var_name]]
-    is_missing <- if (var_name == "column") {
-      is_empty(var_val)
-    } else {
-      quo_is_missing(var_val)
+    missing_vars <- character(0)
+    for (var_name in var_names) {
+        var_val <- tfrmt_object[[var_name]]
+        is_missing <- if (var_name == "column") {
+            is_empty(var_val)
+        } else {
+            quo_is_missing(var_val)
+        }
+        if (is_missing) {
+            missing_vars <- c(missing_vars, var_name)
+        }
     }
-    if (is_missing) {
-      missing_vars <- c(missing_vars, var_name)
+    if (length(missing_vars) > 0) {
+        cli::cli_abort(
+            c(
+                "No value{?s} supplied to {.arg {missing_vars}} in {.fun tfrmt}.",
+                "i" = "Please supply {.arg {missing_vars}} column{?s}."
+            ),
+            call = parent_env
+        )
     }
-  }
-  if (length(missing_vars) > 0) {
-    cli::cli_abort(
-      c(
-        "No value{?s} supplied to {.arg {missing_vars}} in {.fun tfrmt}.",
-        "i" = "Please supply {.arg {missing_vars}} column{?s}."
-      ),
-      call = parent_env
-    )
-  }
 }
-

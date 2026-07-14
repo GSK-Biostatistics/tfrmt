@@ -195,57 +195,62 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
 })
 
 test_that("print_to_gt() errors when required variables are missing", {
-
-  tfrmt_no_param <- tfrmt(
-    group = rowlbl1,
-    label = rowlbl2,
-    column = column,
-    value = value,
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt(""))
-    )
-  )
-
-  expect_error(
-    print_to_gt(tfrmt_no_param, data_demog),
-    "No value supplied to `param` in `tfrmt()"
+    tfrmt_no_param <- tfrmt(
+        group = rowlbl1,
+        label = rowlbl2,
+        column = column,
+        value = value,
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("")
+            )
+        )
     )
 
-  tfrmt_no_column <- tfrmt(
-    group = rowlbl1,
-    label = rowlbl2,
-    value = value,
-    param = param,
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default", label_val = ".default", frmt(""))
-    )
-  )
-
-  expect_error(
-    print_to_gt(tfrmt_no_column, data_demog),
-    "No value supplied to `column` in `tfrmt()"
-  )
-
-
-  # multiple missing variables reported together
-  tfrmt_missing_many <- tfrmt(
-    group = rowlbl1,
-    label = rowlbl2,
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        frmt(""))
-    )
-  )
-
-  expect_error(
-    print_to_gt(tfrmt_missing_many, data_demog),
-    "No values supplied to `column`, `param`, and `value` in `tfrmt()`.",
-    fixed = TRUE
+    expect_error(
+        print_to_gt(tfrmt_no_param, data_demog),
+        "No value supplied to `param` in `tfrmt()"
     )
 
+    tfrmt_no_column <- tfrmt(
+        group = rowlbl1,
+        label = rowlbl2,
+        value = value,
+        param = param,
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("")
+            )
+        )
+    )
 
+    expect_error(
+        print_to_gt(tfrmt_no_column, data_demog),
+        "No value supplied to `column` in `tfrmt()"
+    )
+
+    # multiple missing variables reported together
+    tfrmt_missing_many <- tfrmt(
+        group = rowlbl1,
+        label = rowlbl2,
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("")
+            )
+        )
+    )
+
+    expect_error(
+        print_to_gt(tfrmt_missing_many, data_demog),
+        "No values supplied to `column`, `param`, and `value` in `tfrmt()`.",
+        fixed = TRUE
+    )
 })
 
 test_that("print_mock_gt() messages when tfrmt$column is missing", {

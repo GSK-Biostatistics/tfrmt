@@ -151,20 +151,20 @@ print_mock_gt <- function(
 #' }}
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
-print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE){
-  if(!is_tfrmt(tfrmt)){
-    stop("Requires a tfrmt object")
-  }
+print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
+    if (!is_tfrmt(tfrmt)) {
+        stop("Requires a tfrmt object")
+    }
 
-  if(!is.data.frame(.data)){
-    stop("Requires data, if not available please use `print_mock_gt()`")
-  }
+    if (!is.data.frame(.data)) {
+        stop("Requires data, if not available please use `print_mock_gt()`")
+    }
 
-  # check required input variables are supplied
-  check_inputs(tfrmt, c("column", "param", "value"))
+    # check required input variables are supplied
+    check_inputs(tfrmt, c("column", "param", "value"))
 
-  apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
-    cleaned_data_to_gt(tfrmt, .unicode_ws)
+    apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
+        cleaned_data_to_gt(tfrmt, .unicode_ws)
 
     if (!is.data.frame(.data)) {
         stop("Requires data, if not available please use `print_mock_gt()`")
