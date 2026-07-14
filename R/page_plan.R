@@ -56,26 +56,26 @@
 #'  )
 #'
 page_plan <- function(
-  ...,
-  note_loc = c("noprint", "preheader", "subtitle", "source_note"),
-  max_rows = NULL,
-  transform = NULL
+    ...,
+    note_loc = c("noprint", "preheader", "subtitle", "source_note"),
+    max_rows = NULL,
+    transform = NULL
 ) {
-  page_structure_list <- list(...)
-  note_loc <- match.arg(note_loc)
+    page_structure_list <- list(...)
+    note_loc <- match.arg(note_loc)
 
-  structure(
-    list(
-      struct_list = page_structure_list,
-      note_loc = note_loc,
-      max_rows = max_rows,
-      transform = transform
-    ),
-    class = c(
-      "page_plan",
-      "plan"
+    structure(
+        list(
+            struct_list = page_structure_list,
+            note_loc = note_loc,
+            max_rows = max_rows,
+            transform = transform
+        ),
+        class = c(
+            "page_plan",
+            "plan"
+        )
     )
-  )
 }
 
 #' Page structure
@@ -96,33 +96,34 @@ page_plan <- function(
 #'
 #'  # split page after specific levels
 #'  page_structure(group_val = "grp1", label_val = "lbl3")
-page_structure <- function(group_val = NULL, label_val = NULL){
-
-
-  if(length(group_val)>1 && is.list(group_val)==FALSE && !is.null(names(group_val))){
-    group_val <- as.list(group_val)
-  }else if(length(group_val)==1 && !is.null(names(group_val))){
-    group_val<-as.list(group_val)
-  }
-
-
-  if(is.list(group_val)){
-    group_val_names <- names(group_val)
-    if(is.null(group_val_names)){
-      stop("when group_val is a list, must be a named list")
-    }else if(any(group_val_names == "")){
-      stop("when group_val is a list, each entry must be named")
+page_structure <- function(group_val = NULL, label_val = NULL) {
+    if (
+        length(group_val) > 1 &&
+            is.list(group_val) == FALSE &&
+            !is.null(names(group_val))
+    ) {
+        group_val <- as.list(group_val)
+    } else if (length(group_val) == 1 && !is.null(names(group_val))) {
+        group_val <- as.list(group_val)
     }
-  }
 
-  structure(
-    list(
-      group_val = group_val,
-      label_val = label_val
-    ),
-    class = c(
-      "page_structure",
-      "structure"
+    if (is.list(group_val)) {
+        group_val_names <- names(group_val)
+        if (is.null(group_val_names)) {
+            stop("when group_val is a list, must be a named list")
+        } else if (any(group_val_names == "")) {
+            stop("when group_val is a list, each entry must be named")
+        }
+    }
+
+    structure(
+        list(
+            group_val = group_val,
+            label_val = label_val
+        ),
+        class = c(
+            "page_structure",
+            "structure"
+        )
     )
-  )
 }

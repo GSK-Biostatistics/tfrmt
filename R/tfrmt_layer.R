@@ -30,89 +30,100 @@
 #'
 #' layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 #'
-layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE){
-
-  if(missing(x)){
-    stopifnot(is_tfrmt(y))
-    return(y)
-  }else if(missing(y)){
-    stopifnot(is_tfrmt(x))
-    return(x)
-  }
-
-  stopifnot(is_tfrmt(y))
-  stopifnot(is_tfrmt(x))
-
-  args <- union(names(x), names(y))
-
-  arg_list <- lapply(args, function(argname, x, y, ..., join_body_plans){
-    func <- get_layer_tfrmt_arg_method(argname)
-    func(x, y, argname, ..., join_body_plans = join_body_plans)
-  },x=x, y = y, ..., join_body_plans = join_body_plans)
-
-  names(arg_list) <- args
-
-  ## remove null values that may have made it through
-  arg_list <- arg_list[!sapply(arg_list, is.null)]
-
-  tfrmt_call <- as.call(c(as.name("tfrmt"), arg_list))
-
-  tryCatch(
-    eval(tfrmt_call),
-    error = function(e){
-      if(inherits(e, "_tfrmt_mismatched_group_vals")){
-        e <- append_update_group_message(e, x, y)
-      }
-      abort(
-        e$message,
-        call = e$call,
-        trace = e$trace
-      )
+layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
+    if (missing(x)) {
+        stopifnot(is_tfrmt(y))
+        return(y)
+    } else if (missing(y)) {
+        stopifnot(is_tfrmt(x))
+        return(x)
     }
-  )
 
+    stopifnot(is_tfrmt(y))
+    stopifnot(is_tfrmt(x))
+
+    args <- union(names(x), names(y))
+
+    arg_list <- lapply(
+        args,
+        function(argname, x, y, ..., join_body_plans) {
+            func <- get_layer_tfrmt_arg_method(argname)
+            func(x, y, argname, ..., join_body_plans = join_body_plans)
+        },
+        x = x,
+        y = y,
+        ...,
+        join_body_plans = join_body_plans
+    )
+
+    names(arg_list) <- args
+
+    ## remove null values that may have made it through
+    arg_list <- arg_list[!sapply(arg_list, is.null)]
+
+    tfrmt_call <- as.call(c(as.name("tfrmt"), arg_list))
+
+    tryCatch(
+        eval(tfrmt_call),
+        error = function(e) {
+            if (inherits(e, "_tfrmt_mismatched_group_vals")) {
+                e <- append_update_group_message(e, x, y)
+            }
+            abort(
+                e$message,
+                call = e$call,
+                trace = e$trace
+            )
+        }
+    )
 }
 
-get_layer_tfrmt_arg_method <- function(argname){
-  tryCatch(
-    get(paste0("layer_tfrmt_arg.",argname),envir = asNamespace("tfrmt"), inherits = FALSE),
-    error = function(e){ layer_tfrmt_arg.default}
-  )
+get_layer_tfrmt_arg_method <- function(argname) {
+    tryCatch(
+        get(
+            paste0("layer_tfrmt_arg.", argname),
+            envir = asNamespace("tfrmt"),
+            inherits = FALSE
+        ),
+        error = function(e) {
+            layer_tfrmt_arg.default
+        }
+    )
 }
 
-layer_tfrmt_arg.default<- function(x, y, arg_name, ...){
-  x_arg_val <- x[[arg_name]]
-  y_arg_val <- y[[arg_name]]
+layer_tfrmt_arg.default <- function(x, y, arg_name, ...) {
+    x_arg_val <- x[[arg_name]]
+    y_arg_val <- y[[arg_name]]
 
-  if(is.null(y_arg_val)){
-    x_arg_val
-  }else{
-    y_arg_val
-  }
+    if (is.null(y_arg_val)) {
+        x_arg_val
+    } else {
+        y_arg_val
+    }
 }
 
 ## if group is an empty vars, keep the original value
-layer_tfrmt_arg_vars<- function(x, y, arg_name, ...){
-  x_arg_val <- x[[arg_name]]
-  y_arg_val <- y[[arg_name]]
+layer_tfrmt_arg_vars <- function(x, y, arg_name, ...) {
+    x_arg_val <- x[[arg_name]]
+    y_arg_val <- y[[arg_name]]
 
-  if(is.null(y_arg_val) | identical(y_arg_val, vars())){
-    x_arg_val
-  }else{
-    y_arg_val
-  }
+    if (is.null(y_arg_val) | identical(y_arg_val, vars())) {
+        x_arg_val
+    } else {
+        y_arg_val
+    }
 }
 
 ## if label/param/value/column is an empty quo, keep the original value
-layer_tfrmt_arg_quo<- function(x, y, arg_name, ...){
-  x_arg_val <- x[[arg_name]]
-  y_arg_val <- y[[arg_name]]
+layer_tfrmt_arg_quo <- function(x, y, arg_name, ...) {
+    x_arg_val <- x[[arg_name]]
+    y_arg_val <- y[[arg_name]]
 
-  if(is.null(y_arg_val) | identical(y_arg_val, quo())){
-    x_arg_val
-  }else{
-    y_arg_val
-  }
+    if (is.null(y_arg_val) | identical(y_arg_val, quo())) {
+        x_arg_val
+    } else {
+        y_arg_val
+    }
 }
 
 layer_tfrmt_arg.group <- layer_tfrmt_arg_vars
@@ -123,19 +134,18 @@ layer_tfrmt_arg.column <- layer_tfrmt_arg_vars
 layer_tfrmt_arg.sorting_cols <- layer_tfrmt_arg_vars
 
 
-layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
-  x_body_plan <- x[["body_plan"]]
-  y_body_plan <- y[["body_plan"]]
+layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
+    x_body_plan <- x[["body_plan"]]
+    y_body_plan <- y[["body_plan"]]
 
-  if(join_body_plans){
-    body_plan_el <- unique(c(x_body_plan, y_body_plan))
-  }else{
-    body_plan_el <- y_body_plan
-  }
+    if (join_body_plans) {
+        body_plan_el <- unique(c(x_body_plan, y_body_plan))
+    } else {
+        body_plan_el <- y_body_plan
+    }
 
-  do.call(body_plan,body_plan_el)
+    do.call(body_plan, body_plan_el)
 }
-
 
 
 #' Remap group values in a tfrmt
@@ -170,113 +180,131 @@ layer_tfrmt_arg.body_plan <- function(x, y, ...,  join_body_plans = TRUE){
 #' tfrmt_spec %>%
 #'   update_group(New_Group = group1)
 #'
-update_group <- function(tfrmt, ...){
+update_group <- function(tfrmt, ...) {
+    dots <- as.list(substitute(substitute(...)))[-1]
 
-  dots <- as.list(substitute(substitute(...)))[-1]
+    old_groups <- do.call(vars, unname(dots))
+    new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
 
-  old_groups <- do.call(vars, unname(dots))
-  new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
+    if (!is_empty(tfrmt$group)) {
+        var_list <- sapply(tfrmt$group, function(x) {
+            x_lab <- as_label(x)
+            if (x_lab %in% names(new_group_map)) {
+                new_group_map[[x_lab]]
+            } else {
+                x_lab
+            }
+        })
 
+        tfrmt$group <- as_vars(var_list)
+    } else {
+        stop("No group values defined in input tfrmt.")
+    }
 
-  if(!is_empty(tfrmt$group)){
+    ## Update body_plan
+    if (!is.null(tfrmt$body_plan)) {
+        tfrmt$body_plan <- update_groups_body_plan(
+            tfrmt$body_plan,
+            new_group_map
+        )
+    }
 
-    var_list <- sapply(tfrmt$group, function(x){
-      x_lab <- as_label(x)
-      if(x_lab %in% names(new_group_map)){
-        new_group_map[[x_lab]]
-      }else{
-        x_lab
-      }
-    })
+    ## Update row_grp_plan
+    if (!is.null(tfrmt$row_grp_plan)) {
+        tfrmt$row_grp_plan <- update_groups_row_grp_plan(
+            tfrmt$row_grp_plan,
+            new_group_map
+        )
+    }
 
-    tfrmt$group <- as_vars(var_list)
+    ## update footnote_plan
+    if (!is.null(tfrmt$footnote_plan)) {
+        tfrmt$footnote_plan <- update_groups_footnote_plan(
+            tfrmt$footnote_plan,
+            new_group_map
+        )
+    }
 
-  }else{
-    stop("No group values defined in input tfrmt.")
-  }
+    check_group_var_consistency(tfrmt)
 
-  ## Update body_plan
-  if(!is.null(tfrmt$body_plan)){
-    tfrmt$body_plan <- update_groups_body_plan(tfrmt$body_plan, new_group_map)
-  }
-
-  ## Update row_grp_plan
-  if(!is.null(tfrmt$row_grp_plan)){
-    tfrmt$row_grp_plan <- update_groups_row_grp_plan(tfrmt$row_grp_plan, new_group_map)
-  }
-
-  ## update footnote_plan
-  if(!is.null(tfrmt$footnote_plan)){
-    tfrmt$footnote_plan <- update_groups_footnote_plan(tfrmt$footnote_plan, new_group_map)
-  }
-
-  check_group_var_consistency(tfrmt)
-
-  tfrmt
-
+    tfrmt
 }
 
-update_groups_body_plan <- function(tfrmt_body_plan, new_group_map){
-    bp_list <- lapply(tfrmt_body_plan, function(struct){
-      if(is.list(struct$group_val)){
-        struct_groups <- names(struct$group_val)
-        for(struct_group_idx in seq_along(struct_groups)){
-          if(struct_groups[struct_group_idx] %in% names(new_group_map)){
-            names(struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
-          }
+update_groups_body_plan <- function(tfrmt_body_plan, new_group_map) {
+    bp_list <- lapply(tfrmt_body_plan, function(struct) {
+        if (is.list(struct$group_val)) {
+            struct_groups <- names(struct$group_val)
+            for (struct_group_idx in seq_along(struct_groups)) {
+                if (struct_groups[struct_group_idx] %in% names(new_group_map)) {
+                    names(struct$group_val)[
+                        struct_group_idx
+                    ] <- new_group_map[struct_groups[struct_group_idx]]
+                }
+            }
         }
-      }
-      struct
+        struct
     })
     do.call("body_plan", bp_list)
 }
 
-update_groups_row_grp_plan <- function(tfrmt_row_grp_plan, new_group_map){
-    row_grp_structs <- lapply(tfrmt_row_grp_plan$struct_list, function(struct){
-      if(is.list(struct$group_val)){
-        struct_groups <- names(struct$group_val)
-        for(struct_group_idx in seq_along(struct_groups)){
-          if(struct_groups[struct_group_idx] %in% names(new_group_map)){
-            names(struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
-          }
+update_groups_row_grp_plan <- function(tfrmt_row_grp_plan, new_group_map) {
+    row_grp_structs <- lapply(tfrmt_row_grp_plan$struct_list, function(struct) {
+        if (is.list(struct$group_val)) {
+            struct_groups <- names(struct$group_val)
+            for (struct_group_idx in seq_along(struct_groups)) {
+                if (struct_groups[struct_group_idx] %in% names(new_group_map)) {
+                    names(struct$group_val)[
+                        struct_group_idx
+                    ] <- new_group_map[struct_groups[struct_group_idx]]
+                }
+            }
         }
-      }
-      struct
+        struct
     })
     do.call("row_grp_plan", c(row_grp_structs, tfrmt_row_grp_plan["label_loc"]))
 }
 
-update_groups_footnote_plan <- function(tfrmt_footnote_plan, new_group_map){
-  footnote_structs <- lapply(tfrmt_footnote_plan$struct_list, function(struct){
-    if(is.list(struct$group_val)){
-      struct_groups <- names(struct$group_val)
-      for(struct_group_idx in seq_along(struct_groups)){
-        if(struct_groups[struct_group_idx] %in% names(new_group_map)){
-          names(struct$group_val)[struct_group_idx] <- new_group_map[struct_groups[struct_group_idx]]
+update_groups_footnote_plan <- function(tfrmt_footnote_plan, new_group_map) {
+    footnote_structs <- lapply(
+        tfrmt_footnote_plan$struct_list,
+        function(struct) {
+            if (is.list(struct$group_val)) {
+                struct_groups <- names(struct$group_val)
+                for (struct_group_idx in seq_along(struct_groups)) {
+                    if (
+                        struct_groups[struct_group_idx] %in%
+                            names(new_group_map)
+                    ) {
+                        names(struct$group_val)[
+                            struct_group_idx
+                        ] <- new_group_map[struct_groups[struct_group_idx]]
+                    }
+                }
+            }
+            struct
         }
-      }
-    }
-    struct
-  })
-  do.call("footnote_plan", c(footnote_structs, tfrmt_footnote_plan["marks"]))
+    )
+    do.call("footnote_plan", c(footnote_structs, tfrmt_footnote_plan["marks"]))
 }
 
-append_update_group_message <- function(e, x, y){
+append_update_group_message <- function(e, x, y) {
+    x_grp <- map_chr(x$group, as_label)
+    y_grp <- map_chr(y$group, as_label)
 
-  x_grp <- map_chr(x$group, as_label)
-  y_grp <- map_chr(y$group, as_label)
+    if (!is_empty(y_grp) && !is_empty(x_grp)) {
+        update_grp_message <- c(
+            i = paste0(
+                "You might need to update group names using ",
+                "\"update_group(",
+                paste0("`", y_grp, "` = `", x_grp, "`", collapse = ","),
+                ")\""
+            )
+        )
 
-  if(!is_empty(y_grp) && !is_empty(x_grp)){
-    update_grp_message <- c(i = paste0(
-      "You might need to update group names using ",
-      "\"update_group(",
-      paste0("`",y_grp,"` = `", x_grp,"`", collapse = ","),
-      ")\""))
+        e$message <- c(e$message, "", update_grp_message)
+    }
 
-    e$message <- c(e$message, "", update_grp_message)
-  }
-
-  e
+    e
 }
 
 #' Reset or Remove a Component from a tfrmt Object
@@ -299,23 +327,27 @@ append_update_group_message <- function(e, x, y){
 #'   reset_tfrmt <- reset_component(my_tfrmt, "column")
 #' }
 reset_component <- function(tfrmt_obj, component_name) {
-  # Validate inputs
-  # check for class attribute
-  if (!inherits(tfrmt_obj, "tfrmt")) {
-    stop("The input object must be of class 'tfrmt'.")
-  }
-  if (!is.character(component_name) || length(component_name) != 1) {
-    stop("The component name must be a single string.")
-  }
+    # Validate inputs
+    # check for class attribute
+    if (!inherits(tfrmt_obj, "tfrmt")) {
+        stop("The input object must be of class 'tfrmt'.")
+    }
+    if (!is.character(component_name) || length(component_name) != 1) {
+        stop("The component name must be a single string.")
+    }
 
-  # Check if the specified component exists in the list
-  if (!component_name %in% names(tfrmt_obj)) {
-    stop(paste0("component '", component_name, "' does not exist in the tfrmt object."))
-  }
+    # Check if the specified component exists in the list
+    if (!component_name %in% names(tfrmt_obj)) {
+        stop(paste0(
+            "component '",
+            component_name,
+            "' does not exist in the tfrmt object."
+        ))
+    }
 
-  # Reset the specified component by setting it to NULL
-  tfrmt_obj[[component_name]] <- NULL
+    # Reset the specified component by setting it to NULL
+    tfrmt_obj[[component_name]] <- NULL
 
-  # Return the modified tfrmt object
-  return(tfrmt_obj)
+    # Return the modified tfrmt object
+    return(tfrmt_obj)
 }
