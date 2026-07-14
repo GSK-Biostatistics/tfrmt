@@ -75,15 +75,25 @@ plan <- tfrmt(
             label_val = "w", # Value(s) in the label column where you would want to apply this fmt
             frmt("XXX")
         ),
-        frmt_structure(group_val = "B", label_val = c("i", "k"), frmt("xx.x")),
-        frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
+        frmt_structure(
+            group_val = "B",
+            label_val = c("i", "k"),
+            frmt("xx.x")
+        ),
+        frmt_structure(
+            group_val = "B",
+            label_val = "j",
+            frmt("xx.xx")
+        )
     ),
     # These are the variables to keep
     col_plan = col_plan(
         everything(),
         -starts_with("ord")
     ),
-    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("spanning"))
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc("spanning")
+    )
 )
 
 test_that("Check apply_tfrmt", {
@@ -101,8 +111,11 @@ test_that("Check apply_tfrmt", {
         mutate(..tfrmt_row_grp_lbl = FALSE)
 
     expect_equal(
-        apply_tfrmt(raw_dat, plan) %>% ungroup() %>% arrange(group, label),
-        man_df %>% arrange(group, label),
+        apply_tfrmt(raw_dat, plan) %>%
+            ungroup() %>%
+            arrange(group, label),
+        man_df %>%
+            arrange(group, label),
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
 
@@ -112,7 +125,8 @@ test_that("Check apply_tfrmt", {
         arrange(group, label)
 
     expect_equal(
-        apply_tfrmt(raw_dat, plan) %>% ungroup(),
+        apply_tfrmt(raw_dat, plan) %>%
+            ungroup(),
         man_df_ord,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -197,7 +211,11 @@ test_that("Check apply_tfrmt for mock data", {
                 label_val = c("i", "k"),
                 frmt("xx.x")
             ),
-            frmt_structure(group_val = "B", label_val = "j", frmt("xx.xx"))
+            frmt_structure(
+                group_val = "B",
+                label_val = "j",
+                frmt("xx.xx")
+            )
         ),
         row_grp_plan = row_grp_plan(
             label_loc = element_row_grp_loc("spanning")
@@ -502,7 +520,10 @@ test_that("incorrect footnote plan formats", {
             #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
             #   label_loc = element_row_grp_loc(location = "indented")),
             footnote_plan = footnote_plan(
-                footnote_structure("Test footnote", group_val = "Test group"),
+                footnote_structure(
+                    "Test footnote",
+                    group_val = "Test group"
+                ),
                 marks = "letters"
             )
         ),
@@ -541,7 +562,9 @@ test_that("incorrect footnote plan formats", {
                     group_val = ".default",
                     element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(

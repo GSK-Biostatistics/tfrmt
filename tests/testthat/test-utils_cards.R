@@ -53,17 +53,28 @@ test_that("get_card_attr_arg extracts attributes properly", {
     mock_card <- structure(
         data.frame(),
         class = "card",
-        args = list(by = "group_var", strata = "age_strata")
+        args = list(
+            by = "group_var",
+            strata = "age_strata"
+        )
     )
 
     # Default "by" argument
-    expect_equal(get_card_attr_arg(mock_card), "group_var")
+    expect_equal(
+        get_card_attr_arg(mock_card),
+        "group_var"
+    )
 
     # Custom argument extraction
-    expect_equal(get_card_attr_arg(mock_card, arg = "strata"), "age_strata")
+    expect_equal(
+        get_card_attr_arg(mock_card, arg = "strata"),
+        "age_strata"
+    )
 
     # Non-existent argument returns NULL
-    expect_null(get_card_attr_arg(mock_card, arg = "missing_arg"))
+    expect_null(
+        get_card_attr_arg(mock_card, arg = "missing_arg")
+    )
 })
 
 test_that("set_card_args modifies parameters properly", {
@@ -75,11 +86,17 @@ test_that("set_card_args modifies parameters properly", {
 
     # Modify an existing attribute element
     modified_card <- set_card_args(mock_card, "by", "new")
-    expect_equal(attr(modified_card, "args")$by, "new")
+    expect_equal(
+        attr(modified_card, "args")$by,
+        "new"
+    )
 
     # Add a new attribute element
     modified_card <- set_card_args(modified_card, "variable", "var_name")
-    expect_equal(attr(modified_card, "args")$variable, "var_name")
+    expect_equal(
+        attr(modified_card, "args")$variable,
+        "var_name"
+    )
 })
 
 test_that("drop_bind_ard_args clears stale args on bind_ard objects", {
@@ -109,7 +126,13 @@ test_that("drop_bind_ard_args clears stale args on bind_ard objects", {
     mock_regular_card <- structure(
         data.frame(),
         class = "card",
-        args = list(by = "sex", variable = "bmi")
+        args = list(
+            by = "sex",
+            variable = "bmi"
+        )
     )
-    expect_equal(drop_bind_ard_args(mock_regular_card), mock_regular_card)
+    expect_equal(
+        drop_bind_ard_args(mock_regular_card),
+        mock_regular_card
+    )
 })

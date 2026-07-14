@@ -702,7 +702,10 @@ test_that("shuffle_card() sorting option", {
 
     expect_equal(
         ard_unnest,
-        shuffle_card(ard_mixed, order_rows = FALSE) |>
+        shuffle_card(
+            ard_mixed,
+            order_rows = FALSE
+        ) |>
             dplyr::select(-stat_variable),
         ignore_attr = TRUE
     )
@@ -725,7 +728,10 @@ test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
     msg_string <- paste(msg_output, collapse = "\n")
 
     # Programmatically verify the exact elements of your message text
-    expect_match(msg_string, "Mismatch between attributes of")
+    expect_match(
+        msg_string,
+        "Mismatch between attributes of"
+    )
     expect_match(
         msg_string,
         "Supplied value will be used in lieu of attributes"
@@ -743,13 +749,19 @@ test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
         variables = "AGE"
     )
     expect_silent(
-        res_match <- shuffle_card(ard_match, by = "ARM")
+        res_match <- shuffle_card(
+            ard_match,
+            by = "ARM"
+        )
     )
     expect_true("ARM" %in% names(res_match))
 
     # 3. NULL supplied: Should remain silent and fall back to the attribute ("ARM")
     expect_silent(
-        res_null <- shuffle_card(ard_match, by = NULL)
+        res_null <- shuffle_card(
+            ard_match,
+            by = NULL
+        )
     )
     expect_true("ARM" %in% names(res_null))
 })

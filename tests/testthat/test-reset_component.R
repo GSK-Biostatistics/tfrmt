@@ -11,15 +11,38 @@ test_that("Basic functionality: Resets a component and other components remain u
     modified_tfrmt <- reset_component(t_frmt, "title")
 
     expect_null(modified_tfrmt$title)
-    expect_equal(modified_tfrmt$group, t_frmt$group, ignore_attr = TRUE)
-    expect_equal(modified_tfrmt$label, t_frmt$label, ignore_attr = TRUE)
-    expect_equal(modified_tfrmt$param, t_frmt$param, ignore_attr = TRUE)
-    expect_equal(modified_tfrmt$value, t_frmt$value, ignore_attr = TRUE)
-    expect_equal(modified_tfrmt$column, t_frmt$column, ignore_attr = TRUE)
+    expect_equal(
+        modified_tfrmt$group,
+        t_frmt$group,
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        modified_tfrmt$label,
+        t_frmt$label,
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        modified_tfrmt$param,
+        t_frmt$param,
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        modified_tfrmt$value,
+        t_frmt$value,
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        modified_tfrmt$column,
+        t_frmt$column,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("Error for non-'tfrmt' object", {
-    non_tfrmt_obj <- list(title = "My Title", subtitle = "My Subtitle")
+    non_tfrmt_obj <- list(
+        title = "My Title",
+        subtitle = "My Subtitle"
+    )
 
     expect_error(
         reset_component(non_tfrmt_obj, "subtitle"),

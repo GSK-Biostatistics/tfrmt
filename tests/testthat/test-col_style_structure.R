@@ -1070,6 +1070,6 @@ test_that("helper for constructing positional alignment works", {
             .data = dat,
             col = vars(everything())
         ),
-        "c(\"xx (xx%)\", \" xx (xx.x%)\")"
+        "c(\"xx (xx%)\",\n  \" xx (xx.x%)\")"
     )
 })

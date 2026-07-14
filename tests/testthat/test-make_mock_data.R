@@ -60,22 +60,34 @@ test_that("Mock data contains all levels", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = list(grp1 = "A", grp2 = c("a", "b")),
+                group_val = list(
+                    grp1 = "A",
+                    grp2 = c("a", "b")
+                ),
                 label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
-                group_val = list(grp1 = "B", grp2 = c("a", "b")),
+                group_val = list(
+                    grp1 = "B",
+                    grp2 = c("a", "b")
+                ),
                 label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
-                group_val = list(grp3 = "C", grp4 = c("a", "b")),
+                group_val = list(
+                    grp3 = "C",
+                    grp4 = c("a", "b")
+                ),
                 label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
-                group_val = list(grp3 = "D", grp4 = c("a", "b")),
+                group_val = list(
+                    grp3 = "D",
+                    grp4 = c("a", "b")
+                ),
                 label_val = ".default",
                 frmt("xx.x")
             )
@@ -107,7 +119,10 @@ test_that("Mock data contains all levels", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = list(grp1 = ".default", grp2 = c("c", "d")),
+                group_val = list(
+                    grp1 = ".default",
+                    grp2 = c("c", "d")
+                ),
                 label_val = c("e", "f"),
                 mean = frmt("xx.x")
             )
@@ -161,7 +176,10 @@ test_that("Mock data contains all levels", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = list(grp1 = ".default", grp2 = c("c", "d")),
+                group_val = list(
+                    grp1 = ".default",
+                    grp2 = c("c", "d")
+                ),
                 label_val = c("e", "f"),
                 mean = frmt("xx.x")
             ),
@@ -211,7 +229,9 @@ test_that("Mock data contains all levels", {
                 frmt("xx.x")
             ),
             frmt_structure(
-                group_val = list(grp = "grp_1"),
+                group_val = list(
+                    grp = "grp_1"
+                ),
                 label_val = ".default",
                 frmt("xx.xx")
             )
@@ -293,11 +313,16 @@ test_that("Test when no body_style or values is present", {
             label,
             col1,
             col2,
-            span_structure(spanner = "test label", columns = col3),
+            span_structure(
+                spanner = "test label",
+                columns = col3
+            ),
             vars(col4:col10)
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc("gtdefault")
+            label_loc = element_row_grp_loc(
+                "gtdefault"
+            )
         )
     )
 
@@ -608,8 +633,14 @@ test_that("Using col_plan to get column names", {
             group,
             label,
             col4,
-            span_structure(test1 = `span 1`, test2 = c(col1, contains("col2"))),
-            span_structure(test1 = `span 2`, test2 = c(col7, col8)),
+            span_structure(
+                test1 = `span 1`,
+                test2 = c(col1, contains("col2"))
+            ),
+            span_structure(
+                test1 = `span 2`,
+                test2 = c(col7, col8)
+            ),
             col3,
             -col5
         )
@@ -682,8 +713,14 @@ test_that("Using col_style_plan to get names", {
             )
         ),
         col_style_plan = col_style_plan(
-            col_style_structure(align = ".", col = starts_with("Active")),
-            col_style_structure(align = " ", col = c("Placebo", "Total"))
+            col_style_structure(
+                align = ".",
+                col = starts_with("Active")
+            ),
+            col_style_structure(
+                align = " ",
+                col = c("Placebo", "Total")
+            )
         )
     )
 
@@ -709,14 +746,26 @@ test_that("Using col_style_plan to get names", {
             group,
             label,
             col4,
-            span_structure(test1 = `span 1`, test2 = c(col1, contains("col2"))),
-            span_structure(test1 = `span 2`, test2 = c(col7, col8)),
+            span_structure(
+                test1 = `span 1`,
+                test2 = c(col1, contains("col2"))
+            ),
+            span_structure(
+                test1 = `span 2`,
+                test2 = c(col7, col8)
+            ),
             col3,
             -col5
         ),
         col_style_plan = col_style_plan(
-            col_style_structure(align = ".", col = starts_with("Active")),
-            col_style_structure(align = " ", col = c("Placebo", "Total"))
+            col_style_structure(
+                align = ".",
+                col = starts_with("Active")
+            ),
+            col_style_structure(
+                align = " ",
+                col = c("Placebo", "Total")
+            )
         )
     ) %>%
         make_mock_data() %>%
@@ -751,10 +800,16 @@ test_that("Will add big N avaliable", {
             frmt_structure(
                 group_val = ".default",
                 label_val = ".default",
-                frmt_combine("{n} ({pct}%)", n = frmt("xx"), pct = frmt("xx"))
+                frmt_combine(
+                    "{n} ({pct}%)",
+                    n = frmt("xx"),
+                    pct = frmt("xx")
+                )
             )
         ),
-        big_n = big_n_structure(param_val = "big_n"),
+        big_n = big_n_structure(
+            param_val = "big_n"
+        ),
         col_plan = col_plan(
             starts_with("Xanomeline"),
             "Placebo",
@@ -788,11 +843,18 @@ test_that("Mock data for col_plan with only drops", {
             frmt_structure(
                 group_val = ".default",
                 label_val = ".default",
-                frmt_combine("{n} ({pct}%)", n = frmt("xx"), pct = frmt("xx"))
+                frmt_combine(
+                    "{n} ({pct}%)",
+                    n = frmt("xx"),
+                    pct = frmt("xx")
+                )
             )
         ),
         # remove extra cols
-        col_plan = col_plan(-grp, -starts_with("ord"))
+        col_plan = col_plan(
+            -grp,
+            -starts_with("ord")
+        )
     )
 
     make_mock_data(drop_tfrmt) %>%
@@ -856,5 +918,8 @@ test_that("Mock data ignores col_plan with everything()", {
     col_names <- make_mock_data(tf_everything) %>%
         pull(column) %>%
         unique()
-    expect_equal(col_names, c("column1", "column2", "column3"))
+    expect_equal(
+        col_names,
+        c("column1", "column2", "column3")
+    )
 })

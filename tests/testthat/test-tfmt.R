@@ -715,17 +715,24 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
                     frmt("XXX")
                 ),
                 frmt_structure(
-                    group_val = list(group1 = "value"),
+                    group_val = list(
+                        group1 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
-                    group_val = list(group2 = "value"),
+                    group_val = list(
+                        group2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
-                    group_val = list(group1 = "value", group2 = "value"),
+                    group_val = list(
+                        group1 = "value",
+                        group2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXX")
                 )
@@ -738,7 +745,10 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
             group = vars(group1, group2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = list(invalid = "value", invalid2 = "value"),
+                    group_val = list(
+                        invalid = "value",
+                        invalid2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXX")
                 )
@@ -763,12 +773,21 @@ test_that("basic tfrmt - error when row_grp_plan groups does not match group arg
                     element_block = element_block(" ")
                 ),
                 row_grp_structure(
-                    group_val = list(group2 = "value"),
-                    element_block = element_block(post_space = "-")
+                    group_val = list(
+                        group2 = "value"
+                    ),
+                    element_block = element_block(
+                        post_space = "-"
+                    )
                 ),
                 row_grp_structure(
-                    group_val = list(group1 = "value", group2 = "value"),
-                    element_block = element_block(post_space = NULL)
+                    group_val = list(
+                        group1 = "value",
+                        group2 = "value"
+                    ),
+                    element_block = element_block(
+                        post_space = NULL
+                    )
                 )
             )
         )
@@ -779,7 +798,10 @@ test_that("basic tfrmt - error when row_grp_plan groups does not match group arg
             group = vars(group1, group2),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
-                    group_val = list(invalid = "value", invalid2 = "value"),
+                    group_val = list(
+                        invalid = "value",
+                        invalid2 = "value"
+                    ),
                     element_block = element_block(post_space = NULL)
                 )
             )
@@ -800,13 +822,18 @@ test_that("basic tfrmt - error when footnote_plan groups does not match group ar
             footnote_plan = footnote_plan(
                 footnote_structure(
                     footnote_text = "footnote 2",
-                    group_val = list(group2 = "value"),
+                    group_val = list(
+                        group2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
                 footnote_structure(
                     footnote_text = "footnote 3",
-                    group_val = list(group1 = "value", group2 = "value"),
+                    group_val = list(
+                        group1 = "value",
+                        group2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
@@ -821,13 +848,18 @@ test_that("basic tfrmt - error when footnote_plan groups does not match group ar
             footnote_plan = footnote_plan(
                 footnote_structure(
                     footnote_text = "footnote 2",
-                    group_val = list(group2 = "value"),
+                    group_val = list(
+                        group2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
                 footnote_structure(
                     footnote_text = "footnote 3",
-                    group_val = list(invalid = "value", invalid2 = "value"),
+                    group_val = list(
+                        invalid = "value",
+                        invalid2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
@@ -849,21 +881,30 @@ test_that("basic tfrmt - error when body_plan, row_grp_plan, or footnote_plan gr
             group = vars(group1, group2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = list(group1 = "value", group2 = "value"),
+                    group_val = list(
+                        group1 = "value",
+                        group2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXX")
                 )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
-                    group_val = list(group1 = "value", group2 = "value"),
+                    group_val = list(
+                        group1 = "value",
+                        group2 = "value"
+                    ),
                     element_block = element_block(post_space = NULL)
                 )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(
                     footnote_text = "footnote 3",
-                    group_val = list(group1 = "value", group2 = "value"),
+                    group_val = list(
+                        group1 = "value",
+                        group2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
@@ -877,21 +918,30 @@ test_that("basic tfrmt - error when body_plan, row_grp_plan, or footnote_plan gr
             group = vars(group1, group2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = list(invalid = "value", invalid2 = "value"),
+                    group_val = list(
+                        invalid = "value",
+                        invalid2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXX")
                 )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
-                    group_val = list(invalid = "value", invalid2 = "value"),
+                    group_val = list(
+                        invalid = "value",
+                        invalid2 = "value"
+                    ),
                     element_block = element_block(post_space = NULL)
                 )
             ),
             footnote_plan = footnote_plan(
                 footnote_structure(
                     footnote_text = "footnote 3",
-                    group_val = list(invalid = "value", invalid2 = "value"),
+                    group_val = list(
+                        invalid = "value",
+                        invalid2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
@@ -923,17 +973,24 @@ test_that("layering tfrmt - error when body_plan groups no longer match group ar
                 frmt("XXX")
             ),
             frmt_structure(
-                group_val = list(group1 = "value"),
+                group_val = list(
+                    group1 = "value"
+                ),
                 label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
-                group_val = list(group2 = "value"),
+                group_val = list(
+                    group2 = "value"
+                ),
                 label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
-                group_val = list(group1 = "value", group2 = "value"),
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
                 label_val = ".default",
                 frmt("XXX")
             )
@@ -962,21 +1019,30 @@ test_that("layering tfrmt - error when plan groups no longer match group arg", {
         group = vars(group1, group2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = list(group1 = "value", group2 = "value"),
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
                 label_val = ".default",
                 frmt("XXX")
             )
         ),
         row_grp_plan = row_grp_plan(
             row_grp_structure(
-                group_val = list(group1 = "value", group2 = "value"),
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
                 element_block = element_block(post_space = NULL)
             )
         ),
         footnote_plan = footnote_plan(
             footnote_structure(
                 footnote_text = "footnote 3",
-                group_val = list(group1 = "value", group2 = "value"),
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
                 column_val = "column value",
                 label_val = "label value"
             ),
@@ -1011,12 +1077,17 @@ test_that("updating tfrmt - updating group vars - body_plan", {
                 frmt("XXX")
             ),
             frmt_structure(
-                group_val = list(group2 = "value"),
+                group_val = list(
+                    group2 = "value"
+                ),
                 label_val = ".default",
                 frmt("XXXX")
             ),
             frmt_structure(
-                group_val = list(group1 = "value", group2 = "value"),
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
                 label_val = ".default",
                 frmt("XXXXX")
             )
@@ -1037,12 +1108,17 @@ test_that("updating tfrmt - updating group vars - body_plan", {
                     frmt("XXX")
                 ),
                 frmt_structure(
-                    group_val = list(group2 = "value"),
+                    group_val = list(
+                        group2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXXX")
                 ),
                 frmt_structure(
-                    group_val = list(New_Group = "value", group2 = "value"),
+                    group_val = list(
+                        New_Group = "value",
+                        group2 = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXXXX")
                 )
@@ -1069,7 +1145,9 @@ test_that("updating tfrmt - updating group vars - body_plan", {
                     frmt("XXX")
                 ),
                 frmt_structure(
-                    group_val = list(`best group` = "value"),
+                    group_val = list(
+                        `best group` = "value"
+                    ),
                     label_val = ".default",
                     frmt("XXXX")
                 ),
@@ -1097,12 +1175,21 @@ test_that("updating tfrmt - updating group vars - row_grp_plan", {
                 element_block = element_block(" ")
             ),
             row_grp_structure(
-                group_val = list(group2 = "value"),
-                element_block = element_block(post_space = "-")
+                group_val = list(
+                    group2 = "value"
+                ),
+                element_block = element_block(
+                    post_space = "-"
+                )
             ),
             row_grp_structure(
-                group_val = list(group1 = "value", group2 = "value"),
-                element_block = element_block(post_space = NULL)
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
+                element_block = element_block(
+                    post_space = NULL
+                )
             )
         )
     )
@@ -1120,12 +1207,21 @@ test_that("updating tfrmt - updating group vars - row_grp_plan", {
                     element_block = element_block(" ")
                 ),
                 row_grp_structure(
-                    group_val = list(group2 = "value"),
-                    element_block = element_block(post_space = "-")
+                    group_val = list(
+                        group2 = "value"
+                    ),
+                    element_block = element_block(
+                        post_space = "-"
+                    )
                 ),
                 row_grp_structure(
-                    group_val = list(New_Group = "value", group2 = "value"),
-                    element_block = element_block(post_space = NULL)
+                    group_val = list(
+                        New_Group = "value",
+                        group2 = "value"
+                    ),
+                    element_block = element_block(
+                        post_space = NULL
+                    )
                 )
             )
         ),
@@ -1149,15 +1245,21 @@ test_that("updating tfrmt - updating group vars - row_grp_plan", {
                     element_block = element_block(" ")
                 ),
                 row_grp_structure(
-                    group_val = list(`best group` = "value"),
-                    element_block = element_block(post_space = "-")
+                    group_val = list(
+                        `best group` = "value"
+                    ),
+                    element_block = element_block(
+                        post_space = "-"
+                    )
                 ),
                 row_grp_structure(
                     group_val = list(
                         New_Group = "value",
                         `best group` = "value"
                     ),
-                    element_block = element_block(post_space = NULL)
+                    element_block = element_block(
+                        post_space = NULL
+                    )
                 )
             )
         ),
@@ -1172,13 +1274,18 @@ test_that("updating tfrmt - updating group vars - footnote_plan", {
         footnote_plan = footnote_plan(
             footnote_structure(
                 footnote_text = "footnote 2",
-                group_val = list(group2 = "value"),
+                group_val = list(
+                    group2 = "value"
+                ),
                 column_val = "column value",
                 label_val = "label value"
             ),
             footnote_structure(
                 footnote_text = "footnote 3",
-                group_val = list(group1 = "value", group2 = "value"),
+                group_val = list(
+                    group1 = "value",
+                    group2 = "value"
+                ),
                 column_val = "column value",
                 label_val = "label value"
             ),
@@ -1196,13 +1303,18 @@ test_that("updating tfrmt - updating group vars - footnote_plan", {
             footnote_plan = footnote_plan(
                 footnote_structure(
                     footnote_text = "footnote 2",
-                    group_val = list(group2 = "value"),
+                    group_val = list(
+                        group2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
                 footnote_structure(
                     footnote_text = "footnote 3",
-                    group_val = list(New_Group = "value", group2 = "value"),
+                    group_val = list(
+                        New_Group = "value",
+                        group2 = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),
@@ -1226,7 +1338,9 @@ test_that("updating tfrmt - updating group vars - footnote_plan", {
             footnote_plan = footnote_plan(
                 footnote_structure(
                     footnote_text = "footnote 2",
-                    group_val = list(`best group` = "value"),
+                    group_val = list(
+                        `best group` = "value"
+                    ),
                     column_val = "column value",
                     label_val = "label value"
                 ),

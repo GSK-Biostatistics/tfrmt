@@ -9,8 +9,17 @@ test_that("setting param sigdig defaults", {
     expect_equal(param_set(), defaults)
 
     expect_equal(
-        param_set(max = 2, "{mean} ({sd})" = c(2, 3)),
-        list(min = 1, median = 1, n = NA, max = 2, "{mean} ({sd})" = c(2, 3))
+        param_set(
+            max = 2,
+            "{mean} ({sd})" = c(2, 3)
+        ),
+        list(
+            min = 1,
+            median = 1,
+            n = NA,
+            max = 2,
+            "{mean} ({sd})" = c(2, 3)
+        )
     )
 
     expect_equal(
@@ -27,7 +36,13 @@ test_that("setting param sigdig defaults", {
 
     expect_equal(
         param_set(mean = 0),
-        list(min = 1, max = 1, median = 1, n = NA, mean = 0)
+        list(
+            min = 1,
+            max = 1,
+            median = 1,
+            n = NA,
+            mean = 0
+        )
     )
 
     expect_equal(
@@ -48,7 +63,13 @@ test_that("build frmt objects", {
         param = c("mean", "sd"),
         frmt_string = c("xx.x", "xx.xx")
     )
-    expect_equal(frmt_spec, list(mean = frmt("xx.x"), sd = frmt('xx.xx')))
+    expect_equal(
+        frmt_spec,
+        list(
+            mean = frmt("xx.x"),
+            sd = frmt('xx.xx')
+        )
+    )
 
     frmt_spec <- frmt_builder(
         param = c("mean", "sd"),
@@ -63,10 +84,17 @@ test_that("build frmt objects", {
         )
     )
 
-    frmt_spec <- frmt_builder(frmt_string = c("xx.x", "xx.xx"), missing = "--")
+    frmt_spec <- frmt_builder(
+        frmt_string = c("xx.x", "xx.xx"),
+        missing = "--"
+    )
+
     expect_equal(
         frmt_spec,
-        list(frmt('xx.x', missing = '--'), frmt('xx.xx', missing = '--'))
+        list(
+            frmt('xx.x', missing = '--'),
+            frmt('xx.xx', missing = '--')
+        )
     )
 
     # frmt_combine
@@ -86,7 +114,11 @@ test_that("build frmt objects", {
 
     # frmt_structure
     frmt_list <- list(
-        frmt_combine('{mean} ({sd})', mean = frmt('xx.x'), sd = frmt('xx.xx')),
+        frmt_combine(
+            '{mean} ({sd})',
+            mean = frmt('xx.x'),
+            sd = frmt('xx.xx')
+        ),
         median = frmt('xx.x'),
         n = frmt('xxx')
     )
@@ -253,8 +285,12 @@ test_that("build frmt objects", {
         dat_sigdig,
         group = vars(group1),
         label = quo(group2),
-        param_defaults = param_set(max = 0, "{pct}%" = 0)
+        param_defaults = param_set(
+            max = 0,
+            "{pct}%" = 0
+        )
     )
+
     bp_prm_man <- list(
         frmt_structure(
             group_val = list(group1 = "CHEM"),
@@ -350,6 +386,7 @@ test_that("no redundant frmt_structures", {
         label = quo(group2),
         param_defaults = param_set()
     )$body_plan
+
     bp_man <- body_plan(
         frmt_structure(
             group_val = list(group1 = ".default"),
@@ -456,22 +493,34 @@ test_that("no redundant frmt_structures", {
     )$body_plan
     bp_man <- body_plan(
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = ".default"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = ".default"
+            ),
             label_val = c("v2"),
             min = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = ".default"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = ".default"
+            ),
             label_val = c("v2"),
             max = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = ".default"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = ".default"
+            ),
             label_val = c("v2"),
             median = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = ".default"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = ".default"
+            ),
             label_val = c("v2"),
             frmt_combine(
                 '{mean} ({sd})',
@@ -480,27 +529,42 @@ test_that("no redundant frmt_structures", {
             )
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = ".default"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = ".default"
+            ),
             label_val = c("v2"),
             n = frmt('x')
         ),
         frmt_structure(
-            group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")),
+            group_val = list(
+                group1 = ".default",
+                group2 = c("EOSINOPHILS")
+            ),
             label_val = c("v1"),
             min = frmt('x.xxx')
         ),
         frmt_structure(
-            group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")),
+            group_val = list(
+                group1 = ".default",
+                group2 = c("EOSINOPHILS")
+            ),
             label_val = c("v1"),
             max = frmt('x.xxx')
         ),
         frmt_structure(
-            group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")),
+            group_val = list(
+                group1 = ".default",
+                group2 = c("EOSINOPHILS")
+            ),
             label_val = c("v1"),
             median = frmt('x.xxx')
         ),
         frmt_structure(
-            group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")),
+            group_val = list(
+                group1 = ".default",
+                group2 = c("EOSINOPHILS")
+            ),
             label_val = c("v1"),
             frmt_combine(
                 '{mean} ({sd})',
@@ -509,27 +573,42 @@ test_that("no redundant frmt_structures", {
             )
         ),
         frmt_structure(
-            group_val = list(group1 = ".default", group2 = c("EOSINOPHILS")),
+            group_val = list(
+                group1 = ".default",
+                group2 = c("EOSINOPHILS")
+            ),
             label_val = c("v1"),
             n = frmt('x')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = "BILIRUBIN"
+            ),
             label_val = c("v1"),
             min = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = "BILIRUBIN"
+            ),
             label_val = c("v1"),
             max = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = "BILIRUBIN"
+            ),
             label_val = c("v1"),
             median = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = "BILIRUBIN"
+            ),
             label_val = c("v1"),
             frmt_combine(
                 '{mean} ({sd})',
@@ -538,27 +617,42 @@ test_that("no redundant frmt_structures", {
             )
         ),
         frmt_structure(
-            group_val = list(group1 = "CHEM", group2 = "BILIRUBIN"),
+            group_val = list(
+                group1 = "CHEM",
+                group2 = "BILIRUBIN"
+            ),
             label_val = c("v1"),
             n = frmt('x')
         ),
         frmt_structure(
-            group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"),
+            group_val = list(
+                group1 = "HEM",
+                group2 = "CHOLESTEROL"
+            ),
             label_val = c("v1"),
             min = frmt('x.xxx')
         ),
         frmt_structure(
-            group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"),
+            group_val = list(
+                group1 = "HEM",
+                group2 = "CHOLESTEROL"
+            ),
             label_val = c("v1"),
             max = frmt('x.xxx')
         ),
         frmt_structure(
-            group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"),
+            group_val = list(
+                group1 = "HEM",
+                group2 = "CHOLESTEROL"
+            ),
             label_val = c("v1"),
             median = frmt('x.xxx')
         ),
         frmt_structure(
-            group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"),
+            group_val = list(
+                group1 = "HEM",
+                group2 = "CHOLESTEROL"
+            ),
             label_val = c("v1"),
             frmt_combine(
                 '{mean} ({sd})',
@@ -567,11 +661,15 @@ test_that("no redundant frmt_structures", {
             )
         ),
         frmt_structure(
-            group_val = list(group1 = "HEM", group2 = "CHOLESTEROL"),
+            group_val = list(
+                group1 = "HEM",
+                group2 = "CHOLESTEROL"
+            ),
             label_val = c("v1"),
             n = frmt('x')
         )
     )
+
     expect_equal(bp, bp_man)
 })
 
@@ -590,8 +688,16 @@ test_that("tfrmt_sigdig returns a tfrmt", {
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$group, vars(group1), ignore_attr = TRUE)
-    expect_equal(t_frmt$label, quo(group2), ignore_attr = TRUE)
+    expect_equal(
+        t_frmt$group,
+        vars(group1),
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        t_frmt$label,
+        quo(group2),
+        ignore_attr = TRUE
+    )
 
     # body plan contains 1 frmt_structure per default param per # of rows in sigddig spec
     expect_equal(length(t_frmt$body_plan), length(param_set()))
@@ -603,7 +709,10 @@ test_that("tfrmt_sigdig returns a tfrmt", {
         label = group2,
         param_defaults = myprms
     )
-    expect_equal(length(t_frmt$body_plan), length(param_set()) + 1)
+    expect_equal(
+        length(t_frmt$body_plan),
+        length(param_set()) + 1
+    )
 })
 
 
@@ -619,9 +728,16 @@ test_that("varying group/label inputs", {
     # if no group or label, assume all non-sigdig columns are groups
     t_out <- tfrmt_sigdig(sigdig_df = dat_sigdig)
 
-    expect_equal(t_out$group, vars(group1, group2, lbl), ignore_attr = TRUE)
+    expect_equal(
+        t_out$group,
+        vars(group1, group2, lbl),
+        ignore_attr = TRUE
+    )
 
-    expect_equal(t_out$label, quo())
+    expect_equal(
+        t_out$label,
+        quo()
+    )
 
     # if only some are specified, assume the rest are groups
     t_out <- tfrmt_sigdig(dat_sigdig, label = group2)
@@ -641,8 +757,16 @@ test_that("varying group/label inputs", {
         )
     )
 
-    expect_equal(t_out$group, vars(lbl, grp3), ignore_attr = TRUE)
-    expect_equal(t_out$label, quo(mylab), ignore_attr = TRUE)
+    expect_equal(
+        t_out$group,
+        vars(lbl, grp3),
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        t_out$label,
+        quo(mylab),
+        ignore_attr = TRUE
+    )
 
     expect_error(
         tfrmt_sigdig(dat_sigdig, group = group4, label = group3),
@@ -674,22 +798,34 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
 
     bp_man <- body_plan(
         frmt_structure(
-            group_val = list(group1 = "test1", newgrp = ".default"),
+            group_val = list(
+                group1 = "test1",
+                newgrp = ".default"
+            ),
             label_val = c(".default"),
             min = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", newgrp = ".default"),
+            group_val = list(
+                group1 = "test1",
+                newgrp = ".default"
+            ),
             label_val = c(".default"),
             max = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", newgrp = ".default"),
+            group_val = list(
+                group1 = "test1",
+                newgrp = ".default"
+            ),
             label_val = c(".default"),
             median = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", newgrp = ".default"),
+            group_val = list(
+                group1 = "test1",
+                newgrp = ".default"
+            ),
             label_val = c(".default"),
             frmt_combine(
                 '{mean} ({sd})',
@@ -698,7 +834,10 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
             )
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", newgrp = ".default"),
+            group_val = list(
+                group1 = "test1",
+                newgrp = ".default"
+            ),
             label_val = c(".default"),
             n = frmt('x')
         )
@@ -788,10 +927,19 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
         ~group1 , ~group2 , ~sigdig ,
         "test1" , "test2" ,       1
     )
-    new_tfrmt <- tfrmt_sigdig(dat_sigdig, tfrmt_obj = prev_tfrmt)
+    new_tfrmt <- tfrmt_sigdig(
+        dat_sigdig,
+        tfrmt_obj = prev_tfrmt
+    )
 
-    expect_equal(new_tfrmt$group, prev_tfrmt$group)
-    expect_equal(new_tfrmt$lblvar, prev_tfrmt$lblvar)
+    expect_equal(
+        new_tfrmt$group,
+        prev_tfrmt$group
+    )
+    expect_equal(
+        new_tfrmt$lblvar,
+        prev_tfrmt$lblvar
+    )
 
     bp_man <- body_plan(
         frmt_structure(
@@ -800,22 +948,34 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
             frmt('xx.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", group2 = "test2"),
+            group_val = list(
+                group1 = "test1",
+                group2 = "test2"
+            ),
             label_val = c(".default"),
             min = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", group2 = "test2"),
+            group_val = list(
+                group1 = "test1",
+                group2 = "test2"
+            ),
             label_val = c(".default"),
             max = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", group2 = "test2"),
+            group_val = list(
+                group1 = "test1",
+                group2 = "test2"
+            ),
             label_val = c(".default"),
             median = frmt('x.xx')
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", group2 = "test2"),
+            group_val = list(
+                group1 = "test1",
+                group2 = "test2"
+            ),
             label_val = c(".default"),
             frmt_combine(
                 '{mean} ({sd})',
@@ -824,7 +984,10 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
             )
         ),
         frmt_structure(
-            group_val = list(group1 = "test1", group2 = "test2"),
+            group_val = list(
+                group1 = "test1",
+                group2 = "test2"
+            ),
             label_val = c(".default"),
             n = frmt('x')
         )
@@ -832,7 +995,10 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
 
     expect_equal(new_tfrmt$body_plan, bp_man)
 
-    prev_tfrmt <- tfrmt(group = somegrp, label = group2)
+    prev_tfrmt <- tfrmt(
+        group = somegrp,
+        label = group2
+    )
     dat_sigdig <- tibble::tribble(
         ~group1 , ~group2 , ~sigdig ,
         "test1" , "test2" ,       1
@@ -843,8 +1009,16 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
         tfrmt_obj = prev_tfrmt
     )
 
-    expect_equal(new_tfrmt$group, vars(group1), ignore_attr = TRUE)
-    expect_equal(new_tfrmt$label, quo(group2), ignore_attr = TRUE)
+    expect_equal(
+        new_tfrmt$group,
+        vars(group1),
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        new_tfrmt$label,
+        quo(group2),
+        ignore_attr = TRUE
+    )
 })
 
 
