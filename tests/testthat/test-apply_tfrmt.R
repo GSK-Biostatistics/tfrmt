@@ -200,25 +200,25 @@ test_that("test tentative_process", {
 })
 
 test_that("apply_tfrmt errors when tfrmt is not a tfrmt object", {
-  dat <- tibble::tibble(
-    lbl = "a",
-    prm = "n",
-    val = 1,
-    col = "A"
-  )
-  # Create a real tfrmt then strip the class so it passes
-  # validate_cols_match but fails the is_tfrmt check
-  real_tfrmt <- tfrmt(
-    label = lbl,
-    param = prm,
-    value = val,
-    column = col
-  )
-  not_a_tfrmt <- unclass(real_tfrmt)
-  expect_error(
-    apply_tfrmt(dat, not_a_tfrmt, mock = FALSE),
-    "Requires a tfrmt object"
-  )
+    dat <- tibble::tibble(
+        lbl = "a",
+        prm = "n",
+        val = 1,
+        col = "A"
+    )
+    # Create a real tfrmt then strip the class so it passes
+    # validate_cols_match but fails the is_tfrmt check
+    real_tfrmt <- tfrmt(
+        label = lbl,
+        param = prm,
+        value = val,
+        column = col
+    )
+    not_a_tfrmt <- unclass(real_tfrmt)
+    expect_error(
+        apply_tfrmt(dat, not_a_tfrmt, mock = FALSE),
+        "Requires a tfrmt object"
+    )
 })
 
 test_that("tentative_process handles errors with empty message", {
