@@ -223,30 +223,32 @@ test_that("tentative_process handles errors with empty message", {
 })
 
 test_that("frmt_struct_string handles no group variables", {
-  dat <- tibble::tribble(
-    ~lbl, ~prm, ~column, ~val, ~ord,
-    "n", "n", 1, 1, 1,
-    "n", "n_2", 1, 1.1, 1
-  )
-
-  tfrmt_no_group <- tfrmt(
-    label = lbl,
-    column = column,
-    value = val,
-    param = prm,
-    sorting_cols = ord,
-    col_plan = col_plan(-ord),
-    body_plan = body_plan(
-      frmt_structure(group_val = ".default",
-                     label_val = ".default",
-                     frmt("x.x"))
+    dat <- tibble::tribble(
+        ~lbl , ~prm  , ~column , ~val , ~ord ,
+        "n"  , "n"   ,       1 , 1    ,    1 ,
+        "n"  , "n_2" ,       1 , 1.1  ,    1
     )
-  )
-  expect_message(
-    apply_tfrmt(dat, tfrmt_no_group, mock = FALSE),
-    "Multiple param listed for the same group/label values",
-    fixed = TRUE
-  )
+
+    tfrmt_no_group <- tfrmt(
+        label = lbl,
+        column = column,
+        value = val,
+        param = prm,
+        sorting_cols = ord,
+        col_plan = col_plan(-ord),
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("x.x")
+            )
+        )
+    )
+    expect_message(
+        apply_tfrmt(dat, tfrmt_no_group, mock = FALSE),
+        "Multiple param listed for the same group/label values",
+        fixed = TRUE
+    )
 })
 
 test_that("check_order_vars() messages when order variables cause mismatching rows", {
