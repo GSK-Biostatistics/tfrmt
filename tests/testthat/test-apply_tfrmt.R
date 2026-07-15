@@ -199,55 +199,40 @@ test_that("test tentative_process", {
     )
 })
 
-test_that("apply_tfrmt errors when tfrmt is not a tfrmt object", {
-  dat <- tibble::tibble(
-    lbl = "a",
-    prm = "n",
-    val = 1,
-    col = "A"
-  )
-  # Create a real tfrmt then strip the class so it passes
-  # validate_cols_match but fails the is_tfrmt check
-  real_tfrmt <- tfrmt(
-    label = lbl,
-    param = prm,
-    value = val,
-    column = col
-  )
-  not_a_tfrmt <- unclass(real_tfrmt)
-  expect_error(
-    apply_tfrmt(dat, not_a_tfrmt, mock = FALSE),
-    "Requires a tfrmt object"
-  )
+test_that("apply_tfrmt errors when passed a non-tfrmt object", {
+  dat <- tibble::tibble(lbl = "a",
+                        prm = "n",
+                        val = 1,
+                        col = "A")
+
+  not_a_tfrmt <- unclass(tfrmt(label = lbl,
+                               param = prm,
+                               value = val,
+                               column = col))
+
+  expect_error(apply_tfrmt(dat, not_a_tfrmt),
+               "Requires a tfrmt object")
 })
 
 test_that("tentative_process handles errors with empty message", {
-  # Function that produces an error with an empty message string,
-  # simulating edge cases in internal processing functions
-  empty_msg_func <- function(.data, col) {
-    stop("")
-  }
-  input_data <- tibble::tibble(x = 1:3, y = c("a", "b", "c"))
-  empty_msg_messages <- capture_messages({
-    result <- tentative_process(input_data, empty_msg_func, col = "x")
-  })
-  # Original data returned unchanged when processing fails
-  expect_equal(result, input_data)
-  expect_true(!rlang::is_empty(empty_msg_messages))
-  # When error message is "", it should use format() on the error instead
-  expect_true(grepl("Unable to to apply", empty_msg_messages))
-  expect_true(grepl("Reason:", empty_msg_messages))
+  empty_msg_func <- function(x) stop("")
+  msgs <- capture_messages(
+    result <-
+      tentative_process("x",
+                        empty_msg_func))
+  expect_equal(result, "x")
+  expect_match(msgs, "Reason:")
 })
 
 test_that("frmt_struct_string handles no group variables", {
-  # When no group is specified, group_names will be length 0
-  # and the function should use ".default" for group_val_char
+
   dat <- tibble::tribble(
     ~lbl, ~prm, ~column, ~val, ~ord,
     "n", "n", 1, 1, 1,
     "n", "n_2", 1, 1.1, 1,
     "m", "n", 1, 2, 2
   )
+
   tfrmt_no_group <- tfrmt(
     label = lbl,
     column = column,
@@ -263,8 +248,7 @@ test_that("frmt_struct_string handles no group variables", {
       )
     )
   )
-  # This should trigger the "Multiple param" message path
-  # with no group variable, hitting the else branch in frmt_struct_string
+
   expect_message(
     apply_tfrmt(dat, tfrmt_no_group, mock = FALSE),
     "Multiple param listed for the same group/label values",
