@@ -400,7 +400,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 tab_header(title = md_wrap(title), subtitle = md_wrap(subtitle))
         } else {
             gt_out_final <- gt_out_final %>%
-                tab_header(title = md_wrap(tfrmt$title), subtitle = md_wrap(tfrmt$subtitle))
+                tab_header(
+                    title = md_wrap(tfrmt$title),
+                    subtitle = md_wrap(tfrmt$subtitle)
+                )
 
             if (tfrmt$page_plan$note_loc == "source_note") {
                 gt_out_final <- gt_out_final %>%
@@ -409,7 +412,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         }
     } else {
         gt_out_final <- gt_out_final %>%
-            tab_header(title = md_wrap(tfrmt$title), subtitle = md_wrap(tfrmt$subtitle))
+            tab_header(
+                title = md_wrap(tfrmt$title),
+                subtitle = md_wrap(tfrmt$subtitle)
+            )
     }
 
     # convert white space to unicode
@@ -562,8 +568,8 @@ break_duplicate_whitespace <- function(x) {
 # Wrap a string in gt::md() for markdown rendering, passing through NULL and
 # empty strings unchanged to preserve default gt behavior
 md_wrap <- function(x) {
-  if (is.null(x) || identical(x, "")) {
-    return(x)
-  }
-  md(x)
+    if (is.null(x) || identical(x, "")) {
+        return(x)
+    }
+    md(x)
 }
