@@ -254,6 +254,7 @@ test_that("frmt_struct_string handles no group variables", {
     "Multiple param listed for the same group/label values",
     fixed = TRUE
   )
+
 })
 
 test_that("check_order_vars() messages when order variables cause mismatching rows", {
