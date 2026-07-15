@@ -213,13 +213,13 @@ test_that("apply_tfrmt errors when passed a non-tfrmt object", {
 })
 
 test_that("tentative_process handles errors with empty message", {
-  empty_msg_func <- function(x) stop("")
-  msgs <- capture_messages(
-    result <-
-      tentative_process("x",
-                        empty_msg_func))
-  expect_equal(result, "x")
-  expect_match(msgs, "Reason:")
+    empty_msg_func <- function(x) stop("")
+    msgs <- capture_messages(
+        result <-
+            tentative_process("x", empty_msg_func)
+    )
+    expect_equal(result, "x")
+    expect_match(msgs, "Reason:")
 })
 
 test_that("frmt_struct_string handles no group variables", {
