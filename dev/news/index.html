@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tfrmt</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,23 +66,33 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="tfrmt-development-version">tfrmt (development version)<a class="anchor" aria-label="anchor" href="#tfrmt-development-version"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<ul><li>Fix bug in <code>tfrmt_sigdig</code> so it correctly passes the ‘missing’ argument to the body_plan (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/621" class="external-link">#621</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
-<li>Fix bug in <code>page_plan</code> where the max_rows argument was returning an error if a value in the group variable was an empty string (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/539" class="external-link">#539</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
-<li>Fix bug in <code>row_grp_plan</code> where identical labels repeated across different groups were incorrectly forced to the top of the table instead of maintaining their correct order (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/634" class="external-link">#634</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
-<li>Fix bug in <code>as.character.span_structure</code> where the regex was incorrectly capturing content wrapped in parentheses as an R function even though it did not have a valid R function identifier immediately before the <code>(</code>. i.e., “n (%)” incorrectly captured as a function (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/643" class="external-link">#643</a>, <a href="https://github.com/LiamHobby" class="external-link">@LiamHobby</a>).</li>
-</ul></div>
-<div class="section level3">
 <h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+</div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/660" class="external-link">#660</a>).</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="tfrmt-040">tfrmt 0.4.0<a class="anchor" aria-label="anchor" href="#tfrmt-040"></a></h2><p class="text-muted">CRAN release: 2026-07-10</p>
+<div class="section level3">
+<h3 id="improvements-0-4-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-4-0"></a></h3>
 <ul><li>
 <code><a href="../reference/footnote_plan.html">footnote_plan()</a></code> receives a new argument, <code>order</code>, allowing users to specify the order of footnotes (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/605" class="external-link">#605</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
 <li>Add markdown processing of stub column labels (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/617" class="external-link">#617</a>)</li>
 <li>Update default for <code><a href="../reference/row_grp_plan.html">row_grp_plan()</a></code>/<code><a href="../reference/row_grp_structure.html">row_grp_structure()</a></code> to remove trailing post-space rows (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/630" class="external-link">#630</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
-<li>Added <code><a href="../reference/extract_data.html">extract_data()</a></code> function to enable data to be easily extracted from a tfrmt into a data frame.(<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/628" class="external-link">#628</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>)</li>
+<li>Added <code><a href="../reference/extract_data.html">extract_data()</a></code> function to enable data to be easily extracted from a tfrmt into a data frame (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/628" class="external-link">#628</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
 <li>
 <code><a href="../reference/shuffle_card.html">shuffle_card()</a></code> now automatically strips inherited ARD attributes from objects of class <code>bind_ard</code> to avoid unreliable metadata (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/650" class="external-link">#650</a>).</li>
 <li>
 <code><a href="../reference/shuffle_card.html">shuffle_card()</a></code> now prioritises the user-supplied <code>by</code> argument over inherited ARD attributes, giving users control to override attributes and updating the mismatch message to reflect this change (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/650" class="external-link">#650</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-4-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-0"></a></h3>
+<ul><li>Fix bug in <code>tfrmt_sigdig</code> so it correctly passes the ‘missing’ argument to the body_plan (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/621" class="external-link">#621</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
+<li>Fix bug in <code>page_plan</code> where the max_rows argument was returning an error if a value in the group variable was an empty string (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/539" class="external-link">#539</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
+<li>Fix bug in <code>row_grp_plan</code> where identical labels repeated across different groups were incorrectly forced to the top of the table instead of maintaining their correct order (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/634" class="external-link">#634</a>, <a href="https://github.com/alanahjonas95" class="external-link">@alanahjonas95</a>).</li>
+<li>Fix bug in <code>as.character.span_structure</code> where the regex was incorrectly capturing content wrapped in parentheses as an R function even though it did not have a valid R function identifier immediately before the <code>(</code>. i.e., “n (%)” incorrectly captured as a function (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/643" class="external-link">#643</a>, <a href="https://github.com/LiamHobby" class="external-link">@LiamHobby</a>).</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -201,7 +211,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, Alanah Jonas, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
+  <p>Developed by Alanah Jonas, Becca Krouse, Christina Fillmore, Ellis Hughes, Karima Ahmad, Shannon Haughton, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited, Atorus Research LLC.</p>
 </div>
 
 <div class="pkgdown-footer-right">

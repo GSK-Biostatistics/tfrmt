@@ -2,6 +2,48 @@
 
 ## tfrmt (development version)
 
+### Improvements
+
+### Bug fixes
+
+- Robustly check that all required inputs (column, param, and value) are
+  supplied to prevent unhelpful errors during table printing
+  ([\#660](https://github.com/GSK-Biostatistics/tfrmt/issues/660)).
+
+## tfrmt 0.4.0
+
+CRAN release: 2026-07-10
+
+### Improvements
+
+- [`footnote_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/footnote_plan.md)
+  receives a new argument, `order`, allowing users to specify the order
+  of footnotes
+  ([\#605](https://github.com/GSK-Biostatistics/tfrmt/issues/605),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Add markdown processing of stub column labels
+  ([\#617](https://github.com/GSK-Biostatistics/tfrmt/issues/617))
+- Update default for
+  [`row_grp_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/row_grp_plan.md)/[`row_grp_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/row_grp_structure.md)
+  to remove trailing post-space rows
+  ([\#630](https://github.com/GSK-Biostatistics/tfrmt/issues/630),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- Added
+  [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/extract_data.md)
+  function to enable data to be easily extracted from a tfrmt into a
+  data frame
+  ([\#628](https://github.com/GSK-Biostatistics/tfrmt/issues/628),
+  [@alanahjonas95](https://github.com/alanahjonas95)).
+- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/shuffle_card.md)
+  now automatically strips inherited ARD attributes from objects of
+  class `bind_ard` to avoid unreliable metadata
+  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
+- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/shuffle_card.md)
+  now prioritises the user-supplied `by` argument over inherited ARD
+  attributes, giving users control to override attributes and updating
+  the mismatch message to reflect this change
+  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
+
 ### Bug fixes
 
 - Fix bug in `tfrmt_sigdig` so it correctly passes the ‘missing’
@@ -23,36 +65,6 @@
   before the `(`. i.e., “n (%)” incorrectly captured as a function
   ([\#643](https://github.com/GSK-Biostatistics/tfrmt/issues/643),
   [@LiamHobby](https://github.com/LiamHobby)).
-
-### Improvements
-
-- [`footnote_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/footnote_plan.md)
-  receives a new argument, `order`, allowing users to specify the order
-  of footnotes
-  ([\#605](https://github.com/GSK-Biostatistics/tfrmt/issues/605),
-  [@alanahjonas95](https://github.com/alanahjonas95)).
-- Add markdown processing of stub column labels
-  ([\#617](https://github.com/GSK-Biostatistics/tfrmt/issues/617))
-- Update default for
-  [`row_grp_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/row_grp_plan.md)/[`row_grp_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/row_grp_structure.md)
-  to remove trailing post-space rows
-  ([\#630](https://github.com/GSK-Biostatistics/tfrmt/issues/630),
-  [@alanahjonas95](https://github.com/alanahjonas95)).
-- Added
-  [`extract_data()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/extract_data.md)
-  function to enable data to be easily extracted from a tfrmt into a
-  data
-  frame.([\#628](https://github.com/GSK-Biostatistics/tfrmt/issues/628),
-  [@alanahjonas95](https://github.com/alanahjonas95))
-- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/shuffle_card.md)
-  now automatically strips inherited ARD attributes from objects of
-  class `bind_ard` to avoid unreliable metadata
-  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
-- [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/shuffle_card.md)
-  now prioritises the user-supplied `by` argument over inherited ARD
-  attributes, giving users control to override attributes and updating
-  the mismatch message to reflect this change
-  ([\#650](https://github.com/GSK-Biostatistics/tfrmt/issues/650)).
 
 ## tfrmt 0.3.0
 

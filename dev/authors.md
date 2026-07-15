@@ -2,7 +2,9 @@
 
 ## Authors
 
-- **Becca Krouse**. Author, maintainer.
+- **Alanah Jonas**. Author, maintainer.
+
+- **Becca Krouse**. Author.
 
 - **Christina Fillmore**. Author.
   [](https://orcid.org/0000-0003-0595-2302)
@@ -15,8 +17,6 @@
 
 - **Dragoș Moldovan-Grünfeld**. Author.
 
-- **Alanah Jonas**. Author.
-
 - **GlaxoSmithKline Research & Development Limited**. Copyright holder,
   funder.
 
@@ -27,15 +27,15 @@
 Source:
 [`DESCRIPTION`](https://github.com/GSK-Biostatistics/tfrmt/blob/main/DESCRIPTION)
 
-Krouse B, Fillmore C, Hughes E, Ahmad K, Haughton S, Moldovan-Grünfeld
-D, Jonas A (2026). *tfrmt: Applies Display Metadata to Analysis Results
-Datasets*. R package version 0.3.0.9000,
+Jonas A, Krouse B, Fillmore C, Hughes E, Ahmad K, Haughton S,
+Moldovan-Grünfeld D (2026). *tfrmt: Applies Display Metadata to Analysis
+Results Datasets*. R package version 0.4.0.9000,
 <https://GSK-Biostatistics.github.io/tfrmt/>.
 
     @Manual{,
       title = {tfrmt: Applies Display Metadata to Analysis Results Datasets},
-      author = {Becca Krouse and Christina Fillmore and Ellis Hughes and Karima Ahmad and Shannon Haughton and Dragoș Moldovan-Grünfeld and Alanah Jonas},
+      author = {Alanah Jonas and Becca Krouse and Christina Fillmore and Ellis Hughes and Karima Ahmad and Shannon Haughton and Dragoș Moldovan-Grünfeld},
       year = {2026},
-      note = {R package version 0.3.0.9000},
+      note = {R package version 0.4.0.9000},
       url = {https://GSK-Biostatistics.github.io/tfrmt/},
     }
