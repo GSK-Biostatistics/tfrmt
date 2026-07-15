@@ -156,6 +156,9 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
         stop("Requires a tfrmt object")
     }
 
+    # check required input variables are supplied
+    check_inputs(tfrmt, c("column", "param", "value"))
+
     if (!is.data.frame(.data)) {
         stop("Requires data, if not available please use `print_mock_gt()`")
     }
