@@ -538,43 +538,42 @@ test_that("cleaned_data_to_gt() works", {
 })
 
 test_that("cleaned_data_to_gt() renders markdown in title and subtitle", {
-  test_data <- tibble::tribble(
-    ~group,   ~label,   ~column,  ~param, ~val,
-    "mygrp",  "mylbl",  "col1",   "prm",  1,
-    "mygrp",  "mylbl",  "col2",   "prm",  2
-  )
-
-  tfrmt_md <- tfrmt(
-    group = "group",
-    label = "label",
-    param = "param",
-    column = "column",
-    value = "val",
-    title = "Study ABC-123<br>Protocol Amendment 2",
-    subtitle = "Population: **ITT**",
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        frmt("x.xx")
-      )
+    test_data <- tibble::tribble(
+        ~group  , ~label  , ~column , ~param , ~val ,
+        "mygrp" , "mylbl" , "col1"  , "prm"  ,    1 ,
+        "mygrp" , "mylbl" , "col2"  , "prm"  ,    2
     )
-  )
 
-  gt_result <- cleaned_data_to_gt(test_data, tfrmt_md, .unicode_ws = TRUE)
+    tfrmt_md <- tfrmt(
+        group = "group",
+        label = "label",
+        param = "param",
+        column = "column",
+        value = "val",
+        title = "Study ABC-123<br>Protocol Amendment 2",
+        subtitle = "Population: **ITT**",
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("x.xx")
+            )
+        )
+    )
 
-  expect_s3_class(gt_result$`_heading`$title, "from_markdown")
-  expect_s3_class(gt_result$`_heading`$subtitle, "from_markdown")
+    gt_result <- cleaned_data_to_gt(test_data, tfrmt_md, .unicode_ws = TRUE)
 
-  expect_identical(
-    as.character(gt_result$`_heading`$title),
-    "Study ABC-123<br>Protocol Amendment 2"
-  )
-  expect_identical(
-    as.character(gt_result$`_heading`$subtitle),
-    "Population: **ITT**"
-  )
+    expect_s3_class(gt_result$`_heading`$title, "from_markdown")
+    expect_s3_class(gt_result$`_heading`$subtitle, "from_markdown")
 
+    expect_identical(
+        as.character(gt_result$`_heading`$title),
+        "Study ABC-123<br>Protocol Amendment 2"
+    )
+    expect_identical(
+        as.character(gt_result$`_heading`$subtitle),
+        "Population: **ITT**"
+    )
 })
 
 test_that("cleaned_data_to_gt.list() works", {
