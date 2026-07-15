@@ -222,21 +222,21 @@ test_that("apply_tfrmt errors when tfrmt is not a tfrmt object", {
 })
 
 test_that("tentative_process handles errors with empty message", {
-  # Function that produces an error with an empty message string,
-  # simulating edge cases in internal processing functions
-  empty_msg_func <- function(.data, col) {
-    stop("")
-  }
-  input_data <- tibble::tibble(x = 1:3, y = c("a", "b", "c"))
-  empty_msg_messages <- capture_messages({
-    result <- tentative_process(input_data, empty_msg_func, col = "x")
-  })
-  # Original data returned unchanged when processing fails
-  expect_equal(result, input_data)
-  expect_true(!rlang::is_empty(empty_msg_messages))
-  # When error message is "", it should use format() on the error instead
-  expect_true(grepl("Unable to to apply", empty_msg_messages))
-  expect_true(grepl("Reason:", empty_msg_messages))
+    # Function that produces an error with an empty message string,
+    # simulating edge cases in internal processing functions
+    empty_msg_func <- function(.data, col) {
+        stop("")
+    }
+    input_data <- tibble::tibble(x = 1:3, y = c("a", "b", "c"))
+    empty_msg_messages <- capture_messages({
+        result <- tentative_process(input_data, empty_msg_func, col = "x")
+    })
+    # Original data returned unchanged when processing fails
+    expect_equal(result, input_data)
+    expect_true(!rlang::is_empty(empty_msg_messages))
+    # When error message is "", it should use format() on the error instead
+    expect_true(grepl("Unable to to apply", empty_msg_messages))
+    expect_true(grepl("Reason:", empty_msg_messages))
 })
 
 test_that("frmt_struct_string handles no group variables", {
