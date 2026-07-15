@@ -704,12 +704,12 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in subtitle
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$subtitle,
-        "by group: 101"
+        md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_heading`$subtitle,
-        "by group: 102"
+        md("by group: 102")
     )
 
     # change note location to preheader
@@ -756,12 +756,12 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in source_note
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_source_notes`[[1]],
-        "by group: 101"
+        md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_source_notes`[[1]],
-        "by group: 102"
+        md("by group: 102")
     )
 })
 
