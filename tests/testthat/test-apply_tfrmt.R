@@ -200,18 +200,16 @@ test_that("test tentative_process", {
 })
 
 test_that("apply_tfrmt errors when passed a non-tfrmt object", {
-  dat <- tibble::tibble(lbl = "a",
-                        prm = "n",
-                        val = 1,
-                        col = "A")
+    dat <- tibble::tibble(lbl = "a", prm = "n", val = 1, col = "A")
 
-  not_a_tfrmt <- unclass(tfrmt(label = lbl,
-                               param = prm,
-                               value = val,
-                               column = col))
+    not_a_tfrmt <- unclass(tfrmt(
+        label = lbl,
+        param = prm,
+        value = val,
+        column = col
+    ))
 
-  expect_error(apply_tfrmt(dat, not_a_tfrmt),
-               "Requires a tfrmt object")
+    expect_error(apply_tfrmt(dat, not_a_tfrmt), "Requires a tfrmt object")
 })
 
 test_that("tentative_process handles errors with empty message", {
