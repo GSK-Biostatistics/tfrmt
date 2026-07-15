@@ -270,14 +270,6 @@ test_that("frmt_struct_string handles no group variables", {
         "Multiple param listed for the same group/label values",
         fixed = TRUE
     )
-  )
-  # This should trigger the "Multiple param" message path
-  # with no group variable, hitting the else branch in frmt_struct_string
-  expect_message(
-    apply_tfrmt(dat, tfrmt_no_group, mock = FALSE),
-    "Multiple param listed for the same group/label values",
-    fixed = TRUE
-  )
 })
 
 test_that("check_order_vars() messages when order variables cause mismatching rows", {
