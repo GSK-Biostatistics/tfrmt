@@ -163,29 +163,6 @@ apply_row_grp_lbl <- function(
     add_ln_df
 }
 
-
-#' Test of the grp rows in the data
-#'
-#' @param cur_block current row group block
-#' @param .data data to test against NOTE: `TEMP_row` must be in the dataset
-#' @param group list of the group parameters
-#'
-#' @return vector of the rows which this format could be applied to
-#' @noRd
-#'
-#' @importFrom dplyr filter pull
-#' @importFrom rlang parse_expr
-grp_row_test_data <- function(cur_block, .data, group) {
-    filter_expr <- expr_to_filter.quosures(group, cur_block$group_val) %>%
-        parse_expr()
-
-    .data %>%
-        mutate(across(c(!!!group), ~ str_trim(.x))) %>%
-        filter(!!filter_expr) %>%
-        pull(.data$TEMP_row)
-}
-
-
 #' Apply row group element blocks
 #'
 #' @param .data data, but only what is getting changed
