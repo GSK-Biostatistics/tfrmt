@@ -4,6 +4,10 @@
 
 ### Improvements
 
+- Removed unused `grp_row_test_data` function, which improves test
+  coverage for `R/apply_row_grp_plan.R`
+  ([\#662](https://github.com/GSK-Biostatistics/tfrmt/issues/662)).
+
 ### Bug fixes
 
 - Robustly check that all required inputs (column, param, and value) are
