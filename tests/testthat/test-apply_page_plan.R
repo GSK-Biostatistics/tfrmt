@@ -114,7 +114,6 @@ test_that("Page plan with grouped split", {
             "B"   , "a"   , "n"  , "n"  ,   24 ,
             "C"   , "a"   , "n"  , "n"  ,   12
         ),
-
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "b"   , "n"  , "n"  ,   11 ,
@@ -134,6 +133,7 @@ test_that("Page plan with grouped split", {
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp2: a", "grp2: b")
     )
+
     expect_equal(
         attr(auto_split, ".page_grp_vars"),
         "grp2"
