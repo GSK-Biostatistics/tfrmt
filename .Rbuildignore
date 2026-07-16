@@ -18,3 +18,4 @@ man/figures/
 ^CRAN-SUBMISSION$
 ^[.]?air[.]toml$
 ^\.vscode$
+^\.lintr$

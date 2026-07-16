@@ -1,0 +1,77 @@
+linters: all_linters(
+  commas_linter = NULL,
+  infix_spaces_linter = NULL,
+  object_usage_linter = NULL,
+  implicit_assignment_linter = NULL,
+  numeric_leading_zero_linter = NULL,
+  object_length_linter = NULL,
+  return_linter = NULL,
+  which_grepl_linter = NULL,
+  nrow_subset_linter = NULL,
+  string_boundary_linter = NULL,
+  trailing_blank_lines_linter = NULL,
+  any_is_na_linter = NULL,
+  cyclocomp_linter(25),
+  todo_comment_linter = NULL,
+  boolean_arithmetic_linter = NULL,
+  vector_logic_linter = NULL,
+  function_argument_linter = NULL,
+  consecutive_mutate_linter = NULL,
+  missing_argument_linter = NULL,
+  implicit_integer_linter = NULL,
+  quotes_linter = NULL,
+  unnecessary_lambda_linter = NULL,
+  paste_linter = NULL,
+  literal_coercion_linter = NULL,
+  nzchar_linter = NULL,
+  seq_linter = NULL,
+  object_name_linter = NULL,
+  conjunct_test_linter = NULL,
+  consecutive_assertion_linter = NULL,
+  if_not_else_linter = NULL,
+  coalesce_linter = NULL,
+  # redundancy linters
+  redundant_equals_linter = NULL,
+  redundant_ifelse_linter = NULL,
+  commented_code_linter = NULL,
+  nonportable_path_linter = NULL,
+  keyword_quote_linter = NULL,
+  yoda_test_linter = NULL,
+  duplicate_argument_linter = NULL,
+  undesirable_function_linter = NULL,
+  object_overwrite_linter = NULL,
+  fixed_regex_linter = NULL,
+  # conditions handling linters
+  condition_call_linter = NULL,
+  condition_message_linter = NULL,
+  # expectations linters
+  expect_identical_linter = NULL,
+  expect_length_linter = NULL,
+  expect_not_linter = NULL,
+  expect_true_false_linter = NULL,
+  expect_comparison_linter = NULL,
+  expect_s3_class_linter = NULL,
+  expect_named_linter = NULL,
+  # negation linters
+  comparison_negation_linter = NULL,
+  outer_negation_linter = NULL,
+  strings_as_factors_linter = NULL,
+  unnecessary_concatenation_linter = NULL,
+  unnecessary_nesting_linter = NULL,
+  # piping linters
+  one_call_pipe_linter = NULL,
+  pipe_consistency_linter = NULL,
+  nested_pipe_linter = NULL,
+  pipe_call_linter = NULL,
+  unnecessary_placeholder_linter = NULL,
+  # line_length should also be handled by Air
+  line_length_linter = NULL,
+  # indentation is handled by Air
+  indentation_linter = NULL
+  ) # see vignette("lintr")
+encoding: "UTF-8"
+exclusions: list(
+  "data-raw/",
+  "tests/testthat.R",
+  "vignettes/"
+  ) # see ?lintr::exclude
