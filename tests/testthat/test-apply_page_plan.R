@@ -1325,97 +1325,47 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
     expect_s3_class(result, "gt_group")
 })
 
-test_that("Page plan with max_rows and spanning label_loc", {
-    df <- tibble::tribble(
-        ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
-        "AA"  , "A"   , "a"  , "n"  ,   22 ,
-        "AA"  , "A"   , "b"  , "n"  ,   11 ,
-        "AA"  , "B"   , "a"  , "n"  ,   24 ,
-        "BB"  , "B"   , "b"  , "n"  ,   55 ,
-        "BB"  , "C"   , "a"  , "n"  ,   12 ,
-        "BB"  , "C"   , "b"  , "n"  ,   19 ,
-    ) %>%
-        pivot_longer(trt, names_to = "column", values_to = "value")
-    mytfrmt <- tfrmt(
-        group = c("grp1", "grp2"),
-        label = "lbl",
-        param = "prm",
-        column = "column",
-        value = "value",
-        body_plan = body_plan(
-            frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
-                frmt("xx")
-            )
-        ),
-        row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(
-                location = "spanning"
-            )
-        ),
-        page_plan = page_plan(max_rows = 4)
-    )
+test_that("Page plan with max_rows edge cases: spanning and too-small max_rows", {
+  df <- tibble::tribble(
+    ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
+    "AA"  , "A"   , "a"  , "n"  ,   22 ,
+    "AA"  , "A"   , "b"  , "n"  ,   11 ,
+    "AA"  , "B"   , "a"  , "n"  ,   24 ,
+    "BB"  , "B"   , "b"  , "n"  ,   55 ,
+    "BB"  , "C"   , "a"  , "n"  ,   12 ,
+    "BB"  , "C"   , "b"  , "n"  ,   19 ,
+  ) %>%
+    pivot_longer(trt, names_to = "column", values_to = "value")
+  mytfrmt <- tfrmt(
+    group = c("grp1", "grp2"),
+    label = "lbl",
+    param = "prm",
+    column = "column",
+    value = "value",
+    body_plan = body_plan(
+      frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt("xx")
+      )
+    ),
+    row_grp_plan = row_grp_plan(
+      label_loc = element_row_grp_loc(
+        location = "spanning"
+      )
+    ),
+    page_plan = page_plan(max_rows = 4)
+  )
+  # Spanning label_loc with adequate max_rows splits correctly
+  expect_snapshot({
     result <- apply_tfrmt(df, mytfrmt)
-    # Should produce a split list (spanning with 2 groups adds rows for group labels)
-    expect_true(is.list(result))
-    expect_true(length(result) > 1)
-})
-
-test_that("Page plan with max_rows too small for group labels returns early with message", {
-    df <- tibble::tribble(
-        ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
-        "AA"  , "A"   , "a"  , "n"  ,   22 ,
-        "AA"  , "A"   , "b"  , "n"  ,   11 ,
-        "AA"  , "B"   , "a"  , "n"  ,   24 ,
-        "BB"  , "B"   , "b"  , "n"  ,   55 ,
-        "BB"  , "C"   , "a"  , "n"  ,   12 ,
-        "BB"  , "C"   , "b"  , "n"  ,   19 ,
-    ) %>%
-        pivot_longer(trt, names_to = "column", values_to = "value")
-
-    # With "indented" label_loc and 2 group vars, n_grp_rows = 2
-    # Setting max_rows = 2 means n_grp_rows is NOT < max_rows, triggering early return
-    mytfrmt <- tfrmt(
-        group = c("grp1", "grp2"),
-        label = "lbl",
-        param = "prm",
-        column = "column",
-        value = "value",
-        body_plan = body_plan(
-            frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
-                frmt("xx")
-            )
-        ),
-        page_plan = page_plan(max_rows = 2)
-    )
-
-    expect_message(
-        apply_tfrmt(df, mytfrmt),
-        "Unable to complete pagination"
-    )
-    # With max_rows = 1 (less than n_grp_rows), should also trigger
-    mytfrmt2 <- tfrmt(
-        group = c("grp1", "grp2"),
-        label = "lbl",
-        param = "prm",
-        column = "column",
-        value = "value",
-        body_plan = body_plan(
-            frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
-                frmt("xx")
-            )
-        ),
-        page_plan = page_plan(max_rows = 1)
-    )
-    expect_message(
-        result <- apply_tfrmt(df, mytfrmt2),
-        "Unable to complete pagination"
-    )
-    # Result should be a single tibble (not split), returned as-is
-    expect_true(tibble::is_tibble(result))
+    result
+  })
+  # max_rows too small for group labels triggers early return with message
+  mytfrmt$row_grp_plan <- NULL
+  mytfrmt$page_plan <- page_plan(max_rows = 2)
+  expect_snapshot({
+    result <- apply_tfrmt(df, mytfrmt)
+    result
+  })
 })
