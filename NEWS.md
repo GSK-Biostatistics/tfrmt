@@ -1,3 +1,11 @@
+# tfrmt (development version)
+
+## Improvements
+* Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
+
+## Bug fixes
+* Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
+  
 # tfrmt 0.4.0
 
 ## Improvements
