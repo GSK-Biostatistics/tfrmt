@@ -499,7 +499,7 @@ test_that("Check combine_group_cols with a multi groups", {
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
@@ -577,7 +577,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate(
             trtA = rep("xx (xx%)", 8) %>% as.list(),
             trtB = rep("xx (xx%)", 8) %>% as.list(),
@@ -624,7 +624,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "    my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
         "    my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
     ) %>%
-    # nolint end
+        # nolint end
         mutate(across(trtA:trtC, ~ as.list(.x)))
 
     expect_equal(
@@ -656,7 +656,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "grp1_2" , "grp2_2" , "my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
         "grp1_2" , "grp2_2" , " "          , " "        , " "        , " "
     ) %>%
-    # nolint end
+        # nolint end
         mutate(across(trtA:trtC, ~ as.list(.x)))
 
     expect_equal(auto_test_listcols, man_test_listcols)
@@ -676,7 +676,7 @@ test_that("> 2 groups with and without spanner_label", {
         "grp1_1" , "grp2_2" , "grp3_2" , "my_label_1" ,
         "grp1_1" , "grp2_2" , "grp3_2" , "my_label_2" ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
@@ -750,7 +750,7 @@ test_that("> 2 groups with and without spanner_label", {
             "grp1_1" , "    my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
             "grp1_1" , "    my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         ) %>%
-        # nolint end
+            # nolint end
             group_by(grp1)
     )
 })
@@ -769,7 +769,7 @@ test_that("Summary rows are not indented", {
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_1" ,
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_3" ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
@@ -833,7 +833,7 @@ test_that("Summary rows are not indented", {
             "cat_3" , "  sub_cat_3b_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
             "cat_3" , "  sub_cat_3b_3" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         ) %>%
-        # nolint end
+            # nolint end
             group_by(grp1)
     )
 
@@ -1273,7 +1273,7 @@ test_that("Suppress printing of groups", {
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
@@ -1502,7 +1502,7 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
