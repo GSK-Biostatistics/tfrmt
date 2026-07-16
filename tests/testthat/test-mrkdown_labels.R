@@ -98,7 +98,7 @@ test_that("markdown column labels - spanning", {
         "900"        , "717"      ,
         "Total"      , " "
     ) %>%
-    # nolint end
+        # nolint end
         crossing(
             col1 = c(
                 "Placebo (N=86)",

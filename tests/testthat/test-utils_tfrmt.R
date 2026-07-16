@@ -109,7 +109,7 @@ test_that("Check apply_tfrmt", {
         "B"    , "k"    , " 80.3       " , " 72.5       " , " 87.3       " , " 71.6       " ,
         "B"    , "w"    , "147         " , "149         " , "143         " , "159         "
     ) %>%
-    # nolint end
+        # nolint end
         mutate(..tfrmt_row_grp_lbl = FALSE)
 
     expect_equal(
