@@ -11,7 +11,6 @@ linters: all_linters(
   trailing_blank_lines_linter = NULL,
   any_is_na_linter = NULL,
   namespace_linter = NULL,
-  unreachable_code_linter = NULL,
   cyclocomp_linter(25),
   todo_comment_linter = NULL,
   boolean_arithmetic_linter = NULL,
