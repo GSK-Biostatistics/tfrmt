@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
 
-name: Lint
+name: Lint package
 
 permissions: read-all
 
@@ -25,6 +25,8 @@ jobs:
 
       - name: Setup R 🏗️
         uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
 
       - name: Setup R dependencies 📦
         uses: r-lib/actions/setup-r-dependencies@v2
