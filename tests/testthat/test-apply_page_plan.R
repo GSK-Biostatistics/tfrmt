@@ -161,17 +161,14 @@ test_that("Page plan with grouped split", {
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "a"   , "n"  , "n"  ,   22
         ),
-
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "b"   , "n"  , "n"  ,   11
         ),
-
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "B"   , "a"   , "n"  , "n"  ,   24
         ),
-
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "B"   , "b"   , "n"  , "n"  ,   55
