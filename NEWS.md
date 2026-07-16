@@ -1,3 +1,10 @@
+# tfrmt (development version)
+
+## Improvements
+
+## Bug fixes
+* Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
+  
 # tfrmt 0.4.0
 
 ## Improvements
