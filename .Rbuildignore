@@ -19,3 +19,4 @@ man/figures/
 ^[.]?air[.]toml$
 ^\.vscode$
 ^\.lintr$
+^\.lintr_restrictive$
