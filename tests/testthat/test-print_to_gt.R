@@ -52,6 +52,7 @@ test_that("convert_ws_unicode works as expected", {
 })
 
 test_that("print_to_gt() works", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~group  , ~label  , ~span1   , ~span2  , ~lower     , ~param , ~val ,
         "mygrp" , "mylbl" , "span01" , "span1" , "lower1_a" , "prm"  ,    1 ,
@@ -61,6 +62,7 @@ test_that("print_to_gt() works", {
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_a" , "prm"  ,    1 ,
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_b" , "prm"  ,    1
     )
+    # nolint end
 
     tfrmt_plan <- tfrmt(
         group = "group",
@@ -766,6 +768,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 })
 
 test_that("cleaned_data_to_gt() with col_style_plan", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~g1   , ~g2  , ~one       , ~param   , ~column , ~value  ,
         "G1"  , "g3" , "n (%)"    , "n"      , "trt1"  , 12      ,
@@ -784,6 +787,7 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         "G3"  , "g3" , "(q1, q3)" , "q3"     , "trt2"  , 22      ,
         "G1"  , "g3" , "mean"     , "pval"   , "four"  ,  0.0001
     )
+    # nolint end
 
     plan <- tfrmt(
         label = one,
@@ -886,6 +890,7 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
 })
 
 test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~column , ~val , ~ord ,
         "d"   , "c"   , "n"  , "n"  ,       1 ,    1 ,    1 ,
@@ -893,6 +898,7 @@ test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
         "q"   , "v"   , "s"  , "n"  ,       1 ,    3 ,    3 ,
         "b"   , "p"   , "e"  , "n"  ,       1 ,    4 ,    4
     )
+    # nolint end
 
     tfrmt_plan <- tfrmt(
         group = c(grp1, grp2),

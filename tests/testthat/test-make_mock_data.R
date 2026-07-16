@@ -38,6 +38,7 @@ test_that("Mock data contains all levels", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2    , ~my_label    , ~param2    , ~col   ,
             "grp1_1" , "grp2_1" , "my_label_1" , "param2_1" , "col1" ,
@@ -49,6 +50,7 @@ test_that("Mock data contains all levels", {
             "grp1_2" , "grp2_2" , "my_label_1" , "param2_1" , "col1" ,
             "grp1_2" , "grp2_2" , "my_label_2" , "param2_1" , "col1"
         )
+        # nolint end
     )
 
     # handle many group vars
@@ -97,6 +99,7 @@ test_that("Mock data contains all levels", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2    , ~grp3    , ~grp4    , ~my_label    , ~param2    , ~col   ,
             "A"      , "a"      , "grp3_1" , "grp4_1" , "my_label_1" , "param2_1" , "col1" ,
@@ -108,6 +111,7 @@ test_that("Mock data contains all levels", {
             "grp1_1" , "grp2_1" , "D"      , "a"      , "my_label_1" , "param2_1" , "col1" ,
             "grp1_1" , "grp2_1" , "D"      , "b"      , "my_label_1" , "param2_1" , "col1" ,
         )
+        # nolint end
     )
 
     # group & label values specified
@@ -132,6 +136,7 @@ test_that("Mock data contains all levels", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2 , ~my_label , ~param2 , ~col   ,
             "grp1_1" , "c"   , "e"       , "mean"  , "col1" ,
@@ -139,6 +144,7 @@ test_that("Mock data contains all levels", {
             "grp1_1" , "d"   , "e"       , "mean"  , "col1" ,
             "grp1_1" , "d"   , "f"       , "mean"  , "col1"
         )
+        # nolint end
     )
 
     # group & label specified + multiple levels/columns
@@ -146,6 +152,7 @@ test_that("Mock data contains all levels", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2 , ~my_label , ~param2 , ~col   ,
             "grp1_1" , "c"   , "e"       , "mean"  , "col1" ,
@@ -165,6 +172,7 @@ test_that("Mock data contains all levels", {
             "grp1_2" , "d"   , "f"       , "mean"  , "col1" ,
             "grp1_2" , "d"   , "f"       , "mean"  , "col2"
         )
+        # nolint end
     )
 
     # multiple frmt_structure
@@ -194,6 +202,7 @@ test_that("Mock data contains all levels", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2    , ~my_label    , ~param2 , ~col   ,
             "grp1_1" , "c"      , "e"          , "mean"  , "col1" ,
@@ -213,6 +222,7 @@ test_that("Mock data contains all levels", {
             "grp1_2" , "grp2_2" , "my_label_1" , "N"     , "col1" ,
             "grp1_2" , "grp2_2" , "my_label_2" , "N"     , "col1"
         )
+        # nolint end
     )
 
     # no duplicate levels introduced if body plan references a dummy level
@@ -376,6 +386,7 @@ test_that("Mock data contains sorting_cols when available", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2    , ~my_label    , ~param2    , ~ord1 , ~col   ,
             "grp1_1" , "grp2_1" , "my_label_1" , "param2_1" ,     1 , "col1" ,
@@ -387,6 +398,7 @@ test_that("Mock data contains sorting_cols when available", {
             "grp1_2" , "grp2_2" , "my_label_1" , "param2_1" ,     1 , "col1" ,
             "grp1_2" , "grp2_2" , "my_label_2" , "param2_1" ,     1 , "col1"
         )
+        # nolint end
     )
 
     # handle 2 sorting cols
@@ -410,6 +422,7 @@ test_that("Mock data contains sorting_cols when available", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~grp2    , ~my_label    , ~param2    , ~ord1 , ~ord2 , ~col   ,
             "grp1_1" , "grp2_1" , "my_label_1" , "param2_1" ,     1 ,     1 , "col1" ,
@@ -421,6 +434,7 @@ test_that("Mock data contains sorting_cols when available", {
             "grp1_2" , "grp2_2" , "my_label_1" , "param2_1" ,     1 ,     1 , "col1" ,
             "grp1_2" , "grp2_2" , "my_label_2" , "param2_1" ,     1 ,     1 , "col1"
         )
+        # nolint end
     )
 })
 
@@ -445,6 +459,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp    , ~my_label    , ~param2    , ~col   ,
             "grp_1" , "my_label_1" , "param2_1" , "col1" ,
@@ -456,6 +471,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
             "grp_2" , "my_label_2" , "param2_1" , "col1" ,
             "grp_2" , "my_label_2" , "param2_1" , "col2"
         )
+        # nolint end
     )
 
     # handle two columns
@@ -478,6 +494,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp    , ~my_label    , ~param2    , ~col1       , ~col2   ,
             "grp_1" , "my_label_1" , "param2_1" , "span_col1" , "col21" ,
@@ -489,6 +506,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
             "grp_2" , "my_label_2" , "param2_1" , "span_col1" , "col21" ,
             "grp_2" , "my_label_2" , "param2_1" , "span_col1" , "col22"
         )
+        # nolint end
     )
 
     # handle three columns
@@ -511,6 +529,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
     expect_equal(
         mock_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp    , ~my_label    , ~param2    , ~col1       , ~col2       , ~col3   ,
             "grp_1" , "my_label_1" , "param2_1" , "span_col1" , "span_col2" , "col31" ,
@@ -522,6 +541,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
             "grp_2" , "my_label_2" , "param2_1" , "span_col1" , "span_col2" , "col31" ,
             "grp_2" , "my_label_2" , "param2_1" , "span_col1" , "span_col2" , "col32"
         )
+        # nolint end
     )
 })
 
@@ -681,6 +701,7 @@ test_that("Using col_plan to get column names", {
         make_mock_data() %>%
         distinct(trt, visit)
 
+    # nolint start: commas_linter
     man_col_crossing <- tibble::tribble(
         ~trt                     , ~visit        ,
         "model_results_category" , NA_character_ ,
@@ -693,6 +714,7 @@ test_that("Using col_plan to get column names", {
         "GSK123456 100 mg"       , "Week 8"      ,
         "Placebo"                , "Week 8"      ,
     )
+    # nolint end
 
     expect_equal(auto_col_crossing, man_col_crossing)
 })
@@ -820,12 +842,14 @@ test_that("Will add big N avaliable", {
     auto_big_n_df <- make_mock_data(pop_tbl_tfrmt) %>%
         filter(param == "big_n")
 
+    # nolint start: commas_linter
     man_big_n_df <- tibble::tribble(
         ~name         , ~param  , ~TRT01A      ,
         NA_character_ , "big_n" , "Xanomeline" ,
         NA_character_ , "big_n" , "Placebo"    ,
         NA_character_ , "big_n" , "Total"
     )
+    # nolint end
 
     expect_equal(auto_big_n_df, man_big_n_df)
 })

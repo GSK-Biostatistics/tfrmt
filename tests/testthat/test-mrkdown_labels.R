@@ -76,6 +76,7 @@ test_that("markdown column labels - no spanning", {
 
 test_that("markdown column labels - spanning", {
     # set up data for tfrmt
+    # nolint start: commas_linter
     mock_data <- tibble::tribble(
         ~`Pooled Id` , ~`Site Id` ,
         "701"        , "701"      ,
@@ -97,6 +98,7 @@ test_that("markdown column labels - spanning", {
         "900"        , "717"      ,
         "Total"      , " "
     ) %>%
+    # nolint end
         crossing(
             col1 = c(
                 "Placebo (N=86)",
@@ -154,6 +156,7 @@ test_that("markdown column labels - spanning", {
 
 
 test_that("markdown column labels - renamed", {
+    # nolint start: commas_linter
     mock_data <- tibble::tribble(
         ~group , ~label      , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "col1"   , "value" ,    1 ,
@@ -172,6 +175,7 @@ test_that("markdown column labels - renamed", {
         "g2"   , "rowlabel3" , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , "mycol5" , "value" ,    3
     )
+    # nolint end
 
     test_tfrmt <- tfrmt(
         group = group,
@@ -206,6 +210,7 @@ test_that("markdown column labels - renamed", {
 })
 
 test_that("column spanners and labels are appropriately aligned", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group  , ~label  , ~span1   , ~span2  , ~lower     , ~param , ~val ,
         "mygrp" , "mylbl" , "span01" , "span1" , "lower1_a" , "prm"  ,    1 ,
@@ -215,6 +220,7 @@ test_that("column spanners and labels are appropriately aligned", {
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_a" , "prm"  ,    1 ,
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_b" , "prm"  ,    1
     )
+    # nolint end
 
     tfrmt_spec <- tfrmt(
         group = "group",
