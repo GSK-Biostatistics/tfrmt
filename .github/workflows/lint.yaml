@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
 
-name: Lint package
+name: Lint
 
 permissions: read-all
 
