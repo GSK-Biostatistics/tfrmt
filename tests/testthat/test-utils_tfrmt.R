@@ -171,7 +171,7 @@ test_that("Check apply_tfrmt for mock data", {
         "B"    , "k"    , " xx.x       " , " xx.x       " , " xx.x       " , " xx.x       " ,
         "B"    , "w"    , "XXX         " , "XXX         " , "XXX         " , "XXX         " ,
     ) %>%
-    # nolint end
+        # nolint end
         mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
         arrange(group, label)
 
@@ -244,7 +244,7 @@ test_that("Check apply_tfrmt for mock data", {
         "B"       , "k"       , "xx.x"         , "xx.x"         , "xx.x"         , "xx.x"         ,
         "B"       , "j"       , "xx.xx"        , "xx.xx"        , "xx.xx"        , "xx.xx"
     ) %>%
-    # nolint end
+        # nolint end
         mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
         arrange(group, label)
 
