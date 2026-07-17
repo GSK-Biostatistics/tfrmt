@@ -1391,6 +1391,7 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
 })
 
 test_that("Page plan with max_rows edge cases: spanning and too-small max_rows", {
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
         "AA"  , "A"   , "a"  , "n"  ,   22 ,
@@ -1400,6 +1401,7 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         "BB"  , "C"   , "a"  , "n"  ,   12 ,
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
+        # nolint end
         pivot_longer(trt, names_to = "column", values_to = "value")
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
