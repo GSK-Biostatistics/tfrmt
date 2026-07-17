@@ -203,8 +203,8 @@ test_that("json body plan", {
                 label_val = ".default",
                 frmt_when(
                     "<1" ~ "<1",
-                    '==100' ~ '',
-                    '==0' ~ '',
+                    "==100" ~ "",
+                    "==0" ~ "",
                     TRUE ~ frmt("(xx)")
                 )
             )
@@ -433,7 +433,7 @@ test_that("json col_plan", {
     #Basic tidyselect
     base_ts <- tfrmt(
         col_plan = col_plan(
-            starts_with('col')
+            starts_with("col")
         )
     )
     base_ts %>%
