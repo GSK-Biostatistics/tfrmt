@@ -180,11 +180,13 @@ test_that("build frmt objects", {
     expect_equal(frmt_spec, frmt_string)
 
     # build contents of body_plan for a given sigdig value
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1 , ~group2                    , ~sigdig ,
         "CHEM"  , "ALANINE AMINOTRANSFERASE" ,       1 ,
         "CHEM"  , "CHOLESTEROL"              ,       1
     )
+    # nolint end
     # 1 group, 1 label
     bp_1grp_1lbl <- body_plan_builder(
         dat_sigdig,
@@ -372,6 +374,7 @@ test_that("build frmt objects", {
 })
 
 test_that("no redundant frmt_structures", {
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1    , ~group2                    , ~sigdig ,
         ".default" , ".default"                 ,       1 ,
@@ -380,6 +383,7 @@ test_that("no redundant frmt_structures", {
         "CHEM"     , "CHOLESTEROL"              ,       2 ,
         "HEM"      , "EOSINOPHILS"              ,       2
     )
+    # nolint end
     bp <- tfrmt_sigdig(
         dat_sigdig,
         group = vars(group1),
@@ -478,6 +482,7 @@ test_that("no redundant frmt_structures", {
     )
     expect_equal(bp, bp_man)
 
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1    , ~group2       , ~lbl , ~sigdig ,
         "CHEM"     , "BILIRUBIN"   , "v1" ,       1 ,
@@ -485,6 +490,7 @@ test_that("no redundant frmt_structures", {
         "HEM"      , "CHOLESTEROL" , "v1" ,       2 ,
         ".default" , "EOSINOPHILS" , "v1" ,       2
     )
+    # nolint end
     bp <- tfrmt_sigdig(
         dat_sigdig,
         group = vars(group1, group2),
@@ -675,11 +681,13 @@ test_that("no redundant frmt_structures", {
 
 
 test_that("tfrmt_sigdig returns a tfrmt", {
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1 , ~group2                    , ~sigdig ,
         "CHEM"  , "ALANINE AMINOTRANSFERASE" ,       1 ,
         "CHEM"  , "BILIRUBIN"                ,       1
     )
+    # nolint end
     t_frmt <- tfrmt_sigdig(
         sigdig_df = dat_sigdig,
         group = group1,
@@ -717,6 +725,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
 
 
 test_that("varying group/label inputs", {
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1    , ~group2       , ~lbl , ~sigdig ,
         "CHEM"     , "BILIRUBIN"   , "v1" ,       1 ,
@@ -724,6 +733,7 @@ test_that("varying group/label inputs", {
         "HEM"      , "CHOLESTEROL" , "v1" ,       2 ,
         ".default" , "EOSINOPHILS" , "v1" ,       2
     )
+    # nolint end
 
     # if no group or label, assume all non-sigdig columns are groups
     t_out <- tfrmt_sigdig(sigdig_df = dat_sigdig)
@@ -780,10 +790,12 @@ test_that("varying group/label inputs", {
 
 
 test_that("group vars specified in tfrmt but not sigdig data are represented in body_plan", {
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1 , ~group2    , ~sigdig ,
         "test1" , ".default" ,       1
     )
+    # nolint end
     expect_warning(
         bp <- tfrmt_sigdig(
             dat_sigdig,
@@ -923,10 +935,12 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
             )
         )
     )
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1 , ~group2 , ~sigdig ,
         "test1" , "test2" ,       1
     )
+    # nolint end
     new_tfrmt <- tfrmt_sigdig(
         dat_sigdig,
         tfrmt_obj = prev_tfrmt
@@ -999,10 +1013,12 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
         group = somegrp,
         label = group2
     )
+    # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
         ~group1 , ~group2 , ~sigdig ,
         "test1" , "test2" ,       1
     )
+    # nolint end
     new_tfrmt <- tfrmt_sigdig(
         dat_sigdig,
         group = group1,
@@ -1024,10 +1040,12 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
 
 test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan", {
     # Setup minimal input data
+    # nolint start: commas_linter
     sig_input <- tibble::tribble(
         ~group1 , ~sigdig ,
         "CHEM"  ,       1
     )
+    # nolint end
 
     target_missing <- "MISSING_DATA"
 
