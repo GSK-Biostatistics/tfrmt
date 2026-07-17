@@ -16,7 +16,6 @@ linters: all_linters(
   consecutive_mutate_linter = NULL,
   missing_argument_linter = NULL,
   implicit_integer_linter = NULL,
-  quotes_linter = NULL,
   unnecessary_lambda_linter = NULL,
   paste_linter = NULL,
   literal_coercion_linter = NULL,
