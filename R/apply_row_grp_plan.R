@@ -136,7 +136,7 @@ apply_row_grp_lbl <- function(
     lbl_col <- eval_tidy(label, .data)
 
     # check if lbl_col contains NA
-    if (any(is.na(lbl_col))) {
+    if (anyNA(lbl_col)) {
         stop(paste0(
             "`label` column ",
             quo_name(label),
