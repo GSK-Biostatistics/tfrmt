@@ -1,7 +1,8 @@
 test_that("convert_ws_unicode works as expected", {
     gt_with_ws <- data.frame(
         group = "    trailing.   and.   leading.  ws.   ",
-        value = " ( x  x)"
+        value = " ( x  x)",
+        stringsAsFactors = FALSE
     ) |>
         gt::gt()
 
