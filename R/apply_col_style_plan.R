@@ -121,7 +121,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
         )
     }
 
-    col_selection <- col_selection[!grepl("^-", col_selection)]
+    col_selection <- col_selection[!startsWith(col_selection, "-")]
 
     ## use names if they exist, else use content
     if (!is.null(names(col_selection))) {
