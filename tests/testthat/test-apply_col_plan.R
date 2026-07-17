@@ -187,6 +187,7 @@ test_that("create_stub_head() works", {
 })
 
 test_that("apply_col_plan() works", {
+    # nolint start: commas_linter
     df1 <- tibble::tribble(
         ~grp2 , ~lbl , ~prm  , ~column , ~val , ~ord ,
         "c"   , "n"  , "n"   ,       1 , 1    ,    1 ,
@@ -197,6 +198,7 @@ test_that("apply_col_plan() works", {
         "v"   , "s"  , "n_3" ,       1 , 3.3  ,    3 ,
         "p"   , "e"  , "n"   ,       1 , 4    ,    4
     )
+    # nolint end
 
     expect_snapshot(
         apply_col_plan(
@@ -233,6 +235,7 @@ test_that("apply_col_plan() works", {
 })
 
 test_that("apply_col_plan() group and label vars are excluded from renaming", {
+    # nolint start: commas_linter
     df1 <- tibble::tribble(
         ~grp2 , ~lbl , ~prm  , ~column , ~val , ~ord ,
         "c"   , "n"  , "n"   ,       1 , 1    ,    1 ,
@@ -243,6 +246,7 @@ test_that("apply_col_plan() group and label vars are excluded from renaming", {
         "v"   , "s"  , "n_3" ,       1 , 3.3  ,    3 ,
         "p"   , "e"  , "n"   ,       1 , 4    ,    4
     )
+    # nolint end
 
     expect_snapshot(
         apply_col_plan(

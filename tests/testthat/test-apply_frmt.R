@@ -509,6 +509,7 @@ test_that("applying frmt_when", {
         group = vars(group)
     )
 
+    # nolint start: commas_linter
     man_df <- tibble::tribble(
         ~group  , ~lab    , ~col  , ~y  , ~x           ,
         "group" , "lab 1" , "col" , "A" , "1234.6"     ,
@@ -522,6 +523,7 @@ test_that("applying frmt_when", {
         "group" , "lab 4" , "col" , "B" , "Undectable" ,
         "group" , "lab 5" , "col" , "B" , "Undectable" ,
     )
+    # nolint end
 
     expect_equal(sample_df_frmted, man_df)
 
@@ -545,6 +547,7 @@ test_that("applying frmt_when", {
         group = vars(group)
     )
 
+    # nolint start: commas_linter
     man_df_combo <- tibble::tribble(
         ~group  , ~lab    , ~col  , ~y  , ~x                    ,
         "group" , "lab 1" , "col" , "A" , "1234.6 Undetectable" ,
@@ -553,6 +556,7 @@ test_that("applying frmt_when", {
         "group" , "lab 4" , "col" , "A" , "4567.9 (4.6%)"       ,
         "group" , "lab 5" , "col" , "A" , "5678.9 (5.7%)"       ,
     )
+    # nolint end
     expect_equal(sample_df_frmted, man_df_combo)
 })
 
@@ -635,6 +639,7 @@ test_that("Space in Param", {
 
     expect_equal(mixed$expression, "{mean} ({`CV %`})")
 
+    # nolint start: commas_linter
     data <- tibble::tribble(
         ~group             , ~type            , ~label             , ~column     , ~param      , ~value ,
         "baseline"         , "description"    , "Week 12 analysis" , "Placebo"   , "LM mean"   , 79.0   ,
@@ -642,6 +647,7 @@ test_that("Space in Param", {
         "Primary analysis" , "trt comparison" , "Week 12 analysis" , "TRT - PBO" , "LM mean"   , -0.3   ,
         "Primary analysis" , "trt comparison" , "Week 12 analysis" , "TRT - PBO" , "LM stderr" ,  0.4
     )
+    # nolint end
 
     space_combo <- frmt_combine(
         "{`LM mean`} ({`LM stderr`})",
@@ -778,6 +784,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
 })
 
 test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~grp , ~lbl , ~param , ~column , ~val ,
         "A"  , "n"  , "n"    , "trt1"  ,    1 ,
@@ -785,6 +792,7 @@ test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows"
         "B"  , "n"  , "n"    , "trt1"  ,    3 ,
         "B"  , "n"  , "n"    , "trt2"  ,    4
     )
+    # nolint end
 
     tfrmt_spec <- tfrmt(
         group = grp,

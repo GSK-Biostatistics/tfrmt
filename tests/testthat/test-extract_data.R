@@ -491,6 +491,7 @@ test_that("extract_data works for a table with bigN values", {
 })
 
 test_that("extract_data handles various spanning header depths", {
+    # nolint start: commas_linter
     data <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -509,6 +510,7 @@ test_that("extract_data handles various spanning header depths", {
         "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
     )
+    # nolint end
 
     # 2 layers of spanning headers
     spanning_tfrmt <- tfrmt(
