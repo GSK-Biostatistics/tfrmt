@@ -1389,3 +1389,50 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
 
     expect_s3_class(result, "gt_group")
 })
+
+test_that("Page plan with max_rows edge cases: spanning and too-small max_rows", {
+    # nolint start: commas_linter
+    df <- tibble::tribble(
+        ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
+        "AA"  , "A"   , "a"  , "n"  ,   22 ,
+        "AA"  , "A"   , "b"  , "n"  ,   11 ,
+        "AA"  , "B"   , "a"  , "n"  ,   24 ,
+        "BB"  , "B"   , "b"  , "n"  ,   55 ,
+        "BB"  , "C"   , "a"  , "n"  ,   12 ,
+        "BB"  , "C"   , "b"  , "n"  ,   19 ,
+    ) %>%
+        # nolint end
+        pivot_longer(trt, names_to = "column", values_to = "value")
+    mytfrmt <- tfrmt(
+        group = c("grp1", "grp2"),
+        label = "lbl",
+        param = "prm",
+        column = "column",
+        value = "value",
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
+        row_grp_plan = row_grp_plan(
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
+        ),
+        page_plan = page_plan(max_rows = 4)
+    )
+    # Spanning label_loc with adequate max_rows splits correctly
+    expect_snapshot({
+        result <- apply_tfrmt(df, mytfrmt)
+        result
+    })
+    # max_rows too small for group labels triggers early return with message
+    mytfrmt$row_grp_plan <- NULL
+    mytfrmt$page_plan <- page_plan(max_rows = 2)
+    expect_snapshot({
+        result <- apply_tfrmt(df, mytfrmt)
+        result
+    })
+})
