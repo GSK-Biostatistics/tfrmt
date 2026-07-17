@@ -8,7 +8,6 @@ linters: all_linters(
   nrow_subset_linter = NULL,
   string_boundary_linter = NULL,
   trailing_blank_lines_linter = NULL,
-  any_is_na_linter = NULL,
   namespace_linter = NULL,
   unreachable_code_linter = NULL,
   cyclocomp_linter(25),
