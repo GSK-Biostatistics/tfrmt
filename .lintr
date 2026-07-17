@@ -6,7 +6,6 @@ linters: all_linters(
   return_linter = NULL,
   which_grepl_linter = NULL,
   nrow_subset_linter = NULL,
-  string_boundary_linter = NULL,
   namespace_linter = NULL,
   unreachable_code_linter = NULL,
   cyclocomp_linter(25),
