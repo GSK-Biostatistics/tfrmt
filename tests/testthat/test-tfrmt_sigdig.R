@@ -1038,7 +1038,7 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
 })
 
 
-test_that("tfrmt_sigdig correctly passes the "missing" argument to the body_plan", {
+test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan", {
     # Setup minimal input data
     # nolint start: commas_linter
     sig_input <- tibble::tribble(
