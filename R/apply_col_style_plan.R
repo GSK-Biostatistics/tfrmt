@@ -279,7 +279,7 @@ apply_col_alignment_pos <- function(col, align) {
             by = "col_as_x"
         )
 
-    if (any(is.na(col_with_align$align))) {
+    if (anyNA(col_with_align$align)) {
         message(
             "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned."
         )
