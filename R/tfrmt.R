@@ -510,7 +510,7 @@ compare_dot_args_against_formals <- function(dot_arg, formals) {
         formals,
         ignore.case = TRUE,
         value = TRUE,
-        max.distance = .25
+        max.distance = 0.25
     )
     if (length(fuzzy_arg_match)) {
         arg_message <- paste0(

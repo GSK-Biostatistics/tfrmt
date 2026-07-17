@@ -222,6 +222,7 @@ test_that("Simple Case big_n", {
 })
 
 test_that("Test with spanning headers", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -245,6 +246,7 @@ test_that("Test with spanning headers", {
         NA     , NA          , "column cols" , "col 4"    , "col4"   , "bigN"  ,    6 ,
         NA     , NA          , NA            , NA         , "mycol3" , "bigN"  ,    6 ,
     )
+    # nolint end
 
     auto_tfrmt <- tfrmt(
         group = group,
@@ -551,6 +553,7 @@ test_that("Overlapping Big N's", {
 })
 
 test_that("Missing Big N in dataset", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -569,6 +572,7 @@ test_that("Missing Big N in dataset", {
         "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
     )
+    # nolint end
 
     tfrmt_test <- tfrmt(
         group = group,
@@ -603,6 +607,7 @@ test_that("Missing Big N in dataset", {
 })
 
 test_that("using 'value' for values column where there may be conflict in big_n", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~value ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,      1 ,
@@ -626,6 +631,7 @@ test_that("using 'value' for values column where there may be conflict in big_n"
         NA     , NA          , "column cols" , "col 4"    , "col4"   , "bigN"  ,      6 ,
         NA     , NA          , NA            , NA         , "mycol3" , "bigN"  ,      6 ,
     )
+    # nolint end
 
     auto <- tfrmt(
         group = group,

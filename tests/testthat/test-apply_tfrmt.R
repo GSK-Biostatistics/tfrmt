@@ -1,4 +1,5 @@
 test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
+    # nolint start: commas_linter
     dat1 <- tibble::tribble(
         ~grp2 , ~lbl , ~prm  , ~column , ~val , ~ord ,
         "c"   , "n"  , "n"   ,       1 , 1    ,    1 ,
@@ -30,6 +31,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         "q"   , "v"   , "s"  , "n_3" ,       1 , 3.3  ,    3 ,
         "b"   , "p"   , "e"  , "n"   ,       1 , 4    ,    4
     )
+    # nolint end
 
     tfrmt_temp <- tfrmt(
         group = grp2,
