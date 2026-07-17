@@ -982,6 +982,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1000,6 +1001,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1055,6 +1057,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1073,6 +1076,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1131,6 +1135,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1149,6 +1154,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1187,6 +1193,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 })
 
 test_that("Build simple tfrmt with multiple columns and with renaming duplicated colnames across spans", {
+    # nolint start: commas_linter
     multi_col_df <- tibble::tribble(
         ~label , ~col0 , ~col1 , ~col2 , ~param , ~value ,
         "A"    , "A_"  , "A"   , "AA"  , "p1"   ,    123 ,
@@ -1207,6 +1214,7 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         "B"    , NA    , NA    , "BB"  , "p1"   ,     12 ,
         "B"    , NA    , NA    , "CC"  , "p1"   ,     12
     )
+    # nolint end
 
     multi_column_template <- tfrmt(
         label = label,
@@ -1302,6 +1310,7 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
 })
 
 test_that("Build simple tfrmt with spans with child spans that are and are not spanned", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~top_span     , ~child_span , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2"  , "col1"   , "value" ,    1 ,
@@ -1320,6 +1329,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         "g2"   , "rowlabel3" , "column cols" , NA          , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , "my cols"     , NA          , "mycol5" , "value" ,    3
     )
+    # nolint end
 
     tfrmt_with_parial_child_span <- tfrmt(
         group = group,
@@ -1403,6 +1413,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
 })
 
 test_that("Build simple tfrmt with spans with child spans that are and are not spanned - removal", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~top_span     , ~child_span , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2"  , "col1"   , "value" ,    1 ,
@@ -1421,6 +1432,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         "g2"   , "rowlabel3" , "column cols" , NA          , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , "my cols"     , NA          , "mycol5" , "value" ,    3
     )
+    # nolint end
 
     tfrmt_with_parial_child_span <- tfrmt(
         group = group,
@@ -1714,6 +1726,7 @@ test_that("Build simple tfrmt with stub header", {
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1732,6 +1745,7 @@ test_that("Build simple tfrmt with stub header", {
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1765,6 +1779,7 @@ test_that("Build simple tfrmt with stub header", {
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset2 <- tibble::tribble(
         ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1783,6 +1798,7 @@ test_that("Build simple tfrmt with stub header", {
         "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1824,6 +1840,7 @@ test_that("Build simple tfrmt with stub header", {
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~grp1 , ~grp2 , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "G1"  , "g1"  , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1842,6 +1859,7 @@ test_that("Build simple tfrmt with stub header", {
         "G1"  , "g2"  , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "G1"  , "g2"  , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
