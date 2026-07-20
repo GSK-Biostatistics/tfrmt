@@ -437,7 +437,7 @@ apply_col_alignment_pos <- function(col, align) {
 #' @noRd
 apply_col_width <- function(col, width) {
     col_na_idx <- which(is.na(col))
-    col_empty_strings_idx <- which(grepl("^\\s+$", col))
+    col_empty_strings_idx <- grep("^\\s+$", col)
 
     if (length(col_na_idx) > 0) {
         col[col_na_idx] <- ""
