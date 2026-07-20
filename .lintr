@@ -45,7 +45,6 @@ linters: all_linters(
   expect_identical_linter = NULL,
   expect_length_linter = NULL,
   expect_not_linter = NULL,
-  expect_true_false_linter = NULL,
   expect_comparison_linter = NULL,
   expect_s3_class_linter = NULL,
   expect_named_linter = NULL,
