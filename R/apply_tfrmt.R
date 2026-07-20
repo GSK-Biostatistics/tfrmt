@@ -524,8 +524,6 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
         lbl_names <- lbl
     }
 
-    #label_val_char <- capture.output(dput(lbl))
-
     param_expr_char <- paste0(
         "\"",
         paste0("{", param_vals, "}", collapse = ", "),

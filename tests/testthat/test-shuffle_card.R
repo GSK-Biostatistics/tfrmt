@@ -54,7 +54,6 @@ test_that("shuffle/trim works", {
 
     expect_snapshot(ard_shuffled[1:5, ])
 
-    # shuffle & trim
     ard_shuff_trim <- ard_test |>
         shuffle_card(by = "ARM") |>
         as.data.frame()
@@ -64,17 +63,6 @@ test_that("shuffle/trim works", {
     # no list columns
     expect_true(!any(map_lgl(ard_shuff_trim, is.list)))
 })
-
-# test_that("shuffle_ard handles protected names", {
-#   ard_test <- cards::ard_categorical(
-#     cards::ADSL |> dplyr::rename(stat = ARM),
-#     by = "stat",
-#     variables = "AGEGR1"
-#   ) |>
-#     shuffle_card()
-#
-#   expect_equal(names(ard_test)[1], "stat.1")
-# })
 
 test_that("shuffle_card notifies user about warnings/errors before dropping", {
     expect_snapshot(
@@ -501,16 +489,6 @@ test_that("shuffle_card() fills with multiple `by` columns", {
         # need to ignore the attributes for the purpose of this comparison
         ignore_attr = TRUE
     )
-
-    # expect_identical(
-    #   shuffled_ard |>
-    #     dplyr::filter(
-    #       variable == "..ard_hierarchical_overall.."
-    #     ) |>
-    #     dplyr::pull(AESOC) |>
-    #     unique(),
-    #   "Any AESOC"
-    # )
 })
 
 test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
@@ -607,16 +585,6 @@ test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
         # need to ignore the attributes for the purpose of this comparison
         ignore_attr = TRUE
     )
-
-    # expect_identical(
-    #   shuffled_ard |>
-    #     dplyr::filter(
-    #       variable == "..ard_hierarchical_overall.."
-    #     ) |>
-    #     dplyr::pull(AESOC) |>
-    #     unique(),
-    #   "Any AESOC.1"
-    # )
 })
 
 
