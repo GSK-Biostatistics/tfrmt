@@ -1,5 +1,4 @@
 linters: all_linters(
-  infix_spaces_linter = NULL,
   object_usage_linter = NULL,
   implicit_assignment_linter = NULL,
   object_length_linter = NULL,
@@ -16,7 +15,6 @@ linters: all_linters(
   consecutive_mutate_linter = NULL,
   missing_argument_linter = NULL,
   implicit_integer_linter = NULL,
-  quotes_linter = NULL,
   unnecessary_lambda_linter = NULL,
   paste_linter = NULL,
   literal_coercion_linter = NULL,
@@ -45,14 +43,12 @@ linters: all_linters(
   expect_identical_linter = NULL,
   expect_length_linter = NULL,
   expect_not_linter = NULL,
-  expect_true_false_linter = NULL,
   expect_comparison_linter = NULL,
   expect_s3_class_linter = NULL,
   expect_named_linter = NULL,
   # negation linters
   comparison_negation_linter = NULL,
   outer_negation_linter = NULL,
-  strings_as_factors_linter = NULL,
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
   # piping linters
