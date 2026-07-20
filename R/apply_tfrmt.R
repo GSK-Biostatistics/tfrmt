@@ -415,7 +415,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 reframe(
                     label_collapse = as.character(paste(
                         label_quote,
-                        collapse = ','
+                        collapse = ","
                     )),
                     !!!tfrmt$group,
                     n

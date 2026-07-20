@@ -33,7 +33,7 @@ test_that("convert_ws_unicode works as expected", {
         "combination of   single and    multiple  spaces ",
         NA,
         "     leading    whitespace",
-        'trailing  whitespace     '
+        "trailing  whitespace     "
     )
 
     unicode_strings <- c(
@@ -43,7 +43,7 @@ test_that("convert_ws_unicode works as expected", {
         "combination of \u00A0 single and \u00A0 \u00A0multiple \u00A0spaces\u00A0",
         NA,
         "\u00A0\u00A0\u00A0\u00A0\u00A0leading \u00A0 \u00A0whitespace",
-        'trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0'
+        "trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0"
     )
 
     expect_equal(

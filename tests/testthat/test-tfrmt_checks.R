@@ -177,3 +177,101 @@ test_that("Testing error message for invalid input to big_n parameter", {
         fixed = TRUE
     )
 })
+
+test_that("Testing error for invalid col_style_structure with row_grp_plan when location is not column", {
+    # When a non-first group variable appears in col_style_structure cols
+    # and row_grp_plan location is not "column", it should abort
+    expect_error(
+        tfrmt(
+            group = c(rowlbl1, grp),
+            label = rowlbl2,
+            column = column,
+            param = param,
+            value = value,
+            sorting_cols = c(ord1, ord2),
+            body_plan = body_plan(
+                frmt_structure(
+                    group_val = ".default",
+                    label_val = ".default",
+                    frmt("xxx")
+                )
+            ),
+            col_style_plan = col_style_plan(
+                col_style_structure(col = grp, align = c(".", ",", " "))
+            ),
+            row_grp_plan = row_grp_plan(
+                row_grp_structure(
+                    group_val = ".default",
+                    element_block(post_space = " ")
+                ),
+                label_loc = element_row_grp_loc(location = "indented")
+            )
+        ),
+        class = "_tfrmt_invalid_row_grp_col_style_plan"
+    )
+})
+
+
+test_that("No error for col_style_structure with row_grp_plan when location is column", {
+    # When location is "column", having group vars in col_style_structure is valid
+    expect_no_error(
+        tfrmt(
+            group = c(rowlbl1, grp),
+            label = rowlbl2,
+            column = column,
+            param = param,
+            value = value,
+            sorting_cols = c(ord1, ord2),
+            body_plan = body_plan(
+                frmt_structure(
+                    group_val = ".default",
+                    label_val = ".default",
+                    frmt("xxx")
+                )
+            ),
+            col_style_plan = col_style_plan(
+                col_style_structure(col = grp, align = c(".", ",", " "))
+            ),
+            row_grp_plan = row_grp_plan(
+                row_grp_structure(
+                    group_val = ".default",
+                    element_block(post_space = " ")
+                ),
+                label_loc = element_row_grp_loc(location = "column")
+            )
+        )
+    )
+})
+
+
+test_that("Error message for invalid col_style_structure includes group details", {
+    # Verify the error message contains information about the invalid groups
+    expect_error(
+        tfrmt(
+            group = c(rowlbl1, grp),
+            label = rowlbl2,
+            column = column,
+            param = param,
+            value = value,
+            sorting_cols = c(ord1, ord2),
+            body_plan = body_plan(
+                frmt_structure(
+                    group_val = ".default",
+                    label_val = ".default",
+                    frmt("xxx")
+                )
+            ),
+            col_style_plan = col_style_plan(
+                col_style_structure(col = grp, align = c(".", ",", " "))
+            ),
+            row_grp_plan = row_grp_plan(
+                row_grp_structure(
+                    group_val = ".default",
+                    element_block(post_space = " ")
+                ),
+                label_loc = element_row_grp_loc(location = "spanning")
+            )
+        ),
+        "Invalid col_style_structure in row_grp_plan"
+    )
+})

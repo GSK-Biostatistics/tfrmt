@@ -74,7 +74,7 @@ test_that("expr_to_filter - quosure - with quotes", {
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
     expect_equal(filter_var, "`col` %in% c(\"value1's\")")
 
-    var <- 'value1\'s'
+    var <- "value1's"
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
     expect_equal(filter_var, "`col` %in% c(\"value1's\")")
 
