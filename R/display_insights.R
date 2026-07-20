@@ -7,7 +7,7 @@
 #' @param param symbolic parameter
 #'
 #' @importFrom tidyr unnest
-#' @importFrom dplyr slice pull tibble ungroup group_by left_join arrange
+#' @importFrom dplyr slice pull tibble ungroup left_join arrange
 #' @importFrom purrr map
 #' @noRd
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {

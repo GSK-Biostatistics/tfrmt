@@ -177,7 +177,7 @@ col_plan_quo_to_vars <- function(
 
 #' @importFrom rlang quo_get_expr quo
 #' @importFrom tidyr separate unite
-#' @importFrom dplyr filter pull left_join select
+#' @importFrom dplyr pull left_join select
 col_plan_span_structure_to_vars <- function(
     x,
     column_names,
@@ -422,7 +422,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
 #'
 #' @noRd
 #'
-#' @importFrom dplyr case_when pull
+#' @importFrom dplyr pull
 #' @importFrom tibble tibble
 unite_df_to_data_names <- function(
     split_data_names,

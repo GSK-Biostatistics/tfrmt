@@ -13,7 +13,7 @@
 #' @return formatted dataset
 #'
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove
-#' @importFrom dplyr if_else case_when tibble
+#' @importFrom dplyr if_else tibble
 #' @export
 #' @examples
 #'
@@ -34,7 +34,7 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
 
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
-#' @importFrom dplyr case_when tibble pull
+#' @importFrom dplyr tibble pull
 #' @importFrom rlang := as_function
 #' @export
 #'
@@ -150,7 +150,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
 
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
-#' @importFrom dplyr case_when tibble filter pull left_join
+#' @importFrom dplyr tibble pull left_join
 #' @importFrom tidyr pivot_wider replace_na
 #' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
