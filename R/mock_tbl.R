@@ -10,8 +10,7 @@
 #' @return tibble containing mock data
 #'
 #' @importFrom tidyr crossing unnest expand
-#' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble
-#'   across cur_column
+#' @importFrom dplyr rowwise pull rename ungroup coalesce group_by tibble across cur_column
 #' @importFrom purrr map map_dfr map_chr map_dfc reduce
 #' @importFrom rlang as_name is_empty
 #'

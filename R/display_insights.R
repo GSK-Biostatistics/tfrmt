@@ -7,7 +7,7 @@
 #' @param param symbolic parameter
 #'
 #' @importFrom tidyr unnest
-#' @importFrom dplyr mutate slice pull tibble ungroup group_by left_join arrange
+#' @importFrom dplyr slice pull tibble ungroup group_by left_join arrange
 #' @importFrom purrr map
 #' @noRd
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
@@ -44,7 +44,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #' @param convert_to_txt Logical value converting formatting to text, by default
 #'   `TRUE`
 #'
-#' @importFrom dplyr mutate rename select case_when
+#' @importFrom dplyr rename select case_when
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_remove str_remove_all str_sub str_trim
 #' @return formatted tibble
@@ -155,7 +155,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #'   or unquoted column name, a tidyselect semantic, or a span_structure.
 #'
 #' @importFrom glue glue glue_collapse
-#' @importFrom dplyr select mutate across arrange pull
+#' @importFrom dplyr select across arrange pull
 #' @importFrom rlang is_empty as_name as_label
 #' @importFrom stringr str_replace_all
 #' @importFrom purrr map_chr map
