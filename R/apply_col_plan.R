@@ -139,7 +139,7 @@ col_plan_quo_to_vars <- function(
     )
 
     ## if is subtraction, inverse selection to get subtracted columns and prepend with -
-    if (grepl("^-", as_label(x[[1]]))) {
+    if (startsWith(as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
             filter(!(!!col_quo %in% selected)) %>%
             mutate(
@@ -211,7 +211,7 @@ col_plan_span_structure_to_vars <- function(
                     split_data_names[[col_id]]
                 ))
 
-                is_subtraction_selection <- grepl("^-", as_label(sel_id))
+                is_subtraction_selection <- startsWith(as_label(sel_id), "-")
 
                 if (!is_subtraction_selection) {
                     if (
@@ -303,7 +303,7 @@ col_plan_span_structure_to_vars <- function(
 ## given a string - x - see how to convert to a quosure.
 ##  if negative is TRUE, it will mark it as a `-`.
 char_as_quo <- function(x) {
-    is_negative <- grepl("^-", x)
+    is_negative <- startsWith(x, "-")
     x <- gsub("^-", "", x) # Removes the leading '-'
     x <- gsub("^`|`$", "", x) # Removes leading/trailing backticks for col names with spaces in
 
@@ -394,7 +394,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
         new_name = names(data_names)
     ) %>%
         mutate(
-            subtraction_status = str_detect(.data$original, "^-"),
+            subtraction_status = startsWith(.data$original, "-"),
             original = str_remove(.data$original, "^-")
         ) %>%
         separate(
