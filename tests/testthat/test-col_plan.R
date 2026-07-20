@@ -1566,7 +1566,7 @@ test_that("Tidyselect subtraction with span_structure", {
     ) %>%
         mutate(
             ord1 = rep(
-                seq(1:length(unique(.$label))),
+                seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
             )
         ) %>%
