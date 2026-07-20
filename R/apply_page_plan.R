@@ -104,7 +104,7 @@ apply_page_max_rows <- function(
         noprint = 0
     )
 
-    if (!n_grp_rows < max_rows) {
+    if (n_grp_rows >= max_rows) {
         message(
             "Unable to complete pagination because `max_rows` specified in `page_plan` is smaller than the number of rows dedicated to group labels. Suggest increasing `max_rows` and trying again."
         )
