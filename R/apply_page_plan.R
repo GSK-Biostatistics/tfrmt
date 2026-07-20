@@ -89,10 +89,11 @@ apply_page_max_rows <- function(
 
     # determine # of rows to be added for the group during row grp lbl formatting
     # only proceed if the # of group rows to be added < max_rows
-    #
+    #   nolint start: commented_code_linter
     #      - "gtdefault": +1
     #      - "spanning" / "indented" : # of grouping vars
     #      - "noprint", "column": +0
+    #   nolint end
     n_grp_vars <- length(group)
     n_grp_rows <- switch(
         row_grp_plan_label_loc,
@@ -134,10 +135,6 @@ apply_page_max_rows <- function(
 
             all_summ_row <- numeric(0) # reset until current tbl is finished
         }
-
-        # if this row is added, how many rows will be in table
-        # cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
-        #   combine_group_cols_mod(group, label, row_grp_plan_label_loc)
 
         if (
             length(group) == 0 ||
