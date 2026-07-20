@@ -20,7 +20,7 @@ test_that("shuffle/trim works", {
     ard_grp_shuffled <- ard_grp |>
         shuffle_card(by = "ARM", trim = FALSE) |>
         dplyr::filter(!stat_name == "N")
-    expect_true(all(!is.na(ard_grp_shuffled$ARM)))
+    expect_true(!any(is.na(ard_grp_shuffled$ARM)))
 
     ard_hier <- cards::ard_hierarchical_count(
         data = cards::ADAE,
@@ -30,7 +30,7 @@ test_that("shuffle/trim works", {
     ard_hier_shuff <- ard_hier |>
         shuffle_card(trim = FALSE) |>
         as.data.frame()
-    expect_true(all(!is.na(ard_hier_shuff$AESOC)))
+    expect_true(!any(is.na(ard_hier_shuff$AESOC)))
 
     # shuffle many different formats
     ard_test <- cards::bind_ard(
