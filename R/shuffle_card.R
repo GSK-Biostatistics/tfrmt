@@ -112,7 +112,7 @@ shuffle_card <- function(
             stat_variable = .data$variable
         ) |>
         cards::rename_ard_columns(
-            fill = '..cards_overall..'
+            fill = "..cards_overall.."
         ) |>
         cards::unlist_ard_columns(
             columns = c(cards::all_ard_groups(), cards::all_ard_variables()),
