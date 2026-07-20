@@ -53,12 +53,6 @@ test_that("applying footnote meta column val", {
                 )
             )
         ),
-
-        # Specify row group plan
-        # Indent the rowlbl2
-        # row_grp_plan = row_grp_plan(
-        #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-        #   label_loc = element_row_grp_loc(location = "column")),
         footnote_plan = footnote_plan(
             footnote_structure("Test footnote 1", column_val = "Placebo"),
             marks = "letters"
@@ -513,7 +507,6 @@ test_that("applying footnote meta group val", {
                     rowlbl0 = "Test group",
                     rowlbl1 = "Completion Status"
                 ),
-                # label_val=list(rowlbl2="Adverse Event")
             ),
             marks = "letters"
         )

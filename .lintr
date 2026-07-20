@@ -26,7 +26,6 @@ linters: all_linters(
   # redundancy linters
   redundant_equals_linter = NULL,
   redundant_ifelse_linter = NULL,
-  commented_code_linter = NULL,
   nonportable_path_linter = NULL,
   keyword_quote_linter = NULL,
   yoda_test_linter = NULL,

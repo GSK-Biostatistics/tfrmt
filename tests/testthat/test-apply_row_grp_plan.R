@@ -1155,7 +1155,6 @@ test_that("Row group plans with col style plan", {
         )
     )
 
-    # label_loc = "column"
     # nolint start: commas_linter
     raw_dat <- tibble::tribble(
         ~g1   , ~g2       , ~one    , ~param , ~column , ~value ,
