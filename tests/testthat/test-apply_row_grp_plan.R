@@ -213,7 +213,7 @@ test_that("insert mix - single grouping variable", {
 test_that("insert post space after specific value", {
     df <- tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
-        label = as.character(1),
+        label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
         trtC = rep("xx (xx%)", 6),
@@ -254,7 +254,7 @@ test_that("insert post space after specific value", {
 test_that("overlapping row_grp_structures - prefers latest", {
     df <- tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
-        label = as.character(1),
+        label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
         trtC = rep("xx (xx%)", 6),
