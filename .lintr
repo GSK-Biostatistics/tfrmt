@@ -20,7 +20,6 @@ linters: all_linters(
   literal_coercion_linter = NULL,
   nzchar_linter = NULL,
   object_name_linter = NULL,
-  conjunct_test_linter = NULL,
   consecutive_assertion_linter = NULL,
   if_not_else_linter = NULL,
   coalesce_linter = NULL,
