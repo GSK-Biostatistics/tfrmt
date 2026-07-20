@@ -3,7 +3,7 @@
 #' @param .data data
 #' @param tfrmt_obj tfrmt object
 #' @param col_plan_vars the planned renaming of columns
-#' @importFrom dplyr across select tibble group_by slice n filter cur_column pull ungroup
+#' @importFrom dplyr select tibble group_by slice n filter cur_column pull ungroup
 #' @importFrom tidyr unnest
 #' @importFrom purrr map map_dfr discard
 #' @importFrom rlang as_name
@@ -193,7 +193,7 @@ apply_col_alignment <- function(col, align, type = "char") {
 #' @param align Alignment to be applied to column.
 #'
 #' @importFrom tidyr separate replace_na
-#' @importFrom dplyr across tibble bind_cols
+#' @importFrom dplyr tibble bind_cols
 #' @importFrom stringr str_dup str_c str_trim str_detect
 #' @importFrom rlang warn
 #'
