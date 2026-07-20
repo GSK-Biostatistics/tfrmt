@@ -192,7 +192,6 @@ param_set <- function(...) {
 #' @export
 #'
 #' @importFrom dplyr rowwise group_split desc vars all_of
-#' @importFrom tidyr unite
 #' @importFrom purrr map
 #' @importFrom rlang quo_is_missing syms as_name as_label
 tfrmt_sigdig <- function(
