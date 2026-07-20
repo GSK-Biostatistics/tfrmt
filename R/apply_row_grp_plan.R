@@ -250,7 +250,7 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_split select distinct bind_rows last any_of slice
+#' @importFrom dplyr group_split select bind_rows last any_of slice
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr

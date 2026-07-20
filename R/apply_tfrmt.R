@@ -389,7 +389,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #' @noRd
 #'
 #' @importFrom purrr quietly
-#' @importFrom dplyr summarise n tally pull na_if all_of reframe
+#' @importFrom dplyr summarise n tally pull na_if reframe
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
@@ -587,7 +587,7 @@ check_order_vars <- function(.data, tfrmt) {
 
 #' check that the # of big N's correspond to the # of pages
 #' @importFrom purrr map_dfr
-#' @importFrom dplyr select all_of distinct
+#' @importFrom dplyr select distinct
 #' @noRd
 check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {

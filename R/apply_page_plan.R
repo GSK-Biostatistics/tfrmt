@@ -363,7 +363,7 @@ apply_page_struct <- function(
 #' adapted from the row_grp_plan to remove anything unnecessary but keep the logic
 #' @noRd
 #' @importFrom forcats fct_inorder
-#' @importFrom dplyr select group_split distinct last bind_rows
+#' @importFrom dplyr select group_split last bind_rows
 #' @importFrom tibble tibble
 #' @importFrom stringr str_trim
 combine_group_cols_mod <- function(

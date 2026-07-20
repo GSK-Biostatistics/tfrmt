@@ -202,7 +202,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 #'
 #' @importFrom rlang quo_name is_empty
 #' @importFrom magrittr %>%
-#' @importFrom dplyr all_of select
+#' @importFrom dplyr select
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&
