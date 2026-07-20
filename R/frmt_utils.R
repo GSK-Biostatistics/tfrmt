@@ -189,7 +189,7 @@ format.body_plan <- function(x, ...) {
         paste0(" ", length(x), " Format Structures:")
     )
 
-    frmt_str_seq_len <- seq_len(length(x))
+    frmt_str_seq_len <- seq_along(x)
     frmt_str_num <- format(frmt_str_seq_len)
 
     tabin <- max(nzchar(frmt_str_num))

@@ -279,7 +279,8 @@ shuffle_card <- function(
             # rows with non-missing group
             x_nonmissing_by <- x |>
                 dplyr::filter(
-                    !is.na(.data[[g]]) & !.data[[g]] == "..cards_overall.."
+                    !is.na(.data[[g]]),
+                    !.data[[g]] == "..cards_overall.."
                 )
 
             if (nrow(x_missing_by) > 0 && nrow(x_nonmissing_by) > 0) {
