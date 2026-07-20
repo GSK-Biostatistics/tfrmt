@@ -48,7 +48,6 @@ linters: all_linters(
   expect_named_linter = NULL,
   # negation linters
   comparison_negation_linter = NULL,
-  outer_negation_linter = NULL,
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
   # piping linters
