@@ -3,7 +3,6 @@ linters: all_linters(
   implicit_assignment_linter = NULL,
   object_length_linter = NULL,
   return_linter = NULL,
-  which_grepl_linter = NULL,
   nrow_subset_linter = NULL,
   namespace_linter = NULL,
   unreachable_code_linter = NULL,
