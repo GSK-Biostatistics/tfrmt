@@ -54,7 +54,7 @@ as_json.tfrmt <- function(x) {
     tfrmt_nm <- names(x)
 
     out <- vector("list", length = length(x))
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         out[[i]] <- x[[i]] %>%
             as_json()
     }

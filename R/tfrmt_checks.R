@@ -267,7 +267,7 @@ check_col_style_row_grp_consistency <- function(x) {
 
 check_footnote_plan <- function(x) {
     if (!is_empty(x$footnote_plan)) {
-        for (i in 1:length(x$footnote_plan$struct_list)) {
+        for (i in seq_along(x$footnote_plan$struct_list)) {
             # if multiple columns then column_val must be a named list
             if (
                 length(x$column) > 1 &&
