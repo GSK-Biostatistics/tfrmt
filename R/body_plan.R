@@ -85,7 +85,7 @@ body_plan_builder <- function(
                 .data$param_display,
                 .data$contains_glue,
                 ~ if (.y == TRUE) {
-                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist
+                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
                 } else {
                     .x
                 }

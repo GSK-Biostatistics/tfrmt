@@ -258,14 +258,14 @@ col_plan_span_structure_to_vars <- function(
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
-                unique
+                unique()
         } else {
             split_data_names <- split_data_names %>%
                 filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
-                unique
+                unique()
         }
     }
 
