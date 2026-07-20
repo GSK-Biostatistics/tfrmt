@@ -585,7 +585,6 @@ test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
         # need to ignore the attributes for the purpose of this comparison
         ignore_attr = TRUE
     )
-
 })
 
 
