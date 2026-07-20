@@ -82,10 +82,12 @@ apply_page_max_rows <- function(
     group_cols <- map_chr(group, rlang::as_label)
 
     .data <- .data %>%
-        mutate(across(all_of(group_cols), \(x) {
-            if (is.character(x)) if_else(x == "", " ", x) else x
-        })) %>%
-        mutate(TEMP_row = row_number())
+        mutate(
+            across(all_of(group_cols), \(x) {
+                if (is.character(x)) if_else(x == "", " ", x) else x
+            }),
+            TEMP_row = row_number()
+        )
 
     # determine # of rows to be added for the group during row grp lbl formatting
     # only proceed if the # of group rows to be added < max_rows
@@ -379,9 +381,7 @@ combine_group_cols_mod <- function(
         select(c(!!!group, !!label, "TEMP_row")) %>%
         mutate(
             across(c(!!!group), ~ fct_inorder(.x)),
-            ..tfrmt_row_grp_lbl = FALSE
-        ) %>%
-        mutate(
+            ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
                 str_trim(!!last(group), side = "left")
         )

@@ -345,9 +345,7 @@ apply_col_alignment_pos <- function(col, align) {
                 .data$col,
                 .data$col_split_start,
                 .data$col_split_end
-            )
-        ) %>%
-        mutate(
+            ),
             col_sub_1 = case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
