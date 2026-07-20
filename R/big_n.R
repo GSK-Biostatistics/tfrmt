@@ -140,7 +140,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     !!!columns,
                     !!value,
                     tidyselect::where(
-                         ~ !any(is.na(.x))
+                        ~ !any(is.na(.x))
                     ),
                     -!!param
                 )
