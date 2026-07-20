@@ -389,7 +389,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #' @noRd
 #'
 #' @importFrom purrr quietly
-#' @importFrom dplyr summarise n tally pull na_if reframe
+#' @importFrom dplyr summarise tally pull na_if reframe
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
@@ -552,7 +552,6 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @return warning if order variables are causing formatting issues
 #'
-#' @importFrom dplyr n_distinct
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
     if (is_empty(tfrmt$sorting_cols) == FALSE) {
@@ -587,7 +586,7 @@ check_order_vars <- function(.data, tfrmt) {
 
 #' check that the # of big N's correspond to the # of pages
 #' @importFrom purrr map_dfr
-#' @importFrom dplyr select distinct
+#' @importFrom dplyr select
 #' @noRd
 check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {

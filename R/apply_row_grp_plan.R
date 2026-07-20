@@ -6,7 +6,7 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr tibble slice group_map left_join row_number select summarise across
+#' @importFrom dplyr tibble slice group_map row_number select summarise
 #' @importFrom purrr map map2_dfr
 #' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!
@@ -172,7 +172,7 @@ apply_row_grp_lbl <- function(
 #'
 #' @return dataset with element block applied
 #'
-#' @importFrom dplyr slice n bind_rows cur_column
+#' @importFrom dplyr slice bind_rows cur_column
 #' @importFrom tidyr fill
 #' @importFrom purrr map_chr
 #' @importFrom rlang !!!
@@ -250,7 +250,7 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_split select bind_rows last any_of slice
+#' @importFrom dplyr group_split select bind_rows last slice
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr

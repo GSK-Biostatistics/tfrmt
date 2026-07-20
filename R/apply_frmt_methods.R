@@ -13,7 +13,7 @@
 #' @return formatted dataset
 #'
 #' @importFrom stringr str_count str_trim str_dup str_c str_remove
-#' @importFrom dplyr if_else tibble
+#' @importFrom dplyr tibble
 #' @export
 #' @examples
 #'
@@ -150,7 +150,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
 
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
-#' @importFrom dplyr tibble pull left_join
+#' @importFrom dplyr tibble pull
 #' @importFrom tidyr pivot_wider replace_na
 #' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
@@ -297,7 +297,7 @@ apply_frmt.frmt_combine <- function(
 
 #' @export
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
-#' @importFrom dplyr pull if_else
+#' @importFrom dplyr pull
 #' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
 #' @importFrom tidyr replace_na

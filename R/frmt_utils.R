@@ -358,7 +358,6 @@ as.character.frmt <- function(x, ...) {
 #' @method as.character frmt_when
 #' @importFrom rlang quo `!!` f_rhs f_lhs eval_tidy as_label
 #' @importFrom stringr str_c
-#' @importFrom dplyr if_else
 #' @export
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%

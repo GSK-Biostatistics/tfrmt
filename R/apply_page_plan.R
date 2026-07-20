@@ -67,7 +67,7 @@ apply_page_plan <- function(
 #' @param row_grp_plan_label_loc row_grp_plan label location
 #'
 #' @noRd
-#' @importFrom dplyr  slice bind_rows pull
+#' @importFrom dplyr slice bind_rows pull
 #' @importFrom tibble tibble
 #' @importFrom forcats fct_inorder
 apply_page_max_rows <- function(
@@ -192,7 +192,7 @@ apply_page_max_rows <- function(
 #'
 #' @noRd
 #' @importFrom purrr map map2 map_dbl
-#' @importFrom dplyr tibble row_number left_join select summarise  lag last
+#' @importFrom dplyr tibble row_number select summarise lag last
 #' @importFrom tidyr  pivot_longer
 apply_page_struct <- function(
     .data,
