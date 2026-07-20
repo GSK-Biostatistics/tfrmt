@@ -293,7 +293,6 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
 #' @noRd
 #' @importFrom purrr map safely
 #' @importFrom rlang !! !!!
-#' @importFrom dplyr select
 validate_cols_match <- function(.data, tfrmt, mock) {
     #Required variables
     if (mock) {
@@ -389,7 +388,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #' @noRd
 #'
 #' @importFrom purrr quietly
-#' @importFrom dplyr summarise tally pull na_if reframe
+#' @importFrom dplyr summarise tally na_if reframe
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
@@ -586,7 +585,6 @@ check_order_vars <- function(.data, tfrmt) {
 
 #' check that the # of big N's correspond to the # of pages
 #' @importFrom purrr map_dfr
-#' @importFrom dplyr select
 #' @noRd
 check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {

@@ -32,7 +32,6 @@
 #' }}
 #'
 #' @importFrom rlang quo_is_missing as_label
-#' @importFrom dplyr select pull
 #' @importFrom magrittr %>%
 
 print_to_ggplot <- function(tfrmt, .data, ...) {
@@ -202,7 +201,6 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 #'
 #' @importFrom rlang quo_name is_empty
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&

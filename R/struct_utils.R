@@ -65,7 +65,7 @@ expr_to_filter.quosures <- function(cols, val) {
 #' @return list of row indices
 #' @noRd
 #'
-#' @importFrom dplyr pull select group_split
+#' @importFrom dplyr group_split
 #' @importFrom rlang parse_expr
 #' @importFrom purrr map_lgl map
 struct_val_idx <- function(cur_struct, .data, group, label) {

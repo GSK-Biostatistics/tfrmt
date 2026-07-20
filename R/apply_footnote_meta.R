@@ -51,7 +51,7 @@ apply_footnote_meta <- function(
 #'
 #' @return list with the row, column and footnote
 #' @noRd
-#' @importFrom dplyr inner_join first last cur_group_id
+#' @importFrom dplyr cur_group_id
 locate_fn <- function(
     footnote_structure,
     .data,

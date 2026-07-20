@@ -6,7 +6,7 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr tibble slice group_map row_number select summarise
+#' @importFrom dplyr tibble slice group_map row_number summarise
 #' @importFrom purrr map map2_dfr
 #' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!
@@ -123,7 +123,7 @@ apply_row_grp_struct <- function(
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr select group_by
+#' @importFrom dplyr group_by
 #' @importFrom rlang !!! eval_tidy
 apply_row_grp_lbl <- function(
     .data,
@@ -250,7 +250,7 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_split select bind_rows last slice
+#' @importFrom dplyr group_split bind_rows slice
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr
