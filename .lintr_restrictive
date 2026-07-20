@@ -8,7 +8,6 @@ linters: all_linters(
   unreachable_code_linter = NULL,
   cyclocomp_linter(25),
   todo_comment_linter = NULL,
-  boolean_arithmetic_linter = NULL,
   vector_logic_linter = NULL,
   function_argument_linter = NULL,
   consecutive_mutate_linter = NULL,
@@ -43,7 +42,6 @@ linters: all_linters(
   expect_named_linter = NULL,
   # negation linters
   comparison_negation_linter = NULL,
-  outer_negation_linter = NULL,
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
   # piping linters

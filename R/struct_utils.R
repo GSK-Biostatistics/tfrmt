@@ -133,7 +133,7 @@ detect_default <- function(struct) {
 
 # detect use of non-default in a  *_structure object entry
 detect_non_default <- function(struct_val) {
-    any(!is.null(struct_val) && any(!struct_val == ".default"))
+    !is.null(struct_val) && !all(struct_val == ".default")
 }
 
 #' Create the group_by expression for the data
