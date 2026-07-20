@@ -164,7 +164,7 @@ clean_col_names <- function(names, dont_inc) {
     names %>%
         map_chr(as_label) %>%
         str_remove_all('^.*\\(\\"') %>%
-        str_remove_all('^-') %>%
+        str_remove_all("^-") %>%
         str_remove_all('\\"\\)') %>%
         setdiff(dont_inc)
 }

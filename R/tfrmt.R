@@ -283,7 +283,7 @@ quo_get <- function(
 ) {
     arg_set <- lapply(args, function(arg) {
         ## try to get arg call
-        arg_call <- do.call('substitute', list(as.symbol(arg)), envir = envir)
+        arg_call <- do.call("substitute", list(as.symbol(arg)), envir = envir)
 
         if (missing(arg_call)) {
             ## args not defined can quietly return empty expressions.
@@ -360,10 +360,10 @@ quo_get <- function(
                         arg,
                         allow_tidy_select = allow_tidy_select
                     )
-                    arg_val <- as_vars(do.call('vars', arg_call, envir = envir))
+                    arg_val <- as_vars(do.call("vars", arg_call, envir = envir))
                 } else {
                     arg_val <- as_length_one_quo(
-                        do.call('vars', arg_call, envir = envir),
+                        do.call("vars", arg_call, envir = envir),
                         arg = as.character(arg)
                     )
                 }

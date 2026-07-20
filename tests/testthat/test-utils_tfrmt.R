@@ -622,7 +622,7 @@ test_that("struct utils quote escaping", {
                 frmt("xx")
             ),
             frmt_structure(
-                group_val = 'lowergrp\'s',
+                group_val = "lowergrp's",
                 label_val = "mean",
                 frmt("xx.x")
             ),
