@@ -156,7 +156,7 @@ col_plan_quo_to_vars <- function(
                 is_valid_tidyselect_call(quo_get_expr(x[[1]])) &&
                     length(selected) > 1
             ) {
-                rename_val <- paste0(rename_val, seq_len(length(selected)))
+                rename_val <- paste0(rename_val, seq_along(selected))
             }
 
             rows_to_rename <- split_data_names[[as_label(col_quo)]] %in%
@@ -226,7 +226,7 @@ col_plan_span_structure_to_vars <- function(
                         ) {
                             rename_val <- paste0(
                                 rename_val,
-                                seq_len(length(sel_id_col_selections))
+                                seq_along(sel_id_col_selections)
                             )
                         }
 
