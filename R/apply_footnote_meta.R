@@ -310,9 +310,8 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    # group_by(!!first(group)) %>%
                     mutate(
-                        `___tfrmt_grp_n` = row_number(), #cur_group_id(),
+                        `___tfrmt_grp_n` = row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     filter(.data$`___tfrmt_test`) %>%
