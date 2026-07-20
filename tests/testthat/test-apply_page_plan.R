@@ -1079,7 +1079,9 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     # Keep required AESEV "TOTAL" rows
     ard_ae2 <- ard_ae2 |>
         dplyr::filter(
-            variable != "TRT01A", group1 != "AESOC", group1 != "AESEV"
+            variable != "TRT01A",
+            group1 != "AESOC",
+            group1 != "AESEV"
         )
 
     ard_ae4 <- ard_ae |>
