@@ -50,7 +50,6 @@ linters: all_linters(
   # negation linters
   comparison_negation_linter = NULL,
   outer_negation_linter = NULL,
-  strings_as_factors_linter = NULL,
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
   # piping linters

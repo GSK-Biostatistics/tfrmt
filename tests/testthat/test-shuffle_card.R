@@ -494,7 +494,8 @@ test_that("shuffle_card() fills with multiple `by` columns", {
         data.frame(
             TRTA = "Overall TRTA",
             AESOC = NA_character_,
-            SEX = "Overall SEX"
+            SEX = "Overall SEX",
+            stringsAsFactors = FALSE
         ),
         # the shuffled_ard preserves the card attributes and returns a tibble. We
         # need to ignore the attributes for the purpose of this comparison
@@ -599,7 +600,8 @@ test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
         data.frame(
             TRTA = "Overall TRTA.1",
             AESOC = NA_character_,
-            SEX = "Overall SEX"
+            SEX = "Overall SEX",
+            stringsAsFactors = FALSE
         ),
         # the shuffled_ard preserves the card attributes and returns a tibble. We
         # need to ignore the attributes for the purpose of this comparison
