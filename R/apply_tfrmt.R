@@ -344,7 +344,6 @@ validate_cols_match <- function(.data, tfrmt, mock) {
 #' @param param list of quosures to arrange on
 #'
 #' @noRd
-#' @importFrom dplyr arrange
 arrange_enquo <- function(dat, param) {
     arrange(dat, !!!param)
 }

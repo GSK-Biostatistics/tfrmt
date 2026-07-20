@@ -260,7 +260,7 @@ apply_col_alignment_char <- function(col, align) {
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column.
 #'
-#' @importFrom dplyr lag left_join tibble group_by summarise arrange row_number select filter
+#' @importFrom dplyr lag left_join tibble group_by summarise row_number select filter
 #' @importFrom tidyr separate pivot_longer replace_na
 #' @importFrom stringr str_replace_all str_count str_dup str_extract str_detect str_c
 #'

@@ -177,7 +177,7 @@ col_plan_quo_to_vars <- function(
 
 #' @importFrom rlang quo_get_expr quo
 #' @importFrom tidyr separate unite
-#' @importFrom dplyr filter pull arrange left_join select
+#' @importFrom dplyr filter pull left_join select
 col_plan_span_structure_to_vars <- function(
     x,
     column_names,

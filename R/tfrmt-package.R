@@ -2,7 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom dplyr mutate
+#' @importFrom dplyr arrange mutate
 #' @importFrom tidyr unite
 ## usethis namespace: end
 NULL

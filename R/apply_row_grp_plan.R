@@ -6,7 +6,7 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr tibble group_by arrange slice group_map case_when left_join row_number select summarise across
+#' @importFrom dplyr tibble group_by slice group_map case_when left_join row_number select summarise across
 #' @importFrom purrr map map2_dfr
 #' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!

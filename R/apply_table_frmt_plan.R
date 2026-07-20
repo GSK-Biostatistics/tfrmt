@@ -9,7 +9,7 @@
 #' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
-#' @importFrom dplyr tibble mutate group_by arrange slice bind_cols group_split pull select starts_with
+#' @importFrom dplyr tibble group_by slice bind_cols group_split pull select starts_with
 #' @importFrom purrr map map_dfr
 #' @importFrom tidyr unnest
 #' @importFrom rlang !! :=
