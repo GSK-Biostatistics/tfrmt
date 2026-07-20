@@ -30,7 +30,7 @@ test_that("shuffle/trim works", {
     ard_hier_shuff <- ard_hier |>
         shuffle_card(trim = FALSE) |>
         as.data.frame()
-    expect_true(!anyNA(ard_hier_shuff$AESOC))
+    expect_false(anyNA(ard_hier_shuff$AESOC))
 
     # shuffle many different formats
     ard_test <- cards::bind_ard(
