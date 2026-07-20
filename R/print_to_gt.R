@@ -437,7 +437,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
 #' @importFrom gt cols_label tab_spanner md
-#' @importFrom dplyr as_tibble desc coalesce
+#' @importFrom dplyr as_tibble coalesce
 #' @importFrom purrr keep
 #'
 format_gt_column_labels <- function(gt_table, .data) {

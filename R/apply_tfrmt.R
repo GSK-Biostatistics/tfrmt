@@ -388,7 +388,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #' @noRd
 #'
 #' @importFrom purrr quietly
-#' @importFrom dplyr summarise tally na_if reframe
+#' @importFrom dplyr tally na_if reframe
 #' @importFrom stringr str_detect
 #' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
