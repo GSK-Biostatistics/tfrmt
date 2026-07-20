@@ -231,11 +231,6 @@ check_col_style_row_grp_consistency <- function(x) {
         for (cap_vars_idx in seq_along(col_align_plan_as_char)) {
             grp_in_cap <- group_as_char %in%
                 col_align_plan_as_char[[cap_vars_idx]]
-            if (length(x$col_style_plan[[cap_vars_idx]]$cols) == 0) {
-                stop(
-                    "Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself"
-                )
-            }
 
             if (any(grp_in_cap[-1]) && !r_grp_plan_col_loc == "column") {
                 is_invalid_plan <- TRUE
