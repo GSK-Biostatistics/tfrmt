@@ -132,7 +132,7 @@ page_plan object
 #> 
 #> $transform
 #> ~stringr::str_replace(.x, "grp", "Group")
-#> <environment: 0x559115c47858>
+#> <environment: 0x55b99f348d38>
 #> 
 #> attr(,"class")
 #> [1] "page_plan" "plan"     
@@ -169,7 +169,7 @@ page_plan object
 #> {
 #>     stringr::str_replace(x, "grp", "Group")
 #> }
-#> <environment: 0x559115c47858>
+#> <environment: 0x55b99f348d38>
 #> 
 #> attr(,"class")
 #> [1] "page_plan" "plan"     
