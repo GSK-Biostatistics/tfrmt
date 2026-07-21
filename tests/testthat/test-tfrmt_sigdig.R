@@ -8,19 +8,21 @@ test_that("setting param sigdig defaults", {
     )
     expect_equal(param_set(), defaults)
 
-    expect_equal(
-        list(
-            min = 1,
-            median = 1,
-            n = NA,
-            max = 2,
-            "{mean} ({sd})" = c(2, 3)
-        ),
-        param_set(
-            max = 2,
-            "{mean} ({sd})" = c(2, 3)
-        )
-    )
+actual <- param_set(
+  max = 2,
+  "{mean} ({sd})" = c(2, 3)
+)
+
+expected <- list(
+  min = 1,
+  median = 1,
+  n = NA,
+  max = 2,
+  "{mean} ({sd})" = c(2, 3)
+)
+
+expect_equal(actual, expected)
+    
 
     expect_equal(
         param_set(new_prm = 4),
@@ -45,16 +47,16 @@ test_that("setting param sigdig defaults", {
         )
     )
 
-    expect_equal(
-        list(
+     actual <- list(
             min = 1,
             max = 1,
             median = 1,
             "{mean} ({sd})" = c(1, 2),
             "{n} ({pct}%)" = c(NA, 1)
-        ),
-        param_set("{n} ({pct}%)" = c(NA, 1)),
-    )
+        )
+
+    expected <- param_set("{n} ({pct}%)" = c(NA, 1))
+    expect_equal(actual, expected)
 })
 
 test_that("build frmt objects", {
