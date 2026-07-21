@@ -142,9 +142,9 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 
     if (column_type == "numeric") {
         long_data$column <- as.numeric(long_data$column)
-        plot <- ggplot(
+        plot <- ggplot2::ggplot(
             long_data,
-            aes(
+            ggplot2::aes(
                 x = as.numeric(.data$column),
                 y = as.factor(.data$y),
                 label = .data$value
@@ -156,27 +156,31 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
                 labels = as.character(unique(long_data$column))
             )
     } else {
-        plot <- ggplot(
+        plot <- ggplot2::ggplot(
             long_data,
-            aes(x = .data$column, y = as.factor(.data$y), label = .data$value)
+            ggplot2::aes(
+                x = .data$column,
+                y = as.factor(.data$y),
+                label = .data$value
+            )
         ) +
             scale_x_discrete(position = "top")
     }
 
     plot +
-        geom_text(...) +
+        ggplot2::geom_text(...) +
         xlab("") +
         ylab("") +
         theme_void() +
         theme(
-            axis.text.y = element_text(
+            axis.text.y = ggplot2::element_text(
                 size = 10,
-                margin = margin(r = 0),
+                margin = ggplot2::margin(r = 0),
                 hjust = 0
             ),
             panel.spacing = unit(0, "mm"),
-            strip.text = element_blank(),
-            axis.text.x = element_text(size = 10)
+            strip.text = ggplot2::element_blank(),
+            axis.text.x = ggplot2::element_text(size = 10)
         ) + # replace y values with labels
         scale_y_discrete(
             labels = dplyr::pull(long_data, !!tfrmt$label),

@@ -8,7 +8,6 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom ggplot2 aes element_blank element_text geom_text ggplot margin
 #' @importFrom ggplot2 scale_x_continuous scale_x_discrete scale_y_discrete
 #' @importFrom ggplot2 theme theme_void unit xlab ylab
 #'
