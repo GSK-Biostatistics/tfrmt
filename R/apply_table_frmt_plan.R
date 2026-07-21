@@ -10,7 +10,6 @@
 #'
 #' @noRd
 #' @importFrom purrr map map_dfr
-#' @importFrom tidyr unnest
 #' @importFrom rlang !! :=
 apply_table_frmt_plan <- function(
     .data,

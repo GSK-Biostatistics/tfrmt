@@ -7,7 +7,6 @@
 #'
 #' @noRd
 #' @importFrom purrr map map2_dfr
-#' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
 apply_row_grp_struct <- function(
@@ -170,7 +169,6 @@ apply_row_grp_lbl <- function(
 #'
 #' @return dataset with element block applied
 #'
-#' @importFrom tidyr fill
 #' @importFrom purrr map_chr
 #' @importFrom rlang !!!
 #'
@@ -247,7 +245,6 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom tidyr replace_na
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom forcats fct_inorder

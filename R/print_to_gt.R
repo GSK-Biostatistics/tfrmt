@@ -437,7 +437,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
 #' @importFrom gt cols_label tab_spanner md
 #' @importFrom purrr keep

@@ -148,7 +148,6 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
 
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
-#' @importFrom tidyr pivot_wider replace_na
 #' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
 #' @export
@@ -296,7 +295,6 @@ apply_frmt.frmt_combine <- function(
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
 #' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
-#' @importFrom tidyr replace_na
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {

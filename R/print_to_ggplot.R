@@ -103,7 +103,6 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 #' @noRd
 #'
 #' @importFrom ggplot2 ggplot .data ylab xlab theme_void theme scale_y_discrete scale_x_continuous scale_x_discrete element_text aes geom_text margin unit element_blank
-#' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     # apply grouping if any

@@ -191,7 +191,6 @@ apply_page_max_rows <- function(
 #'
 #' @noRd
 #' @importFrom purrr map map2 map_dbl
-#' @importFrom tidyr  pivot_longer
 apply_page_struct <- function(
     .data,
     page_struct_list,
@@ -429,7 +428,6 @@ combine_group_cols_mod <- function(
 #' add any related summary rows from previous tbl to next tbl
 #' @noRd
 #' @importFrom purrr map_chr map map2_lgl
-#' @importFrom tidyr pivot_longer
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%

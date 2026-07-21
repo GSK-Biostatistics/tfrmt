@@ -388,7 +388,6 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #'
 #' @importFrom purrr quietly
 #' @importFrom stringr str_detect
-#' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
     num_rec_by_row <- data %>%

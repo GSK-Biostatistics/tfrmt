@@ -16,8 +16,12 @@
 #' @importFrom dplyr vars
 #'
 #' @importFrom rlang expr
+#'
 #' @importFrom tibble add_row as_tibble as_tibble_row is_tibble tibble
-#' @importFrom tidyr unite
+#'
+#' @importFrom tidyr crossing expand fill nest pivot_longer pivot_wider
+#' @importFrom tidyr replace_na separate unnest unnest_longer unite
+#'
 #' @importFrom tidyselect starts_with
 ## usethis namespace: end
 NULL

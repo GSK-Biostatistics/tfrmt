@@ -175,7 +175,6 @@ col_plan_quo_to_vars <- function(
 }
 
 #' @importFrom rlang quo_get_expr quo
-#' @importFrom tidyr separate unite
 col_plan_span_structure_to_vars <- function(
     x,
     column_names,
@@ -370,7 +369,6 @@ eval_col_plan_quo <- function(
 #'
 #' @noRd
 #'
-#' @importFrom tidyr separate
 split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
     data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 

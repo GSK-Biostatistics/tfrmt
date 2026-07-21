@@ -60,7 +60,6 @@ body_plan <- function(...) {
 #' @noRd
 #' @importFrom stringr str_detect str_extract_all
 #' @importFrom purrr map_dfr map map_chr quietly pmap_chr
-#' @importFrom tidyr unnest
 #' @importFrom rlang as_name quo_is_missing
 body_plan_builder <- function(
     data,
