@@ -116,16 +116,18 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             dplyr::mutate(
                 frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
-                        str_remove("< frmt \\| Expression: ") %>%
-                        str_remove(" >"),
+                        stringr::str_remove("< frmt \\| Expression: ") %>%
+                        stringr::str_remove(" >"),
                     frmt_type == "frmt_combine" ~ frmt_details %>%
-                        str_remove("< frmt_combine \\| Expression: ") %>%
-                        str_remove(" >"),
+                        stringr::str_remove(
+                            "< frmt_combine \\| Expression: "
+                        ) %>%
+                        stringr::str_remove(" >"),
                     frmt_type == "frmt_when" ~ frmt_details %>%
-                        str_remove("< frmt_when \\| ") %>%
-                        str_sub(end = -2L) %>%
-                        str_remove_all("[\n]") %>%
-                        str_trim() %>%
+                        stringr::str_remove("< frmt_when \\| ") %>%
+                        stringr::str_sub(end = -2L) %>%
+                        stringr::str_remove_all("[\n]") %>%
+                        stringr::str_trim() %>%
                         gsub(pattern = "\\s\\s", replacement = ", ")
                 )
             )
@@ -201,7 +203,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::mutate(
             dplyr::across(
                 tidyselect::everything(),
-                ~ str_replace_all(., "[0-9]", "x")
+                ~ stringr::str_replace_all(., "[0-9]", "x")
             )
         )
 

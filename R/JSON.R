@@ -63,13 +63,16 @@ as_json.tfrmt <- function(x) {
     # Removing names added in by jsonlite
     # only change spaces at the beginning of the row
     json_split <- output_json %>%
-        str_split("\\\n") %>%
+        stringr::str_split("\\\n") %>%
         unlist()
     # Needs updating
-    to_replace <- str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
+    to_replace <- stringr::str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
+
     json_split[to_replace] <- json_split[to_replace] %>%
-        str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
-    json_clean <- str_c(json_split, collapse = "\n")
+        stringr::str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
+
+    json_clean <- stringr::str_c(json_split, collapse = "\n")
+
     if (jsonlite::validate(json_clean)) {
         class(json_clean) <- "json"
     } else {
@@ -122,8 +125,9 @@ as_json.frmt_structure <- function(x) {
 as_json.frmt <- function(x) {
     if (!is.null(x$transform)) {
         x$transform <- deparse(x$transform) %>%
-            str_c(collapse = "")
+            stringr::str_c(collapse = "")
     }
+
     list(frmt = x)
 }
 
@@ -281,7 +285,7 @@ ls_to_body_plan <- function(ls) {
     if (!is.null(ls)) {
         frmts_ls <- ls %>%
             map(function(struct) {
-                frmt_loc <- str_which(names(struct), "frmt*")
+                frmt_loc <- stringr::str_which(names(struct), "frmt*")
                 type <- names(struct)[frmt_loc]
                 frmt_val <- do.call(
                     paste0("ls_to_", type),
@@ -344,7 +348,7 @@ ls_to_frmt_when <- function(x) {
                 ) %>%
                     as.character()
             } else {
-                out <- str_c("'", a_frmt[[1]], "'")
+                out <- stringr::str_c("'", a_frmt[[1]], "'")
             }
             out
         })
@@ -352,9 +356,9 @@ ls_to_frmt_when <- function(x) {
     lhs <- dplyr::if_else(
         names(fmts) == "TRUE",
         names(fmts),
-        str_c("'", names(fmts), "'")
+        stringr::str_c("'", names(fmts), "'")
     )
-    formula_ls <- str_c(lhs, " ~ ", fmts) %>%
+    formula_ls <- stringr::str_c(lhs, " ~ ", fmts) %>%
         map(stats::as.formula)
 
     do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
@@ -417,7 +421,7 @@ ls_to_col_plan <- function(ls) {
                         parse_expr()
                 } else {
                     el[[1]] %>%
-                        str_replace_all("\\\"", "'") %>%
+                        stringr::str_replace_all("\\\"", "'") %>%
                         char_as_quo() %>%
                         quo_get_expr()
                 }
@@ -431,9 +435,9 @@ ls_to_span_structure <- function(ls) {
     span_ls <- ls %>%
         map(
             ~ unlist(.) %>%
-                str_c("'", ., "'") %>%
-                str_c(collapse = ", ") %>%
-                str_c("c(", ., ")") %>%
+                stringr::str_c("'", ., "'") %>%
+                stringr::str_c(collapse = ", ") %>%
+                stringr::str_c("c(", ., ")") %>%
                 parse_expr(.)
         )
 
@@ -444,9 +448,11 @@ ls_to_col_style_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls %>%
             map(function(struct) {
-                stuct_in <- struct %>% map(unlist)
+                stuct_in <- map(struct, unlist)
+
                 names(stuct_in) <- names(stuct_in) %>%
-                    str_replace("cols", "col")
+                    stringr::str_replace("cols", "col")
+
                 cols_val <- struct[["cols"]][[1]]
                 if (
                     !is.null(names(cols_val)) &&
@@ -463,7 +469,7 @@ ls_to_col_style_plan <- function(ls) {
                             quo_get_expr() %>%
                             expr_text()
                     ) %>%
-                        str_c(., collapse = ", ") %>%
+                        stringr::str_c(., collapse = ", ") %>%
                         paste0("vars(", ., ")") %>%
                         parse_expr()
                 }

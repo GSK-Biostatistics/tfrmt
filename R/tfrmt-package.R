@@ -21,13 +21,22 @@
 #' @importFrom rlang quo_is_missing quo_name sym syms warn
 #' @importFrom rlang := !! !!! %||%
 #'
-#' @importFrom stringr str_c str_count str_detect str_dup str_extract
-#' @importFrom stringr str_extract_all str_glue str_match str_pad str_replace
-#' @importFrom stringr str_replace_all str_remove str_remove_all str_split
-#' @importFrom stringr str_sub str_trim str_which
-#'
 #' @importFrom tidyr fill nest pivot_longer pivot_wider
 #' @importFrom tidyr replace_na separate unnest unnest_longer unite
 #'
 ## usethis namespace: end
 NULL
+
+utils::globalVariables(
+    c(
+        ".",
+        ".data",
+        ".rename_col",
+        ".original_col",
+        "df_names",
+        "new_name_in_df",
+        "param_list",
+        "label_quote",
+        "label_collapse"
+    )
+)

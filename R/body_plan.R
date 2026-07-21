@@ -75,12 +75,19 @@ body_plan_builder <- function(
             )
         ) %>%
         dplyr::mutate(
-            contains_glue = str_detect(.data$param_display, "\\{.*\\}"), # is this to be a frmt_combine
+            contains_glue = stringr::str_detect(
+                .data$param_display,
+                "\\{.*\\}"
+            ), # is this to be a frmt_combine
             param = map2(
                 .data$param_display,
                 .data$contains_glue,
                 ~ if (.y == TRUE) {
-                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
+                    stringr::str_extract_all(
+                        .x,
+                        "(?<=\\{)[^\\}]+(?=\\})"
+                    ) %>%
+                        unlist()
                 } else {
                     .x
                 }

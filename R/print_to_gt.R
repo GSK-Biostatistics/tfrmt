@@ -426,11 +426,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @return gt object
 #' @noRd
 format_gt_column_labels <- function(gt_table, .data) {
-    spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
+    spanning <- names(.data) %>% keep(stringr::str_detect, .tlang_delim)
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
-            keep(str_detect, .tlang_delim) %>%
-            str_split(.tlang_delim, simplify = TRUE) %>%
+            keep(stringr::str_detect, .tlang_delim) %>%
+            stringr::str_split(.tlang_delim, simplify = TRUE) %>%
             tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(cols = spanning) %>%
             pivot_longer(-"cols")
@@ -504,21 +504,24 @@ convert_ws_unicode <- function(gt_table) {
             locations = locations,
             fn = function(x) {
                 # leading and trailing whitespace is nonbreaking unicode whitespace to preserve alignment
-                x_trimmed <- str_trim(x)
-                space_left <- str_match(x, "^\\s*") %>% nchar()
-                space_right <- str_match(x, "\\s*$") %>% nchar()
+                x_trimmed <- stringr::str_trim(x)
+
+                space_left <- stringr::str_match(x, "^\\s*") %>%
+                    nchar()
+                space_right <- stringr::str_match(x, "\\s*$") %>%
+                    nchar()
                 space_right[x_trimmed == ""] <- 0
 
-                str_c(
-                    str_dup("\U00A0", space_left),
+                stringr::str_c(
+                    stringr::str_dup("\U00A0", space_left),
                     # 2 or more spaces are split into a combination of unicode whitespaces and
                     # regular spaces for latex collapsing
-                    str_replace_all(
+                    stringr::str_replace_all(
                         x_trimmed,
                         pattern = "\\s{2,}",
                         break_duplicate_whitespace
                     ),
-                    str_dup("\U00A0", space_right)
+                    stringr::str_dup("\U00A0", space_right)
                 )
             }
         )

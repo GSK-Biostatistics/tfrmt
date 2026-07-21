@@ -374,8 +374,8 @@ combine_group_cols_mod <- function(
         dplyr::mutate(
             dplyr::across(c(!!!group), ~ forcats::fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
-            `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
-                str_trim(!!dplyr::last(group), side = "left")
+            `..tfrmt_summary_row` = stringr::str_trim(!!label, side = "left") ==
+                stringr::str_trim(!!dplyr::last(group), side = "left")
         )
 
     if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
@@ -391,11 +391,14 @@ combine_group_cols_mod <- function(
             map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
-                        `..tfrmt_summary_row_cur` = str_trim(
+                        `..tfrmt_summary_row_cur` = stringr::str_trim(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(!!dplyr::last(group), side = "left")
+                            stringr::str_trim(
+                                !!dplyr::last(group),
+                                side = "left"
+                            )
                     )
 
                 if (any(lone_dat_summ$`..tfrmt_summary_row_cur`) == FALSE) {
