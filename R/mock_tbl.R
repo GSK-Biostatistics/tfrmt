@@ -96,7 +96,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
             tidyselect::everything()
         ) %>%
         dplyr::group_by(.data$frmt_num) %>%
-        expand(!!!expand_cols) %>%
+        tidyr::expand(!!!expand_cols) %>%
         dplyr::ungroup() %>%
         add_sorting_cols(tfrmt$sorting_cols)
 
