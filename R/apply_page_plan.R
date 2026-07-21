@@ -28,7 +28,7 @@ apply_page_plan <- function(
 
     # then apply max rows splits
     if (!is.null(page_plan$max_rows)) {
-        if (is_tibble(.data)) {
+        if (tibble::is_tibble(.data)) {
             .data <- apply_page_max_rows(
                 .data,
                 page_plan$max_rows,
