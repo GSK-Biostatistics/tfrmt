@@ -27,7 +27,7 @@ apply_row_grp_struct <- function(
 
             split_dat <- .data %>%
                 group_by(
-                    across(
+                    dplyr::across(
                         tidyselect::all_of(
                             grping
                         )
@@ -58,7 +58,10 @@ apply_row_grp_struct <- function(
         # unnest to 1 rec per data row, to handle where chunk >1 row
         unnest(TEMP_appl_row) %>%
         group_by(TEMP_appl_row) %>%
-        arrange(TEMP_appl_row, desc(.data$TEMP_block_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            desc(.data$TEMP_block_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         group_by(
@@ -71,7 +74,7 @@ apply_row_grp_struct <- function(
     # get max character width for each column in the full data
     dat_max_widths <- .data %>%
         summarise(
-            across(
+            dplyr::across(
                 tidyselect::everything(),
                 function(x) {
                     if (is.character(x)) {
@@ -103,7 +106,7 @@ apply_row_grp_struct <- function(
             }
         }
     ) %>%
-        arrange(.data$TEMP_row) %>%
+        dplyr::arrange(.data$TEMP_row) %>%
         select(-"TEMP_row")
 
     add_ln_df
@@ -173,7 +176,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
         grp_row_add <- .data %>%
             slice(n()) %>%
             mutate(
-                across(
+                dplyr::across(
                     c(
                         -map_chr(group, as_name),
                         -tidyselect::where(is.numeric)
@@ -251,7 +254,9 @@ combine_group_cols <- function(
 
     # ensure label is character
     .data <- .data %>%
-        mutate(across(!!label, ~ as.character(.x)))
+        mutate(
+            dplyr::across(!!label, ~ as.character(.x))
+        )
 
     if (is.null(element_row_grp_loc)) {
         indent <- "  "
@@ -301,7 +306,7 @@ combine_group_cols <- function(
                         slice(0) %>%
                         add_row() %>%
                         mutate(
-                            across(
+                            dplyr::across(
                                 #convert NULL to NA in list-cols
                                 tidyselect::where(is.list),
                                 ~ map(
@@ -334,7 +339,7 @@ combine_group_cols <- function(
 
     .data %>%
         mutate(
-            across(
+            dplyr::across(
                 tidyselect::any_of(
                     orig_group_names
                 ),
@@ -398,7 +403,9 @@ apply_post_space_trim <- function(.data) {
         }
         # Always drop the helper column before returning
         .data <- .data %>%
-            dplyr::select(-dplyr::all_of(target_col))
+            dplyr::select(
+                -tidyselect::all_of(target_col)
+            )
     }
 
     .data

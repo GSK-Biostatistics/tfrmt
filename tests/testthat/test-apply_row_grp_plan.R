@@ -625,7 +625,12 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "    my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
     ) %>%
         # nolint end
-        mutate(across(trtA:trtC, ~ as.list(.x)))
+        mutate(
+            dplyr::across(
+                trtA:trtC,
+                ~ as.list(.x)
+            )
+        )
 
     expect_equal(
         auto_test_listcols,
@@ -657,7 +662,12 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "grp1_2" , "grp2_2" , " "          , " "        , " "        , " "
     ) %>%
         # nolint end
-        mutate(across(trtA:trtC, ~ as.list(.x)))
+        mutate(
+            dplyr::across(
+                trtA:trtC,
+                ~ as.list(.x)
+            )
+        )
 
     expect_equal(auto_test_listcols, man_test_listcols)
 })
@@ -1343,15 +1353,18 @@ test_that("Row group plan indenting handles factor variables", {
     # nolint end
 
     expect_equal(
-        apply_row_grp_lbl(
-            dat %>%
-                mutate(
-                    across(grp_span:rowlbl, as.factor)
-                ),
-            grp_plan$label_loc,
-            vars(grp_span, grp),
-            sym("rowlbl")
-        ) %>%
+        dat %>%
+            mutate(
+                dplyr::across(
+                    grp_span:rowlbl,
+                    as.factor
+                )
+            ) %>%
+            apply_row_grp_lbl(
+                grp_plan$label_loc,
+                vars(grp_span, grp),
+                sym("rowlbl")
+            ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
                 vars(grp_span, grp)
@@ -1360,15 +1373,18 @@ test_that("Row group plan indenting handles factor variables", {
     )
 
     expect_equal(
-        apply_row_grp_lbl(
-            dat %>%
-                mutate(
-                    across(rowlbl, as.factor)
-                ),
-            grp_plan$label_loc,
-            vars(grp_span, grp),
-            sym("rowlbl")
-        ) %>%
+        dat %>%
+            mutate(
+                dplyr::across(
+                    rowlbl,
+                    as.factor
+                )
+            ) %>%
+            apply_row_grp_lbl(
+                grp_plan$label_loc,
+                vars(grp_span, grp),
+                sym("rowlbl")
+            ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
                 vars(grp_span, grp)
@@ -1377,15 +1393,18 @@ test_that("Row group plan indenting handles factor variables", {
     )
 
     expect_equal(
-        apply_row_grp_lbl(
-            dat %>%
-                mutate(
-                    across(grp, as.factor)
-                ),
-            grp_plan$label_loc,
-            vars(grp_span, grp),
-            sym("rowlbl")
-        ) %>%
+        dat %>%
+            mutate(
+                dplyr::across(
+                    grp,
+                    as.factor
+                )
+            ) %>%
+            apply_row_grp_lbl(
+                grp_plan$label_loc,
+                vars(grp_span, grp),
+                sym("rowlbl")
+            ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
                 vars(grp_span, grp)
@@ -1394,15 +1413,18 @@ test_that("Row group plan indenting handles factor variables", {
     )
 
     expect_equal(
-        apply_row_grp_lbl(
-            dat %>%
-                mutate(
-                    across(grp_span, as.factor)
-                ),
-            grp_plan$label_loc,
-            vars(grp_span, grp),
-            sym("rowlbl")
-        ) %>%
+        dat %>%
+            mutate(
+                dplyr::across(
+                    grp_span,
+                    as.factor
+                )
+            ) %>%
+            apply_row_grp_lbl(
+                grp_plan$label_loc,
+                vars(grp_span, grp),
+                sym("rowlbl")
+            ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
                 vars(grp_span, grp)

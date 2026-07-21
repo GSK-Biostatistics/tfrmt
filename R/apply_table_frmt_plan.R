@@ -39,7 +39,7 @@ apply_table_frmt_plan <- function(
         unnest(cols = c(TEMP_appl_row)) %>%
         group_by(TEMP_appl_row) %>%
         #TODO add warning if there are rows not covered
-        arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
+        dplyr::arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         group_by(.data$TEMP_fmt_rank) %>%
@@ -86,7 +86,7 @@ apply_table_frmt_plan <- function(
 
             out
         }) %>%
-        arrange(.data$TEMP_row) %>%
+        dplyr::arrange(.data$TEMP_row) %>%
         select(
             # drop TEMP_row values
             -tidyselect::starts_with(

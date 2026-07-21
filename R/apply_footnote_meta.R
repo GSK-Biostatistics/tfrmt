@@ -246,7 +246,7 @@ get_row_loc <- function(
                 col_info$row <- .data %>%
                     ungroup() %>%
                     mutate(
-                        across(
+                        dplyr::across(
                             c(!!!group, !!label),
                             ~ str_remove(
                                 .x,

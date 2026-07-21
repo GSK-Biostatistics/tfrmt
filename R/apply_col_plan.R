@@ -260,7 +260,7 @@ col_plan_span_structure_to_vars <- function(
     ## create order df
     ords <- do.call("crossing", col_selections) %>%
         mutate(
-            across(
+            dplyr::across(
                 tidyselect::everything(),
                 ~ factor(
                     .x,
@@ -268,8 +268,8 @@ col_plan_span_structure_to_vars <- function(
                 )
             )
         ) %>%
-        arrange(
-            across(
+        dplyr::arrange(
+            dplyr::across(
                 tidyselect::everything()
             )
         ) %>%
@@ -279,7 +279,7 @@ col_plan_span_structure_to_vars <- function(
 
     split_data_names %>%
         left_join(ords, by = names(col_selections)) %>%
-        arrange(.data$ord_col) %>%
+        dplyr::arrange(.data$ord_col) %>%
         select(-"ord_col") %>%
         unite_df_to_data_names(
             preselected_cols,
@@ -433,7 +433,7 @@ unite_df_to_data_names <- function(
             sep = .tlang_delim
         ) %>%
         mutate(
-            across(
+            dplyr::across(
                 c("original", "new_name"),
                 ~ remove_empty_layers(
                     .x,
