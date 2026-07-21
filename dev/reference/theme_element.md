@@ -70,8 +70,8 @@ numeric values represented as x's. These values can be created manually
 or obtained by utilizing the helper
 [`display_val_frmts()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/display_val_frmts.md).
 Alignment positions will be represented by vertical bars. For example,
-with starting values: c("12.3", "(5%)", "2.35 (10.23)") we can align all
-of the first sets of decimals and parentheses by providing align =
+with starting values: `c("12.3", "(5%)", "2.35 (10.23)")` we can align
+all of the first sets of decimals and parentheses by providing align =
 c("xx\|.x", "\|\|(x%)", "x\|.xx \|")
 
 ## See also
