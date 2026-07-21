@@ -102,7 +102,7 @@ layer_tfrmt_arg_vars <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val) | identical(y_arg_val, vars())) {
+    if (is.null(y_arg_val) || identical(y_arg_val, vars())) {
         x_arg_val
     } else {
         y_arg_val
@@ -114,7 +114,7 @@ layer_tfrmt_arg_quo <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val) | identical(y_arg_val, quo())) {
+    if (is.null(y_arg_val) || identical(y_arg_val, quo())) {
         x_arg_val
     } else {
         y_arg_val
