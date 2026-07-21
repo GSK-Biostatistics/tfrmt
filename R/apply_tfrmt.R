@@ -454,9 +454,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             across(
                 tidyselect::all_of(column_cols),
                 ~ as.character(.x)
-            )
-        ) %>%
-        mutate(
+            ),
             across(
                 tidyselect::all_of(column_cols),
                 ~ na_if(.x, "")

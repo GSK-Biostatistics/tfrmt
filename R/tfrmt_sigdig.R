@@ -12,7 +12,7 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
         frmted_string <- "x"
     } else {
         frmted_dec <- str_dup("x", sigdig)
-        if (!frmted_dec == "") {
+        if (frmted_dec != "") {
             frmted_dec <- paste0(".", frmted_dec)
         }
         frmted_string <- paste0("x", frmted_dec)
