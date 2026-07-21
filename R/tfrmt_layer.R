@@ -39,8 +39,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
         return(x)
     }
 
-    stopifnot(is_tfrmt(y))
-    stopifnot(is_tfrmt(x))
+    stopifnot(is_tfrmt(y), is_tfrmt(x))
 
     args <- union(names(x), names(y))
 
