@@ -128,7 +128,9 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             dplyr::distinct() %>%
             dplyr::group_by(!!!group, !!label) %>%
             dplyr::mutate(test = sum(!!parse_expr(parm_expr))) %>%
-            dplyr::filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)) %>%
+            dplyr::filter(
+                .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
+            ) %>%
             dplyr::ungroup()
         join_by <- c(group, label, param) %>%
             map_chr(as_label) %>%

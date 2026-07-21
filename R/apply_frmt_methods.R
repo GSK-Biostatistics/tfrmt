@@ -228,12 +228,16 @@ apply_frmt.frmt_combine <- function(
     # check that pivot_wider resulted in a reduction of rows, which indicates that at least
     #  1 row will successfully have a frmt_combine in it
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
-        id_cols <- .tmp_data %>% dplyr::select(!!!column, !!label, !!!group, !!param)
+        id_cols <- .tmp_data %>%
+            dplyr::select(!!!column, !!label, !!!group, !!param)
         warning(paste0(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
             paste(names(id_cols %>% dplyr::select(-!!param)), collapse = ", "),
             ". Current values:\n",
-            paste(utils::capture.output(id_cols %>% as.data.frame()), collapse = "\n")
+            paste(
+                utils::capture.output(id_cols %>% as.data.frame()),
+                collapse = "\n"
+            )
         ))
     }
 
@@ -307,7 +311,8 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
             map(f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
-                    out <- apply_frmt(x, .data, value, ...) %>% dplyr::pull(!!value)
+                    out <- apply_frmt(x, .data, value, ...) %>%
+                        dplyr::pull(!!value)
                 } else {
                     out <- rep(x, val_len)
                 }
