@@ -304,7 +304,7 @@ combine_group_cols <- function(
                             )
                         ) %>%
                         dplyr::slice(0) %>%
-                        add_row() %>%
+                        tibble::add_row() %>%
                         dplyr::mutate(
                             dplyr::across(
                                 #convert NULL to NA in list-cols
