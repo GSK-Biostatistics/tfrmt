@@ -7,11 +7,11 @@
 #' @return formatted tibble
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
-    validate_cols_match(.data, tfrmt, mock)
-
     if (!is_tfrmt(tfrmt)) {
         stop("Requires a tfrmt object")
     }
+
+  validate_cols_match(.data, tfrmt, mock)
 
     tbl_dat <- .data %>%
         remove_big_ns(param = tfrmt$param, big_n_structure = tfrmt$big_n) %>%
@@ -436,7 +436,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 paste0(
                     "Multiple param listed for the same group/label values.\n",
                     "The following frmt_structures may be missing from the body_plan\n",
-                    "or the order may need to be changed:"
+                    "or the order may need to be changed to:"
                 ),
                 body = suggested_frmt_structs,
                 class = "_tlang_missing_frmt_structs"

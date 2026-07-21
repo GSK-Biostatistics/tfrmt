@@ -65,7 +65,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
-                "or the order may need to be changed:",
+                "or the order may need to be changed to:",
                 "- `frmt_structure(group_val = \"c\", label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
                 "- `frmt_structure(group_val = \"v\", label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
             ),
@@ -84,7 +84,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
-                "or the order may need to be changed:",
+                "or the order may need to be changed to:",
                 "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`"
             ),
             collapse = "\n"
@@ -102,7 +102,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
-                "or the order may need to be changed:",
+                "or the order may need to be changed to:",
                 "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
                 "- `frmt_structure(group_val = list(grp1 = \"q\", grp2 = \"v\"), label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
             ),
@@ -132,7 +132,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         )$messages,
         c(
             "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57\n",
-            "Multiple param listed for the same group/label values.\nThe following frmt_structures may be missing from the body_plan\nor the order may need to be changed:\n- `frmt_structure(group_val = list(rowlbl1 = \"Age (y)\", grp = \"cat\"), label_val = c(\"65-80 yrs\",\"<65 yrs\",\">80 yrs\"), frmt_combine(\"{n}, {pct}\",n = frmt(\"xx\"), pct = frmt(\"xx\")))`"
+            "Multiple param listed for the same group/label values.\nThe following frmt_structures may be missing from the body_plan\nor the order may need to be changed to:\n- `frmt_structure(group_val = list(rowlbl1 = \"Age (y)\", grp = \"cat\"), label_val = c(\"65-80 yrs\",\"<65 yrs\",\">80 yrs\"), frmt_combine(\"{n}, {pct}\",n = frmt(\"xx\"), pct = frmt(\"xx\")))`"
         )
     )
 })
@@ -216,12 +216,10 @@ test_that("apply_tfrmt errors when passed a non-tfrmt object", {
 
 test_that("tentative_process handles errors with empty message", {
     empty_msg_func <- function(x) stop("")
-    msgs <- capture_messages(
-        result <-
-            tentative_process("x", empty_msg_func)
+    expect_snapshot(
+      result <- tentative_process("x", empty_msg_func)
     )
     expect_equal(result, "x")
-    expect_match(msgs, "Reason:")
 })
 
 test_that("frmt_struct_string handles no group variables", {
@@ -246,10 +244,8 @@ test_that("frmt_struct_string handles no group variables", {
             )
         )
     )
-    expect_message(
-        apply_tfrmt(dat, tfrmt_no_group, mock = FALSE),
-        "Multiple param listed for the same group/label values",
-        fixed = TRUE
+    expect_snapshot(
+      apply_tfrmt(dat, tfrmt_no_group, mock = FALSE)
     )
 })
 
