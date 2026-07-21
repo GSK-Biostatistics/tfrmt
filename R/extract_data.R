@@ -42,7 +42,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 
     df %>%
         # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
-        dplyr::select(-dplyr::starts_with("..tfrmt")) %>%
+        dplyr::select(-tidyselect::starts_with("..tfrmt")) %>%
         # Replace the internal tlang_delim pattern in column names
         dplyr::rename_with(
             ~ stringr::str_replace_all(.x, "___tlang_delim___", delim),

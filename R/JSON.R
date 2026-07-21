@@ -355,7 +355,7 @@ ls_to_frmt_when <- function(x) {
         str_c("'", names(fmts), "'")
     )
     formula_ls <- str_c(lhs, " ~ ", fmts) %>%
-        map(as.formula)
+        map(stats::as.formula)
 
     do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
 }
