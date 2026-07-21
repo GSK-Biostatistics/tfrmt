@@ -1761,7 +1761,7 @@ test_that("Build simple tfrmt with stub header", {
     )
     expect_equal(
         processed_gt[["_stubhead"]]$label,
-        md("grp")
+        gt::md("grp")
     )
 
     # no stubhead if no group column
@@ -1814,7 +1814,7 @@ test_that("Build simple tfrmt with stub header", {
     )
     expect_equal(
         processed_gt[["_stubhead"]]$label,
-        md("")
+        gt::md("")
     )
 
     # multi group stub header
@@ -1875,6 +1875,6 @@ test_that("Build simple tfrmt with stub header", {
     )
     expect_equal(
         processed_gt[["_stubhead"]]$label,
-        md(c("Group 1", "Group 2", "Row label"))
+        gt::md(c("Group 1", "Group 2", "Row label"))
     )
 })
