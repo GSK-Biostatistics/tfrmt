@@ -345,5 +345,5 @@ reset_component <- function(tfrmt_obj, component_name) {
     tfrmt_obj[[component_name]] <- NULL
 
     # Return the modified tfrmt object
-    return(tfrmt_obj)
+    tfrmt_obj
 }

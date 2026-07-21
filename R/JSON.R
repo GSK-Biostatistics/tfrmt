@@ -24,7 +24,7 @@ tfrmt_to_json <- function(tfrmt, path = NULL) {
         message(paste0("Writing json file out to:\n", path))
         write(output, path)
     } else {
-        return(output)
+        output
     }
 }
 
@@ -99,7 +99,7 @@ as_json.quosure <- function(x) {
     out <- x %>%
         as_label()
     if (out != "<empty>") {
-        return(out)
+        out
     }
 }
 

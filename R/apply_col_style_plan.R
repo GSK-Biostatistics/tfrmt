@@ -97,7 +97,7 @@ apply_col_style_plan <- function(
 
     force(.data)
 
-    return(.data)
+    .data
 }
 
 # function to get all columns the col_style_structure applies to

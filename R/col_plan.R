@@ -165,15 +165,15 @@ check_span_structure_dots <- function(x) {
             ~ lapply(trim_vars_quo_c(.x), function(x) {
                 if (is.name(x)) {
                     if (identical(as_label(x), "<empty>")) {
-                        return(NULL)
+                        NULL
                     } else {
-                        return(quo(!!x))
+                        quo(!!x)
                     }
                 } else if (is.call(x)) {
                     if (is_valid_tidyselect_call(x)) {
                         quo(!!x)
                     } else if (is_valid_quo_call(x)) {
-                        return(eval_tidy(x))
+                        eval_tidy(x)
                     } else {
                         abort(
                             message = paste0(
@@ -189,7 +189,7 @@ check_span_structure_dots <- function(x) {
                         )
                     }
                 } else if (is.character(x)) {
-                    return(as_length_one_quo.character(x))
+                    as_length_one_quo.character(x)
                 } else {
                     abort(
                         "Unexpected entry type in span_structure()",
@@ -232,15 +232,15 @@ check_col_plan_dots <- function(x) {
     lapply(x, function(x) {
         if (is.name(x)) {
             if (identical(as_label(x), "<empty>")) {
-                return(NULL)
+                NULL
             } else {
-                return(quo(!!x))
+                quo(!!x)
             }
         } else if (is.call(x)) {
             if (is_valid_tidyselect_call(x)) {
                 quo(!!x)
             } else if (is_valid_quo_call(x) | is_valid_span_structure_call(x)) {
-                return(eval_tidy(x))
+                eval_tidy(x)
             } else {
                 stop(
                     "Invalid entry: `",
@@ -255,7 +255,7 @@ check_col_plan_dots <- function(x) {
                 )
             }
         } else if (is.character(x)) {
-            return(as_length_one_quo.character(x))
+            as_length_one_quo.character(x)
         } else {
             stop("Unexpected entry type in span_structure()")
         }
