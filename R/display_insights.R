@@ -227,7 +227,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     }
     selection <- as.list(substitute(substitute(col)))[-1] %>%
         map(trim_vars_quo_c) %>%
-        do.call('c', .) %>%
+        do.call("c", .) %>%
         check_col_plan_dots()
 
     col_selection <- col_style_selections(
@@ -248,7 +248,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         arrange(nchar(.data$value)) %>%
         filter(!is.na(.data$value)) %>%
         pull(.data$value) %>%
-        unique %>%
+        unique() %>%
         paste0("\"", ., "\"") %>%
         glue_collapse(., ",\n  ")
 

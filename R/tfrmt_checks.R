@@ -15,7 +15,7 @@ check_column_and_col_plan <- function(x) {
         span_structs <- NULL
     }
 
-    if (!multi_column_defined & span_structures_defined) {
+    if (!multi_column_defined && span_structures_defined) {
         if (length(x$column) == 1) {
             n_col_desc <- "A single column defined in `column` argument of tfrmt "
         } else {
@@ -216,8 +216,8 @@ check_group_var_consistency_footnote_plan <- function(x) {
 #'
 check_col_style_row_grp_consistency <- function(x) {
     if (
-        !is_empty(x$group) &
-            !is.null(x$col_style_plan) &
+        !is_empty(x$group) &&
+            !is.null(x$col_style_plan) &&
             !is_empty(x$row_grp_plan)
     ) {
         is_invalid_plan <- FALSE
@@ -231,13 +231,8 @@ check_col_style_row_grp_consistency <- function(x) {
         for (cap_vars_idx in seq_along(col_align_plan_as_char)) {
             grp_in_cap <- group_as_char %in%
                 col_align_plan_as_char[[cap_vars_idx]]
-            if (length(x$col_style_plan[[cap_vars_idx]]$cols) == 0) {
-                stop(
-                    "Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself"
-                )
-            }
 
-            if (any(grp_in_cap[-1]) && !r_grp_plan_col_loc == "column") {
+            if (any(grp_in_cap[-1]) && r_grp_plan_col_loc != "column") {
                 is_invalid_plan <- TRUE
                 invalid_groups <- group_as_char[grp_in_cap]
                 is_invalid_plan_message <- c(
@@ -272,7 +267,7 @@ check_col_style_row_grp_consistency <- function(x) {
 
 check_footnote_plan <- function(x) {
     if (!is_empty(x$footnote_plan)) {
-        for (i in 1:length(x$footnote_plan$struct_list)) {
+        for (i in seq_along(x$footnote_plan$struct_list)) {
             # if multiple columns then column_val must be a named list
             if (
                 length(x$column) > 1 &&

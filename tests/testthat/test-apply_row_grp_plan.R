@@ -213,7 +213,7 @@ test_that("insert mix - single grouping variable", {
 test_that("insert post space after specific value", {
     df <- tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
-        label = as.character(1),
+        label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
         trtC = rep("xx (xx%)", 6),
@@ -254,7 +254,7 @@ test_that("insert post space after specific value", {
 test_that("overlapping row_grp_structures - prefers latest", {
     df <- tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
-        label = as.character(1),
+        label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
         trtC = rep("xx (xx%)", 6),
@@ -1155,7 +1155,6 @@ test_that("Row group plans with col style plan", {
         )
     )
 
-    # label_loc = "column"
     # nolint start: commas_linter
     raw_dat <- tibble::tribble(
         ~g1   , ~g2       , ~one    , ~param , ~column , ~value ,
@@ -1420,7 +1419,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
         mutate(
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%
-        ungroup %>%
+        ungroup() %>%
         filter(pct_high > 10) %>%
         select(-pct_high)
 

@@ -112,7 +112,7 @@ shuffle_card <- function(
             stat_variable = .data$variable
         ) |>
         cards::rename_ard_columns(
-            fill = '..cards_overall..'
+            fill = "..cards_overall.."
         ) |>
         cards::unlist_ard_columns(
             columns = c(cards::all_ard_groups(), cards::all_ard_variables()),
@@ -189,7 +189,7 @@ shuffle_card <- function(
     dots <- rlang::dots_list(...)
 
     lapply(dots, function(var) {
-        if (any(!map_lgl(x[[var]], is.null))) {
+        if (!all(map_lgl(x[[var]], is.null))) {
             cli::cli_inform(
                 "{.val {var}} column contains messages that will be removed."
             )
@@ -279,7 +279,8 @@ shuffle_card <- function(
             # rows with non-missing group
             x_nonmissing_by <- x |>
                 dplyr::filter(
-                    !is.na(.data[[g]]) & !.data[[g]] == "..cards_overall.."
+                    !is.na(.data[[g]]),
+                    .data[[g]] != "..cards_overall.."
                 )
 
             if (nrow(x_missing_by) > 0 && nrow(x_nonmissing_by) > 0) {

@@ -12,7 +12,7 @@ apply_footnote_plan <- function(gt, tfrmt, footnote_loc) {
     if (is.null(tfrmt$footnote_plan)) {
         gt
     } else {
-        for (i in 1:length(tfrmt$footnote_plan$struct_list)) {
+        for (i in seq_along(tfrmt$footnote_plan$struct_list)) {
             gt <- gt %>%
                 apply_general_footnote(footnote_loc[[i]]) %>%
                 apply_cells_column_labels(footnote_loc[[i]]) %>%

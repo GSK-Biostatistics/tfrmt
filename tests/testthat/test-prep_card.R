@@ -70,10 +70,8 @@ test_that("prep_...() pipe with demographic data", {
 
                     as.character(.x[[1]]) # Convert to character
                 }
-            )
-        ) |>
-        # set missing labels to stat_lavel
-        dplyr::mutate(
+            ),
+            # set missing labels to stat_lavel
             label = dplyr::if_else(is.na(label), stat_label, label),
             # Add big N labels
             ARM = dplyr::if_else(

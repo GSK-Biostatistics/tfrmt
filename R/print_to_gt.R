@@ -215,7 +215,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     if (length(existing_grp) > 0) {
         if (
             !is.null(tfrmt$row_grp_plan) &&
-                !tfrmt$row_grp_plan$label_loc$location == "column"
+                tfrmt$row_grp_plan$label_loc$location != "column"
         ) {
             .data <- .data %>%
                 group_by(!!!existing_grp)
@@ -379,7 +379,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     if (
         !is.null(attr(.data, ".page_note")) &&
             !is.null(tfrmt$page_plan) &&
-            !tfrmt$page_plan$note_loc == "noprint"
+            tfrmt$page_plan$note_loc != "noprint"
     ) {
         if (tfrmt$page_plan$note_loc == "preheader") {
             gt_out_final <- gt_out_final %>%
@@ -446,7 +446,7 @@ format_gt_column_labels <- function(gt_table, .data) {
         work_df <- names(.data) %>%
             keep(str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
-            as_tibble(.name_repair = ~ paste0("V", 1:length(.))) %>%
+            as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             mutate(cols = spanning) %>%
             pivot_longer(-"cols")
 
@@ -460,7 +460,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
             filter(.data$value != "NA")
 
-        for (i in 1:nrow(spans_to_apply)) {
+        for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format
             gt_table <- gt_table %>%
                 tab_spanner(
@@ -545,7 +545,7 @@ convert_ws_unicode <- function(gt_table) {
 #' @importFrom stringr str_sub
 #' @noRd
 break_duplicate_whitespace <- function(x) {
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         n_spaces <- nchar(x[i])
         if (n_spaces > 1 && !is.na(x[i])) {
             #want to swap every even indice for a unicode character

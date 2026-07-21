@@ -211,7 +211,7 @@ get_row_loc <- function(
                 "Cannot apply footnotes to rows when you have only specified a spanning column"
             )
             col_info$row <- NULL
-        } else if (row_grp == "noprint" & !is_empty(loc_info$group_val)) {
+        } else if (row_grp == "noprint" && !is_empty(loc_info$group_val)) {
             warning(
                 "Can not apply footnotes to group columns when 'noprint' is set"
             )
@@ -310,9 +310,8 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    # group_by(!!first(group)) %>%
                     mutate(
-                        `___tfrmt_grp_n` = row_number(), #cur_group_id(),
+                        `___tfrmt_grp_n` = row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     filter(.data$`___tfrmt_test`) %>%

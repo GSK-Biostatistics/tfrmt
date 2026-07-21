@@ -85,7 +85,7 @@ body_plan_builder <- function(
                 .data$param_display,
                 .data$contains_glue,
                 ~ if (.y == TRUE) {
-                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist
+                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
                 } else {
                     .x
                 }
@@ -93,7 +93,7 @@ body_plan_builder <- function(
             single_glue_to_frmt = pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
-                    if (a == TRUE & length(b) == 1) c else NA_character_
+                    if (a == TRUE && length(b) == 1) c else NA_character_
                 }
             )
         ) %>%

@@ -82,17 +82,20 @@ apply_page_max_rows <- function(
     group_cols <- map_chr(group, rlang::as_label)
 
     .data <- .data %>%
-        mutate(across(all_of(group_cols), \(x) {
-            if (is.character(x)) if_else(x == "", " ", x) else x
-        })) %>%
-        mutate(TEMP_row = row_number())
+        mutate(
+            across(all_of(group_cols), \(x) {
+                if (is.character(x)) if_else(x == "", " ", x) else x
+            }),
+            TEMP_row = row_number()
+        )
 
     # determine # of rows to be added for the group during row grp lbl formatting
     # only proceed if the # of group rows to be added < max_rows
-    #
+    #   nolint start: commented_code_linter
     #      - "gtdefault": +1
     #      - "spanning" / "indented" : # of grouping vars
     #      - "noprint", "column": +0
+    #   nolint end
     n_grp_vars <- length(group)
     n_grp_rows <- switch(
         row_grp_plan_label_loc,
@@ -103,7 +106,7 @@ apply_page_max_rows <- function(
         noprint = 0
     )
 
-    if (!n_grp_rows < max_rows) {
+    if (n_grp_rows >= max_rows) {
         message(
             "Unable to complete pagination because `max_rows` specified in `page_plan` is smaller than the number of rows dedicated to group labels. Suggest increasing `max_rows` and trying again."
         )
@@ -135,10 +138,6 @@ apply_page_max_rows <- function(
             all_summ_row <- numeric(0) # reset until current tbl is finished
         }
 
-        # if this row is added, how many rows will be in table
-        # cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
-        #   combine_group_cols_mod(group, label, row_grp_plan_label_loc)
-
         if (
             length(group) == 0 ||
                 is_empty(label) ||
@@ -158,7 +157,7 @@ apply_page_max_rows <- function(
         }
 
         # if we have hit or exceeded the limit, save the table & move to next
-        if (nrow(cur_dat_new) >= max_rows | nrow(remain_dat) == 0) {
+        if (nrow(cur_dat_new) >= max_rows || nrow(remain_dat) == 0) {
             # summary row groups to carry forward to next tbl
             if ("..tfrmt_summary_row" %in% names(cur_dat_new)) {
                 all_summ_row <- cur_dat_new %>%
@@ -382,18 +381,16 @@ combine_group_cols_mod <- function(
         select(c(!!!group, !!label, "TEMP_row")) %>%
         mutate(
             across(c(!!!group), ~ fct_inorder(.x)),
-            ..tfrmt_row_grp_lbl = FALSE
-        ) %>%
-        mutate(
+            ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
                 str_trim(!!last(group), side = "left")
         )
 
-    if (element_row_grp_loc %in% c("spanning") & length(group) > 0) {
+    if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
         group <- group[-1]
     }
 
-    while (length(group) > 0 & !is.null(label)) {
+    while (length(group) > 0 && !is.null(label)) {
         split_dat <- .data %>%
             group_by(!!!top_grouping) %>%
             group_split()

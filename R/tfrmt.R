@@ -283,18 +283,18 @@ quo_get <- function(
 ) {
     arg_set <- lapply(args, function(arg) {
         ## try to get arg call
-        arg_call <- do.call('substitute', list(as.symbol(arg)), envir = envir)
+        arg_call <- do.call("substitute", list(as.symbol(arg)), envir = envir)
 
         if (missing(arg_call)) {
             ## args not defined can quietly return empty expressions.
             return(quote(expr = ))
         } else {
-            if (identical(arg_call, quo()) | identical(arg_call, vars())) {
+            if (identical(arg_call, quo()) || identical(arg_call, vars())) {
                 return(arg_call)
             }
 
             # don't try to eval quosures if it is intended to be a quosure
-            if (is_quosure(arg_call) & arg %in% c(as_quo_args)) {
+            if (is_quosure(arg_call) && arg %in% c(as_quo_args)) {
                 arg_call_results <- list(result = arg_call, error = NULL)
             } else {
                 # try to safely evaluate arg call
@@ -320,7 +320,7 @@ quo_get <- function(
                     ## for arg_var_args, we expect not a function. this means arguments can be
                     ## entered such as `col`. convert into final forms respectively
                     if (
-                        !(is.function(arg_call_results$result) |
+                        !(is.function(arg_call_results$result) ||
                             is_basic_list(arg_call_results$result))
                     ) {
                         if (arg %in% as_var_args) {
@@ -360,10 +360,10 @@ quo_get <- function(
                         arg,
                         allow_tidy_select = allow_tidy_select
                     )
-                    arg_val <- as_vars(do.call('vars', arg_call, envir = envir))
+                    arg_val <- as_vars(do.call("vars", arg_call, envir = envir))
                 } else {
                     arg_val <- as_length_one_quo(
-                        do.call('vars', arg_call, envir = envir),
+                        do.call("vars", arg_call, envir = envir),
                         arg = as.character(arg)
                     )
                 }

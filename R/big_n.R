@@ -140,7 +140,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     !!!columns,
                     !!value,
                     tidyselect::where(
-                        ~ sum(is.na(.x)) == 0
+                        ~ !anyNA(.x)
                     ),
                     -!!param
                 )
@@ -200,8 +200,8 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                 values_to = "__tfrmt_big_n_values__"
             ) |>
             dplyr::filter(
-                !is.na(.data$`__tfrmt_big_n_values__`) &
-                    .data$`__tfrmt_big_n_values__` != ""
+                !is.na(.data$`__tfrmt_big_n_values__`),
+                .data$`__tfrmt_big_n_values__` != ""
             ) |>
             dplyr::group_by(.data$`_tfrmt______id`) |>
             dplyr::mutate(

@@ -46,7 +46,7 @@ create_stub_head <- function(
             stub <- nms_grps
 
             # only row_grp_plan "column" option gets >1 stub label
-            if (!row_grp_plan_label_loc == "column") {
+            if (row_grp_plan_label_loc != "column") {
                 stub_no_empty <- setdiff(stub, "")
                 stub <- c(stub_no_empty, "")[1]
             }
@@ -139,7 +139,7 @@ col_plan_quo_to_vars <- function(
     )
 
     ## if is subtraction, inverse selection to get subtracted columns and prepend with -
-    if (grepl("^-", as_label(x[[1]]))) {
+    if (startsWith(as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
             filter(!(!!col_quo %in% selected)) %>%
             mutate(
@@ -156,7 +156,7 @@ col_plan_quo_to_vars <- function(
                 is_valid_tidyselect_call(quo_get_expr(x[[1]])) &&
                     length(selected) > 1
             ) {
-                rename_val <- paste0(rename_val, seq_len(length(selected)))
+                rename_val <- paste0(rename_val, seq_along(selected))
             }
 
             rows_to_rename <- split_data_names[[as_label(col_quo)]] %in%
@@ -211,7 +211,7 @@ col_plan_span_structure_to_vars <- function(
                     split_data_names[[col_id]]
                 ))
 
-                is_subtraction_selection <- grepl("^-", as_label(sel_id))
+                is_subtraction_selection <- startsWith(as_label(sel_id), "-")
 
                 if (!is_subtraction_selection) {
                     if (
@@ -226,7 +226,7 @@ col_plan_span_structure_to_vars <- function(
                         ) {
                             rename_val <- paste0(
                                 rename_val,
-                                seq_len(length(sel_id_col_selections))
+                                seq_along(sel_id_col_selections)
                             )
                         }
 
@@ -258,14 +258,14 @@ col_plan_span_structure_to_vars <- function(
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
-                unique
+                unique()
         } else {
             split_data_names <- split_data_names %>%
                 filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
-                unique
+                unique()
         }
     }
 
@@ -303,7 +303,7 @@ col_plan_span_structure_to_vars <- function(
 ## given a string - x - see how to convert to a quosure.
 ##  if negative is TRUE, it will mark it as a `-`.
 char_as_quo <- function(x) {
-    is_negative <- grepl("^-", x)
+    is_negative <- startsWith(x, "-")
     x <- gsub("^-", "", x) # Removes the leading '-'
     x <- gsub("^`|`$", "", x) # Removes leading/trailing backticks for col names with spaces in
 
@@ -347,7 +347,9 @@ eval_col_plan_quo <- function(
     preselected_vals,
     default_everything_behavior = FALSE
 ) {
-    if (identical(as_label(x), "everything()") & !default_everything_behavior) {
+    if (
+        identical(as_label(x), "everything()") && !default_everything_behavior
+    ) {
         # dump any pre-selected columns from everything() call. we are _not_ using
         # the default behavior of everything().
 
@@ -394,7 +396,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
         new_name = names(data_names)
     ) %>%
         mutate(
-            subtraction_status = str_detect(.data$original, "^-"),
+            subtraction_status = startsWith(.data$original, "-"),
             original = str_remove(.data$original, "^-")
         ) %>%
         separate(

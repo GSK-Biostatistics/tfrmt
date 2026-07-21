@@ -33,7 +33,7 @@ expr_to_filter.quosure <- function(cols, val) {
 expr_to_filter.quosures <- function(cols, val) {
     if (is.null(val)) {
         out <- "TRUE"
-    } else if (!is.list(val) & length(cols) == 1) {
+    } else if (!is.list(val) && length(cols) == 1) {
         cols <- cols[[1]]
         out <- expr_to_filter(cols, val)
     } else if (!is.list(val) && all(val == ".default")) {
@@ -133,7 +133,7 @@ detect_default <- function(struct) {
 
 # detect use of non-default in a  *_structure object entry
 detect_non_default <- function(struct_val) {
-    any(!is.null(struct_val) && any(!struct_val == ".default"))
+    !is.null(struct_val) && !all(struct_val == ".default")
 }
 
 #' Create the group_by expression for the data
