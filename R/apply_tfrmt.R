@@ -302,7 +302,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     req_quo %>%
         map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(select)(.data, !!var_test)
+            check <- safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -318,7 +318,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     req_var %>%
         map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(select)(.data, !!!var_test)
+            check <- safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(

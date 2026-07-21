@@ -248,7 +248,7 @@ apply_page_struct <- function(
             split_idx = map(.data$`..tfrmt_data`, function(x) {
                 map(page_struct_list, function(y) {
                     struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
-                        map_dbl(last) # keep just the last one to split after
+                        map_dbl(dplyr::last) # keep just the last one to split after
                 }) %>%
                     unlist()
             })
@@ -273,7 +273,9 @@ apply_page_struct <- function(
                                 .data$`..tfrmt_start_idx`
                             )
                         ) %>%
-                        dplyr::select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
+                        dplyr::select(
+                            -c("..tfrmt_start_idx", "..tfrmt_split_idx")
+                        ) %>%
                         dplyr::group_by(.data$`..tfrmt_split_after`) %>%
                         dplyr::group_split(.keep = FALSE)
                 }
