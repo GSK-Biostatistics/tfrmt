@@ -9,7 +9,6 @@
 #'
 #' @return tibble containing mock data
 #'
-#' @importFrom purrr map map_dfr map_chr map_dfc reduce
 #' @importFrom rlang as_name is_empty
 #'
 #' @export

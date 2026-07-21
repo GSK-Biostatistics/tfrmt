@@ -46,7 +46,6 @@
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
 #' @importFrom rlang quo_is_missing sym quo is_empty
-#' @importFrom purrr quietly safely
 print_mock_gt <- function(
     tfrmt,
     .data = NULL,
@@ -185,7 +184,6 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @keywords internal
 #' @importFrom gt gt_group
-#' @importFrom purrr map2
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
     map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
         gt_group(.list = .)
@@ -439,7 +437,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @noRd
 #' @importFrom stringr str_split
 #' @importFrom gt cols_label tab_spanner md
-#' @importFrom purrr keep
 #'
 format_gt_column_labels <- function(gt_table, .data) {
     spanning <- names(.data) %>% keep(str_detect, .tlang_delim)

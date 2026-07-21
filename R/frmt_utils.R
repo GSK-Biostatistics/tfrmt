@@ -124,7 +124,7 @@ print.frmt_when <- function(x, ...) {
 }
 
 #' @export
-#' @importFrom purrr map
+#'
 format.frmt_structure <- function(x, ...) {
     if (is.list(x$group_val)) {
         groups <- x$group_val %>% map(unique)
@@ -228,7 +228,6 @@ print.body_plan <- function(x, ...) {
 #'
 #' @return character string representing `frmt` object with `param` value as name
 #' @noRd
-#' @importFrom purrr map2
 #' @importFrom stats setNames
 frmt_builder <- function(param, frmt_string, missing = NULL) {
     if (!missing(param)) {
@@ -276,7 +275,6 @@ frmt_combine_builder <- function(
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom purrr pmap
 #' @importFrom rlang `%||%`
 frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))

@@ -112,7 +112,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
 #' @param big_n_df tbl of big Ns to apply (if 1 set of overall Ns) or list of tbl of bigNs (if grouping by page)
 #' to apply
 #'
-#' @importFrom purrr map map2
 #' @noRd
 apply_tfrmt_subtable_mapper <- function(
     tfrmt,
@@ -244,7 +243,6 @@ apply_tfrmt_subtable <- function(
 #' @param ... inputs supplied to function arguments
 #'
 #' @return processed data
-#' @importFrom purrr map_lgl
 #' @importFrom rlang is_empty
 #' @noRd
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
@@ -291,7 +289,6 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
 #'
 #' @return formatted tibble
 #' @noRd
-#' @importFrom purrr map safely
 #' @importFrom rlang !! !!!
 validate_cols_match <- function(.data, tfrmt, mock) {
     #Required variables
@@ -386,7 +383,6 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #' @return data pivoted wider
 #' @noRd
 #'
-#' @importFrom purrr quietly
 #' @importFrom stringr str_detect
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
@@ -579,7 +575,7 @@ check_order_vars <- function(.data, tfrmt) {
 }
 
 #' check that the # of big N's correspond to the # of pages
-#' @importFrom purrr map_dfr
+#'
 #' @noRd
 check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {

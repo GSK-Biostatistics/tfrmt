@@ -9,7 +9,7 @@
 #' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
-#' @importFrom purrr map map_dfr
+#'
 #' @importFrom rlang !! :=
 apply_table_frmt_plan <- function(
     .data,

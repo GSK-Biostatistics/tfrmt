@@ -15,6 +15,8 @@
 #'
 #' @importFrom dplyr vars
 #'
+#' @importFrom purrr discard keep list_flatten map map_chr map_dbl map_dfc map_dfr map_lgl map2 map2_chr map2_dfr map2_lgl pmap pmap_chr reduce quietly safely
+#'
 #' @importFrom rlang expr
 #'
 #' @importFrom tibble add_row as_tibble as_tibble_row is_tibble tibble

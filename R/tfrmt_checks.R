@@ -59,7 +59,6 @@ check_column_and_col_plan <- function(x) {
 #' @param x tfrmt to be checked
 #'
 #' @importFrom rlang caller_call is_empty as_label abort
-#' @importFrom purrr map_chr
 #'
 check_group_var_consistency <- function(x) {
     if (!is_empty(x$group)) {
@@ -212,7 +211,6 @@ check_group_var_consistency_footnote_plan <- function(x) {
 #' @param x tfrmt to be checked
 #'
 #' @importFrom rlang caller_call is_empty as_label abort
-#' @importFrom purrr map_chr
 #'
 check_col_style_row_grp_consistency <- function(x) {
     if (

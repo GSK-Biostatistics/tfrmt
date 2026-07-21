@@ -1,5 +1,4 @@
 #' @importFrom stringr str_remove str_detect
-#' @importFrom purrr pmap_chr map2
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
 apply_col_plan <- function(data, col_selection, grp_lbl) {
@@ -19,7 +18,7 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
 
 
 #' create the stub header for table
-#' @importFrom purrr map_chr
+#'
 #' @noRd
 create_stub_head <- function(
     col_plan_vars,
@@ -56,7 +55,6 @@ create_stub_head <- function(
 #' Creates a named vector explicitly calling all the columns
 #'
 #' @importFrom rlang is_empty
-#' @importFrom purrr map map_chr
 #'
 #' @noRd
 create_col_order <- function(data_names, columns, cp) {

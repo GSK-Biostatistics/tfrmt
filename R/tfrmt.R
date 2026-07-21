@@ -271,7 +271,6 @@ tfrmt_find_args <- function(
 }
 
 #' @importFrom rlang abort frame_call is_quosure
-#' @importFrom purrr safely
 quo_get <- function(
     args,
     as_var_args = c(),

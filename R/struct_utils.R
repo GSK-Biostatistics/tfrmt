@@ -29,7 +29,6 @@ expr_to_filter.quosure <- function(cols, val) {
 }
 
 
-#' @importFrom purrr map2_chr map_chr
 expr_to_filter.quosures <- function(cols, val) {
     if (is.null(val)) {
         out <- "TRUE"
@@ -66,7 +65,6 @@ expr_to_filter.quosures <- function(cols, val) {
 #' @noRd
 #'
 #' @importFrom rlang parse_expr
-#' @importFrom purrr map_lgl map
 struct_val_idx <- function(cur_struct, .data, group, label) {
     grp_expr <- "TRUE"
     lbl_expr <- "TRUE"
@@ -124,7 +122,6 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
 }
 
 # detect use of .default in a *_structure object
-#' @importFrom purrr map_lgl
 #' @noRd
 detect_default <- function(struct) {
     map_lgl(struct, ~ any(!is.null(.x) && any(.x == ".default"))) %>% any()
@@ -145,7 +142,6 @@ detect_non_default <- function(struct_val) {
 #' @noRd
 #'
 #' @importFrom rlang as_label
-#' @importFrom purrr map_lgl map_chr
 expr_to_grouping <- function(cur_struct, group, label) {
     grouping <- NULL
 

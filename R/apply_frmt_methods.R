@@ -148,7 +148,6 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
 
 #' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
-#' @importFrom purrr map_dfr map_chr discard
 #' @importFrom rlang :=
 #' @export
 #'
@@ -293,7 +292,6 @@ apply_frmt.frmt_combine <- function(
 
 #' @export
 #' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
-#' @importFrom purrr map map_chr keep
 #' @importFrom rlang :=
 #'
 #' @rdname apply_frmt

@@ -53,8 +53,8 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' param_set("{pct} %" = 1)
 #'
 #' @return list of default parameter-level significant digits rounding
+#'
 #' @export
-#' @importFrom purrr map_lgl map2_lgl
 param_set <- function(...) {
     args <- list(...)
 
@@ -191,7 +191,6 @@ param_set <- function(...) {
 #'
 #' @export
 #'
-#' @importFrom purrr map
 #' @importFrom rlang quo_is_missing syms as_name as_label
 tfrmt_sigdig <- function(
     sigdig_df,

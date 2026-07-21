@@ -6,7 +6,6 @@ eval_tidyselect_on_colvec <- function(x, column_vec) {
 }
 
 #' @importFrom rlang !!! as_label
-#' @importFrom purrr keep
 eval_tidyselect_on_colvec.quosures <- function(x, column_vec) {
     names(column_vec) <- column_vec
     avli_x <- x %>%

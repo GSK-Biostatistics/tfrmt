@@ -6,7 +6,6 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom purrr map map2_dfr
 #' @importFrom rlang !!!
 #' @importFrom stringr str_split
 apply_row_grp_struct <- function(
@@ -169,7 +168,6 @@ apply_row_grp_lbl <- function(
 #'
 #' @return dataset with element block applied
 #'
-#' @importFrom purrr map_chr
 #' @importFrom rlang !!!
 #'
 #' @noRd
@@ -246,7 +244,6 @@ fill_post_space <- function(post_space, fill, width) {
 #' @return dataset with the group columns combines
 #' @noRd
 #' @importFrom stringr str_trim
-#' @importFrom purrr map_dfr map_chr
 #' @importFrom forcats fct_inorder
 combine_group_cols <- function(
     .data,

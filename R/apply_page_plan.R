@@ -8,7 +8,6 @@
 #'
 #' @noRd
 #' @importFrom rlang is_empty
-#' @importFrom purrr list_flatten
 apply_page_plan <- function(
     .data,
     page_plan,
@@ -190,7 +189,6 @@ apply_page_max_rows <- function(
 #' @param transform optional, a function or formula to transform the page label.
 #'
 #' @noRd
-#' @importFrom purrr map map2 map_dbl
 apply_page_struct <- function(
     .data,
     page_struct_list,
@@ -427,7 +425,6 @@ combine_group_cols_mod <- function(
 
 #' add any related summary rows from previous tbl to next tbl
 #' @noRd
-#' @importFrom purrr map_chr map map2_lgl
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%

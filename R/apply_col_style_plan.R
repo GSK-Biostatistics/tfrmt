@@ -3,7 +3,7 @@
 #' @param .data data
 #' @param tfrmt_obj tfrmt object
 #' @param col_plan_vars the planned renaming of columns
-#' @importFrom purrr map map_dfr discard
+#'
 #' @importFrom rlang as_name
 #' @importFrom forcats fct_inorder
 #'
@@ -424,7 +424,6 @@ apply_col_alignment_pos <- function(col, align) {
 #' @return Character vector containing padded aligned data values
 #'
 #' @importFrom stringr str_dup str_pad
-#' @importFrom purrr pmap_chr
 #' @noRd
 apply_col_width <- function(col, width) {
     col_na_idx <- which(is.na(col))

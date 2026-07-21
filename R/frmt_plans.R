@@ -239,7 +239,7 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 #' @rdname frmt
 #' @export
 #' @importFrom rlang list2 f_rhs f_rhs<-
-#' @importFrom purrr map
+#'
 frmt_when <- function(..., missing = NULL) {
     frmts <- list2(...)
 
