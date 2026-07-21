@@ -223,7 +223,7 @@ test_that("tentative_process handles errors with empty message", {
 })
 
 test_that("frmt_struct_string handles no group variables", {
-  # nolint start: commas_linter
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~lbl , ~prm  , ~column , ~val , ~ord ,
         "n"  , "n"   ,       1 , 1    ,    1 ,
