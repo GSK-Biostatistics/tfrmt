@@ -690,7 +690,10 @@ test_that("frmt_combine only applies when all parameters are in the data", {
     ) %>%
         # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
         dplyr::mutate(
-            Value = dplyr::case_when(Param == "pct" ~ Value * 100, TRUE ~ Value),
+            Value = dplyr::case_when(
+                Param == "pct" ~ Value * 100,
+                TRUE ~ Value
+            ),
             ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
             ord2 = dplyr::if_else(Label == "n", 1, 2),
             TEMP_row = dplyr::row_number()
