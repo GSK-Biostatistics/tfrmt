@@ -279,7 +279,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     gt_out_final <- gt_out %>%
         tab_style(
             style = list(
-                cell_text(whitespace = "pre-wrap", align = "left")
+                cell_text(
+                    whitespace = "pre-wrap",
+                    align = "left"
+                )
             ),
             locations = list(
                 cells_stub(columns = rowname_col),
@@ -307,9 +310,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             page.footer.use_tbl_notes = TRUE,
             page.orientation = "landscape"
         ) %>%
-
         tab_style(
-            style = cell_text(whitespace = "pre-wrap", align = "center"),
+            style = cell_text(
+                whitespace = "pre-wrap",
+                align = "center"
+            ),
             locations = list(
                 cells_column_spanners(),
                 cells_column_labels(),
@@ -318,7 +323,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 )
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("top", "bottom"),
@@ -333,7 +337,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 cells_row_groups()
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("top"),
@@ -344,7 +347,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 cells_column_labels()
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("bottom"),
@@ -356,7 +358,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             )
         ) %>%
         tab_style(
-            style = cell_text(font = c("Courier", default_fonts())),
+            style = cell_text(
+                font = c("Courier", default_fonts())
+            ),
             locations = list(
                 cells_body(),
                 cells_row_groups(),
