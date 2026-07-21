@@ -46,7 +46,6 @@
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
 #' @importFrom rlang quo_is_missing sym quo is_empty
-#' @importFrom dplyr vars
 #' @importFrom purrr quietly safely
 print_mock_gt <- function(
     tfrmt,
@@ -437,7 +436,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_split
 #' @importFrom gt cols_label tab_spanner md
-#' @importFrom dplyr as_tibble coalesce
 #' @importFrom purrr keep
 #'
 format_gt_column_labels <- function(gt_table, .data) {

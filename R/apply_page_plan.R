@@ -191,7 +191,6 @@ apply_page_max_rows <- function(
 #'
 #' @noRd
 #' @importFrom purrr map map2 map_dbl
-#' @importFrom dplyr tibble
 #' @importFrom tidyr  pivot_longer
 apply_page_struct <- function(
     .data,

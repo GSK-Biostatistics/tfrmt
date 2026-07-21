@@ -6,7 +6,6 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr tibble
 #' @importFrom purrr map map2_dfr
 #' @importFrom tidyr unnest nest unnest_longer
 #' @importFrom rlang !!!
