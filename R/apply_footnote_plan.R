@@ -6,8 +6,6 @@
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote md opt_footnote_marks tab_options
 apply_footnote_plan <- function(gt, tfrmt, footnote_loc) {
     if (is.null(tfrmt$footnote_plan)) {
         gt
@@ -35,8 +33,6 @@ apply_footnote_plan <- function(gt, tfrmt, footnote_loc) {
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote
 apply_general_footnote <- function(gt, loc) {
     if (length(loc$row) == 0 && length(loc$col) == 0) {
         gt <- gt %>%
@@ -55,8 +51,6 @@ apply_general_footnote <- function(gt, loc) {
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_labels <- function(gt, loc) {
     # check row is empty - therefore a column footnote, and not a spanning column
 
@@ -78,8 +72,6 @@ apply_cells_column_labels <- function(gt, loc) {
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_column_spanners <- function(gt, loc) {
     # check row is empty - therefore a column footnote
     if (!is.null(loc) && is.null(loc$row) && loc$spanning == TRUE) {
@@ -101,8 +93,6 @@ apply_cells_column_spanners <- function(gt, loc) {
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_stub <- function(gt, tfrmt, loc) {
     if (length(loc$col) > 0) {
         in_stub <- (
@@ -136,8 +126,6 @@ apply_cells_stub <- function(gt, tfrmt, loc) {
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_row_groups <- function(gt, tfrmt, loc) {
     if (length(loc$col) > 0) {
         if (all(loc$col %in% map_chr(tfrmt$group, as_label))) {
@@ -159,8 +147,6 @@ apply_cells_row_groups <- function(gt, tfrmt, loc) {
 #'
 #' @return gt object
 #' @noRd
-#'
-#' @importFrom gt tab_footnote md opt_footnote_marks
 apply_cells_body <- function(gt, loc) {
     if (!is.null(loc$col) && !is.null(loc$row)) {
         gt <- gt %>%

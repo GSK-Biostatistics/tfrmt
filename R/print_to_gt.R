@@ -42,9 +42,6 @@
 #'```
 #'
 #'   \if{html}{\out{ `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png\" alt = \"Simple 3 by 3 table without values, but with column names\" style=\"width:50\\%;\">"` }}
-#'
-#'
-#' @importFrom gt gt tab_header tab_style cell_text cells_body px
 print_mock_gt <- function(
     tfrmt,
     .data = NULL,
@@ -146,8 +143,6 @@ print_mock_gt <- function(
 #' \if{html}{\out{
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
-#'
-#' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     if (!is_tfrmt(tfrmt)) {
         stop("Requires a tfrmt object")
@@ -182,7 +177,6 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #' @export
 #'
 #' @keywords internal
-#' @importFrom gt gt_group
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
     map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
         gt_group(.list = .)
@@ -198,9 +192,6 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
 #' @export
 #'
 #' @keywords internal
-#' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
-#'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead tab_source_note
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     existing_grp <- tfrmt$group %>%
         keep(function(x) {
@@ -434,8 +425,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom gt cols_label tab_spanner md
-#'
 format_gt_column_labels <- function(gt_table, .data) {
     spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
     if (length(spanning) > 0) {
@@ -493,8 +482,6 @@ format_gt_column_labels <- function(gt_table, .data) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom gt text_transform cells_body cells_stub cells_column_labels cells_column_spanners
-#'
 convert_ws_unicode <- function(gt_table) {
     locations <- list(cells_body())
 
