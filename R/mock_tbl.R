@@ -36,7 +36,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
                     # if group_val is a named list, return as a tibble with list names as colnames
                     # otherwise (group_val = ".default") convert to tibble with colname "grp"
                     if (is.list(x$group_val)) {
-                        as_tibble(x$group_val)
+                        tibble::as_tibble(x$group_val)
                     } else {
                         tibble(..grp = x$group_val[[1]])
                     },

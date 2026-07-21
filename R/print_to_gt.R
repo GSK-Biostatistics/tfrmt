@@ -431,7 +431,7 @@ format_gt_column_labels <- function(gt_table, .data) {
         work_df <- names(.data) %>%
             keep(str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
-            as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
+            tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(cols = spanning) %>%
             pivot_longer(-"cols")
 
@@ -442,7 +442,9 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::arrange(dplyr::desc(.data$name)) %>%
             dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
-            dplyr::mutate(set = map(.data$set, ~ dplyr::pull(., .data$cols))) %>%
+            dplyr::mutate(
+                set = map(.data$set, ~ dplyr::pull(., .data$cols))
+            ) %>%
             dplyr::filter(.data$value != "NA")
 
         for (i in seq_len(nrow(spans_to_apply))) {

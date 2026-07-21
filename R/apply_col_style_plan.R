@@ -50,7 +50,7 @@ apply_col_style_plan <- function(
                 "cols"
             )] %>%
                 map(list) %>%
-                as_tibble() %>%
+                tibble::as_tibble() %>%
                 dplyr::bind_cols(
                     tibble(col = unlist(col_selections))
                 )

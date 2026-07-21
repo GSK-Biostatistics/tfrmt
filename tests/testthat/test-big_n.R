@@ -819,7 +819,7 @@ test_that("Test big n with footnotes", {
                 rownum,
                 footnotes
             ) |>
-            as_tibble(),
+            tibble::as_tibble(),
         tibble::tibble(
             locname = c(
                 "columns_columns",
