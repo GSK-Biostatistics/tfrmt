@@ -70,7 +70,7 @@ as_json.tfrmt <- function(x) {
     json_split[to_replace] <- json_split[to_replace] %>%
         str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
     json_clean <- str_c(json_split, collapse = "\n")
-    if (validate(json_clean)) {
+    if (jsonlite::validate(json_clean)) {
         class(json_clean) <- "json"
     } else {
         stop("Error when creating the json object")
