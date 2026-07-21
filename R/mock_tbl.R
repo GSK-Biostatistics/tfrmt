@@ -216,11 +216,11 @@ make_col_df <- function(
 
     # Use provided column names if there is no spanning
     if (col_plan_test_res || col_style_plan_test_res) {
-        if (col_plan_test_res & n_spans == 1 & is.null(n_cols)) {
+        if (col_plan_test_res && n_spans == 1 && is.null(n_cols)) {
             cols_to_use <- col_plan$dots %>%
                 clean_col_names(dont_inc = grp_lb_vars)
             col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
-        } else if (col_plan_test_res & is.null(n_cols)) {
+        } else if (col_plan_test_res && is.null(n_cols)) {
             # Gets the lowest level columns only
             low_lvl_vars <- col_plan$dots %>%
                 discard(is.list) %>%

@@ -150,7 +150,7 @@ is_span_structure <- function(x) {
 check_span_structure_dots <- function(x) {
     x_names <- names(x)
 
-    if (is.null(x_names) | any(x_names == "")) {
+    if (is.null(x_names) || any(x_names == "")) {
         abort(
             paste0(
                 "Entries of a span_stucture must be named:\n ",
@@ -239,7 +239,9 @@ check_col_plan_dots <- function(x) {
         } else if (is.call(x)) {
             if (is_valid_tidyselect_call(x)) {
                 quo(!!x)
-            } else if (is_valid_quo_call(x) | is_valid_span_structure_call(x)) {
+            } else if (
+                is_valid_quo_call(x) || is_valid_span_structure_call(x)
+            ) {
                 return(eval_tidy(x))
             } else {
                 stop(

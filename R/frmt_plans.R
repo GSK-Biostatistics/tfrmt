@@ -205,12 +205,12 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     vars_to_fmt <- as.vector(vars_to_fmt)
     frmt_ls <- list(...)
 
-    if (n_vars != length(frmt_ls) & length(frmt_ls) > 1) {
+    if (n_vars != length(frmt_ls) && length(frmt_ls) > 1) {
         stop(
             "The number of formats must be 1 or match the number of parameters",
             call. = FALSE
         )
-    } else if (n_vars > 1 & length(frmt_ls) == 1) {
+    } else if (n_vars > 1 && length(frmt_ls) == 1) {
         frmt_ls <- frmt_ls[rep(1, n_vars)]
     }
 

@@ -289,16 +289,16 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     crossing(frmt_vec_list, grp_lbl_list) %>%
         pmap(function(frmt_vec_list, grp_lbl_list) {
             if (
-                is.list(grp_lbl_list$group_val) &
-                    length(grp_lbl_list$group_val) == 1 &
+                is.list(grp_lbl_list$group_val) &&
+                    length(grp_lbl_list$group_val) == 1 &&
                     is.null(names(grp_lbl_list$group_val))
             ) {
                 grp_lbl_list$group_val <- grp_lbl_list$group_val[[1]]
             }
 
             if (
-                is.list(grp_lbl_list$label_val) &
-                    length(grp_lbl_list$label_val) == 1 &
+                is.list(grp_lbl_list$label_val) &&
+                    length(grp_lbl_list$label_val) == 1 &&
                     is.null(names(grp_lbl_list$label_val))
             ) {
                 grp_lbl_list$label_val <- grp_lbl_list$label_val[[1]]

@@ -157,7 +157,7 @@ apply_page_max_rows <- function(
         }
 
         # if we have hit or exceeded the limit, save the table & move to next
-        if (nrow(cur_dat_new) >= max_rows | nrow(remain_dat) == 0) {
+        if (nrow(cur_dat_new) >= max_rows || nrow(remain_dat) == 0) {
             # summary row groups to carry forward to next tbl
             if ("..tfrmt_summary_row" %in% names(cur_dat_new)) {
                 all_summ_row <- cur_dat_new %>%
@@ -386,11 +386,11 @@ combine_group_cols_mod <- function(
                 str_trim(!!last(group), side = "left")
         )
 
-    if (element_row_grp_loc %in% c("spanning") & length(group) > 0) {
+    if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
         group <- group[-1]
     }
 
-    while (length(group) > 0 & !is.null(label)) {
+    while (length(group) > 0 && !is.null(label)) {
         split_dat <- .data %>%
             group_by(!!!top_grouping) %>%
             group_split()
