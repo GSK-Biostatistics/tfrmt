@@ -37,7 +37,5 @@
 #' @importFrom tidyr crossing expand fill nest pivot_longer pivot_wider
 #' @importFrom tidyr replace_na separate unnest unnest_longer unite
 #'
-#' @importFrom utils capture.output
-#'
 ## usethis namespace: end
 NULL
