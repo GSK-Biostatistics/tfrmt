@@ -79,7 +79,7 @@ param_set <- function(...) {
 
     args_params <- c(
         names(args),
-        str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>% unlist
+        str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
     )
 
     idx_drop <- seq_along(param_list) %>%

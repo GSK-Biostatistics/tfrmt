@@ -243,7 +243,7 @@ apply_frmt.frmt_combine <- function(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
             paste(names(id_cols %>% select(-!!param)), collapse = ", "),
             ". Current values:\n",
-            paste(capture.output(id_cols %>% as.data.frame), collapse = "\n")
+            paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
         ))
     }
 
