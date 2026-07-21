@@ -103,7 +103,6 @@ apply_cells_column_spanners <- function(gt, loc) {
 #' @noRd
 #'
 #' @importFrom gt tab_footnote md opt_footnote_marks
-#' @importFrom rlang quo_get_expr
 apply_cells_stub <- function(gt, tfrmt, loc) {
     if (length(loc$col) > 0) {
         in_stub <- (

@@ -31,7 +31,6 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png\" alt=\"Simple table to stack with a KM-plot\" style=\"width:100\\%;\">"`
 #' }}
 #'
-#' @importFrom rlang quo_is_missing as_label
 #' @importFrom magrittr %>%
 
 print_to_ggplot <- function(tfrmt, .data, ...) {
@@ -198,7 +197,6 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 #' @return dataset wth grouping columns combined
 #' @noRd
 #'
-#' @importFrom rlang quo_name is_empty
 #' @importFrom magrittr %>%
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (

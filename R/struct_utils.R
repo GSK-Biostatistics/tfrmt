@@ -4,7 +4,6 @@ expr_to_filter <- function(cols, val) {
     UseMethod("expr_to_filter", cols)
 }
 
-#' @importFrom rlang as_label
 expr_to_filter.quosure <- function(cols, val) {
     ## If is missing a quosure, nothing to filter
     if (quo_is_missing(cols)) {
@@ -62,8 +61,6 @@ expr_to_filter.quosures <- function(cols, val) {
 #'
 #' @return list of row indices
 #' @noRd
-#'
-#' @importFrom rlang parse_expr
 struct_val_idx <- function(cur_struct, .data, group, label) {
     grp_expr <- "TRUE"
     lbl_expr <- "TRUE"
@@ -140,7 +137,6 @@ detect_non_default <- function(struct_val) {
 #' @return character vector of variable names to group by
 #' @noRd
 #'
-#' @importFrom rlang as_label
 expr_to_grouping <- function(cur_struct, group, label) {
     grouping <- NULL
 

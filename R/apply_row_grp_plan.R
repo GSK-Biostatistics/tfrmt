@@ -6,7 +6,6 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom rlang !!!
 apply_row_grp_struct <- function(
     .data,
     row_grp_struct_list,
@@ -119,7 +118,6 @@ apply_row_grp_struct <- function(
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom rlang !!! eval_tidy
 apply_row_grp_lbl <- function(
     .data,
     element_row_grp_loc,
@@ -166,8 +164,6 @@ apply_row_grp_lbl <- function(
 #' @param widths tibble of widths for each column
 #'
 #' @return dataset with element block applied
-#'
-#' @importFrom rlang !!!
 #'
 #' @noRd
 apply_grp_block <- function(.data, group, element_block, widths) {

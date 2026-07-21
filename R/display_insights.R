@@ -149,7 +149,6 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #'   or unquoted column name, a tidyselect semantic, or a span_structure.
 #'
 #' @importFrom glue glue glue_collapse
-#' @importFrom rlang is_empty as_name as_label
 #'
 #' @return text representing character vector of formatted values to be copied and modified in the col_style_plan
 #' @export

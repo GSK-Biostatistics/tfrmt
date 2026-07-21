@@ -7,7 +7,6 @@
 #' @param row_grp_plan_label_loc row_grp_plan label location
 #'
 #' @noRd
-#' @importFrom rlang is_empty
 apply_page_plan <- function(
     .data,
     page_plan,

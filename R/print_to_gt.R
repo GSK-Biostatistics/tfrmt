@@ -45,7 +45,6 @@
 #'
 #'
 #' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom rlang quo_is_missing sym quo is_empty
 print_mock_gt <- function(
     tfrmt,
     .data = NULL,

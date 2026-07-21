@@ -9,8 +9,6 @@
 #'
 #' @return tibble containing mock data
 #'
-#' @importFrom rlang as_name is_empty
-#'
 #' @export
 #' @examples
 #'

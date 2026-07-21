@@ -9,8 +9,6 @@
 #' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
-#'
-#' @importFrom rlang !! :=
 apply_table_frmt_plan <- function(
     .data,
     table_frmt_plan,
@@ -143,8 +141,6 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         pull(.data$TEMP_row)
 }
 
-
-#' @importFrom rlang parse_expr eval_bare
 all_missing <- function(cols, .data) {
     paste0("is.na(.data$", cols, ")", collapse = " & ") %>%
         parse_expr() %>%

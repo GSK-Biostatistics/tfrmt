@@ -411,7 +411,6 @@ ls_to_footnote_plan <- function(ls) {
     }
 }
 
-#' @importFrom rlang parse_expr quo_get_expr
 ls_to_col_plan <- function(ls) {
     if (!is.null(ls)) {
         dots <- ls$col_plan$dots %>%
@@ -446,7 +445,6 @@ ls_to_span_structure <- function(ls) {
     do.call(span_structure, span_ls)
 }
 
-#' @importFrom rlang expr_text
 ls_to_col_style_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls %>%

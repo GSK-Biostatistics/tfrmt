@@ -1,5 +1,4 @@
 #' @importFrom utils capture.output
-#' @importFrom rlang quo
 apply_col_plan <- function(data, col_selection, grp_lbl) {
     if (is.character(col_selection)) {
         quo_col_selections <- map(col_selection, ~ char_as_quo(.x))
@@ -52,8 +51,6 @@ create_stub_head <- function(
 }
 
 #' Creates a named vector explicitly calling all the columns
-#'
-#' @importFrom rlang is_empty
 #'
 #' @noRd
 create_col_order <- function(data_names, columns, cp) {
@@ -171,7 +168,6 @@ col_plan_quo_to_vars <- function(
     )
 }
 
-#' @importFrom rlang quo_get_expr quo
 col_plan_span_structure_to_vars <- function(
     x,
     column_names,
@@ -331,7 +327,6 @@ char_as_quo <- function(x) {
 #' Evaluate a `col_plan` quosure
 #'
 #' @param x a (single) quosure to evaluate
-#' @importFrom rlang quo_get_expr as_label is_empty
 #'
 #' @noRd
 eval_col_plan_quo <- function(

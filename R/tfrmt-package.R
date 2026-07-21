@@ -19,7 +19,12 @@
 #' @importFrom purrr map_dfr map_lgl map2 map2_chr map2_dfr map2_lgl pmap
 #' @importFrom purrr pmap_chr reduce quietly safely
 #'
-#' @importFrom rlang expr
+#' @importFrom rlang abort as_function as_label as_name caller_call caller_env
+#' @importFrom rlang check_dots_empty0 eval_bare eval_tidy expr expr_text f_lhs
+#' @importFrom rlang f_rhs f_rhs<- frame_call inform is_empty is_quosure
+#' @importFrom rlang is_quosures list2 parse_expr parse_exprs quo quo_get_expr
+#' @importFrom rlang quo_is_missing quo_name sym syms warn
+#' @importFrom rlang := !! !!! %||%
 #'
 #' @importFrom stringr str_c str_count str_detect str_dup str_extract
 #' @importFrom stringr str_extract_all str_glue str_match str_pad str_replace

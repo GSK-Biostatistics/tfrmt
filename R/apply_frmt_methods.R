@@ -31,7 +31,6 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 }
 
 
-#' @importFrom rlang := as_function
 #' @export
 #'
 #' @rdname apply_frmt
@@ -145,7 +144,6 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 }
 
 
-#' @importFrom rlang :=
 #' @export
 #'
 #' @rdname apply_frmt
@@ -288,8 +286,6 @@ apply_frmt.frmt_combine <- function(
 }
 
 #' @export
-#' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
-#' @importFrom rlang :=
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {

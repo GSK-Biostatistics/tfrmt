@@ -4,7 +4,6 @@
 #' @param tfrmt_obj tfrmt object
 #' @param col_plan_vars the planned renaming of columns
 #'
-#' @importFrom rlang as_name
 #' @importFrom forcats fct_inorder
 #'
 #' @noRd
@@ -188,8 +187,6 @@ apply_col_alignment <- function(col, align, type = "char") {
 #'
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column.
-#'
-#' @importFrom rlang warn
 #'
 #' @noRd
 apply_col_alignment_char <- function(col, align) {

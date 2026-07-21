@@ -275,7 +275,6 @@ frmt_combine_builder <- function(
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom rlang `%||%`
 frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
     frmt_vec_list <- map2(
@@ -354,7 +353,6 @@ as.character.frmt <- function(x, ...) {
 }
 
 #' @method as.character frmt_when
-#' @importFrom rlang quo `!!` f_rhs f_lhs eval_tidy as_label
 #'
 #' @export
 as.character.frmt_when <- function(x, ...) {

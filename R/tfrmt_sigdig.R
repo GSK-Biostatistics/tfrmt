@@ -189,7 +189,6 @@ param_set <- function(...) {
 #'
 #' @export
 #'
-#' @importFrom rlang quo_is_missing syms as_name as_label
 tfrmt_sigdig <- function(
     sigdig_df,
     group = vars(),

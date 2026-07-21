@@ -243,7 +243,6 @@ apply_tfrmt_subtable <- function(
 #' @param ... inputs supplied to function arguments
 #'
 #' @return processed data
-#' @importFrom rlang is_empty
 #' @noRd
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
@@ -289,7 +288,6 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
 #'
 #' @return formatted tibble
 #' @noRd
-#' @importFrom rlang !! !!!
 validate_cols_match <- function(.data, tfrmt, mock) {
     #Required variables
     if (mock) {

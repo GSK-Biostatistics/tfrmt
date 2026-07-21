@@ -23,7 +23,6 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_n_percent.png\" alt=\"3 by 3 table\" style=\"width:50\\%;\">"`
 #' }}
 #'
-#' @importFrom rlang parse_expr
 tfrmt_n_pct <- function(
     n = "n",
     pct = "pct",
