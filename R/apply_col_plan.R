@@ -347,7 +347,7 @@ eval_col_plan_quo <- function(
     preselected_vals,
     default_everything_behavior = FALSE
 ) {
-    if (identical(as_label(x), "everything()") & !default_everything_behavior) {
+    if (identical(as_label(x), "everything()") && !default_everything_behavior) {
         # dump any pre-selected columns from everything() call. we are _not_ using
         # the default behavior of everything().
 
