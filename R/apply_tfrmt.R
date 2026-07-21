@@ -574,7 +574,7 @@ check_order_vars <- function(.data, tfrmt) {
 
         # print warning if the number of lines printed over is greater than 1
         if (
-            sum(order_check$n1) > nrow(order_check) &
+            sum(order_check$n1) > nrow(order_check) &&
                 all(order_check$n1 == order_check$n2) == FALSE
         ) {
             message(
@@ -615,7 +615,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
         )
 
         if (
-            !identical(expected_pops, actual_pops) |
+            !identical(expected_pops, actual_pops) ||
                 (!is_empty(actual_grp_levs) &&
                     !isTRUE(all.equal(
                         expected_grp_levs,

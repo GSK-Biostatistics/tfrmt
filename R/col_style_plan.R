@@ -116,7 +116,7 @@ col_style_structure <- function(
         do.call("c", .) %>%
         check_col_plan_dots()
 
-    if (is.null(width) & is.null(align)) {
+    if (is.null(width) && is.null(align)) {
         abort(
             "`align` or `width` must be applied to create this col_style_structure",
             class = "missing_col_style_structure_value"
@@ -125,7 +125,7 @@ col_style_structure <- function(
 
     if (!is.null(align)) {
         if (type == "char") {
-            if (!is.character(align) & length(align) > 0) {
+            if (!is.character(align) && length(align) > 0) {
                 abort(
                     "`align` must be a character vector",
                     class = "invalid_col_style_structure_value"
