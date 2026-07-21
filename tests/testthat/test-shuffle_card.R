@@ -19,7 +19,7 @@ test_that("shuffle/trim works", {
     )
     ard_grp_shuffled <- ard_grp |>
         shuffle_card(by = "ARM", trim = FALSE) |>
-        dplyr::filter(!stat_name == "N")
+        dplyr::filter(stat_name != "N")
     expect_false(anyNA(ard_grp_shuffled$ARM))
 
     ard_hier <- cards::ard_hierarchical_count(

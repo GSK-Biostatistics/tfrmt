@@ -46,7 +46,7 @@ create_stub_head <- function(
             stub <- nms_grps
 
             # only row_grp_plan "column" option gets >1 stub label
-            if (!row_grp_plan_label_loc == "column") {
+            if (row_grp_plan_label_loc != "column") {
                 stub_no_empty <- setdiff(stub, "")
                 stub <- c(stub_no_empty, "")[1]
             }

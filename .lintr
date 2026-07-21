@@ -18,7 +18,6 @@ linters: all_linters(
   object_name_linter = NULL,
   consecutive_assertion_linter = NULL,
   if_not_else_linter = NULL,
-  coalesce_linter = NULL,
   # redundancy linters
   redundant_equals_linter = NULL,
   redundant_ifelse_linter = NULL,
@@ -40,7 +39,6 @@ linters: all_linters(
   expect_s3_class_linter = NULL,
   expect_named_linter = NULL,
   # negation linters
-  comparison_negation_linter = NULL,
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
   # piping linters
