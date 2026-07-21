@@ -372,7 +372,7 @@ combine_group_cols_mod <- function(
     .data <- .data %>%
         dplyr::select(c(!!!group, !!label, "TEMP_row")) %>%
         dplyr::mutate(
-            dplyr::across(c(!!!group), ~ fct_inorder(.x)),
+            dplyr::across(c(!!!group), ~ forcats::fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
                 str_trim(!!dplyr::last(group), side = "left")
