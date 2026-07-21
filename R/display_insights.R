@@ -239,5 +239,5 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         paste0("\"", ., "\"") %>%
         glue_collapse(., ",\n  ")
 
-    glue("c({vec_prep})")
+    glue::glue("c({vec_prep})")
 }
