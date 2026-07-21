@@ -334,7 +334,6 @@ ls_to_frmt_combine <- function(x) {
     )
 }
 
-#' @importFrom stats as.formula
 ls_to_frmt_when <- function(x) {
     fmts <- x$frmt_ls %>%
         map(function(a_frmt) {

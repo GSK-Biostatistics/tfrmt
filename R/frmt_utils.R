@@ -228,7 +228,6 @@ print.body_plan <- function(x, ...) {
 #'
 #' @return character string representing `frmt` object with `param` value as name
 #' @noRd
-#' @importFrom stats setNames
 frmt_builder <- function(param, frmt_string, missing = NULL) {
     if (!missing(param)) {
         frmt_string <- setNames(frmt_string, param)

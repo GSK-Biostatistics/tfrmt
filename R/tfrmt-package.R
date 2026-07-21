@@ -36,6 +36,8 @@
 #' @importFrom rlang quo_is_missing quo_name sym syms warn
 #' @importFrom rlang := !! !!! %||%
 #'
+#' @importFrom stats as.formula setNames
+#'
 #' @importFrom stringi stri_wrap
 #'
 #' @importFrom stringr str_c str_count str_detect str_dup str_extract
