@@ -23,7 +23,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
             length(stub_vars) > 0 &&
                 length(stub_vars) == length(new_stub_labels)
         ) {
-            lookup <- setNames(stub_vars, new_stub_labels)
+            lookup <- stats::setNames(stub_vars, new_stub_labels)
 
             #  Filter out entries where the new name is empty or NA
             valid_names <- names(lookup) != "" & !is.na(names(lookup))

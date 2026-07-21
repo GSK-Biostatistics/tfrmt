@@ -177,7 +177,7 @@ update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]
 
     old_groups <- do.call(vars, unname(dots))
-    new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
+    new_group_map <- stats::setNames(names(dots), map_chr(old_groups, as_label))
 
     if (!is_empty(tfrmt$group)) {
         var_list <- sapply(tfrmt$group, function(x) {

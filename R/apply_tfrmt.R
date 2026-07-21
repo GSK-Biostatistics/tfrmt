@@ -499,7 +499,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
         map_chr(as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
-        group_val_char <- capture.output(dput(setNames(grp, group_names)))
+        group_val_char <- capture.output(dput(stats::setNames(grp, group_names)))
     } else if (length(group_names) == 1) {
         group_val_char <- paste(capture.output(dput(grp[[1]])), collapse = "")
     } else {

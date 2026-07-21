@@ -230,7 +230,7 @@ print.body_plan <- function(x, ...) {
 #' @noRd
 frmt_builder <- function(param, frmt_string, missing = NULL) {
     if (!missing(param)) {
-        frmt_string <- setNames(frmt_string, param)
+        frmt_string <- stats::setNames(frmt_string, param)
     }
 
     map(
