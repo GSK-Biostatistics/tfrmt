@@ -58,7 +58,6 @@ body_plan <- function(...) {
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom stringr str_detect str_extract_all
 #' @importFrom rlang as_name quo_is_missing
 body_plan_builder <- function(
     data,

@@ -192,7 +192,7 @@ frmt <- function(
 
 #' @export
 #' @rdname frmt
-#' @importFrom stringr str_extract_all str_count str_replace str_detect
+#'
 frmt_combine <- function(expression, ..., missing = NULL) {
     everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
 

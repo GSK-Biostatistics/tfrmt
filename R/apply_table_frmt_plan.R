@@ -107,7 +107,6 @@ apply_table_frmt_plan <- function(
 #'
 #' @return vector of the rows which this format could be applied to
 #'
-#' @importFrom stringr str_remove_all
 #' @noRd
 fmt_test_data <- function(cur_fmt, .data, label, group, param) {
     #get filters for each column type

@@ -7,7 +7,6 @@
 #'
 #' @noRd
 #' @importFrom rlang !!!
-#' @importFrom stringr str_split
 apply_row_grp_struct <- function(
     .data,
     row_grp_struct_list,
@@ -214,7 +213,6 @@ apply_grp_block <- function(.data, group, element_block, widths) {
 #' @return character value containing post space value modified to fill cell
 #' @noRd
 #'
-#' @importFrom stringr str_sub
 fill_post_space <- function(post_space, fill, width) {
     ## if only white space, no need to make wider for visuals
     if (grepl("^\\s*$", post_space)) {
@@ -243,7 +241,6 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom stringr str_trim
 #' @importFrom forcats fct_inorder
 combine_group_cols <- function(
     .data,

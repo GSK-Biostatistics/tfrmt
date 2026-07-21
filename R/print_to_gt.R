@@ -435,7 +435,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom stringr str_split
 #' @importFrom gt cols_label tab_spanner md
 #'
 format_gt_column_labels <- function(gt_table, .data) {
@@ -496,7 +495,6 @@ format_gt_column_labels <- function(gt_table, .data) {
 #' @return gt object
 #' @noRd
 #' @importFrom gt text_transform cells_body cells_stub cells_column_labels cells_column_spanners
-#' @importFrom stringr str_match str_c str_dup str_trim
 #'
 convert_ws_unicode <- function(gt_table) {
     locations <- list(cells_body())
@@ -540,7 +538,6 @@ convert_ws_unicode <- function(gt_table) {
 
 # split duplicate space characters with unicode whitespace ones
 #' @param x whitespace vector of strings of length >1
-#' @importFrom stringr str_sub
 #' @noRd
 break_duplicate_whitespace <- function(x) {
     for (i in seq_along(x)) {

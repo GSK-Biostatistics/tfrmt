@@ -1,4 +1,3 @@
-#' @importFrom stringr str_remove str_detect
 #' @importFrom utils capture.output
 #' @importFrom rlang quo
 apply_col_plan <- function(data, col_selection, grp_lbl) {

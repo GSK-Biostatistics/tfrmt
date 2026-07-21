@@ -5,8 +5,6 @@
 #'
 #' @return formatted spec as character string
 #' @noRd
-#'
-#' @importFrom stringr str_dup str_replace
 sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
     if (is.na(sigdig)) {
         frmted_string <- "x"

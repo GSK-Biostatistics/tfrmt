@@ -351,7 +351,6 @@ arrange_enquo <- function(dat, param) {
 #'
 #' @return dataset with renaming in needed
 #' @noRd
-#' @importFrom stringr str_count str_remove
 clean_spanning_col_names <- function(data) {
     # Get number of layers
     lyrs <- count_spanning_layers(names(data))
@@ -382,8 +381,6 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #'
 #' @return data pivoted wider
 #' @noRd
-#'
-#' @importFrom stringr str_detect
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
     num_rec_by_row <- data %>%

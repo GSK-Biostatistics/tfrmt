@@ -4,7 +4,6 @@ expr_to_filter <- function(cols, val) {
     UseMethod("expr_to_filter", cols)
 }
 
-#' @importFrom stringr str_detect str_sub
 #' @importFrom rlang as_label
 expr_to_filter.quosure <- function(cols, val) {
     ## If is missing a quosure, nothing to filter

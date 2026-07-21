@@ -189,7 +189,6 @@ apply_col_alignment <- function(col, align, type = "char") {
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column.
 #'
-#' @importFrom stringr str_dup str_c str_trim str_detect
 #' @importFrom rlang warn
 #'
 #' @noRd
@@ -254,8 +253,6 @@ apply_col_alignment_char <- function(col, align) {
 #'
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column.
-#'
-#' @importFrom stringr str_replace_all str_count str_dup str_extract str_detect str_c
 #'
 #' @noRd
 apply_col_alignment_pos <- function(col, align) {
@@ -423,7 +420,6 @@ apply_col_alignment_pos <- function(col, align) {
 #'
 #' @return Character vector containing padded aligned data values
 #'
-#' @importFrom stringr str_dup str_pad
 #' @noRd
 apply_col_width <- function(col, width) {
     col_na_idx <- which(is.na(col))

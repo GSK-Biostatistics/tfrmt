@@ -48,7 +48,6 @@ as_json <- function(x) {
 
 #' @export
 #' @importFrom jsonlite toJSON validate
-#' @importFrom stringr str_replace_all
 as_json.tfrmt <- function(x) {
     # Prepare each element to get converted to JSON
     tfrmt_nm <- names(x)
@@ -282,7 +281,6 @@ ls_to_row_grp_plan <- function(ls) {
     ls
 }
 
-#' @importFrom stringr str_which
 ls_to_body_plan <- function(ls) {
     if (!is.null(ls)) {
         frmts_ls <- ls %>%
