@@ -7,7 +7,6 @@ linters: all_linters(
   unreachable_code_linter = NULL,
   cyclocomp_linter(25),
   todo_comment_linter = NULL,
-  vector_logic_linter = NULL,
   function_argument_linter = NULL,
   missing_argument_linter = NULL,
   implicit_integer_linter = NULL,
