@@ -239,7 +239,9 @@ check_col_plan_dots <- function(x) {
         } else if (is.call(x)) {
             if (is_valid_tidyselect_call(x)) {
                 quo(!!x)
-            } else if (is_valid_quo_call(x) || is_valid_span_structure_call(x)) {
+            } else if (
+                is_valid_quo_call(x) || is_valid_span_structure_call(x)
+            ) {
                 return(eval_tidy(x))
             } else {
                 stop(

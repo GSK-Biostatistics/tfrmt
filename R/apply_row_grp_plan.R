@@ -274,7 +274,9 @@ combine_group_cols <- function(
 
     if (is.null(element_row_grp_loc)) {
         indent <- "  "
-    } else if (element_row_grp_loc$location == "spanning" && length(group) > 0) {
+    } else if (
+        element_row_grp_loc$location == "spanning" && length(group) > 0
+    ) {
         group <- group[-1]
         indent <- element_row_grp_loc$indent
     } else {
