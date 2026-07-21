@@ -504,7 +504,10 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
             group_names
         )))
     } else if (length(group_names) == 1) {
-        group_val_char <- paste(utils::capture.output(dput(grp[[1]])), collapse = "")
+        group_val_char <- paste(
+            utils::capture.output(dput(grp[[1]])),
+            collapse = ""
+        )
     } else {
         group_val_char <- "\".default\""
     }
@@ -552,14 +555,20 @@ check_order_vars <- function(.data, tfrmt) {
             order_check <- .data %>%
                 dplyr::group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
                 dplyr::mutate(
-                    n1 = dplyr::n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
+                    n1 = dplyr::n_distinct(
+                        !!(tfrmt$label),
+                        !!!tfrmt$sorting_cols
+                    ),
                     n2 = dplyr::n_distinct(!!(tfrmt$label))
                 )
         } else {
             order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
                 dplyr::mutate(
-                    n1 = dplyr::n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
+                    n1 = dplyr::n_distinct(
+                        !!tfrmt$label,
+                        !!!tfrmt$sorting_cols
+                    ),
                     n2 = dplyr::n_distinct(!!tfrmt$label)
                 )
         }
