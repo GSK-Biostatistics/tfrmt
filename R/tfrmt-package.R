@@ -27,8 +27,6 @@
 #' @importFrom rlang quo_is_missing quo_name sym syms warn
 #' @importFrom rlang := !! !!! %||%
 #'
-#' @importFrom stringi stri_wrap
-#'
 #' @importFrom stringr str_c str_count str_detect str_dup str_extract
 #' @importFrom stringr str_extract_all str_glue str_match str_pad str_replace
 #' @importFrom stringr str_replace_all str_remove str_remove_all str_split
