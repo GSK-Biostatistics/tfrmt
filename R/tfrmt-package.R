@@ -8,9 +8,6 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom ggplot2 scale_x_continuous scale_x_discrete scale_y_discrete
-#' @importFrom ggplot2 theme theme_void unit xlab ylab
-#'
 #' @importFrom gt cells_body cell_borders cells_column_labels cells_column_spanners cells_row_groups cells_stub cell_text cols_hide cols_label default_fonts gt gt_group md opt_footnote_marks opt_table_font px sub_missing tab_footnote tab_header tab_options tab_source_note tab_spanner tab_stubhead tab_style text_transform
 #'
 #' @importFrom purrr discard keep list_flatten map map_chr map_dbl map_dfc

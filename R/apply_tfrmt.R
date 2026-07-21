@@ -412,7 +412,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                         )
                     ),
                     !!!tfrmt$group,
-                    n
+                    .data$n
                 ) %>%
                 unique() %>%
                 dplyr::rowwise() %>%

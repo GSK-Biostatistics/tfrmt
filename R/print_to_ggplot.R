@@ -150,7 +150,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
                 label = .data$value
             )
         ) +
-            scale_x_continuous(
+            ggplot2::scale_x_continuous(
                 position = "top",
                 breaks = unique(long_data$column),
                 labels = as.character(unique(long_data$column))
@@ -164,25 +164,25 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
                 label = .data$value
             )
         ) +
-            scale_x_discrete(position = "top")
+            ggplot2::scale_x_discrete(position = "top")
     }
 
     plot +
         ggplot2::geom_text(...) +
-        xlab("") +
-        ylab("") +
-        theme_void() +
-        theme(
+        ggplot2::xlab("") +
+        ggplot2::ylab("") +
+        ggplot2::theme_void() +
+        ggplot2::theme(
             axis.text.y = ggplot2::element_text(
                 size = 10,
                 margin = ggplot2::margin(r = 0),
                 hjust = 0
             ),
-            panel.spacing = unit(0, "mm"),
+            panel.spacing = ggplot2::unit(0, "mm"),
             strip.text = ggplot2::element_blank(),
             axis.text.x = ggplot2::element_text(size = 10)
         ) + # replace y values with labels
-        scale_y_discrete(
+        ggplot2::scale_y_discrete(
             labels = dplyr::pull(long_data, !!tfrmt$label),
             breaks = long_data$y
         )
