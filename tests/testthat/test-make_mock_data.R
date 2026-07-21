@@ -270,7 +270,7 @@ test_that("Mock data contains all levels", {
 
 
 test_that("Check mock when value is missing", {
-    data <- crossing(
+    data <- tidyr::crossing(
         label = c(
             "Intent-To-Treat (ITT)",
             "Safety",

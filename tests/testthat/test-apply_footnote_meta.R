@@ -574,7 +574,7 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
                 rowlbl2 = c("Other", "Lost to follow-up")
             )
         ) %>%
-        crossing(
+        tidyr::crossing(
             param = c("n", "pct"),
             trt = c("Placebo", "Trt1", "Trt2", "Trt3")
         ) %>%

@@ -32,7 +32,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     all_frmt_spec <- body_plan %>%
         map_dfr(
             function(x) {
-                crossing(
+                tidyr::crossing(
                     # if group_val is a named list, return as a tibble with list names as colnames
                     # otherwise (group_val = ".default") convert to tibble with colname "grp"
                     if (is.list(x$group_val)) {
@@ -220,7 +220,9 @@ make_col_df <- function(
                 discard(is.list) %>%
                 clean_col_names(dont_inc = grp_lb_vars)
 
-            low_lvl_def <- tibble::tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
+            low_lvl_def <- tibble::tibble(
+                !!column_vars[max(n_spans)] := low_lvl_vars
+            )
 
             # creates a df for each span structure
             span_df <- col_plan$dots %>%
@@ -228,7 +230,7 @@ make_col_df <- function(
                 map_dfr(function(x) {
                     span_df <- x %>%
                         map(~ clean_col_names(., c())) %>%
-                        reduce(crossing) %>%
+                        reduce(tidyr::crossing) %>%
                         unnest(
                             cols = tidyselect::everything()
                         )
@@ -280,7 +282,10 @@ add_mock_big_ns <- function(data, column, param, big_n_struct) {
             dplyr::pull(!!col) %>%
             unique()
 
-        data <- tibble::tibble(!!col := col_vals, !!param := big_n_struct$param_val) %>%
+        data <- tibble::tibble(
+            !!col := col_vals,
+            !!param := big_n_struct$param_val
+        ) %>%
             dplyr::bind_rows(data, .)
     }
     data

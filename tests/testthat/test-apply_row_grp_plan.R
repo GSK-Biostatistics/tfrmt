@@ -73,7 +73,7 @@ test_that("insert post space - single grouping variable", {
 
 test_that("insert post space - two grouping variables", {
     df <- tibble::tibble(
-        crossing(
+        tidyr::crossing(
             grp1 = c("A", "B", "C"),
             grp2 = c("a", "b"),
             label = as.character(1:2)
@@ -212,7 +212,7 @@ test_that("insert mix - single grouping variable", {
 
 test_that("insert post space after specific value", {
     df <- tibble::tibble(
-        crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
+        tidyr::crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
         label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
@@ -253,7 +253,7 @@ test_that("insert post space after specific value", {
 
 test_that("overlapping row_grp_structures - prefers latest", {
     df <- tibble::tibble(
-        crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
+        tidyr::crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
         label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
@@ -443,7 +443,7 @@ test_that("post space works when data contains NAs", {
 
 test_that("Check combine_group_cols with a single group", {
     mock_single_grp <- tibble::tibble(
-        crossing(grp1 = c("A", "B", "C"), lab = c("a", "b")),
+        tidyr::crossing(grp1 = c("A", "B", "C"), lab = c("a", "b")),
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
         trtC = rep("xx (xx%)", 6),
