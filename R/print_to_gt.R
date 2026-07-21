@@ -42,12 +42,6 @@
 #'```
 #'
 #'   \if{html}{\out{ `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png\" alt = \"Simple 3 by 3 table without values, but with column names\" style=\"width:50\\%;\">"` }}
-#'
-#'
-#' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom rlang quo_is_missing sym quo is_empty
-#' @importFrom dplyr vars
-#' @importFrom purrr quietly safely
 print_mock_gt <- function(
     tfrmt,
     .data = NULL,
@@ -149,8 +143,6 @@ print_mock_gt <- function(
 #' \if{html}{\out{
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
-#'
-#' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     if (!is_tfrmt(tfrmt)) {
         stop("Requires a tfrmt object")
@@ -185,8 +177,6 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #' @export
 #'
 #' @keywords internal
-#' @importFrom gt gt_group
-#' @importFrom purrr map2
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
     map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
         gt_group(.list = .)
@@ -202,9 +192,6 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
 #' @export
 #'
 #' @keywords internal
-#' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders
-#'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead tab_source_note
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     existing_grp <- tfrmt$group %>%
         keep(function(x) {
@@ -280,7 +267,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     gt_out_final <- gt_out %>%
         tab_style(
             style = list(
-                cell_text(whitespace = "pre-wrap", align = "left")
+                cell_text(
+                    whitespace = "pre-wrap",
+                    align = "left"
+                )
             ),
             locations = list(
                 cells_stub(columns = rowname_col),
@@ -308,9 +298,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             page.footer.use_tbl_notes = TRUE,
             page.orientation = "landscape"
         ) %>%
-
         tab_style(
-            style = cell_text(whitespace = "pre-wrap", align = "center"),
+            style = cell_text(
+                whitespace = "pre-wrap",
+                align = "center"
+            ),
             locations = list(
                 cells_column_spanners(),
                 cells_column_labels(),
@@ -319,7 +311,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 )
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("top", "bottom"),
@@ -334,7 +325,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 cells_row_groups()
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("top"),
@@ -345,7 +335,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 cells_column_labels()
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("bottom"),
@@ -357,7 +346,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             )
         ) %>%
         tab_style(
-            style = cell_text(font = c("Courier", default_fonts())),
+            style = cell_text(
+                font = c("Courier", default_fonts())
+            ),
             locations = list(
                 cells_body(),
                 cells_row_groups(),
@@ -434,12 +425,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom tidyr pivot_longer
-#' @importFrom stringr str_split
-#' @importFrom gt cols_label tab_spanner md
-#' @importFrom dplyr as_tibble desc coalesce left_join mutate
-#' @importFrom purrr keep
-#'
 format_gt_column_labels <- function(gt_table, .data) {
     spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
     if (length(spanning) > 0) {
@@ -497,9 +482,6 @@ format_gt_column_labels <- function(gt_table, .data) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom gt text_transform cells_body cells_stub cells_column_labels cells_column_spanners
-#' @importFrom stringr str_match str_c str_dup str_trim
-#'
 convert_ws_unicode <- function(gt_table) {
     locations <- list(cells_body())
 
@@ -542,7 +524,6 @@ convert_ws_unicode <- function(gt_table) {
 
 # split duplicate space characters with unicode whitespace ones
 #' @param x whitespace vector of strings of length >1
-#' @importFrom stringr str_sub
 #' @noRd
 break_duplicate_whitespace <- function(x) {
     for (i in seq_along(x)) {

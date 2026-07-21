@@ -151,8 +151,6 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #' @return
 #' A `tfrmt` with the `group` variables updated in all places
 #'
-#' @importFrom rlang as_label is_empty
-#'
 #' @returns tfrmt object with updated groups#'
 #' @export
 #' @examples

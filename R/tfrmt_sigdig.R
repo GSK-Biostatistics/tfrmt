@@ -5,8 +5,6 @@
 #'
 #' @return formatted spec as character string
 #' @noRd
-#'
-#' @importFrom stringr str_dup str_replace
 sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
     if (is.na(sigdig)) {
         frmted_string <- "x"
@@ -53,8 +51,8 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' param_set("{pct} %" = 1)
 #'
 #' @return list of default parameter-level significant digits rounding
+#'
 #' @export
-#' @importFrom purrr map_lgl map2_lgl
 param_set <- function(...) {
     args <- list(...)
 
@@ -191,10 +189,6 @@ param_set <- function(...) {
 #'
 #' @export
 #'
-#' @importFrom dplyr rowwise group_split desc vars all_of
-#' @importFrom tidyr unite
-#' @importFrom purrr map
-#' @importFrom rlang quo_is_missing syms as_name as_label
 tfrmt_sigdig <- function(
     sigdig_df,
     group = vars(),
