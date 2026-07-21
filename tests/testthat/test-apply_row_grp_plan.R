@@ -555,7 +555,7 @@ test_that("Check combine_group_cols with a multi groups", {
         ) %>%
         dplyr::select(grp1, grp2, everything()) %>%
         dplyr::mutate(grp1 = ifelse(grp1 == "", NA, grp1)) %>%
-        fill(grp1, .direction = "up")
+        tidyr::fill(grp1, .direction = "up")
 
     expect_equal(
         auto_test_with_span,

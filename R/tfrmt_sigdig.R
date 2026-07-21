@@ -99,7 +99,7 @@ param_set <- function(...) {
             )
         ) %>%
         dplyr::mutate(idx = dplyr::row_number()) %>%
-        unnest("params", keep_empty = TRUE) %>%
+        tidyr::unnest("params", keep_empty = TRUE) %>%
         dplyr::mutate(
             drop = map2_lgl(
                 .data$param_display,
@@ -303,7 +303,7 @@ tfrmt_sigdig <- function(
 
     if (length(groups_in_data) > 0) {
         data_ord <- sigdig_df %>%
-            unite(
+            tidyr::unite(
                 "def_ord",
                 tidyselect::all_of(groups_in_data),
                 remove = FALSE

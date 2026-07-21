@@ -205,7 +205,7 @@ test_that("alignment of multiple columns works", {
     # nolint end
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -214,7 +214,7 @@ test_that("alignment of multiple columns works", {
     expect_equal(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -258,7 +258,7 @@ test_that("alignment of multiple columns works", {
     # nolint end
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -267,7 +267,7 @@ test_that("alignment of multiple columns works", {
     expect_equal(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -327,7 +327,7 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -361,7 +361,7 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -385,7 +385,7 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -422,7 +422,7 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -487,7 +487,7 @@ test_that("span_structure works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = c(span_col, column),
             names_sep = .tlang_delim,
             values_from = value,
@@ -638,7 +638,7 @@ test_that("Overlapping col_style_structure favors last one", {
     # nolint end
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -647,7 +647,7 @@ test_that("Overlapping col_style_structure favors last one", {
     expect_equal(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -722,7 +722,7 @@ test_that("Align strings >1 in length", {
 
     # informs user
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -731,7 +731,7 @@ test_that("Align strings >1 in length", {
     expect_equal(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -806,7 +806,7 @@ test_that("Alphanumeric align string supplied", {
 
     # informs user
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -815,7 +815,7 @@ test_that("Alphanumeric align string supplied", {
     expect_equal(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -904,7 +904,7 @@ test_that("multi-positional alignment", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = col,
             values_from = val
         ) %>%
@@ -955,7 +955,7 @@ test_that("multi-positional alignment", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -1001,7 +1001,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         )
     )
     dat_wide <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = col,
             values_from = val
         )
@@ -1041,7 +1041,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         )
     )
     dat_wide <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = col,
             values_from = val
         )

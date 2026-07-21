@@ -99,7 +99,7 @@ body_plan_builder <- function(
                 }
             )
         ) %>%
-        unnest(
+        tidyr::unnest(
             tidyselect::everything()
         ) %>%
         dplyr::mutate(

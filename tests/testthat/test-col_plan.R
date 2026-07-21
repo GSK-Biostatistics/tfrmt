@@ -951,7 +951,10 @@ test_that("Order is kept for multi-col columns", {
         dplyr::select(
             tidyselect::starts_with("col")
         ) %>%
-        unite("new", sep = .tlang_delim) %>%
+        tidyr::unite(
+            "new",
+            sep = .tlang_delim
+        ) %>%
         dplyr::pull(new)
 
     expect_equal(new_name_ord, new_name_ord_in_dat)

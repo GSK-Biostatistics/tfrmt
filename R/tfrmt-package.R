@@ -20,10 +20,6 @@
 #' @importFrom rlang is_quosures list2 parse_expr parse_exprs quo quo_get_expr
 #' @importFrom rlang quo_is_missing quo_name sym syms warn
 #' @importFrom rlang := !! !!! %||%
-#'
-#' @importFrom tidyr fill nest pivot_longer pivot_wider
-#' @importFrom tidyr replace_na separate unnest unnest_longer unite
-#'
 ## usethis namespace: end
 NULL
 

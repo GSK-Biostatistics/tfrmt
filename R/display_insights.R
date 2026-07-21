@@ -23,7 +23,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     ) %>%
         # TODO add a warning if a format isn't applied anywhere
         dplyr::mutate(TEMP_fmt_rank = dplyr::row_number()) %>%
-        unnest(cols = c(TEMP_appl_row)) %>%
+        tidyr::unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
         dplyr::arrange(TEMP_appl_row, dplyr::desc(.data$TEMP_fmt_rank)) %>%
@@ -231,7 +231,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
                 col_selection
             )
         ) %>%
-        pivot_longer(
+        tidyr::pivot_longer(
             tidyselect::everything()
         ) %>%
         dplyr::arrange(nchar(.data$value)) %>%

@@ -429,7 +429,10 @@ test_that("Test body_plan missing", {
         input_data %>%
             dplyr::select(-param) %>%
             dplyr::mutate(val = as.character(val)) %>%
-            pivot_wider(names_from = column, values_from = val),
+            tidyr::pivot_wider(
+                names_from = column,
+                values_from = val
+            ),
         ignore_attr = c(
             "class",
             ".col_plan_vars",

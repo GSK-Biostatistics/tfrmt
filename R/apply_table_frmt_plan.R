@@ -36,7 +36,7 @@ apply_table_frmt_plan <- function(
     ) %>%
         # TODO? add a warning if a format isn't applied anywhere?
         dplyr::mutate(TEMP_fmt_rank = dplyr::row_number()) %>%
-        unnest(cols = c(TEMP_appl_row)) %>%
+        tidyr::unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         #TODO add warning if there are rows not covered
         dplyr::arrange(TEMP_appl_row, dplyr::desc(.data$TEMP_fmt_rank)) %>%

@@ -433,7 +433,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             stringr::str_split(.tlang_delim, simplify = TRUE) %>%
             tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(cols = spanning) %>%
-            pivot_longer(-"cols")
+            tidyr::pivot_longer(-"cols")
 
         lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
 
@@ -441,7 +441,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::filter(.data$name != max(.data$name)) %>%
             dplyr::arrange(dplyr::desc(.data$name)) %>%
             dplyr::group_by(.data$value) %>%
-            nest(set = "cols") %>%
+            tidyr::nest(set = "cols") %>%
             dplyr::mutate(
                 set = map(.data$set, ~ dplyr::pull(., .data$cols))
             ) %>%
