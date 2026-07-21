@@ -148,8 +148,6 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #' @param col Column value to align on from `column` variable. May be a quoted
 #'   or unquoted column name, a tidyselect semantic, or a span_structure.
 #'
-#' @importFrom glue glue glue_collapse
-#'
 #' @return text representing character vector of formatted values to be copied and modified in the col_style_plan
 #' @export
 #' @examples
