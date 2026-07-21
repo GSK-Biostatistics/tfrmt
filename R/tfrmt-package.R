@@ -15,17 +15,23 @@
 #'
 #' @importFrom dplyr vars
 #'
+#' @importFrom forcats fct_inorder
+#'
+#' @importFrom ggplot2 aes element_blank element_text geom_text ggplot margin
+#' @importFrom ggplot2 scale_x_continuous scale_x_discrete scale_y_discrete
+#' @importFrom ggplot2 theme theme_void unit xlab ylab
+#'
 #' @importFrom glue glue glue_collapse
 #'
-#' @importFrom forcats fct_inorder
+#' @importFrom jsonlite parse_json read_json toJSON validate
 #'
 #' @importFrom purrr discard keep list_flatten map map_chr map_dbl map_dfc
 #' @importFrom purrr map_dfr map_lgl map2 map2_chr map2_dfr map2_lgl pmap
 #' @importFrom purrr pmap_chr reduce quietly safely
 #'
 #' @importFrom rlang abort as_function as_label as_name caller_call caller_env
-#' @importFrom rlang check_dots_empty0 eval_bare eval_tidy expr expr_text f_lhs
-#' @importFrom rlang f_rhs f_rhs<- frame_call inform is_empty is_quosure
+#' @importFrom rlang check_dots_empty0 .data eval_bare eval_tidy expr expr_text
+#' @importFrom rlang f_lhs f_rhs f_rhs<- frame_call inform is_empty is_quosure
 #' @importFrom rlang is_quosures list2 parse_expr parse_exprs quo quo_get_expr
 #' @importFrom rlang quo_is_missing quo_name sym syms warn
 #' @importFrom rlang := !! !!! %||%

@@ -12,8 +12,6 @@
 #'   param = param,
 #'   value=value) |>
 #'   tfrmt_to_json()
-#'
-#' @importFrom jsonlite toJSON validate
 tfrmt_to_json <- function(tfrmt, path = NULL) {
     if (!is_tfrmt(tfrmt)) {
         stop("Needs tfrmt")
@@ -47,7 +45,6 @@ as_json <- function(x) {
 }
 
 #' @export
-#' @importFrom jsonlite toJSON validate
 as_json.tfrmt <- function(x) {
     # Prepare each element to get converted to JSON
     tfrmt_nm <- names(x)
@@ -208,7 +205,6 @@ as_json.page_plan <- function(x) {
 #'   will read in json object preferentially. So if both a path and a json
 #'   object are supplied the json object will be read in.
 #'
-#' @importFrom jsonlite read_json parse_json
 #' @export
 json_to_tfrmt <- function(path = NULL, json = NULL) {
     if (!is.null(json)) {
