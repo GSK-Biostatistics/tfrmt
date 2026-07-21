@@ -58,7 +58,7 @@ as_json.tfrmt <- function(x) {
 
     # Converts list to a json object
     output_json <- out %>%
-        toJSON(pretty = TRUE, force = TRUE)
+        jsonlite::toJSON(pretty = TRUE, force = TRUE)
 
     # Removing names added in by jsonlite
     # only change spaces at the beginning of the row
