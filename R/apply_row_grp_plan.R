@@ -323,7 +323,7 @@ combine_group_cols <- function(
                                 tidyselect::where(is.list),
                                 ~ map(
                                     .x,
-                                    ~ if (is.null(.)) NA_character_ else .
+                                    ~ . %||% NA_character_
                                 )
                             )
                         ) %>%
