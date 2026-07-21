@@ -237,7 +237,6 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom forcats fct_inorder
 combine_group_cols <- function(
     .data,
     group,

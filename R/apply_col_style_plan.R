@@ -4,8 +4,6 @@
 #' @param tfrmt_obj tfrmt object
 #' @param col_plan_vars the planned renaming of columns
 #'
-#' @importFrom forcats fct_inorder
-#'
 #' @noRd
 apply_col_style_plan <- function(
     .data,

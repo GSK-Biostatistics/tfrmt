@@ -64,7 +64,6 @@ apply_page_plan <- function(
 #' @param row_grp_plan_label_loc row_grp_plan label location
 #'
 #' @noRd
-#' @importFrom forcats fct_inorder
 apply_page_max_rows <- function(
     .data,
     max_rows,
@@ -356,7 +355,6 @@ apply_page_struct <- function(
 
 #' adapted from the row_grp_plan to remove anything unnecessary but keep the logic
 #' @noRd
-#' @importFrom forcats fct_inorder
 combine_group_cols_mod <- function(
     .data,
     group,
