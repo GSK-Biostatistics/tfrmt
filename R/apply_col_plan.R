@@ -371,7 +371,6 @@ eval_col_plan_quo <- function(
 #' @noRd
 #'
 #' @importFrom tidyr separate
-#' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
     data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
@@ -420,7 +419,6 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
 #'
 #' @noRd
 #'
-#' @importFrom tibble tibble
 unite_df_to_data_names <- function(
     split_data_names,
     preselected_cols,

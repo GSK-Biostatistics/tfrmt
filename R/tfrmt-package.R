@@ -14,8 +14,9 @@
 #' @importFrom dplyr summarise ungroup
 #'
 #' @importFrom dplyr vars
+#'
 #' @importFrom rlang expr
-#' @importFrom tibble as_tibble tibble
+#' @importFrom tibble add_row as_tibble as_tibble_row is_tibble tibble
 #' @importFrom tidyr unite
 #' @importFrom tidyselect starts_with
 ## usethis namespace: end

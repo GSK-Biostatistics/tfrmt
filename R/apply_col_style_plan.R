@@ -6,7 +6,6 @@
 #' @importFrom tidyr unnest
 #' @importFrom purrr map map_dfr discard
 #' @importFrom rlang as_name
-#' @importFrom tibble as_tibble_row
 #' @importFrom forcats fct_inorder
 #'
 #' @noRd

@@ -251,7 +251,6 @@ fill_post_space <- function(post_space, fill, width) {
 #' @importFrom stringr str_trim
 #' @importFrom purrr map_dfr map_chr
 #' @importFrom forcats fct_inorder
-#' @importFrom tibble add_row
 combine_group_cols <- function(
     .data,
     group,
