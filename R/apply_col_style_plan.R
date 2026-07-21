@@ -52,7 +52,7 @@ apply_col_style_plan <- function(
                 map(list) %>%
                 tibble::as_tibble() %>%
                 dplyr::bind_cols(
-                    tibble(col = unlist(col_selections))
+                    tibble::tibble(col = unlist(col_selections))
                 )
             total_col_style_selection <- c(
                 total_col_style_selection,
@@ -196,7 +196,7 @@ apply_col_alignment_char <- function(col, align) {
         )
         align <- paste(align, collapse = "|")
         align <- paste0("(?=[", align, "])")
-        tbl_dat <- tibble(col = trimws(col)) %>%
+        tbl_dat <- tibble::tibble(col = trimws(col)) %>%
             separate(
                 col,
                 c("add_left", "add_right"),
@@ -221,20 +221,20 @@ apply_col_alignment_char <- function(col, align) {
                 )
             )
     } else {
-        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
+        tbl_dat <- tibble::tibble(col = str_trim(col, side = "right")) %>%
             dplyr::mutate(
                 string_col = nchar(.data$col),
                 string_tot = max(.data$string_col),
                 space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
             )
         if (align == "left") {
-            tbl_dat <- tibble(
+            tbl_dat <- tibble::tibble(
                 add_left = "",
                 add_right = tbl_dat$space_to_add
             ) %>%
                 dplyr::bind_cols(tbl_dat, .)
         } else {
-            tbl_dat <- tibble(
+            tbl_dat <- tibble::tibble(
                 add_left = tbl_dat$space_to_add,
                 add_right = ""
             ) %>%
@@ -257,12 +257,12 @@ apply_col_alignment_char <- function(col, align) {
 #' @noRd
 apply_col_alignment_pos <- function(col, align) {
     # merge the alignment vec in with the column
-    col_with_align <- tibble(
+    col_with_align <- tibble::tibble(
         col = trimws(col),
         col_as_x = str_replace_all(col, "[0-9]", "x")
     ) %>% # convert column values to x's
         dplyr::left_join(
-            tibble(
+            tibble::tibble(
                 align = trimws(align),
                 col_as_x = str_replace_all(align, "\\|", "")
             ),

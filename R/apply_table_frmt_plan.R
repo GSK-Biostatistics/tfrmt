@@ -30,7 +30,7 @@ apply_table_frmt_plan <- function(
 
     TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
 
-    dat_plus_fmt <- tibble(
+    dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,
         TEMP_fmt_to_apply
     ) %>%

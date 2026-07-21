@@ -210,7 +210,7 @@ test_that("applying frmt - preserves decimal places after rounding", {
 })
 
 test_that("applying frmt_combine - 2x", {
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -240,7 +240,7 @@ test_that("applying frmt_combine - 2x", {
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -258,7 +258,7 @@ test_that("applying frmt_combine - 2x", {
 
 test_that("applying frmt_combine missing", {
     # Both missing
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -289,7 +289,7 @@ test_that("applying frmt_combine missing", {
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -304,7 +304,7 @@ test_that("applying frmt_combine missing", {
         )
     )
     #One Missing
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -335,7 +335,7 @@ test_that("applying frmt_combine missing", {
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -352,7 +352,7 @@ test_that("applying frmt_combine missing", {
 })
 
 test_that("applying frmt_combine - 3x", {
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 3),
         col = "col",
@@ -384,7 +384,7 @@ test_that("applying frmt_combine - 3x", {
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -401,7 +401,7 @@ test_that("applying frmt_combine - 3x", {
 })
 
 test_that("applying frmt_combine - no unique labels, so unable to frmt_combine", {
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = paste("lab", 1:15),
         col = "col",
@@ -436,7 +436,7 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             # fmt: skip
             lab = c(
@@ -475,7 +475,7 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
 
 test_that("applying frmt_when", {
     #Test frmt_when alone
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -592,7 +592,7 @@ test_that("mocks return correctly", {
     expect_equal(frmt_when_no_true, rep("Hello", nrow(iris)))
 
     #frmt_combine
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -674,7 +674,7 @@ test_that("Space in Param", {
 
 
 test_that("frmt_combine only applies when all parameters are in the data", {
-    data <- tibble(
+    data <- tibble::tibble(
         Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
         Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
         Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
@@ -717,7 +717,7 @@ test_that("frmt_combine only applies when all parameters are in the data", {
 })
 
 test_that("frmt_combine fills with partially missing values where a column is missing the value", {
-    data <- tibble(
+    data <- tibble::tibble(
         Group = rep(c("Age (y)"), c(6)),
         Label = rep(c("Mean (SD)"), c(6)),
         Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
@@ -745,7 +745,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             Group = rep(c("Age (y)"), c(3)),
             Label = rep(c("Mean (SD)"), c(3)),
             Column = c("Placebo", "Total", "Treatment"),
@@ -773,7 +773,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
 
     expect_equal(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             Group = rep(c("Age (y)"), c(3)),
             Label = rep(c("Mean (SD)"), c(3)),
             Column = c("Placebo", "Total", "Treatment"),

@@ -55,7 +55,7 @@ Apply formatting
 library(tibble)
 library(dplyr)
 # Set up data
-df <- tibble(x = c(20.12,34.54,12.34))
+df <- tibble::tibble(x = c(20.12,34.54,12.34))
 
 apply_frmt(
  frmt_def = frmt("XX.X"),

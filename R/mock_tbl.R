@@ -38,7 +38,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
                     if (is.list(x$group_val)) {
                         tibble::as_tibble(x$group_val)
                     } else {
-                        tibble(..grp = x$group_val[[1]])
+                        tibble::tibble(..grp = x$group_val[[1]])
                     },
                     !!tfrmt$label := x$label_val,
                     !!tfrmt$param := x$param_val
@@ -54,7 +54,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     # & replace .default's
     all_frmt_vals <- dplyr::bind_cols(
         all_frmt_spec,
-        map(cols_to_add, function(x) tibble(!!x := NA_character_))
+        map(cols_to_add, function(x) tibble::tibble(!!x := NA_character_))
     ) %>%
         dplyr::mutate(
             ..grp = replace_na(.data$..grp, ".default"),
@@ -170,7 +170,7 @@ add_sorting_cols <- function(data, sorting_cols) {
         n_sorting_cols <- length(sorting_cols_vars)
 
         sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x) {
-            tibble(!!sorting_cols_vars[x] := 1)
+            tibble::tibble(!!sorting_cols_vars[x] := 1)
         })
 
         data <- data %>%
@@ -206,21 +206,21 @@ make_col_df <- function(
     # test if col_plan/col_style_plan have names to use
     col_plan_test_res <- col_plan_test(col_plan)
     col_style_plan_test_res <- col_style_plan_test(col_style_plan)
-    col_def <- tibble()
+    col_def <- tibble::tibble()
 
     # Use provided column names if there is no spanning
     if (col_plan_test_res || col_style_plan_test_res) {
         if (col_plan_test_res && n_spans == 1 && is.null(n_cols)) {
             cols_to_use <- col_plan$dots %>%
                 clean_col_names(dont_inc = grp_lb_vars)
-            col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
+            col_def <- tibble::tibble(!!column_vars[n_spans] := cols_to_use)
         } else if (col_plan_test_res && is.null(n_cols)) {
             # Gets the lowest level columns only
             low_lvl_vars <- col_plan$dots %>%
                 discard(is.list) %>%
                 clean_col_names(dont_inc = grp_lb_vars)
 
-            low_lvl_def <- tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
+            low_lvl_def <- tibble::tibble(!!column_vars[max(n_spans)] := low_lvl_vars)
 
             # creates a df for each span structure
             span_df <- col_plan$dots %>%
@@ -244,14 +244,14 @@ make_col_df <- function(
             cols_from_sp <- map(col_style_plan, ~ .x$cols) |>
                 list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
-                tibble(.)
+                tibble::tibble(.)
             names(cols_from_sp) <- dplyr::last(column_vars)
 
             col_def <- dplyr::bind_rows(col_def, cols_from_sp) |> unique()
         }
     } else {
         n_cols <- ifelse(is.null(n_cols), 3, n_cols)
-        col_def <- tibble(
+        col_def <- tibble::tibble(
             !!column_vars[n_spans] := paste0(
                 column_vars[[n_spans]],
                 seq(1:n_cols)
@@ -259,7 +259,7 @@ make_col_df <- function(
         )
         if (n_spans > 1) {
             col_spans_df <- map_dfc(seq_len(n_spans - 1), function(x) {
-                tibble(
+                tibble::tibble(
                     !!column_vars[x] := rep(
                         paste0("span_", column_vars[x]),
                         n_cols
@@ -280,7 +280,7 @@ add_mock_big_ns <- function(data, column, param, big_n_struct) {
             dplyr::pull(!!col) %>%
             unique()
 
-        data <- tibble(!!col := col_vals, !!param := big_n_struct$param_val) %>%
+        data <- tibble::tibble(!!col := col_vals, !!param := big_n_struct$param_val) %>%
             dplyr::bind_rows(data, .)
     }
     data

@@ -18,7 +18,7 @@
 #' library(tibble)
 #' library(dplyr)
 #' # Set up data
-#' df <- tibble(x = c(20.12,34.54,12.34))
+#' df <- tibble::tibble(x = c(20.12,34.54,12.34))
 #'
 #' apply_frmt(
 #'  frmt_def = frmt("XX.X"),
@@ -94,7 +94,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             ) %>%
                 str_trim()
 
-            fmt_options <- tibble(
+            fmt_options <- tibble::tibble(
                 rounded = rounded_vals,
                 # digits preceding period in vals
                 act_pre_dec = rounded_vals %>%

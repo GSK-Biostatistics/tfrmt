@@ -401,7 +401,7 @@ test_that("Check apply_tfrmt for mock data", {
 })
 
 test_that("Test body_plan missing", {
-    input_data <- tibble(
+    input_data <- tibble::tibble(
         group = "groupvar",
         label = paste0("label", 1:10),
         param = "params",

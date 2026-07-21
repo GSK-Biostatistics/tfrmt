@@ -44,7 +44,7 @@ apply_row_grp_struct <- function(
 
     # similar to frmts, only allow 1 element_block for a given row
     #   - within block-specific data, split data further by grouping vars
-    dat_plus_block <- tibble(
+    dat_plus_block <- tibble::tibble(
         TEMP_appl_row,
         TEMP_block_to_apply
     ) %>%
@@ -318,7 +318,7 @@ combine_group_cols <- function(
                         dplyr::bind_cols(new_row, .) %>%
                         dplyr::mutate(..tfrmt_row_grp_lbl = TRUE)
                 } else {
-                    new_row <- tibble()
+                    new_row <- tibble::tibble()
                 }
 
                 lone_dat_summ %>%
