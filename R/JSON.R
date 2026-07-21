@@ -210,7 +210,7 @@ json_to_tfrmt <- function(path = NULL, json = NULL) {
     if (!is.null(json)) {
         dirty_list <- jsonlite::parse_json(json)
     } else if (!is.null(path)) {
-        dirty_list <- read_json(path)
+        dirty_list <- jsonlite::read_json(path)
     } else {
         stop("Path or json object needed")
     }
