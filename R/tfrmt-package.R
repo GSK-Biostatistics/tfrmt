@@ -51,5 +51,8 @@
 #' @importFrom tidyr replace_na separate unnest unnest_longer unite
 #'
 #' @importFrom tidyselect starts_with
+#'
+#' @importFrom utils capture.output
+#'
 ## usethis namespace: end
 NULL

@@ -1,4 +1,3 @@
-#' @importFrom utils capture.output
 apply_col_plan <- function(data, col_selection, grp_lbl) {
     if (is.character(col_selection)) {
         quo_col_selections <- map(col_selection, ~ char_as_quo(.x))
