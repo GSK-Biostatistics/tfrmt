@@ -397,16 +397,20 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
                 dplyr::ungroup() %>%
-                dplyr::filter(n > 1) %>%
+                dplyr::filter(.data$n > 1) %>%
                 dplyr::select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
                 dplyr::group_by(!!!tfrmt$group, param_list) %>%
-                dplyr::mutate(label_quote = paste0('"', !!tfrmt$label, '"')) %>%
+                dplyr::mutate(
+                    label_quote = paste0('"', !!tfrmt$label, '"')
+                ) %>%
                 dplyr::reframe(
-                    label_collapse = as.character(paste(
-                        label_quote,
-                        collapse = ","
-                    )),
+                    label_collapse = as.character(
+                        paste(
+                            label_quote,
+                            collapse = ","
+                        )
+                    ),
                     !!!tfrmt$group,
                     n
                 ) %>%

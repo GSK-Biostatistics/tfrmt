@@ -169,8 +169,12 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     )
                 )
             ) |>
-            dplyr::summarise(n = dplyr::n()) |>
-            dplyr::filter(n > 1)
+            dplyr::summarise(
+                n = dplyr::n()
+            ) |>
+            dplyr::filter(
+                .data$n > 1
+            )
         if (nrow(multi_test) > 0) {
             warn_df <- multi_test |>
                 dplyr::select(-"n")
