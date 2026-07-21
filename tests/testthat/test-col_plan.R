@@ -1568,9 +1568,7 @@ test_that("Tidyselect subtraction with span_structure", {
             ord1 = rep(
                 seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
-            )
-        ) %>%
-        mutate(
+            ),
             t_or_p = case_when(
                 column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
                 column %in% c("pl") ~ "Placebo",

@@ -214,7 +214,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     if (length(existing_grp) > 0) {
         if (
             !is.null(tfrmt$row_grp_plan) &&
-                !tfrmt$row_grp_plan$label_loc$location == "column"
+                tfrmt$row_grp_plan$label_loc$location != "column"
         ) {
             .data <- .data %>%
                 group_by(!!!existing_grp)
@@ -382,7 +382,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     if (
         !is.null(attr(.data, ".page_note")) &&
             !is.null(tfrmt$page_plan) &&
-            !tfrmt$page_plan$note_loc == "noprint"
+            tfrmt$page_plan$note_loc != "noprint"
     ) {
         if (tfrmt$page_plan$note_loc == "preheader") {
             gt_out_final <- gt_out_final %>%

@@ -1419,7 +1419,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
         mutate(
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%
-        ungroup %>%
+        ungroup() %>%
         filter(pct_high > 10) %>%
         select(-pct_high)
 

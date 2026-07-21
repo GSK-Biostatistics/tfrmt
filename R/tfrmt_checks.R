@@ -232,7 +232,7 @@ check_col_style_row_grp_consistency <- function(x) {
             grp_in_cap <- group_as_char %in%
                 col_align_plan_as_char[[cap_vars_idx]]
 
-            if (any(grp_in_cap[-1]) && !r_grp_plan_col_loc == "column") {
+            if (any(grp_in_cap[-1]) && r_grp_plan_col_loc != "column") {
                 is_invalid_plan <- TRUE
                 invalid_groups <- group_as_char[grp_in_cap]
                 is_invalid_plan_message <- c(

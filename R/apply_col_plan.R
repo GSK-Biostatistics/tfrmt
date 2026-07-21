@@ -44,7 +44,7 @@ create_stub_head <- function(
             stub <- nms_grps
 
             # only row_grp_plan "column" option gets >1 stub label
-            if (!row_grp_plan_label_loc == "column") {
+            if (row_grp_plan_label_loc != "column") {
                 stub_no_empty <- setdiff(stub, "")
                 stub <- c(stub_no_empty, "")[1]
             }
@@ -255,14 +255,14 @@ col_plan_span_structure_to_vars <- function(
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
-                unique
+                unique()
         } else {
             split_data_names <- split_data_names %>%
                 filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
-                unique
+                unique()
         }
     }
 

@@ -302,7 +302,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     }
     req_var <- c("group", "column")
 
-    .data <- .data %>% ungroup
+    .data <- .data %>% ungroup()
 
     req_quo %>%
         map(function(x) {
@@ -402,7 +402,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- list("")
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
-                ungroup %>%
+                ungroup() %>%
                 filter(n > 1) %>%
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
@@ -450,9 +450,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             across(
                 tidyselect::all_of(column_cols),
                 ~ as.character(.x)
-            )
-        ) %>%
-        mutate(
+            ),
             across(
                 tidyselect::all_of(column_cols),
                 ~ na_if(.x, "")
