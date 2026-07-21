@@ -93,8 +93,8 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             parse_expr()
 
         .data %>%
-            filter(!!filter_expr) %>%
-            select(
+            dplyr::filter(!!filter_expr) %>%
+            dplyr::select(
                 tidyselect::any_of(
                     c(
                         map_chr(keep_vars, as_label),
@@ -103,16 +103,16 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
                 )
             ) %>%
             # split only after non-consecutive sequence
-            mutate(
-                breaks = .data$TEMP_row == lag(.data$TEMP_row, default = 0) + 1,
+            dplyr::mutate(
+                breaks = .data$TEMP_row == dplyr::lag(.data$TEMP_row, default = 0) + 1,
                 breaks = cumsum(!.data$breaks)
             ) %>%
-            group_by(.data$breaks) %>%
-            group_split() %>%
-            map(function(x) pull(x, .data$TEMP_row))
+            dplyr::group_by(.data$breaks) %>%
+            dplyr::group_split() %>%
+            map(function(x) dplyr::pull(x, .data$TEMP_row))
     } else {
         .data %>%
-            pull(.data$TEMP_row) %>%
+            dplyr::pull(.data$TEMP_row) %>%
             list()
     }
 }

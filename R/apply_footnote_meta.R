@@ -108,7 +108,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 map_chr(as_label),
             col_str
         ) %>%
-            inner_join(loc_col_df, by = col_val_nm)
+            dplyr::inner_join(loc_col_df, by = col_val_nm)
 
         if (nrow(col_loc_df) == 0) {
             message_text <- c(
@@ -148,14 +148,14 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 max() %>%
                 col_str[.]
 
-            if (last(col_str) == span_lvl) {
+            if (dplyr::last(col_str) == span_lvl) {
                 col_loc <- unite_df_to_data_names(
                     col_loc_df,
                     preselected_cols = c(),
                     column_names = col_str
                 )
                 if (!is.null(names(col_loc))) {
-                    col_loc <- if_else(
+                    col_loc <- dplyr::if_else(
                         names(col_loc) != "",
                         names(col_loc),
                         unname(col_loc)
@@ -164,7 +164,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 out <- list(col = col_loc, spanning = FALSE)
             } else {
                 col_loc <- col_loc_df %>%
-                    pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
+                    dplyr::pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
                     unique()
                 out <- list(col = col_loc, spanning = TRUE)
             }
@@ -220,7 +220,7 @@ get_row_loc <- function(
             # Test if there are more than the first group
             highest_grp <- setdiff(
                 names(loc_info$group_val),
-                first(group_str)
+                dplyr::first(group_str)
             ) %>%
                 length() ==
                 0
@@ -244,8 +244,8 @@ get_row_loc <- function(
                     parse_expr()
 
                 col_info$row <- .data %>%
-                    ungroup() %>%
-                    mutate(
+                    dplyr::ungroup() %>%
+                    dplyr::mutate(
                         dplyr::across(
                             c(!!!group, !!label),
                             ~ str_remove(
@@ -254,10 +254,10 @@ get_row_loc <- function(
                             )
                         ),
                         `___tfrmt_test` = !!filter_expr,
-                        `___tfrmt_TEMP_rows` = row_number()
+                        `___tfrmt_TEMP_rows` = dplyr::row_number()
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_TEMP_rows`)
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
+                    dplyr::pull(.data$`___tfrmt_TEMP_rows`)
 
                 col_info$col <- ifelse(
                     is.null(col_info$col),
@@ -268,30 +268,30 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    group_by(!!first(group)) %>%
-                    mutate(
-                        `___tfrmt_grp_n` = cur_group_id(),
+                    dplyr::group_by(!!dplyr::first(group)) %>%
+                    dplyr::mutate(
+                        `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_grp_n`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
+                    dplyr::pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
                 col_info$col <- ifelse(
                     is.null(col_info$col),
-                    first(group_str),
+                    dplyr::first(group_str),
                     col_info$col
                 )
             } else if (row_grp %in% c("", "gtdefault")) {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    group_by(!!first(group)) %>%
-                    mutate(
-                        `___tfrmt_grp_n` = cur_group_id(),
+                    dplyr::group_by(!!dplyr::first(group)) %>%
+                    dplyr::mutate(
+                        `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_grp_n`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
+                    dplyr::pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
                 lowest_grp <- group_str %in%
@@ -309,12 +309,12 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    mutate(
-                        `___tfrmt_grp_n` = row_number(),
+                    dplyr::mutate(
+                        `___tfrmt_grp_n` = dplyr::row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_grp_n`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
+                    dplyr::pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
                 lowest_grp <- group_str %in%

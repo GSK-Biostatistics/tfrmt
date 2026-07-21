@@ -205,7 +205,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 tfrmt$row_grp_plan$label_loc$location != "column"
         ) {
             .data <- .data %>%
-                group_by(!!!existing_grp)
+                dplyr::group_by(!!!existing_grp)
         } else {
             # drop groups into row names
             rowname_col <- existing_grp
@@ -216,7 +216,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         # keep attribute for footnotes
         attr_footnote <- attr(.data, ".footnote_locs")
         attr_stub_header <- attr(.data, ".stub_header")
-        .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
+        .data <- dplyr::mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
         attr(.data, ".footnote_locs") <- attr_footnote
         attr(.data, ".stub_header") <- attr_stub_header
     }
@@ -432,18 +432,18 @@ format_gt_column_labels <- function(gt_table, .data) {
             keep(str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
-            mutate(cols = spanning) %>%
+            dplyr::mutate(cols = spanning) %>%
             pivot_longer(-"cols")
 
-        lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
+        lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
 
         spans_to_apply <- work_df %>%
-            filter(.data$name != max(.data$name)) %>%
-            dplyr::arrange(desc(.data$name)) %>%
-            group_by(.data$value) %>%
+            dplyr::filter(.data$name != max(.data$name)) %>%
+            dplyr::arrange(dplyr::desc(.data$name)) %>%
+            dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
-            mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
-            filter(.data$value != "NA")
+            dplyr::mutate(set = map(.data$set, ~ dplyr::pull(., .data$cols))) %>%
+            dplyr::filter(.data$value != "NA")
 
         for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format
@@ -459,13 +459,13 @@ format_gt_column_labels <- function(gt_table, .data) {
         # ensure all columns are represented
         lowest_lvl <- names(.data) %>%
             tibble(cols = .) %>%
-            left_join(lowest_lvl, by = "cols") %>%
-            mutate(value = coalesce(.data$value, .data$cols))
+            dplyr::left_join(lowest_lvl, by = "cols") %>%
+            dplyr::mutate(value = dplyr::coalesce(.data$value, .data$cols))
 
         renm_vals <- lowest_lvl %>%
-            pull(.data$value)
+            dplyr::pull(.data$value)
         names(renm_vals) <- lowest_lvl %>%
-            pull(.data$cols)
+            dplyr::pull(.data$cols)
     } else {
         renm_vals <- names(.data)
         names(renm_vals) <- renm_vals

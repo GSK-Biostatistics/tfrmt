@@ -1047,7 +1047,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
         dplyr::filter(AESOC %in% unique(AESOC)[1:3]) |>
         dplyr::group_by(AESOC) |>
         dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
-        ungroup()
+        dplyr::ungroup()
 
     # Create an ARD that stacks hierarchical data of adverse events
     # Grouping by treatment, severity, system organ class, and preferred term
@@ -1366,7 +1366,7 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         "B"  , "b"    , "n"  ,   55
     ) %>%
         # nolint end
-        mutate(grp = factor(grp, levels = c("A", "B", ""))) %>% # Explicitly a factor
+        dplyr::mutate(grp = factor(grp, levels = c("A", "B", ""))) %>% # Explicitly a factor
         tidyr::pivot_longer(trt, names_to = "column", values_to = "value")
 
     mytfrmt <- tfrmt(

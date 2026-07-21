@@ -111,7 +111,7 @@ test_that("markdown column labels - spanning", {
                 levels = c("ITT </br> (N=10)", "Eff", "Com")
             )
         ) %>%
-        mutate(val = rpois(216, 15), param = "val")
+        dplyr::mutate(val = rpois(216, 15), param = "val")
 
     # create output with spanning headers
     test_tfrmt <- tfrmt(
@@ -244,13 +244,13 @@ test_that("column spanners and labels are appropriately aligned", {
 
     # get spanner labels
     spans <- gt_out$`_spanners` %>%
-        select(var = vars, spanner_label, spanner_level) %>%
+        dplyr::select(var = vars, spanner_label, spanner_level) %>%
         unnest(
             tidyselect::everything()
         )
     # get lower labels
     lower <- gt_out$`_boxhead` %>%
-        select(var, column_label) %>%
+        dplyr::select(var, column_label) %>%
         unnest(
             tidyselect::everything()
         )

@@ -169,7 +169,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     )
                 )
             ) |>
-            dplyr::summarise(n = n()) |>
+            dplyr::summarise(n = dplyr::n()) |>
             dplyr::filter(n > 1)
         if (nrow(multi_test) > 0) {
             warn_df <- multi_test |>
@@ -188,7 +188,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
 
         data_out <- frmtted_vals |>
             dplyr::mutate(
-                `_tfrmt______id` = row_number()
+                `_tfrmt______id` = dplyr::row_number()
             ) |>
             tidyr::pivot_longer(
                 -c(

@@ -203,7 +203,7 @@ test_that("Simple Case big_n", {
     )
 
     auto_mock <- apply_tfrmt(
-        .data = select(data, -Value),
+        .data = dplyr::select(data, -Value),
         tfrmt = tfrmt_wit_colplan,
         mock = TRUE
     ) |>
@@ -812,7 +812,7 @@ test_that("Test big n with footnotes", {
     ## confirm location of footnotes gets recorded correctly
     expect_identical(
         big_n_footnote_plan_gt$`_footnotes` |>
-            select(
+            dplyr::select(
                 locname,
                 colname,
                 locnum,
@@ -885,7 +885,7 @@ test_that("big Ns vary by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -976,7 +976,7 @@ test_that("big Ns constant by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1133,7 +1133,7 @@ test_that("big Ns constant by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1212,7 +1212,7 @@ test_that("not enough big Ns by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1287,7 +1287,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns) |>
+    data <- dplyr::bind_rows(data, big_ns) |>
         dplyr::arrange(
             dplyr::desc(Group)
         )
@@ -1398,7 +1398,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
             Group
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1470,7 +1470,7 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
     data_102 <- original_data |> dplyr::mutate(`by group` = "102")
 
     # Combine the two data frames
-    data <- bind_rows(data_101, data_102)
+    data <- dplyr::bind_rows(data_101, data_102)
 
     # Create mock big Ns
     big_ns <- data |>

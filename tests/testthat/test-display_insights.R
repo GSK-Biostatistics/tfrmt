@@ -5,7 +5,7 @@ test_that("Display row formats for tfrmt with <frmt>", {
         param = c("count")
     ) %>%
         dplyr::arrange_all() %>%
-        mutate(value = seq_len(nrow(.)))
+        dplyr::mutate(value = seq_len(nrow(.)))
 
     my_tfrmt <- tfrmt(
         label = label,
@@ -68,7 +68,7 @@ test_that("Display row formats for tfrmt with <frmt>", {
 })
 
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
-    df <- bind_rows(
+    df <- dplyr::bind_rows(
         crossing(
             label = c("label 1"),
             column = c("PL", "T1", "T2"),
@@ -81,7 +81,7 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
         )
     ) %>%
         dplyr::arrange_all() %>%
-        mutate(value = seq_len(nrow(.)))
+        dplyr::mutate(value = seq_len(nrow(.)))
 
     my_tfrmt <- tfrmt(
         label = label,
@@ -153,7 +153,7 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 })
 
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>", {
-    df <- bind_rows(
+    df <- dplyr::bind_rows(
         crossing(
             label = c("label 1"),
             column = c("PL", "T1", "T2"),
@@ -171,7 +171,7 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
         )
     ) %>%
         dplyr::arrange_all() %>%
-        mutate(value = seq_len(nrow(.)))
+        dplyr::mutate(value = seq_len(nrow(.)))
 
     my_tfrmt <- tfrmt(
         label = label,

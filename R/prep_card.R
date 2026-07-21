@@ -92,7 +92,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 
     interim <- df |>
         dplyr::mutate(
-            var_level_coalesced = coalesce(
+            var_level_coalesced = dplyr::coalesce(
                 !!!rlang::syms(vars)
             )
         ) |>
