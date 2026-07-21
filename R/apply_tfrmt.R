@@ -11,7 +11,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
         stop("Requires a tfrmt object")
     }
 
-  validate_cols_match(.data, tfrmt, mock)
+    validate_cols_match(.data, tfrmt, mock)
 
     tbl_dat <- .data %>%
         remove_big_ns(param = tfrmt$param, big_n_structure = tfrmt$big_n) %>%
