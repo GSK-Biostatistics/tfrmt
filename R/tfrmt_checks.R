@@ -12,7 +12,7 @@ check_column_and_col_plan <- function(x) {
         span_structs <- NULL
     }
 
-    if (!multi_column_defined & span_structures_defined) {
+    if (!multi_column_defined && span_structures_defined) {
         if (length(x$column) == 1) {
             n_col_desc <- "A single column defined in `column` argument of tfrmt "
         } else {
@@ -207,8 +207,8 @@ check_group_var_consistency_footnote_plan <- function(x) {
 #'
 check_col_style_row_grp_consistency <- function(x) {
     if (
-        !is_empty(x$group) &
-            !is.null(x$col_style_plan) &
+        !is_empty(x$group) &&
+            !is.null(x$col_style_plan) &&
             !is_empty(x$row_grp_plan)
     ) {
         is_invalid_plan <- FALSE
