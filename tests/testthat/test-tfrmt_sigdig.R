@@ -9,16 +9,16 @@ test_that("setting param sigdig defaults", {
     expect_equal(param_set(), defaults)
 
     expect_equal(
-        param_set(
-            max = 2,
-            `{mean} ({sd})` = c(2, 3)
-        ),
         list(
             min = 1,
             median = 1,
             n = NA,
             max = 2,
-            `{mean} ({sd})` = c(2, 3)
+            "{mean} ({sd})" = c(2, 3)
+        ),
+        param_set(
+            max = 2,
+            "{mean} ({sd})" = c(2, 3)
         )
     )
 
@@ -46,14 +46,14 @@ test_that("setting param sigdig defaults", {
     )
 
     expect_equal(
-        param_set(`{n} ({pct}%)` = c(NA, 1)),
         list(
             min = 1,
             max = 1,
             median = 1,
-            `{mean} ({sd})` = c(1, 2),
-            `{n} ({pct}%)` = c(NA, 1)
-        )
+            "{mean} ({sd})" = c(1, 2),
+            "{n} ({pct}%)" = c(NA, 1)
+        ),
+        param_set("{n} ({pct}%)" = c(NA, 1)),
     )
 })
 
