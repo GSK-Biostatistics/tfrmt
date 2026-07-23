@@ -1638,7 +1638,8 @@ test_that("Tidyselect subtraction with span_structure", {
 
     # keeps the spanners & original cols other than ones that start with "ord".
     # renaming occurs as needed
-    expect_named(real_gt$`_data`,
+    expect_named(
+        real_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
