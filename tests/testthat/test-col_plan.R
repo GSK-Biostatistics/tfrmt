@@ -1673,7 +1673,8 @@ test_that("Tidyselect subtraction with span_structure", {
     mock_gt2 <- print_mock_gt(tfrmt_minus_selection_2, df)
 
     ## keeps only the spanners, label is dropped
-    expect_named(mock_gt2$`_data`,
+    expect_named(
+        mock_gt2$`_data`,
         c(
             "Treatment___tlang_delim___T1",
             "Treatment___tlang_delim___T2",
