@@ -717,8 +717,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
         label = group2,
         param_defaults = myprms
     )
-    expect_equal(
-        length(t_frmt$body_plan),
+    expect_length(t_frmt$body_plan,
         length(param_set()) + 1
     )
 })
