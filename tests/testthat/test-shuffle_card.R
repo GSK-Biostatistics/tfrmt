@@ -61,7 +61,7 @@ test_that("shuffle/trim works", {
     # only numeric stats
     expect_type(ard_shuff_trim$stat, "double")
     # no list columns
-    expect_true(!any(map_lgl(ard_shuff_trim, is.list)))
+    expect_false(any(map_lgl(ard_shuff_trim, is.list)))
 })
 
 test_that("shuffle_card notifies user about warnings/errors before dropping", {

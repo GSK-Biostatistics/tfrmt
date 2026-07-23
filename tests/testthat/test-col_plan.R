@@ -64,7 +64,7 @@ test_that("Defining the col plan in tfrmt", {
         )
     )
 
-    expect_true(!is.null(tfrmt_test$col_plan))
+    expect_false(is.null(tfrmt_test$col_plan))
 
     # expect error when writing invalid col_plan
     expect_error(

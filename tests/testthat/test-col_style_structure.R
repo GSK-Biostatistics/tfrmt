@@ -695,8 +695,8 @@ test_that("Align strings >1 in length", {
         )
     })
 
-    expect_true(
-        !is_empty(col_style_structure_message)
+    expect_false(
+        is_empty(col_style_structure_message)
     )
 
     # nolint start: commas_linter
@@ -779,8 +779,8 @@ test_that("Alphanumeric align string supplied", {
         )
     })
 
-    expect_true(
-        !is_empty(col_style_structure_message)
+    expect_false(
+        is_empty(col_style_structure_message)
     )
 
     # nolint start: commas_linter
