@@ -257,5 +257,6 @@ test_that("column type has been preserved", {
         print_to_ggplot(risk)
 
     expect_s3_class(table_data$column, class(x2$data$column))
-    expect_equal(class(risk$time), class(p2$data$column))
+    # risk$time is numeric (not an S3 object), so expect_s3_class cannot be used here
+    expect_equal(class(risk$time), class(p2$data$column)) # nolint: expect_s3_class_linter.
 })
