@@ -131,7 +131,7 @@ apply_row_grp_lbl <- function(
     ...
 ) {
     # store values of label column
-    lbl_col <- eval_tidy(label, .data)
+    lbl_col <- rlang::eval_tidy(label, .data)
 
     # check if lbl_col contains NA
     if (anyNA(lbl_col)) {

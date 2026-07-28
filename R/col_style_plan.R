@@ -102,7 +102,7 @@ col_style_structure <- function(
     width = NULL,
     ...
 ) {
-    check_dots_empty0(...)
+    rlang::check_dots_empty0(...)
 
     type <- match.arg(type)
 

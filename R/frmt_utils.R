@@ -366,7 +366,7 @@ as.character.frmt_when <- function(x, ...) {
         x$frmt_ls,
         function(x) {
             val <- quo(!!f_rhs(x))
-            val_eval <- eval_tidy(val)
+            val_eval <- rlang::eval_tidy(val)
             if (!is_frmt(val_eval)) {
                 rlang::as_label(val)
             } else {
