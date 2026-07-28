@@ -293,11 +293,11 @@ quo_get <- function(
                 arg_call_results <- list(result = arg_call, error = NULL)
             } else {
                 # try to safely evaluate arg call
-                arg_call_results_envir <- safely(eval_tidy)(
+                arg_call_results_envir <- purrr::safely(eval_tidy)(
                     arg_call,
                     env = envir
                 )
-                arg_call_results_parent_env <- safely(eval_tidy)(
+                arg_call_results_parent_env <- purrr::safely(eval_tidy)(
                     arg_call,
                     env = parent_env
                 )

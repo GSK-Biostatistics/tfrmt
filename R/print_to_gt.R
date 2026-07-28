@@ -84,7 +84,7 @@ print_mock_gt <- function(
         .data <- make_mock_data(tfrmt, .default, n_cols)
     } else {
         ## check that if value column exists in data, remove it for mocking
-        select_try <- safely(quietly(tidyselect::eval_select))(
+        select_try <- purrr::safely(purrr::quietly(tidyselect::eval_select))(
             tfrmt$value,
             data = .data
         )

@@ -373,7 +373,7 @@ test_that("Check apply_tfrmt for mock data", {
     )
 
     test_dat <- mock_dat %>%
-        quietly(apply_tfrmt)(plan, mock = TRUE) %>%
+        purrr::quietly(apply_tfrmt)(plan, mock = TRUE) %>%
         .[["result"]]
 
     expect_equal(
