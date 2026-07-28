@@ -360,7 +360,9 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
 
         out <- .data %>%
-            dplyr::mutate(!!value := out)
+            dplyr::mutate(
+                !!value := out
+            )
     }
     out
 }
