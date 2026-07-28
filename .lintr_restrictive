@@ -34,7 +34,6 @@ linters: all_linters(
   expect_length_linter = NULL,
   expect_not_linter = NULL,
   expect_s3_class_linter = NULL,
-  expect_named_linter = NULL,
   # negation linters
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
