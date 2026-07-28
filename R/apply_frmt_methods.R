@@ -309,7 +309,7 @@ apply_frmt.frmt_combine <- function(
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
         frmt_to_prt <- frmt_def$frmt_ls %>%
-            keep(~ f_lhs(.) == "TRUE")
+            purrr::keep(~ f_lhs(.) == "TRUE")
         if (length(frmt_to_prt) < 1) {
             frmt_to_prt <- frmt_def$frmt_ls
         }

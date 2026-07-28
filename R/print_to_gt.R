@@ -194,7 +194,7 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
 #' @keywords internal
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     existing_grp <- tfrmt$group %>%
-        keep(function(x) {
+        purrr::keep(function(x) {
             as_label(x) %in% names(.data)
         })
     rowname_col <- NULL
@@ -444,10 +444,15 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @return gt object
 #' @noRd
 format_gt_column_labels <- function(gt_table, .data) {
-    spanning <- names(.data) %>% keep(stringr::str_detect, .tlang_delim)
+    spanning <- purrr::keep(
+        names(.data),
+        stringr::str_detect,
+        .tlang_delim
+    )
+
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
-            keep(stringr::str_detect, .tlang_delim) %>%
+            purrr::keep(stringr::str_detect, .tlang_delim) %>%
             stringr::str_split(.tlang_delim, simplify = TRUE) %>%
             tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(cols = spanning) %>%

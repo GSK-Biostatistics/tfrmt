@@ -237,7 +237,7 @@ make_col_df <- function(
 
             # creates a df for each span structure
             span_df <- col_plan$dots %>%
-                keep(is.list) %>%
+                purrr::keep(is.list) %>%
                 map_dfr(function(x) {
                     span_df <- x %>%
                         map(~ clean_col_names(., c())) %>%
