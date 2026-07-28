@@ -145,7 +145,6 @@ is_span_structure <- function(x) {
     inherits(x, "span_structure")
 }
 
-#' @importFrom rlang eval_tidy
 #' @noRd
 check_span_structure_dots <- function(x) {
     x_names <- names(x)

@@ -3,12 +3,6 @@
 #' @param .data data
 #' @param tfrmt_obj tfrmt object
 #' @param col_plan_vars the planned renaming of columns
-#' @importFrom dplyr mutate across select tibble group_by slice n filter cur_column pull ungroup
-#' @importFrom tidyr unnest
-#' @importFrom purrr map map_dfr discard
-#' @importFrom rlang as_name
-#' @importFrom tibble as_tibble_row
-#' @importFrom forcats fct_inorder
 #'
 #' @noRd
 apply_col_style_plan <- function(
@@ -192,11 +186,6 @@ apply_col_alignment <- function(col, align, type = "char") {
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column.
 #'
-#' @importFrom tidyr separate replace_na
-#' @importFrom dplyr mutate across tibble bind_cols
-#' @importFrom stringr str_dup str_c str_trim str_detect
-#' @importFrom rlang warn
-#'
 #' @noRd
 apply_col_alignment_char <- function(col, align) {
     if (!all(align %in% c("left", "right"))) {
@@ -259,10 +248,6 @@ apply_col_alignment_char <- function(col, align) {
 #'
 #' @param col Character vector of data values to align
 #' @param align Alignment to be applied to column.
-#'
-#' @importFrom dplyr lag left_join tibble mutate group_by summarise arrange row_number select filter
-#' @importFrom tidyr separate pivot_longer replace_na
-#' @importFrom stringr str_replace_all str_count str_dup str_extract str_detect str_c
 #'
 #' @noRd
 apply_col_alignment_pos <- function(col, align) {
@@ -430,8 +415,6 @@ apply_col_alignment_pos <- function(col, align) {
 #'
 #' @return Character vector containing padded aligned data values
 #'
-#' @importFrom stringr str_dup str_pad
-#' @importFrom purrr pmap_chr
 #' @noRd
 apply_col_width <- function(col, width) {
     col_na_idx <- which(is.na(col))
@@ -458,7 +441,6 @@ apply_col_width <- function(col, width) {
     out
 }
 
-#' @importFrom stringi stri_wrap
 wrap_string <- function(x, width, pad_left, pad_right) {
     word_list <- stri_wrap(x, width = width, normalize = FALSE)
     paste0(pad_left, word_list, pad_right, collapse = "\n")

@@ -39,8 +39,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
         return(x)
     }
 
-    stopifnot(is_tfrmt(y))
-    stopifnot(is_tfrmt(x))
+    stopifnot(is_tfrmt(y), is_tfrmt(x))
 
     args <- union(names(x), names(y))
 
@@ -151,8 +150,6 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #'
 #' @return
 #' A `tfrmt` with the `group` variables updated in all places
-#'
-#' @importFrom rlang as_label is_empty
 #'
 #' @returns tfrmt object with updated groups#'
 #' @export

@@ -55,7 +55,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 #' @param col_delim Character string to replace the internal "tlang_delim"
 #'   separator in column names only for tables with spanning headers. Defaults to "_".
 #' @return If `gt_tbl`, a single data frame. If `gt_group`, a list of data frames.
-#' @importFrom purrr map
+#'
 #' @export
 extract_data <- function(x, col_delim = "_") {
     #Fallback

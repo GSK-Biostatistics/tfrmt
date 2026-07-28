@@ -63,8 +63,6 @@
 #'
 #' @rdname tfrmt
 #'
-#' @importFrom rlang caller_env
-#'
 #' @export
 #' @examples
 #'
@@ -270,9 +268,6 @@ tfrmt_find_args <- function(
     vals
 }
 
-#' @importFrom rlang abort frame_call is_quosure
-#' @importFrom dplyr vars
-#' @importFrom purrr safely
 quo_get <- function(
     args,
     as_var_args = c(),
@@ -424,8 +419,6 @@ trim_vars_quo_c <- function(x) {
     }
 }
 
-
-#' @importFrom rlang is_quosures
 is_basic_list <- function(x) {
     is.list(x) & !is_quosures(x)
 }
@@ -446,7 +439,6 @@ as_length_one_quo.quosure <- function(x, ...) {
 
 #' @export
 #' @keywords internal
-#' @importFrom rlang warn
 as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
     if (length(x) == 0) {
         quo()
@@ -498,7 +490,6 @@ as_vars.character <- function(x) {
     )
 }
 
-#' @importFrom rlang inform
 compare_dot_args_against_formals <- function(dot_arg, formals) {
     arg_message <- paste0(
         "Argument '",

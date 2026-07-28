@@ -31,10 +31,6 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png\" alt=\"Simple table to stack with a KM-plot\" style=\"width:100\\%;\">"`
 #' }}
 #'
-#' @importFrom rlang quo_is_missing as_label
-#' @importFrom dplyr select pull
-#' @importFrom magrittr %>%
-
 print_to_ggplot <- function(tfrmt, .data, ...) {
     if (!is_tfrmt(tfrmt)) {
         stop("Requires a tfrmt object")
@@ -102,10 +98,6 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 #'
 #' @return ggplot object
 #' @noRd
-#'
-#' @importFrom ggplot2 ggplot .data ylab xlab theme_void theme scale_y_discrete scale_x_continuous scale_x_discrete element_text aes geom_text margin unit element_blank
-#' @importFrom tidyr pivot_longer
-#' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     # apply grouping if any
     # create y variable to preserve ordering and levels
@@ -199,10 +191,6 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 #'
 #' @return dataset wth grouping columns combined
 #' @noRd
-#'
-#' @importFrom rlang quo_name is_empty
-#' @importFrom magrittr %>%
-#' @importFrom dplyr all_of select
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&

@@ -12,8 +12,6 @@
 #'   param = param,
 #'   value=value) |>
 #'   tfrmt_to_json()
-#'
-#' @importFrom jsonlite toJSON validate
 tfrmt_to_json <- function(tfrmt, path = NULL) {
     if (!is_tfrmt(tfrmt)) {
         stop("Needs tfrmt")
@@ -47,8 +45,6 @@ as_json <- function(x) {
 }
 
 #' @export
-#' @importFrom jsonlite toJSON validate
-#' @importFrom stringr str_replace_all
 as_json.tfrmt <- function(x) {
     # Prepare each element to get converted to JSON
     tfrmt_nm <- names(x)
@@ -209,7 +205,6 @@ as_json.page_plan <- function(x) {
 #'   will read in json object preferentially. So if both a path and a json
 #'   object are supplied the json object will be read in.
 #'
-#' @importFrom jsonlite read_json parse_json
 #' @export
 json_to_tfrmt <- function(path = NULL, json = NULL) {
     if (!is.null(json)) {
@@ -282,7 +277,6 @@ ls_to_row_grp_plan <- function(ls) {
     ls
 }
 
-#' @importFrom stringr str_which
 ls_to_body_plan <- function(ls) {
     if (!is.null(ls)) {
         frmts_ls <- ls %>%
@@ -340,7 +334,6 @@ ls_to_frmt_combine <- function(x) {
     )
 }
 
-#' @importFrom stats as.formula
 ls_to_frmt_when <- function(x) {
     fmts <- x$frmt_ls %>%
         map(function(a_frmt) {
@@ -413,7 +406,6 @@ ls_to_footnote_plan <- function(ls) {
     }
 }
 
-#' @importFrom rlang parse_expr quo_get_expr
 ls_to_col_plan <- function(ls) {
     if (!is.null(ls)) {
         dots <- ls$col_plan$dots %>%
@@ -448,7 +440,6 @@ ls_to_span_structure <- function(ls) {
     do.call(span_structure, span_ls)
 }
 
-#' @importFrom rlang expr_text
 ls_to_col_style_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls %>%
