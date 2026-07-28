@@ -91,7 +91,7 @@ test_that("col_style_plan - basic", {
         col_style_structure(align = ".", col = c("trt1", "trt2"))
     )
 
-    expect_equal(length(csp), 3)
+    expect_length(csp, 3)
     expect_equal(
         lapply(csp, `[[`, "cols"),
         list(vars(n_tot), vars(p), vars(trt1, trt2)),
