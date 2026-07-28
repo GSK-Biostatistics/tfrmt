@@ -215,7 +215,6 @@ test_that("layering tfrmt - body style elements", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = c("group1"),
-                # label_val = ".default",
                 frmt("XXX")
             )
         )
@@ -227,7 +226,6 @@ test_that("layering tfrmt - body style elements", {
                 body_plan = body_plan(
                     frmt_structure(
                         group_val = c("group2"),
-                        # label_val = ".default",
                         frmt("xx.x")
                     )
                 )
@@ -242,12 +240,10 @@ test_that("layering tfrmt - body style elements", {
         body_plan(
             frmt_structure(
                 group_val = "group1",
-                # label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
                 group_val = "group2",
-                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -260,7 +256,6 @@ test_that("layering tfrmt - body style elements - multiple", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                # label_val = ".default",
                 frmt("XXX")
             )
         )
@@ -273,12 +268,10 @@ test_that("layering tfrmt - body style elements - multiple", {
                 body_plan = body_plan(
                     frmt_structure(
                         group_val = "group2",
-                        # label_val = ".default",
                         frmt("xx.x")
                     ),
                     frmt_structure(
                         group_val = "group3",
-                        # label_val = ".default",
                         frmt("xx.xx")
                     )
                 )
@@ -295,17 +288,14 @@ test_that("layering tfrmt - body style elements - multiple", {
         body_plan(
             frmt_structure(
                 group_val = "group1",
-                # label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
                 group_val = "group2",
-                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
                 group_val = "group3",
-                # label_val = ".default",
                 frmt("xx.xx")
             )
         )
@@ -318,7 +308,6 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                # label_val = ".default",
                 frmt("XXX")
             )
         )
@@ -331,12 +320,10 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE", {
                 body_plan = body_plan(
                     frmt_structure(
                         group_val = "group2",
-                        # label_val = ".default",
                         frmt("xx.x")
                     ),
                     frmt_structure(
                         group_val = "group3",
-                        # label_val = ".default",
                         frmt("xx.xx")
                     )
                 )
@@ -354,12 +341,10 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE", {
         body_plan(
             frmt_structure(
                 group_val = "group2",
-                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
                 group_val = "group3",
-                # label_val = ".default",
                 frmt("xx.xx")
             )
         )
@@ -454,8 +439,6 @@ test_that("basic tfrmt - erroring args", {
         tfrmt(
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt("XX")
                 ),
             )
@@ -586,13 +569,10 @@ test_that("advanced tfrmt - tfrmt maker", {
         quo(labs),
         "parameter",
         frmt_structure(
-            # group_val = ".default",
-            # label_val = ".default",
             frmt("xx.xx")
         ),
         frmt_structure(
             group_val = "group1",
-            # label_val = ".default",
             frmt("xxx.xx")
         )
     )
@@ -610,13 +590,10 @@ test_that("advanced tfrmt - tfrmt maker", {
         new_tfrmt_with_bp$body_plan,
         body_plan(
             frmt_structure(
-                # group_val = ".default",
-                # label_val = ".default",
                 frmt("xx.xx")
             ),
             frmt_structure(
                 group_val = "group1",
-                # label_val = ".default",
                 frmt("xxx.xx")
             )
         ),
@@ -625,8 +602,6 @@ test_that("advanced tfrmt - tfrmt maker", {
 
     bp <- body_plan(
         frmt_structure(
-            # group_val = ".default",
-            # label_val = ".default",
             frmt("xx.xx")
         )
     )
@@ -637,13 +612,10 @@ test_that("advanced tfrmt - tfrmt maker", {
         quo(labs),
         "parameter",
         frmt_structure(
-            # group_val = ".default",
-            # label_val = ".default",
             frmt("xx.xx")
         ),
         frmt_structure(
             group_val = "group1",
-            # label_val = ".default",
             frmt("xxx.xx")
         )
     )
@@ -662,13 +634,10 @@ test_that("advanced tfrmt - tfrmt maker", {
         new_tfrmt_with_bp_2$body_plan,
         body_plan(
             frmt_structure(
-                # group_val = ".default",
-                # label_val = ".default",
                 frmt("xx.xx")
             ),
             frmt_structure(
                 group_val = "group1",
-                # label_val = ".default",
                 frmt("xxx.xx")
             )
         ),
@@ -705,21 +674,18 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
             body_plan = body_plan(
                 frmt_structure(
                     group_val = c("value"),
-                    # label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
                     group_val = list(
                         group1 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
                     group_val = list(
                         group2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
@@ -727,7 +693,6 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
                         group1 = "value",
                         group2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXX")
                 )
             )
@@ -743,7 +708,6 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
                         invalid = "value",
                         invalid2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXX")
                 )
             )
@@ -879,7 +843,6 @@ test_that("basic tfrmt - error when body_plan, row_grp_plan, or footnote_plan gr
                         group1 = "value",
                         group2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXX")
                 )
             ),
@@ -916,7 +879,6 @@ test_that("basic tfrmt - error when body_plan, row_grp_plan, or footnote_plan gr
                         invalid = "value",
                         invalid2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXX")
                 )
             ),
@@ -963,21 +925,18 @@ test_that("layering tfrmt - error when body_plan groups no longer match group ar
         body_plan = body_plan(
             frmt_structure(
                 group_val = c("value"),
-                # label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
                 group_val = list(
                     group1 = "value"
                 ),
-                # label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
                 group_val = list(
                     group2 = "value"
                 ),
-                # label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
@@ -985,7 +944,6 @@ test_that("layering tfrmt - error when body_plan groups no longer match group ar
                     group1 = "value",
                     group2 = "value"
                 ),
-                # label_val = ".default",
                 frmt("XXX")
             )
         )
@@ -1015,7 +973,6 @@ test_that("layering tfrmt - error when plan groups no longer match group arg", {
                     group1 = "value",
                     group2 = "value"
                 ),
-                # label_val = ".default",
                 frmt("XXX")
             )
         ),
@@ -1065,14 +1022,12 @@ test_that("updating tfrmt - updating group vars - body_plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "value",
-                # label_val = ".default",
                 frmt("XXX")
             ),
             frmt_structure(
                 group_val = list(
                     group2 = "value"
                 ),
-                # label_val = ".default",
                 frmt("XXXX")
             ),
             frmt_structure(
@@ -1080,7 +1035,6 @@ test_that("updating tfrmt - updating group vars - body_plan", {
                     group1 = "value",
                     group2 = "value"
                 ),
-                # label_val = ".default",
                 frmt("XXXXX")
             )
         )
@@ -1096,14 +1050,12 @@ test_that("updating tfrmt - updating group vars - body_plan", {
             body_plan = body_plan(
                 frmt_structure(
                     group_val = "value",
-                    # label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
                     group_val = list(
                         group2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXXX")
                 ),
                 frmt_structure(
@@ -1111,7 +1063,6 @@ test_that("updating tfrmt - updating group vars - body_plan", {
                         New_Group = "value",
                         group2 = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXXXX")
                 )
             )
@@ -1133,14 +1084,12 @@ test_that("updating tfrmt - updating group vars - body_plan", {
             body_plan = body_plan(
                 frmt_structure(
                     group_val = "value",
-                    # label_val = ".default",
                     frmt("XXX")
                 ),
                 frmt_structure(
                     group_val = list(
                         `best group` = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXXX")
                 ),
                 frmt_structure(
@@ -1148,7 +1097,6 @@ test_that("updating tfrmt - updating group vars - body_plan", {
                         New_Group = "value",
                         `best group` = "value"
                     ),
-                    # label_val = ".default",
                     frmt("XXXXX")
                 )
             )

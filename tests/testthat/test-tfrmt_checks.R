@@ -11,8 +11,6 @@ test_that("Testing error messages for missing argument col_style_structure", {
             # specify value formatting
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt_combine(
                         "{n} {pct}",
                         n = frmt("xxx"),
@@ -24,27 +22,21 @@ test_that("Testing error messages for missing argument col_style_structure", {
                     )
                 ),
                 frmt_structure(
-                    # group_val = ".default",
                     label_val = "n",
                     frmt("xxx")
                 ),
                 frmt_structure(
-                    # group_val = ".default",
                     label_val = c("Mean", "Median", "Min", "Max"),
                     frmt("xxx.x")
                 ),
                 frmt_structure(
-                    # group_val = ".default",
                     label_val = "SD",
                     frmt("xxx.xx")
                 ),
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     p = frmt("")
                 ),
                 frmt_structure(
-                    # group_val = ".default",
                     label_val = c("n", "<65 yrs", "<12 months", "<25"),
                     p = frmt_when(
                         ">0.99" ~ ">0.99",
@@ -90,13 +82,9 @@ test_that("Testing error message for invalid input to plan parameters, specifica
             col_plan = col_plan(-ord),
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt("xx", missing = " ")
                 ),
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt_combine(
                         "{mean} ({sd})",
                         mean = frmt("xx.x"),
@@ -105,8 +93,6 @@ test_that("Testing error message for invalid input to plan parameters, specifica
                     )
                 ),
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     pval = frmt_when(
                         ">0.99" ~ ">0.99",
                         "<0.001" ~ "<0.001",
@@ -140,8 +126,6 @@ test_that("Testing error message for invalid input to big_n parameter", {
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt_combine(
                         "{n} {pct}",
                         n = frmt("X"),
@@ -158,7 +142,6 @@ test_that("Testing error message for invalid input to big_n parameter", {
                     )
                 ),
                 frmt_structure(
-                    # group_val = ".default",
                     label_val = "n",
                     frmt("xx")
                 )
@@ -195,8 +178,6 @@ test_that("Testing error for invalid col_style_structure with row_grp_plan when 
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt("xxx")
                 )
             ),
@@ -228,8 +209,6 @@ test_that("No error for col_style_structure with row_grp_plan when location is c
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt("xxx")
                 )
             ),
@@ -260,8 +239,6 @@ test_that("Error message for invalid col_style_structure includes group details"
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    # group_val = ".default",
-                    # label_val = ".default",
                     frmt("xxx")
                 )
             ),
