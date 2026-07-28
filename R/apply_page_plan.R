@@ -48,7 +48,7 @@ apply_page_plan <- function(
                         row_grp_plan_label_loc
                     )
                 ) %>%
-                    list_flatten(),
+                    purrr::list_flatten(),
                 .page_grp_vars = attr(.data, ".page_grp_vars")
             )
         }
@@ -73,7 +73,7 @@ apply_page_max_rows <- function(
 ) {
     # Ensure empty strings in grouping columns are treated as literal spaces
     # so pagination math doesn't break
-    group_cols <- map_chr(group, rlang::as_label)
+    group_cols <- purrr::map_chr(group, rlang::as_label)
 
     .data <- .data %>%
         dplyr::mutate(
@@ -436,7 +436,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             dplyr::across(c(!!!group), ~ .x == !!label)
         ) %>%
         tidyr::pivot_longer(
-            map_chr(group, as_label),
+            purrr::map_chr(group, as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
@@ -445,7 +445,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         dplyr::slice(1) %>%
         dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
-                .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
+                .data$`..tfrmt_summ_grp_num` == purrr::map_chr(group, as_label)
             )
         ) %>%
         dplyr::pull(.data$`..tfrmt_summ_grp_num`)

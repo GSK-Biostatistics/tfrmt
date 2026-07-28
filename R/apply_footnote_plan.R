@@ -108,7 +108,11 @@ apply_cells_stub <- function(gt, tfrmt, loc) {
             (!is.null(tfrmt$row_grp_plan) &&
                 tfrmt$row_grp_plan$label_loc$location == "column") &&
                 all(
-                    loc$col %in% map_chr(c(tfrmt$group, tfrmt$label), as_label)
+                    loc$col %in%
+                        purrr::map_chr(
+                            c(tfrmt$group, tfrmt$label),
+                            as_label
+                        )
                 ) ||
                 # in the label
                 (all(loc$col == as_label(tfrmt$label)))
@@ -139,7 +143,7 @@ apply_cells_stub <- function(gt, tfrmt, loc) {
 #' @noRd
 apply_cells_row_groups <- function(gt, tfrmt, loc) {
     if (length(loc$col) > 0) {
-        if (all(loc$col %in% map_chr(tfrmt$group, as_label))) {
+        if (all(loc$col %in% purrr::map_chr(tfrmt$group, as_label))) {
             gt <- gt %>%
                 gt::tab_footnote(
                     footnote = loc$note,

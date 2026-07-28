@@ -85,9 +85,12 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             ) %>%
             dplyr::mutate(
-                frmt_type = map_chr(.data$frmt_applied, function(x) {
-                    unlist(class(x)[1])
-                })
+                frmt_type = purrr::map_chr(
+                    .data$frmt_applied,
+                    function(x) {
+                        unlist(class(x)[1])
+                    }
+                )
             )
     } else if (convert_to_txt == TRUE) {
         output <- match_frmt_to_rows(
@@ -104,10 +107,16 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             ) %>%
             dplyr::mutate(
-                frmt_type = map_chr(.data$frmt_applied, function(x) {
-                    unlist(class(x)[1])
-                }),
-                frmt_details = map_chr(.data$frmt_applied, format)
+                frmt_type = purrr::map_chr(
+                    .data$frmt_applied,
+                    function(x) {
+                        unlist(class(x)[1])
+                    }
+                ),
+                frmt_details = purrr::map_chr(
+                    .data$frmt_applied,
+                    format
+                )
             ) %>%
             dplyr::select(-"frmt_applied")
 
@@ -195,7 +204,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::select(
             -tidyselect::any_of(
                 c(
-                    map_chr(tfrmt$group, as_name),
+                    purrr::map_chr(tfrmt$group, as_name),
                     as_name(tfrmt$label)
                 )
             )
@@ -212,8 +221,9 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- map_chr(tfrmt$column, as_label)
+        column_names <- purrr::map_chr(tfrmt$column, as_label)
     }
+
     selection <- as.list(substitute(substitute(col)))[-1] %>%
         map(trim_vars_quo_c) %>%
         do.call("c", .) %>%

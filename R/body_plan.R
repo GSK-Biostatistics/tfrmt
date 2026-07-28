@@ -92,7 +92,7 @@ body_plan_builder <- function(
                     .x
                 }
             ),
-            single_glue_to_frmt = pmap_chr(
+            single_glue_to_frmt = purrr::pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
                     if (a == TRUE && length(b) == 1) c else NA_character_
@@ -103,7 +103,7 @@ body_plan_builder <- function(
             tidyselect::everything()
         ) %>%
         dplyr::mutate(
-            frmt_string = map2_chr(
+            frmt_string = purrr::map2_chr(
                 .data$sigdig,
                 .data$single_glue_to_frmt,
                 sigdig_frmt_string
@@ -132,7 +132,7 @@ body_plan_builder <- function(
     grp_names <- if (length(group) == 0) {
         character(0)
     } else {
-        group %>% map_chr(as_name)
+        purrr::map_chr(group, as_name)
     }
     lbl_names <- if (quo_is_missing(label)) character(0) else as_name(label)
 

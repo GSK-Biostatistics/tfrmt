@@ -24,9 +24,9 @@ create_stub_head <- function(
     row_grp_plan_label_loc
 ) {
     # all group/label vars
-    grps <- map_chr(c(group, label), as_label)
+    grps <- purrr::map_chr(c(group, label), as_label)
     # all column labels
-    col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
+    col_plan_vars_chr <- purrr::map_chr(col_plan_vars, as_label)
 
     stub <- ""
     # subset the column labels to just group/label vars
@@ -60,7 +60,7 @@ create_col_order <- function(data_names, columns, cp) {
             # create placeholder
             column_names <- "col"
         } else {
-            column_names <- map_chr(columns, as_label)
+            column_names <- purrr::map_chr(columns, as_label)
         }
 
         col_selections <- c()

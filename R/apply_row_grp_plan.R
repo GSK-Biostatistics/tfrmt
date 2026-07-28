@@ -37,7 +37,7 @@ apply_row_grp_struct <- function(
             map(split_dat, function(dat) {
                 struct_val_idx(struct, dat, group, label)
             }) %>%
-                list_flatten()
+                purrr::list_flatten()
         })
 
     TEMP_block_to_apply <- row_grp_struct_list %>% map(~ .$block_to_apply)
@@ -179,7 +179,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
             dplyr::mutate(
                 dplyr::across(
                     c(
-                        -map_chr(group, as_name),
+                        -purrr::map_chr(group, as_name),
                         -tidyselect::where(is.numeric)
                     ),
                     ~ replace(
@@ -251,7 +251,8 @@ combine_group_cols <- function(
     label,
     element_row_grp_loc = NULL
 ) {
-    orig_group_names <- map_chr(group, as_name)
+    orig_group_names <- purrr::map_chr(group, as_name)
+
     top_grouping <- group #used for spliting in case of spanning label
 
     .data <- .data %>%

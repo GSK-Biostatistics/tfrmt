@@ -440,8 +440,8 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- ""
     }
 
-    column_cols <- tfrmt$column %>%
-        map_chr(as_name)
+    column_cols <- purrr::map_chr(tfrmt$column, as_name)
+
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%
         dplyr::mutate(
@@ -502,7 +502,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        map_chr(as_label) %>%
+        purrr::map_chr(as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- utils::capture.output(dput(stats::setNames(

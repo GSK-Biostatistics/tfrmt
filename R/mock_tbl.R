@@ -26,7 +26,7 @@
 #'
 make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     body_plan <- tfrmt$body_plan
-    grp_vars <- tfrmt$group %>% map_chr(as_name)
+    grp_vars <- purrr::map_chr(tfrmt$group, as_name)
 
     # create tibble of all frmt_structure grp/label/param: 1 row per group_val per frmt_structure
     all_frmt_spec <- body_plan %>%
@@ -164,7 +164,7 @@ process_for_mock <- function(x, column, .default = 1:3) {
 #' @noRd
 clean_col_names <- function(names, dont_inc) {
     names %>%
-        map_chr(as_label) %>%
+        purrr::map_chr(as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
         stringr::str_remove_all("^-") %>%
         stringr::str_remove_all('\\"\\)') %>%
@@ -174,7 +174,7 @@ clean_col_names <- function(names, dont_inc) {
 # Adds the sorting columns if relevant otherwise just returns data
 add_sorting_cols <- function(data, sorting_cols) {
     if (!is.null(sorting_cols)) {
-        sorting_cols_vars <- sorting_cols %>% map_chr(as_name)
+        sorting_cols_vars <- purrr::map_chr(sorting_cols, as_name)
         n_sorting_cols <- length(sorting_cols_vars)
 
         sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x) {
@@ -201,11 +201,12 @@ make_col_df <- function(
     col_style_plan,
     n_cols
 ) {
-    column_vars <- column %>% map_chr(as_label)
+    column_vars <- purrr::map_chr(column, as_label)
+
     grp_lb_vars <- c(
-        group %>% map_chr(as_name),
+        purrr::map_chr(group, as_name),
         as_label(label),
-        sorting_cols %>% map_chr(as_name)
+        purrr::map_chr(sorting_cols, as_name)
     )
     if (identical(column_vars, "__tfrmt__column")) {
         column_vars <- "col"
@@ -254,7 +255,7 @@ make_col_df <- function(
         # get col_style_plan referenced cols
         if (col_style_plan_test_res) {
             cols_from_sp <- map(col_style_plan, ~ .x$cols) |>
-                list_flatten() |>
+                purrr::list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
                 tibble::tibble(.)
             names(cols_from_sp) <- dplyr::last(column_vars)
@@ -306,8 +307,7 @@ col_plan_test <- function(col_plan) {
     if (is.null(col_plan)) {
         out <- FALSE
     } else {
-        all_names <- col_plan$dots %>%
-            map_chr(as_label)
+        all_names <- purrr::map_chr(col_plan$dots, as_label)
         first_chr <- all_names %>%
             stringr::str_sub(end = 1)
         out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
@@ -321,9 +321,9 @@ col_style_plan_test <- function(col_style_plan) {
     if (is.null(col_style_plan)) {
         out <- FALSE
     } else {
-        all_names <- map(col_style_plan, ~ .x$cols) |>
-            list_flatten() %>%
-            map_chr(as_label)
+        all_names <- purrr::map(col_style_plan, ~ .x$cols) |>
+            purrr::list_flatten() %>%
+            purrr::map_chr(as_label)
         out <- !all("everything()" %in% all_names)
     }
     out

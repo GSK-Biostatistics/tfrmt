@@ -133,7 +133,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             ) %>%
             dplyr::ungroup()
         join_by <- c(group, label, param) %>%
-            map_chr(as_label) %>%
+            purrr::map_chr(as_label) %>%
             keep(~ . != "<empty>")
 
         out <- complet_combo_grps %>%

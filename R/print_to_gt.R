@@ -230,7 +230,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 
     # convert to character if not null
     rowname_col <- if (!is.null(rowname_col)) {
-        map_chr(rowname_col, rlang::as_label)
+        purrr::map_chr(
+            rowname_col,
+            rlang::as_label
+        )
     }
 
     gt_out <- .data %>%

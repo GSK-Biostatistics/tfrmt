@@ -88,8 +88,7 @@ as_json.default <- function(x) {
 
 #' @export
 as_json.quosures <- function(x) {
-    x %>%
-        map_chr(., as_label)
+    purrr::map_chr(x, as_label)
 }
 
 
@@ -133,7 +132,7 @@ as_json.frmt <- function(x) {
 
 #' @export
 as_json.frmt_when <- function(x) {
-    lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
+    lhs <- purrr::map_chr(x$frmt_ls, f_lhs_as_char)
     rhs <- map(x$frmt_ls, f_rhs) %>% map(as_json)
     names(rhs) <- lhs
     list(frmt_when = list(frmt_ls = rhs, missing = x$missing))
@@ -172,7 +171,7 @@ as_json.span_structure <- function(x) {
     x %>%
         map(function(foo) {
             foo %>%
-                map_chr(as_json)
+                purrr::map_chr(as_json)
         }) %>%
         list(span_structure = .)
 }
@@ -463,7 +462,7 @@ ls_to_col_style_plan <- function(ls) {
                         as.character() %>%
                         parse_expr()
                 } else {
-                    stuct_in[["col"]] <- map_chr(
+                    stuct_in[["col"]] <- purrr::map_chr(
                         stuct_in[["col"]],
                         ~ char_as_quo(.x) %>%
                             quo_get_expr() %>%
