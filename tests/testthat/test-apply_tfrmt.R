@@ -43,12 +43,9 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         col_plan = col_plan(-ord),
         body_plan = body_plan(
             frmt_structure(
-                # group_val = ".default",
-                # label_val = ".default",
                 frmt("x.x")
             ),
             frmt_structure(
-                # group_val = ".default",
                 label_val = "m",
                 frmt_combine(
                     "{n}/{n_2}",
