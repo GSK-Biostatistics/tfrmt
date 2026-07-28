@@ -237,8 +237,6 @@ test_that("frmt_struct_string handles no group variables", {
         col_plan = col_plan(-ord),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x.x")
             )
         )

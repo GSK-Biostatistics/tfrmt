@@ -224,8 +224,6 @@ test_that("applying footnote meta column val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -595,8 +593,6 @@ test_that("applying footnote meta group val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
