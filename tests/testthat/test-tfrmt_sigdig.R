@@ -708,7 +708,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
     )
 
     # body plan contains 1 frmt_structure per default param per # of rows in sigddig spec
-    expect_equal(length(t_frmt$body_plan), length(param_set()))
+    expect_length(t_frmt$body_plan, length(param_set()))
 
     myprms <- param_set(newprm = 2)
     t_frmt <- tfrmt_sigdig(
@@ -717,10 +717,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
         label = group2,
         param_defaults = myprms
     )
-    expect_equal(
-        length(t_frmt$body_plan),
-        length(param_set()) + 1
-    )
+    expect_length(t_frmt$body_plan, length(param_set()) + 1)
 })
 
 
