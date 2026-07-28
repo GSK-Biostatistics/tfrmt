@@ -1082,7 +1082,7 @@ test_that("helper for constructing positional alignment works", {
         value = val,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = "lbl1",
                 frmt_combine(
                     "{n} ({pct}%)",
@@ -1091,7 +1091,7 @@ test_that("helper for constructing positional alignment works", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = "lbl2",
                 frmt_combine(
                     "{n} ({pct}%)",

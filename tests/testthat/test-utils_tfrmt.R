@@ -53,13 +53,13 @@ plan <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
+            # group_val = ".default",
+            # label_val = ".default",
             frmt("XXX.XX")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
+            # group_val = ".default",
+            # label_val = ".default",
             frmt_combine(
                 "{count} {pct}",
                 count = frmt("XXX"),
@@ -193,8 +193,8 @@ test_that("Check apply_tfrmt for mock data", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{count} {pct}",
                     count = frmt("XXX"),
@@ -271,7 +271,7 @@ test_that("Check apply_tfrmt for mock data", {
                     grp3 = ".default",
                     grp4 = ".default"
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
@@ -281,7 +281,7 @@ test_that("Check apply_tfrmt for mock data", {
                     grp3 = ".default",
                     grp4 = ".default"
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
@@ -291,7 +291,7 @@ test_that("Check apply_tfrmt for mock data", {
                     grp3 = "C",
                     grp4 = c("a", "b")
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
@@ -301,7 +301,7 @@ test_that("Check apply_tfrmt for mock data", {
                     grp3 = "D",
                     grp4 = c("a", "b")
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         ),
@@ -346,13 +346,13 @@ test_that("Check apply_tfrmt for mock data", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 N = frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 mean = frmt("xx.x")
             )
         ),
@@ -461,13 +461,15 @@ test_that("incomplete body_plan where params share label", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = "mean",
                 frmt("xx.x")
             )
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         )
     )
 
@@ -514,8 +516,8 @@ test_that("incorrect footnote plan formats", {
             # set formatting for values
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
+                    # group_val = ".default",
+                    # label_val = ".default",
                     frmt_combine(
                         "{n} {pct}",
                         n = frmt("xxx"),
@@ -549,8 +551,8 @@ test_that("incorrect footnote plan formats", {
             # set formatting for values
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
+                    # group_val = ".default",
+                    # label_val = ".default",
                     frmt_combine(
                         "{n} {pct}",
                         n = frmt("xxx"),
@@ -606,8 +608,8 @@ test_that("struct utils quote escaping", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("x")
             ),
             frmt_structure(

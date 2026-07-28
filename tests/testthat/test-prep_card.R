@@ -126,13 +126,13 @@ test_that("prep_...() pipe with demographic data", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} ({p}%)",
                     n = frmt("xxx"),

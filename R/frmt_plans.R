@@ -22,26 +22,28 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" alt = \"Example comparing fmt, frmt_combine, and frmt_when\" style=\"width:100\\%;\">"`
 #' }}
 #'
+#' @returns frmt_structure object
+#' @export
+#'
 #' @examples
 #'
 #' sample_structure <- frmt_structure(
-#'           group_val = c("group1"),
-#'           label_val = ".default",
-#'           frmt("XXX")
-#'         )
-#' ## multiple group columns
-#' sample_structure <- frmt_structure(
-#'           group_val = list(grp_col1 = "group1", grp_col2 = "subgroup3"),
-#'           label_val = ".default",
-#'           frmt("XXX")
-#'         )
+#'     group_val = c("group1"),
+#'     frmt("XXX")
+#' )
 #'
-#' @returns frmt_structure object
-#' @export
+#' # multiple group columns
+#' sample_structure <- frmt_structure(
+#'     group_val = list(
+#'         grp_col1 = "group1",
+#'         grp_col2 = "subgroup3"
+#'     ),
+#'     frmt("XXX")
+#' )
 frmt_structure <- function(
+    ...,
     group_val = ".default",
-    label_val = ".default",
-    ...
+    label_val = ".default"
 ) {
     param_frmt <- list(...)
     param_val <- names(param_frmt)

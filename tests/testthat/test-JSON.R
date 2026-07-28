@@ -103,7 +103,7 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("XXX")
             )
         )
@@ -124,7 +124,7 @@ test_that("json body plan", {
                     grp_col1 = "group1",
                     grp_col2 = "subgroup"
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 test = frmt("XXX")
             )
         )
@@ -143,7 +143,7 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("XXX", transform = ~ . * 100)
             )
         )
@@ -158,7 +158,7 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("XXX", transform = function(x) {
                     x * 4
                 })
@@ -177,8 +177,8 @@ test_that("json body plan", {
     frmt_when_simp <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_when(
                     ">3" ~ frmt("(X.X%)"),
                     "<=3" ~ frmt("Undetectable")
@@ -199,8 +199,8 @@ test_that("json body plan", {
     frmt_when_scalar <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_when(
                     "<1" ~ "<1",
                     "==100" ~ "",
@@ -223,8 +223,8 @@ test_that("json body plan", {
     frmt_comb_simp <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{param1} {param2}",
                     param1 = frmt("XXX %"),
@@ -245,7 +245,7 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.xx", scientific = "x10^xx")
             )
         )
@@ -264,8 +264,8 @@ test_that("json body plan", {
     complex_frmt <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{param1} {param2}",
                     param1 = frmt("XXX %"),
@@ -278,12 +278,12 @@ test_that("json body plan", {
             ),
             frmt_structure(
                 group_val = "test1",
-                label_val = ".default",
+                # label_val = ".default",
                 foo = frmt("xx.x", missing = "--")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_when(
                     ">0.4" ~ frmt("(X.X%)", missing = ""),
                     "<=0.4" ~ frmt_combine(
@@ -707,8 +707,8 @@ test_that("json read/write", {
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -720,27 +720,27 @@ test_that("json read/write", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 p = frmt("")
             ),
             frmt_structure(
-                group_val = ".default",
+                # group_val = ".default",
                 label_val = c("n", "<65 yrs", "<12 months", "<25"),
                 p = frmt_when(
                     ">0.99" ~ ">0.99",
@@ -774,8 +774,10 @@ test_that("json read/write", {
         )
     )
 
-    #Write out to json file
-    tfrmt_to_json(test_tfrmt, path = test_loc)
+    # Write out to json file
+    suppressMessages(
+        tfrmt_to_json(test_tfrmt, path = test_loc)
+    )
 
     # Reading in
     read_tfrmt <- json_to_tfrmt(path = test_loc)

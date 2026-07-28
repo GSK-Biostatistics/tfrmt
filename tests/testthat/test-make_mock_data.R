@@ -7,8 +7,8 @@ test_that("Mock data column names are correct", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -28,8 +28,8 @@ test_that("Mock data contains all levels", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -66,7 +66,7 @@ test_that("Mock data contains all levels", {
                     grp1 = "A",
                     grp2 = c("a", "b")
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
@@ -74,7 +74,7 @@ test_that("Mock data contains all levels", {
                     grp1 = "B",
                     grp2 = c("a", "b")
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
@@ -82,7 +82,7 @@ test_that("Mock data contains all levels", {
                     grp3 = "C",
                     grp4 = c("a", "b")
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
@@ -90,7 +90,7 @@ test_that("Mock data contains all levels", {
                     grp3 = "D",
                     grp4 = c("a", "b")
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -192,8 +192,8 @@ test_that("Mock data contains all levels", {
                 mean = frmt("xx.x")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 N = frmt("xx")
             )
         )
@@ -234,15 +234,15 @@ test_that("Mock data contains all levels", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             ),
             frmt_structure(
                 group_val = list(
                     grp = "grp_1"
                 ),
-                label_val = ".default",
+                # label_val = ".default",
                 frmt("xx.xx")
             )
         )
@@ -257,8 +257,8 @@ test_that("Mock data contains all levels", {
         column = "col",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -294,8 +294,8 @@ test_that("Check mock when value is missing", {
         title = "Summary of Populations",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} ({percent}%)",
                     n = frmt("xx"),
@@ -375,8 +375,8 @@ test_that("Mock data contains sorting_cols when available", {
         sorting_cols = c(ord1),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -411,8 +411,8 @@ test_that("Mock data contains sorting_cols when available", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -448,8 +448,8 @@ test_that("Mock data includes all columns identified in tfrmt", {
         column = col,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -483,8 +483,8 @@ test_that("Mock data includes all columns identified in tfrmt", {
         column = c(col1, col2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -518,8 +518,8 @@ test_that("Mock data includes all columns identified in tfrmt", {
         column = c(col1, col2, col3),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -553,8 +553,8 @@ test_that("Mock data can be made and printed without label", {
         title = "Summary of Populations",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} ({percent}%)",
                     n = frmt("xx"),
@@ -617,8 +617,8 @@ test_that("Using col_plan to get column names", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("X.X")
             )
         ),
@@ -644,8 +644,8 @@ test_that("Using col_plan to get column names", {
         column = c(test1, test2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("X.X")
             )
         ),
@@ -683,8 +683,8 @@ test_that("Using col_plan to get column names", {
         column = c(visit, trt),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("X.X")
             )
         ),
@@ -729,8 +729,8 @@ test_that("Using col_style_plan to get names", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("X.X")
             )
         ),
@@ -759,8 +759,8 @@ test_that("Using col_style_plan to get names", {
         column = c(test1, test2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("X.X")
             )
         ),
@@ -820,8 +820,8 @@ test_that("Will add big N avaliable", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} ({pct}%)",
                     n = frmt("xx"),
@@ -865,8 +865,8 @@ test_that("Mock data for col_plan with only drops", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} ({pct}%)",
                     n = frmt("xx"),
@@ -897,8 +897,8 @@ test_that("Mock data for col_plan does not add group, label, or sorting_cols nam
         sorting_cols = c("ord1", "ord2"),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx.x")
             )
         ),
@@ -928,8 +928,8 @@ test_that("Mock data ignores col_plan with everything()", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("X.X")
             )
         ),

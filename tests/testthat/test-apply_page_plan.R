@@ -459,8 +459,8 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -502,8 +502,8 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -555,8 +555,8 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -617,8 +617,8 @@ test_that("Page plan with max_rows & group-level summary rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -675,8 +675,8 @@ test_that("Page plan with max_rows & group-level summary rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -745,8 +745,8 @@ test_that("page plan with both page_structure and max_rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -839,8 +839,8 @@ test_that("page plan with page_structure, single level variable", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -902,8 +902,8 @@ test_that("page_plan() with transform", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -967,8 +967,8 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1051,17 +1051,19 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
     # Create an ARD that stacks hierarchical data of adverse events
     # Grouping by treatment, severity, system organ class, and preferred term
-    ard_ae <- cards::ard_stack_hierarchical(
-        data = adae,
-        # by variables must be present in the denominator dataset
-        by = c(TRT01A, AESEV),
-        variables = c(AESOC, AETERM),
-        denominator = adsl,
-        statistic = ~ c("n", "p"),
-        id = USUBJID,
-        over_variables = TRUE,
-        overall = TRUE
-    )
+    suppressMessages({
+        ard_ae <- cards::ard_stack_hierarchical(
+            data = adae,
+            # by variables must be present in the denominator dataset
+            by = c(TRT01A, AESEV),
+            variables = c(AESOC, AETERM),
+            denominator = adsl,
+            statistic = ~ c("n", "p"),
+            id = USUBJID,
+            over_variables = TRUE,
+            overall = TRUE
+        )
+    })
 
     # create an ARD for where AESEV is "TOTAL"
     ard_ae2 <- cards::ard_stack_hierarchical(
@@ -1328,8 +1330,8 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1377,8 +1379,8 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1413,8 +1415,8 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("xx")
             )
         ),

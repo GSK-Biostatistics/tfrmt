@@ -697,9 +697,13 @@ test_that("frmt_combine only applies when all parameters are in the data", {
         )
 
     test_combo <- frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
-        frmt_combine("{n} ({pct}%)", n = frmt("XX"), pct = frmt("x.x"))
+        # group_val = ".default",
+        # label_val = ".default",
+        frmt_combine(
+            "{n} ({pct}%)",
+            n = frmt("XX"),
+            pct = frmt("x.x")
+        )
     )
 
     rows_to_use <- fmt_test_data(
@@ -802,8 +806,8 @@ test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows"
         value = val,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt("x")
             )
         ),

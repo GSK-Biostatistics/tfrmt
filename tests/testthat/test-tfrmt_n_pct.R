@@ -4,8 +4,8 @@ test_that("tfrmt_n_pct", {
         format(tfrmt_n_pct()$body_plan),
         body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -26,8 +26,8 @@ test_that("tfrmt_n_pct", {
         format(tfrmt_n_pct("n_distinct")$body_plan),
         body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n_distinct} {pct}",
                     n_distinct = frmt("xxx"),
@@ -56,8 +56,8 @@ test_that("tfrmt_n_pct", {
         ),
         body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),

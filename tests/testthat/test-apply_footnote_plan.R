@@ -38,8 +38,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -76,8 +76,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -117,8 +117,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -166,8 +166,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -207,8 +207,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -243,8 +243,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -298,8 +298,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -345,8 +345,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -398,8 +398,8 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -445,15 +445,15 @@ test_that("applying footnote plan", {
 
 
 test_that("Check footnote order option works as expected", {
-    #default marks_first
+    # default marks_first
     tfrmt_ord <- tfrmt(
         label = label,
         column = column,
         param = param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
+                # group_val = ".default",
+                # label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -477,7 +477,9 @@ test_that("Check footnote order option works as expected", {
         )
     )
 
-    gt_out <- print_mock_gt(tfrmt_ord)
+    suppressMessages({
+        gt_out <- print_mock_gt(tfrmt_ord)
+    })
 
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
     expect_equal(current_order_opt, "marks_first")
@@ -510,7 +512,10 @@ test_that("Check footnote order option works as expected", {
             )
         )
 
-    gt_out <- print_mock_gt(tfrmt_ord)
+    suppressMessages({
+        gt_out <- print_mock_gt(tfrmt_ord)
+    })
+
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
     expect_equal(current_order_opt, "preserve_order")
 
@@ -530,7 +535,10 @@ test_that("Check footnote order option works as expected", {
             )
         )
 
-    gt_out <- print_mock_gt(tfrmt_ord)
+    suppressMessages({
+        gt_out <- print_mock_gt(tfrmt_ord)
+    })
+
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
     expect_equal(current_order_opt, "marks_last")
 })
