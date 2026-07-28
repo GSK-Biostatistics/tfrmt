@@ -150,7 +150,7 @@ check_span_structure_dots <- function(x) {
     x_names <- names(x)
 
     if (is.null(x_names) || any(x_names == "")) {
-        abort(
+        rlang::abort(
             paste0(
                 "Entries of a span_stucture must be named:\n ",
                 format(caller_call())
@@ -174,7 +174,7 @@ check_span_structure_dots <- function(x) {
                     } else if (is_valid_quo_call(x)) {
                         return(eval_tidy(x))
                     } else {
-                        abort(
+                        rlang::abort(
                             message = paste0(
                                 "Invalid entry: `",
                                 format(x),
@@ -190,7 +190,7 @@ check_span_structure_dots <- function(x) {
                 } else if (is.character(x)) {
                     return(as_length_one_quo.character(x))
                 } else {
-                    abort(
+                    rlang::abort(
                         "Unexpected entry type in span_structure()",
                         call = caller_call()
                     )

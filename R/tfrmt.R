@@ -342,7 +342,7 @@ quo_get <- function(
                 ## check if argcall is tidyselect call, give feedback that is invalid if so
                 if (any(purrr::map_lgl(arg_call, is_valid_tidyselect_call))) {
                     if (!allow_tidy_select) {
-                        abort(
+                        rlang::abort(
                             message = "Tidyselect selection helpers are not acceptable to use in this context. Please provide a specific column to use.",
                             class = "invalid_tidyselect_use"
                         )
@@ -365,7 +365,7 @@ quo_get <- function(
 
                 return(arg_val)
             } else {
-                abort(
+                rlang::abort(
                     paste0(
                         "Error in evaluating argument `",
                         arg,
@@ -394,7 +394,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
             ")"
         )
 
-        abort(
+        rlang::abort(
             paste0(
                 "Entries for `",
                 arg,
