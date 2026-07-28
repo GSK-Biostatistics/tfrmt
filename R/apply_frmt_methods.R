@@ -352,19 +352,15 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
             replaced <- replaced | (left[[i]] & !is.na(left[[i]]))
         }
 
-        if (is.null(frmt_def$missing)) {
-            out <- out
-        } else if (!is.null(frmt_def$missing)) {
-            out <- out %>%
-                tidyr::replace_na(
-                    replace = frmt_def$missing
-                )
+        if (!is.null(frmt_def$missing)) {
+            out <- tidyr::replace_na(
+                out,
+                replace = frmt_def$missing
+            )
         }
 
         out <- .data %>%
-            dplyr::mutate(
-                !!value := out
-            )
+            dplyr::mutate(!!value := out)
     }
     out
 }
