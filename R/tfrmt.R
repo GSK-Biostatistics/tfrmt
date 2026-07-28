@@ -464,7 +464,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
 #' @export
 #' @keywords internal
 as_length_one_quo.character <- function(x, ...) {
-    rlang::quo(!!sym(x))
+    rlang::quo(!!rlang::sym(x))
 }
 
 as_vars <- function(x) {
@@ -489,7 +489,7 @@ as_vars.character <- function(x) {
     do.call(
         vars,
         lapply(x, function(x) {
-            rlang::quo(!!sym(x))
+            rlang::quo(!!rlang::sym(x))
         })
     )
 }

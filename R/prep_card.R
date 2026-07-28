@@ -444,8 +444,8 @@ replace_na_pairwise <- function(
 
     if (length(pair) != 2) {
         cli::cli_abort(
-            "{.arg pair} must contain exactly 2 elements. The one you supplied has \\
-      {length(pair)}.",
+            "{.arg pair} must contain exactly 2 elements. The one you \\
+            supplied has {length(pair)}.",
             call = call
         )
     }

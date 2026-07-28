@@ -116,8 +116,10 @@ col_plan_quo_to_vars <- function(
     )
 
     col_id <- column_names[length(column_names)]
-    col_quo <- rlang::quo(!!sym(col_id))
-    col_name_quo <- rlang::quo(!!sym(paste0("__tfrmt_new_name__", col_id)))
+    col_quo <- rlang::quo(!!rlang::sym(col_id))
+    col_name_quo <- rlang::quo(
+        !!rlang::sym(paste0("__tfrmt_new_name__", col_id))
+    )
 
     ## only apply tidyselect to _bottom_ column
     data_names_tmp <- split_data_names[[col_id]]
@@ -185,8 +187,10 @@ col_plan_span_structure_to_vars <- function(
     ## evaluate selections to identify columns
     for (col_id_idx in seq_along(column_names)) {
         col_id <- column_names[col_id_idx]
-        col_quo <- rlang::quo(!!sym(col_id))
-        col_name_quo <- rlang::quo(!!sym(paste0("__tfrmt_new_name__", col_id)))
+        col_quo <- rlang::quo(!!rlang::sym(col_id))
+        col_name_quo <- rlang::quo(
+            !!rlang::sym(paste0("__tfrmt_new_name__", col_id))
+        )
 
         if (col_id %in% names(x[[1]])) {
             selections <- x[[1]][[col_id]]

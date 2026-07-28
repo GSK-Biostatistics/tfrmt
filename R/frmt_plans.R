@@ -249,7 +249,7 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 #' @rdname frmt
 #' @export
 frmt_when <- function(..., missing = NULL) {
-    frmts <- list2(...)
+    frmts <- rlang::list2(...)
 
     frmt_ls <- frmts %>%
         purrr::map(function(x) {

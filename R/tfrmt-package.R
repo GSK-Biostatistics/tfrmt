@@ -7,11 +7,8 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom rlang .data
 #' @importFrom rlang f_lhs f_rhs f_rhs<-
-#' @importFrom rlang list2
-#' @importFrom rlang sym syms
-#' @importFrom rlang := !! !!! %||%
+#' @importFrom rlang := !! !!! %||% .data
 ## usethis namespace: end
 NULL
 
