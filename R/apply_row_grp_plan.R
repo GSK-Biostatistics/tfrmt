@@ -138,7 +138,7 @@ apply_row_grp_lbl <- function(
         stop(
             paste0(
                 "`label` column ",
-                quo_name(label),
+                rlang::quo_name(label),
                 " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."
             )
         )

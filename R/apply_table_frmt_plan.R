@@ -116,7 +116,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         c(lbl_expr, grp_expr, parm_expr),
         collapse = "&"
     ) %>%
-        parse_expr()
+        rlang::parse_expr()
 
     out <- .data %>%
         dplyr::filter(!!filter_expr)
@@ -127,7 +127,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             dplyr::select(!!!group, !!label, !!param) %>%
             dplyr::distinct() %>%
             dplyr::group_by(!!!group, !!label) %>%
-            dplyr::mutate(test = sum(!!parse_expr(parm_expr))) %>%
+            dplyr::mutate(test = sum(!!rlang::parse_expr(parm_expr))) %>%
             dplyr::filter(
                 .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
             ) %>%
@@ -145,7 +145,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
 
 all_missing <- function(cols, .data) {
     paste0("is.na(.data$", cols, ")", collapse = " & ") %>%
-        parse_expr() %>%
+        rlang::parse_expr() %>%
         rlang::eval_bare(env = environment())
 }
 

@@ -420,7 +420,7 @@ ls_to_col_plan <- function(ls) {
                     el$span_structure %>%
                         ls_to_span_structure() %>%
                         as.character() %>%
-                        parse_expr()
+                        rlang::parse_expr()
                 } else {
                     el[[1]] %>%
                         stringr::str_replace_all("\\\"", "'") %>%
@@ -440,7 +440,7 @@ ls_to_span_structure <- function(ls) {
                 stringr::str_c("'", ., "'") %>%
                 stringr::str_c(collapse = ", ") %>%
                 stringr::str_c("c(", ., ")") %>%
-                parse_expr(.)
+                rlang::parse_expr(.)
         )
 
     do.call(span_structure, span_ls)
@@ -463,7 +463,7 @@ ls_to_col_style_plan <- function(ls) {
                     stuct_in[["col"]] <- cols_val[[1]] %>%
                         ls_to_span_structure() %>%
                         as.character() %>%
-                        parse_expr()
+                        rlang::parse_expr()
                 } else {
                     stuct_in[["col"]] <- purrr::map_chr(
                         stuct_in[["col"]],
@@ -473,7 +473,7 @@ ls_to_col_style_plan <- function(ls) {
                     ) %>%
                         stringr::str_c(., collapse = ", ") %>%
                         paste0("vars(", ., ")") %>%
-                        parse_expr()
+                        rlang::parse_expr()
                 }
                 do.call(col_style_structure, stuct_in)
             })

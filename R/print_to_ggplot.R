@@ -66,17 +66,17 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if param, column values not provided
-    if (quo_is_missing(tfrmt$param)) {
+    if (rlang::quo_is_missing(tfrmt$param)) {
         stop("param variable required for print_to_ggplot")
     }
     if (rlang::is_empty(tfrmt$column)) {
         stop("column variable required for print_to_ggplot")
     }
-    if (quo_is_missing(tfrmt$label)) {
+    if (rlang::quo_is_missing(tfrmt$label)) {
         stop("label variable required for print_to_ggplot")
     }
 
-    if (quo_is_missing(tfrmt$value)) {
+    if (rlang::quo_is_missing(tfrmt$value)) {
         stop("value variable required for print_to_ggplot")
     }
 
@@ -201,7 +201,7 @@ apply_grp_ggplot <- function(.data, tfrmt) {
             !rlang::is_empty(tfrmt$group) &&
             tfrmt$row_grp_plan$label_loc$location == "gtdefault"
     ) {
-        group_name <- quo_name(tfrmt$group[[1]])
+        group_name <- rlang::quo_name(tfrmt$group[[1]])
 
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 

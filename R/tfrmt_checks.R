@@ -356,7 +356,7 @@ check_inputs <- function(
         is_missing <- if (var_name == "column") {
             rlang::is_empty(var_val)
         } else {
-            quo_is_missing(var_val)
+            rlang::quo_is_missing(var_val)
         }
         if (is_missing) {
             missing_vars <- c(missing_vars, var_name)

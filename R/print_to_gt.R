@@ -50,7 +50,7 @@ print_mock_gt <- function(
     .unicode_ws = TRUE
 ) {
     # fill param, column if not provided
-    if (quo_is_missing(tfrmt$param)) {
+    if (rlang::quo_is_missing(tfrmt$param)) {
         message(
             "`tfrmt` will need a `param` value to `print_to_gt` when data is available"
         )
@@ -63,7 +63,7 @@ print_mock_gt <- function(
         tfrmt$column <- vars(!!sym("__tfrmt__column"))
     }
 
-    if (quo_is_missing(tfrmt$value)) {
+    if (rlang::quo_is_missing(tfrmt$value)) {
         message(
             "Message: `tfrmt` will need `value` value to `print_to_gt` when data is available"
         )

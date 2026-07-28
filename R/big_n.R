@@ -68,7 +68,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
             data_names <- data_names |>
                 dplyr::mutate(
                     !!big_n_i$`__tfrmt_big_n_names__` := dplyr::if_else(
-                        !!parse_expr(big_n_i$exp),
+                        !!rlang::parse_expr(big_n_i$exp),
                         paste0(
                             !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`),
                             dplyr::pull(big_n_i, !!value)

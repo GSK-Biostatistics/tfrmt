@@ -134,7 +134,7 @@ body_plan_builder <- function(
     } else {
         purrr::map_chr(group, rlang::as_name)
     }
-    lbl_names <- if (quo_is_missing(label)) {
+    lbl_names <- if (rlang::quo_is_missing(label)) {
         character(0)
     } else {
         rlang::as_name(label)

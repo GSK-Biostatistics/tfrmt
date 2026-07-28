@@ -6,7 +6,7 @@ expr_to_filter <- function(cols, val) {
 
 expr_to_filter.quosure <- function(cols, val) {
     ## If is missing a quosure, nothing to filter
-    if (quo_is_missing(cols)) {
+    if (rlang::quo_is_missing(cols)) {
         return("TRUE")
     }
 
@@ -94,7 +94,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             c(lbl_expr, grp_expr),
             collapse = "&"
         ) %>%
-            parse_expr()
+            rlang::parse_expr()
 
         .data %>%
             dplyr::filter(!!filter_expr) %>%

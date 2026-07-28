@@ -1,17 +1,16 @@
 #' @keywords internal
 "_PACKAGE"
 
-# `vars()` is a bit problematic since vars is deprecated (it originally came
-# from tidyselect and dplyr re-exports it, but it is no longer exported by
-# tidyselect)
+# `vars()` is a bit problematic since vars is deprecated in tidyselect, but
+# dplyr still re-exports it (tidyselect no longer does)
 
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
 #' @importFrom rlang .data expr
 #' @importFrom rlang f_lhs f_rhs f_rhs<- frame_call inform
-#' @importFrom rlang list2 parse_expr parse_exprs
-#' @importFrom rlang quo_is_missing quo_name sym syms warn
+#' @importFrom rlang list2
+#' @importFrom rlang sym syms warn
 #' @importFrom rlang := !! !!! %||%
 ## usethis namespace: end
 NULL

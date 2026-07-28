@@ -245,7 +245,7 @@ get_row_loc <- function(
                 lbl_expr <- expr_to_filter(label, label_vals)
 
                 filter_expr <- paste(c(lbl_expr, grp_expr), collapse = "&") %>%
-                    parse_expr()
+                    rlang::parse_expr()
 
                 col_info$row <- .data %>%
                     dplyr::ungroup() %>%
@@ -270,7 +270,7 @@ get_row_loc <- function(
                 )
             } else if (highest_grp) {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
-                    parse_expr()
+                    rlang::parse_expr()
                 col_info$row <- .data %>%
                     dplyr::group_by(!!dplyr::first(group)) %>%
                     dplyr::mutate(
@@ -287,7 +287,7 @@ get_row_loc <- function(
                 )
             } else if (row_grp %in% c("", "gtdefault")) {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
-                    parse_expr()
+                    rlang::parse_expr()
                 col_info$row <- .data %>%
                     dplyr::group_by(!!dplyr::first(group)) %>%
                     dplyr::mutate(
@@ -311,7 +311,7 @@ get_row_loc <- function(
                 )
             } else if (row_grp == "column") {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
-                    parse_expr()
+                    rlang::parse_expr()
                 col_info$row <- .data %>%
                     dplyr::mutate(
                         `___tfrmt_grp_n` = dplyr::row_number(),
