@@ -376,7 +376,7 @@ as.character.frmt_when <- function(x, ...) {
     )
 
     left <- x$frmt_ls %>%
-        purrr::map_chr(~ f_lhs(.x)) %>%
+        purrr::map_chr(~ f_lhs_as_char(.x)) %>%
         stringr::str_c("'", ., "'")
 
     params <- stringr::str_c(left, " ~ ", right) %>%
