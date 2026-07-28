@@ -31,7 +31,6 @@ linters: all_linters(
   condition_message_linter = NULL,
   # expectations linters
   expect_identical_linter = NULL,
-  expect_length_linter = NULL,
   expect_not_linter = NULL,
   expect_s3_class_linter = NULL,
   # negation linters
