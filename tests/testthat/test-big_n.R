@@ -797,8 +797,8 @@ test_that("Test big n with footnotes", {
         print_mock_gt(span_df_big_n)
 
     ## ensure big_n got applied
-    expect_identical(
-        names(big_n_footnote_plan_gt$`_data`),
+    expect_named(
+        big_n_footnote_plan_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
