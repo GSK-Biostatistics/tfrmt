@@ -7,6 +7,10 @@
 - Removed unused `grp_row_test_data` function, which improves test
   coverage for `R/apply_row_grp_plan.R`
   ([\#662](https://github.com/GSK-Biostatistics/tfrmt/issues/662)).
+- [`footnote_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/footnote_structure.md)
+  now returns its elements in the same order as its arguments
+  (`footnote_text`, `column_val`, `group_val`, `label_val`)
+  ([\#589](https://github.com/GSK-Biostatistics/tfrmt/issues/589)).
 
 ### Bug fixes
 
