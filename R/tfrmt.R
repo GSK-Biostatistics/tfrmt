@@ -287,7 +287,7 @@ quo_get <- function(
 
         if (missing(arg_call)) {
             ## args not defined can quietly return empty expressions.
-            quote(expr = )
+            return(quote(expr = ))
         } else {
             if (identical(arg_call, quo()) || identical(arg_call, vars())) {
                 return(arg_call)
