@@ -124,7 +124,7 @@ apply_tfrmt_subtable_mapper <- function(
     if (inherits(.data, "list")) {
         # there is a list of >1 big N tibbles
         if (inherits(big_n_df, "list") && length(big_n_df) > 1) {
-            map2(
+            purrr::map2(
                 .data,
                 big_n_df,
                 ~ apply_tfrmt_subtable(

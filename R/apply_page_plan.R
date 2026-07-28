@@ -257,7 +257,7 @@ apply_page_struct <- function(
     # determine where the splits should occur in data
     dat_split_2 <- dat_split_2_idx %>%
         dplyr::mutate(
-            `..tfrmt_data` = map2(
+            `..tfrmt_data` = purrr::map2(
                 .data$`..tfrmt_data`,
                 .data$split_idx,
                 function(x, y) {
@@ -468,7 +468,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     )
 
     # check which are identical & add all that match to the data
-    check_eq <- map2_lgl(
+    check_eq <- purrr::map2_lgl(
         prev_summ_top_grp_vars,
         next_summ_top_grp_vars,
         function(x, y) {

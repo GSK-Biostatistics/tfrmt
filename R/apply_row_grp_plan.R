@@ -91,7 +91,7 @@ apply_row_grp_struct <- function(
         )
 
     # apply group block function to data subsets
-    add_ln_df <- map2_dfr(
+    add_ln_df <- purrr::map2_dfr(
         dat_plus_block$data,
         dat_plus_block$TEMP_block_to_apply,
         function(x, y) {

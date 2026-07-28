@@ -282,7 +282,7 @@ frmt_combine_builder <- function(
 #' @noRd
 frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
-    frmt_vec_list <- map2(
+    frmt_vec_list <- purrr::map2(
         names(frmt_vec),
         frmt_vec,
         ~ list(param = .x %||% "", frmt = .y)

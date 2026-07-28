@@ -101,7 +101,7 @@ param_set <- function(...) {
         dplyr::mutate(idx = dplyr::row_number()) %>%
         tidyr::unnest("params", keep_empty = TRUE) %>%
         dplyr::mutate(
-            drop = map2_lgl(
+            drop = purrr::map2_lgl(
                 .data$param_display,
                 .data$params,
                 ~ (.x %in% args_params || .y %in% args_params)
