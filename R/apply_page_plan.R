@@ -254,7 +254,7 @@ apply_page_struct <- function(
             split_idx = map(.data$`..tfrmt_data`, function(x) {
                 map(page_struct_list, function(y) {
                     struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
-                        map_dbl(dplyr::last) # keep just the last one to split after
+                        purrr::map_dbl(dplyr::last) # keep just the last one to split after
                 }) %>%
                     unlist()
             })

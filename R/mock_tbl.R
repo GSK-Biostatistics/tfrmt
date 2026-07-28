@@ -177,9 +177,12 @@ add_sorting_cols <- function(data, sorting_cols) {
         sorting_cols_vars <- purrr::map_chr(sorting_cols, as_name)
         n_sorting_cols <- length(sorting_cols_vars)
 
-        sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x) {
-            tibble::tibble(!!sorting_cols_vars[x] := 1)
-        })
+        sorting_cols_def <- purrr::map_dfc(
+            seq_len(n_sorting_cols),
+            function(x) {
+                tibble::tibble(!!sorting_cols_vars[x] := 1)
+            }
+        )
 
         data <- data %>%
             dplyr::mutate(
@@ -271,7 +274,7 @@ make_col_df <- function(
             )
         )
         if (n_spans > 1) {
-            col_spans_df <- map_dfc(seq_len(n_spans - 1), function(x) {
+            col_spans_df <- purrr::map_dfc(seq_len(n_spans - 1), function(x) {
                 tibble::tibble(
                     !!column_vars[x] := rep(
                         paste0("span_", column_vars[x]),
