@@ -204,8 +204,8 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::select(
             -tidyselect::any_of(
                 c(
-                    purrr::map_chr(tfrmt$group, as_name),
-                    as_name(tfrmt$label)
+                    purrr::map_chr(tfrmt$group, rlang::as_name),
+                    rlang::as_name(tfrmt$label)
                 )
             )
         ) %>%

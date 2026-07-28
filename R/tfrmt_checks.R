@@ -294,7 +294,7 @@ check_footnote_plan <- function(x) {
 #' @param plan name of plan, e.g., "col_style_plan"
 #' @param parent_env parent environment
 #'
-check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
+check_plan <- function(tfrmt_object, plan, parent_env = rlang::caller_env()) {
     # extract the plan element from the tfrmt_object
     plan_element <- tfrmt_object[[plan]]
 
@@ -318,7 +318,7 @@ check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
 }
 
 
-check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
+check_big_n <- function(tfrmt_object, parent_env = rlang::caller_env()) {
     # extract the big_n element from the tfrmt_object
     big_n_element <- tfrmt_object[["big_n"]]
 
@@ -345,7 +345,11 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
 #' @param parent_env parent environment for error reporting
 #'
 #' @noRd
-check_inputs <- function(tfrmt_object, var_names, parent_env = caller_env()) {
+check_inputs <- function(
+    tfrmt_object,
+    var_names,
+    parent_env = rlang::caller_env()
+) {
     missing_vars <- character(0)
     for (var_name in var_names) {
         var_val <- tfrmt_object[[var_name]]

@@ -132,9 +132,13 @@ body_plan_builder <- function(
     grp_names <- if (length(group) == 0) {
         character(0)
     } else {
-        purrr::map_chr(group, as_name)
+        purrr::map_chr(group, rlang::as_name)
     }
-    lbl_names <- if (quo_is_missing(label)) character(0) else as_name(label)
+    lbl_names <- if (quo_is_missing(label)) {
+        character(0)
+    } else {
+        rlang::as_name(label)
+    }
 
     # sigdig value
     sigdig <- data$sigdig[[1]]

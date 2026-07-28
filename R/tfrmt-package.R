@@ -8,7 +8,6 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom rlang as_name caller_call caller_env
 #' @importFrom rlang check_dots_empty0 .data eval_bare eval_tidy expr expr_text
 #' @importFrom rlang f_lhs f_rhs f_rhs<- frame_call inform is_empty is_quosure
 #' @importFrom rlang is_quosures list2 parse_expr parse_exprs quo quo_get_expr

@@ -440,7 +440,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- ""
     }
 
-    column_cols <- purrr::map_chr(tfrmt$column, as_name)
+    column_cols <- purrr::map_chr(tfrmt$column, rlang::as_name)
 
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%

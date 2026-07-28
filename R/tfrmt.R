@@ -190,7 +190,7 @@ tfrmt <- function(
     tfrmt_el <- tfrmt_find_args(
         ...,
         env = environment(),
-        parent_env = caller_env()
+        parent_env = rlang::caller_env()
     )
 
     new_tfrmt <- structure(
