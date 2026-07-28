@@ -46,7 +46,7 @@ test_that("setting param sigdig defaults", {
             mean = 0
         )
     )
-# nolint start: yoda_test_linter
+    # nolint start: yoda_test_linter
     expect_equal(
         param_set("{n} ({pct}%)" = c(NA, 1)),
         list(
