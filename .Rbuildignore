@@ -20,3 +20,4 @@ man/figures/
 ^\.vscode$
 ^\.lintr$
 ^\.lintr_restrictive$
+^TODO\.md$
