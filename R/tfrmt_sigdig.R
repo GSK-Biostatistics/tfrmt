@@ -218,7 +218,10 @@ tfrmt_sigdig <- function(
 
     # if a tfrmt_obj is supplied and no group or label parameters are passed, use the one from the tfrmt_obj
     if (!is.null(tfrmt_obj)) {
-        if (is_empty(tfrmt_inputs$group) && !is_empty(tfrmt_obj$group)) {
+        if (
+            rlang::is_empty(tfrmt_inputs$group) &&
+                !rlang::is_empty(tfrmt_obj$group)
+        ) {
             tfrmt_inputs$group <- tfrmt_obj$group
         }
         if (

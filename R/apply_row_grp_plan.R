@@ -148,7 +148,7 @@ apply_row_grp_lbl <- function(
 
     if (
         length(grps_avail) == 0 ||
-            is_empty(label) ||
+            rlang::is_empty(label) ||
             element_row_grp_loc$location %in%
                 c("gtdefault", "noprint", "column")
     ) {

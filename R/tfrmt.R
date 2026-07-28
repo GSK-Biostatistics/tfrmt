@@ -289,7 +289,7 @@ quo_get <- function(
             }
 
             # don't try to eval quosures if it is intended to be a quosure
-            if (is_quosure(arg_call) && arg %in% c(as_quo_args)) {
+            if (rlang::is_quosure(arg_call) && arg %in% c(as_quo_args)) {
                 arg_call_results <- list(result = arg_call, error = NULL)
             } else {
                 # try to safely evaluate arg call
@@ -420,7 +420,7 @@ trim_vars_quo_c <- function(x) {
 }
 
 is_basic_list <- function(x) {
-    is.list(x) & !is_quosures(x)
+    is.list(x) & !rlang::is_quosures(x)
 }
 
 is_missing <- function(x) {

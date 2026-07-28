@@ -56,7 +56,7 @@ check_column_and_col_plan <- function(x) {
 #' @param x tfrmt to be checked
 #'
 check_group_var_consistency <- function(x) {
-    if (!is_empty(x$group)) {
+    if (!rlang::is_empty(x$group)) {
         group_var_consistency_message <- trimws(
             paste0(
                 c(
@@ -207,9 +207,9 @@ check_group_var_consistency_footnote_plan <- function(x) {
 #'
 check_col_style_row_grp_consistency <- function(x) {
     if (
-        !is_empty(x$group) &&
+        !rlang::is_empty(x$group) &&
             !is.null(x$col_style_plan) &&
-            !is_empty(x$row_grp_plan)
+            !rlang::is_empty(x$row_grp_plan)
     ) {
         is_invalid_plan <- FALSE
         is_invalid_plan_message <- "Invalid Entries based on col_align_plan and row_grp_plan"
@@ -257,7 +257,7 @@ check_col_style_row_grp_consistency <- function(x) {
 
 
 check_footnote_plan <- function(x) {
-    if (!is_empty(x$footnote_plan)) {
+    if (!rlang::is_empty(x$footnote_plan)) {
         for (i in seq_along(x$footnote_plan$struct_list)) {
             # if multiple columns then column_val must be a named list
             if (
@@ -354,7 +354,7 @@ check_inputs <- function(
     for (var_name in var_names) {
         var_val <- tfrmt_object[[var_name]]
         is_missing <- if (var_name == "column") {
-            is_empty(var_val)
+            rlang::is_empty(var_val)
         } else {
             quo_is_missing(var_val)
         }

@@ -185,7 +185,7 @@ update_group <- function(tfrmt, ...) {
         )
     )
 
-    if (!is_empty(tfrmt$group)) {
+    if (!rlang::is_empty(tfrmt$group)) {
         var_list <- sapply(tfrmt$group, function(x) {
             x_lab <- rlang::as_label(x)
             if (x_lab %in% names(new_group_map)) {
@@ -290,7 +290,7 @@ append_update_group_message <- function(e, x, y) {
     x_grp <- purrr::map_chr(x$group, rlang::as_label)
     y_grp <- purrr::map_chr(y$group, rlang::as_label)
 
-    if (!is_empty(y_grp) && !is_empty(x_grp)) {
+    if (!rlang::is_empty(y_grp) && !rlang::is_empty(x_grp)) {
         update_grp_message <- c(
             i = paste0(
                 "You might need to update group names using ",

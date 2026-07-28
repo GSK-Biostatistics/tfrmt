@@ -229,7 +229,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             dplyr::select(-"_tfrmt______id")
 
         if (big_n_structure$by_page) {
-            if (is_empty(by_var)) {
+            if (rlang::is_empty(by_var)) {
                 data_out <- data_out |>
                     dplyr::group_split()
             } else {

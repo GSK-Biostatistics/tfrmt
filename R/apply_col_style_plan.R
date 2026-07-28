@@ -16,7 +16,7 @@ apply_col_style_plan <- function(
         return(.data)
     }
 
-    if (is_empty(tfrmt_obj$column)) {
+    if (rlang::is_empty(tfrmt_obj$column)) {
         # create placeholder
         column_names <- "col"
     } else {

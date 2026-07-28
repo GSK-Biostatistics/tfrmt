@@ -93,7 +93,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
     if ("column_val" %in% names(loc_info)) {
         col_str <- purrr::map_chr(columns, rlang::as_label)
 
-        if (is_empty(names(loc_info$column_val))) {
+        if (rlang::is_empty(names(loc_info$column_val))) {
             col_val_nm <- col_str
             loc_col_df <- tibble::tibble(!!col_str := loc_info$column_val)
         } else {
@@ -212,7 +212,9 @@ get_row_loc <- function(
                 "Cannot apply footnotes to rows when you have only specified a spanning column"
             )
             col_info$row <- NULL
-        } else if (row_grp == "noprint" && !is_empty(loc_info$group_val)) {
+        } else if (
+            row_grp == "noprint" && !rlang::is_empty(loc_info$group_val)
+        ) {
             warning(
                 "Can not apply footnotes to group columns when 'noprint' is set"
             )
