@@ -56,9 +56,8 @@ test_that("setting param sigdig defaults", {
             "{mean} ({sd})" = c(1, 2),
             "{n} ({pct}%)" = c(NA, 1)
         )
-        )
-# nolint end
-    
+    )
+    # nolint end
 })
 
 test_that("build frmt objects", {
