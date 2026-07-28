@@ -166,11 +166,11 @@ check_span_structure_dots <- function(x) {
                     if (identical(rlang::as_label(x), "<empty>")) {
                         return(NULL)
                     } else {
-                        return(quo(!!x))
+                        return(rlang::quo(!!x))
                     }
                 } else if (is.call(x)) {
                     if (is_valid_tidyselect_call(x)) {
-                        quo(!!x)
+                        rlang::quo(!!x)
                     } else if (is_valid_quo_call(x)) {
                         return(rlang::eval_tidy(x))
                     } else {
@@ -233,11 +233,11 @@ check_col_plan_dots <- function(x) {
             if (identical(rlang::as_label(x), "<empty>")) {
                 return(NULL)
             } else {
-                return(quo(!!x))
+                return(rlang::quo(!!x))
             }
         } else if (is.call(x)) {
             if (is_valid_tidyselect_call(x)) {
-                quo(!!x)
+                rlang::quo(!!x)
             } else if (
                 is_valid_quo_call(x) || is_valid_span_structure_call(x)
             ) {

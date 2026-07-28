@@ -10,7 +10,7 @@
 #'
 #' @importFrom rlang .data expr
 #' @importFrom rlang f_lhs f_rhs f_rhs<- frame_call inform
-#' @importFrom rlang list2 parse_expr parse_exprs quo quo_get_expr
+#' @importFrom rlang list2 parse_expr parse_exprs
 #' @importFrom rlang quo_is_missing quo_name sym syms warn
 #' @importFrom rlang := !! !!! %||%
 ## usethis namespace: end

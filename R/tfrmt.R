@@ -171,9 +171,9 @@
 tfrmt <- function(
     tfrmt_obj,
     group = vars(),
-    label = quo(),
-    param = quo(),
-    value = quo(),
+    label = rlang::quo(),
+    param = rlang::quo(),
+    value = rlang::quo(),
     column = vars(),
     title,
     subtitle,
@@ -284,7 +284,9 @@ quo_get <- function(
             ## args not defined can quietly return empty expressions.
             return(quote(expr = ))
         } else {
-            if (identical(arg_call, quo()) || identical(arg_call, vars())) {
+            if (
+                identical(arg_call, rlang::quo()) || identical(arg_call, vars())
+            ) {
                 return(arg_call)
             }
 
@@ -441,7 +443,7 @@ as_length_one_quo.quosure <- function(x, ...) {
 #' @keywords internal
 as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
     if (length(x) == 0) {
-        quo()
+        rlang::quo()
     } else {
         if (length(x) > 1) {
             warn(
@@ -460,7 +462,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
 #' @export
 #' @keywords internal
 as_length_one_quo.character <- function(x, ...) {
-    quo(!!sym(x))
+    rlang::quo(!!sym(x))
 }
 
 as_vars <- function(x) {
@@ -485,7 +487,7 @@ as_vars.character <- function(x) {
     do.call(
         vars,
         lapply(x, function(x) {
-            quo(!!sym(x))
+            rlang::quo(!!sym(x))
         })
     )
 }

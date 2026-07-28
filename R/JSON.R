@@ -425,7 +425,7 @@ ls_to_col_plan <- function(ls) {
                     el[[1]] %>%
                         stringr::str_replace_all("\\\"", "'") %>%
                         char_as_quo() %>%
-                        quo_get_expr()
+                        rlang::quo_get_expr()
                 }
             })
 
@@ -468,7 +468,7 @@ ls_to_col_style_plan <- function(ls) {
                     stuct_in[["col"]] <- purrr::map_chr(
                         stuct_in[["col"]],
                         ~ char_as_quo(.x) %>%
-                            quo_get_expr() %>%
+                            rlang::quo_get_expr() %>%
                             rlang::expr_text()
                     ) %>%
                         stringr::str_c(., collapse = ", ") %>%

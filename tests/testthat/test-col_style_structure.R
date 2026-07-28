@@ -64,12 +64,12 @@ test_that("col_style_structure - advanced", {
 
     expect_equal(
         element_1$cols,
-        list(quo(n_tot), quo(p), quo(test)),
+        list(rlang::quo(n_tot), rlang::quo(p), rlang::quo(test)),
         ignore_attr = TRUE
     )
     expect_equal(
         element_2$cols,
-        list(quo(n_tot), quo(p), quo(test)),
+        list(rlang::quo(n_tot), rlang::quo(p), rlang::quo(test)),
         ignore_attr = TRUE
     )
     expect_equal(
@@ -79,7 +79,7 @@ test_that("col_style_structure - advanced", {
     )
     expect_equal(
         element_4$cols,
-        list(quo(trt1), list(col = vars(test), col1 = vars(value))),
+        list(rlang::quo(trt1), list(col = vars(test), col1 = vars(value))),
         ignore_attr = TRUE
     )
 })
