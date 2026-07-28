@@ -221,6 +221,50 @@ test_that("applying footnote meta column val", {
             )
         )
     )
+    # column val that doesn't exist in the data
+    tfrmt4 <- tfrmt(
+        # specify columns in the data
+        group = c(rowlbl1),
+        label = rowlbl2,
+        column = trt,
+        param = param,
+        value = value,
+        # set formatting for value
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt_combine(
+                    "{n} {pct}",
+                    n = frmt("xxx"),
+                    pct = frmt_when(
+                        "==100" ~ "",
+                        "==0" ~ "",
+                        TRUE ~ frmt("(xx.x %)")
+                    )
+                )
+            )
+        ),
+        footnote_plan = footnote_plan(
+            footnote_structure(
+                "Test footnote 1",
+                column_val = list(trt = "Not A Column")
+            ),
+            marks = "letters"
+        )
+    )
+    expect_message(
+        apply_tfrmt(es_data, tfrmt4),
+        "The provided column location does not exist in the provided data for the footnote"
+    )
+    expect_equal(
+        attr(suppressMessages(apply_tfrmt(es_data, tfrmt4)), ".footnote_locs"),
+        list(list(
+            "col" = NULL,
+            "spanning" = FALSE,
+            "note" = "Test footnote 1"
+        ))
+    )
 })
 
 
@@ -558,6 +602,53 @@ test_that("applying footnote meta group val", {
     expect_equal(
         attr(apply_tfrmt(es_data3, tfrmt6), ".footnote_locs"),
         list(list("col" = NULL, "spanning" = FALSE, "note" = "Test footnote"))
+    )
+
+    # row_grp_loc = "column" with a non-highest group referenced
+    tfrmt7 <- tfrmt(
+        # specify columns in the data
+        group = c(rowlbl0, rowlbl1),
+        label = rowlbl2,
+        column = trt,
+        param = param,
+        value = value,
+        # set formatting for value
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt_combine(
+                    "{n} {pct}",
+                    n = frmt("xxx"),
+                    pct = frmt_when(
+                        "==100" ~ "",
+                        "==0" ~ "",
+                        TRUE ~ frmt("(xx.x %)")
+                    )
+                )
+            )
+        ),
+        # Locate the row group label in its own column, and only reference
+        # the second (non-highest) group in the footnote's group_val
+        row_grp_plan = row_grp_plan(
+            label_loc = element_row_grp_loc(location = "column")
+        ),
+        footnote_plan = footnote_plan(
+            footnote_structure(
+                "Test footnote",
+                group_val = list(rowlbl1 = "Completion Status")
+            ),
+            marks = "letters"
+        )
+    )
+    expect_equal(
+        attr(apply_tfrmt(es_data3, tfrmt7), ".footnote_locs"),
+        list(list(
+            "col" = "rowlbl1",
+            "spanning" = FALSE,
+            "row" = 1:3,
+            "note" = "Test footnote"
+        ))
     )
 })
 
