@@ -374,7 +374,9 @@ quo_get <- function(
                         "`:\n",
                         paste0(" ", arg_call_results$error, collapse = "")
                     ),
-                    call = frame_call(frame = envir)
+                    call = rlang::frame_call(
+                        frame = envir
+                    )
                 )
             }
         }
@@ -446,7 +448,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
         rlang::quo()
     } else {
         if (length(x) > 1) {
-            warn(
+            rlang::warn(
                 paste0(
                     "Passed more than one quosure to the argument `",
                     arg,
@@ -514,5 +516,8 @@ compare_dot_args_against_formals <- function(dot_arg, formals) {
             "`?"
         )
     }
-    inform(arg_message, class = "tfrmt_unrecognized_argument_inform")
+    rlang::inform(
+        arg_message,
+        class = "tfrmt_unrecognized_argument_inform"
+    )
 }
