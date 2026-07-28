@@ -251,7 +251,7 @@ json_to_tfrmt <- function(path = NULL, json = NULL) {
         list(col_style_plan = csp),
         list(page_plan = pp)
     ) %>%
-        discard(is.null)
+        purrr::discard(is.null)
     do.call(tfrmt, all_params)
 }
 

@@ -8,7 +8,7 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom purrr discard keep map map_dbl map_dfc
+#' @importFrom purrr keep map map_dbl map_dfc
 #' @importFrom purrr map_dfr map_lgl map2 map2_dfr map2_lgl pmap
 #' @importFrom purrr reduce quietly safely
 #'

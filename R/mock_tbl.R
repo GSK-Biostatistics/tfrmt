@@ -228,7 +228,7 @@ make_col_df <- function(
         } else if (col_plan_test_res && is.null(n_cols)) {
             # Gets the lowest level columns only
             low_lvl_vars <- col_plan$dots %>%
-                discard(is.list) %>%
+                purrr::discard(is.list) %>%
                 clean_col_names(dont_inc = grp_lb_vars)
 
             low_lvl_def <- tibble::tibble(

@@ -86,7 +86,7 @@ locate_fn <- function(
 #' @noRd
 get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
     loc_info <- footnote_structure %>%
-        discard(is.null) %>%
+        purrr::discard(is.null) %>%
         .[names(.) != "footnote_text"]
 
     # Get column information
@@ -197,7 +197,7 @@ get_row_loc <- function(
     col_info
 ) {
     loc_info <- footnote_structure %>%
-        discard(is.null) %>%
+        purrr::discard(is.null) %>%
         .[names(.) != "footnote_text"]
 
     row_grp <- ifelse(

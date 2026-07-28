@@ -225,7 +225,7 @@ apply_frmt.frmt_combine <- function(
     missing_param_replacements <-
         map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
         stats::setNames(fmt_param_vals) %>%
-        discard(is.null)
+        purrr::discard(is.null)
 
     if (length(missing_param_replacements) > 0) {
         ## after .is_all_missing so that can be tabulated first
@@ -286,7 +286,7 @@ apply_frmt.frmt_combine <- function(
             }
         }
     ) %>%
-        discard(is.null) %>%
+        purrr::discard(is.null) %>%
         do.call("vars", .)
 
     # merge on new values, and remove cases other than first occurance of group/label/column pairing
