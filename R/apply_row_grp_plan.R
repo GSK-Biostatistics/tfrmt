@@ -282,7 +282,7 @@ combine_group_cols <- function(
             map(~ dplyr::select(.x, -run_id))
 
         .data <- split_dat %>%
-            map_dfr(function(lone_dat) {
+            purrr::map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
                         ..tfrmt_summary_row = stringr::str_trim(

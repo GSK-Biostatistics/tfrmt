@@ -30,7 +30,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     # create tibble of all frmt_structure grp/label/param: 1 row per group_val per frmt_structure
     all_frmt_spec <- body_plan %>%
-        map_dfr(
+        purrr::map_dfr(
             function(x) {
                 tidyr::crossing(
                     # if group_val is a named list, return as a tibble with list names as colnames
@@ -238,7 +238,7 @@ make_col_df <- function(
             # creates a df for each span structure
             span_df <- col_plan$dots %>%
                 purrr::keep(is.list) %>%
-                map_dfr(function(x) {
+                purrr::map_dfr(function(x) {
                     span_df <- x %>%
                         map(~ clean_col_names(., c())) %>%
                         reduce(tidyr::crossing) %>%

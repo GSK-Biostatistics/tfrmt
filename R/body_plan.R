@@ -67,7 +67,7 @@ body_plan_builder <- function(
 ) {
     # prep params for frmt functions
     param_tbl <- seq_along(param_defaults) %>%
-        map_dfr(
+        purrr::map_dfr(
             ~ tibble::tibble(
                 param_display = names(param_defaults)[.x],
                 sigdig = list(param_defaults[[.x]] + data$sigdig[[1]]),
@@ -79,7 +79,7 @@ body_plan_builder <- function(
                 .data$param_display,
                 "\\{.*\\}"
             ), # is this to be a frmt_combine
-            param = map2(
+            param = purrr::map2(
                 .data$param_display,
                 .data$contains_glue,
                 ~ if (.y == TRUE) {

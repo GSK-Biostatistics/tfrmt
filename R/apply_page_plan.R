@@ -202,7 +202,10 @@ apply_page_struct <- function(
         dplyr::mutate(TEMP_row = dplyr::row_number())
 
     # 1. check that only 1 page_structure contains a .default, drop extras
-    struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
+    struct_defaults_idx <- which(purrr::map_lgl(
+        page_struct_list,
+        detect_default
+    ))
     if (length(struct_defaults_idx) > 1) {
         struct_defaults_idx_drop <- struct_defaults_idx[
             -dplyr::last(struct_defaults_idx)
@@ -217,7 +220,10 @@ apply_page_struct <- function(
     # 2. get all the subsets of data
 
     # a) If applicable, split by any group/label vars set to ".default"
-    struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
+    struct_defaults_idx <- which(purrr::map_lgl(
+        page_struct_list,
+        detect_default
+    )) # do this again post-dropping duplicates
 
     if (length(struct_defaults_idx) > 0) {
         # split on all set to .default
@@ -388,7 +394,7 @@ combine_group_cols_mod <- function(
             dplyr::group_split()
 
         .data <- split_dat %>%
-            map_dfr(function(lone_dat) {
+            purrr::map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
                         `..tfrmt_summary_row_cur` = stringr::str_trim(

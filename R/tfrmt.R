@@ -340,7 +340,7 @@ quo_get <- function(
                 arg_call <- trim_vars_quo_c(arg_call)
 
                 ## check if argcall is tidyselect call, give feedback that is invalid if so
-                if (any(map_lgl(arg_call, is_valid_tidyselect_call))) {
+                if (any(purrr::map_lgl(arg_call, is_valid_tidyselect_call))) {
                     if (!allow_tidy_select) {
                         abort(
                             message = "Tidyselect selection helpers are not acceptable to use in this context. Please provide a specific column to use.",

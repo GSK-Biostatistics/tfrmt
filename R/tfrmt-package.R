@@ -9,7 +9,7 @@
 #' @importFrom dplyr vars
 #'
 #' @importFrom purrr map map_dbl map_dfc
-#' @importFrom purrr map_dfr map_lgl pmap
+#' @importFrom purrr pmap
 #' @importFrom purrr reduce quietly safely
 #'
 #' @importFrom rlang abort as_function as_label as_name caller_call caller_env

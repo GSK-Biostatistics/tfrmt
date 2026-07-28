@@ -77,7 +77,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
         if (!is.list(cur_struct$group_val)) {
             keep_vars <- group
         } else {
-            keep_vars <- group[map_lgl(
+            keep_vars <- group[purrr::map_lgl(
                 cur_struct$group_val,
                 ~ !all(.x == ".default")
             )]
@@ -125,7 +125,8 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
 # detect use of .default in a *_structure object
 #' @noRd
 detect_default <- function(struct) {
-    map_lgl(struct, ~ any(!is.null(.x) && any(.x == ".default"))) %>% any()
+    purrr::map_lgl(struct, ~ any(!is.null(.x) && any(.x == ".default"))) %>%
+        any()
 }
 
 # detect use of non-default in a  *_structure object entry
@@ -156,7 +157,7 @@ expr_to_grouping <- function(cur_struct, group, label) {
             is.list(cur_struct$group_val) &&
                 any(cur_struct$group_val == ".default")
         ) {
-            grp_to_add <- names(cur_struct$group_val)[map_lgl(
+            grp_to_add <- names(cur_struct$group_val)[purrr::map_lgl(
                 cur_struct$group_val,
                 ~ all(.x == ".default")
             )]

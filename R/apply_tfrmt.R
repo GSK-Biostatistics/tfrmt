@@ -247,7 +247,7 @@ apply_tfrmt_subtable <- function(
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
 
-    if (any(map_lgl(args, is_empty))) {
+    if (any(purrr::map_lgl(args, is_empty))) {
         out <- .data
     } else {
         out <- .data %>%
@@ -598,7 +598,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {
         expected_pops <- length(data_wide)
         expected_grp_vars <- attr(data_wide, ".page_grp_vars")
-        expected_grp_levs <- map_dfr(
+        expected_grp_levs <- purrr::map_dfr(
             data_wide,
             ~ dplyr::select(
                 .x,
@@ -609,7 +609,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                 dplyr::distinct()
         )
         actual_pops <- length(big_n_df)
-        actual_grp_levs <- map_dfr(
+        actual_grp_levs <- purrr::map_dfr(
             big_n_df,
             ~ dplyr::select(
                 .x,
