@@ -9,8 +9,6 @@ tfrmt_demog <- tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -22,27 +20,22 @@ tfrmt_demog <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "n",
             frmt("xxx")
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = c("Mean", "Median", "Min", "Max"),
             frmt("xxx.x")
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "SD",
             frmt("xxx.xx")
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
@@ -102,8 +95,6 @@ tfrmt_ae <- tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -115,13 +106,9 @@ tfrmt_ae <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -177,13 +164,10 @@ tfrmt_efficacy <- tfrmt(
     body_plan = body_plan(
         # we could also do: label_val = ".default", n = frmt("xx")
         frmt_structure(
-            group_val = ".default",
             label_val = "n",
             frmt("xx")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -191,7 +175,6 @@ tfrmt_efficacy <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -202,7 +185,6 @@ tfrmt_efficacy <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -212,7 +194,6 @@ tfrmt_efficacy <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -222,7 +203,6 @@ tfrmt_efficacy <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",

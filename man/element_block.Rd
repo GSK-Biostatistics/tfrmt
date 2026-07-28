@@ -20,17 +20,22 @@ Element block
 \examples{
 
 tfrmt_spec <- tfrmt(
-  group = grp1,
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = "   "))
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = grp1,
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block(post_space = "   ")
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 }
 \seealso{
