@@ -252,7 +252,7 @@ frmt_when <- function(..., missing = NULL) {
     frmts <- list2(...)
 
     frmt_ls <- frmts %>%
-        map(function(x) {
+        purrr::map(function(x) {
             f_rhs(x) <- eval(f_rhs(x))
             x
         })

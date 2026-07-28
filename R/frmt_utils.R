@@ -103,7 +103,7 @@ print.frmt_combine <- function(x, ...) {
 #' @export
 format.frmt_when <- function(x, ...) {
     lhs <- purrr::map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>%
+    rhs <- purrr::map(x$frmt_ls, f_rhs) %>%
         purrr::map_chr(format)
 
     frmt_str <- paste(
@@ -133,7 +133,7 @@ print.frmt_when <- function(x, ...) {
 #'
 format.frmt_structure <- function(x, ...) {
     if (is.list(x$group_val)) {
-        groups <- x$group_val %>% map(unique)
+        groups <- x$group_val %>% purrr::map(unique)
     } else {
         groups <- unique(x$group_val)
     }
@@ -239,7 +239,7 @@ frmt_builder <- function(param, frmt_string, missing = NULL) {
         frmt_string <- stats::setNames(frmt_string, param)
     }
 
-    map(
+    purrr::map(
         frmt_string,
         function(x, missing_val) {
             do.call(frmt, list(expression = x, missing = missing_val))
@@ -289,7 +289,7 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     )
 
     tidyr::crossing(frmt_vec_list, grp_lbl_list) %>%
-        pmap(function(frmt_vec_list, grp_lbl_list) {
+        purrr::pmap(function(frmt_vec_list, grp_lbl_list) {
             if (
                 is.list(grp_lbl_list$group_val) &&
                     length(grp_lbl_list$group_val) == 1 &&
@@ -422,7 +422,7 @@ as.character.frmt_combine <- function(x, ...) {
 #' @export
 as.character.span_structure <- function(x, ...) {
     values <- x %>%
-        map(function(val) {
+        purrr::map(function(val) {
             elements <- purrr::map_chr(val, as_label) %>%
                 stringr::str_replace_all("\\\"", "'")
 

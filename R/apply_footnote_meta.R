@@ -21,7 +21,7 @@ apply_footnote_meta <- function(
     columns
 ) {
     footnote_locs <- footnote_plan$struct_list %>%
-        map(
+        purrr::map(
             locate_fn,
             .data = .data,
             col_plan_vars = col_plan_vars,

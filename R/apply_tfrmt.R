@@ -137,7 +137,7 @@ apply_tfrmt_subtable_mapper <- function(
             )
         } else {
             # there is only 1 set of (overall) big Ns
-            map(
+            purrr::map(
                 .data,
                 ~ apply_tfrmt_subtable(
                     tfrmt,
@@ -300,7 +300,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     .data <- .data %>% dplyr::ungroup()
 
     req_quo %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
             check <- safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
@@ -316,7 +316,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
         })
 
     req_var %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
             check <- safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {

@@ -327,8 +327,8 @@ tfrmt_sigdig <- function(
     frmt_structure_list <- data_ord %>%
         dplyr::group_by(def_ord = dplyr::desc(.data$def_ord), .data$sigdig) %>%
         dplyr::group_split() %>%
-        map(dplyr::select, -"def_ord") %>%
-        map(
+        purrr::map(dplyr::select, -"def_ord") %>%
+        purrr::map(
             body_plan_builder,
             tfrmt_inputs$group,
             tfrmt_inputs$label,

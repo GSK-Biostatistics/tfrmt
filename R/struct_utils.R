@@ -114,7 +114,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             ) %>%
             dplyr::group_by(.data$breaks) %>%
             dplyr::group_split() %>%
-            map(function(x) dplyr::pull(x, .data$TEMP_row))
+            purrr::map(function(x) dplyr::pull(x, .data$TEMP_row))
     } else {
         .data %>%
             dplyr::pull(.data$TEMP_row) %>%

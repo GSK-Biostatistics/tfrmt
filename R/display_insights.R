@@ -13,9 +13,9 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         dplyr::mutate(TEMP_row = dplyr::row_number())
 
     TEMP_appl_row <- table_frmt_plan %>%
-        map(fmt_test_data, .data, label, group, param)
+        purrr::map(fmt_test_data, .data, label, group, param)
 
-    TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
+    TEMP_fmt_to_apply <- table_frmt_plan %>% purrr::map(~ .$frmt_to_apply[[1]])
 
     dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,
@@ -225,7 +225,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     }
 
     selection <- as.list(substitute(substitute(col)))[-1] %>%
-        map(trim_vars_quo_c) %>%
+        purrr::map(trim_vars_quo_c) %>%
         do.call("c", .) %>%
         check_col_plan_dots()
 

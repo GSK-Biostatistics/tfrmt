@@ -8,8 +8,6 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom purrr map
-#' @importFrom purrr pmap
 #' @importFrom purrr reduce quietly safely
 #'
 #' @importFrom rlang abort as_function as_label as_name caller_call caller_env

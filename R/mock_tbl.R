@@ -54,7 +54,9 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     # & replace .default's
     all_frmt_vals <- dplyr::bind_cols(
         all_frmt_spec,
-        map(cols_to_add, function(x) tibble::tibble(!!x := NA_character_))
+        purrr::map(cols_to_add, function(x) {
+            tibble::tibble(!!x := NA_character_)
+        })
     ) %>%
         dplyr::mutate(
             ..grp = tidyr::replace_na(
@@ -243,7 +245,7 @@ make_col_df <- function(
                 purrr::keep(is.list) %>%
                 purrr::map_dfr(function(x) {
                     span_df <- x %>%
-                        map(~ clean_col_names(., c())) %>%
+                        purrr::map(~ clean_col_names(., c())) %>%
                         reduce(tidyr::crossing) %>%
                         tidyr::unnest(
                             cols = tidyselect::everything()
@@ -257,7 +259,7 @@ make_col_df <- function(
 
         # get col_style_plan referenced cols
         if (col_style_plan_test_res) {
-            cols_from_sp <- map(col_style_plan, ~ .x$cols) |>
+            cols_from_sp <- purrr::map(col_style_plan, ~ .x$cols) |>
                 purrr::list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
                 tibble::tibble(.)

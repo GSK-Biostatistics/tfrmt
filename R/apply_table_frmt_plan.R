@@ -26,9 +26,9 @@ apply_table_frmt_plan <- function(
         dplyr::mutate(TEMP_row = dplyr::row_number())
 
     TEMP_appl_row <- table_frmt_plan %>%
-        map(fmt_test_data, .data, label, group, param)
+        purrr::map(fmt_test_data, .data, label, group, param)
 
-    TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
+    TEMP_fmt_to_apply <- table_frmt_plan %>% purrr::map(~ .$frmt_to_apply[[1]])
 
     dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,

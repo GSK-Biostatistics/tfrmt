@@ -223,7 +223,7 @@ apply_frmt.frmt_combine <- function(
         )
 
     missing_param_replacements <-
-        map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
+        purrr::map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
         stats::setNames(fmt_param_vals) %>%
         purrr::discard(is.null)
 
@@ -278,7 +278,7 @@ apply_frmt.frmt_combine <- function(
             dplyr::select(-!!value)
     }
 
-    merge_group <- map(
+    merge_group <- purrr::map(
         c(column, label, group),
         function(x) {
             if (!quo_is_missing(x)) {
@@ -322,8 +322,8 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
-            map(f_rhs) %>%
-            map(function(x) {
+            purrr::map(f_rhs) %>%
+            purrr::map(function(x) {
                 if (is_frmt(x)) {
                     out <- apply_frmt(x, .data, value, ...) %>%
                         dplyr::pull(!!value)
@@ -337,7 +337,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
             purrr::map_chr(f_lhs_as_char) %>%
             dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
             parse_exprs() %>%
-            map(eval_tidy, .data)
+            purrr::map(eval_tidy, .data)
 
         out <- rep(NA_character_, val_len)
         replaced <- rep(FALSE, val_len)
