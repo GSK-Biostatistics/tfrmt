@@ -21,7 +21,6 @@ linters: all_linters(
   redundant_ifelse_linter = NULL,
   nonportable_path_linter = NULL,
   keyword_quote_linter = NULL,
-  yoda_test_linter = NULL,
   duplicate_argument_linter = NULL,
   undesirable_function_linter = NULL,
   object_overwrite_linter = NULL,
@@ -31,7 +30,6 @@ linters: all_linters(
   condition_message_linter = NULL,
   # expectations linters
   expect_identical_linter = NULL,
-  expect_s3_class_linter = NULL,
   # negation linters
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
