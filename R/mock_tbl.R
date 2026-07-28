@@ -166,7 +166,7 @@ process_for_mock <- function(x, column, .default = 1:3) {
 #' @noRd
 clean_col_names <- function(names, dont_inc) {
     names %>%
-        purrr::map_chr(as_label) %>%
+        purrr::map_chr(rlang::as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
         stringr::str_remove_all("^-") %>%
         stringr::str_remove_all('\\"\\)') %>%
@@ -206,11 +206,11 @@ make_col_df <- function(
     col_style_plan,
     n_cols
 ) {
-    column_vars <- purrr::map_chr(column, as_label)
+    column_vars <- purrr::map_chr(column, rlang::as_label)
 
     grp_lb_vars <- c(
         purrr::map_chr(group, as_name),
-        as_label(label),
+        rlang::as_label(label),
         purrr::map_chr(sorting_cols, as_name)
     )
     if (identical(column_vars, "__tfrmt__column")) {
@@ -312,7 +312,7 @@ col_plan_test <- function(col_plan) {
     if (is.null(col_plan)) {
         out <- FALSE
     } else {
-        all_names <- purrr::map_chr(col_plan$dots, as_label)
+        all_names <- purrr::map_chr(col_plan$dots, rlang::as_label)
         first_chr <- all_names %>%
             stringr::str_sub(end = 1)
         out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
@@ -328,7 +328,7 @@ col_style_plan_test <- function(col_style_plan) {
     } else {
         all_names <- purrr::map(col_style_plan, ~ .x$cols) |>
             purrr::list_flatten() %>%
-            purrr::map_chr(as_label)
+            purrr::map_chr(rlang::as_label)
         out <- !all("everything()" %in% all_names)
     }
     out

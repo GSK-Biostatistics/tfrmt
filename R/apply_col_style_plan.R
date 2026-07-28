@@ -20,7 +20,7 @@ apply_col_style_plan <- function(
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- purrr::map_chr(tfrmt_obj$column, as_label)
+        column_names <- purrr::map_chr(tfrmt_obj$column, rlang::as_label)
     }
 
     total_col_style_selection <- list()
@@ -101,7 +101,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = purrr::map_chr(col_plan_vars, as_label),
+            preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE,
             default_everything_behavior = TRUE
         )
@@ -110,7 +110,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = purrr::map_chr(col_plan_vars, as_label),
+            preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE
         )
     }

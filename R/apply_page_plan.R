@@ -442,7 +442,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             dplyr::across(c(!!!group), ~ .x == !!label)
         ) %>%
         tidyr::pivot_longer(
-            purrr::map_chr(group, as_label),
+            purrr::map_chr(group, rlang::as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
@@ -451,7 +451,8 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         dplyr::slice(1) %>%
         dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
-                .data$`..tfrmt_summ_grp_num` == purrr::map_chr(group, as_label)
+                .data$`..tfrmt_summ_grp_num` ==
+                    purrr::map_chr(group, rlang::as_label)
             )
         ) %>%
         dplyr::pull(.data$`..tfrmt_summ_grp_num`)

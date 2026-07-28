@@ -91,7 +91,7 @@ print_mock_gt <- function(
         if (!is.null(select_try$result)) {
             message(
                 " Removing `",
-                as_label(tfrmt$value),
+                rlang::as_label(tfrmt$value),
                 "` from input data for mocking."
             )
             .data <- .data[, -select_try$result$result]
@@ -195,7 +195,7 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     existing_grp <- tfrmt$group %>%
         purrr::keep(function(x) {
-            as_label(x) %in% names(.data)
+            rlang::as_label(x) %in% names(.data)
         })
     rowname_col <- NULL
 

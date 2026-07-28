@@ -368,7 +368,7 @@ as.character.frmt_when <- function(x, ...) {
             val <- quo(!!f_rhs(x))
             val_eval <- eval_tidy(val)
             if (!is_frmt(val_eval)) {
-                as_label(val)
+                rlang::as_label(val)
             } else {
                 as.character(val_eval)
             }
@@ -423,7 +423,7 @@ as.character.frmt_combine <- function(x, ...) {
 as.character.span_structure <- function(x, ...) {
     values <- x %>%
         purrr::map(function(val) {
-            elements <- purrr::map_chr(val, as_label) %>%
+            elements <- purrr::map_chr(val, rlang::as_label) %>%
                 stringr::str_replace_all("\\\"", "'")
 
             # Detect function calls. Matches valid R functions i.e, my_function()

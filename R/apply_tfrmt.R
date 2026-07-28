@@ -474,7 +474,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                     tbl_dat_wide$warnings,
                     paste0(
                         "Values from `",
-                        as_label(tfrmt$value),
+                        rlang::as_label(tfrmt$value),
                         "` are not uniquely identified"
                     )
                 )
@@ -502,7 +502,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        purrr::map_chr(as_label) %>%
+        purrr::map_chr(rlang::as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- utils::capture.output(dput(stats::setNames(

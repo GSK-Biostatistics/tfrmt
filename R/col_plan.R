@@ -163,7 +163,7 @@ check_span_structure_dots <- function(x) {
         purrr::map(
             ~ lapply(trim_vars_quo_c(.x), function(x) {
                 if (is.name(x)) {
-                    if (identical(as_label(x), "<empty>")) {
+                    if (identical(rlang::as_label(x), "<empty>")) {
                         return(NULL)
                     } else {
                         return(quo(!!x))
@@ -230,7 +230,7 @@ is_valid_quo_call <- function(x) {
 check_col_plan_dots <- function(x) {
     lapply(x, function(x) {
         if (is.name(x)) {
-            if (identical(as_label(x), "<empty>")) {
+            if (identical(rlang::as_label(x), "<empty>")) {
                 return(NULL)
             } else {
                 return(quo(!!x))

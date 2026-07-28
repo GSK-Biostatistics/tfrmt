@@ -88,14 +88,14 @@ as_json.default <- function(x) {
 
 #' @export
 as_json.quosures <- function(x) {
-    purrr::map_chr(x, as_label)
+    purrr::map_chr(x, rlang::as_label)
 }
 
 
 #' @export
 as_json.quosure <- function(x) {
-    out <- x %>%
-        as_label()
+    out <- rlang::as_label(x)
+
     if (out != "<empty>") {
         return(out)
     }

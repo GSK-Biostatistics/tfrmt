@@ -52,10 +52,10 @@ big_n_structure <- function(
 apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
     if (!is.null(big_n_df) && nrow(big_n_df) > 0) {
         col_lab <- columns |>
-            purrr::map_chr(as_label)
+            purrr::map_chr(rlang::as_label)
 
         data_names <- col_plan_vars |>
-            purrr::map_chr(as_label) |>
+            purrr::map_chr(rlang::as_label) |>
             split_data_names_to_df(
                 data_names = c(),
                 preselected_cols = _,
@@ -160,7 +160,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
         }
 
         # Test for too many big n's
-        grp_vars <- setdiff(names(frmtted_vals), as_label(value))
+        grp_vars <- setdiff(names(frmtted_vals), rlang::as_label(value))
         multi_test <- frmtted_vals |>
             dplyr::group_by(
                 dplyr::across(
@@ -190,7 +190,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
 
         by_var <- setdiff(
             grp_vars,
-            purrr::map_chr(columns, as_label)
+            purrr::map_chr(columns, rlang::as_label)
         )
 
         data_out <- frmtted_vals |>

@@ -45,7 +45,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (length(vals) == 0) {
             return(.data)
         } else if (!is.null(frmt_def$transform)) {
-            vals <- as_function(frmt_def$transform)(vals)
+            vals <- rlang::as_function(frmt_def$transform)(vals)
         }
 
         if (stringr::str_detect(frmt_def$expression, "[x|X]")) {
@@ -295,7 +295,7 @@ apply_frmt.frmt_combine <- function(
             .tmp_data_fmted,
             by = purrr::map_chr(
                 merge_group,
-                as_label
+                rlang::as_label
             )
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
@@ -317,7 +317,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         out <- .data %>%
             dplyr::mutate(!!value := str_to_prnt)
     } else {
-        values_str <- as_label(value)
+        values_str <- rlang::as_label(value)
         n <- length(frmt_def$frmt_ls)
 
         val_len <- length(dplyr::pull(.data, !!value))

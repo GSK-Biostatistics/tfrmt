@@ -221,7 +221,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- purrr::map_chr(tfrmt$column, as_label)
+        column_names <- purrr::map_chr(tfrmt$column, rlang::as_label)
     }
 
     selection <- as.list(substitute(substitute(col)))[-1] %>%

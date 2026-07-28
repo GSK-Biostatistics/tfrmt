@@ -24,9 +24,9 @@ create_stub_head <- function(
     row_grp_plan_label_loc
 ) {
     # all group/label vars
-    grps <- purrr::map_chr(c(group, label), as_label)
+    grps <- purrr::map_chr(c(group, label), rlang::as_label)
     # all column labels
-    col_plan_vars_chr <- purrr::map_chr(col_plan_vars, as_label)
+    col_plan_vars_chr <- purrr::map_chr(col_plan_vars, rlang::as_label)
 
     stub <- ""
     # subset the column labels to just group/label vars
@@ -60,7 +60,7 @@ create_col_order <- function(data_names, columns, cp) {
             # create placeholder
             column_names <- "col"
         } else {
-            column_names <- purrr::map_chr(columns, as_label)
+            column_names <- purrr::map_chr(columns, rlang::as_label)
         }
 
         col_selections <- c()
@@ -130,7 +130,7 @@ col_plan_quo_to_vars <- function(
     )
 
     ## if is subtraction, inverse selection to get subtracted columns and prepend with -
-    if (startsWith(as_label(x[[1]]), "-")) {
+    if (startsWith(rlang::as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
             dplyr::filter(!(!!col_quo %in% selected)) %>%
             dplyr::mutate(
@@ -150,11 +150,11 @@ col_plan_quo_to_vars <- function(
                 rename_val <- paste0(rename_val, seq_along(selected))
             }
 
-            rows_to_rename <- split_data_names[[as_label(col_quo)]] %in%
+            rows_to_rename <- split_data_names[[rlang::as_label(col_quo)]] %in%
                 selected
             split_data_names[
                 rows_to_rename,
-                as_label(col_name_quo)
+                rlang::as_label(col_name_quo)
             ] <- rename_val
         }
     }
@@ -199,7 +199,10 @@ col_plan_span_structure_to_vars <- function(
                     split_data_names[[col_id]]
                 ))
 
-                is_subtraction_selection <- startsWith(as_label(sel_id), "-")
+                is_subtraction_selection <- startsWith(
+                    rlang::as_label(sel_id),
+                    "-"
+                )
 
                 if (!is_subtraction_selection) {
                     if (
@@ -218,13 +221,13 @@ col_plan_span_structure_to_vars <- function(
                             )
                         }
 
-                        rows_to_rename <- split_data_names[[as_label(
+                        rows_to_rename <- split_data_names[[rlang::as_label(
                             col_quo
                         )]] %in%
                             sel_id_col_selections
                         split_data_names[
                             rows_to_rename,
-                            as_label(col_name_quo)
+                            rlang::as_label(col_name_quo)
                         ] <- rename_val
                     }
 
@@ -335,7 +338,8 @@ eval_col_plan_quo <- function(
     default_everything_behavior = FALSE
 ) {
     if (
-        identical(as_label(x), "everything()") && !default_everything_behavior
+        identical(rlang::as_label(x), "everything()") &&
+            !default_everything_behavior
     ) {
         # dump any pre-selected columns from everything() call. we are _not_ using
         # the default behavior of everything().
