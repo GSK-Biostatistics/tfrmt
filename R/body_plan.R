@@ -58,11 +58,6 @@ body_plan <- function(...) {
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom stringr str_detect str_extract_all
-#' @importFrom purrr map_dfr map map_chr quietly pmap_chr
-#' @importFrom dplyr mutate group_by filter group_split select across
-#' @importFrom tidyr unnest
-#' @importFrom rlang as_name quo_is_missing
 body_plan_builder <- function(
     data,
     group,

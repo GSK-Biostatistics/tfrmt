@@ -6,11 +6,6 @@
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr tibble mutate group_by arrange slice group_map case_when left_join row_number select summarise across
-#' @importFrom purrr map map2_dfr
-#' @importFrom tidyr unnest nest unnest_longer
-#' @importFrom rlang !!!
-#' @importFrom stringr str_split
 apply_row_grp_struct <- function(
     .data,
     row_grp_struct_list,
@@ -123,8 +118,6 @@ apply_row_grp_struct <- function(
 #' @param label symbolic label column
 #'
 #' @noRd
-#' @importFrom dplyr select group_by
-#' @importFrom rlang !!! eval_tidy
 apply_row_grp_lbl <- function(
     .data,
     element_row_grp_loc,
@@ -172,11 +165,6 @@ apply_row_grp_lbl <- function(
 #'
 #' @return dataset with element block applied
 #'
-#' @importFrom dplyr slice n mutate across bind_rows cur_column
-#' @importFrom tidyr fill
-#' @importFrom purrr map_chr
-#' @importFrom rlang !!!
-#'
 #' @noRd
 apply_grp_block <- function(.data, group, element_block, widths) {
     if (!is.null(element_block$post_space)) {
@@ -221,7 +209,6 @@ apply_grp_block <- function(.data, group, element_block, widths) {
 #' @return character value containing post space value modified to fill cell
 #' @noRd
 #'
-#' @importFrom stringr str_sub
 fill_post_space <- function(post_space, fill, width) {
     ## if only white space, no need to make wider for visuals
     if (grepl("^\\s*$", post_space)) {
@@ -250,12 +237,6 @@ fill_post_space <- function(post_space, fill, width) {
 #'
 #' @return dataset with the group columns combines
 #' @noRd
-#' @importFrom dplyr group_by group_split mutate select distinct bind_rows across last any_of slice
-#' @importFrom tidyr replace_na
-#' @importFrom stringr str_trim
-#' @importFrom purrr map_dfr map_chr
-#' @importFrom forcats fct_inorder
-#' @importFrom tibble add_row
 combine_group_cols <- function(
     .data,
     group,
