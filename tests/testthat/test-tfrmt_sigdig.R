@@ -8,8 +8,8 @@ test_that("setting param sigdig defaults", {
     )
     expect_equal(param_set(), defaults)
 
-# nolint start: yoda_test_linter
-   expect_equal(
+    # nolint start: yoda_test_linter
+    expect_equal(
         param_set(
             max = 2,
             "{mean} ({sd})" = c(2, 3)
