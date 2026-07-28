@@ -1661,8 +1661,8 @@ test_that("Tidyselect subtraction with span_structure", {
 
     # keeps the spanners & original cols other than ones that start with "ord".
     # renaming occurs as needed
-    expect_equal(
-        names(mock_gt$`_data`),
+    expect_named(
+        mock_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
@@ -1677,8 +1677,8 @@ test_that("Tidyselect subtraction with span_structure", {
 
     # keeps the spanners & original cols other than ones that start with "ord".
     # renaming occurs as needed
-    expect_equal(
-        names(real_gt$`_data`),
+    expect_named(
+        real_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
@@ -1712,8 +1712,8 @@ test_that("Tidyselect subtraction with span_structure", {
     mock_gt2 <- print_mock_gt(tfrmt_minus_selection_2, df)
 
     ## keeps only the spanners, label is dropped
-    expect_equal(
-        names(mock_gt2$`_data`),
+    expect_named(
+        mock_gt2$`_data`,
         c(
             "Treatment___tlang_delim___T1",
             "Treatment___tlang_delim___T2",
@@ -1726,8 +1726,8 @@ test_that("Tidyselect subtraction with span_structure", {
     real_gt2 <- print_to_gt(tfrmt_minus_selection_2, df_fake_values)
 
     ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
-    expect_equal(
-        names(real_gt$`_data`),
+    expect_named(
+        real_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",

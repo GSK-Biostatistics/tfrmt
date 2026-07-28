@@ -58,7 +58,7 @@ test_that("extract_data works for a single gt_tbl object", {
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
     expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
-    expect_true(nrow(tfrmt_data_extracted) > 0)
+    expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data extracts updated names changed in the col_plan including group/label vars", {
@@ -138,7 +138,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
     expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
-    expect_true(nrow(tfrmt_data_extracted) > 0)
+    expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data extracts updated names changed in the col_plan including 1 group/label vars", {
@@ -214,7 +214,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
     expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
-    expect_true(nrow(tfrmt_data_extracted) > 0)
+    expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data extracts updated names changed in the col_plan", {
@@ -288,7 +288,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
     expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
-    expect_true(nrow(tfrmt_data_extracted) > 0)
+    expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data works for a gt_group object (paged tables)", {
@@ -476,7 +476,7 @@ test_that("extract_data works for a table with bigN values", {
     # check expected data is equal to manual extraction
     expect_s3_class(extracted, "data.frame")
     expect_equal(extracted, manual)
-    expect_true(nrow(extracted) > 0)
+    expect_gt(nrow(extracted), 0)
 
     # check that the bigns are present in the column names of extracted data
     column_labels <- colnames(extracted)
