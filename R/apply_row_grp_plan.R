@@ -16,7 +16,9 @@ apply_row_grp_struct <- function(
     # Locate which groups need which formatting
     # determine which rows each block applies to
     .data <- .data %>%
-        dplyr::mutate(TEMP_row = dplyr::row_number())
+        dplyr::mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     # for each structure object, (1) split the data on any default values, (2) split the data on specific data values
     # get nested list object:
