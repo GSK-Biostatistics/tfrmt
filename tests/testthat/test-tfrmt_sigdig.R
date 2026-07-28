@@ -22,8 +22,8 @@ test_that("setting param sigdig defaults", {
             "{mean} ({sd})" = c(2, 3)
         )
     )
-# nolint end
-    
+    # nolint end
+
     expect_equal(
         param_set(new_prm = 4),
         list(
