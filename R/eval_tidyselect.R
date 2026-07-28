@@ -5,6 +5,7 @@ eval_tidyselect_on_colvec <- function(x, column_vec) {
     UseMethod("eval_tidyselect_on_colvec", x)
 }
 
+#' @exportS3Method
 eval_tidyselect_on_colvec.quosures <- function(x, column_vec) {
     names(column_vec) <- column_vec
     avli_x <- x %>%
@@ -18,6 +19,7 @@ eval_tidyselect_on_colvec.quosures <- function(x, column_vec) {
     )
 }
 
+#' @exportS3Method
 eval_tidyselect_on_colvec.quosure <- function(x, column_vec) {
     names(column_vec) <- column_vec
 

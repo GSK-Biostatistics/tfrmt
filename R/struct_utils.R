@@ -4,6 +4,7 @@ expr_to_filter <- function(cols, val) {
     UseMethod("expr_to_filter", cols)
 }
 
+#' @exportS3Method
 expr_to_filter.quosure <- function(cols, val) {
     ## If is missing a quosure, nothing to filter
     if (rlang::quo_is_missing(cols)) {
@@ -30,7 +31,7 @@ expr_to_filter.quosure <- function(cols, val) {
     out
 }
 
-
+#' @exportS3Method
 expr_to_filter.quosures <- function(cols, val) {
     if (is.null(val)) {
         out <- "TRUE"
