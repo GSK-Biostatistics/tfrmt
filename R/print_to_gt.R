@@ -16,12 +16,25 @@
 #' @section Examples:
 #'```r
 #'
-#'   # Create tfrmt specification
-#'   tfrmt_spec <- tfrmt( label = label, column =
-#'   column, param = param, body_plan = body_plan( frmt_structure(group_val =
-#'   ".default", label_val = ".default", frmt_combine( "{count} {percent}",
-#'   count = frmt("xxx"), percent = frmt_when("==100"~ frmt(""), "==0"~ "",
-#'   "TRUE" ~ frmt("(xx.x%)")))) ))
+#' # Create tfrmt specification
+#' tfrmt_spec <- tfrmt(
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             frmt_combine(
+#'                 "{count} {percent}",
+#'                 count = frmt("xxx"),
+#'                 percent = frmt_when(
+#'                     "==100" ~ frmt(""),
+#'                     "==0" ~ "",
+#'                     "TRUE" ~ frmt("(xx.x%)")
+#'                 )
+#'             )
+#'         )
+#'     )
+#' )
 #'
 #'   # Print mock table using default
 #'   print_mock_gt(tfrmt = tfrmt_spec)
@@ -31,10 +44,12 @@
 #'   \if{html}{\out{ `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png\" alt = \"Simple 3 by 3 table without values\" style=\"width:50\\%;\">"` }}
 #'
 #'```r
-#'   # Create mock data
-#'   df <- tidyr::crossing(label = c("label 1", "label 2",
-#'   "label 3"), column = c("placebo", "trt1", "trt2"), param = c("count",
-#'   "percent"))
+#' # Create mock data
+#' df <- tidyr::crossing(
+#'     label = c("label 1", "label 2", "label 3"),
+#'     column = c("placebo", "trt1", "trt2"),
+#'     param = c("count", "percent")
+#' )
 #'
 #'   # Print mock table using mock data
 #'   print_mock_gt(tfrmt_spec, df)

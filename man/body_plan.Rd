@@ -24,7 +24,6 @@ added structure is the first applied.
       body_plan = body_plan(
         frmt_structure(
           group_val = c("group1"),
-          label_val = ".default",
           frmt("XXX")
         )
       )

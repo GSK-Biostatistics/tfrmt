@@ -49,10 +49,10 @@ x2 <- frmt_when(
 is_frmt_when(x2)
 
 x3 <- frmt_structure(
- group_val = c("group1"),
- label_val = ".default",
-frmt("XXX")
+    group_val = c("group1"),
+    frmt("XXX")
 )
+
 is_frmt_structure(x3)
 
 x4 <- row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))

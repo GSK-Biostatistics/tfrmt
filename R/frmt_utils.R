@@ -41,17 +41,18 @@ is_frmt_combine <- function(x) {
 is_frmt_when <- function(x) {
     inherits(x, "frmt_when")
 }
+
 #' Check if input is a frmt_structure
 #'
 #' @param x Object to check
 #' @export
 #' @examples
 #' x3 <- frmt_structure(
-#'  group_val = c("group1"),
-#'  label_val = ".default",
-#' frmt("XXX")
+#'     group_val = c("group1"),
+#'     frmt("XXX")
 #' )
-#'is_frmt_structure(x3)
+#'
+#' is_frmt_structure(x3)
 #'
 #' @rdname frmt_utils
 is_frmt_structure <- function(x) {

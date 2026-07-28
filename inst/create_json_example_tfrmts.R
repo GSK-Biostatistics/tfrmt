@@ -32,7 +32,6 @@ tfrmt_demog <- tfrmt(
             frmt("xxx.xx")
         ),
         frmt_structure(
-            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
