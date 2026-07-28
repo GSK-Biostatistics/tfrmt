@@ -127,10 +127,10 @@ footnote_structure <- function(
 
     structure(
         list(
+            footnote_text = footnote_text,
             column_val = column_val,
             group_val = group_val,
-            label_val = label_val,
-            footnote_text = footnote_text
+            label_val = label_val
         ),
         class = c("footnote_structure", "structure")
     )

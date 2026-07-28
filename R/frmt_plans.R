@@ -170,7 +170,6 @@ frmt_structure <- function(
 #'   )
 #'
 #' @rdname frmt
-#'
 frmt <- function(
     expression,
     missing = NULL,
@@ -192,7 +191,6 @@ frmt <- function(
 
 #' @export
 #' @rdname frmt
-#' @importFrom stringr str_extract_all str_count str_replace str_detect
 frmt_combine <- function(expression, ..., missing = NULL) {
     everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
 
@@ -238,8 +236,6 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 
 #' @rdname frmt
 #' @export
-#' @importFrom rlang list2 f_rhs f_rhs<-
-#' @importFrom purrr map
 frmt_when <- function(..., missing = NULL) {
     frmts <- list2(...)
 

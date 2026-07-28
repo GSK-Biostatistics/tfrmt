@@ -8,6 +8,7 @@ test_that("setting param sigdig defaults", {
     )
     expect_equal(param_set(), defaults)
 
+    # nolint start: yoda_test_linter
     expect_equal(
         param_set(
             max = 2,
@@ -21,6 +22,7 @@ test_that("setting param sigdig defaults", {
             "{mean} ({sd})" = c(2, 3)
         )
     )
+    # nolint end
 
     expect_equal(
         param_set(new_prm = 4),
@@ -44,7 +46,7 @@ test_that("setting param sigdig defaults", {
             mean = 0
         )
     )
-
+    # nolint start: yoda_test_linter
     expect_equal(
         param_set("{n} ({pct}%)" = c(NA, 1)),
         list(
@@ -55,6 +57,7 @@ test_that("setting param sigdig defaults", {
             "{n} ({pct}%)" = c(NA, 1)
         )
     )
+    # nolint end
 })
 
 test_that("build frmt objects", {
@@ -708,7 +711,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
     )
 
     # body plan contains 1 frmt_structure per default param per # of rows in sigddig spec
-    expect_equal(length(t_frmt$body_plan), length(param_set()))
+    expect_length(t_frmt$body_plan, length(param_set()))
 
     myprms <- param_set(newprm = 2)
     t_frmt <- tfrmt_sigdig(
@@ -717,10 +720,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
         label = group2,
         param_defaults = myprms
     )
-    expect_equal(
-        length(t_frmt$body_plan),
-        length(param_set()) + 1
-    )
+    expect_length(t_frmt$body_plan, length(param_set()) + 1)
 })
 
 

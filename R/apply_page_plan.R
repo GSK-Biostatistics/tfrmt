@@ -7,9 +7,6 @@
 #' @param row_grp_plan_label_loc row_grp_plan label location
 #'
 #' @noRd
-#' @importFrom rlang is_empty
-#' @importFrom tibble is_tibble
-#' @importFrom purrr list_flatten
 apply_page_plan <- function(
     .data,
     page_plan,
@@ -67,9 +64,6 @@ apply_page_plan <- function(
 #' @param row_grp_plan_label_loc row_grp_plan label location
 #'
 #' @noRd
-#' @importFrom dplyr  slice bind_rows filter pull
-#' @importFrom tibble tibble
-#' @importFrom forcats fct_inorder
 apply_page_max_rows <- function(
     .data,
     max_rows,
@@ -193,9 +187,6 @@ apply_page_max_rows <- function(
 #' @param transform optional, a function or formula to transform the page label.
 #'
 #' @noRd
-#' @importFrom purrr map map2 map_dbl
-#' @importFrom dplyr tibble row_number mutate group_by left_join select filter summarise  lag last
-#' @importFrom tidyr  pivot_longer
 apply_page_struct <- function(
     .data,
     page_struct_list,
@@ -364,10 +355,6 @@ apply_page_struct <- function(
 
 #' adapted from the row_grp_plan to remove anything unnecessary but keep the logic
 #' @noRd
-#' @importFrom forcats fct_inorder
-#' @importFrom dplyr mutate select across group_by group_split distinct last bind_rows
-#' @importFrom tibble tibble
-#' @importFrom stringr str_trim
 combine_group_cols_mod <- function(
     .data,
     group,
@@ -434,9 +421,6 @@ combine_group_cols_mod <- function(
 
 #' add any related summary rows from previous tbl to next tbl
 #' @noRd
-#' @importFrom dplyr mutate slice pull filter across select bind_rows
-#' @importFrom purrr map_chr map map2_lgl
-#' @importFrom tidyr pivot_longer
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%

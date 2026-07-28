@@ -112,7 +112,6 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
 #' @param big_n_df tbl of big Ns to apply (if 1 set of overall Ns) or list of tbl of bigNs (if grouping by page)
 #' to apply
 #'
-#' @importFrom purrr map map2
 #' @noRd
 apply_tfrmt_subtable_mapper <- function(
     tfrmt,
@@ -244,8 +243,6 @@ apply_tfrmt_subtable <- function(
 #' @param ... inputs supplied to function arguments
 #'
 #' @return processed data
-#' @importFrom purrr map_lgl
-#' @importFrom rlang is_empty
 #' @noRd
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
@@ -291,9 +288,6 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
 #'
 #' @return formatted tibble
 #' @noRd
-#' @importFrom purrr map safely
-#' @importFrom rlang !! !!!
-#' @importFrom dplyr select
 validate_cols_match <- function(.data, tfrmt, mock) {
     #Required variables
     if (mock) {
@@ -344,7 +338,6 @@ validate_cols_match <- function(.data, tfrmt, mock) {
 #' @param param list of quosures to arrange on
 #'
 #' @noRd
-#' @importFrom dplyr arrange
 arrange_enquo <- function(dat, param) {
     arrange(dat, !!!param)
 }
@@ -356,8 +349,6 @@ arrange_enquo <- function(dat, param) {
 #'
 #' @return dataset with renaming in needed
 #' @noRd
-#' @importFrom stringr str_count str_remove
-#' @importFrom dplyr rename_with
 clean_spanning_col_names <- function(data) {
     # Get number of layers
     lyrs <- count_spanning_layers(names(data))
@@ -388,11 +379,6 @@ remove_empty_layers <- function(x, nlayers = 1) {
 #'
 #' @return data pivoted wider
 #' @noRd
-#'
-#' @importFrom purrr quietly
-#' @importFrom dplyr group_by across summarise n tally pull na_if all_of reframe
-#' @importFrom stringr str_detect
-#' @importFrom tidyr unnest
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
     num_rec_by_row <- data %>%
@@ -551,7 +537,6 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @return warning if order variables are causing formatting issues
 #'
-#' @importFrom dplyr n_distinct
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
     if (is_empty(tfrmt$sorting_cols) == FALSE) {
@@ -585,8 +570,7 @@ check_order_vars <- function(.data, tfrmt) {
 }
 
 #' check that the # of big N's correspond to the # of pages
-#' @importFrom purrr map_dfr
-#' @importFrom dplyr select all_of distinct
+#'
 #' @noRd
 check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {

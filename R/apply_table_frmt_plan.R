@@ -9,10 +9,6 @@
 #' @param mock Logical value is this is for a mock or not
 #'
 #' @noRd
-#' @importFrom dplyr tibble mutate group_by arrange slice bind_cols group_split pull select starts_with
-#' @importFrom purrr map map_dfr
-#' @importFrom tidyr unnest
-#' @importFrom rlang !! :=
 apply_table_frmt_plan <- function(
     .data,
     table_frmt_plan,
@@ -109,7 +105,6 @@ apply_table_frmt_plan <- function(
 #'
 #' @return vector of the rows which this format could be applied to
 #'
-#' @importFrom stringr str_remove_all
 #' @noRd
 fmt_test_data <- function(cur_fmt, .data, label, group, param) {
     #get filters for each column type
@@ -146,8 +141,6 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         pull(.data$TEMP_row)
 }
 
-
-#' @importFrom rlang parse_expr eval_bare
 all_missing <- function(cols, .data) {
     paste0("is.na(.data$", cols, ")", collapse = " & ") %>%
         parse_expr() %>%

@@ -1,9 +1,6 @@
 #' check in tfrmt that the column and col_plan are compatable
 #' @noRd
 #' @param x tfrmt to be checked
-#' @importFrom rlang caller_call abort
-
-#'
 check_column_and_col_plan <- function(x) {
     multi_column_defined <- length(x$column) > 1
     if (!is.null(x$col_plan)) {
@@ -57,9 +54,6 @@ check_column_and_col_plan <- function(x) {
 #' check that in tfrmt that the group var and body_plan is consistent
 #' @noRd
 #' @param x tfrmt to be checked
-#'
-#' @importFrom rlang caller_call is_empty as_label abort
-#' @importFrom purrr map_chr
 #'
 check_group_var_consistency <- function(x) {
     if (!is_empty(x$group)) {
@@ -211,9 +205,6 @@ check_group_var_consistency_footnote_plan <- function(x) {
 #' @noRd
 #' @param x tfrmt to be checked
 #'
-#' @importFrom rlang caller_call is_empty as_label abort
-#' @importFrom purrr map_chr
-#'
 check_col_style_row_grp_consistency <- function(x) {
     if (
         !is_empty(x$group) &&
@@ -302,8 +293,6 @@ check_footnote_plan <- function(x) {
 #' @param tfrmt_object tfrmt object to be checked
 #' @param plan name of plan, e.g., "col_style_plan"
 #' @param parent_env parent environment
-#' @importFrom rlang abort
-#'
 #'
 check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
     # extract the plan element from the tfrmt_object
@@ -356,7 +345,6 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
 #' @param parent_env parent environment for error reporting
 #'
 #' @noRd
-#' @importFrom rlang quo_is_missing is_empty caller_env
 check_inputs <- function(tfrmt_object, var_names, parent_env = caller_env()) {
     missing_vars <- character(0)
     for (var_name in var_names) {

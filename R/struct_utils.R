@@ -4,8 +4,6 @@ expr_to_filter <- function(cols, val) {
     UseMethod("expr_to_filter", cols)
 }
 
-#' @importFrom stringr str_detect str_sub
-#' @importFrom rlang as_label
 expr_to_filter.quosure <- function(cols, val) {
     ## If is missing a quosure, nothing to filter
     if (quo_is_missing(cols)) {
@@ -29,7 +27,6 @@ expr_to_filter.quosure <- function(cols, val) {
 }
 
 
-#' @importFrom purrr map2_chr map_chr
 expr_to_filter.quosures <- function(cols, val) {
     if (is.null(val)) {
         out <- "TRUE"
@@ -64,10 +61,6 @@ expr_to_filter.quosures <- function(cols, val) {
 #'
 #' @return list of row indices
 #' @noRd
-#'
-#' @importFrom dplyr filter pull select mutate group_by group_split
-#' @importFrom rlang parse_expr
-#' @importFrom purrr map_lgl map
 struct_val_idx <- function(cur_struct, .data, group, label) {
     grp_expr <- "TRUE"
     lbl_expr <- "TRUE"
@@ -125,7 +118,6 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
 }
 
 # detect use of .default in a *_structure object
-#' @importFrom purrr map_lgl
 #' @noRd
 detect_default <- function(struct) {
     map_lgl(struct, ~ any(!is.null(.x) && any(.x == ".default"))) %>% any()
@@ -145,8 +137,6 @@ detect_non_default <- function(struct_val) {
 #' @return character vector of variable names to group by
 #' @noRd
 #'
-#' @importFrom rlang as_label
-#' @importFrom purrr map_lgl map_chr
 expr_to_grouping <- function(cur_struct, group, label) {
     grouping <- NULL
 
