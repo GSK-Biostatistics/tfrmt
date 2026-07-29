@@ -25,7 +25,7 @@ test_that("check_card passes valid inputs and handles allow_null", {
     # NULL should fail by default
     expect_error(
         check_card(NULL),
-        regexp = "`NULL` must be a card object, not `NULL`"
+        regexp = "`NULL` must be a card object, not NULL"
     )
 
     # NULL should pass when allow_null = TRUE
@@ -33,7 +33,7 @@ test_that("check_card passes valid inputs and handles allow_null", {
     expect_null(check_card(NULL, allow_null = TRUE))
 })
 
-test_that("check_card throws correct rlang errors for invalid inputs", {
+test_that("check_card throws correct cli errors for invalid inputs", {
     invalid_input <- "not a card"
 
     # Test standard error throwing and message formatting

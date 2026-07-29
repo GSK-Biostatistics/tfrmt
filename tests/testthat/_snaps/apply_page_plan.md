@@ -1,3 +1,11 @@
+# page plan with multiple structures
+
+    Code
+      auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    Message
+      `page_plan` contains multiple `page_structures` with values set to ".default".
+      Only the last one specified will be used.
+
 # Page plan with max_rows edge cases: spanning and too-small max_rows
 
     Code

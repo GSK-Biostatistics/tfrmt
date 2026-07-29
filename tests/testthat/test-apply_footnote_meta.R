@@ -253,12 +253,11 @@ test_that("applying footnote meta column val", {
             marks = "letters"
         )
     )
-    expect_match(
-        capture_messages(apply_tfrmt(es_data, tfrmt4)),
-        "The provided column location does not exist in the provided data for the footnote"
+    expect_snapshot(
+        result <- apply_tfrmt(es_data, tfrmt4)
     )
     expect_equal(
-        attr(suppressMessages(apply_tfrmt(es_data, tfrmt4)), ".footnote_locs"),
+        attr(result, ".footnote_locs"),
         list(list(
             "col" = NULL,
             "spanning" = FALSE,
