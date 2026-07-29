@@ -9,8 +9,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -36,48 +36,64 @@ To add a post space after all groups of values based on the variable "grp1" (our
 
 ```{r}
 my_tfrmt <- tfrmt(
-  group = grp1,
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = "   "))
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = grp1,
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block(post_space = "   ")
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 To add a post space after values where grp1 = "grp1_1" only we do the following:
 
 ```{r }
 my_tfrmt <- tfrmt(
-  group = grp1,
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = "grp1_1", element_block(post_space = "   "))
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = grp1,
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = "grp1_1",
+            element_block(post_space = "   ")
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 As `group_val = "grp1_1"` in this table rather than `group_val = "default"` previously, the post space after grp1_2 is removed.
@@ -97,24 +113,31 @@ tfrmt will combine group and label variables into a single column, using indenta
 
 ```{r}
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "indented")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 ## spanning
@@ -123,51 +146,62 @@ This is the default option from gt: group labels become spanning headers over th
 
 ```{r}
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "spanning")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 ## column
 
-In this case, group and row labels become separate columns on the left (forming the table "stub" in {gt}). 
+In this case, group and row labels become separate columns on the left (forming the table "stub" in {gt}).
 *Note: in {tfrmt} 0.2.1 and earlier, only a maximum of 2 grouping columns was possible. If multiple grouping variables were present, the top level group variable appeared in the left-most column, and the remaining grouping variables were combined with the label variable using indentation.*
 
 ```{r}
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(v_align = "top"),
-    locations = gt::cells_stub(columns = c(1:3))
-  )
+    gt::tab_style(
+        style = gt::cell_text(v_align = "top"),
+        locations = gt::cells_stub(columns = c(1:3))
+    )
 ```
 
 ## noprint
@@ -176,17 +210,21 @@ A user may also suppress the printing of any group variable by specifying the "n
 
 ```{r}
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "noprint")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "noprint"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2)
