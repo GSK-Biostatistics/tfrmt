@@ -225,7 +225,9 @@ tfrmt_sigdig <- function(
     # error if no group/label columns available
     data_names <- sigdig_df %>% select(-"sigdig") %>% names()
     if (length(data_names) == 0) {
-        cli::cli_abort("`sigdig_df` input must contain group and/or label value columns.")
+        cli::cli_abort(
+            "`sigdig_df` input must contain group and/or label value columns."
+        )
     }
 
     group_names <- map_chr(tfrmt_inputs$group, as_label)

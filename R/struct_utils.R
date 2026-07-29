@@ -36,7 +36,9 @@ expr_to_filter.quosures <- function(cols, val) {
     } else if (!is.list(val) && all(val == ".default")) {
         out <- "TRUE"
     } else if (!is.list(val)) {
-        cli::cli_abort("If multiple cols are provided, val must be a named list")
+        cli::cli_abort(
+            "If multiple cols are provided, val must be a named list"
+        )
     } else {
         if (!all(names(val) %in% map_chr(cols, as_label))) {
             cli::cli_abort("Names of val entries do not all match col values")
