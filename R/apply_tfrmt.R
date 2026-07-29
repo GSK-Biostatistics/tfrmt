@@ -8,7 +8,7 @@
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
     if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
+        cli::cli_abort("Requires a tfrmt object")
     }
 
     validate_cols_match(.data, tfrmt, mock)
@@ -263,13 +263,12 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
                 error_message <- format(out[["error"]], backtrace = FALSE)
             }
 
-            fail_desc <- paste0(
-                fail_desc,
-                "\n",
-                "Reason: ",
-                error_message
+            cli::cli_inform(
+                c(
+                    fail_desc,
+                    paste0("Reason: ", error_message)
+                )
             )
-            message(fail_desc)
 
             out <- .data
         } else {
@@ -304,13 +303,9 @@ validate_cols_match <- function(.data, tfrmt, mock) {
             var_test <- tfrmt[[x]]
             check <- safely(select)(.data, !!var_test)
             if (!is.null(check$error)) {
-                stop(
-                    paste0(
-                        "Variable Specified in '",
-                        x,
-                        "' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
-                    ),
-                    call. = FALSE
+                cli::cli_abort(
+                    "Variable Specified in '{x}' doesn't exist in the supplied dataset. Please check the tfrmt and try again.",
+                    call = NULL
                 )
             }
         })
@@ -320,13 +315,9 @@ validate_cols_match <- function(.data, tfrmt, mock) {
             var_test <- tfrmt[[x]]
             check <- safely(select)(.data, !!!var_test)
             if (!is.null(check$error)) {
-                stop(
-                    paste0(
-                        "Variable Specified in '",
-                        x,
-                        "' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
-                    ),
-                    call. = FALSE
+                cli::cli_abort(
+                    "Variable Specified in '{x}' doesn't exist in the supplied dataset. Please check the tfrmt and try again.",
+                    call = NULL
                 )
             }
         })
@@ -417,14 +408,17 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ) %>%
                 pull(.data$suggested_frmt_struct) %>%
                 paste0("- `", ., "`", collapse = "\n")
+            suggested_frmt_structs <- suggested_frmt_structs %>%
+                str_replace_all("\\{", "{{") %>%
+                str_replace_all("\\}", "}}")
 
-            inform(
-                paste0(
-                    "Multiple param listed for the same group/label values.\n",
-                    "The following frmt_structures may be missing from the body_plan\n",
-                    "or the order may need to be changed to:"
+            cli::cli_inform(
+                c(
+                    "Multiple param listed for the same group/label values.",
+                    "The following frmt_structures may be missing from the body_plan",
+                    "or the order may need to be changed to:",
+                    str_split(suggested_frmt_structs, "\n")[[1]]
                 ),
-                body = suggested_frmt_structs,
                 class = "_tlang_missing_frmt_structs"
             )
         }
@@ -470,7 +464,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 )
             ))
     ) {
-        message(
+        cli::cli_inform(
             "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."
         )
         tbl_dat_wide <- tbl_dat_wide$result %>%
@@ -562,8 +556,11 @@ check_order_vars <- function(.data, tfrmt) {
             sum(order_check$n1) > nrow(order_check) &&
                 all(order_check$n1 == order_check$n2) == FALSE
         ) {
-            message(
-                "Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it."
+            cli::cli_inform(
+                c(
+                    "Note: Some row labels have values printed over more than 1 line.",
+                    " This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it."
+                )
             )
         }
     }
@@ -607,7 +604,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                         check.attributes = FALSE
                     )))
         ) {
-            message(
+            cli::cli_inform(
                 "Mismatch between big Ns and page_plan. For varying big N's by page (`by_page` = TRUE in `big_n_structure`), data must contain 1 big N value per unique grouping variable/value set to \".default\" in `page_plan` and bigNs must be in order of the data"
             )
         }

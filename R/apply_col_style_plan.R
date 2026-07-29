@@ -265,7 +265,7 @@ apply_col_alignment_pos <- function(col, align) {
         )
 
     if (anyNA(col_with_align$align)) {
-        message(
+        cli::cli_inform(
             "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned."
         )
     }
@@ -383,7 +383,7 @@ apply_col_alignment_pos <- function(col, align) {
         )
 
     if (nrow(filter(col_left_padded01, .data$no_space)) > 0) {
-        message(
+        cli::cli_inform(
             "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value"
         )
     }

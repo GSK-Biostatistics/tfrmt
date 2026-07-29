@@ -253,8 +253,8 @@ test_that("applying footnote meta column val", {
             marks = "letters"
         )
     )
-    expect_message(
-        apply_tfrmt(es_data, tfrmt4),
+    expect_match(
+        capture_messages(apply_tfrmt(es_data, tfrmt4)),
         "The provided column location does not exist in the provided data for the footnote"
     )
     expect_equal(

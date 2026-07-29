@@ -60,7 +60,7 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 extract_data <- function(x, col_delim = "_") {
     #Fallback
     if (!inherits(x, c("gt_tbl", "gt_group"))) {
-        stop("Input must be a 'gt_tbl' or 'gt_group' object.")
+        cli::cli_abort("Input must be a 'gt_tbl' or 'gt_group' object.")
     }
 
     # Single gt table

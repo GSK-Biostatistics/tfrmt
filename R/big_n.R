@@ -26,7 +26,7 @@ big_n_structure <- function(
     by_page = FALSE
 ) {
     if (!is_frmt(n_frmt) || is_frmt_combine(n_frmt) || is_frmt_when(n_frmt)) {
-        stop("`n_frmt` must be given a frmt object")
+        cli::cli_abort("`n_frmt` must be given a frmt object")
     }
 
     structure(
@@ -154,7 +154,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
 
         # Test for missing big n's
         if (nrow(frmtted_vals) == 0) {
-            warning(
+            cli::cli_warn(
                 "Unable to add big n's as there are no matching parameter values in the given ARD"
             )
         }
@@ -175,12 +175,17 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             warn_df <- multi_test |>
                 dplyr::select(-"n")
 
-            warning(
+            warn_df_output <- if (ncol(warn_df) == 1) {
+                capture.output(dput(warn_df[[1]]))
+            } else {
+                capture.output(warn_df)
+            }
+            cli::cli_warn(
                 c(
-                    "The following columns have multiple Big N's associated with them:\n",
-                    warn_df
+                    "The following columns have multiple Big N's associated with them:",
+                    warn_df_output
                 ),
-                call. = FALSE
+                call = NULL
             )
         }
 

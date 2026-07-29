@@ -1013,8 +1013,8 @@ test_that("multi-positional alignment detects inadequate inputs", {
     expect_equal(
         msgs,
         c(
-            "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
-            "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n"
+            "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.",
+            "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned."
         )
     )
 
@@ -1053,8 +1053,8 @@ test_that("multi-positional alignment detects inadequate inputs", {
     expect_equal(
         msgs,
         c(
-            "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n",
-            "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n"
+            "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value",
+            "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value"
         )
     )
 })

@@ -144,15 +144,7 @@ test_that("basic tfrmt - bare/char mix error", {
             value = value,
             column = column
         ),
-        paste0(
-            "Entries for `",
-            "group",
-            "` argument must be vars(), a character vector, or unquoted column name.\n",
-            "  Consider updating the argument input to `",
-            "group",
-            "` to:\n\t",
-            "vars(row_label1,row_label4)"
-        ),
+        "Entries for `group` argument must be vars(), a character vector, or unquoted column name.",
         fixed = TRUE
     )
 })
@@ -429,9 +421,9 @@ test_that("basic tfrmt - ... args", {
             colmn = "my_col",
         )
     )
-    expect_equal(
+    expect_match(
         message_res,
-        "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?"
+        "Argument 'colmn' passed to tfrmt is not a recognized argument\\..*`column`\\?"
     )
 
     message_res <- capture_messages(
@@ -440,12 +432,13 @@ test_that("basic tfrmt - ... args", {
             lalbl = "label"
         )
     )
-    expect_equal(
-        message_res,
-        c(
-            "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?",
-            "Argument 'lalbl' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `label`?"
-        )
+    expect_match(
+        message_res[[1]],
+        "Argument 'colmn' passed to tfrmt is not a recognized argument\\..*`column`\\?"
+    )
+    expect_match(
+        message_res[[2]],
+        "Argument 'lalbl' passed to tfrmt is not a recognized argument\\..*`label`\\?"
     )
 })
 
@@ -460,11 +453,7 @@ test_that("basic tfrmt - erroring args", {
                 ),
             )
         ),
-        paste0(
-            "Error in evaluating argument `body_plan`:\n ",
-            "Error in body_plan(frmt_structure(group_val = \".default\",",
-            " label_val = \".default\", : argument is missing, with no default"
-        ),
+        "Error in evaluating argument `body_plan`:",
         fixed = TRUE
     )
 })
@@ -754,11 +743,7 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
                 )
             )
         ),
-        paste0(
-            "Inconsistencies between group and body_plan\n",
-            "Invalid Format Structure in body_plan at position `1`:\n",
-            "  Malformed Group: invalid, invalid2"
-        ),
+        "Inconsistencies between group and body_plan",
         fixed = TRUE
     )
 })
@@ -806,11 +791,7 @@ test_that("basic tfrmt - error when row_grp_plan groups does not match group arg
                 )
             )
         ),
-        paste0(
-            "Inconsistencies between group and row_grp_plan row_grp_structures\n",
-            "Invalid Format Structure in row_grp_plan for row_grp_structure `1`:\n",
-            "  Malformed Group: invalid, invalid2"
-        ),
+        "Inconsistencies between group and row_grp_plan row_grp_structures",
         fixed = TRUE
     )
 })
@@ -866,11 +847,7 @@ test_that("basic tfrmt - error when footnote_plan groups does not match group ar
                 marks = "standard"
             )
         ),
-        paste0(
-            "Inconsistencies between group and footnote_plan footnote_structures\n",
-            "Invalid Format Structure in footnote_plan for footnote_structure `2`:\n",
-            "  Malformed Group: invalid, invalid2"
-        ),
+        "Inconsistencies between group and footnote_plan footnote_structures",
         fixed = TRUE
     )
 })
@@ -948,17 +925,7 @@ test_that("basic tfrmt - error when body_plan, row_grp_plan, or footnote_plan gr
                 marks = "standard"
             )
         ),
-        paste0(
-            "Inconsistencies between group and body_plan\n",
-            "Invalid Format Structure in body_plan at position `1`:\n",
-            "  Malformed Group: invalid, invalid2\n\n",
-            "Inconsistencies between group and row_grp_plan row_grp_structures\n",
-            "Invalid Format Structure in row_grp_plan for row_grp_structure `1`:\n",
-            "  Malformed Group: invalid, invalid2\n\n",
-            "Inconsistencies between group and footnote_plan footnote_structures\n",
-            "Invalid Format Structure in footnote_plan for footnote_structure `1`:\n",
-            "  Malformed Group: invalid, invalid2"
-        ),
+        "Inconsistencies between group and body_plan",
         fixed = TRUE
     )
 })

@@ -110,9 +110,9 @@ page_structure <- function(group_val = NULL, label_val = NULL) {
     if (is.list(group_val)) {
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
-            stop("when group_val is a list, must be a named list")
+            cli::cli_abort("when group_val is a list, must be a named list")
         } else if (any(group_val_names == "")) {
-            stop("when group_val is a list, each entry must be named")
+            cli::cli_abort("when group_val is a list, each entry must be named")
         }
     }
 

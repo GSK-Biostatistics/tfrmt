@@ -374,16 +374,18 @@ test_that("page plan with multiple structures", {
         page_structure(group_val = list(grp2 = "b"))
     )
 
-    expect_message(
-        auto_split <- apply_page_plan(
-            df,
-            my_page_plan,
-            vars(grp1, grp2),
-            quo(lbl)
+    expect_equal(
+        capture_messages(
+            auto_split <- apply_page_plan(
+                df,
+                my_page_plan,
+                vars(grp1, grp2),
+                quo(lbl)
+            )
         ),
         paste0(
             c(
-                "`page_plan` contains multiple `page_structures` with values set to \".default\". ",
+                "`page_plan` contains multiple `page_structures` with values set to \".default\".",
                 "Only the last one specified will be used."
             ),
             collapse = "\n"

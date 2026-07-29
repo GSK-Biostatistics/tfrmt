@@ -101,7 +101,7 @@ apply_page_max_rows <- function(
     )
 
     if (n_grp_rows >= max_rows) {
-        message(
+        cli::cli_inform(
             "Unable to complete pagination because `max_rows` specified in `page_plan` is smaller than the number of rows dedicated to group labels. Suggest increasing `max_rows` and trying again."
         )
         return(.data)
@@ -205,9 +205,11 @@ apply_page_struct <- function(
             -last(struct_defaults_idx)
         ]
         page_struct_list <- page_struct_list[-struct_defaults_idx_drop]
-        message(
-            "`page_plan` contains multiple `page_structures` with values set to \".default\". \n",
-            "Only the last one specified will be used."
+        cli::cli_inform(
+            c(
+                "`page_plan` contains multiple `page_structures` with values set to \".default\".",
+                "Only the last one specified will be used."
+            )
         )
     }
 

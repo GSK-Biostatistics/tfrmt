@@ -369,7 +369,7 @@ test_that("Check apply_tfrmt for mock data", {
     ## capturing second message
     expect_equal(
         make_mock_dat_message,
-        "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
+        "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."
     )
 
     test_dat <- mock_dat %>%

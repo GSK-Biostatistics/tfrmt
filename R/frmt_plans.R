@@ -47,7 +47,7 @@ frmt_structure <- function(
     param_val <- names(param_frmt)
 
     if (length(param_frmt) > 1) {
-        stop(
+        cli::cli_abort(
             "Can only handle one format per frmt_structure function. Use frmt_combine if a combination is needed"
         )
     }
@@ -59,15 +59,15 @@ frmt_structure <- function(
     }
 
     if (!is_frmt(param_frmt[[1]])) {
-        stop(paste0("Entry is not an object of class `frmt`"))
+        cli::cli_abort("Entry is not an object of class `frmt`")
     }
 
     if (is.list(group_val)) {
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
-            stop("when group_val is a list, must be a named list")
+            cli::cli_abort("when group_val is a list, must be a named list")
         } else if (any(group_val_names == "")) {
-            stop("when group_val is a list, each entry must be named")
+            cli::cli_abort("when group_val is a list, each entry must be named")
         }
     }
 
@@ -204,9 +204,9 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     frmt_ls <- list(...)
 
     if (n_vars != length(frmt_ls) && length(frmt_ls) > 1) {
-        stop(
+        cli::cli_abort(
             "The number of formats must be 1 or match the number of parameters",
-            call. = FALSE
+            call = NULL
         )
     } else if (n_vars > 1 && length(frmt_ls) == 1) {
         frmt_ls <- frmt_ls[rep(1, n_vars)]
