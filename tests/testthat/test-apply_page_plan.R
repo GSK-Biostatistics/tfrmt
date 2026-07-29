@@ -210,7 +210,9 @@ test_that("Page plan with grouped split", {
     )
     # nolint end
     my_page_plan <- page_plan(
-        page_structure(label_val = ".default")
+        page_structure(
+            label_val = ".default"
+        )
     )
 
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
@@ -373,9 +375,20 @@ test_that("page plan with multiple structures", {
 
     # valid
     my_page_plan <- page_plan(
-        page_structure(label_val = ".default"),
-        page_structure(group_val = list(grp1 = ".default", grp2 = "a")),
-        page_structure(group_val = list(grp2 = "b"))
+        page_structure(
+            label_val = ".default"
+        ),
+        page_structure(
+            group_val = list(
+                grp1 = ".default",
+                grp2 = "a"
+            )
+        ),
+        page_structure(
+            group_val = list(
+                grp2 = "b"
+            )
+        )
     )
 
     expect_message(

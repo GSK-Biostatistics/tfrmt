@@ -401,7 +401,9 @@ test_that("applying footnote plan", {
                 group_val = ".default",
                 element_block(post_space = " ")
             ),
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         ),
         footnote_plan = footnote_plan(
             footnote_structure(

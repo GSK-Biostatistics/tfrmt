@@ -161,7 +161,7 @@ tfrmt_efficacy <- tfrmt(
     value = value,
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
-        # we could also do: label_val = ".default", n = frmt("xx")
+        # we could also do: n = frmt("xx")
         frmt_structure(
             label_val = "n",
             frmt("xx")
