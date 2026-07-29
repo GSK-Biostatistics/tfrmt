@@ -260,7 +260,7 @@ tfrmt_find_args <- function(
         vals[[dot_name]] <- tryCatch(
             eval(dot_subs[[dot_name]], envir = env, enclos = parent_env),
             error = function(e) {
-                stop(e$message, call. = FALSE)
+                cli::cli_abort(e$message, call = NULL)
             }
         )
     }
@@ -342,7 +342,7 @@ quo_get <- function(
                 ## check if argcall is tidyselect call, give feedback that is invalid if so
                 if (any(map_lgl(arg_call, is_valid_tidyselect_call))) {
                     if (!allow_tidy_select) {
-                        abort(
+                        cli::cli_abort(
                             message = "Tidyselect selection helpers are not acceptable to use in this context. Please provide a specific column to use.",
                             class = "invalid_tidyselect_use"
                         )
@@ -365,7 +365,7 @@ quo_get <- function(
 
                 return(arg_val)
             } else {
-                abort(
+                cli::cli_abort(
                     paste0(
                         "Error in evaluating argument `",
                         arg,
@@ -394,7 +394,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
             ")"
         )
 
-        abort(
+        cli::cli_abort(
             paste0(
                 "Entries for `",
                 arg,
@@ -444,7 +444,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
         quo()
     } else {
         if (length(x) > 1) {
-            warn(
+            cli::cli_warn(
                 paste0(
                     "Passed more than one quosure to the argument `",
                     arg,
@@ -512,5 +512,5 @@ compare_dot_args_against_formals <- function(dot_arg, formals) {
             "`?"
         )
     }
-    inform(arg_message, class = "tfrmt_unrecognized_argument_inform")
+    cli::cli_inform(arg_message, class = "tfrmt_unrecognized_argument_inform")
 }

@@ -168,7 +168,7 @@ apply_frmt.frmt_combine <- function(
     # Check if unspecified param values are in the dataset
 
     if (!setequal(names(frmt_def$frmt_ls), fmt_param_vals)) {
-        stop(
+        cli::cli_abort(
             "The values in the expression don't match the names of the given formats "
         )
     }
@@ -198,10 +198,9 @@ apply_frmt.frmt_combine <- function(
         setdiff(fmt_param_vals_uq, .)
 
     if (length(miss_param_from_data) > 0) {
-        stop(paste0(
-            "Unable to create formatting combination because the following parameters are missing from the data:\n ",
-            paste0(miss_param_from_data, collapse = " \n")
-        ))
+        cli::cli_abort(
+            "Unable to create formatting combination because the following parameters are missing from the data:\n {paste0(miss_param_from_data, collapse = ' \n')}"
+        )
     }
 
     .tmp_data_wide <- .tmp_data %>%
@@ -229,12 +228,9 @@ apply_frmt.frmt_combine <- function(
     #  1 row will successfully have a frmt_combine in it
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
         id_cols <- .tmp_data %>% select(!!!column, !!label, !!!group, !!param)
-        warning(paste0(
-            "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            paste(names(id_cols %>% select(-!!param)), collapse = ", "),
-            ". Current values:\n",
-            paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
-        ))
+        cli::cli_warn(
+            "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: {paste(names(id_cols %>% select(-!!param)), collapse = ', ')}. Current values:\n{paste(capture.output(id_cols %>% as.data.frame()), collapse = '\n')}"
+        )
     }
 
     if (is.null(frmt_def$missing)) {

@@ -150,7 +150,7 @@ check_span_structure_dots <- function(x) {
     x_names <- names(x)
 
     if (is.null(x_names) || any(x_names == "")) {
-        abort(
+        cli::cli_abort(
             paste0(
                 "Entries of a span_stucture must be named:\n ",
                 format(caller_call())
@@ -174,7 +174,7 @@ check_span_structure_dots <- function(x) {
                     } else if (is_valid_quo_call(x)) {
                         return(eval_tidy(x))
                     } else {
-                        abort(
+                        cli::cli_abort(
                             message = paste0(
                                 "Invalid entry: `",
                                 format(x),
@@ -190,7 +190,7 @@ check_span_structure_dots <- function(x) {
                 } else if (is.character(x)) {
                     return(as_length_one_quo.character(x))
                 } else {
-                    abort(
+                    cli::cli_abort(
                         "Unexpected entry type in span_structure()",
                         call = caller_call()
                     )
@@ -243,22 +243,15 @@ check_col_plan_dots <- function(x) {
             ) {
                 return(eval_tidy(x))
             } else {
-                stop(
-                    "Invalid entry: `",
-                    format(x),
-                    "`\n",
-                    "Only span_structures (`span_structure()`), ",
-                    "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
-                    " or unquoted expressions representing variable names ",
-                    " can be entered as contents.",
-                    " Changing the names of individual variables using new_name = old_name syntax is allowable",
-                    call. = FALSE
+                cli::cli_abort(
+                    "Invalid entry: `{format(x)}`\nOnly span_structures (`span_structure()`), selection helpers (See <https://tidyselect.r-lib.org/reference>),  or unquoted expressions representing variable names  can be entered as contents. Changing the names of individual variables using new_name = old_name syntax is allowable",
+                    call = NULL
                 )
             }
         } else if (is.character(x)) {
             return(as_length_one_quo.character(x))
         } else {
-            stop("Unexpected entry type in span_structure()")
+            cli::cli_abort("Unexpected entry type in span_structure()")
         }
     })
 }

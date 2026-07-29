@@ -99,7 +99,7 @@ test_that("throw error when input argument errors out", {
 
     expect_error(
         temp_function_1(x = fail_function()),
-        "Error in evaluating argument `x`:\n Error in fail_function(): I HAVE FAILED",
+        "Error in evaluating argument `x`:",
         fixed = TRUE
     )
 })

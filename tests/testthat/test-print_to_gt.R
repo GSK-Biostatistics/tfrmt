@@ -183,12 +183,13 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
         )
     )
 
-    expect_message(
-        print_mock_gt(
-            tfrmt_plan_no_param
+    expect_equal(
+        capture_messages(
+            print_mock_gt(
+                tfrmt_plan_no_param
+            )
         ),
-        "`tfrmt` will need a `param` value to `print_to_gt` when data is available",
-        fixed = TRUE
+        "`tfrmt` will need a `param` value to `print_to_gt` when data is available"
     )
     expect_snapshot(
         print_mock_gt(
@@ -308,12 +309,13 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
         )
     )
 
-    expect_message(
-        print_mock_gt(
-            tfrmt_plan_no_column
+    expect_equal(
+        capture_messages(
+            print_mock_gt(
+                tfrmt_plan_no_column
+            )
         ),
-        "`tfrmt` will need `column` value(s) to `print_to_gt` when data is available",
-        fixed = TRUE
+        "`tfrmt` will need `column` value(s) to `print_to_gt` when data is available"
     )
 
     expect_snapshot(
@@ -375,12 +377,13 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
         )
     )
 
-    expect_message(
-        print_mock_gt(
-            tfrmt_plan_no_value
+    expect_equal(
+        capture_messages(
+            print_mock_gt(
+                tfrmt_plan_no_value
+            )
         ),
-        "`tfrmt` will need `value` value to `print_to_gt` when data is available",
-        fixed = TRUE
+        "Message: `tfrmt` will need `value` value to `print_to_gt` when data is available"
     )
 
     expect_snapshot(
@@ -480,13 +483,14 @@ test_that("print_mock_data() removes `value` when it exists in the input data", 
         )
     )
 
-    expect_message(
-        print_mock_gt(
-            plan,
-            data
+    expect_equal(
+        capture_messages(
+            print_mock_gt(
+                plan,
+                data
+            )
         ),
-        "Removing `value_to_remove` from input data for mocking.",
-        fixed = TRUE
+        "Removing `value_to_remove` from input data for mocking."
     )
 
     expect_snapshot(
