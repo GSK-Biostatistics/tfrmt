@@ -15,6 +15,18 @@ This text is not a task.
   - [ ] `check_span_structure_dots()`
 - [ ] revisit `is_valid_()` functionality
   - [ ] the constructor should always produce a valid object
+- [ ] some `is_()` functions should probably not be user facing (i.e. exported), such as: `is_frmt_structure()`, `is_frmt()`, `is_frmt_combine()`, `is_frmt_when()`, `is_row_grp_structure()`.
+- [ ] improve messaging (to discuss):
+  - [ ] messages should be aware of the context (errors and warnings should surface from the functions directly called by the users)
+    - no `call = NULL`, but rather `call = rlang::caller_env()`
+  - [ ] improve multi-row cli messages (by adding bullet points)
+  - [ ] use inline formatting
+  - [ ] wrap lines to 80 characters
+  - [ ] revisit / add `is_()` and `check_()` functions for the tfrmt classes
+  - [ ] implement existing rlang checks. e.g. `check_logical()` in `display_row_frmts()` instead of having a conditional statement and the very bottom of the function body
+  - [ ] decide on a consistent approach to:
+    -  classing the message
+    - including or not including context
 
 ## Performance
 
