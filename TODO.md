@@ -23,7 +23,9 @@ This text is not a task.
   - [ ] use inline formatting
   - [ ] wrap lines to 80 characters
   - [ ] revisit / add `is_()` and `check_()` functions for the tfrmt classes
-  - [ ] implement existing rlang checks. e.g. `check_logical()` in `display_row_frmts()` instead of having a conditional statement and the very bottom of the function body
+  - [ ] implement existing rlang checks, for example:
+    - `check_logical()` in `display_row_frmts()` instead of having a conditional statement and the very bottom of the function body
+    - `check_whole_number()` for width in `col_style_structure()`. Do we want to continue supporting `width` as character in `col_style_structure()`?
   - [ ] decide on a consistent approach to:
     -  classing the message
     - including or not including context
