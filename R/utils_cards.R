@@ -1,7 +1,7 @@
 #' Check if an object is a card
 #'
 #' Validates that the input is a valid `card` object. If the check fails,
-#' it throws an informative error message using [cli::cli_abort()].
+#' it throws an informative error message using [rlang::stop_input_type()].
 #'
 #' @param card An object to check.
 #' @param arg Character string specifying the argument name to display in error messages.
@@ -26,17 +26,13 @@ check_card <- function(
         }
     }
 
-    if (allow_null) {
-        cli::cli_abort(
-            "{.arg {arg}} must be a card object or {.code NULL}, not {.obj_type_friendly {card}}.",
-            call = call
-        )
-    } else {
-        cli::cli_abort(
-            "{.arg {arg}} must be a card object, not {.obj_type_friendly {card}}.",
-            call = call
-        )
-    }
+  rlang::stop_input_type(
+        card,
+        "a card object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
 }
 
 #' Test if an object is a card
