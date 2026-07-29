@@ -26,7 +26,7 @@ check_card <- function(
         }
     }
 
-  rlang::stop_input_type(
+    rlang::stop_input_type(
         card,
         "a card object",
         allow_null = allow_null,
