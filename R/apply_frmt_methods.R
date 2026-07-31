@@ -295,7 +295,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (length(frmt_to_prt) < 1) {
             frmt_to_prt <- frmt_def$frmt_ls
         }
-        str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
+        str_to_prnt <- rlang::f_rhs(frmt_to_prt[[1]])$expression
         out <- .data %>%
             mutate(!!value := str_to_prnt)
     } else {
@@ -304,7 +304,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         val_len <- length(pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
-            map(f_rhs) %>%
+            map(rlang::f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
                     out <- apply_frmt(x, .data, value, ...) %>% pull(!!value)

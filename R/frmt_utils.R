@@ -103,7 +103,7 @@ print.frmt_combine <- function(x, ...) {
 #' @export
 format.frmt_when <- function(x, ...) {
     lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>% map_chr(format)
+    rhs <- map(x$frmt_ls, rlang::f_rhs) %>% map_chr(format)
 
     frmt_str <- paste(
         "< frmt_when | ",
@@ -357,7 +357,7 @@ as.character.frmt <- function(x, ...) {
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%
         map_chr(function(x) {
-            val <- quo(!!f_rhs(x))
+            val <- quo(!!rlang::f_rhs(x))
             val_eval <- eval_tidy(val)
             if (!is_frmt(val_eval)) {
                 as_label(val)

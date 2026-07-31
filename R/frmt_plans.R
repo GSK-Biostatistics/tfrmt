@@ -239,11 +239,14 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 frmt_when <- function(..., missing = NULL) {
     frmts <- list2(...)
 
-    frmt_ls <- frmts %>%
-        map(function(x) {
-            f_rhs(x) <- eval(f_rhs(x))
-            x
-        })
+    env <- rlang::caller_env()
+
+    frmt_ls <- purrr::map(frmts, function(x) {
+      lhs <- rlang::f_lhs(x)
+      evaluated_rhs <- eval(rlang::f_rhs(x), envir = env)
+
+      rlang::new_formula(lhs = lhs, rhs = evaluated_rhs, env = env)
+    })
 
     structure(
         list(frmt_ls = frmt_ls, missing = missing),
