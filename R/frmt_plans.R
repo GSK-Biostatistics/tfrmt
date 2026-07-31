@@ -242,8 +242,8 @@ frmt_when <- function(..., missing = NULL) {
     env <- rlang::caller_env()
 
     frmt_ls <- purrr::map(frmts, function(x) {
-      lhs <- rlang::f_lhs(x)
-      evaluated_rhs <- eval(rlang::f_rhs(x), envir = env)
+        lhs <- rlang::f_lhs(x)
+        evaluated_rhs <- eval(rlang::f_rhs(x), envir = env)
 
       rlang::new_formula(lhs = lhs, rhs = evaluated_rhs, env = env)
     })
