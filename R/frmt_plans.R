@@ -245,7 +245,7 @@ frmt_when <- function(..., missing = NULL) {
         lhs <- rlang::f_lhs(x)
         evaluated_rhs <- eval(rlang::f_rhs(x), envir = env)
 
-      rlang::new_formula(lhs = lhs, rhs = evaluated_rhs, env = env)
+        rlang::new_formula(lhs = lhs, rhs = evaluated_rhs, env = env)
     })
 
     structure(
