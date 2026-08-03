@@ -241,7 +241,7 @@ col_plan_span_structure_to_vars <- function(
                 }
             }
 
-            split_data_names <- bind_rows(split_data_selections) %>%
+            split_data_names <- dplyr::bind_rows(split_data_selections) %>%
                 unique()
 
             col_selections[[col_id]] <- split_data_names %>%

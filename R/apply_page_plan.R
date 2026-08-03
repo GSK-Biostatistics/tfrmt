@@ -140,16 +140,16 @@ apply_page_max_rows <- function(
                 is_empty(label) ||
                 row_grp_plan_label_loc %in% c("gtdefault", "noprint", "column")
         ) {
-            cur_dat_new <- bind_rows(cur_dat, next_dat)
+            cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat)
         } else {
             #  combine any grouping columns that need combining into label
-            cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
+            cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat) %>%
                 combine_group_cols_mod(group, label, row_grp_plan_label_loc)
         }
 
         # if the table is within our limit, keep it
         if (nrow(cur_dat_new) <= max_rows) {
-            cur_dat <- bind_rows(cur_dat, next_dat)
+            cur_dat <- dplyr::bind_rows(cur_dat, next_dat)
             remain_dat <- remain_dat %>% slice(-1)
         }
 
@@ -408,7 +408,7 @@ combine_group_cols_mod <- function(
                 }
 
                 lone_dat_summ %>%
-                    bind_rows(new_row, .)
+                    dplyr::bind_rows(new_row, .)
             })
         group <- group[-length(group)]
         top_grouping <- top_grouping[-length(top_grouping)]
@@ -476,7 +476,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     if (any(check_eq)) {
         to_add <- which(check_eq)
 
-        next_dat <- bind_rows(
+        next_dat <- dplyr::bind_rows(
             prev_summ[to_add, ],
             next_dat
         )

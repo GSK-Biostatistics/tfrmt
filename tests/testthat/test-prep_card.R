@@ -604,7 +604,7 @@ test_that("prep_big_n() works", {
         context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
         stat_variable = rep(c("a", "b", "c"), each = 3)
     ) |>
-        bind_rows(
+        dplyr::bind_rows(
             tibble::tibble(
                 stat_name = "n",
                 context = "total_n",
