@@ -541,19 +541,19 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 check_order_vars <- function(.data, tfrmt) {
     if (!is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (!is_empty(tfrmt$group)) {
-            order_check <- .data %>%
-                group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
-                mutate(
-                    n1 = n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
-                    n2 = n_distinct(!!(tfrmt$label))
-                )
-        } else {
+        if (is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 group_by(!!tfrmt$label) %>%
                 mutate(
                     n1 = n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
                     n2 = n_distinct(!!tfrmt$label)
+                )
+        } else {
+            order_check <- .data %>%
+                group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
+                mutate(
+                    n1 = n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
+                    n2 = n_distinct(!!(tfrmt$label))
                 )
         }
 
