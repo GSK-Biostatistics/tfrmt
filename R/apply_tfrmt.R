@@ -188,7 +188,11 @@ apply_tfrmt_subtable <- function(
             apply_col_plan,
             append(
                 col_plan_vars,
-                rlang::quos(tidyselect::any_of("..tfrmt_post_space_row"))
+                rlang::quos(
+                    tidyselect::any_of(
+                        "..tfrmt_post_space_row"
+                    )
+                )
             ),
             c(tfrmt$group, tfrmt$label),
             fail_desc = "Unable to subset dataset columns"
