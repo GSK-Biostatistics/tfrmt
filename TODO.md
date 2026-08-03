@@ -47,4 +47,4 @@ This text is not a task.
 # Done ✓
 
 - [x] use namespaced calls @dragosmg
-- [x] ~~This task has been declined~~ (declined)
+- [x] ~~This is an example of a declined task~~ (declined)
