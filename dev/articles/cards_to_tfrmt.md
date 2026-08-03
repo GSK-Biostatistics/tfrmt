@@ -44,16 +44,16 @@ ard_demog <- cards::ard_stack(
 ard_demog
 #> {cards} data frame: 21 x 11
 #>    group1 group1_level variable variable_level stat_name stat_label   stat
-#> 1     ARM      Placebo   AGEGR1            >64         p          %  0.837
-#> 2     ARM      Placebo   AGEGR1          18-64         p          %  0.163
+#> 1     ARM      Placebo   AGEGR1          18-64         p          %  0.163
+#> 2     ARM      Placebo   AGEGR1            >64         p          %  0.837
 #> 3     ARM      Placebo      AGE                     mean       Mean 75.209
 #> 4     ARM      Placebo      AGE                       sd         SD   8.59
-#> 5     ARM    Xanomeli…   AGEGR1            >64         p          %  0.869
-#> 6     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.131
+#> 5     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.131
+#> 6     ARM    Xanomeli…   AGEGR1            >64         p          %  0.869
 #> 7     ARM    Xanomeli…      AGE                     mean       Mean 74.381
 #> 8     ARM    Xanomeli…      AGE                       sd         SD  7.886
-#> 9     ARM    Xanomeli…   AGEGR1            >64         p          %  0.905
-#> 10    ARM    Xanomeli…   AGEGR1          18-64         p          %  0.095
+#> 9     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.095
+#> 10    ARM    Xanomeli…   AGEGR1            >64         p          %  0.905
 #> ℹ 11 more rows
 #> ℹ Use `print(n = ...)` to see more rows
 #> ℹ 4 more variables: context, fmt_fun, warning, error
@@ -73,16 +73,16 @@ ard_demog_shuffled
 #> # A tibble: 21 × 8
 #>    ARM           AGEGR1 AGE   context stat_variable stat_name stat_label    stat
 #>    <chr>         <chr>  <chr> <chr>   <chr>         <chr>     <chr>        <dbl>
-#>  1 Placebo       >64    NA    catego… AGEGR1        p         %           0.837 
-#>  2 Placebo       18-64  NA    catego… AGEGR1        p         %           0.163 
+#>  1 Placebo       18-64  NA    catego… AGEGR1        p         %           0.163 
+#>  2 Placebo       >64    NA    catego… AGEGR1        p         %           0.837 
 #>  3 Placebo       NA     Over… contin… AGE           mean      Mean       75.2   
 #>  4 Placebo       NA     Over… contin… AGE           sd        SD          8.59  
-#>  5 Xanomeline H… >64    NA    catego… AGEGR1        p         %           0.869 
-#>  6 Xanomeline H… 18-64  NA    catego… AGEGR1        p         %           0.131 
+#>  5 Xanomeline H… 18-64  NA    catego… AGEGR1        p         %           0.131 
+#>  6 Xanomeline H… >64    NA    catego… AGEGR1        p         %           0.869 
 #>  7 Xanomeline H… NA     Over… contin… AGE           mean      Mean       74.4   
 #>  8 Xanomeline H… NA     Over… contin… AGE           sd        SD          7.89  
-#>  9 Xanomeline L… >64    NA    catego… AGEGR1        p         %           0.905 
-#> 10 Xanomeline L… 18-64  NA    catego… AGEGR1        p         %           0.0952
+#>  9 Xanomeline L… 18-64  NA    catego… AGEGR1        p         %           0.0952
+#> 10 Xanomeline L… >64    NA    catego… AGEGR1        p         %           0.905 
 #> # ℹ 11 more rows
 ```
 
@@ -103,16 +103,16 @@ ard_demog_shuffled
 #> # A tibble: 21 × 7
 #>    ARM         variable_level context stat_variable stat_name stat_label    stat
 #>    <chr>       <chr>          <chr>   <chr>         <chr>     <chr>        <dbl>
-#>  1 Placebo     >64            catego… AGEGR1        p         %           0.837 
-#>  2 Placebo     18-64          catego… AGEGR1        p         %           0.163 
+#>  1 Placebo     18-64          catego… AGEGR1        p         %           0.163 
+#>  2 Placebo     >64            catego… AGEGR1        p         %           0.837 
 #>  3 Placebo     Overall AGE    contin… AGE           mean      Mean       75.2   
 #>  4 Placebo     Overall AGE    contin… AGE           sd        SD          8.59  
-#>  5 Xanomeline… >64            catego… AGEGR1        p         %           0.869 
-#>  6 Xanomeline… 18-64          catego… AGEGR1        p         %           0.131 
+#>  5 Xanomeline… 18-64          catego… AGEGR1        p         %           0.131 
+#>  6 Xanomeline… >64            catego… AGEGR1        p         %           0.869 
 #>  7 Xanomeline… Overall AGE    contin… AGE           mean      Mean       74.4   
 #>  8 Xanomeline… Overall AGE    contin… AGE           sd        SD          7.89  
-#>  9 Xanomeline… >64            catego… AGEGR1        p         %           0.905 
-#> 10 Xanomeline… 18-64          catego… AGEGR1        p         %           0.0952
+#>  9 Xanomeline… 18-64          catego… AGEGR1        p         %           0.0952
+#> 10 Xanomeline… >64            catego… AGEGR1        p         %           0.905 
 #> # ℹ 11 more rows
 ```
 
@@ -131,22 +131,23 @@ ard_demog_shuffled
 #> # A tibble: 21 × 8
 #>    ARM   variable_level context stat_variable stat_name stat_label    stat label
 #>    <chr> <chr>          <chr>   <chr>         <chr>     <chr>        <dbl> <chr>
-#>  1 Plac… >64            catego… AGEGR1        p         %           0.837  >64  
-#>  2 Plac… 18-64          catego… AGEGR1        p         %           0.163  18-64
+#>  1 Plac… 18-64          catego… AGEGR1        p         %           0.163  18-64
+#>  2 Plac… >64            catego… AGEGR1        p         %           0.837  >64  
 #>  3 Plac… Overall AGE    contin… AGE           mean      Mean       75.2    Mean 
 #>  4 Plac… Overall AGE    contin… AGE           sd        SD          8.59   SD   
-#>  5 Xano… >64            catego… AGEGR1        p         %           0.869  >64  
-#>  6 Xano… 18-64          catego… AGEGR1        p         %           0.131  18-64
+#>  5 Xano… 18-64          catego… AGEGR1        p         %           0.131  18-64
+#>  6 Xano… >64            catego… AGEGR1        p         %           0.869  >64  
 #>  7 Xano… Overall AGE    contin… AGE           mean      Mean       74.4    Mean 
 #>  8 Xano… Overall AGE    contin… AGE           sd        SD          7.89   SD   
-#>  9 Xano… >64            catego… AGEGR1        p         %           0.905  >64  
-#> 10 Xano… 18-64          catego… AGEGR1        p         %           0.0952 18-64
+#>  9 Xano… 18-64          catego… AGEGR1        p         %           0.0952 18-64
+#> 10 Xano… >64            catego… AGEGR1        p         %           0.905  >64  
 #> # ℹ 11 more rows
 ```
 
 Note that if we take a peek at our stats for the treatment groups, we
 have `n`, `N`, `p` from the
-[`ard_stack()`](https://rdrr.io/pkg/cards/man/ard_stack.html) call:
+[`ard_stack()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html)
+call:
 
 ``` r
 
@@ -177,16 +178,16 @@ ard_demog_shuffled
 #> # A tibble: 15 × 8
 #>    ARM   variable_level context stat_variable stat_name stat_label    stat label
 #>    <chr> <chr>          <chr>   <chr>         <chr>     <chr>        <dbl> <chr>
-#>  1 Plac… >64            catego… AGEGR1        p         %           0.837  >64  
-#>  2 Plac… 18-64          catego… AGEGR1        p         %           0.163  18-64
+#>  1 Plac… 18-64          catego… AGEGR1        p         %           0.163  18-64
+#>  2 Plac… >64            catego… AGEGR1        p         %           0.837  >64  
 #>  3 Plac… Overall AGE    contin… AGE           mean      Mean       75.2    Mean 
 #>  4 Plac… Overall AGE    contin… AGE           sd        SD          8.59   SD   
-#>  5 Xano… >64            catego… AGEGR1        p         %           0.869  >64  
-#>  6 Xano… 18-64          catego… AGEGR1        p         %           0.131  18-64
+#>  5 Xano… 18-64          catego… AGEGR1        p         %           0.131  18-64
+#>  6 Xano… >64            catego… AGEGR1        p         %           0.869  >64  
 #>  7 Xano… Overall AGE    contin… AGE           mean      Mean       74.4    Mean 
 #>  8 Xano… Overall AGE    contin… AGE           sd        SD          7.89   SD   
-#>  9 Xano… >64            catego… AGEGR1        p         %           0.905  >64  
-#> 10 Xano… 18-64          catego… AGEGR1        p         %           0.0952 18-64
+#>  9 Xano… 18-64          catego… AGEGR1        p         %           0.0952 18-64
+#> 10 Xano… >64            catego… AGEGR1        p         %           0.905  >64  
 #> 11 Xano… Overall AGE    contin… AGE           mean      Mean       75.7    Mean 
 #> 12 Xano… Overall AGE    contin… AGE           sd        SD          8.29   SD   
 #> 13 Plac… NA             tabula… ARM           bigN      n          86      NA   
@@ -213,16 +214,16 @@ ard_final
 #> # A tibble: 15 × 6
 #>    ARM                  stat_variable stat_name    stat label  ord1
 #>    <chr>                <chr>         <chr>       <dbl> <chr> <dbl>
-#>  1 Placebo              AGEGR1        p          0.837  >64       2
-#>  2 Placebo              AGEGR1        p          0.163  18-64     1
+#>  1 Placebo              AGEGR1        p          0.163  18-64     1
+#>  2 Placebo              AGEGR1        p          0.837  >64       2
 #>  3 Placebo              AGE           mean      75.2    Mean      3
 #>  4 Placebo              AGE           sd         8.59   SD        3
-#>  5 Xanomeline High Dose AGEGR1        p          0.869  >64       2
-#>  6 Xanomeline High Dose AGEGR1        p          0.131  18-64     1
+#>  5 Xanomeline High Dose AGEGR1        p          0.131  18-64     1
+#>  6 Xanomeline High Dose AGEGR1        p          0.869  >64       2
 #>  7 Xanomeline High Dose AGE           mean      74.4    Mean      3
 #>  8 Xanomeline High Dose AGE           sd         7.89   SD        3
-#>  9 Xanomeline Low Dose  AGEGR1        p          0.905  >64       2
-#> 10 Xanomeline Low Dose  AGEGR1        p          0.0952 18-64     1
+#>  9 Xanomeline Low Dose  AGEGR1        p          0.0952 18-64     1
+#> 10 Xanomeline Low Dose  AGEGR1        p          0.905  >64       2
 #> 11 Xanomeline Low Dose  AGE           mean      75.7    Mean      3
 #> 12 Xanomeline Low Dose  AGE           sd         8.29   SD        3
 #> 13 Placebo              ARM           bigN      86      NA        3
@@ -400,7 +401,8 @@ ard_ae_shuffled |>
 
 Note that if we take a peek at our stats for the treatment groups, we
 have `n`, `N`, `p` from the
-[`ard_stack()`](https://rdrr.io/pkg/cards/man/ard_stack.html) call:
+[`ard_stack()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html)
+call:
 
 ``` r
 
