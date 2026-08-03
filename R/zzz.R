@@ -1,4 +1,4 @@
-globalVariables(
+utils::globalVariables(
     c(
         ".",
         ".data",
