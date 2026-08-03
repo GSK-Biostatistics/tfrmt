@@ -403,7 +403,11 @@ apply_post_space_trim <- function(.data) {
         }
         # Always drop the helper column before returning
         .data <- .data %>%
-            dplyr::select(-dplyr::all_of(target_col))
+            dplyr::select(
+                -tidyselect::all_of(
+                    target_col
+                )
+            )
     }
 
     .data

@@ -78,7 +78,7 @@ apply_page_max_rows <- function(
     .data <- .data %>%
         mutate(
             dplyr::across(
-                all_of(group_cols),
+                tidyselect::all_of(group_cols),
                 \(x) {
                     if (is.character(x)) if_else(x == "", " ", x) else x
                 }
