@@ -457,8 +457,8 @@ test_that("basic tfrmt - erroring args", {
                     group_val = ".default",
                     label_val = ".default",
                     frmt("XX")
-                ), # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error below
-            )
+                ),
+            ) # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error below
         ),
         paste0(
             "Error in evaluating argument `body_plan`:\n ",
