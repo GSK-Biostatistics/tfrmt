@@ -199,7 +199,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
             )
         ) %>%
         mutate(
-            across(
+            dplyr::across(
                 tidyselect::everything(),
                 ~ str_replace_all(., "[0-9]", "x")
             )

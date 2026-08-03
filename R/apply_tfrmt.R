@@ -382,7 +382,11 @@ remove_empty_layers <- function(x, nlayers = 1) {
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
     num_rec_by_row <- data %>%
-        group_by(across(c(-!!tfrmt$value, -!!tfrmt$param))) %>%
+        group_by(
+            dplyr::across(
+                c(-!!tfrmt$value, -!!tfrmt$param)
+            )
+        ) %>%
         summarise(
             param_list = list(!!tfrmt$param),
             n = n()
@@ -437,11 +441,11 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     tbl_dat_wide <- data %>%
         select(-!!tfrmt$param) %>%
         mutate(
-            across(
+            dplyr::across(
                 tidyselect::all_of(column_cols),
                 ~ as.character(.x)
             ),
-            across(
+            dplyr::across(
                 tidyselect::all_of(column_cols),
                 ~ na_if(.x, "")
             )

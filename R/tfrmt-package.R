@@ -6,7 +6,7 @@
 # tidyselect)
 
 ## usethis namespace: start
-#' @importFrom dplyr across all_of any_of arrange bind_cols bind_rows case_when
+#' @importFrom dplyr all_of any_of arrange bind_cols bind_rows case_when
 #' @importFrom dplyr coalesce cur_column cur_group_id desc distinct filter first
 #' @importFrom dplyr group_by group_map group_split if_else inner_join lag last
 #' @importFrom dplyr left_join mutate n n_distinct na_if pull reframe relocate
