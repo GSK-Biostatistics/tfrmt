@@ -103,7 +103,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             ) %>%
                 mutate(
                     # keep from being negative
-                    space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0),
+                    space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0)
                 )
 
             # when scientific is null paste rounded value, if not then append scientific expression
