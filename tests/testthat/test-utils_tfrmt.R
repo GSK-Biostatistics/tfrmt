@@ -115,16 +115,16 @@ test_that("Check apply_tfrmt", {
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
             ungroup() %>%
-            arrange(group, label),
+            dplyr::arrange(group, label),
         man_df %>%
-            arrange(group, label),
+            dplyr::arrange(group, label),
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
 
     plan$sorting_cols <- NULL
 
     man_df_ord <- man_df %>%
-        arrange(group, label)
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
@@ -173,12 +173,12 @@ test_that("Check apply_tfrmt for mock data", {
     ) %>%
         # nolint end
         mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
-        arrange(group, label)
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
             ungroup() %>%
-            arrange(group, label),
+            dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -246,12 +246,12 @@ test_that("Check apply_tfrmt for mock data", {
     ) %>%
         # nolint end
         mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
-        arrange(group, label)
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
             ungroup() %>%
-            arrange(group, label),
+            dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )

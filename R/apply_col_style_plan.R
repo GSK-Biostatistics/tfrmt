@@ -225,16 +225,21 @@ apply_col_alignment_char <- function(col, align) {
                 fill = "right",
                 remove = FALSE
             ) %>%
-            mutate(across(c("add_left", "add_right"), function(x) {
-                replace_na(x, "") %>%
-                    nchar() %>%
-                    {
-                        max(.) - .
-                    } %>%
-                    {
-                        str_dup(" ", .)
+            mutate(
+                dplyr::across(
+                    c("add_left", "add_right"),
+                    function(x) {
+                        replace_na(x, "") %>%
+                            nchar() %>%
+                            {
+                                max(.) - .
+                            } %>%
+                            {
+                                str_dup(" ", .)
+                            }
                     }
-            }))
+                )
+            )
     }
 
     str_c(
@@ -305,7 +310,7 @@ apply_col_alignment_pos <- function(col, align) {
             names_to = "col_split_lev",
             values_to = "col_split_val"
         ) %>%
-        arrange(.data$col_idx, .data$col_split_lev) %>%
+        dplyr::arrange(.data$col_idx, .data$col_split_lev) %>%
         group_by(.data$col_idx) %>%
         mutate(
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),
@@ -371,7 +376,7 @@ apply_col_alignment_pos <- function(col, align) {
                 FALSE
             ),
             to_add_left = ifelse(.data$no_space, "", .data$to_add_left),
-            across(
+            dplyr::across(
                 c("col_sub_1", "to_add_left", "col_sub_2"),
                 ~ replace_na(., "")
             ),

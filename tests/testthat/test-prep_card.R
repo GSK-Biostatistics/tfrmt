@@ -372,8 +372,8 @@ test_that("prep_...() pipe with adverse effects data", {
         dplyr::relocate(stat_name, .after = stat)
 
     expect_equal(
-        arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
-        arrange(prepped_ard, TRT01A, AESEV, AEBODSYS, AETERM),
+        dplyr::arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
+        dplyr::arrange(prepped_ard, TRT01A, AESEV, AEBODSYS, AETERM),
         ignore_attr = TRUE
     )
 

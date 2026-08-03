@@ -439,7 +439,7 @@ format_gt_column_labels <- function(gt_table, .data) {
 
         spans_to_apply <- work_df %>%
             filter(.data$name != max(.data$name)) %>%
-            arrange(desc(.data$name)) %>%
+            dplyr::arrange(desc(.data$name)) %>%
             group_by(.data$value) %>%
             nest(set = "cols") %>%
             mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%

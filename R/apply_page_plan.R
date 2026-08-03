@@ -77,9 +77,12 @@ apply_page_max_rows <- function(
 
     .data <- .data %>%
         mutate(
-            across(all_of(group_cols), \(x) {
-                if (is.character(x)) if_else(x == "", " ", x) else x
-            }),
+            dplyr::across(
+                tidyselect::all_of(group_cols),
+                \(x) {
+                    if (is.character(x)) if_else(x == "", " ", x) else x
+                }
+            ),
             TEMP_row = row_number()
         )
 
@@ -367,7 +370,7 @@ combine_group_cols_mod <- function(
     .data <- .data %>%
         select(c(!!!group, !!label, "TEMP_row")) %>%
         mutate(
-            across(c(!!!group), ~ fct_inorder(.x)),
+            dplyr::across(c(!!!group), ~ fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
                 str_trim(!!last(group), side = "left")
@@ -424,7 +427,12 @@ combine_group_cols_mod <- function(
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%
-        mutate(across(c(!!!group), ~ .x == !!label)) %>%
+        mutate(
+            dplyr::across(
+                c(!!!group),
+                ~ .x == !!label
+            )
+        ) %>%
         pivot_longer(
             map_chr(group, as_label),
             names_to = "..tfrmt_summ_grp_num",

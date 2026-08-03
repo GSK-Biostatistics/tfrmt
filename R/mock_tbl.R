@@ -58,7 +58,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     ) %>%
         mutate(
             ..grp = replace_na(.data$..grp, ".default"),
-            across(
+            dplyr::across(
                 tidyselect::all_of(grp_vars),
                 ~ coalesce(.x, .data$..grp)
             )
@@ -66,11 +66,11 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         select(-"..grp") %>%
         rowwise() %>%
         mutate(
-            across(
+            dplyr::across(
                 !!tfrmt$param,
                 ~ process_for_mock(.x, cur_column(), 1)
             ),
-            across(
+            dplyr::across(
                 tidyselect::all_of(grp_vars),
                 ~ process_for_mock(.x, cur_column(), .default)
             )
@@ -81,7 +81,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     if (!quo_is_missing(tfrmt$label)) {
         all_frmt_vals <- all_frmt_vals %>%
             mutate(
-                across(
+                dplyr::across(
                     !!tfrmt$label,
                     ~ process_for_mock(.x, cur_column(), .default)
                 )
