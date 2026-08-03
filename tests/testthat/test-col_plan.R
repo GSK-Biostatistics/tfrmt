@@ -182,7 +182,7 @@ test_that("Test applying a col_plan - simple", {
         vars(
             first_col,
             `test val___tlang_delim___val2`,
-            `test val___tlang_delim___val1`,
+            `test val___tlang_delim___val1`
         ),
         ignore_attr = c(".Environment")
     )
@@ -1564,7 +1564,7 @@ test_that("Tidyselect subtraction with span_structure", {
             ),
             t_or_p = case_when(
                 column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
-                column %in% c("pl") ~ "Placebo",
+                column %in% c("pl") ~ "Placebo"
             )
         )
 

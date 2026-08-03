@@ -549,7 +549,7 @@ test_that("applying footnote meta group val", {
                 group_val = list(
                     rowlbl0 = "Test group",
                     rowlbl1 = "Completion Status"
-                ),
+                )
             ),
             marks = "letters"
         )

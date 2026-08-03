@@ -490,7 +490,7 @@ test_that("span_structure works", {
         pivot_wider(
             names_from = c(span_col, column),
             names_sep = .tlang_delim,
-            values_from = value,
+            values_from = value
         ) %>%
         clean_spanning_col_names() %>%
         apply_col_style_plan(plan)

@@ -453,7 +453,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         )
 
     if (
-        mock == TRUE &&
+        mock &&
             length(tbl_dat_wide$warnings) > 0 &&
             any(str_detect(
                 tbl_dat_wide$warnings,
@@ -533,28 +533,28 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
-    if (is_empty(tfrmt$sorting_cols) == FALSE) {
+    if (!is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (is_empty(tfrmt$group) == FALSE) {
-            order_check <- .data %>%
-                group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
-                mutate(
-                    n1 = n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
-                    n2 = n_distinct(!!(tfrmt$label))
-                )
-        } else {
+        if (is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 group_by(!!tfrmt$label) %>%
                 mutate(
                     n1 = n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
                     n2 = n_distinct(!!tfrmt$label)
                 )
+        } else {
+            order_check <- .data %>%
+                group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
+                mutate(
+                    n1 = n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
+                    n2 = n_distinct(!!(tfrmt$label))
+                )
         }
 
         # print warning if the number of lines printed over is greater than 1
         if (
             sum(order_check$n1) > nrow(order_check) &&
-                all(order_check$n1 == order_check$n2) == FALSE
+                !all(order_check$n1 == order_check$n2)
         ) {
             cli::cli_inform(
                 c(

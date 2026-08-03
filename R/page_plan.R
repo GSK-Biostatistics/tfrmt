@@ -99,7 +99,7 @@ page_plan <- function(
 page_structure <- function(group_val = NULL, label_val = NULL) {
     if (
         length(group_val) > 1 &&
-            is.list(group_val) == FALSE &&
+            !is.list(group_val) &&
             !is.null(names(group_val))
     ) {
         group_val <- as.list(group_val)

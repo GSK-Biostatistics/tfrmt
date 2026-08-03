@@ -695,7 +695,7 @@ test_that("Test big n with footnotes", {
         dplyr::mutate(
             span = dplyr::case_when(
                 column == "PL" ~ "Placebo",
-                column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
+                column %in% c("T1", "T2", "T1&T2") ~ "Treatment"
             )
         )
 
@@ -775,7 +775,7 @@ test_that("Test big n with footnotes", {
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 4",
-                label_val = list(label = "label 1"),
+                label_val = list(label = "label 1")
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 5",

@@ -279,7 +279,9 @@ combine_group_cols <- function(
                             str_trim(!!last(group), side = "left")
                     )
 
-                if (any(lone_dat_summ$..tfrmt_summary_row) == FALSE) {
+                if (any(lone_dat_summ$..tfrmt_summary_row)) {
+                    new_row <- tibble()
+                } else {
                     # if the set of rows contains NO group-level summary data, create an
                     # extra row to be added
 
@@ -310,15 +312,13 @@ combine_group_cols <- function(
                         ) %>%
                         bind_cols(new_row, .) %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
-                } else {
-                    new_row <- tibble()
                 }
 
                 lone_dat_summ %>%
                     # only indent if not a summary row
                     mutate(
                         !!label := ifelse(
-                            .data$..tfrmt_summary_row == TRUE,
+                            .data$..tfrmt_summary_row,
                             !!label,
                             str_c(indent, !!label)
                         )

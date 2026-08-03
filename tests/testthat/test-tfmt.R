@@ -418,7 +418,7 @@ test_that("basic tfrmt - ... args", {
     ## arg is spelled close to actual arg
     message_res <- capture_messages(
         tfrmt(
-            colmn = "my_col",
+            colmn = "my_col"
         )
     )
     expect_match(
@@ -451,7 +451,7 @@ test_that("basic tfrmt - erroring args", {
                     label_val = ".default",
                     frmt("XX")
                 ),
-            )
+            ) # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error below
         ),
         "Error in evaluating argument `body_plan`:",
         fixed = TRUE

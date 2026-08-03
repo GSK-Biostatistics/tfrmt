@@ -70,7 +70,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'
 #'  display_row_frmts(tfrmt_spec,df)
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
-    if (convert_to_txt == FALSE) {
+    if (isFALSE(convert_to_txt)) {
         output <- match_frmt_to_rows(
             .data,
             tfrmt$body_plan,
@@ -89,7 +89,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                     unlist(class(x)[1])
                 })
             )
-    } else if (convert_to_txt == TRUE) {
+    } else if (isTRUE(convert_to_txt)) {
         output <- match_frmt_to_rows(
             .data,
             tfrmt$body_plan,
