@@ -137,7 +137,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 )
             }
 
-            message(paste0(message_text, collapse = "\n"))
+            message(paste(message_text, collapse = "\n"))
 
             out <- list(col = NULL, spanning = FALSE)
         } else {

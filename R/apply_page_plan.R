@@ -298,7 +298,7 @@ apply_page_struct <- function(
                     ": ",
                     .data$grouping_val
                 ) %>%
-                    paste0(collapse = ", ")
+                    paste(collapse = ", ")
             )
 
         page_grp_vars <- setdiff(

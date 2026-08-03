@@ -200,7 +200,7 @@ apply_frmt.frmt_combine <- function(
     if (length(miss_param_from_data) > 0) {
         stop(paste0(
             "Unable to create formatting combination because the following parameters are missing from the data:\n ",
-            paste0(miss_param_from_data, collapse = " \n")
+            paste(miss_param_from_data, collapse = " \n")
         ))
     }
 
@@ -231,7 +231,7 @@ apply_frmt.frmt_combine <- function(
         id_cols <- .tmp_data %>% select(!!!column, !!label, !!!group, !!param)
         warning(paste0(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            paste(names(id_cols %>% select(-!!param)), collapse = ", "),
+            toString(names(id_cols %>% select(-!!param))),
             ". Current values:\n",
             paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
         ))
