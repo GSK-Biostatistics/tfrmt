@@ -198,10 +198,12 @@ col_plan_span_structure_to_vars <- function(
 
             for (sel_id_idx in seq_along(selections)) {
                 sel_id <- selections[[sel_id_idx]]
-                sel_id_col_selections <- unique(eval_tidyselect_on_colvec(
-                    sel_id,
-                    split_data_names[[col_id]]
-                ))
+                sel_id_col_selections <- unique(
+                    eval_tidyselect_on_colvec(
+                        sel_id,
+                        split_data_names[[col_id]]
+                    )
+                )
 
                 is_subtraction_selection <- startsWith(
                     rlang::as_label(sel_id),
