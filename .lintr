@@ -12,7 +12,6 @@ linters: all_linters(
   missing_argument_linter = NULL,
   implicit_integer_linter = NULL,
   unnecessary_lambda_linter = NULL,
-  paste_linter = NULL,
   nzchar_linter = NULL,
   object_name_linter = NULL,
   # redundancy linters
