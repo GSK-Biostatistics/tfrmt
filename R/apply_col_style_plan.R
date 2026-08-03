@@ -101,7 +101,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = purrr::map_chr(col_plan_vars, as_label),
+            preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE
         )
     } else {
@@ -189,24 +189,32 @@ apply_col_alignment <- function(col, align, type = "char") {
 #' @noRd
 apply_col_alignment_char <- function(col, align) {
     if (all(align %in% c("left", "right"))) {
-        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
-            mutate(
+        tbl_dat <- tibble::tibble(
+            col = stringr::str_trim(
+                col,
+                side = "right"
+            )
+        ) %>%
+            dplyr::mutate(
                 string_col = nchar(.data$col),
                 string_tot = max(.data$string_col),
-                space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
+                space_to_add = stringr::str_dup(
+                    " ",
+                    .data$string_tot - .data$string_col
+                )
             )
         if (align == "left") {
-            tbl_dat <- tibble(
+            tbl_dat <- tibble::tibble(
                 add_left = "",
                 add_right = tbl_dat$space_to_add
             ) %>%
-                bind_cols(tbl_dat, .)
+                dplyr::bind_cols(tbl_dat, .)
         } else {
-            tbl_dat <- tibble(
+            tbl_dat <- tibble::tibble(
                 add_left = tbl_dat$space_to_add,
                 add_right = ""
             ) %>%
-                bind_cols(tbl_dat, .)
+                dplyr::bind_cols(tbl_dat, .)
         }
     } else {
         align <- ifelse(
@@ -240,7 +248,8 @@ apply_col_alignment_char <- function(col, align) {
                                 stringr::str_dup(" ", .)
                             }
                     }
-            }))
+                )
+            )
     }
 
     stringr::str_c(

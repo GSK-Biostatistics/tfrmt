@@ -210,8 +210,8 @@ col_plan_span_structure_to_vars <- function(
 
                 if (is_subtraction_selection) {
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
-                        mutate(
-                            subtraction_status = case_when(
+                        dplyr::mutate(
+                            subtraction_status = dplyr::case_when(
                                 !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
                                 TRUE ~ FALSE
                             )
