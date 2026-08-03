@@ -459,7 +459,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         )
 
     if (
-        mock == TRUE &&
+        mock &&
             length(tbl_dat_wide$warnings) > 0 &&
             any(str_detect(
                 tbl_dat_wide$warnings,
@@ -539,9 +539,9 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
-    if (is_empty(tfrmt$sorting_cols) == FALSE) {
+    if (!is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (is_empty(tfrmt$group) == FALSE) {
+        if (!is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
                 mutate(
@@ -560,7 +560,7 @@ check_order_vars <- function(.data, tfrmt) {
         # print warning if the number of lines printed over is greater than 1
         if (
             sum(order_check$n1) > nrow(order_check) &&
-                all(order_check$n1 == order_check$n2) == FALSE
+                !all(order_check$n1 == order_check$n2)
         ) {
             message(
                 "Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it."

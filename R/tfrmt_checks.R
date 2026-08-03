@@ -262,10 +262,8 @@ check_footnote_plan <- function(x) {
             # if multiple columns then column_val must be a named list
             if (
                 length(x$column) > 1 &&
-                    is.list(x$footnote_plan$struct_list[[i]]$column_val) ==
-                        FALSE &&
-                    is.null(x$footnote_plan$struct_list[[i]]$column_val) ==
-                        FALSE
+                    !is.list(x$footnote_plan$struct_list[[i]]$column_val) &&
+                    !is.null(x$footnote_plan$struct_list[[i]]$column_val)
             ) {
                 stop(
                     "when tfrmt contains multiple columns, column_val must be a named list"
@@ -275,9 +273,8 @@ check_footnote_plan <- function(x) {
             # if multiple groups then group_val must be a named list
             if (
                 length(x$group) > 1 &&
-                    is.list(x$footnote_plan$struct_list[[i]]$group_val) ==
-                        FALSE &&
-                    is.null(x$footnote_plan$struct_list[[i]]$group_val) == FALSE
+                    !is.list(x$footnote_plan$struct_list[[i]]$group_val) &&
+                    !is.null(x$footnote_plan$struct_list[[i]]$group_val)
             ) {
                 stop(
                     "when tfrmt contains multiple groups, group_val must be a named list"

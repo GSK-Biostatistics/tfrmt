@@ -42,7 +42,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # stop if label location is not indented
     if (
-        is.null(tfrmt$row_grp_plan) == FALSE &&
+        !is.null(tfrmt$row_grp_plan) &&
             tfrmt$row_grp_plan$label_loc[1] != "indented"
     ) {
         stop(
@@ -51,7 +51,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if span structures are present
-    if (is.null(tfrmt$col_plan$span_structures) == FALSE) {
+    if (!is.null(tfrmt$col_plan$span_structures)) {
         stop("print_to_ggplot does not support spanning headers")
     }
 
@@ -61,7 +61,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if column style plan added
-    if (is.null(tfrmt$col_style_plan) == FALSE) {
+    if (!is.null(tfrmt$col_style_plan)) {
         stop("print_to_ggplot does not support col_style_plan elements")
     }
 
@@ -115,7 +115,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
             ) %>%
             mutate(
                 value = if_else(
-                    .data$`..tfrmt_row_grp_lbl` == TRUE,
+                    .data$`..tfrmt_row_grp_lbl`,
                     "",
                     .data$value
                 )
@@ -194,7 +194,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&
-            is_empty(tfrmt$group) == FALSE &&
+            !is_empty(tfrmt$group) &&
             tfrmt$row_grp_plan$label_loc$location == "gtdefault"
     ) {
         group_name <- quo_name(tfrmt$group[[1]])
