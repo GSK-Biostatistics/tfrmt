@@ -89,7 +89,7 @@ create_col_order <- function(data_names, columns, cp) {
         }
 
         ## add back in the non-specified columns
-        if (cp$.drop == FALSE) {
+        if (!cp$.drop) {
             missing_cols <- setdiff(data_names, gsub("^-", "", col_selections))
             col_selections <- c(col_selections, missing_cols)
         }
@@ -445,7 +445,7 @@ unite_df_to_data_names <- function(
     selected <- new_preselected_cols_full %>%
         mutate(
             original = case_when(
-                .data$subtraction_status == TRUE ~ paste0("-", .data$original),
+                .data$subtraction_status ~ paste0("-", .data$original),
                 TRUE ~ .data$original
             )
         ) %>%

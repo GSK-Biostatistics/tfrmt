@@ -238,7 +238,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             rowname_col = rowname_col
         ) %>%
         sub_missing(
-            rows = .data$..tfrmt_row_grp_lbl == TRUE,
+            rows = .data$..tfrmt_row_grp_lbl,
             missing_text = ""
         ) %>%
         cols_hide(columns = "..tfrmt_row_grp_lbl") %>%

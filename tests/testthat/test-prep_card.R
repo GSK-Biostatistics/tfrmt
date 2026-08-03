@@ -285,7 +285,7 @@ test_that("prep_...() pipe with adverse effects data", {
             # rows
             AETERM = dplyr::if_else(
                 !is.na(..ard_hierarchical_overall..) &
-                    ..ard_hierarchical_overall.. == TRUE |
+                    ..ard_hierarchical_overall.. |
                     is.na(AETERM) & !is.na(AEBODSYS),
                 "ANY EVENT",
                 AETERM
