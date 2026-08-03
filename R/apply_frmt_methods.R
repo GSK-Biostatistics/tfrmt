@@ -126,7 +126,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             }
 
             # Combining the additional formatting
-            fmt_val_output <- case_when(
+            fmt_val_output <- dplyr::case_when(
                 fmt_options$rounded == "NA" ~ miss_val,
                 TRUE ~ str_c(expr_start, fmt_vals, expr_end)
             )
@@ -245,7 +245,7 @@ apply_frmt.frmt_combine <- function(
     ## otherwise concat the params
     .tmp_data_fmted <- .tmp_data_wide %>%
         mutate(
-            !!value := case_when(
+            !!value := dplyr::case_when(
                 .data$.is_all_missing ~ frmt_def$missing,
                 TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
             )

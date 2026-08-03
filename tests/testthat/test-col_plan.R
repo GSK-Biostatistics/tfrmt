@@ -1569,7 +1569,7 @@ test_that("Tidyselect subtraction with span_structure", {
                 seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
             ),
-            t_or_p = case_when(
+            t_or_p = dplyr::case_when(
                 column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
                 column %in% c("pl") ~ "Placebo"
             )

@@ -10,7 +10,7 @@ raw_data_cat <- crossing(
     mutate(
         ord1 = 1,
         ord2 = 26 - which(label == letters),
-        val2 = case_when(
+        val2 = dplyr::case_when(
             label == "w" & param2 == "pct" ~ 100.0,
             param2 == "count" ~ as.double(rpois(n = 1, lambda = 150)),
             param2 == "pct" ~ runif(n = 1, max = 100)
@@ -27,7 +27,7 @@ raw_data_cont <- crossing(
     mutate(
         ord1 = 2,
         ord2 = which(label == letters),
-        val2 = case_when(
+        val2 = dplyr::case_when(
             label == "w" ~ as.double(rpois(n = 1, lambda = 150)),
             label == "i" ~ rnorm(n = 1, mean = 75, 13),
             label == "j" ~ rnorm(n = 1, mean = 10, 3),
