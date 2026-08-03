@@ -180,7 +180,7 @@ update_group <- function(tfrmt, ...) {
     new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
 
     if (is_empty(tfrmt$group)) {
-       cli::cli_abort("No group values defined in input tfrmt.")
+        cli::cli_abort("No group values defined in input tfrmt.")
     } else {
         var_list <- sapply(tfrmt$group, function(x) {
             x_lab <- as_label(x)
