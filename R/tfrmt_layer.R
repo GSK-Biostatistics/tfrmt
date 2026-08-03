@@ -179,7 +179,9 @@ update_group <- function(tfrmt, ...) {
     old_groups <- do.call(vars, unname(dots))
     new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
 
-    if (!is_empty(tfrmt$group)) {
+    if (is_empty(tfrmt$group)) {
+       cli::cli_abort("No group values defined in input tfrmt.")
+    } else {
         var_list <- sapply(tfrmt$group, function(x) {
             x_lab <- as_label(x)
             if (x_lab %in% names(new_group_map)) {
@@ -190,8 +192,6 @@ update_group <- function(tfrmt, ...) {
         })
 
         tfrmt$group <- as_vars(var_list)
-    } else {
-        cli::cli_abort("No group values defined in input tfrmt.")
     }
 
     ## Update body_plan

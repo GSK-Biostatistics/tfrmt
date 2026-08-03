@@ -64,14 +64,14 @@ shuffle_card <- function(
     # Check if a 'by' variable is available for bind_ard objs
     by_arg <- get_card_attr_arg(x, "by")
     if (is_bind_ard_card(x) && rlang::is_empty(by)) {
-        by_msg <- if (!rlang::is_empty(by_arg)) {
+        by_msg <- if (rlang::is_empty(by_arg)) {
             c(
-                "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
-                "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
+                "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
             )
         } else {
             c(
-                "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
+                "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
+                "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
             )
         }
 

@@ -54,11 +54,11 @@ apply_table_frmt_plan <- function(
                 .[[1]]
 
             if (is.null(cur_fmt)) {
-                if (!mock) {
+                if (mock) {
+                    out <- x
+                } else {
                     out <- x %>%
                         mutate(!!value := as.character(!!value))
-                } else {
-                    out <- x
                 }
 
                 # Add message
