@@ -557,17 +557,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 check_order_vars <- function(.data, tfrmt) {
     if (!rlang::is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (!rlang::is_empty(tfrmt$group)) {
-            order_check <- .data %>%
-                dplyr::group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
-                dplyr::mutate(
-                    n1 = dplyr::n_distinct(
-                        !!(tfrmt$label),
-                        !!!tfrmt$sorting_cols
-                    ),
-                    n2 = dplyr::n_distinct(!!(tfrmt$label))
-                )
-        } else {
+        if (rlang::is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
                 dplyr::mutate(
@@ -576,6 +566,16 @@ check_order_vars <- function(.data, tfrmt) {
                         !!!tfrmt$sorting_cols
                     ),
                     n2 = dplyr::n_distinct(!!tfrmt$label)
+                )
+        } else {
+            order_check <- .data %>%
+                dplyr::group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
+                dplyr::mutate(
+                    n1 = dplyr::n_distinct(
+                        !!(tfrmt$label),
+                        !!!tfrmt$sorting_cols
+                    ),
+                    n2 = dplyr::n_distinct(!!(tfrmt$label))
                 )
         }
 
