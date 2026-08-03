@@ -393,15 +393,15 @@ combine_group_cols_mod <- function(
                             str_trim(!!last(group), side = "left")
                     )
 
-                if (!any(lone_dat_summ$`..tfrmt_summary_row_cur`)) {
+                if (any(lone_dat_summ$`..tfrmt_summary_row_cur`)) {
+                    new_row <- tibble()
+                } else {
                     # if the set of rows contains NO group-level summary data, create an extra row to be added
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
                         distinct() %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
-                } else {
-                    new_row <- tibble()
                 }
 
                 lone_dat_summ %>%

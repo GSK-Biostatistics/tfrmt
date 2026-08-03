@@ -281,7 +281,9 @@ combine_group_cols <- function(
                             str_trim(!!last(group), side = "left")
                     )
 
-                if (!any(lone_dat_summ$..tfrmt_summary_row)) {
+                if (any(lone_dat_summ$..tfrmt_summary_row)) {
+                    new_row <- tibble()
+                } else {
                     # if the set of rows contains NO group-level summary data, create an
                     # extra row to be added
 
@@ -312,8 +314,6 @@ combine_group_cols <- function(
                         ) %>%
                         bind_cols(new_row, .) %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
-                } else {
-                    new_row <- tibble()
                 }
 
                 lone_dat_summ %>%
