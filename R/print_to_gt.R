@@ -329,7 +329,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             style = cell_borders(
                 sides = c("top"),
                 color = "transparent",
-                weight = px(0),
+                weight = px(0)
             ),
             locations = list(
                 cells_column_labels()

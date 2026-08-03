@@ -775,7 +775,7 @@ test_that("prep_hierarchical_fill() returns input when `length(vars) < 2`", {
         prep_hierarchical_fill(
             df,
             vars = "y"
-        ),
+        )
     )
 })
 

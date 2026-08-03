@@ -60,7 +60,7 @@ test_that("applying footnote plan", {
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "spanning")
-        ),
+        )
     ) %>%
         print_to_gt(es_data)
 
@@ -98,7 +98,7 @@ test_that("applying footnote plan", {
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
-        ),
+        )
     )
 
     gt1 <- apply_footnote_plan(gt_start, tfrmt1, list())
@@ -229,7 +229,7 @@ test_that("applying footnote plan", {
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
-        ),
+        )
     ) %>%
         print_to_gt(es_data2)
 
