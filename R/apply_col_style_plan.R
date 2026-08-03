@@ -310,7 +310,7 @@ apply_col_alignment_pos <- function(col, align) {
             names_to = "col_split_lev",
             values_to = "col_split_val"
         ) %>%
-        arrange(.data$col_idx, .data$col_split_lev) %>%
+        dplyr::arrange(.data$col_idx, .data$col_split_lev) %>%
         group_by(.data$col_idx) %>%
         mutate(
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),

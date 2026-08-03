@@ -339,7 +339,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
 #'
 #' @noRd
 arrange_enquo <- function(dat, param) {
-    arrange(dat, !!!param)
+    dplyr::arrange(dat, !!!param)
 }
 
 #' Clean Spanning column names

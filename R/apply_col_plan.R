@@ -268,7 +268,7 @@ col_plan_span_structure_to_vars <- function(
                 )
             )
         ) %>%
-        arrange(
+        dplyr::arrange(
             dplyr::across(
                 tidyselect::everything()
             )
@@ -279,7 +279,7 @@ col_plan_span_structure_to_vars <- function(
 
     split_data_names %>%
         left_join(ords, by = names(col_selections)) %>%
-        arrange(.data$ord_col) %>%
+        dplyr::arrange(.data$ord_col) %>%
         select(-"ord_col") %>%
         unite_df_to_data_names(
             preselected_cols,
