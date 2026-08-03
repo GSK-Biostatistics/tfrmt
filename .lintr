@@ -16,7 +16,6 @@ linters: all_linters(
   nzchar_linter = NULL,
   object_name_linter = NULL,
   # redundancy linters
-  redundant_equals_linter = NULL,
   redundant_ifelse_linter = NULL,
   nonportable_path_linter = NULL,
   keyword_quote_linter = NULL,

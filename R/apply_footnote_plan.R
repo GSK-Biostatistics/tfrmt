@@ -58,7 +58,7 @@ apply_general_footnote <- function(gt, loc) {
 apply_cells_column_labels <- function(gt, loc) {
     # check row is empty - therefore a column footnote, and not a spanning column
 
-    if (is.null(loc$row) && loc$spanning == FALSE) {
+    if (is.null(loc$row) && !loc$spanning) {
         gt <- gt %>%
             gt::tab_footnote(
                 footnote = loc$note,
@@ -80,7 +80,7 @@ apply_cells_column_labels <- function(gt, loc) {
 #' @noRd
 apply_cells_column_spanners <- function(gt, loc) {
     # check row is empty - therefore a column footnote
-    if (!is.null(loc) && is.null(loc$row) && loc$spanning == TRUE) {
+    if (!is.null(loc) && is.null(loc$row) && loc$spanning) {
         gt <- gt %>%
             gt::tab_footnote(
                 footnote = loc$note,

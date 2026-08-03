@@ -111,7 +111,7 @@ param_set <- function(...) {
                 ~ (.x %in% args_params || .y %in% args_params)
             )
         ) %>%
-        dplyr::filter(drop == TRUE) %>%
+        dplyr::filter(drop) %>%
         dplyr::pull(.data$idx) %>%
         unique()
 

@@ -467,7 +467,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         )
 
     if (
-        mock == TRUE &&
+        mock &&
             length(tbl_dat_wide$warnings) > 0 &&
             any(
                 stringr::str_detect(
@@ -559,6 +559,13 @@ check_order_vars <- function(.data, tfrmt) {
         # check for values printing on different lines due to incorrect order variables
         if (rlang::is_empty(tfrmt$group)) {
             order_check <- .data %>%
+                group_by(!!tfrmt$label) %>%
+                mutate(
+                    n1 = n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
+                    n2 = n_distinct(!!tfrmt$label)
+                )
+        } else {
+            order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
                 dplyr::mutate(
                     n1 = dplyr::n_distinct(
@@ -567,22 +574,21 @@ check_order_vars <- function(.data, tfrmt) {
                     ),
                     n2 = dplyr::n_distinct(!!tfrmt$label)
                 )
-        } else {
+        }
+        else
+        {
             order_check <- .data %>%
-                dplyr::group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
-                dplyr::mutate(
-                    n1 = dplyr::n_distinct(
-                        !!(tfrmt$label),
-                        !!!tfrmt$sorting_cols
-                    ),
-                    n2 = dplyr::n_distinct(!!(tfrmt$label))
+                group_by(!!tfrmt$label) %>%
+                mutate(
+                    n1 = n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
+                    n2 = n_distinct(!!tfrmt$label)
                 )
         }
 
         # print warning if the number of lines printed over is greater than 1
         if (
             sum(order_check$n1) > nrow(order_check) &&
-                all(order_check$n1 == order_check$n2) == FALSE
+                !all(order_check$n1 == order_check$n2)
         ) {
             message(
                 "Note: Some row labels have values printed over more than 1 line.\n This could be due to incorrect sorting variables. Each row in your output table should have only one sorting var combination assigned to it."

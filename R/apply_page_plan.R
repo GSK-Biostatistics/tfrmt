@@ -407,15 +407,15 @@ combine_group_cols_mod <- function(
                             )
                     )
 
-                if (any(lone_dat_summ$`..tfrmt_summary_row_cur`) == FALSE) {
+                if (any(lone_dat_summ$`..tfrmt_summary_row_cur`)) {
+                    new_row <- tibble()
+                } else {
                     # if the set of rows contains NO group-level summary data, create an extra row to be added
                     new_row <- lone_dat %>%
                         dplyr::select(!!!top_grouping, !!label) %>%
                         dplyr::mutate(!!label := !!dplyr::last(group)) %>%
                         dplyr::distinct() %>%
                         dplyr::mutate(..tfrmt_row_grp_lbl = TRUE)
-                } else {
-                    new_row <- tibble::tibble()
                 }
 
                 lone_dat_summ %>%

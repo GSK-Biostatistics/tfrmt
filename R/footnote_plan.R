@@ -87,7 +87,7 @@ footnote_structure <- function(
     # force column_val and group_val into a list if a named vector
     if (
         length(column_val) > 1 &&
-            is.list(column_val) == FALSE &&
+            !is.list(column_val) &&
             !is.null(names(column_val))
     ) {
         column_val <- as.list(column_val)
@@ -97,7 +97,7 @@ footnote_structure <- function(
 
     if (
         length(group_val) > 1 &&
-            is.list(group_val) == FALSE &&
+            !is.list(group_val) &&
             !is.null(names(group_val))
     ) {
         group_val <- as.list(group_val)
