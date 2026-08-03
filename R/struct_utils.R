@@ -35,9 +35,7 @@ expr_to_filter.quosures <- function(cols, val) {
         out <- expr_to_filter(cols, val)
     } else if (!is.list(val) && all(val == ".default")) {
         out <- "TRUE"
-    } else if (!is.list(val)) {
-        stop("If multiple cols are provided, val must be a named list")
-    } else {
+    } else if (is.list(val)) {
         if (!all(names(val) %in% map_chr(cols, as_label))) {
             stop("Names of val entries do not all match col values")
         }
@@ -47,6 +45,8 @@ expr_to_filter.quosures <- function(cols, val) {
             ~ expr_to_filter(.x, .y)
         ) %>%
             paste0(collapse = " & ")
+    } else {
+        stop("If multiple cols are provided, val must be a named list")
     }
     out
 }
@@ -70,13 +70,13 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
     if (detect_non_default(cur_struct$group_val)) {
         grp_expr <- expr_to_filter(group, cur_struct$group_val)
 
-        if (!is.list(cur_struct$group_val)) {
-            keep_vars <- group
-        } else {
+        if (is.list(cur_struct$group_val)) {
             keep_vars <- group[map_lgl(
                 cur_struct$group_val,
                 ~ !all(.x == ".default")
             )]
+        } else {
+            keep_vars <- group
         }
     }
 

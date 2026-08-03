@@ -15,7 +15,6 @@ linters: all_linters(
   paste_linter = NULL,
   nzchar_linter = NULL,
   object_name_linter = NULL,
-  if_not_else_linter = NULL,
   # redundancy linters
   redundant_equals_linter = NULL,
   redundant_ifelse_linter = NULL,
