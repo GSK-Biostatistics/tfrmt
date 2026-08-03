@@ -67,15 +67,15 @@ create_col_order <- function(data_names, columns, cp) {
 
         for (cp_el_idx in seq_along(cp$dots)) {
             cp_el <- cp$dots[cp_el_idx]
-            if (!is_span_structure(cp_el[[1]])) {
-                col_selections <- col_plan_quo_to_vars(
+            if (is_span_structure(cp_el[[1]])) {
+                col_selections <- col_plan_span_structure_to_vars(
                     x = cp_el,
                     column_names = column_names,
                     data_names = data_names,
                     preselected_cols = col_selections
                 )
             } else {
-                col_selections <- col_plan_span_structure_to_vars(
+                col_selections <- col_plan_quo_to_vars(
                     x = cp_el,
                     column_names = column_names,
                     data_names = data_names,
@@ -201,7 +201,15 @@ col_plan_span_structure_to_vars <- function(
 
                 is_subtraction_selection <- startsWith(as_label(sel_id), "-")
 
-                if (!is_subtraction_selection) {
+                if (is_subtraction_selection) {
+                    split_data_selections[[sel_id_idx]] <- split_data_names %>%
+                        mutate(
+                            subtraction_status = case_when(
+                                !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
+                                TRUE ~ FALSE
+                            )
+                        )
+                } else {
                     if (
                         !is.null(names(selections)) &&
                             names(selections)[[sel_id_idx]] != ""
@@ -230,14 +238,6 @@ col_plan_span_structure_to_vars <- function(
 
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
                         filter(!!col_quo %in% sel_id_col_selections)
-                } else {
-                    split_data_selections[[sel_id_idx]] <- split_data_names %>%
-                        mutate(
-                            subtraction_status = case_when(
-                                !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
-                                TRUE ~ FALSE
-                            )
-                        )
                 }
             }
 
