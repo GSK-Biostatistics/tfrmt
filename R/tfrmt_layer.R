@@ -185,7 +185,9 @@ update_group <- function(tfrmt, ...) {
         )
     )
 
-    if (!rlang::is_empty(tfrmt$group)) {
+    if (rlang::is_empty(tfrmt$group)) {
+        stop("No group values defined in input tfrmt.")
+    } else {
         var_list <- sapply(tfrmt$group, function(x) {
             x_lab <- rlang::as_label(x)
             if (x_lab %in% names(new_group_map)) {
@@ -196,8 +198,6 @@ update_group <- function(tfrmt, ...) {
         })
 
         tfrmt$group <- as_vars(var_list)
-    } else {
-        stop("No group values defined in input tfrmt.")
     }
 
     ## Update body_plan

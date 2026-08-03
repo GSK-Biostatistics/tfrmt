@@ -96,7 +96,15 @@ apply_col_style_plan <- function(
 
 # function to get all columns the col_style_structure applies to
 col_style_selections <- function(selection, column_names, col_plan_vars) {
-    if (!is_span_structure(selection[[1]])) {
+    if (is_span_structure(selection[[1]])) {
+        col_selection <- col_plan_span_structure_to_vars(
+            x = selection,
+            column_names = column_names,
+            data_names = c(),
+            preselected_cols = purrr::map_chr(col_plan_vars, as_label),
+            return_only_selected = TRUE
+        )
+    } else {
         col_selection <- col_plan_quo_to_vars(
             x = selection,
             column_names = column_names,
@@ -104,14 +112,6 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE,
             default_everything_behavior = TRUE
-        )
-    } else {
-        col_selection <- col_plan_span_structure_to_vars(
-            x = selection,
-            column_names = column_names,
-            data_names = c(),
-            preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
-            return_only_selected = TRUE
         )
     }
 
@@ -188,7 +188,27 @@ apply_col_alignment <- function(col, align, type = "char") {
 #'
 #' @noRd
 apply_col_alignment_char <- function(col, align) {
-    if (!all(align %in% c("left", "right"))) {
+    if (all(align %in% c("left", "right"))) {
+        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
+            mutate(
+                string_col = nchar(.data$col),
+                string_tot = max(.data$string_col),
+                space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
+            )
+        if (align == "left") {
+            tbl_dat <- tibble(
+                add_left = "",
+                add_right = tbl_dat$space_to_add
+            ) %>%
+                bind_cols(tbl_dat, .)
+        } else {
+            tbl_dat <- tibble(
+                add_left = tbl_dat$space_to_add,
+                add_right = ""
+            ) %>%
+                bind_cols(tbl_dat, .)
+        }
+    } else {
         align <- ifelse(
             stringr::str_detect(align, "[[:alnum:]]"),
             paste0("\"", align, "\""),
@@ -220,36 +240,7 @@ apply_col_alignment_char <- function(col, align) {
                                 stringr::str_dup(" ", .)
                             }
                     }
-                )
-            )
-    } else {
-        tbl_dat <- tibble::tibble(
-            col = stringr::str_trim(
-                col,
-                side = "right"
-            )
-        ) %>%
-            dplyr::mutate(
-                string_col = nchar(.data$col),
-                string_tot = max(.data$string_col),
-                space_to_add = stringr::str_dup(
-                    " ",
-                    .data$string_tot - .data$string_col
-                )
-            )
-        if (align == "left") {
-            tbl_dat <- tibble::tibble(
-                add_left = "",
-                add_right = tbl_dat$space_to_add
-            ) %>%
-                dplyr::bind_cols(tbl_dat, .)
-        } else {
-            tbl_dat <- tibble::tibble(
-                add_left = tbl_dat$space_to_add,
-                add_right = ""
-            ) %>%
-                dplyr::bind_cols(tbl_dat, .)
-        }
+            }))
     }
 
     stringr::str_c(

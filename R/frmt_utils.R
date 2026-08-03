@@ -365,12 +365,12 @@ as.character.frmt_when <- function(x, ...) {
     right <- purrr::map_chr(
         x$frmt_ls,
         function(x) {
-            val <- rlang::quo(!!f_rhs(x))
-            val_eval <- rlang::eval_tidy(val)
-            if (!is_frmt(val_eval)) {
-                rlang::as_label(val)
-            } else {
+            val <- quo(!!f_rhs(x))
+            val_eval <- eval_tidy(val)
+            if (is_frmt(val_eval)) {
                 as.character(val_eval)
+            } else {
+                as_label(val)
             }
         }
     )
