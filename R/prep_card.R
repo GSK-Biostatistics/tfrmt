@@ -126,7 +126,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
             -"var_level_coalesced"
         ) |>
         dplyr::rename(
-            "variable_level" = "var_level_untd",
+            "variable_level" = "var_level_untd"
         )
 
     output

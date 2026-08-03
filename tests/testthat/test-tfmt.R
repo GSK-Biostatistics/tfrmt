@@ -426,7 +426,7 @@ test_that("basic tfrmt - ... args", {
     ## arg is spelled close to actual arg
     message_res <- capture_messages(
         tfrmt(
-            colmn = "my_col",
+            colmn = "my_col"
         )
     )
     expect_equal(
@@ -457,7 +457,7 @@ test_that("basic tfrmt - erroring args", {
                     group_val = ".default",
                     label_val = ".default",
                     frmt("XX")
-                ),
+                )
             )
         ),
         paste0(

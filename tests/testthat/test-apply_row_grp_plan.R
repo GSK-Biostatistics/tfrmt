@@ -4,7 +4,7 @@ test_that("insert post space - single grouping variable", {
         label = as.character(1:4),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -80,7 +80,7 @@ test_that("insert post space - two grouping variables", {
         ),
         trtA = rep("xx (xx%)", 12),
         trtB = rep("xx (xx%)", 12),
-        trtC = rep("xx (xx%)", 12),
+        trtC = rep("xx (xx%)", 12)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -174,7 +174,7 @@ test_that("insert mix - single grouping variable", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -216,7 +216,7 @@ test_that("insert post space after specific value", {
         label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
-        trtC = rep("xx (xx%)", 6),
+        trtC = rep("xx (xx%)", 6)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -257,7 +257,7 @@ test_that("overlapping row_grp_structures - prefers latest", {
         label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
-        trtC = rep("xx (xx%)", 6),
+        trtC = rep("xx (xx%)", 6)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -308,7 +308,7 @@ test_that("no post space added if NULL", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -339,7 +339,7 @@ test_that("post space is truncated to data width", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -375,7 +375,7 @@ test_that("do not recycle the post space for full width", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -446,7 +446,7 @@ test_that("Check combine_group_cols with a single group", {
         crossing(grp1 = c("A", "B", "C"), lab = c("a", "b")),
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
-        trtC = rep("xx (xx%)", 6),
+        trtC = rep("xx (xx%)", 6)
     )
 
     auto_test_no_span <- combine_group_cols(
@@ -503,7 +503,7 @@ test_that("Check combine_group_cols with a multi groups", {
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     auto_test_no_span <- combine_group_cols(
@@ -581,7 +581,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         mutate(
             trtA = rep("xx (xx%)", 8) %>% as.list(),
             trtB = rep("xx (xx%)", 8) %>% as.list(),
-            trtC = rep("xx (xx%)", 8) %>% as.list(),
+            trtC = rep("xx (xx%)", 8) %>% as.list()
         )
 
     sample_grp_plan <- row_grp_plan(
@@ -680,7 +680,7 @@ test_that("> 2 groups with and without spanner_label", {
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     plan_no_span <- row_grp_plan()
@@ -773,7 +773,7 @@ test_that("Summary rows are not indented", {
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     plan_no_span <- row_grp_plan()
@@ -1276,7 +1276,7 @@ test_that("Suppress printing of groups", {
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     my_plan <- row_grp_plan(
@@ -1482,7 +1482,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
             "Unable to to apply apply_row_grp_lbl.",
             "Reason: `label` column AETERM contains NA values. For group-level summary data, `label` and the relevant `group` values should match.",
             sep = "\n"
-        ),
+        )
     )
 })
 
@@ -1505,7 +1505,7 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
         mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     mock_multi_grp$my_label <- ifelse(

@@ -775,7 +775,7 @@ test_that("Test big n with footnotes", {
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 4",
-                label_val = list(label = "label 1"),
+                label_val = list(label = "label 1")
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 5",

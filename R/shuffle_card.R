@@ -116,7 +116,7 @@ shuffle_card <- function(
         ) |>
         cards::unlist_ard_columns(
             columns = c(cards::all_ard_groups(), cards::all_ard_variables()),
-            fct_as_chr = TRUE,
+            fct_as_chr = TRUE
         ) |>
         dplyr::relocate(
             "stat_variable",
