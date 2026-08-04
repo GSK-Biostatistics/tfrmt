@@ -174,7 +174,7 @@ prep_big_n <- function(df, vars) {
     if (!rlang::is_character(vars)) {
         cli::cli_abort(
             "{.arg vars} must be a character vector. You have supplied \\
-      {.obj_type_friendly {vars}}."
+            {.obj_type_friendly {vars}}."
         )
     }
 

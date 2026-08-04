@@ -659,7 +659,7 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         rowlbl1 = "Completion Status",
         rowlbl2 = c("Completed", "Ongoing", "Unknown")
     ) %>%
-        bind_rows(
+        dplyr::bind_rows(
             tibble(
                 rowlbl1 = "Primary reason for withdrawal",
                 rowlbl2 = c("Other", "Lost to follow-up")
@@ -669,7 +669,7 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
             param = c("n", "pct"),
             trt = c("Placebo", "Trt1", "Trt2", "Trt3")
         ) %>%
-        bind_cols(
+        dplyr::bind_cols(
             # fmt: skip
             value = c(
                 24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18,

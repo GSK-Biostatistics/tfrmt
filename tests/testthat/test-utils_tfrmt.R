@@ -34,7 +34,10 @@ raw_data_cont <- crossing(
             label == "k" ~ rnorm(n = 1, mean = 72, 7)
         )
     )
-raw_dat <- bind_rows(raw_data_cat, raw_data_cont)
+raw_dat <- dplyr::bind_rows(
+    raw_data_cat,
+    raw_data_cont
+)
 
 plan <- tfrmt(
     #These are the columns that control the general structure of the data

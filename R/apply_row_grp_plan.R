@@ -191,7 +191,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
             )
 
         # combine with original data
-        bind_rows(.data, grp_row_add) %>%
+        dplyr::bind_rows(.data, grp_row_add) %>%
             fill(!!!group) %>%
             mutate(..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0)
     } else {
@@ -317,7 +317,7 @@ combine_group_cols <- function(
                                 )
                             )
                         ) %>%
-                        bind_cols(new_row, .) %>%
+                        dplyr::bind_cols(new_row, .) %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
                 }
 
@@ -331,7 +331,7 @@ combine_group_cols <- function(
                         )
                     ) %>%
                     select(-"..tfrmt_summary_row") %>%
-                    bind_rows(new_row, .)
+                    dplyr::bind_rows(new_row, .)
             })
         group <- group[-length(group)]
         top_grouping <- top_grouping[-length(top_grouping)]

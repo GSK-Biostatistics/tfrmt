@@ -51,7 +51,7 @@ apply_col_style_plan <- function(
             )] %>%
                 map(list) %>%
                 as_tibble() %>%
-                bind_cols(
+                dplyr::bind_cols(
                     tibble(col = unlist(col_selections))
                 )
             total_col_style_selection <- c(
@@ -62,7 +62,7 @@ apply_col_style_plan <- function(
     }
 
     if (length(total_col_style_selection) > 0) {
-        total_col_styles <- bind_rows(total_col_style_selection) %>%
+        total_col_styles <- dplyr::bind_rows(total_col_style_selection) %>%
             group_by(col) %>%
             slice(n()) %>%
             ungroup()
@@ -200,13 +200,13 @@ apply_col_alignment_char <- function(col, align) {
                 add_left = "",
                 add_right = tbl_dat$space_to_add
             ) %>%
-                bind_cols(tbl_dat, .)
+                dplyr::bind_cols(tbl_dat, .)
         } else {
             tbl_dat <- tibble(
                 add_left = tbl_dat$space_to_add,
                 add_right = ""
             ) %>%
-                bind_cols(tbl_dat, .)
+                dplyr::bind_cols(tbl_dat, .)
         }
     } else {
         align <- ifelse(
