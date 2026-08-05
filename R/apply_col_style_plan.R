@@ -366,12 +366,11 @@ apply_col_alignment_pos <- function(col, align) {
     # notify user if left padding was intended but no space found
     col_left_padded01 <- col_left_padded00 %>%
         mutate(
-            no_space =
-                (.data$col_split_lev > 1 &
-                    .data$col_split_lev < .data$n_split_levs) & # not the first or final level
-                    (is.na(.data$col_sub_2)) & # unable to split on a space
-                    (.data$col_sub != "") & # there is actually a value there
-                    (nchar(.data$to_add_left) > 0), # there is postive padding
+            no_space = (.data$col_split_lev > 1 &
+                .data$col_split_lev < .data$n_split_levs) & # not the first or final level
+                (is.na(.data$col_sub_2)) & # unable to split on a space
+                (.data$col_sub != "") & # there is actually a value there
+                (nchar(.data$to_add_left) > 0), # there is postive padding
             to_add_left = ifelse(.data$no_space, "", .data$to_add_left),
             dplyr::across(
                 c("col_sub_1", "to_add_left", "col_sub_2"),
