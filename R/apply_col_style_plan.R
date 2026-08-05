@@ -120,9 +120,9 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
     ## use names if they exist, else use content
     if (!is.null(names(col_selection))) {
         col_sel_names <- names(col_selection)
-        if (any(col_sel_names == "")) {
-            col_sel_names[col_sel_names == ""] <- col_selection[
-                col_sel_names == ""
+        if (any(!nzchar(col_sel_names))) {
+            col_sel_names[!nzchar(col_sel_names)] <- col_selection[
+                !nzchar(col_sel_names)
             ]
         }
         col_selection <- col_sel_names
@@ -370,8 +370,8 @@ apply_col_alignment_pos <- function(col, align) {
                 (.data$col_split_lev > 1 &
                     .data$col_split_lev < .data$n_split_levs) & # not the first or final level
                     (is.na(.data$col_sub_2)) & # unable to split on a space
-                    (.data$col_sub != "") & # there is actually a value there
-                    (nchar(.data$to_add_left) > 0), # there is postive padding
+                    (nzchar(.data$col_sub, keepNA = TRUE)) & # there is actually a value there
+                    (nzchar(.data$to_add_left)), # there is postive padding
                 TRUE,
                 FALSE
             ),

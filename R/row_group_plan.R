@@ -92,7 +92,7 @@ row_grp_structure <- function(group_val = ".default", element_block) {
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
             stop("when group_val is a list, must be a named list")
-        } else if (any(group_val_names == "")) {
+        } else if (any(!nzchar(group_val_names))) {
             stop("when group_val is a list, each entry must be named")
         }
     }

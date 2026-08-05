@@ -505,7 +505,7 @@ convert_ws_unicode <- function(gt_table) {
                 x_trimmed <- str_trim(x)
                 space_left <- str_match(x, "^\\s*") %>% nchar()
                 space_right <- str_match(x, "\\s*$") %>% nchar()
-                space_right[x_trimmed == ""] <- 0
+                space_right[!nzchar(x_trimmed)] <- 0
 
                 str_c(
                     str_dup("\U00A0", space_left),

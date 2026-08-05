@@ -104,7 +104,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
         ) |>
         dplyr::mutate(
             var_level_untd = dplyr::if_else(
-                .data$var_level_untd == "",
+                !nzchar(.data$var_level_untd),
                 NA_character_,
                 .data$var_level_untd
             )

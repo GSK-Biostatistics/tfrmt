@@ -80,7 +80,7 @@ apply_page_max_rows <- function(
             dplyr::across(
                 tidyselect::all_of(group_cols),
                 \(x) {
-                    if (is.character(x)) if_else(x == "", " ", x) else x
+                    if (is.character(x)) if_else(!nzchar(x, keepNA = TRUE), " ", x) else x
                 }
             ),
             TEMP_row = row_number()

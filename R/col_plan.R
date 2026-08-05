@@ -149,7 +149,7 @@ is_span_structure <- function(x) {
 check_span_structure_dots <- function(x) {
     x_names <- names(x)
 
-    if (is.null(x_names) || any(x_names == "")) {
+    if (is.null(x_names) || any(!nzchar(x_names))) {
         abort(
             paste0(
                 "Entries of a span_stucture must be named:\n ",
