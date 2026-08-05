@@ -57,7 +57,10 @@ test_that("expr_to_filter - quosures", {
         filter_var_list_named,
         "`col1` %in% c(\"value1\") & `col2` %in% c(\"value2\")"
     )
-    expect_identical(filter_var_list_default, "TRUE & `col2` %in% c(\"value2\")")
+    expect_identical(
+        filter_var_list_default,
+        "TRUE & `col2` %in% c(\"value2\")"
+    )
 
     ## length 2 vars & length two var incorrect names
     expect_error(
@@ -80,9 +83,15 @@ test_that("expr_to_filter - quosure - with quotes", {
 
     var <- '"a value with quotes"'
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
-    expect_identical(filter_var, "`col` %in% c(\"\\\"a value with quotes\\\"\")")
+    expect_identical(
+        filter_var,
+        "`col` %in% c(\"\\\"a value with quotes\\\"\")"
+    )
 
     var <- "\"a value with quotes\""
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
-    expect_identical(filter_var, "`col` %in% c(\"\\\"a value with quotes\\\"\")")
+    expect_identical(
+        filter_var,
+        "`col` %in% c(\"\\\"a value with quotes\\\"\")"
+    )
 })
