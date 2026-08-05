@@ -280,11 +280,11 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
     expect_true(all(res_classes == "character"))
 
     # correct coersion
-    expect_equal(
+    expect_identical(
         sort(unique(res$RACE)),
         sort(unique(as.character(adsl_$RACE)))
     )
-    expect_equal(
+    expect_identical(
         sort(unique(res$ETHNIC)),
         sort(unique(as.character(adsl_$ETHNIC)))
     )

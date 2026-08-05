@@ -6,8 +6,8 @@ test_that("expr_to_filter - quosure", {
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
     filter_default <- expr_to_filter.quosure(cols = quo_val, val = default)
 
-    expect_equal(filter_var, "`col` %in% c(\"value1\")")
-    expect_equal(filter_default, "TRUE")
+    expect_identical(filter_var, "`col` %in% c(\"value1\")")
+    expect_identical(filter_default, "TRUE")
 })
 
 
@@ -25,8 +25,8 @@ test_that("expr_to_filter - quosures", {
     filter_var <- expr_to_filter.quosures(cols = quos_val_1, val = var)
     filter_default <- expr_to_filter.quosures(cols = quos_val_1, val = default)
 
-    expect_equal(filter_var, "`col1` %in% c(\"value1\")")
-    expect_equal(filter_default, "TRUE")
+    expect_identical(filter_var, "`col1` %in% c(\"value1\")")
+    expect_identical(filter_default, "TRUE")
 
     ## length 2 vars & length one var
 
@@ -38,7 +38,7 @@ test_that("expr_to_filter - quosures", {
     )
 
     ### .default is allowed
-    expect_equal(
+    expect_identical(
         expr_to_filter.quosures(cols = quos_val_2, val = default),
         "TRUE"
     )
@@ -53,11 +53,11 @@ test_that("expr_to_filter - quosures", {
         val = var_list_default
     )
 
-    expect_equal(
+    expect_identical(
         filter_var_list_named,
         "`col1` %in% c(\"value1\") & `col2` %in% c(\"value2\")"
     )
-    expect_equal(filter_var_list_default, "TRUE & `col2` %in% c(\"value2\")")
+    expect_identical(filter_var_list_default, "TRUE & `col2` %in% c(\"value2\")")
 
     ## length 2 vars & length two var incorrect names
     expect_error(
@@ -72,17 +72,17 @@ test_that("expr_to_filter - quosure - with quotes", {
 
     var <- "value1's"
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
-    expect_equal(filter_var, "`col` %in% c(\"value1's\")")
+    expect_identical(filter_var, "`col` %in% c(\"value1's\")")
 
     var <- "value1's"
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
-    expect_equal(filter_var, "`col` %in% c(\"value1's\")")
+    expect_identical(filter_var, "`col` %in% c(\"value1's\")")
 
     var <- '"a value with quotes"'
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
-    expect_equal(filter_var, "`col` %in% c(\"\\\"a value with quotes\\\"\")")
+    expect_identical(filter_var, "`col` %in% c(\"\\\"a value with quotes\\\"\")")
 
     var <- "\"a value with quotes\""
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
-    expect_equal(filter_var, "`col` %in% c(\"\\\"a value with quotes\\\"\")")
+    expect_identical(filter_var, "`col` %in% c(\"\\\"a value with quotes\\\"\")")
 })
