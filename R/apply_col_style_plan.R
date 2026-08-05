@@ -120,7 +120,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
     ## use names if they exist, else use content
     if (!is.null(names(col_selection))) {
         col_sel_names <- names(col_selection)
-        if (any(!nzchar(col_sel_names))) {
+        if (!all(nzchar(col_sel_names))) {
             col_sel_names[!nzchar(col_sel_names)] <- col_selection[
                 !nzchar(col_sel_names)
             ]
