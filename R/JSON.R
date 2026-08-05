@@ -86,7 +86,7 @@ as_json.default <- function(x) {
 #' @export
 as_json.quosures <- function(x) {
     x %>%
-        map_chr(., as_label)
+        map_chr(as_label)
 }
 
 
@@ -434,7 +434,7 @@ ls_to_span_structure <- function(ls) {
                 str_c("'", ., "'") %>%
                 str_c(collapse = ", ") %>%
                 str_c("c(", ., ")") %>%
-                parse_expr(.)
+                parse_expr()
         )
 
     do.call(span_structure, span_ls)
@@ -463,7 +463,7 @@ ls_to_col_style_plan <- function(ls) {
                             quo_get_expr() %>%
                             expr_text()
                     ) %>%
-                        str_c(., collapse = ", ") %>%
+                        str_c(collapse = ", ") %>%
                         paste0("vars(", ., ")") %>%
                         parse_expr()
                 }
