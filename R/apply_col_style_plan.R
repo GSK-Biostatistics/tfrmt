@@ -286,7 +286,9 @@ apply_col_alignment_pos <- function(col, align) {
             align = ifelse(is.na(.data$align), .data$col_as_x, .data$align)
         ) %>%
         select(-"col_as_x") %>%
-        mutate(n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1)
+        mutate(
+            n_split_levs = stringr::str_count(.data$align, "(?<!\\\\)[\\|]") + 1
+        )
 
     # get the maximum number of splits to make
     # ignore any |'s that have been escaped by user

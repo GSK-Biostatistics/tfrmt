@@ -52,7 +52,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             # digits following period in expression
             dig <- frmt_def$expression %>%
                 str_extract("(?<=\\.)[X|x]+") %>%
-                str_count("[X|x]")
+                stringr::str_count("[X|x]")
 
             ## There were no x's after a `.` to extract, so assume none
             if (is.na(dig)) {
@@ -70,7 +70,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 ## remove x's from end of scientific
                 multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
                 sci_width <- str_extract(frmt_def$scientific, "[xX]+(?<=$)") %>%
-                    str_count("[X|x]")
+                    stringr::str_count("[X|x]")
 
                 vals_sci_post <- vals_sci %>%
                     str_extract("[^e]+$") %>%
@@ -84,7 +84,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             # digits preceding period in expression
             pre_dec_expr <- frmt_def$expression %>%
                 str_remove("\\..*$") %>%
-                str_count("[X|x]")
+                stringr::str_count("[X|x]")
 
             # vals rounded and trimmed
             rounded_vals <- format(
@@ -99,7 +99,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 # digits preceding period in vals
                 act_pre_dec = rounded_vals %>%
                     str_remove("\\..*$") %>%
-                    str_count(".")
+                    stringr::str_count(".")
             ) %>%
                 mutate(
                     # keep from being negative

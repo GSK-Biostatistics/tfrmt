@@ -300,7 +300,9 @@ tfrmt_sigdig <- function(
                 tidyselect::all_of(groups_in_data),
                 remove = FALSE
             ) %>%
-            mutate(def_ord = str_count(.data$def_ord, ".default"))
+            mutate(
+                def_ord = stringr::str_count(.data$def_ord, ".default")
+            )
     } else {
         data_ord <- sigdig_df %>%
             mutate(def_ord = 0)

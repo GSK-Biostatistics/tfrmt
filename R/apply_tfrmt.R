@@ -366,7 +366,7 @@ clean_spanning_col_names <- function(data) {
 
 count_spanning_layers <- function(x) {
     x %>%
-        str_count(.tlang_delim) %>%
+        stringr::str_count(.tlang_delim) %>%
         max()
 }
 
@@ -496,7 +496,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
 
 
 frmt_struct_string <- function(grp, lbl, param_vals) {
-    length_lbl <- str_count(lbl, ",") + 1
+    length_lbl <- stringr::str_count(lbl, ",") + 1
 
     group_names <- substitute(grp) %>%
         as.list() %>%
