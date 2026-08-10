@@ -214,7 +214,7 @@ test_that("column type has been preserved", {
 
     dfm <- df %>%
         pivot_longer(January:December) %>%
-        rename("month" = name) %>%
+        dplyr::rename("month" = name) %>%
         mutate(month = substr(month, 1, 3))
 
     # fmt: skip
@@ -228,7 +228,10 @@ test_that("column type has been preserved", {
 
     table_data <- dfm %>%
         mutate(param = "n") %>%
-        rename("label" = City, "column" = month)
+        dplyr::rename(
+            "label" = City,
+            "column" = month
+        )
 
     suppressMessages({
         x2 <- tfrmt(

@@ -130,7 +130,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
     tfrmt_data_extracted <- extract_data(tfrmt_dem)
 
     tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
-        rename(
+        dplyr::rename(
             "rowlbl1_new" = "rowlbl1",
             "rowlbl2_new" = "rowlbl2"
         ) |>
@@ -209,7 +209,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
     tfrmt_data_extracted <- extract_data(tfrmt_dem)
 
     tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
-        rename("rowlbl2_new" = "rowlbl2") |>
+        dplyr::rename("rowlbl2_new" = "rowlbl2") |>
         select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")

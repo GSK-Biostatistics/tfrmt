@@ -81,7 +81,9 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             tfrmt$label,
             tfrmt$param
         ) %>%
-            rename(frmt_applied = "TEMP_fmt_to_apply") %>%
+            dplyr::rename(
+                frmt_applied = "TEMP_fmt_to_apply"
+            ) %>%
             select(
                 -tidyselect::starts_with(
                     "TEMP"
@@ -100,7 +102,9 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             tfrmt$label,
             tfrmt$param
         ) %>%
-            rename(frmt_applied = "TEMP_fmt_to_apply") %>%
+            dplyr::rename(
+                frmt_applied = "TEMP_fmt_to_apply"
+            ) %>%
             select(
                 -tidyselect::starts_with(
                     "TEMP"
