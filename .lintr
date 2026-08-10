@@ -11,7 +11,6 @@ linters: all_linters(
   function_argument_linter = NULL,
   implicit_integer_linter = NULL,
   unnecessary_lambda_linter = NULL,
-  nzchar_linter = NULL,
   object_name_linter = NULL,
   # redundancy linters
   nonportable_path_linter = NULL,
@@ -30,7 +29,6 @@ linters: all_linters(
   one_call_pipe_linter = NULL,
   pipe_consistency_linter = NULL,
   nested_pipe_linter = NULL,
-  unnecessary_placeholder_linter = NULL,
   # line_length should also be handled by Air
   line_length_linter = NULL,
   # indentation is handled by Air
