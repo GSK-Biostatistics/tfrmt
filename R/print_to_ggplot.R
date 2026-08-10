@@ -64,7 +64,9 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # stop if column style plan added
     if (!is.null(tfrmt$col_style_plan)) {
-        cli::cli_abort("print_to_ggplot does not support col_style_plan elements")
+        cli::cli_abort(
+            "print_to_ggplot does not support col_style_plan elements"
+        )
     }
 
     # stop if param, column values not provided
