@@ -57,7 +57,7 @@ test_that("extract_data works for a single gt_tbl object", {
         select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
@@ -137,7 +137,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
@@ -213,7 +213,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
@@ -287,7 +287,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
         select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
@@ -364,7 +364,7 @@ test_that("extract_data works for a gt_group object (paged tables)", {
     #  Assertions
     expect_type(gt_group_data_extracted, "list")
     expect_length(gt_group_data_extracted, length(gt_group_manual))
-    expect_equal(gt_group_data_extracted, gt_group_manual)
+    expect_identical(gt_group_data_extracted, gt_group_manual)
 
     # Check that each element in the list is a data frame
     expect_s3_class(gt_group_data_extracted[[1]], "data.frame")
@@ -475,7 +475,7 @@ test_that("extract_data works for a table with bigN values", {
 
     # check expected data is equal to manual extraction
     expect_s3_class(extracted, "data.frame")
-    expect_equal(extracted, manual)
+    expect_identical(extracted, manual)
     expect_gt(nrow(extracted), 0)
 
     # check that the bigns are present in the column names of extracted data

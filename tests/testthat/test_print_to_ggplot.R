@@ -112,7 +112,7 @@ test_that("group columns are created correctly", {
         `..tfrmt_row_grp_lbl` = c(TRUE, rep(FALSE, 12))
     )
 
-    expect_equal(apply_grp_ggplot(test_data, tfrmt), expected_data)
+    expect_identical(apply_grp_ggplot(test_data, tfrmt), expected_data)
 })
 
 test_that("tfrmt is as expected", {
@@ -258,5 +258,5 @@ test_that("column type has been preserved", {
 
     expect_s3_class(table_data$column, class(x2$data$column))
     # risk$time is numeric (not an S3 object), so expect_s3_class cannot be used here
-    expect_equal(class(risk$time), class(p2$data$column)) # nolint: expect_s3_class_linter.
+    expect_identical(class(risk$time), class(p2$data$column)) # nolint: expect_s3_class_linter.
 })
