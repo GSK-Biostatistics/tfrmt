@@ -316,7 +316,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         left <- frmt_def$frmt_ls %>%
             map_chr(f_lhs_as_char) %>%
-            if_else(. == "TRUE", ., paste0(values_str, .)) %>%
+            dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
             parse_exprs() %>%
             map(eval_tidy, .data)
 

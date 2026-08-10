@@ -155,7 +155,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                     column_names = col_str
                 )
                 if (!is.null(names(col_loc))) {
-                    col_loc <- if_else(
+                    col_loc <- dplyr::if_else(
                         names(col_loc) != "",
                         names(col_loc),
                         unname(col_loc)
