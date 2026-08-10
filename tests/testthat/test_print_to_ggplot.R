@@ -230,14 +230,16 @@ test_that("column type has been preserved", {
         mutate(param = "n") %>%
         rename("label" = City, "column" = month)
 
-    x2 <- tfrmt(
-        # specify columns in the data
-        label = label,
-        column = column,
-        param = param,
-        value = value
-    ) %>%
-        print_to_ggplot(table_data)
+    suppressMessages({
+        x2 <- tfrmt(
+            # specify columns in the data
+            label = label,
+            column = column,
+            param = param,
+            value = value
+        ) %>%
+            print_to_ggplot(table_data)
+    })
 
     # continuous mock data
     risk <- tibble(
@@ -247,16 +249,27 @@ test_that("column type has been preserved", {
         param = rep("n", 12)
     )
 
-    p2 <- tfrmt(
-        # specify columns in the data
-        label = label,
-        column = time,
-        param = param,
-        value = value
-    ) %>%
-        print_to_ggplot(risk)
+    suppressMessages({
+        p2 <- tfrmt(
+            # specify columns in the data
+            label = label,
+            column = time,
+            param = param,
+            value = value
+        ) %>%
+            print_to_ggplot(risk)
+    })
 
-    expect_s3_class(table_data$column, class(x2$data$column))
+    expect_s3_class(
+        table_data$column,
+        class(x2$data$column)
+    )
+
     # risk$time is numeric (not an S3 object), so expect_s3_class cannot be used here
-    expect_identical(class(risk$time), class(p2$data$column)) # nolint: expect_s3_class_linter.
+    # nolint start: expect_s3_class_linter
+    expect_identical(
+        class(risk$time),
+        class(p2$data$column)
+    )
+    # nolint end
 })
