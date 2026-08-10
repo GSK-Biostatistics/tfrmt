@@ -401,7 +401,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
                 ungroup() %>%
-                filter(n > 1) %>%
+                dplyr::filter(n > 1) %>%
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
                 group_by(!!!tfrmt$group, param_list) %>%

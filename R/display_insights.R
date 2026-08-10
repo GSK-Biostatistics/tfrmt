@@ -236,7 +236,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
             tidyselect::everything()
         ) %>%
         dplyr::arrange(nchar(.data$value)) %>%
-        filter(!is.na(.data$value)) %>%
+        dplyr::filter(!is.na(.data$value)) %>%
         pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%

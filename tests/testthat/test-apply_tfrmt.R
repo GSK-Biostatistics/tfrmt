@@ -126,7 +126,8 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
 
     expect_identical(
         safe_apply_tfrmt(
-            data_demog %>% filter(rowlbl1 == "Age (y)"),
+            data_demog %>%
+                dplyr::filter(rowlbl1 == "Age (y)"),
             tfrmt_temp2,
             mock = FALSE
         )$messages,

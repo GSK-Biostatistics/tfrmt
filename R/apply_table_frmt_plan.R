@@ -122,7 +122,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         parse_expr()
 
     out <- .data %>%
-        filter(!!filter_expr)
+        dplyr::filter(!!filter_expr)
 
     # Protect against incomplete frmt_combines
     if (is_frmt_combine(cur_fmt$frmt_to_apply[[1]])) {
@@ -131,7 +131,9 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             dplyr::distinct() %>%
             group_by(!!!group, !!label) %>%
             mutate(test = sum(!!parse_expr(parm_expr))) %>%
-            filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)) %>%
+            dplyr::filter(
+                .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
+            ) %>%
             ungroup()
         join_by <- c(group, label, param) %>%
             map_chr(as_label) %>%

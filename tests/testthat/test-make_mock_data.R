@@ -843,7 +843,7 @@ test_that("Will add big N avaliable", {
     )
 
     auto_big_n_df <- make_mock_data(pop_tbl_tfrmt) %>%
-        filter(param == "big_n")
+        dplyr::filter(param == "big_n")
 
     # nolint start: commas_linter
     man_big_n_df <- tibble::tribble(

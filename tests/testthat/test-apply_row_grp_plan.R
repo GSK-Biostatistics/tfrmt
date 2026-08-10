@@ -1439,7 +1439,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%
         ungroup() %>%
-        filter(pct_high > 10) %>%
+        dplyr::filter(pct_high > 10) %>%
         select(-pct_high)
 
     data_ae2$AETERM <- ifelse(

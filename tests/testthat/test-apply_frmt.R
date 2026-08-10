@@ -713,7 +713,7 @@ test_that("frmt_combine only applies when all parameters are in the data", {
         param = quo(Param)
     )
     expected <- data %>%
-        filter(Label %in% c("Male", "Female")) %>%
+        dplyr::filter(Label %in% c("Male", "Female")) %>%
         pull(TEMP_row)
 
     expect_identical(rows_to_use, expected)

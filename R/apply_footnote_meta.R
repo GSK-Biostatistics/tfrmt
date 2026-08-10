@@ -256,7 +256,7 @@ get_row_loc <- function(
                         `___tfrmt_test` = !!filter_expr,
                         `___tfrmt_TEMP_rows` = row_number()
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_TEMP_rows`)
 
                 col_info$col <- ifelse(
@@ -273,7 +273,7 @@ get_row_loc <- function(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
                 col_info$col <- ifelse(
@@ -290,7 +290,7 @@ get_row_loc <- function(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
@@ -313,7 +313,7 @@ get_row_loc <- function(
                         `___tfrmt_grp_n` = row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
