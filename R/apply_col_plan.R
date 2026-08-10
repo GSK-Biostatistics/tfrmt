@@ -373,7 +373,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
     if (is.null(names(data_names))) {
         names(data_names) <- data_names
     } else {
-        if (any(is_preserved_name <- names(data_names) == "")) {
+        if (any(is_preserved_name <- !nzchar(names(data_names)))) {
             names(data_names)[is_preserved_name] <- data_names[
                 is_preserved_name
             ]
