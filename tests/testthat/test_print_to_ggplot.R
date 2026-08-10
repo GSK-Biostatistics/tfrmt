@@ -219,7 +219,7 @@ test_that("column type has been preserved", {
 
     dfm <- df %>%
         pivot_longer(January:December) %>%
-        rename("month" = name) %>%
+        dplyr::rename("month" = name) %>%
         dplyr::mutate(
             month = substr(month, 1, 3)
         )
@@ -237,7 +237,7 @@ test_that("column type has been preserved", {
         dplyr::mutate(
             param = "n"
         ) %>%
-        rename(
+        dplyr::rename(
             "label" = City,
             "column" = month
         )

@@ -10,7 +10,7 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
         names(col_selection)[col_selection_grp_lbl] <- ""
     }
 
-    select(data, !!!col_selection)
+    dplyr::select(data, !!!col_selection)
 }
 
 
@@ -245,14 +245,14 @@ col_plan_span_structure_to_vars <- function(
                 unique()
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
+                dplyr::pull(!!col_quo) %>%
                 unique()
         } else {
             split_data_names <- split_data_names %>%
                 dplyr::filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
+                dplyr::pull(!!col_quo) %>%
                 unique()
         }
     }
@@ -285,7 +285,7 @@ col_plan_span_structure_to_vars <- function(
             by = names(col_selections)
         ) %>%
         dplyr::arrange(.data$ord_col) %>%
-        select(-"ord_col") %>%
+        dplyr::select(-"ord_col") %>%
         unite_df_to_data_names(
             preselected_cols,
             column_names,
@@ -454,7 +454,7 @@ unite_df_to_data_names <- function(
                 TRUE ~ .data$original
             )
         ) %>%
-        pull(.data$original)
+        dplyr::pull(.data$original)
 
     new_names <- ifelse(
         new_preselected_cols_full$original !=

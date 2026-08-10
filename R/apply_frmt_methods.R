@@ -36,13 +36,12 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 #' @rdname apply_frmt
 apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
-        out <- .data %>%
-            dplyr::mutate(
-                !!value := frmt_def$expression
-            )
+        out <- dplyr::mutate(
+            .data,
+            !!value := frmt_def$expression
+        )
     } else {
-        vals <- .data %>%
-            pull(!!value)
+        vals <- dplyr::pull(.data, !!value)
 
         if (length(vals) == 0) {
             return(.data)
@@ -195,7 +194,7 @@ apply_frmt.frmt_combine <- function(
 
     #Test if common information exists
     miss_param_from_data <- .tmp_data %>%
-        pull(!!param) %>%
+        dplyr::pull(!!param) %>%
         unique() %>%
         setdiff(fmt_param_vals_uq, .)
 
@@ -207,7 +206,7 @@ apply_frmt.frmt_combine <- function(
     }
 
     .tmp_data_wide <- .tmp_data %>%
-        select(!!value, !!param, !!!column, !!label, !!!group) %>%
+        dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
         pivot_wider(
             values_from = !!value,
             names_from = !!param
@@ -230,10 +229,11 @@ apply_frmt.frmt_combine <- function(
     # check that pivot_wider resulted in a reduction of rows, which indicates that at least
     #  1 row will successfully have a frmt_combine in it
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
-        id_cols <- .tmp_data %>% select(!!!column, !!label, !!!group, !!param)
+        id_cols <- .tmp_data %>%
+            dplyr::select(!!!column, !!label, !!!group, !!param)
         warning(paste0(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            toString(names(id_cols %>% select(-!!param))),
+            toString(names(id_cols %>% dplyr::select(-!!param))),
             ". Current values:\n",
             paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
         ))
@@ -252,7 +252,7 @@ apply_frmt.frmt_combine <- function(
                 TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
             )
         ) %>%
-        select(
+        dplyr::select(
             -tidyselect::all_of(
                 fmt_param_vals_uq
             ),
@@ -262,7 +262,7 @@ apply_frmt.frmt_combine <- function(
     ## if not mock remove
     if (!mock) {
         .data <- .data %>%
-            select(-!!value)
+            dplyr::select(-!!value)
     }
 
     merge_group <- map(
@@ -283,8 +283,8 @@ apply_frmt.frmt_combine <- function(
             by = map_chr(merge_group, as_label)
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
-        slice(1) %>%
-        ungroup()
+        dplyr::slice(1) %>%
+        dplyr::ungroup()
 }
 
 #' @export
@@ -306,12 +306,14 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         values_str <- as_label(value)
         n <- length(frmt_def$frmt_ls)
 
-        val_len <- length(pull(.data, !!value))
+        val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
             map(f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
-                    out <- apply_frmt(x, .data, value, ...) %>% pull(!!value)
+                    out <- x %>%
+                        apply_frmt(.data, value, ...) %>%
+                        dplyr::pull(!!value)
                 } else {
                     out <- rep(x, val_len)
                 }

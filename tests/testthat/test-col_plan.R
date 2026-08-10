@@ -944,15 +944,15 @@ test_that("Order is kept for multi-col columns", {
     )
 
     new_name_ord <- apply_tfrmt(test, tfrmt) %>%
-        select(-label) %>%
+        dplyr::select(-label) %>%
         names()
 
     new_name_ord_in_dat <- test %>%
-        select(
+        dplyr::select(
             tidyselect::starts_with("col")
         ) %>%
         unite("new", sep = .tlang_delim) %>%
-        pull(new)
+        dplyr::pull(new)
 
     expect_identical(new_name_ord, new_name_ord_in_dat)
 })

@@ -6,10 +6,6 @@
 # tidyselect)
 
 ## usethis namespace: start
-#' @importFrom dplyr pull reframe relocate
-#' @importFrom dplyr rename rename_with row_number rowwise select slice
-#' @importFrom dplyr summarise ungroup
-#'
 #' @importFrom dplyr vars
 #'
 #' @importFrom forcats fct_inorder

@@ -454,7 +454,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
             dplyr::mutate(
-                set = map(.data$set, ~ pull(., .data$cols))
+                set = map(.data$set, ~ dplyr::pull(., .data$cols))
             ) %>%
             dplyr::filter(
                 .data$value != "NA"
@@ -485,10 +485,8 @@ format_gt_column_labels <- function(gt_table, .data) {
                 )
             )
 
-        renm_vals <- lowest_lvl %>%
-            pull(.data$value)
-        names(renm_vals) <- lowest_lvl %>%
-            pull(.data$cols)
+        renm_vals <- dplyr::pull(lowest_lvl, .data$value)
+        names(renm_vals) <- dplyr::pull(lowest_lvl, .data$cols)
     } else {
         renm_vals <- names(.data)
         names(renm_vals) <- renm_vals

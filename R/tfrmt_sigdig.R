@@ -91,7 +91,7 @@ param_set <- function(...) {
             )
         ) %>%
         dplyr::mutate(
-            idx = row_number()
+            idx = dplyr::row_number()
         ) %>%
         unnest("params", keep_empty = TRUE) %>%
         dplyr::mutate(
@@ -102,7 +102,7 @@ param_set <- function(...) {
             )
         ) %>%
         dplyr::filter(drop) %>%
-        pull(.data$idx) %>%
+        dplyr::pull(.data$idx) %>%
         unique()
 
     if (length(idx_drop) > 0) {
@@ -225,7 +225,9 @@ tfrmt_sigdig <- function(
     }
 
     # error if no group/label columns available
-    data_names <- sigdig_df %>% select(-"sigdig") %>% names()
+    data_names <- sigdig_df %>%
+        dplyr::select(-"sigdig") %>%
+        names()
     if (length(data_names) == 0) {
         stop("`sigdig_df` input must contain group and/or label value columns.")
     }
@@ -240,7 +242,7 @@ tfrmt_sigdig <- function(
     # if group param is provided, figure out which group/label variables are present in data and only keep those
     if (length(group_names) > 0) {
         sigdig_df <- sigdig_df %>%
-            select(
+            dplyr::select(
                 tidyselect::any_of(
                     c(
                         group_names,
@@ -251,7 +253,9 @@ tfrmt_sigdig <- function(
             )
 
         # error if mismatch between provided group (and label, if it exists) & data columns
-        data_names <- sigdig_df %>% select(-"sigdig") %>% names()
+        data_names <- sigdig_df %>%
+            dplyr::select(-"sigdig") %>%
+            names()
         if (length(data_names) == 0) {
             group_msg <- if (length(group_names) > 0) {
                 paste0("group: ", toString(group_names), "\n")
@@ -319,7 +323,7 @@ tfrmt_sigdig <- function(
             .data$sigdig
         ) %>%
         dplyr::group_split() %>%
-        map(select, -"def_ord") %>%
+        map(dplyr::select, -"def_ord") %>%
         map(
             body_plan_builder,
             tfrmt_inputs$group,

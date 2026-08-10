@@ -24,7 +24,7 @@ test_that("insert post space - single grouping variable", {
             vars(grp1),
             sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~label , ~trtA      , ~trtB      , ~trtC      ,
@@ -54,7 +54,7 @@ test_that("insert post space - single grouping variable", {
             vars(grp1),
             sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~label , ~trtA      , ~trtB      , ~trtC      ,
@@ -105,7 +105,7 @@ test_that("insert post space - two grouping variables", {
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
@@ -146,7 +146,7 @@ test_that("insert post space - two grouping variables", {
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
@@ -193,7 +193,7 @@ test_that("insert mix - single grouping variable", {
 
     expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
@@ -234,7 +234,7 @@ test_that("insert post space after specific value", {
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
@@ -281,7 +281,7 @@ test_that("overlapping row_grp_structures - prefers latest", {
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
@@ -352,7 +352,7 @@ test_that("post space is truncated to data width", {
 
     expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
@@ -388,7 +388,7 @@ test_that("do not recycle the post space for full width", {
 
     expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
@@ -424,7 +424,7 @@ test_that("post space works when data contains NAs", {
 
     expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      , ~other ,
@@ -480,7 +480,7 @@ test_that("Check combine_group_cols with a single group", {
                 location = "spanning"
             )
         ) %>%
-            select(-..tfrmt_row_grp_lbl),
+            dplyr::select(-..tfrmt_row_grp_lbl),
         mock_single_grp
     )
 })
@@ -553,7 +553,11 @@ test_that("Check combine_group_cols with a multi groups", {
             group = vars(grp2),
             label = sym("my_label")
         ) %>%
-        select(grp1, grp2, everything()) %>%
+        dplyr::select(
+            grp1,
+            grp2,
+            everything()
+        ) %>%
         dplyr::mutate(
             grp1 = ifelse(nzchar(grp1), grp1, NA)
         ) %>%
@@ -642,7 +646,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         group = vars(grp1, grp2),
         label = sym("my_label")
     ) %>%
-        select(-..tfrmt_post_space_row)
+        dplyr::select(-..tfrmt_post_space_row)
 
     # nolint start: commas_linter
     man_test_listcols <- tibble::tribble(
@@ -1012,7 +1016,10 @@ test_that("row order is retained for all selections", {
             label_loc = element_row_grp_loc(location = "indented")
         )
     ) %>%
-        print_to_gt(dat %>% select(-ord))
+        print_to_gt(
+            dat |>
+                dplyr::select(-ord)
+        )
 
     gt_indented_dat <- gt_indented$`_data`
     # nolint start: commas_linter
@@ -1139,7 +1146,7 @@ test_that("Row group plans with col style plan", {
 
     expect_identical(
         tfrmt_gt$`_data` %>%
-            select(-`..tfrmt_row_grp_lbl`) %>%
+            dplyr::select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
         # fmt: skip
         list(
@@ -1239,7 +1246,7 @@ test_that("Row group plans with col style plan", {
 
     expect_equal(
         tfrmt_gt$`_data` %>%
-            select(-`..tfrmt_row_grp_lbl`) %>%
+            dplyr::select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
         # fmt: skip
         list(
@@ -1440,9 +1447,9 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
         dplyr::mutate(
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         dplyr::filter(pct_high > 10) %>%
-        select(-pct_high)
+        dplyr::select(-pct_high)
 
     data_ae2$AETERM <- ifelse(
         data_ae2$AETERM == "ANY BODY SYSTEM",

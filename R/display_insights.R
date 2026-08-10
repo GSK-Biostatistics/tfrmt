@@ -9,9 +9,9 @@
 #' @noRd
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     .data <- .data %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         dplyr::mutate(
-            TEMP_row = row_number()
+            TEMP_row = dplyr::row_number()
         )
 
     TEMP_appl_row <- table_frmt_plan %>%
@@ -25,7 +25,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     ) %>%
         # TODO add a warning if a format isn't applied anywhere
         dplyr::mutate(
-            TEMP_fmt_rank = row_number()
+            TEMP_fmt_rank = dplyr::row_number()
         ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
@@ -34,7 +34,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
             TEMP_appl_row,
             dplyr::desc(.data$TEMP_fmt_rank)
         ) %>%
-        slice(1) %>%
+        dplyr::slice(1) %>%
         dplyr::left_join(
             .data,
             .,
@@ -93,8 +93,10 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             tfrmt$label,
             tfrmt$param
         ) %>%
-            rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-            select(
+            dplyr::rename(
+                frmt_applied = "TEMP_fmt_to_apply"
+            ) %>%
+            dplyr::select(
                 -tidyselect::starts_with(
                     "TEMP"
                 )
@@ -112,8 +114,10 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             tfrmt$label,
             tfrmt$param
         ) %>%
-            rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-            select(
+            dplyr::rename(
+                frmt_applied = "TEMP_fmt_to_apply"
+            ) %>%
+            dplyr::select(
                 -tidyselect::starts_with(
                     "TEMP"
                 )
@@ -124,7 +128,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 }),
                 frmt_details = map_chr(.data$frmt_applied, format)
             ) %>%
-            select(-"frmt_applied")
+            dplyr::select(-"frmt_applied")
 
         # extract < frmt > type from frmt_details
         output <- output %>%
@@ -205,7 +209,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
 
     tbl_dat_wide <- tbl_dat %>%
         pivot_wider_tfrmt(tfrmt, mock) %>%
-        select(
+        dplyr::select(
             -tidyselect::any_of(
                 c(
                     map_chr(tfrmt$group, as_name),
@@ -239,7 +243,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     )
 
     vec_prep <- tbl_dat_wide %>%
-        select(
+        dplyr::select(
             tidyselect::any_of(
                 col_selection
             )
@@ -249,7 +253,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         ) %>%
         dplyr::arrange(nchar(.data$value)) %>%
         dplyr::filter(!is.na(.data$value)) %>%
-        pull(.data$value) %>%
+        dplyr::pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%
         glue_collapse(sep = ",\n  ")
