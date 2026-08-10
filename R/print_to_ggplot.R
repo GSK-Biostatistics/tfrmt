@@ -57,7 +57,9 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # stop if more than one column variable
     if (length(tfrmt$column) > 1) {
-        cli::cli_abort("print_to_ggplot does not support multiple column variables")
+        cli::cli_abort(
+            "print_to_ggplot does not support multiple column variables"
+        )
     }
 
     # stop if column style plan added
