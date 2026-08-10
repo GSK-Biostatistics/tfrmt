@@ -13,11 +13,14 @@ frmt_combine(expression, ..., missing = NULL)
 frmt_when(..., missing = NULL)
 }
 \arguments{
-\item{expression}{this is the string representing the intended format. See details: expression for more a detailed description.}
+\item{expression}{this is the string representing the intended format. See
+details: expression for more a detailed description.}
 
-\item{missing}{when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.}
+\item{missing}{when a value is missing that is intended to be formatted, what
+value to place. See details: missing for more a detailed description.}
 
-\item{scientific}{a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".}
+\item{scientific}{a string representing the intended scientific notation to
+be appended to the expression. Ex. "e^XX" or " x10^XX".}
 
 \item{transform}{this is what should happen to the value prior to formatting,
 It should be a formula or function. Ex. \code{~.*100}if you want to convert a
@@ -40,8 +43,10 @@ and missing behaviour.
 single cell in the table. Each of the rows needs to have a defined \code{frmt()}
 and need to share a label.
 
-\code{frmt_when()} is used when a rows format behaviour is dependent on the value itself and is written similarly to \code{\link[dplyr:case_when]{dplyr::case_when()}}.
-The left hand side of the equation is a \code{"TRUE"}for the default case or the right hand side of a boolean expression \code{">50"}.
+\code{frmt_when()} is used when a rows format behaviour is dependent on the value
+itself and is written similarly to \code{\link[dplyr:case_when]{dplyr::case_when()}}.
+The left hand side of the equation is a \code{"TRUE"}for the default case or the
+right hand side of a boolean expression \code{">50"}.
 }
 \details{
 \subsection{expression}{

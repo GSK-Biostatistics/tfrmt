@@ -114,7 +114,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
         # extract < frmt > type from frmt_details
         output <- output %>%
             mutate(
-                frmt_details = case_when(
+                frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
                         str_remove("< frmt \\| Expression: ") %>%
                         str_remove(" >"),

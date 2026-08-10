@@ -183,7 +183,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
                         values = fill_post_space(
                             post_space = element_block$post_space,
                             fill = element_block$fill,
-                            width = widths[[cur_column()]]
+                            width = widths[[dplyr::cur_column()]]
                         )
                     )
                 ),

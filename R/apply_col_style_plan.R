@@ -314,7 +314,7 @@ apply_col_alignment_pos <- function(col, align) {
         group_by(.data$col_idx) %>%
         mutate(
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),
-            col_split_start = case_when(
+            col_split_start = dplyr::case_when(
                 is.na(.data$col_split_val) ~ NA,
                 TRUE ~ lag(.data$col_split_end, default = 0) + 1
             ),
@@ -336,14 +336,14 @@ apply_col_alignment_pos <- function(col, align) {
                 .data$col_split_start,
                 .data$col_split_end
             ),
-            col_sub_1 = case_when(
+            col_sub_1 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
                 !str_detect(.data$col_sub, " ") &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
                 TRUE ~ str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space
-            col_sub_2 = case_when(
+            col_sub_2 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ .data$col_sub, # first substring so put the whole thing here
                 .data$col_split_lev == .data$n_split_levs ~ NA_character_, # last substring, nothing to left-pad
                 TRUE ~ str_extract(.data$col_sub, "(?= ).*")
