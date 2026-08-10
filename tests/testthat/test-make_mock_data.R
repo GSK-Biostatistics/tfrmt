@@ -635,7 +635,7 @@ test_that("Using col_plan to get column names", {
     )
 
     col_names <- make_mock_data(basic_cols) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
     expect_identical(col_names, c("Placebo", "Low", "High"))
 
@@ -750,7 +750,7 @@ test_that("Using col_style_plan to get names", {
     )
 
     col_names <- make_mock_data(basic_cols) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
     expect_identical(col_names, c("Active", "Placebo", "Total"))
 
@@ -885,7 +885,7 @@ test_that("Mock data for col_plan with only drops", {
     )
 
     make_mock_data(drop_tfrmt) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique() %>%
         expect_identical(c("column1", "column2", "column3"))
 })
@@ -916,7 +916,7 @@ test_that("Mock data for col_plan does not add group, label, or sorting_cols nam
     )
 
     make_mock_data(tf_cols) %>%
-        pull(col) %>%
+        dplyr::pull(col) %>%
         unique() %>%
         expect_identical(c("col1", "col2"))
 })
@@ -943,7 +943,7 @@ test_that("Mock data ignores col_plan with everything()", {
     )
 
     col_names <- make_mock_data(tf_everything) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
     expect_identical(
         col_names,

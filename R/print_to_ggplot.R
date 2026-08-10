@@ -82,8 +82,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # Keeping the original data of column to preserve data type later on
     column_name <- as_label(tfrmt$column[[1]])
-    column_data <- .data %>%
-        pull(!!column_name)
+    column_data <- dplyr::pull(.data, !!column_name)
 
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
@@ -179,7 +178,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
             axis.text.x = element_text(size = 10)
         ) + # replace y values with labels
         scale_y_discrete(
-            labels = pull(long_data, !!tfrmt$label),
+            labels = dplyr::pull(long_data, !!tfrmt$label),
             breaks = long_data$y
         )
 }

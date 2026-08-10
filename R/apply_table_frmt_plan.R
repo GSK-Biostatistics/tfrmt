@@ -52,7 +52,7 @@ apply_table_frmt_plan <- function(
     dat_plus_fmt %>%
         map_dfr(function(x) {
             cur_fmt <- x %>%
-                pull(.data$TEMP_fmt_to_apply) %>%
+                dplyr::pull(.data$TEMP_fmt_to_apply) %>%
                 .[1] %>%
                 .[[1]]
 
@@ -66,7 +66,7 @@ apply_table_frmt_plan <- function(
 
                 # Add message
                 x %>%
-                    pull(.data$TEMP_row) %>%
+                    dplyr::pull(.data$TEMP_row) %>%
                     paste0(collapse = ", ") %>%
                     paste(
                         "The following rows of the given dataset have no format applied to them",
@@ -143,7 +143,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             left_join(out, by = join_by, multiple = "all")
     }
     out %>%
-        pull(.data$TEMP_row)
+        dplyr::pull(.data$TEMP_row)
 }
 
 all_missing <- function(cols, .data) {

@@ -423,7 +423,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                         param_vals = .data$param_list
                     )
                 ) %>%
-                pull(.data$suggested_frmt_struct) %>%
+                dplyr::pull(.data$suggested_frmt_struct) %>%
                 paste0("- `", ., "`", collapse = "\n")
 
             inform(

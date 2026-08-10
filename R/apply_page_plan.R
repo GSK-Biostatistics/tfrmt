@@ -159,7 +159,7 @@ apply_page_max_rows <- function(
             if ("..tfrmt_summary_row" %in% names(cur_dat_new)) {
                 all_summ_row <- cur_dat_new %>%
                     dplyr::filter(.data$`..tfrmt_summary_row`) %>%
-                    pull(.data$TEMP_row)
+                    dplyr::pull(.data$TEMP_row)
             }
 
             # save tbl to list
@@ -328,7 +328,7 @@ apply_page_struct <- function(
                 ~ select(.x, -"TEMP_row")
             )
         ) %>%
-        pull(.data$`..tfrmt_data`)
+        dplyr::pull(.data$`..tfrmt_data`)
 
     # add pg_note to individual tbls as applicable
     if ("..tfrmt_page_note" %in% names(dat_split_2)) {
@@ -446,7 +446,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
                 .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
             )
         ) %>%
-        pull(.data$`..tfrmt_summ_grp_num`)
+        dplyr::pull(.data$`..tfrmt_summ_grp_num`)
 
     prev_summ_top_grp_vars <- map(
         seq_len(nrow(prev_summ)),

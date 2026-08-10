@@ -245,14 +245,14 @@ col_plan_span_structure_to_vars <- function(
                 unique()
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
+                dplyr::pull(!!col_quo) %>%
                 unique()
         } else {
             split_data_names <- split_data_names %>%
                 dplyr::filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
+                dplyr::pull(!!col_quo) %>%
                 unique()
         }
     }
@@ -449,7 +449,7 @@ unite_df_to_data_names <- function(
                 TRUE ~ .data$original
             )
         ) %>%
-        pull(.data$original)
+        dplyr::pull(.data$original)
 
     new_names <- ifelse(
         new_preselected_cols_full$original !=

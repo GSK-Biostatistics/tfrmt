@@ -281,7 +281,7 @@ add_mock_big_ns <- function(data, column, param, big_n_struct) {
     if (!is.null(big_n_struct)) {
         col <- column %>% last()
         col_vals <- data %>%
-            pull(!!col) %>%
+            dplyr::pull(!!col) %>%
             unique()
 
         data <- tibble(

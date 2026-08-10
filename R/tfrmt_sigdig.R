@@ -100,7 +100,7 @@ param_set <- function(...) {
             )
         ) %>%
         dplyr::filter(drop) %>%
-        pull(.data$idx) %>%
+        dplyr::pull(.data$idx) %>%
         unique()
 
     if (length(idx_drop) > 0) {

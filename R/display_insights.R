@@ -237,7 +237,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         ) %>%
         dplyr::arrange(nchar(.data$value)) %>%
         dplyr::filter(!is.na(.data$value)) %>%
-        pull(.data$value) %>%
+        dplyr::pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%
         glue_collapse(., ",\n  ")

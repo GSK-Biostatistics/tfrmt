@@ -36,11 +36,9 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 #' @rdname apply_frmt
 apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
-        out <- .data %>%
-            mutate(!!value := frmt_def$expression)
+        out <- mutate(.data, !!value := frmt_def$expression)
     } else {
-        vals <- .data %>%
-            pull(!!value)
+        vals <- dplyr::pull(.data, !!value)
 
         if (length(vals) == 0) {
             return(.data)
@@ -193,7 +191,7 @@ apply_frmt.frmt_combine <- function(
 
     #Test if common information exists
     miss_param_from_data <- .tmp_data %>%
-        pull(!!param) %>%
+        dplyr::pull(!!param) %>%
         unique() %>%
         setdiff(fmt_param_vals_uq, .)
 
@@ -302,12 +300,14 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         values_str <- as_label(value)
         n <- length(frmt_def$frmt_ls)
 
-        val_len <- length(pull(.data, !!value))
+        val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
             map(f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
-                    out <- apply_frmt(x, .data, value, ...) %>% pull(!!value)
+                    out <- x %>%
+                        apply_frmt(.data, value, ...) %>%
+                        dplyr::pull(!!value)
                 } else {
                     out <- rep(x, val_len)
                 }
