@@ -111,7 +111,10 @@ test_that("markdown column labels - spanning", {
                 levels = c("ITT </br> (N=10)", "Eff", "Com")
             )
         ) %>%
-        mutate(val = rpois(216, 15), param = "val")
+        dplyr::mutate(
+            val = rpois(216, 15),
+            param = "val"
+        )
 
     # create output with spanning headers
     test_tfrmt <- tfrmt(

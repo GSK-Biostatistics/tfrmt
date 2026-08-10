@@ -405,7 +405,9 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
                 dplyr::group_by(!!!tfrmt$group, param_list) %>%
-                mutate(label_quote = paste0('"', !!tfrmt$label, '"')) %>%
+                dplyr::mutate(
+                    label_quote = paste0('"', !!tfrmt$label, '"')
+                ) %>%
                 reframe(
                     label_collapse = as.character(paste(
                         label_quote,
@@ -416,7 +418,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ) %>%
                 unique() %>%
                 rowwise() %>%
-                mutate(
+                dplyr::mutate(
                     suggested_frmt_struct = frmt_struct_string(
                         grp = list(!!!tfrmt$group),
                         lbl = label_collapse,
@@ -444,7 +446,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         map_chr(as_name)
     tbl_dat_wide <- data %>%
         select(-!!tfrmt$param) %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 tidyselect::all_of(column_cols),
                 ~ as.character(.x)
@@ -552,14 +554,14 @@ check_order_vars <- function(.data, tfrmt) {
         if (is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
-                mutate(
+                dplyr::mutate(
                     n1 = n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
                     n2 = n_distinct(!!tfrmt$label)
                 )
         } else {
             order_check <- .data %>%
                 dplyr::group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
-                mutate(
+                dplyr::mutate(
                     n1 = n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
                     n2 = n_distinct(!!(tfrmt$label))
                 )

@@ -75,7 +75,7 @@ apply_col_style_plan <- function(
             col_to_modify <- col_style_to_apply$col %>% char_as_quo()
 
             .data <- .data %>%
-                mutate(
+                dplyr::mutate(
                     !!col_to_modify := apply_style_to_col(
                         !!col_to_modify,
                         col_style_to_apply[setdiff(
@@ -190,7 +190,7 @@ apply_col_alignment <- function(col, align, type = "char") {
 apply_col_alignment_char <- function(col, align) {
     if (all(align %in% c("left", "right"))) {
         tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
-            mutate(
+            dplyr::mutate(
                 string_col = nchar(.data$col),
                 string_tot = max(.data$string_col),
                 space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
@@ -225,7 +225,7 @@ apply_col_alignment_char <- function(col, align) {
                 fill = "right",
                 remove = FALSE
             ) %>%
-            mutate(
+            dplyr::mutate(
                 dplyr::across(
                     c("add_left", "add_right"),
                     function(x) {
@@ -282,11 +282,13 @@ apply_col_alignment_pos <- function(col, align) {
 
     # account for any with missing align strings
     col_with_align <- col_with_align %>%
-        mutate(
+        dplyr::mutate(
             align = ifelse(is.na(.data$align), .data$col_as_x, .data$align)
         ) %>%
         select(-"col_as_x") %>%
-        mutate(n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1)
+        dplyr::mutate(
+            n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1
+        )
 
     # get the maximum number of splits to make
     # ignore any |'s that have been escaped by user
@@ -295,7 +297,9 @@ apply_col_alignment_pos <- function(col, align) {
     # create splits on the align vec at the |'s and count the number of chars for each
     # this will be used to help us split the col by position
     col_with_pos <- col_with_align %>%
-        mutate(col_idx = row_number()) %>%
+        dplyr::mutate(
+            col_idx = row_number()
+        ) %>%
         separate(
             "align",
             into = paste0("col_split_", 1:n_split_levs_max),
@@ -312,7 +316,7 @@ apply_col_alignment_pos <- function(col, align) {
         ) %>%
         dplyr::arrange(.data$col_idx, .data$col_split_lev) %>%
         dplyr::group_by(.data$col_idx) %>%
-        mutate(
+        dplyr::mutate(
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),
             col_split_start = dplyr::case_when(
                 is.na(.data$col_split_val) ~ NA,
@@ -330,7 +334,7 @@ apply_col_alignment_pos <- function(col, align) {
     #  - if > first substring, split will occur on 1st identified space (if available).
     #       padding will be added to the left of 2nd piece
     col_with_splits <- col_with_pos %>%
-        mutate(
+        dplyr::mutate(
             col_sub = substr(
                 .data$col,
                 .data$col_split_start,
@@ -353,7 +357,7 @@ apply_col_alignment_pos <- function(col, align) {
     # within each split level, find the # of chars it needs to take up, then left pad
     col_left_padded00 <- col_with_splits %>%
         dplyr::group_by(.data$col_split_lev) %>%
-        mutate(
+        dplyr::mutate(
             to_add_left = nchar(.data$col_sub) %>%
                 {
                     max(., na.rm = TRUE) - .
@@ -365,7 +369,7 @@ apply_col_alignment_pos <- function(col, align) {
 
     # notify user if left padding was intended but no space found
     col_left_padded01 <- col_left_padded00 %>%
-        mutate(
+        dplyr::mutate(
             no_space = (.data$col_split_lev > 1 &
                 .data$col_split_lev < .data$n_split_levs) & # not the first or final level
                 (is.na(.data$col_sub_2)) & # unable to split on a space
@@ -394,7 +398,7 @@ apply_col_alignment_pos <- function(col, align) {
     col_left_padded_sum <- col_left_padded01 %>%
         dplyr::group_by(.data$col_idx) %>%
         summarise(col = paste0(.data$col_sub_out, collapse = "")) %>%
-        mutate(
+        dplyr::mutate(
             to_add_right = .data$col %>%
                 nchar() %>%
                 {

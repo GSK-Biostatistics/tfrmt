@@ -76,7 +76,7 @@ apply_page_max_rows <- function(
     group_cols <- map_chr(group, rlang::as_label)
 
     .data <- .data %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 tidyselect::all_of(group_cols),
                 \(x) {
@@ -199,7 +199,9 @@ apply_page_struct <- function(
     transform
 ) {
     .data <- .data %>%
-        mutate(TEMP_row = row_number())
+        dplyr::mutate(
+            TEMP_row = row_number()
+        )
 
     # 1. check that only 1 page_structure contains a .default, drop extras
     struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
@@ -232,7 +234,7 @@ apply_page_struct <- function(
                 `..tfrmt_data` = tidyselect::everything(),
                 .by = tidyselect::all_of(grping)
             ) %>%
-            mutate(
+            dplyr::mutate(
                 `..tfrmt_split_num` = row_number()
             )
     } else {
@@ -244,7 +246,7 @@ apply_page_struct <- function(
 
     # find indices of specific values in data
     dat_split_2_idx <- dat_split_1 %>%
-        mutate(
+        dplyr::mutate(
             split_idx = map(.data$`..tfrmt_data`, function(x) {
                 map(page_struct_list, function(y) {
                     struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
@@ -256,13 +258,13 @@ apply_page_struct <- function(
 
     # determine where the splits should occur in data
     dat_split_2 <- dat_split_2_idx %>%
-        mutate(
+        dplyr::mutate(
             `..tfrmt_data` = map2(
                 .data$`..tfrmt_data`,
                 .data$split_idx,
                 function(x, y) {
                     x %>%
-                        mutate(
+                        dplyr::mutate(
                             `..tfrmt_split_idx` = .data$TEMP_row %in% y,
                             # carry it forward to denote start of next table,
                             `..tfrmt_start_idx` = dplyr::lag(
@@ -322,7 +324,7 @@ apply_page_struct <- function(
     # 4. return the values
     # prep list of tbsl
     dat_out <- dat_split_2 %>%
-        mutate(
+        dplyr::mutate(
             `..tfrmt_data` = map(
                 .data$`..tfrmt_data`,
                 ~ select(.x, -"TEMP_row")
@@ -369,7 +371,7 @@ combine_group_cols_mod <- function(
     # to retain the order of the data when splitting by group
     .data <- .data %>%
         select(c(!!!group, !!label, "TEMP_row")) %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(c(!!!group), ~ fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
@@ -391,7 +393,7 @@ combine_group_cols_mod <- function(
         .data <- split_dat %>%
             map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
-                    mutate(
+                    dplyr::mutate(
                         `..tfrmt_summary_row_cur` = str_trim(
                             !!label,
                             side = "left"
@@ -408,11 +410,13 @@ combine_group_cols_mod <- function(
                     # if the set of rows contains NO group-level summary data, create an extra row to be added
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
-                        mutate(
+                        dplyr::mutate(
                             !!label := !!dplyr::last(group)
                         ) %>%
                         dplyr::distinct() %>%
-                        mutate(..tfrmt_row_grp_lbl = TRUE)
+                        dplyr::mutate(
+                            ..tfrmt_row_grp_lbl = TRUE
+                        )
                 }
 
                 lone_dat_summ %>%
@@ -435,7 +439,7 @@ combine_group_cols_mod <- function(
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 c(!!!group),
                 ~ .x == !!label
@@ -449,7 +453,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         dplyr::filter(.data$`..tfrmt_summ_row`) %>%
         dplyr::group_by(.data$TEMP_row) %>%
         slice(1) %>%
-        mutate(
+        dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
                 .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
             )

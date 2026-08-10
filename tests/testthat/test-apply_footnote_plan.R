@@ -195,7 +195,9 @@ test_that("applying footnote plan", {
     # spanner footnote ##################################################################
 
     es_data2 <- es_data %>%
-        mutate(col2 = "Treatment column")
+        dplyr::mutate(
+            col2 = "Treatment column"
+        )
 
     gt_start2 <- tfrmt(
         # specify columns in the data

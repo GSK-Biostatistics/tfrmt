@@ -132,10 +132,14 @@ print_mock_gt <- function(
 #'   ))
 #'
 #' # Create data
-#' df <- tidyr::crossing(label = c("label 1", "label 2"),
-#'                column = c("placebo", "trt1"),
-#'                param = c("count", "percent")) |>
-#'       dplyr::mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#' df <- tidyr::crossing(
+#'         label = c("label 1", "label 2"),
+#'         column = c("placebo", "trt1"),
+#'         param = c("count", "percent")
+#'     ) |>
+#'     dplyr::mutate(
+#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'     )
 #'
 #' print_to_gt(tfrmt_spec,df)
 #'
@@ -216,7 +220,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         # keep attribute for footnotes
         attr_footnote <- attr(.data, ".footnote_locs")
         attr_stub_header <- attr(.data, ".stub_header")
-        .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
+        .data <- dplyr::mutate(
+            .data,
+            ..tfrmt_row_grp_lbl = FALSE
+        )
         attr(.data, ".footnote_locs") <- attr_footnote
         attr(.data, ".stub_header") <- attr_stub_header
     }
@@ -432,7 +439,9 @@ format_gt_column_labels <- function(gt_table, .data) {
             keep(str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
-            mutate(cols = spanning) %>%
+            dplyr::mutate(
+                cols = spanning
+            ) %>%
             pivot_longer(-"cols")
 
         lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
@@ -444,8 +453,12 @@ format_gt_column_labels <- function(gt_table, .data) {
             ) %>%
             dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
-            mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
-            dplyr::filter(.data$value != "NA")
+            dplyr::mutate(
+                set = map(.data$set, ~ pull(., .data$cols))
+            ) %>%
+            dplyr::filter(
+                .data$value != "NA"
+            )
 
         for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format
@@ -465,7 +478,7 @@ format_gt_column_labels <- function(gt_table, .data) {
                 lowest_lvl,
                 by = "cols"
             ) %>%
-            mutate(
+            dplyr::mutate(
                 value = dplyr::coalesce(
                     .data$value,
                     .data$cols

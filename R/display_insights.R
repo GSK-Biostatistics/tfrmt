@@ -10,7 +10,9 @@
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     .data <- .data %>%
         ungroup() %>%
-        mutate(TEMP_row = row_number())
+        dplyr::mutate(
+            TEMP_row = row_number()
+        )
 
     TEMP_appl_row <- table_frmt_plan %>%
         map(fmt_test_data, .data, label, group, param)
@@ -22,7 +24,9 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         TEMP_fmt_to_apply
     ) %>%
         # TODO add a warning if a format isn't applied anywhere
-        mutate(TEMP_fmt_rank = row_number()) %>%
+        dplyr::mutate(
+            TEMP_fmt_rank = row_number()
+        ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
@@ -70,10 +74,14 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'  ))
 #'
 #'  # Create data
-#'  df <- tidyr::crossing(label = c("label 1", "label 2"),
-#'                 column = c("placebo", "trt1"),
-#'                 param = c("count", "percent")) |>
-#'    dplyr::mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'  df <- tidyr::crossing(
+#'         label = c("label 1", "label 2"),
+#'         column = c("placebo", "trt1"),
+#'         param = c("count", "percent")
+#'     ) |>
+#'     dplyr::mutate(
+#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'     )
 #'
 #'  display_row_frmts(tfrmt_spec,df)
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
@@ -91,7 +99,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                     "TEMP"
                 )
             ) %>%
-            mutate(
+            dplyr::mutate(
                 frmt_type = map_chr(.data$frmt_applied, function(x) {
                     unlist(class(x)[1])
                 })
@@ -110,7 +118,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                     "TEMP"
                 )
             ) %>%
-            mutate(
+            dplyr::mutate(
                 frmt_type = map_chr(.data$frmt_applied, function(x) {
                     unlist(class(x)[1])
                 }),
@@ -120,7 +128,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 
         # extract < frmt > type from frmt_details
         output <- output %>%
-            mutate(
+            dplyr::mutate(
                 frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
                         str_remove("< frmt \\| Expression: ") %>%
@@ -205,7 +213,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
                 )
             )
         ) %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 tidyselect::everything(),
                 ~ str_replace_all(., "[0-9]", "x")
