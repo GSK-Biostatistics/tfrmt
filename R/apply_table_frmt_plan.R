@@ -67,7 +67,7 @@ apply_table_frmt_plan <- function(
                 # Add message
                 x %>%
                     pull(.data$TEMP_row) %>%
-                    paste0(collapse = ", ") %>%
+                    paste(collapse = ", ") %>%
                     paste(
                         "The following rows of the given dataset have no format applied to them",
                         .
