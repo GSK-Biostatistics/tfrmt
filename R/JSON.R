@@ -156,7 +156,7 @@ as_json.col_plan <- function(x) {
             map(as_json)
 
         if (!is.null(names(dot_ls))) {
-            names(dot_ls) <- names(x$dots) %>% ifelse(. == "", " ", .)
+            names(dot_ls) <- names(x$dots) %>% ifelse(nzchar(.), ., " ")
         }
         list(col_plan = list(dots = dot_ls, .drop = x$.drop))
     }
