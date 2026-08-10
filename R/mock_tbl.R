@@ -244,7 +244,7 @@ make_col_df <- function(
             cols_from_sp <- map(col_style_plan, ~ .x$cols) |>
                 list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
-                tibble(.)
+                tibble()
             names(cols_from_sp) <- dplyr::last(column_vars)
 
             col_def <- dplyr::bind_rows(col_def, cols_from_sp) |>
