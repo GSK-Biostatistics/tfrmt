@@ -460,7 +460,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             ),
             dplyr::across(
                 tidyselect::all_of(column_cols),
-                ~ na_if(.x, "")
+                ~ dplyr::na_if(.x, "")
             )
         ) %>%
         quietly(pivot_wider)(

@@ -6,7 +6,7 @@
 # tidyselect)
 
 ## usethis namespace: start
-#' @importFrom dplyr na_if pull reframe relocate
+#' @importFrom dplyr pull reframe relocate
 #' @importFrom dplyr rename rename_with row_number rowwise select slice
 #' @importFrom dplyr summarise ungroup
 #'
