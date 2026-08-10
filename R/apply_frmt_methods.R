@@ -259,7 +259,7 @@ apply_frmt.frmt_combine <- function(
     ## if not mock remove
     if (!mock) {
         .data <- .data %>%
-            select(-!!value)
+            dplyr::select(-!!value)
     }
 
     merge_group <- map(
