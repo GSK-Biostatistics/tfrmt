@@ -164,7 +164,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 out <- list(col = col_loc, spanning = FALSE)
             } else {
                 col_loc <- col_loc_df %>%
-                    pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
+                    dplyr::pull(paste0("__tfrmt_new_name__", span_lvl)) %>%
                     unique()
                 out <- list(col = col_loc, spanning = TRUE)
             }
@@ -244,7 +244,7 @@ get_row_loc <- function(
                     parse_expr()
 
                 col_info$row <- .data %>%
-                    ungroup() %>%
+                    dplyr::ungroup() %>%
                     dplyr::mutate(
                         dplyr::across(
                             c(!!!group, !!label),
@@ -254,10 +254,10 @@ get_row_loc <- function(
                             )
                         ),
                         `___tfrmt_test` = !!filter_expr,
-                        `___tfrmt_TEMP_rows` = row_number()
+                        `___tfrmt_TEMP_rows` = dplyr::row_number()
                     ) %>%
                     dplyr::filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_TEMP_rows`)
+                    dplyr::pull(.data$`___tfrmt_TEMP_rows`)
 
                 col_info$col <- ifelse(
                     is.null(col_info$col),
@@ -276,7 +276,7 @@ get_row_loc <- function(
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     dplyr::filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_grp_n`) %>%
+                    dplyr::pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
                 col_info$col <- ifelse(
                     is.null(col_info$col),
@@ -295,7 +295,7 @@ get_row_loc <- function(
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     dplyr::filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_grp_n`) %>%
+                    dplyr::pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
                 lowest_grp <- group_str %in%
@@ -314,11 +314,11 @@ get_row_loc <- function(
                     parse_expr()
                 col_info$row <- .data %>%
                     dplyr::mutate(
-                        `___tfrmt_grp_n` = row_number(),
+                        `___tfrmt_grp_n` = dplyr::row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     dplyr::filter(.data$`___tfrmt_test`) %>%
-                    pull(.data$`___tfrmt_grp_n`) %>%
+                    dplyr::pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
                 lowest_grp <- group_str %in%

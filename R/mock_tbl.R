@@ -63,8 +63,8 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
                 ~ dplyr::coalesce(.x, .data$..grp)
             )
         ) %>%
-        select(-"..grp") %>%
-        rowwise() %>%
+        dplyr::select(-"..grp") %>%
+        dplyr::rowwise() %>%
         dplyr::mutate(
             dplyr::across(
                 !!tfrmt$param,
@@ -97,7 +97,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         ) %>%
         dplyr::group_by(.data$frmt_num) %>%
         expand(!!!expand_cols) %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         add_sorting_cols(tfrmt$sorting_cols)
 
     ## add `column` columns
@@ -125,7 +125,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     # remove the frmt_num field
     output_dat %>%
-        select(-"frmt_num") %>%
+        dplyr::select(-"frmt_num") %>%
         unique()
 }
 
@@ -281,7 +281,7 @@ add_mock_big_ns <- function(data, column, param, big_n_struct) {
     if (!is.null(big_n_struct)) {
         col <- dplyr::last(column)
         col_vals <- data %>%
-            pull(!!col) %>%
+            dplyr::pull(!!col) %>%
             unique()
 
         data <- tibble(

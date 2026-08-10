@@ -203,7 +203,7 @@ test_that("Simple Case big_n", {
     )
 
     auto_mock <- apply_tfrmt(
-        .data = select(data, -Value),
+        .data = dplyr::select(data, -Value),
         tfrmt = tfrmt_wit_colplan,
         mock = TRUE
     ) |>
@@ -812,7 +812,7 @@ test_that("Test big n with footnotes", {
     ## confirm location of footnotes gets recorded correctly
     expect_identical(
         big_n_footnote_plan_gt$`_footnotes` |>
-            select(
+            dplyr::select(
                 locname,
                 colname,
                 locnum,

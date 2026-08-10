@@ -64,14 +64,14 @@ apply_col_style_plan <- function(
     if (length(total_col_style_selection) > 0) {
         total_col_styles <- dplyr::bind_rows(total_col_style_selection) %>%
             dplyr::group_by(col) %>%
-            slice(
+            dplyr::slice(
                 dplyr::n()
             ) %>%
-            ungroup()
+            dplyr::ungroup()
 
         for (col_style_idx in seq_len(nrow(total_col_styles))) {
             col_style_to_apply <- total_col_styles %>%
-                slice(col_style_idx) %>%
+                dplyr::slice(col_style_idx) %>%
                 as.list()
 
             col_to_modify <- col_style_to_apply$col %>% char_as_quo()
@@ -287,7 +287,7 @@ apply_col_alignment_pos <- function(col, align) {
         dplyr::mutate(
             align = ifelse(is.na(.data$align), .data$col_as_x, .data$align)
         ) %>%
-        select(-"col_as_x") %>%
+        dplyr::select(-"col_as_x") %>%
         dplyr::mutate(
             n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1
         )
@@ -299,9 +299,7 @@ apply_col_alignment_pos <- function(col, align) {
     # create splits on the align vec at the |'s and count the number of chars for each
     # this will be used to help us split the col by position
     col_with_pos <- col_with_align %>%
-        dplyr::mutate(
-            col_idx = row_number()
-        ) %>%
+        dplyr::mutate(col_idx = dplyr::row_number()) %>%
         separate(
             "align",
             into = paste0("col_split_", 1:n_split_levs_max),
@@ -399,7 +397,9 @@ apply_col_alignment_pos <- function(col, align) {
     # & pad the right hand side
     col_left_padded_sum <- col_left_padded01 %>%
         dplyr::group_by(.data$col_idx) %>%
-        summarise(col = paste(.data$col_sub_out, collapse = "")) %>%
+        dplyr::summarise(
+            col = paste(.data$col_sub_out, collapse = "")
+        ) %>%
         dplyr::mutate(
             to_add_right = .data$col %>%
                 nchar() %>%

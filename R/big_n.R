@@ -192,7 +192,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
 
         data_out <- frmtted_vals |>
             dplyr::mutate(
-                `_tfrmt______id` = row_number()
+                `_tfrmt______id` = dplyr::row_number()
             ) |>
             tidyr::pivot_longer(
                 -c(
