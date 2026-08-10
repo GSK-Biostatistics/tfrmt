@@ -301,7 +301,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     }
     req_var <- c("group", "column")
 
-    .data <- .data %>% ungroup()
+    .data <- dplyr::ungroup(.data)
 
     req_quo %>%
         map(function(x) {
@@ -400,7 +400,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- list("")
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
-                ungroup() %>%
+                dplyr::ungroup() %>%
                 dplyr::filter(n > 1) %>%
                 dplyr::select(-c(!!!tfrmt$column)) %>%
                 unique() %>%

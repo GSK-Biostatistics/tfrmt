@@ -244,7 +244,7 @@ get_row_loc <- function(
                     parse_expr()
 
                 col_info$row <- .data %>%
-                    ungroup() %>%
+                    dplyr::ungroup() %>%
                     mutate(
                         dplyr::across(
                             c(!!!group, !!label),

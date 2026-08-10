@@ -65,7 +65,7 @@ apply_col_style_plan <- function(
         total_col_styles <- dplyr::bind_rows(total_col_style_selection) %>%
             dplyr::group_by(col) %>%
             dplyr::slice(n()) %>%
-            ungroup()
+            dplyr::ungroup()
 
         for (col_style_idx in seq_len(nrow(total_col_styles))) {
             col_style_to_apply <- total_col_styles %>%

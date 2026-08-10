@@ -281,7 +281,7 @@ apply_frmt.frmt_combine <- function(
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
         dplyr::slice(1) %>%
-        ungroup()
+        dplyr::ungroup()
 }
 
 #' @export

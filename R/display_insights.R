@@ -9,7 +9,7 @@
 #' @noRd
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     .data <- .data %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         mutate(
             TEMP_row = dplyr::row_number()
         )

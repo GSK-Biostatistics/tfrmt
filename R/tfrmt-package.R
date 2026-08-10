@@ -8,7 +8,6 @@
 ## usethis namespace: start
 #' @importFrom dplyr lag last
 #' @importFrom dplyr left_join mutate n n_distinct na_if
-#' @importFrom dplyr ungroup
 #'
 #' @importFrom dplyr vars
 #'

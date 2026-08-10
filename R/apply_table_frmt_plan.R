@@ -22,7 +22,7 @@ apply_table_frmt_plan <- function(
 ) {
     ## identify which formatting needs to be applied where
     .data <- .data %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         mutate(
             TEMP_row = dplyr::row_number()
         )
@@ -138,7 +138,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             dplyr::filter(
                 .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
             ) %>%
-            ungroup()
+            dplyr::ungroup()
         join_by <- c(group, label, param) %>%
             map_chr(as_label) %>%
             keep(~ . != "<empty>")
