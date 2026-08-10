@@ -36,7 +36,10 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 #' @rdname apply_frmt
 apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
-        out <- mutate(.data, !!value := frmt_def$expression)
+        out <- .data |>
+            dplyr::mutate(
+                !!value := frmt_def$expression
+            )
     } else {
         vals <- dplyr::pull(.data, !!value)
 
@@ -99,7 +102,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                     str_remove("\\..*$") %>%
                     str_count(".")
             ) %>%
-                mutate(
+                dplyr::mutate(
                     # keep from being negative
                     space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0)
                 )
@@ -133,7 +136,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
 
         out <- .data %>%
-            mutate(
+            dplyr::mutate(
                 !!value := fmt_val_output
             )
     }
@@ -198,7 +201,7 @@ apply_frmt.frmt_combine <- function(
     if (length(miss_param_from_data) > 0) {
         stop(paste0(
             "Unable to create formatting combination because the following parameters are missing from the data:\n ",
-            paste0(miss_param_from_data, collapse = " \n")
+            paste(miss_param_from_data, collapse = " \n")
         ))
     }
 
@@ -208,7 +211,7 @@ apply_frmt.frmt_combine <- function(
             values_from = !!value,
             names_from = !!param
         ) %>%
-        mutate(
+        dplyr::mutate(
             .is_all_missing = all_missing(fmt_param_vals, .)
         )
 
@@ -230,7 +233,7 @@ apply_frmt.frmt_combine <- function(
             dplyr::select(!!!column, !!label, !!!group, !!param)
         warning(paste0(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            paste(names(id_cols %>% dplyr::select(-!!param)), collapse = ", "),
+            toString(names(id_cols %>% dplyr::select(-!!param))),
             ". Current values:\n",
             paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
         ))
@@ -243,7 +246,7 @@ apply_frmt.frmt_combine <- function(
     ## if both params are missing, then drop in frmt definition missing value
     ## otherwise concat the params
     .tmp_data_fmted <- .tmp_data_wide %>%
-        mutate(
+        dplyr::mutate(
             !!value := dplyr::case_when(
                 .data$.is_all_missing ~ frmt_def$missing,
                 TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
@@ -275,7 +278,7 @@ apply_frmt.frmt_combine <- function(
 
     # merge on new values, and remove cases other than first occurance of group/label/column pairing
     .data %>%
-        left_join(
+        dplyr::left_join(
             .tmp_data_fmted,
             by = map_chr(merge_group, as_label)
         ) %>%
@@ -296,7 +299,9 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
         str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
         out <- .data %>%
-            mutate(!!value := str_to_prnt)
+            dplyr::mutate(
+                !!value := str_to_prnt
+            )
     } else {
         values_str <- as_label(value)
         n <- length(frmt_def$frmt_ls)
@@ -336,7 +341,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
 
         out <- .data %>%
-            mutate(
+            dplyr::mutate(
                 !!value := out
             )
     }

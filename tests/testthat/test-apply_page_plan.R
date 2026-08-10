@@ -381,7 +381,7 @@ test_that("page plan with multiple structures", {
             vars(grp1, grp2),
             quo(lbl)
         ),
-        paste0(
+        paste(
             c(
                 "`page_plan` contains multiple `page_structures` with values set to \".default\". ",
                 "Only the last one specified will be used."
@@ -1368,7 +1368,9 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         "B"  , "b"    , "n"  ,   55
     ) %>%
         # nolint end
-        mutate(grp = factor(grp, levels = c("A", "B", ""))) %>% # Explicitly a factor
+        dplyr::mutate(
+            grp = factor(grp, levels = c("A", "B", ""))
+        ) %>% # Explicitly a factor
         tidyr::pivot_longer(trt, names_to = "column", values_to = "value")
 
     mytfrmt <- tfrmt(

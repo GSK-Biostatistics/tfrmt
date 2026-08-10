@@ -1466,8 +1466,14 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
         )
 
     # Duplicate the data and add the `by group` column
-    data_101 <- original_data |> dplyr::mutate(`by group` = "101")
-    data_102 <- original_data |> dplyr::mutate(`by group` = "102")
+    data_101 <- original_data |>
+        dplyr::mutate(
+            `by group` = "101"
+        )
+    data_102 <- original_data |>
+        dplyr::mutate(
+            `by group` = "102"
+        )
 
     # Combine the two data frames
     data <- dplyr::bind_rows(data_101, data_102)

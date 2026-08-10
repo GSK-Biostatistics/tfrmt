@@ -23,7 +23,7 @@ apply_table_frmt_plan <- function(
     ## identify which formatting needs to be applied where
     .data <- .data %>%
         dplyr::ungroup() %>%
-        mutate(
+        dplyr::mutate(
             TEMP_row = dplyr::row_number()
         )
 
@@ -37,7 +37,7 @@ apply_table_frmt_plan <- function(
         TEMP_fmt_to_apply
     ) %>%
         # TODO (?) add a warning if a format isn't applied anywhere?
-        mutate(
+        dplyr::mutate(
             TEMP_fmt_rank = dplyr::row_number()
         ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
@@ -48,7 +48,11 @@ apply_table_frmt_plan <- function(
             dplyr::desc(.data$TEMP_fmt_rank)
         ) %>%
         dplyr::slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        ) %>%
         dplyr::group_by(.data$TEMP_fmt_rank) %>%
         dplyr::group_split()
 
@@ -65,13 +69,15 @@ apply_table_frmt_plan <- function(
                     out <- x
                 } else {
                     out <- x %>%
-                        mutate(!!value := as.character(!!value))
+                        dplyr::mutate(
+                            !!value := as.character(!!value)
+                        )
                 }
 
                 # Add message
                 x %>%
                     dplyr::pull(.data$TEMP_row) %>%
-                    paste0(collapse = ", ") %>%
+                    paste(collapse = ", ") %>%
                     paste(
                         "The following rows of the given dataset have no format applied to them",
                         .
@@ -134,7 +140,9 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             dplyr::select(!!!group, !!label, !!param) %>%
             dplyr::distinct() %>%
             dplyr::group_by(!!!group, !!label) %>%
-            mutate(test = sum(!!parse_expr(parm_expr))) %>%
+            dplyr::mutate(
+                test = sum(!!parse_expr(parm_expr))
+            ) %>%
             dplyr::filter(
                 .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
             ) %>%
@@ -144,7 +152,11 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             keep(~ . != "<empty>")
 
         out <- complet_combo_grps %>%
-            left_join(out, by = join_by, multiple = "all")
+            dplyr::left_join(
+                out,
+                by = join_by,
+                multiple = "all"
+            )
     }
     out %>%
         dplyr::pull(.data$TEMP_row)

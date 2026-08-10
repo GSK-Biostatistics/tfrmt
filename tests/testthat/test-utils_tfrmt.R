@@ -7,7 +7,7 @@ raw_data_cat <- crossing(
     param2 = c("count", "pct")
 ) %>%
     dplyr::rowwise() %>%
-    mutate(
+    dplyr::mutate(
         ord1 = 1,
         ord2 = 26 - which(label == letters),
         val2 = dplyr::case_when(
@@ -24,7 +24,7 @@ raw_data_cont <- crossing(
     param2 = c("val")
 ) %>%
     dplyr::rowwise() %>%
-    mutate(
+    dplyr::mutate(
         ord1 = 2,
         ord2 = which(label == letters),
         val2 = dplyr::case_when(
@@ -113,7 +113,9 @@ test_that("Check apply_tfrmt", {
         "B"    , "w"    , "147         " , "149         " , "143         " , "159         "
     ) %>%
         # nolint end
-        mutate(..tfrmt_row_grp_lbl = FALSE)
+        dplyr::mutate(
+            ..tfrmt_row_grp_lbl = FALSE
+        )
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
@@ -176,7 +178,9 @@ test_that("Check apply_tfrmt for mock data", {
         "B"    , "w"    , "XXX         " , "XXX         " , "XXX         " , "XXX         " ,
     ) %>%
         # nolint end
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
         dplyr::arrange(group, label)
 
     expect_equal(
@@ -249,7 +253,9 @@ test_that("Check apply_tfrmt for mock data", {
         "B"       , "j"       , "xx.xx"        , "xx.xx"        , "xx.xx"        , "xx.xx"
     ) %>%
         # nolint end
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
         dplyr::arrange(group, label)
 
     expect_equal(
@@ -432,8 +438,13 @@ test_that("Test body_plan missing", {
         empty_body_plan,
         input_data %>%
             dplyr::select(-param) %>%
-            mutate(val = as.character(val)) %>%
-            pivot_wider(names_from = column, values_from = val),
+            dplyr::mutate(
+                val = as.character(val)
+            ) %>%
+            pivot_wider(
+                names_from = column,
+                values_from = val
+            ),
         ignore_attr = c(
             "class",
             ".col_plan_vars",

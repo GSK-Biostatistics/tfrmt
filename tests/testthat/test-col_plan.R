@@ -1564,7 +1564,7 @@ test_that("Tidyselect subtraction with span_structure", {
         column = c("trt1", "trt2", "pl", "trt1&trt2"),
         param = c("count", "percent")
     ) %>%
-        mutate(
+        dplyr::mutate(
             ord1 = rep(
                 seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
@@ -1575,7 +1575,10 @@ test_that("Tidyselect subtraction with span_structure", {
             )
         )
 
-    df_fake_values <- df %>% mutate(value = runif(nrow(df)))
+    df_fake_values <- df %>%
+        dplyr::mutate(
+            value = runif(nrow(df))
+        )
 
     tfrmt_minus_selection <- tfrmt(
         # Specify columns in the data

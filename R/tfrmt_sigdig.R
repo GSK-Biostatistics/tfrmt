@@ -90,11 +90,11 @@ param_set <- function(...) {
                 )
             )
         ) %>%
-        mutate(
+        dplyr::mutate(
             idx = dplyr::row_number()
         ) %>%
         unnest("params", keep_empty = TRUE) %>%
-        mutate(
+        dplyr::mutate(
             drop = map2_lgl(
                 .data$param_display,
                 .data$params,
@@ -258,12 +258,12 @@ tfrmt_sigdig <- function(
             names()
         if (length(data_names) == 0) {
             group_msg <- if (length(group_names) > 0) {
-                paste0("group: ", paste(group_names, collapse = ", "), "\n")
+                paste0("group: ", toString(group_names), "\n")
             } else {
                 ""
             }
             label_msg <- if (length(label_name) > 0) {
-                paste0("label: ", paste(label_name, collapse = ", "))
+                paste0("label: ", toString(label_name))
             } else {
                 ""
             }
@@ -291,7 +291,7 @@ tfrmt_sigdig <- function(
         grp <- setdiff(new_group_names, names(sigdig_df))
         warning(
             "`sigdig_df` input does not contain the following group params: ",
-            paste0(grp, collapse = ", ")
+            toString(grp)
         )
     }
 
@@ -306,10 +306,14 @@ tfrmt_sigdig <- function(
                 tidyselect::all_of(groups_in_data),
                 remove = FALSE
             ) %>%
-            mutate(def_ord = str_count(.data$def_ord, ".default"))
+            dplyr::mutate(
+                def_ord = str_count(.data$def_ord, ".default")
+            )
     } else {
         data_ord <- sigdig_df %>%
-            mutate(def_ord = 0)
+            dplyr::mutate(
+                def_ord = 0
+            )
     }
 
     # Create body plan

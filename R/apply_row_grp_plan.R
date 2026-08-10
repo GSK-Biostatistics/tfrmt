@@ -16,7 +16,7 @@ apply_row_grp_struct <- function(
     # Locate which groups need which formatting
     # determine which rows each block applies to
     .data <- .data %>%
-        mutate(
+        dplyr::mutate(
             TEMP_row = dplyr::row_number()
         )
 
@@ -50,7 +50,7 @@ apply_row_grp_struct <- function(
         TEMP_appl_row,
         TEMP_block_to_apply
     ) %>%
-        mutate(
+        dplyr::mutate(
             TEMP_block_rank = dplyr::row_number()
         ) %>%
         # unnest to 1 rec per data chunk
@@ -67,7 +67,11 @@ apply_row_grp_struct <- function(
             dplyr::desc(.data$TEMP_block_rank)
         ) %>%
         dplyr::slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        ) %>%
         dplyr::group_by(
             .data$TEMP_block_rank,
             .data$TEMP_chunk_num,
@@ -178,8 +182,8 @@ apply_grp_block <- function(.data, group, element_block, widths) {
         # create add-on row
         # utilize TEMP_row to retain the ordering
         grp_row_add <- .data %>%
-            dplyr::slice(n()) %>%
-            mutate(
+            dplyr::slice(dplyr::n()) %>%
+            dplyr::mutate(
                 dplyr::across(
                     c(
                         -map_chr(group, as_name),
@@ -200,7 +204,9 @@ apply_grp_block <- function(.data, group, element_block, widths) {
         # combine with original data
         dplyr::bind_rows(.data, grp_row_add) %>%
             fill(!!!group) %>%
-            mutate(..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0)
+            dplyr::mutate(
+                ..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0
+            )
     } else {
         .data
     }
@@ -254,11 +260,13 @@ combine_group_cols <- function(
     top_grouping <- group #used for spliting in case of spanning label
 
     .data <- .data %>%
-        mutate(..tfrmt_row_grp_lbl = FALSE)
+        dplyr::mutate(
+            ..tfrmt_row_grp_lbl = FALSE
+        )
 
     # ensure label is character
     .data <- .data %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 !!label,
                 ~ as.character(.x)
@@ -287,12 +295,15 @@ combine_group_cols <- function(
         .data <- split_dat %>%
             map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
-                    mutate(
+                    dplyr::mutate(
                         ..tfrmt_summary_row = str_trim(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(!!last(group), side = "left")
+                            str_trim(
+                                !!dplyr::last(group),
+                                side = "left"
+                            )
                     )
 
                 if (any(lone_dat_summ$..tfrmt_summary_row)) {
@@ -304,7 +315,9 @@ combine_group_cols <- function(
                     # first containing grouping/label values
                     new_row <- lone_dat %>%
                         dplyr::select(!!!top_grouping, !!label) %>%
-                        mutate(!!label := !!last(group)) %>%
+                        dplyr::mutate(
+                            !!label := !!dplyr::last(group)
+                        ) %>%
                         dplyr::distinct()
 
                     # next all of the other variables (as missing)
@@ -316,7 +329,7 @@ combine_group_cols <- function(
                         ) %>%
                         dplyr::slice(0) %>%
                         add_row() %>%
-                        mutate(
+                        dplyr::mutate(
                             dplyr::across(
                                 #convert NULL to NA in list-cols
                                 tidyselect::where(is.list),
@@ -327,12 +340,14 @@ combine_group_cols <- function(
                             )
                         ) %>%
                         dplyr::bind_cols(new_row, .) %>%
-                        mutate(..tfrmt_row_grp_lbl = TRUE)
+                        dplyr::mutate(
+                            ..tfrmt_row_grp_lbl = TRUE
+                        )
                 }
 
                 lone_dat_summ %>%
                     # only indent if not a summary row
-                    mutate(
+                    dplyr::mutate(
                         !!label := ifelse(
                             .data$..tfrmt_summary_row,
                             !!label,
@@ -347,7 +362,7 @@ combine_group_cols <- function(
     }
 
     .data %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 tidyselect::any_of(
                     orig_group_names
@@ -407,7 +422,7 @@ apply_post_space_trim <- function(.data) {
 
     if (target_col %in% names(.data)) {
         # If the very last row was tagged as a spacer, drop it
-        if (isTRUE(last(.data[[target_col]]))) {
+        if (isTRUE(dplyr::last(.data[[target_col]]))) {
             .data <- .data %>%
                 dplyr::slice(-dplyr::n())
         }
