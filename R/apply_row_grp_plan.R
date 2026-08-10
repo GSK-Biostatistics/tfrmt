@@ -58,7 +58,10 @@ apply_row_grp_struct <- function(
         # unnest to 1 rec per data row, to handle where chunk >1 row
         unnest(TEMP_appl_row) %>%
         group_by(TEMP_appl_row) %>%
-        dplyr::arrange(TEMP_appl_row, desc(.data$TEMP_block_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_block_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         group_by(
