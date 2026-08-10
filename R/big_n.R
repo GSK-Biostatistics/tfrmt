@@ -178,7 +178,10 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             cli::cli_warn(
                 paste0(
                     "The following columns have multiple Big N's associated with them:\n",
-                    paste(deparse(as.vector(as.matrix(warn_df))), collapse = "\n")
+                    paste(
+                        deparse(as.vector(as.matrix(warn_df))),
+                        collapse = "\n"
+                    )
                 ),
                 call = NULL
             )
