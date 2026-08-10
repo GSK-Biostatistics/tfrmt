@@ -68,7 +68,7 @@ as_json.tfrmt <- function(x) {
     # Needs updating
     to_replace <- str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
     json_split[to_replace] <- json_split[to_replace] %>%
-        str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
+        stringr::str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
     json_clean <- stringr::str_c(json_split, collapse = "\n")
     if (validate(json_clean)) {
         class(json_clean) <- "json"
@@ -416,7 +416,7 @@ ls_to_col_plan <- function(ls) {
                         parse_expr()
                 } else {
                     el[[1]] %>%
-                        str_replace_all("\\\"", "'") %>%
+                        stringr::str_replace_all("\\\"", "'") %>%
                         char_as_quo() %>%
                         quo_get_expr()
                 }
@@ -445,7 +445,7 @@ ls_to_col_style_plan <- function(ls) {
             map(function(struct) {
                 stuct_in <- struct %>% map(unlist)
                 names(stuct_in) <- names(stuct_in) %>%
-                    str_replace("cols", "col")
+                    stringr::str_replace("cols", "col")
                 cols_val <- struct[["cols"]][[1]]
                 if (
                     !is.null(names(cols_val)) &&

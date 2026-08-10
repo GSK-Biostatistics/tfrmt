@@ -262,12 +262,12 @@ apply_col_alignment_pos <- function(col, align) {
     # merge the alignment vec in with the column
     col_with_align <- tibble(
         col = trimws(col),
-        col_as_x = str_replace_all(col, "[0-9]", "x")
+        col_as_x = stringr::str_replace_all(col, "[0-9]", "x")
     ) %>% # convert column values to x's
         left_join(
             tibble(
                 align = trimws(align),
-                col_as_x = str_replace_all(align, "\\|", "")
+                col_as_x = stringr::str_replace_all(align, "\\|", "")
             ),
             by = "col_as_x"
         )
@@ -441,7 +441,7 @@ apply_col_width <- function(col, width) {
         out[col_na_idx] <- NA
     }
     if (length(col_empty_strings_idx) > 0) {
-        out[col_empty_strings_idx] <- str_pad(
+        out[col_empty_strings_idx] <- stringr::str_pad(
             col[col_empty_strings_idx],
             min(c(nchar(col[col_empty_strings_idx]), width))
         )

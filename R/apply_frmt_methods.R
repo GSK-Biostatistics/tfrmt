@@ -250,7 +250,8 @@ apply_frmt.frmt_combine <- function(
         mutate(
             !!value := dplyr::case_when(
                 .data$.is_all_missing ~ frmt_def$missing,
-                TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
+                TRUE ~ stringr::str_glue(!!frmt_def$expression) %>%
+                    as.character()
             )
         ) %>%
         select(

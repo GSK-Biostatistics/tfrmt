@@ -40,8 +40,7 @@
 #'
 #' @importFrom stringi stri_wrap
 #'
-#' @importFrom stringr str_glue str_match str_pad str_replace
-#' @importFrom stringr str_replace_all str_remove str_remove_all str_split
+#' @importFrom stringr str_remove str_remove_all str_split
 #' @importFrom stringr str_sub str_trim str_which
 #'
 #' @importFrom tibble add_row as_tibble as_tibble_row is_tibble tibble

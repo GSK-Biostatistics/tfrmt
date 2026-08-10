@@ -19,7 +19,7 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
     if (is.na(single_glue_to_frmt)) {
         frmted_string
     } else {
-        str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
+        stringr::str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
     }
 }
 

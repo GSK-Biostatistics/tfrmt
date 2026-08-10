@@ -414,7 +414,7 @@ as.character.span_structure <- function(x, ...) {
     values <- x %>%
         map(function(val) {
             elements <- map_chr(val, as_label) %>%
-                str_replace_all("\\\"", "'")
+                stringr::str_replace_all("\\\"", "'")
 
             # Detect function calls. Matches valid R functions i.e, my_function()
             # Valid column names containing parenthesis i.e., "n (%)" are not captured
