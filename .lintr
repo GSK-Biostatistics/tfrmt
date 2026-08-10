@@ -14,7 +14,6 @@ linters: all_linters(
   paste_linter = NULL,
   object_name_linter = NULL,
   # redundancy linters
-  redundant_ifelse_linter = NULL,
   nonportable_path_linter = NULL,
   keyword_quote_linter = NULL,
   duplicate_argument_linter = NULL,
