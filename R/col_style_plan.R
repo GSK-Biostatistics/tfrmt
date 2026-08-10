@@ -142,7 +142,7 @@ col_style_structure <- function(
                     align <- str_sub(align, start = 1, end = 1)
                 }
 
-                if (any(str_detect(align, "[[:alnum:]]"))) {
+                if (any(stringr::str_detect(align, "[[:alnum:]]"))) {
                     message(
                         "Alignment specified contains one or more alphanumeric characters. Results may not be as expected."
                     )

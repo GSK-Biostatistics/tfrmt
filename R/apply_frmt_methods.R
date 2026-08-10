@@ -48,7 +48,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             vals <- as_function(frmt_def$transform)(vals)
         }
 
-        if (str_detect(frmt_def$expression, "[x|X]")) {
+        if (stringr::str_detect(frmt_def$expression, "[x|X]")) {
             # digits following period in expression
             dig <- frmt_def$expression %>%
                 str_extract("(?<=\\.)[X|x]+") %>%

@@ -210,7 +210,7 @@ apply_col_alignment_char <- function(col, align) {
         }
     } else {
         align <- ifelse(
-            str_detect(align, "[[:alnum:]]"),
+            stringr::str_detect(align, "[[:alnum:]]"),
             paste0("\"", align, "\""),
             paste0("\\", align)
         )
@@ -341,7 +341,7 @@ apply_col_alignment_pos <- function(col, align) {
             col_sub_1 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
-                !str_detect(.data$col_sub, " ") &
+                !stringr::str_detect(.data$col_sub, " ") &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
                 TRUE ~ str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space

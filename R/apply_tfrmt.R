@@ -469,14 +469,16 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     if (
         mock &&
             length(tbl_dat_wide$warnings) > 0 &&
-            any(str_detect(
-                tbl_dat_wide$warnings,
-                paste0(
-                    "Values from `",
-                    as_label(tfrmt$value),
-                    "` are not uniquely identified"
+            any(
+                stringr::str_detect(
+                    tbl_dat_wide$warnings,
+                    paste0(
+                        "Values from `",
+                        as_label(tfrmt$value),
+                        "` are not uniquely identified"
+                    )
                 )
-            ))
+            )
     ) {
         message(
             "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."

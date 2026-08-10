@@ -75,7 +75,10 @@ body_plan_builder <- function(
             )
         ) %>%
         mutate(
-            contains_glue = str_detect(.data$param_display, "\\{.*\\}"), # is this to be a frmt_combine
+            contains_glue = stringr::str_detect(
+                .data$param_display,
+                "\\{.*\\}"
+            ), # is this to be a frmt_combine
             param = map2(
                 .data$param_display,
                 .data$contains_glue,

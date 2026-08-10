@@ -426,10 +426,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @return gt object
 #' @noRd
 format_gt_column_labels <- function(gt_table, .data) {
-    spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
+    spanning <- names(.data) %>%
+        keep(stringr::str_detect, .tlang_delim)
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
-            keep(str_detect, .tlang_delim) %>%
+            keep(stringr::str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             mutate(cols = spanning) %>%
