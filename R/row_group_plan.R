@@ -43,7 +43,7 @@ row_grp_plan <- function(
 
     for (struct_idx in seq_along(row_grp_structure_list)) {
         if (!is_row_grp_structure(row_grp_structure_list[[struct_idx]])) {
-            stop(paste0(
+            cli::cli_abort(paste0(
                 "Entry number ",
                 struct_idx,
                 " is not an object of class `row_grp_structure`.
@@ -85,15 +85,15 @@ row_grp_plan <- function(
 #'
 row_grp_structure <- function(group_val = ".default", element_block) {
     if (!is_element_block(element_block)) {
-        stop("element_block, must be an element_block type")
+        cli::cli_abort("element_block, must be an element_block type")
     }
 
     if (is.list(group_val)) {
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
-            stop("when group_val is a list, must be a named list")
+            cli::cli_abort("when group_val is a list, must be a named list")
         } else if (!all(nzchar(group_val_names))) {
-            stop("when group_val is a list, each entry must be named")
+            cli::cli_abort("when group_val is a list, each entry must be named")
         }
     }
 

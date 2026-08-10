@@ -34,7 +34,7 @@ body_plan <- function(...) {
 
     for (struct_idx in seq_along(frmt_structure_list)) {
         if (!is_frmt_structure(frmt_structure_list[[struct_idx]])) {
-            stop(paste0(
+            cli::cli_abort(paste0(
                 "Entry number ",
                 struct_idx,
                 " is not an object of class `frmt_structure`."

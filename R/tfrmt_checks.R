@@ -19,7 +19,7 @@ check_column_and_col_plan <- function(x) {
             n_col_desc <- "No columns defined in the `column` argument of tfrmt "
         }
 
-        abort(
+        cli::cli_abort(
             paste0(
                 n_col_desc,
                 "but provided a span_structure() in `col_plan`.\n",
@@ -35,9 +35,9 @@ check_column_and_col_plan <- function(x) {
 
         for (struct in span_structs) {
             if (!all(vals <- names(struct) %in% column_strings)) {
-                abort(
-                    "Columns defined in `span_structure` are not defined columns in the tfrmt",
-                    body = paste0(
+                cli::cli_abort(
+                    paste0(
+                        "Columns defined in `span_structure` are not defined columns in the tfrmt\n",
                         "Column Values: ",
                         paste0("`", column_strings, "`", collapse = ", "),
                         "\n",
@@ -69,7 +69,7 @@ check_group_var_consistency <- function(x) {
         )
 
         if (!identical(group_var_consistency_message, "")) {
-            abort(
+            cli::cli_abort(
                 group_var_consistency_message,
                 class = "_tfrmt_mismatched_group_vals"
             )
@@ -247,7 +247,7 @@ check_col_style_row_grp_consistency <- function(x) {
         }
 
         if (is_invalid_plan) {
-            abort(
+            cli::cli_abort(
                 is_invalid_plan_message,
                 class = "_tfrmt_invalid_row_grp_col_style_plan"
             )
@@ -265,7 +265,7 @@ check_footnote_plan <- function(x) {
                     !is.list(x$footnote_plan$struct_list[[i]]$column_val) &&
                     !is.null(x$footnote_plan$struct_list[[i]]$column_val)
             ) {
-                stop(
+                cli::cli_abort(
                     "when tfrmt contains multiple columns, column_val must be a named list"
                 )
             }
@@ -276,7 +276,7 @@ check_footnote_plan <- function(x) {
                     !is.list(x$footnote_plan$struct_list[[i]]$group_val) &&
                     !is.null(x$footnote_plan$struct_list[[i]]$group_val)
             ) {
-                stop(
+                cli::cli_abort(
                     "when tfrmt contains multiple groups, group_val must be a named list"
                 )
             }
@@ -300,7 +300,7 @@ check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
         # check if the plan element inherits the plan attribute
         if (!inherits(plan_element, plan)) {
             # display error message
-            abort(
+            cli::cli_abort(
                 paste0(
                     "Invalid input supplied to the `",
                     plan,
@@ -324,7 +324,7 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
         # check if the big_n element inherits the big_n_structure
         if (!inherits(big_n_element, "big_n_structure")) {
             # display error message
-            abort(
+            cli::cli_abort(
                 paste0(
                     "Invalid input supplied to the `big_n` parameter. Please supply a `big_n_structure()`."
                 ),

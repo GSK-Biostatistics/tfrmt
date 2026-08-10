@@ -14,12 +14,12 @@
 #'   tfrmt_to_json()
 tfrmt_to_json <- function(tfrmt, path = NULL) {
     if (!is_tfrmt(tfrmt)) {
-        stop("Needs tfrmt")
+        cli::cli_abort("Needs tfrmt")
     }
     output <- as_json(tfrmt)
 
     if (!is.null(path)) {
-        message(paste0("Writing json file out to:\n", path))
+        cli::cli_inform(paste0("Writing json file out to:\n", path))
         write(output, path)
     } else {
         return(output)
@@ -73,7 +73,7 @@ as_json.tfrmt <- function(x) {
     if (validate(json_clean)) {
         class(json_clean) <- "json"
     } else {
-        stop("Error when creating the json object")
+        cli::cli_abort("Error when creating the json object")
     }
     json_clean
 }
@@ -211,7 +211,7 @@ json_to_tfrmt <- function(path = NULL, json = NULL) {
     } else if (!is.null(path)) {
         dirty_list <- read_json(path)
     } else {
-        stop("Path or json object needed")
+        cli::cli_abort("Path or json object needed")
     }
 
     json_nm <- names(dirty_list)

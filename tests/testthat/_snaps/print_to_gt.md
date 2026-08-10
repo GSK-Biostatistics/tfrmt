@@ -92,7 +92,7 @@
     Code
       print_mock_gt(plan, data)["_data"]
     Message
-       Removing `value_to_remove` from input data for mocking.
+      Removing `value_to_remove` from input data for mocking.
     Output
       $`_data`
       # A tibble: 5 x 6
@@ -178,4 +178,3 @@
       2 a     b     m     2     FALSE              
       3 q     v     s     3     FALSE              
       4 b     p     e     4     FALSE              
-

@@ -133,7 +133,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             )
     } else {
-        stop("Please pass a boolean value into the `convert_to_txt` parameter")
+        cli::cli_abort("Please pass a boolean value into the `convert_to_txt` parameter")
     }
 
     output

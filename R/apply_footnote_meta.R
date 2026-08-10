@@ -137,7 +137,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 )
             }
 
-            message(paste(message_text, collapse = "\n"))
+            cli::cli_inform(paste(message_text, collapse = "\n"))
 
             out <- list(col = NULL, spanning = FALSE)
         } else {
@@ -206,12 +206,12 @@ get_row_loc <- function(
     if (any(names(loc_info) %in% c("group_val", "label_val"))) {
         # Things that don't have rows
         if (!is.null(col_info$spanning) && col_info$spanning) {
-            warning(
+            cli::cli_warn(
                 "Cannot apply footnotes to rows when you have only specified a spanning column"
             )
             col_info$row <- NULL
         } else if (row_grp == "noprint" && !is_empty(loc_info$group_val)) {
-            warning(
+            cli::cli_warn(
                 "Can not apply footnotes to group columns when 'noprint' is set"
             )
             col_info$row <- NULL

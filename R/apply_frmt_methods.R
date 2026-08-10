@@ -168,7 +168,7 @@ apply_frmt.frmt_combine <- function(
     # Check if unspecified param values are in the dataset
 
     if (!setequal(names(frmt_def$frmt_ls), fmt_param_vals)) {
-        stop(
+        cli::cli_abort(
             "The values in the expression don't match the names of the given formats "
         )
     }
@@ -198,7 +198,7 @@ apply_frmt.frmt_combine <- function(
         setdiff(fmt_param_vals_uq, .)
 
     if (length(miss_param_from_data) > 0) {
-        stop(paste0(
+        cli::cli_abort(paste0(
             "Unable to create formatting combination because the following parameters are missing from the data:\n ",
             paste(miss_param_from_data, collapse = " \n")
         ))
@@ -229,7 +229,7 @@ apply_frmt.frmt_combine <- function(
     #  1 row will successfully have a frmt_combine in it
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
         id_cols <- .tmp_data %>% select(!!!column, !!label, !!!group, !!param)
-        warning(paste0(
+        cli::cli_warn(paste0(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
             toString(names(id_cols %>% select(-!!param))),
             ". Current values:\n",
