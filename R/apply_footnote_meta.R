@@ -270,7 +270,7 @@ get_row_loc <- function(
                 col_info$row <- .data %>%
                     group_by(!!first(group)) %>%
                     mutate(
-                        `___tfrmt_grp_n` = cur_group_id(),
+                        `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     filter(.data$`___tfrmt_test`) %>%
@@ -287,7 +287,7 @@ get_row_loc <- function(
                 col_info$row <- .data %>%
                     group_by(!!first(group)) %>%
                     mutate(
-                        `___tfrmt_grp_n` = cur_group_id(),
+                        `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     filter(.data$`___tfrmt_test`) %>%
