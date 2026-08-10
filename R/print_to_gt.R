@@ -154,7 +154,9 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     check_inputs(tfrmt, c("column", "param", "value"))
 
     if (!is.data.frame(.data)) {
-        cli::cli_abort("Requires data, if not available please use `print_mock_gt()`")
+        cli::cli_abort(
+            "Requires data, if not available please use `print_mock_gt()`"
+        )
     }
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
         cleaned_data_to_gt(tfrmt, .unicode_ws)
