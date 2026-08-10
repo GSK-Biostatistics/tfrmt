@@ -17,7 +17,7 @@ test_that("insert post space - single grouping variable", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
@@ -47,7 +47,7 @@ test_that("insert post space - single grouping variable", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
@@ -98,7 +98,7 @@ test_that("insert post space - two grouping variables", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
@@ -139,7 +139,7 @@ test_that("insert post space - two grouping variables", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
@@ -191,7 +191,7 @@ test_that("insert mix - single grouping variable", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
             select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -227,7 +227,7 @@ test_that("insert post space after specific value", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
@@ -274,7 +274,7 @@ test_that("overlapping row_grp_structures - prefers latest", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
@@ -319,7 +319,7 @@ test_that("no post space added if NULL", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
         # nolint start: commas_linter
         tibble::tribble(
@@ -350,7 +350,7 @@ test_that("post space is truncated to data width", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
             select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -386,7 +386,7 @@ test_that("do not recycle the post space for full width", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
             select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -422,7 +422,7 @@ test_that("post space works when data contains NAs", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
             select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -469,9 +469,9 @@ test_that("Check combine_group_cols with a single group", {
     )
     # nolint end
 
-    expect_equal(auto_test_no_span, man_test_no_span)
+    expect_identical(auto_test_no_span, man_test_no_span)
     #With spanning (so no change to the data)
-    expect_equal(
+    expect_identical(
         combine_group_cols(
             mock_single_grp,
             group = vars(grp1),
@@ -533,7 +533,7 @@ test_that("Check combine_group_cols with a multi groups", {
     )
     # nolint end
 
-    expect_equal(auto_test_no_span, man_test_no_span)
+    expect_identical(auto_test_no_span, man_test_no_span)
 
     auto_test_with_span <- combine_group_cols(
         mock_multi_grp,
@@ -557,7 +557,7 @@ test_that("Check combine_group_cols with a multi groups", {
         mutate(grp1 = ifelse(nzchar(grp1), grp1, NA)) %>%
         fill(grp1, .direction = "up")
 
-    expect_equal(
+    expect_identical(
         auto_test_with_span,
         man_test_with_span
     )
@@ -629,7 +629,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
             dplyr::across(trtA:trtC, ~ as.list(.x))
         )
 
-    expect_equal(
+    expect_identical(
         auto_test_listcols,
         man_test_listcols
     )
@@ -666,7 +666,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
             )
         )
 
-    expect_equal(auto_test_listcols, man_test_listcols)
+    expect_identical(auto_test_listcols, man_test_listcols)
 })
 
 
@@ -692,7 +692,7 @@ test_that("> 2 groups with and without spanner_label", {
 
     plan_no_span <- row_grp_plan()
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_no_span$label_loc,
@@ -731,7 +731,7 @@ test_that("> 2 groups with and without spanner_label", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_with_span$label_loc,
@@ -785,7 +785,7 @@ test_that("Summary rows are not indented", {
 
     plan_no_span <- row_grp_plan()
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_no_span$label_loc,
@@ -816,7 +816,7 @@ test_that("Summary rows are not indented", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_with_span$label_loc,
@@ -850,7 +850,7 @@ test_that("Summary rows are not indented", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_with_column$label_loc,
@@ -964,7 +964,7 @@ test_that("row order is retained for all selections", {
         "b"   , "  e" , "4"  , FALSE
     )
     # nolint end
-    expect_equal(gt_spanning_dat, gt_spanning_man)
+    expect_identical(gt_spanning_dat, gt_spanning_man)
 
     gt_column <- tfrmt_temp %>%
         tfrmt(
@@ -1135,7 +1135,7 @@ test_that("Row group plans with col style plan", {
         tfrmt_gt <- print_to_gt(plan, raw_dat)
     })
 
-    expect_equal(
+    expect_identical(
         tfrmt_gt$`_data` %>%
             select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
@@ -1304,7 +1304,7 @@ test_that("Suppress printing of groups", {
     )
     # nolint end
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             my_plan$label_loc,
@@ -1349,7 +1349,7 @@ test_that("Row group plan indenting handles factor variables", {
     )
     # nolint end
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
                 mutate(
@@ -1369,7 +1369,7 @@ test_that("Row group plan indenting handles factor variables", {
         expected
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
                 mutate(
@@ -1389,7 +1389,7 @@ test_that("Row group plan indenting handles factor variables", {
         expected
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
                 mutate(
@@ -1409,7 +1409,7 @@ test_that("Row group plan indenting handles factor variables", {
         expected
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
                 mutate(
@@ -1439,7 +1439,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%
         ungroup() %>%
-        filter(pct_high > 10) %>%
+        dplyr::filter(pct_high > 10) %>%
         select(-pct_high)
 
     data_ae2$AETERM <- ifelse(

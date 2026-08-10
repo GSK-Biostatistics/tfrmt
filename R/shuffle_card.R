@@ -401,15 +401,15 @@ shuffle_card <- function(
 
     if (!is.na(glue_overall) && overall_val != glue_overall) {
         cli::cli_alert_info(
-            "{.val {glue_overall}} already exists in the {.code {colname}} column. \\
-      Using {.val {overall_val}}."
+            "{.val {glue_overall}} already exists in the {.code {colname}} \\
+            column. Using {.val {overall_val}}."
         )
     }
 
     if (!is.na(glue_any) && any_val != glue_any) {
         cli::cli_alert_info(
-            "{.val {glue_any}} already exists in the {.code {colname}} column. Using\\
-       {.val {any_val}}."
+            "{.val {glue_any}} already exists in the {.code {colname}} \\
+            column. Using {.val {any_val}}."
         )
     }
 
