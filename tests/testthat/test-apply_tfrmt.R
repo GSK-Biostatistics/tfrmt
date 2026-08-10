@@ -59,7 +59,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE)
         ),
@@ -75,7 +75,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             processed_dat <- apply_tfrmt(
                 dat2,
@@ -94,7 +94,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             processed_dat <- apply_tfrmt(
                 dat3,
