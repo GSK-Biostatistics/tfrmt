@@ -183,7 +183,7 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             print_mock_gt(
                 tfrmt_plan_no_param
@@ -309,7 +309,7 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             print_mock_gt(
                 tfrmt_plan_no_column
@@ -377,7 +377,7 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             print_mock_gt(
                 tfrmt_plan_no_value
@@ -483,7 +483,7 @@ test_that("print_mock_data() removes `value` when it exists in the input data", 
         )
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             print_mock_gt(
                 plan,
