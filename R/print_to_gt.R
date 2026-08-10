@@ -460,7 +460,12 @@ format_gt_column_labels <- function(gt_table, .data) {
         lowest_lvl <- names(.data) %>%
             tibble(cols = .) %>%
             left_join(lowest_lvl, by = "cols") %>%
-            mutate(value = coalesce(.data$value, .data$cols))
+            mutate(
+                value = dplyr::coalesce(
+                    .data$value,
+                    .data$cols
+                )
+            )
 
         renm_vals <- lowest_lvl %>%
             pull(.data$value)

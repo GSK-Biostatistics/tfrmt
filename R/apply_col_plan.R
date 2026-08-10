@@ -264,7 +264,7 @@ col_plan_span_structure_to_vars <- function(
                 tidyselect::everything(),
                 ~ factor(
                     .x,
-                    levels = col_selections[[cur_column()]]
+                    levels = col_selections[[dplyr::cur_column()]]
                 )
             )
         ) %>%
