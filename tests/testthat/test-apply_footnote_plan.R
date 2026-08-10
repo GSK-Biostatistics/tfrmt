@@ -445,7 +445,7 @@ test_that("applying footnote plan", {
 
 
 test_that("Check footnote order option works as expected", {
-    #default marks_first
+    # default marks_first
     tfrmt_ord <- tfrmt(
         label = label,
         column = column,
@@ -477,12 +477,14 @@ test_that("Check footnote order option works as expected", {
         )
     )
 
-    gt_out <- print_mock_gt(tfrmt_ord)
+    suppressMessages({
+        gt_out <- print_mock_gt(tfrmt_ord)
+    })
 
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
     expect_identical(current_order_opt, "marks_first")
 
-    #check the footnotes are all printed
+    # check the footnotes are all printed
     actual_fns <- gt_out$`_footnotes`$footnotes
 
     expected_fns <- c(
@@ -492,9 +494,12 @@ test_that("Check footnote order option works as expected", {
         "label_1 footnote"
     )
 
-    expect_identical(as.character(actual_fns), expected_fns)
+    expect_identical(
+        as.character(actual_fns),
+        expected_fns
+    )
 
-    #check preserve_order
+    # check preserve_order
     tfrmt_ord <- tfrmt_ord |>
         tfrmt(
             footnote_plan = footnote_plan(
@@ -510,7 +515,10 @@ test_that("Check footnote order option works as expected", {
             )
         )
 
-    gt_out <- print_mock_gt(tfrmt_ord)
+    suppressMessages({
+        gt_out <- print_mock_gt(tfrmt_ord)
+    })
+
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
     expect_identical(current_order_opt, "preserve_order")
 
@@ -530,7 +538,10 @@ test_that("Check footnote order option works as expected", {
             )
         )
 
-    gt_out <- print_mock_gt(tfrmt_ord)
+    suppressMessages({
+        gt_out <- print_mock_gt(tfrmt_ord)
+    })
+
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
     expect_identical(current_order_opt, "marks_last")
 })

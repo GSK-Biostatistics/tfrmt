@@ -63,7 +63,7 @@ apply_col_style_plan <- function(
 
     if (length(total_col_style_selection) > 0) {
         total_col_styles <- dplyr::bind_rows(total_col_style_selection) %>%
-            group_by(col) %>%
+            dplyr::group_by(col) %>%
             slice(n()) %>%
             ungroup()
 
@@ -311,7 +311,7 @@ apply_col_alignment_pos <- function(col, align) {
             values_to = "col_split_val"
         ) %>%
         dplyr::arrange(.data$col_idx, .data$col_split_lev) %>%
-        group_by(.data$col_idx) %>%
+        dplyr::group_by(.data$col_idx) %>%
         mutate(
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),
             col_split_start = dplyr::case_when(
@@ -352,7 +352,7 @@ apply_col_alignment_pos <- function(col, align) {
 
     # within each split level, find the # of chars it needs to take up, then left pad
     col_left_padded00 <- col_with_splits %>%
-        group_by(.data$col_split_lev) %>%
+        dplyr::group_by(.data$col_split_lev) %>%
         mutate(
             to_add_left = nchar(.data$col_sub) %>%
                 {
@@ -392,8 +392,8 @@ apply_col_alignment_pos <- function(col, align) {
     # collapse back to 1 rec per formatted string
     # & pad the right hand side
     col_left_padded_sum <- col_left_padded01 %>%
-        group_by(.data$col_idx) %>%
-        summarise(col = paste(.data$col_sub_out, collapse = "")) %>%
+        dplyr::group_by(.data$col_idx) %>%
+        summarise(col = paste0(.data$col_sub_out, collapse = "")) %>%
         mutate(
             to_add_right = .data$col %>%
                 nchar() %>%
