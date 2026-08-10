@@ -38,8 +38,6 @@
 #'
 #' @importFrom stats as.formula setNames
 #'
-#' @importFrom stringi stri_wrap
-#'
 #' @importFrom tibble add_row as_tibble as_tibble_row is_tibble tibble
 #'
 #' @importFrom tidyr crossing expand fill nest pivot_longer pivot_wider

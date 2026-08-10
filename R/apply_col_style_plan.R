@@ -456,6 +456,6 @@ apply_col_width <- function(col, width) {
 }
 
 wrap_string <- function(x, width, pad_left, pad_right) {
-    word_list <- stri_wrap(x, width = width, normalize = FALSE)
+    word_list <- stringi::stri_wrap(x, width = width, normalize = FALSE)
     paste0(pad_left, word_list, pad_right, collapse = "\n")
 }
