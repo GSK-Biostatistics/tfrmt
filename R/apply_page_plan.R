@@ -275,7 +275,7 @@ apply_page_struct <- function(
                         ) %>%
                         select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
                         dplyr::group_by(.data$`..tfrmt_split_after`) %>%
-                        group_split(.keep = FALSE)
+                        dplyr::group_split(.keep = FALSE)
                 }
             )
         ) %>%
@@ -383,7 +383,7 @@ combine_group_cols_mod <- function(
     while (length(group) > 0 && !is.null(label)) {
         split_dat <- .data %>%
             dplyr::group_by(!!!top_grouping) %>%
-            group_split()
+            dplyr::group_split()
 
         .data <- split_dat %>%
             map_dfr(function(lone_dat) {

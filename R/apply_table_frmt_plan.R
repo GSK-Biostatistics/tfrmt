@@ -46,7 +46,7 @@ apply_table_frmt_plan <- function(
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         dplyr::group_by(.data$TEMP_fmt_rank) %>%
-        group_split()
+        dplyr::group_split()
 
     ## apply formatting
     dat_plus_fmt %>%

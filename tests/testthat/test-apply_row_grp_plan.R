@@ -547,7 +547,7 @@ test_that("Check combine_group_cols with a multi groups", {
     #Should be the same as removing a group
     man_test_with_span <- mock_multi_grp %>%
         dplyr::group_by(grp1) %>%
-        group_split() %>%
+        dplyr::group_split() %>%
         map_dfr(
             combine_group_cols,
             group = vars(grp2),

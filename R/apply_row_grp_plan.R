@@ -33,7 +33,7 @@ apply_row_grp_struct <- function(
                         )
                     )
                 ) %>%
-                group_split()
+                dplyr::group_split()
             map(split_dat, function(dat) {
                 struct_val_idx(struct, dat, group, label)
             }) %>%
@@ -277,7 +277,7 @@ combine_group_cols <- function(
             dplyr::group_by(
                 run_id = dplyr::consecutive_id(!!!top_grouping)
             ) %>%
-            group_split() %>%
+            dplyr::group_split() %>%
             map(~ select(.x, -run_id))
 
         .data <- split_dat %>%

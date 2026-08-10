@@ -105,7 +105,7 @@ body_plan_builder <- function(
 
     frmt_vec <- param_tbl %>%
         dplyr::group_by(.data$pos) %>%
-        group_split() %>%
+        dplyr::group_split() %>%
         map(function(x) {
             if (sum(x$contains_glue) > 1) {
                 frmt_combine_builder(
