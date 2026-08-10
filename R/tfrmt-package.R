@@ -15,10 +15,6 @@
 #'
 #' @importFrom forcats fct_inorder
 #'
-#' @importFrom ggplot2 aes element_blank element_text geom_text ggplot margin
-#' @importFrom ggplot2 scale_x_continuous scale_x_discrete scale_y_discrete
-#' @importFrom ggplot2 theme theme_void unit xlab ylab
-#'
 #' @importFrom glue glue glue_collapse
 #'
 #' @importFrom gt cells_body cell_borders cells_column_labels cells_column_spanners cells_row_groups cells_stub cell_text cols_hide cols_label default_fonts gt gt_group md opt_footnote_marks opt_table_font px sub_missing tab_footnote tab_header tab_options tab_source_note tab_spanner tab_stubhead tab_style text_transform

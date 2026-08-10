@@ -60,7 +60,10 @@ test_that("inputs are as expected", {
         )
     )
 
-    expect_error(print_to_ggplot(tfrmt_1, "test"), "Requires data")
+    expect_error(
+        print_to_ggplot(tfrmt_1, "test"),
+        "Requires data"
+    )
     expect_error(
         print_to_ggplot(tfrmt = "test", .data = test_data),
         "Requires a tfrmt object"
@@ -112,7 +115,10 @@ test_that("group columns are created correctly", {
         `..tfrmt_row_grp_lbl` = c(TRUE, rep(FALSE, 12))
     )
 
-    expect_identical(apply_grp_ggplot(test_data, tfrmt), expected_data)
+    expect_identical(
+        apply_grp_ggplot(test_data, tfrmt),
+        expected_data
+    )
 })
 
 test_that("tfrmt is as expected", {
