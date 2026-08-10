@@ -58,7 +58,10 @@ apply_row_grp_struct <- function(
         # unnest to 1 rec per data row, to handle where chunk >1 row
         unnest(TEMP_appl_row) %>%
         group_by(TEMP_appl_row) %>%
-        dplyr::arrange(TEMP_appl_row, desc(.data$TEMP_block_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_block_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         group_by(
@@ -183,7 +186,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
                         values = fill_post_space(
                             post_space = element_block$post_space,
                             fill = element_block$fill,
-                            width = widths[[cur_column()]]
+                            width = widths[[dplyr::cur_column()]]
                         )
                     )
                 ),
@@ -296,7 +299,7 @@ combine_group_cols <- function(
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
-                        distinct()
+                        dplyr::distinct()
 
                     # next all of the other variables (as missing)
                     new_row <- lone_dat %>%

@@ -401,7 +401,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
                 ungroup() %>%
-                filter(n > 1) %>%
+                dplyr::filter(n > 1) %>%
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
                 group_by(!!!tfrmt$group, param_list) %>%
@@ -592,7 +592,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                     expected_grp_vars
                 )
             ) %>%
-                distinct()
+                dplyr::distinct()
         )
         actual_pops <- length(big_n_df)
         actual_grp_levs <- map_dfr(
@@ -603,7 +603,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                     expected_grp_vars
                 )
             ) %>%
-                distinct()
+                dplyr::distinct()
         )
 
         if (

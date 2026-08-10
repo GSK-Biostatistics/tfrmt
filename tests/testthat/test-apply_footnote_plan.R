@@ -103,7 +103,7 @@ test_that("applying footnote plan", {
 
     gt1 <- apply_footnote_plan(gt_start, tfrmt1, list())
 
-    expect_equal(nrow(gt1$`_footnotes`), 0)
+    expect_identical(nrow(gt1$`_footnotes`), 0L)
 
     # source footnote #################################################################
 
@@ -152,7 +152,7 @@ test_that("applying footnote plan", {
         list(list(col = NULL, spanning = FALSE, note = "Source Note"))
     )
 
-    expect_equal(gt2$`_footnotes`$footnotes, list("Source Note"))
+    expect_identical(gt2$`_footnotes`$footnotes, list("Source Note"))
 
     # column footnote ##################################################################
 
@@ -190,7 +190,7 @@ test_that("applying footnote plan", {
         tfrmt3,
         list(list(col = "Placebo", spanning = FALSE, note = "Test foontote 2"))
     )
-    expect_equal(nrow(gt3$`_footnotes`), 1)
+    expect_identical(nrow(gt3$`_footnotes`), 1L)
 
     # spanner footnote ##################################################################
 
@@ -284,7 +284,7 @@ test_that("applying footnote plan", {
             note = "Test foontote 3"
         ))
     )
-    expect_equal(nrow(gt4$`_footnotes`), 1)
+    expect_identical(nrow(gt4$`_footnotes`), 1L)
 
     # body footnote ##################################################################
 
@@ -332,7 +332,7 @@ test_that("applying footnote plan", {
             note = "Test foontote 2"
         ))
     )
-    expect_equal(nrow(gt5$`_footnotes`), 1)
+    expect_identical(nrow(gt5$`_footnotes`), 1L)
 
     # stub footnote ##################################################################
     tfrmt6 <- tfrmt(
@@ -384,7 +384,7 @@ test_that("applying footnote plan", {
             note = "Test foontote"
         ))
     )
-    expect_equal(nrow(gt6$`_footnotes`), 2)
+    expect_identical(nrow(gt6$`_footnotes`), 2L)
 
     # group footnote ##################################################################
 
@@ -440,7 +440,7 @@ test_that("applying footnote plan", {
             note = "Test foontote"
         ))
     )
-    expect_equal(nrow(gt7$`_footnotes`), 1)
+    expect_identical(nrow(gt7$`_footnotes`), 1L)
 })
 
 
@@ -480,7 +480,7 @@ test_that("Check footnote order option works as expected", {
     gt_out <- print_mock_gt(tfrmt_ord)
 
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
-    expect_equal(current_order_opt, "marks_first")
+    expect_identical(current_order_opt, "marks_first")
 
     #check the footnotes are all printed
     actual_fns <- gt_out$`_footnotes`$footnotes
@@ -492,7 +492,7 @@ test_that("Check footnote order option works as expected", {
         "label_1 footnote"
     )
 
-    expect_equal(as.character(actual_fns), expected_fns)
+    expect_identical(as.character(actual_fns), expected_fns)
 
     #check preserve_order
     tfrmt_ord <- tfrmt_ord |>
@@ -512,7 +512,7 @@ test_that("Check footnote order option works as expected", {
 
     gt_out <- print_mock_gt(tfrmt_ord)
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
-    expect_equal(current_order_opt, "preserve_order")
+    expect_identical(current_order_opt, "preserve_order")
 
     # check marks last
     tfrmt_ord <- tfrmt_ord |>
@@ -532,5 +532,5 @@ test_that("Check footnote order option works as expected", {
 
     gt_out <- print_mock_gt(tfrmt_ord)
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
-    expect_equal(current_order_opt, "marks_last")
+    expect_identical(current_order_opt, "marks_last")
 })

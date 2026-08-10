@@ -8,7 +8,7 @@ test_that("json basic tfrmt", {
     tfrmt() %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(tfrmt())
+        expect_identical(tfrmt())
 
     #Complete tfrmt
     basic_filled_in <- tfrmt(
@@ -171,7 +171,7 @@ test_that("json body plan", {
     # Get out the function to see if it runs the same
     fx1 <- frmt4[[6]][[1]][[4]][[1]][[4]]
     fx2 <- new_frmt[[6]][[1]][[4]][[1]][[4]]
-    expect_equal(fx1(1:5), fx2(1:5))
+    expect_identical(fx1(1:5), fx2(1:5))
 
     #Format when test
     frmt_when_simp <- tfrmt(
@@ -383,7 +383,7 @@ test_that("json footnote plan", {
     gl_fn %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(gl_fn)
+        expect_identical(gl_fn)
 
     # Nest columns
     nested_fn <- tfrmt(

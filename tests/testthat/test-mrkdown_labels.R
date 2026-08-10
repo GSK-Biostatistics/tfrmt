@@ -65,7 +65,7 @@ test_that("markdown column labels - no spanning", {
         tab_options(container.width = 1000)
 
     # test that format of column headers is markdown
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -138,14 +138,14 @@ test_that("markdown column labels - spanning", {
         print_to_gt(mock_data)
 
     # test that format of both column headers and spannning headers is markdown
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
             length(test_tfrmt$`_boxhead`$column_label)
         ))
     )
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_spanners`$spanner_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -200,7 +200,7 @@ test_that("markdown column labels - renamed", {
     ) %>%
         print_to_gt(mock_data)
 
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",

@@ -132,13 +132,13 @@ col_plan_quo_to_vars <- function(
     ## if is subtraction, inverse selection to get subtracted columns and prepend with -
     if (startsWith(as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
-            filter(!(!!col_quo %in% selected)) %>%
+            dplyr::filter(!(!!col_quo %in% selected)) %>%
             mutate(
                 subtraction_status = TRUE
             )
     } else {
         split_data_names <- split_data_names %>%
-            filter(!!col_quo %in% selected)
+            dplyr::filter(!!col_quo %in% selected)
 
         if (!is.null(names(x)) && names(x) != "") {
             rename_val <- names(x)
@@ -204,7 +204,7 @@ col_plan_span_structure_to_vars <- function(
                 if (is_subtraction_selection) {
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
                         mutate(
-                            subtraction_status = case_when(
+                            subtraction_status = dplyr::case_when(
                                 !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
                                 TRUE ~ FALSE
                             )
@@ -237,7 +237,7 @@ col_plan_span_structure_to_vars <- function(
                     }
 
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
-                        filter(!!col_quo %in% sel_id_col_selections)
+                        dplyr::filter(!!col_quo %in% sel_id_col_selections)
                 }
             }
 
@@ -249,7 +249,7 @@ col_plan_span_structure_to_vars <- function(
                 unique()
         } else {
             split_data_names <- split_data_names %>%
-                filter(!is.na(!!col_quo))
+                dplyr::filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
                 pull(!!col_quo) %>%
@@ -264,7 +264,7 @@ col_plan_span_structure_to_vars <- function(
                 tidyselect::everything(),
                 ~ factor(
                     .x,
-                    levels = col_selections[[cur_column()]]
+                    levels = col_selections[[dplyr::cur_column()]]
                 )
             )
         ) %>%
@@ -444,7 +444,7 @@ unite_df_to_data_names <- function(
 
     selected <- new_preselected_cols_full %>%
         mutate(
-            original = case_when(
+            original = dplyr::case_when(
                 .data$subtraction_status ~ paste0("-", .data$original),
                 TRUE ~ .data$original
             )

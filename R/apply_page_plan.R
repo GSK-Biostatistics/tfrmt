@@ -158,7 +158,7 @@ apply_page_max_rows <- function(
             # summary row groups to carry forward to next tbl
             if ("..tfrmt_summary_row" %in% names(cur_dat_new)) {
                 all_summ_row <- cur_dat_new %>%
-                    filter(.data$`..tfrmt_summary_row`) %>%
+                    dplyr::filter(.data$`..tfrmt_summary_row`) %>%
                     pull(.data$TEMP_row)
             }
 
@@ -293,7 +293,7 @@ apply_page_struct <- function(
                 values_to = "grouping_val"
             ) %>%
             group_by(.data$`..tfrmt_split_num`) %>%
-            filter(!is.na(.data$grouping_val)) %>%
+            dplyr::filter(!is.na(.data$grouping_val)) %>%
             unique() %>%
             summarise(
                 `..tfrmt_page_note` = paste0(
@@ -403,7 +403,7 @@ combine_group_cols_mod <- function(
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
-                        distinct() %>%
+                        dplyr::distinct() %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
                 }
 
@@ -438,7 +438,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
-        filter(.data$`..tfrmt_summ_row`) %>%
+        dplyr::filter(.data$`..tfrmt_summ_row`) %>%
         group_by(.data$TEMP_row) %>%
         slice(1) %>%
         mutate(

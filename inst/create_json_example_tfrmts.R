@@ -273,7 +273,7 @@ data_ae2 <- data_ae %>%
         pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
     ) %>%
     ungroup() %>%
-    filter(pct_high > 10) %>%
+    dplyr::filter(pct_high > 10) %>%
     select(-pct_high)
 
 
