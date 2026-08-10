@@ -402,7 +402,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
                 ungroup() %>%
                 dplyr::filter(n > 1) %>%
-                select(-c(!!!tfrmt$column)) %>%
+                dplyr::select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
                 dplyr::group_by(!!!tfrmt$group, param_list) %>%
                 mutate(label_quote = paste0('"', !!tfrmt$label, '"')) %>%
@@ -443,7 +443,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     column_cols <- tfrmt$column %>%
         map_chr(as_name)
     tbl_dat_wide <- data %>%
-        select(-!!tfrmt$param) %>%
+        dplyr::select(-!!tfrmt$param) %>%
         mutate(
             dplyr::across(
                 tidyselect::all_of(column_cols),
@@ -586,7 +586,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
         expected_grp_vars <- attr(data_wide, ".page_grp_vars")
         expected_grp_levs <- map_dfr(
             data_wide,
-            ~ select(
+            ~ dplyr::select(
                 .x,
                 tidyselect::all_of(
                     expected_grp_vars
@@ -597,7 +597,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
         actual_pops <- length(big_n_df)
         actual_grp_levs <- map_dfr(
             big_n_df,
-            ~ select(
+            ~ dplyr::select(
                 .x,
                 tidyselect::any_of(
                     expected_grp_vars

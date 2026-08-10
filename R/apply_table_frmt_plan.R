@@ -94,7 +94,7 @@ apply_table_frmt_plan <- function(
             out
         }) %>%
         dplyr::arrange(.data$TEMP_row) %>%
-        select(
+        dplyr::select(
             # drop TEMP_row values
             -tidyselect::starts_with(
                 "TEMP_"
@@ -131,7 +131,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
     # Protect against incomplete frmt_combines
     if (is_frmt_combine(cur_fmt$frmt_to_apply[[1]])) {
         complet_combo_grps <- out %>%
-            select(!!!group, !!label, !!param) %>%
+            dplyr::select(!!!group, !!label, !!param) %>%
             dplyr::distinct() %>%
             dplyr::group_by(!!!group, !!label) %>%
             mutate(test = sum(!!parse_expr(parm_expr))) %>%

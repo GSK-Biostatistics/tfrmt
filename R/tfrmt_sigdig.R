@@ -225,7 +225,9 @@ tfrmt_sigdig <- function(
     }
 
     # error if no group/label columns available
-    data_names <- sigdig_df %>% select(-"sigdig") %>% names()
+    data_names <- sigdig_df %>%
+        dplyr::select(-"sigdig") %>%
+        names()
     if (length(data_names) == 0) {
         stop("`sigdig_df` input must contain group and/or label value columns.")
     }
@@ -240,7 +242,7 @@ tfrmt_sigdig <- function(
     # if group param is provided, figure out which group/label variables are present in data and only keep those
     if (length(group_names) > 0) {
         sigdig_df <- sigdig_df %>%
-            select(
+            dplyr::select(
                 tidyselect::any_of(
                     c(
                         group_names,
@@ -251,7 +253,9 @@ tfrmt_sigdig <- function(
             )
 
         # error if mismatch between provided group (and label, if it exists) & data columns
-        data_names <- sigdig_df %>% select(-"sigdig") %>% names()
+        data_names <- sigdig_df %>%
+            dplyr::select(-"sigdig") %>%
+            names()
         if (length(data_names) == 0) {
             group_msg <- if (length(group_names) > 0) {
                 paste0("group: ", paste(group_names, collapse = ", "), "\n")

@@ -10,7 +10,7 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
         names(col_selection)[col_selection_grp_lbl] <- ""
     }
 
-    select(data, !!!col_selection)
+    dplyr::select(data, !!!col_selection)
 }
 
 
@@ -280,7 +280,7 @@ col_plan_span_structure_to_vars <- function(
     split_data_names %>%
         left_join(ords, by = names(col_selections)) %>%
         dplyr::arrange(.data$ord_col) %>%
-        select(-"ord_col") %>%
+        dplyr::select(-"ord_col") %>%
         unite_df_to_data_names(
             preselected_cols,
             column_names,

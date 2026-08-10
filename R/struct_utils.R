@@ -94,7 +94,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
 
         .data %>%
             dplyr::filter(!!filter_expr) %>%
-            select(
+            dplyr::select(
                 tidyselect::any_of(
                     c(
                         map_chr(keep_vars, as_label),

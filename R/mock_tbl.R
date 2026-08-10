@@ -63,7 +63,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
                 ~ dplyr::coalesce(.x, .data$..grp)
             )
         ) %>%
-        select(-"..grp") %>%
+        dplyr::select(-"..grp") %>%
         dplyr::rowwise() %>%
         mutate(
             dplyr::across(
@@ -125,7 +125,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     # remove the frmt_num field
     output_dat %>%
-        select(-"frmt_num") %>%
+        dplyr::select(-"frmt_num") %>%
         unique()
 }
 

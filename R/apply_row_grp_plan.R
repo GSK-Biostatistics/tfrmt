@@ -111,7 +111,7 @@ apply_row_grp_struct <- function(
         }
     ) %>%
         dplyr::arrange(.data$TEMP_row) %>%
-        select(-"TEMP_row")
+        dplyr::select(-"TEMP_row")
 
     add_ln_df
 }
@@ -282,7 +282,7 @@ combine_group_cols <- function(
                 run_id = dplyr::consecutive_id(!!!top_grouping)
             ) %>%
             dplyr::group_split() %>%
-            map(~ select(.x, -run_id))
+            map(~ dplyr::select(.x, -run_id))
 
         .data <- split_dat %>%
             map_dfr(function(lone_dat) {
@@ -303,13 +303,13 @@ combine_group_cols <- function(
 
                     # first containing grouping/label values
                     new_row <- lone_dat %>%
-                        select(!!!top_grouping, !!label) %>%
+                        dplyr::select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
                         dplyr::distinct()
 
                     # next all of the other variables (as missing)
                     new_row <- lone_dat %>%
-                        select(
+                        dplyr::select(
                             -tidyselect::any_of(
                                 names(new_row)
                             )
@@ -339,7 +339,7 @@ combine_group_cols <- function(
                             str_c(indent, !!label)
                         )
                     ) %>%
-                    select(-"..tfrmt_summary_row") %>%
+                    dplyr::select(-"..tfrmt_summary_row") %>%
                     dplyr::bind_rows(new_row, .)
             })
         group <- group[-length(group)]
@@ -379,10 +379,11 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL) {
 
         # Either drop group columns ("no print"), or format them w/ label
         if (element_row_grp_loc$location == "noprint") {
-            add_ln_df <- .data %>% select(-c(!!!group))
+            add_ln_df <- .data %>%
+                dplyr::select(-c(!!!group))
         } else if (element_row_grp_loc$location == "indented") {
             add_ln_df <- .data %>%
-                select(-c(!!!group))
+                dplyr::select(-c(!!!group))
         } else if (length(group) == 1) {
             #Using the grouping in gt + a single grouping
             add_ln_df <- .data %>%
@@ -390,7 +391,7 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL) {
         } else {
             # Using the grouping in gt, but needs to drop all groups in label
             add_ln_df <- .data %>%
-                select(-c(!!!group[-1])) %>%
+                dplyr::select(-c(!!!group[-1])) %>%
                 dplyr::group_by(!!group[[1]])
         }
     }

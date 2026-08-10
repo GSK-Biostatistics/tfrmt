@@ -274,7 +274,7 @@ data_ae2 <- data_ae %>%
     ) %>%
     ungroup() %>%
     dplyr::filter(pct_high > 10) %>%
-    select(-pct_high)
+    dplyr::select(-pct_high)
 
 
 tfrmt_demog %>% print_to_gt(data_demog)

@@ -362,7 +362,7 @@ test_that("Test when no body_style or values is present", {
                 names_sep = .tlang_delim,
                 values_from = val
             ) %>%
-            select(-param) %>%
+            dplyr::select(-param) %>%
             mutate(..tfrmt_row_grp_lbl = FALSE)
     )
 })
@@ -669,7 +669,7 @@ test_that("Using col_plan to get column names", {
         )
     ) %>%
         make_mock_data() %>%
-        select(test1, test2) %>%
+        dplyr::select(test1, test2) %>%
         dplyr::distinct(test1, test2)
 
     man_col_df <- tibble(
@@ -794,7 +794,7 @@ test_that("Using col_style_plan to get names", {
         )
     ) %>%
         make_mock_data() %>%
-        select(test1, test2) %>%
+        dplyr::select(test1, test2) %>%
         dplyr::distinct(test1, test2)
 
     man_col_df <- tibble(

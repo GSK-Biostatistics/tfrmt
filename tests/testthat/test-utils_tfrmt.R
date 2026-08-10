@@ -160,7 +160,8 @@ test_that("Check apply_tfrmt", {
 test_that("Check apply_tfrmt for mock data", {
     # mock for example data above
 
-    mock_dat <- raw_dat %>% select(-val2)
+    mock_dat <- raw_dat %>%
+        dplyr::select(-val2)
 
     # nolint start: commas_linter
     mock_man_df <- tibble::tribble(
@@ -430,7 +431,7 @@ test_that("Test body_plan missing", {
     expect_equal(
         empty_body_plan,
         input_data %>%
-            select(-param) %>%
+            dplyr::select(-param) %>%
             mutate(val = as.character(val)) %>%
             pivot_wider(names_from = column, values_from = val),
         ignore_attr = c(
@@ -648,7 +649,8 @@ test_that("struct utils quote escaping", {
     )
     # nolint end
     expect_equal(
-        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |> dplyr::select(rowlbl2:A),
+        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |>
+            dplyr::select(rowlbl2:A),
         man_tfrmt,
         ignore_attr = c(
             "class",

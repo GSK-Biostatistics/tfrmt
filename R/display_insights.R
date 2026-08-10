@@ -88,7 +88,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             dplyr::rename(
                 frmt_applied = "TEMP_fmt_to_apply"
             ) %>%
-            select(
+            dplyr::select(
                 -tidyselect::starts_with(
                     "TEMP"
                 )
@@ -109,7 +109,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             dplyr::rename(
                 frmt_applied = "TEMP_fmt_to_apply"
             ) %>%
-            select(
+            dplyr::select(
                 -tidyselect::starts_with(
                     "TEMP"
                 )
@@ -120,7 +120,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 }),
                 frmt_details = map_chr(.data$frmt_applied, format)
             ) %>%
-            select(-"frmt_applied")
+            dplyr::select(-"frmt_applied")
 
         # extract < frmt > type from frmt_details
         output <- output %>%
@@ -201,7 +201,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
 
     tbl_dat_wide <- tbl_dat %>%
         pivot_wider_tfrmt(tfrmt, mock) %>%
-        select(
+        dplyr::select(
             -tidyselect::any_of(
                 c(
                     map_chr(tfrmt$group, as_name),
@@ -235,7 +235,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     )
 
     vec_prep <- tbl_dat_wide %>%
-        select(
+        dplyr::select(
             tidyselect::any_of(
                 col_selection
             )

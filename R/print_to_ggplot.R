@@ -201,7 +201,7 @@ apply_grp_ggplot <- function(.data, tfrmt) {
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 
         combine_group_cols(.data, tfrmt$group, tfrmt$label, element) %>%
-            select(
+            dplyr::select(
                 -tidyselect::all_of(
                     group_name
                 )
