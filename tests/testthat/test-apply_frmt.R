@@ -696,7 +696,7 @@ test_that("frmt_combine only applies when all parameters are in the data", {
             ),
             ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
             ord2 = dplyr::if_else(Label == "n", 1, 2),
-            TEMP_row = row_number()
+            TEMP_row = dplyr::row_number()
         )
 
     test_combo <- frmt_structure(
