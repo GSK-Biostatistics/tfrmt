@@ -423,7 +423,7 @@ test_that("basic tfrmt - ... args", {
     )
     expect_identical(
         message_res,
-        "Argument 'colmn' passed to tfrmt is not a recognized argument\\..*`column`\\?"
+        "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?"
     )
 
     message_res <- capture_messages(
