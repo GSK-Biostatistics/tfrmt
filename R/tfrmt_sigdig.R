@@ -254,12 +254,12 @@ tfrmt_sigdig <- function(
         data_names <- sigdig_df %>% select(-"sigdig") %>% names()
         if (length(data_names) == 0) {
             group_msg <- if (length(group_names) > 0) {
-                paste0("group: ", paste(group_names, collapse = ", "), "\n")
+                paste0("group: ", toString(group_names), "\n")
             } else {
                 ""
             }
             label_msg <- if (length(label_name) > 0) {
-                paste0("label: ", paste(label_name, collapse = ", "))
+                paste0("label: ", toString(label_name))
             } else {
                 ""
             }
@@ -287,7 +287,7 @@ tfrmt_sigdig <- function(
         grp <- setdiff(new_group_names, names(sigdig_df))
         warning(
             "`sigdig_df` input does not contain the following group params: ",
-            paste0(grp, collapse = ", ")
+            toString(grp)
         )
     }
 

@@ -61,7 +61,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
 
     expect_message(
         processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE),
-        paste0(
+        paste(
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
@@ -80,7 +80,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
             mock = FALSE
         ),
-        paste0(
+        paste(
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
@@ -98,7 +98,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
             mock = FALSE
         ),
-        paste0(
+        paste(
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
