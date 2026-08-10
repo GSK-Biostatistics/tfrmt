@@ -205,7 +205,7 @@ apply_page_struct <- function(
     struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
     if (length(struct_defaults_idx) > 1) {
         struct_defaults_idx_drop <- struct_defaults_idx[
-            -last(struct_defaults_idx)
+            -dplyr::last(struct_defaults_idx)
         ]
         page_struct_list <- page_struct_list[-struct_defaults_idx_drop]
         message(
@@ -373,7 +373,10 @@ combine_group_cols_mod <- function(
             dplyr::across(c(!!!group), ~ fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
-                str_trim(!!last(group), side = "left")
+                str_trim(
+                    !!dplyr::last(group),
+                    side = "left"
+                )
         )
 
     if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
@@ -393,7 +396,10 @@ combine_group_cols_mod <- function(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(!!last(group), side = "left")
+                            str_trim(
+                                !!dplyr::last(group),
+                                side = "left"
+                            )
                     )
 
                 if (any(lone_dat_summ$`..tfrmt_summary_row_cur`)) {
@@ -402,7 +408,9 @@ combine_group_cols_mod <- function(
                     # if the set of rows contains NO group-level summary data, create an extra row to be added
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
-                        mutate(!!label := !!last(group)) %>%
+                        mutate(
+                            !!label := !!dplyr::last(group)
+                        ) %>%
                         dplyr::distinct() %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
                 }

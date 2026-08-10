@@ -245,7 +245,7 @@ make_col_df <- function(
                 list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
                 tibble(.)
-            names(cols_from_sp) <- last(column_vars)
+            names(cols_from_sp) <- dplyr::last(column_vars)
 
             col_def <- dplyr::bind_rows(col_def, cols_from_sp) |>
                 unique()
@@ -279,7 +279,7 @@ make_col_df <- function(
 
 add_mock_big_ns <- function(data, column, param, big_n_struct) {
     if (!is.null(big_n_struct)) {
-        col <- column %>% last()
+        col <- dplyr::last(column)
         col_vals <- data %>%
             pull(!!col) %>%
             unique()

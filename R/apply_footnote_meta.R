@@ -148,7 +148,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 max() %>%
                 col_str[.]
 
-            if (last(col_str) == span_lvl) {
+            if (dplyr::last(col_str) == span_lvl) {
                 col_loc <- unite_df_to_data_names(
                     col_loc_df,
                     preselected_cols = c(),

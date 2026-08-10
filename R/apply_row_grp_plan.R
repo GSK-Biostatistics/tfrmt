@@ -288,7 +288,10 @@ combine_group_cols <- function(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(!!last(group), side = "left")
+                            str_trim(
+                                !!dplyr::last(group),
+                                side = "left"
+                            )
                     )
 
                 if (any(lone_dat_summ$..tfrmt_summary_row)) {
@@ -300,7 +303,9 @@ combine_group_cols <- function(
                     # first containing grouping/label values
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
-                        mutate(!!label := !!last(group)) %>%
+                        mutate(
+                            !!label := !!dplyr::last(group)
+                        ) %>%
                         dplyr::distinct()
 
                     # next all of the other variables (as missing)
@@ -402,7 +407,7 @@ apply_post_space_trim <- function(.data) {
 
     if (target_col %in% names(.data)) {
         # If the very last row was tagged as a spacer, drop it
-        if (isTRUE(last(.data[[target_col]]))) {
+        if (isTRUE(dplyr::last(.data[[target_col]]))) {
             .data <- .data %>%
                 dplyr::slice(-dplyr::n())
         }
