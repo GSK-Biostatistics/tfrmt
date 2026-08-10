@@ -1013,8 +1013,8 @@ test_that("multi-positional alignment detects inadequate inputs", {
     expect_identical(
         msgs,
         c(
-            "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.",
-            "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned."
+            "`align` input for `type=\"pos\"` in `col_style_structure()` does not cover all possible values. Some cells may not be aligned.",
+            "`align` input for `type=\"pos\"` in `col_style_structure()` does not cover all possible values. Some cells may not be aligned."
         )
     )
 

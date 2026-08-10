@@ -185,7 +185,7 @@ test_that("test tentative_process", {
     expect_false(is_empty(failing_func_messages))
     expect_identical(
         failing_func_messages,
-        "Unable to to apply failing_func.\nReason: this function failed"
+        "Unable to to apply failing_func. Reason: this function failed"
     )
 
     ## function failing in tentative process
@@ -201,7 +201,7 @@ test_that("test tentative_process", {
     expect_false(is_empty(rlang_abort_func_messages))
     expect_identical(
         rlang_abort_func_messages,
-        "Unable to to apply rlang_abort_func.\nReason: this function failed2"
+        "Unable to to apply rlang_abort_func. Reason: this function failed2"
     )
 })
 

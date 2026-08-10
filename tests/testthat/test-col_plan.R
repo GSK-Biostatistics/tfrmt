@@ -110,7 +110,7 @@ test_that("Defining the col plan in tfrmt", {
                 )
             )
         ),
-        "Columns defined in `span_structure` are not defined columns in the tfrmt\nColumn Values: `col1`, `col2`\nInvalid Column Names in Span Structure: `col11`",
+        "Columns defined in `span_structure` are not defined columns in the tfrmt Column Values: `col1`, `col2` Invalid Column Names in Span Structure: `col11`",
         fixed = TRUE
     )
 })
@@ -1518,14 +1518,7 @@ test_that("col_plan returns correct errors", {
         col_plan(
             func("invalid entry")
         ),
-        paste0(
-            "Invalid entry: `func(\"invalid entry\")`\n",
-            "Only span_structures (`span_structure()`),",
-            " selection helpers (See <https://tidyselect.r-lib.org/reference>),",
-            "  or unquoted expressions representing variable names  can be entered",
-            " as contents. Changing the names of individual variables using",
-            " new_name = old_name syntax is allowable"
-        ),
+        "Invalid entry: `func(\"invalid entry\")` Only span_structures (`span_structure()`), selection helpers (See <https://tidyselect.r-lib.org/reference>), or unquoted expressions representing variable names can be entered as contents. Changing the names of individual variables using new_name = old_name syntax is allowable",
         fixed = TRUE
     )
 })
@@ -1534,7 +1527,7 @@ test_that("span_structure misc, including errors", {
     ## unnamed values
     expect_error(
         span_structure(`blah blah blah`),
-        "Entries of a span_stucture must be named:\n span_structure(`blah blah blah`)",
+        "Entries of a span_stucture must be named: span_structure(`blah blah blah`)",
         fixed = TRUE
     )
 
@@ -1552,7 +1545,7 @@ test_that("span_structure misc, including errors", {
         span_structure(
             name_col = vars(matrix())
         ),
-        "Invalid entry: `matrix()`\nOnly selection helpers (See <https://tidyselect.r-lib.org/reference>),",
+        "Invalid entry: `matrix()` Only selection helpers (See <https://tidyselect.r-lib.org/reference>),",
         fixed = TRUE
     )
 })

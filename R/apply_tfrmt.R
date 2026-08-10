@@ -435,6 +435,13 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 pull(.data$suggested_frmt_struct) %>%
                 paste0("- `", ., "`", collapse = "\n")
 
+            suggested_frmt_structs <- gsub(
+                "\\}",
+                "}}",
+                gsub("\\{", "{{", suggested_frmt_structs, perl = TRUE),
+                perl = TRUE
+            )
+
             cli::cli_inform(
                 paste0(
                     "Multiple param listed for the same group/label values.\n",
