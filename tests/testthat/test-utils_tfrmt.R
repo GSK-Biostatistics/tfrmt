@@ -6,7 +6,7 @@ raw_data_cat <- crossing(
     col = paste("Var", 1:4),
     param2 = c("count", "pct")
 ) %>%
-    rowwise() %>%
+    dplyr::rowwise() %>%
     mutate(
         ord1 = 1,
         ord2 = 26 - which(label == letters),
@@ -23,7 +23,7 @@ raw_data_cont <- crossing(
     col = paste("Var", 1:4),
     param2 = c("val")
 ) %>%
-    rowwise() %>%
+    dplyr::rowwise() %>%
     mutate(
         ord1 = 2,
         ord2 = which(label == letters),

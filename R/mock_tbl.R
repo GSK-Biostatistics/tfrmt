@@ -64,7 +64,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
             )
         ) %>%
         select(-"..grp") %>%
-        rowwise() %>%
+        dplyr::rowwise() %>%
         mutate(
             dplyr::across(
                 !!tfrmt$param,

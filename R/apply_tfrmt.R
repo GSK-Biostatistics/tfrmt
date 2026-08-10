@@ -415,7 +415,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                     n
                 ) %>%
                 unique() %>%
-                rowwise() %>%
+                dplyr::rowwise() %>%
                 mutate(
                     suggested_frmt_struct = frmt_struct_string(
                         grp = list(!!!tfrmt$group),
