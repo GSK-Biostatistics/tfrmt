@@ -386,7 +386,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
     num_rec_by_row <- data %>%
-        group_by(
+        dplyr::group_by(
             dplyr::across(
                 c(-!!tfrmt$value, -!!tfrmt$param)
             )
@@ -404,7 +404,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::filter(n > 1) %>%
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
-                group_by(!!!tfrmt$group, param_list) %>%
+                dplyr::group_by(!!!tfrmt$group, param_list) %>%
                 mutate(label_quote = paste0('"', !!tfrmt$label, '"')) %>%
                 reframe(
                     label_collapse = as.character(paste(
@@ -551,14 +551,14 @@ check_order_vars <- function(.data, tfrmt) {
         # check for values printing on different lines due to incorrect order variables
         if (is_empty(tfrmt$group)) {
             order_check <- .data %>%
-                group_by(!!tfrmt$label) %>%
+                dplyr::group_by(!!tfrmt$label) %>%
                 mutate(
                     n1 = n_distinct(!!tfrmt$label, !!!tfrmt$sorting_cols),
                     n2 = n_distinct(!!tfrmt$label)
                 )
         } else {
             order_check <- .data %>%
-                group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
+                dplyr::group_by(!!!tfrmt$group, !!(tfrmt$label)) %>%
                 mutate(
                     n1 = n_distinct(!!(tfrmt$label), !!!tfrmt$sorting_cols),
                     n2 = n_distinct(!!(tfrmt$label))

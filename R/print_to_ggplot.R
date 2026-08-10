@@ -113,7 +113,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
                 values_to = "value"
             ) %>%
             mutate(
-                value = if_else(
+                value = dplyr::if_else(
                     .data$`..tfrmt_row_grp_lbl`,
                     "",
                     .data$value

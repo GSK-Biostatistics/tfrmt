@@ -24,7 +24,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         # TODO add a warning if a format isn't applied anywhere
         mutate(TEMP_fmt_rank = row_number()) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
-        group_by(TEMP_appl_row) %>%
+        dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
         dplyr::arrange(
             TEMP_appl_row,
