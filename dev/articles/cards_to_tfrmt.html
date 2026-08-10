@@ -130,21 +130,22 @@ using the following {cards} code:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_demog</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">{cards} data frame: 21 x 11</span></span></span>
-<span><span class="co">#&gt;    group1 group1_level variable variable_level stat_name stat_label   stat</span></span>
-<span><span class="co">#&gt; 1     ARM      Placebo   AGEGR1          18-64         p          %  0.163</span></span>
-<span><span class="co">#&gt; 2     ARM      Placebo   AGEGR1            &gt;64         p          %  0.837</span></span>
-<span><span class="co">#&gt; 3     ARM      Placebo      AGE                     mean       Mean 75.209</span></span>
-<span><span class="co">#&gt; 4     ARM      Placebo      AGE                       sd         SD   8.59</span></span>
-<span><span class="co">#&gt; 5     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.131</span></span>
-<span><span class="co">#&gt; 6     ARM    Xanomeli…   AGEGR1            &gt;64         p          %  0.869</span></span>
-<span><span class="co">#&gt; 7     ARM    Xanomeli…      AGE                     mean       Mean 74.381</span></span>
-<span><span class="co">#&gt; 8     ARM    Xanomeli…      AGE                       sd         SD  7.886</span></span>
-<span><span class="co">#&gt; 9     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.095</span></span>
-<span><span class="co">#&gt; 10    ARM    Xanomeli…   AGEGR1            &gt;64         p          %  0.905</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">11 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Use `print(n = ...)` to see more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">4 more variables: context, fmt_fun, warning, error</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># An ARD data frame: 21 × 11</span></span></span>
+<span><span class="co">#&gt;    group1 group1_level         variable variable_level context stat_name    stat</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> ARM    Placebo              AGEGR1   18-64          catego… p          0.163 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> ARM    Placebo              AGEGR1   &gt;64            catego… p          0.837 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> ARM    Placebo              AGE      <span style="color: #949494;">&lt;NULL&gt;</span>         contin… mean      75.2   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> ARM    Placebo              AGE      <span style="color: #949494;">&lt;NULL&gt;</span>         contin… sd         8.59  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> ARM    Xanomeline High Dose AGEGR1   18-64          catego… p          0.131 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> ARM    Xanomeline High Dose AGEGR1   &gt;64            catego… p          0.869 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> ARM    Xanomeline High Dose AGE      <span style="color: #949494;">&lt;NULL&gt;</span>         contin… mean      74.4   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> ARM    Xanomeline High Dose AGE      <span style="color: #949494;">&lt;NULL&gt;</span>         contin… sd         7.89  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> ARM    Xanomeline Low Dose  AGEGR1   18-64          catego… p          0.095<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> ARM    Xanomeline Low Dose  AGEGR1   &gt;64            catego… p          0.905 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: stat_label &lt;chr&gt;, fmt_fun &lt;list&gt;, warning &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   error &lt;list&gt;</span></span></span></code></pre></div>
 <p>The first step in preparing the data for {tfrmt} is calling
 <code><a href="../reference/shuffle_card.html">shuffle_card()</a></code> which performs general operations to get the
 results in a tidy data frame without list-columns and extra
@@ -855,32 +856,22 @@ summaries using the following {cards} code:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ard_ae</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">{cards} data frame: 57 x 13</span></span></span>
-<span><span class="co">#&gt;    group1 group1_level group2 group2_level variable variable_level stat_name</span></span>
-<span><span class="co">#&gt; 1    &lt;NA&gt;                &lt;NA&gt;                   ARM        Placebo         n</span></span>
-<span><span class="co">#&gt; 2    &lt;NA&gt;                &lt;NA&gt;                   ARM        Placebo         N</span></span>
-<span><span class="co">#&gt; 3    &lt;NA&gt;                &lt;NA&gt;                   ARM        Placebo         p</span></span>
-<span><span class="co">#&gt; 4    &lt;NA&gt;                &lt;NA&gt;                   ARM      Xanomeli…         n</span></span>
-<span><span class="co">#&gt; 5    &lt;NA&gt;                &lt;NA&gt;                   ARM      Xanomeli…         N</span></span>
-<span><span class="co">#&gt; 6    &lt;NA&gt;                &lt;NA&gt;                   ARM      Xanomeli…         p</span></span>
-<span><span class="co">#&gt; 7    &lt;NA&gt;                &lt;NA&gt;                   ARM      Xanomeli…         n</span></span>
-<span><span class="co">#&gt; 8    &lt;NA&gt;                &lt;NA&gt;                   ARM      Xanomeli…         N</span></span>
-<span><span class="co">#&gt; 9    &lt;NA&gt;                &lt;NA&gt;                   ARM      Xanomeli…         p</span></span>
-<span><span class="co">#&gt; 10    ARM      Placebo   &lt;NA&gt;                 AESOC      GASTROIN…         n</span></span>
-<span><span class="co">#&gt;    stat_label  stat</span></span>
-<span><span class="co">#&gt; 1           n    86</span></span>
-<span><span class="co">#&gt; 2           N   254</span></span>
-<span><span class="co">#&gt; 3           % 0.339</span></span>
-<span><span class="co">#&gt; 4           n    84</span></span>
-<span><span class="co">#&gt; 5           N   254</span></span>
-<span><span class="co">#&gt; 6           % 0.331</span></span>
-<span><span class="co">#&gt; 7           n    84</span></span>
-<span><span class="co">#&gt; 8           N   254</span></span>
-<span><span class="co">#&gt; 9           % 0.331</span></span>
-<span><span class="co">#&gt; 10          n    12</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">47 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Use `print(n = ...)` to see more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">4 more variables: context, fmt_fun, warning, error</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># An ARD data frame: 57 × 13</span></span></span>
+<span><span class="co">#&gt;    group1 group1_level group2 group2_level variable variable_level     stat_name</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Placebo            n        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Placebo            N        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Placebo            p        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Xanomeline High D… n        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Xanomeline High D… N        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Xanomeline High D… p        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Xanomeline Low Do… n        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Xanomeline Low Do… N        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       ARM      Xanomeline Low Do… p        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> ARM    Placebo      <span style="color: #BB0000;">NA</span>     <span style="color: #949494;">&lt;NULL&gt;</span>       AESOC    GASTROINTESTINAL … n        </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 47 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 more variables: context &lt;chr&gt;, stat_label &lt;chr&gt;, stat &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   fmt_fun &lt;list&gt;, warning &lt;list&gt;, error &lt;list&gt;</span></span></span></code></pre></div>
 <p>Like the demog table example, the first step in preparing the data
 for {tfrmt} is calling <code><a href="../reference/shuffle_card.html">shuffle_card()</a></code> which performs
 general operations to get the results in a tidy data frame without

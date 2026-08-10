@@ -42,21 +42,22 @@ ard_demog <- cards::ard_stack(
 )
 
 ard_demog
-#> {cards} data frame: 21 x 11
-#>    group1 group1_level variable variable_level stat_name stat_label   stat
-#> 1     ARM      Placebo   AGEGR1          18-64         p          %  0.163
-#> 2     ARM      Placebo   AGEGR1            >64         p          %  0.837
-#> 3     ARM      Placebo      AGE                     mean       Mean 75.209
-#> 4     ARM      Placebo      AGE                       sd         SD   8.59
-#> 5     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.131
-#> 6     ARM    Xanomeli…   AGEGR1            >64         p          %  0.869
-#> 7     ARM    Xanomeli…      AGE                     mean       Mean 74.381
-#> 8     ARM    Xanomeli…      AGE                       sd         SD  7.886
-#> 9     ARM    Xanomeli…   AGEGR1          18-64         p          %  0.095
-#> 10    ARM    Xanomeli…   AGEGR1            >64         p          %  0.905
-#> ℹ 11 more rows
-#> ℹ Use `print(n = ...)` to see more rows
-#> ℹ 4 more variables: context, fmt_fun, warning, error
+#> # An ARD data frame: 21 × 11
+#>    group1 group1_level         variable variable_level context stat_name    stat
+#>    <chr>  <list>               <chr>    <list>         <chr>   <chr>      <list>
+#>  1 ARM    Placebo              AGEGR1   18-64          catego… p          0.163 
+#>  2 ARM    Placebo              AGEGR1   >64            catego… p          0.837 
+#>  3 ARM    Placebo              AGE      <NULL>         contin… mean      75.2   
+#>  4 ARM    Placebo              AGE      <NULL>         contin… sd         8.59  
+#>  5 ARM    Xanomeline High Dose AGEGR1   18-64          catego… p          0.131 
+#>  6 ARM    Xanomeline High Dose AGEGR1   >64            catego… p          0.869 
+#>  7 ARM    Xanomeline High Dose AGE      <NULL>         contin… mean      74.4   
+#>  8 ARM    Xanomeline High Dose AGE      <NULL>         contin… sd         7.89  
+#>  9 ARM    Xanomeline Low Dose  AGEGR1   18-64          catego… p          0.0952
+#> 10 ARM    Xanomeline Low Dose  AGEGR1   >64            catego… p          0.905 
+#> # ℹ 11 more rows
+#> # ℹ 4 more variables: stat_label <chr>, fmt_fun <list>, warning <list>,
+#> #   error <list>
 ```
 
 The first step in preparing the data for {tfrmt} is calling
@@ -286,32 +287,22 @@ ard_ae <- cards::ard_stack_hierarchical(
 )
 
 ard_ae
-#> {cards} data frame: 57 x 13
-#>    group1 group1_level group2 group2_level variable variable_level stat_name
-#> 1    <NA>                <NA>                   ARM        Placebo         n
-#> 2    <NA>                <NA>                   ARM        Placebo         N
-#> 3    <NA>                <NA>                   ARM        Placebo         p
-#> 4    <NA>                <NA>                   ARM      Xanomeli…         n
-#> 5    <NA>                <NA>                   ARM      Xanomeli…         N
-#> 6    <NA>                <NA>                   ARM      Xanomeli…         p
-#> 7    <NA>                <NA>                   ARM      Xanomeli…         n
-#> 8    <NA>                <NA>                   ARM      Xanomeli…         N
-#> 9    <NA>                <NA>                   ARM      Xanomeli…         p
-#> 10    ARM      Placebo   <NA>                 AESOC      GASTROIN…         n
-#>    stat_label  stat
-#> 1           n    86
-#> 2           N   254
-#> 3           % 0.339
-#> 4           n    84
-#> 5           N   254
-#> 6           % 0.331
-#> 7           n    84
-#> 8           N   254
-#> 9           % 0.331
-#> 10          n    12
-#> ℹ 47 more rows
-#> ℹ Use `print(n = ...)` to see more rows
-#> ℹ 4 more variables: context, fmt_fun, warning, error
+#> # An ARD data frame: 57 × 13
+#>    group1 group1_level group2 group2_level variable variable_level     stat_name
+#>    <chr>  <list>       <chr>  <list>       <chr>    <list>             <chr>    
+#>  1 NA     <NULL>       NA     <NULL>       ARM      Placebo            n        
+#>  2 NA     <NULL>       NA     <NULL>       ARM      Placebo            N        
+#>  3 NA     <NULL>       NA     <NULL>       ARM      Placebo            p        
+#>  4 NA     <NULL>       NA     <NULL>       ARM      Xanomeline High D… n        
+#>  5 NA     <NULL>       NA     <NULL>       ARM      Xanomeline High D… N        
+#>  6 NA     <NULL>       NA     <NULL>       ARM      Xanomeline High D… p        
+#>  7 NA     <NULL>       NA     <NULL>       ARM      Xanomeline Low Do… n        
+#>  8 NA     <NULL>       NA     <NULL>       ARM      Xanomeline Low Do… N        
+#>  9 NA     <NULL>       NA     <NULL>       ARM      Xanomeline Low Do… p        
+#> 10 ARM    Placebo      NA     <NULL>       AESOC    GASTROINTESTINAL … n        
+#> # ℹ 47 more rows
+#> # ℹ 6 more variables: context <chr>, stat_label <chr>, stat <list>,
+#> #   fmt_fun <list>, warning <list>, error <list>
 ```
 
 Like the demog table example, the first step in preparing the data for
