@@ -182,7 +182,9 @@ apply_grp_block <- function(.data, group, element_block, widths) {
         # create add-on row
         # utilize TEMP_row to retain the ordering
         grp_row_add <- .data %>%
-            dplyr::slice(dplyr::n()) %>%
+            dplyr::slice(
+                dplyr::n()
+            ) %>%
             dplyr::mutate(
                 dplyr::across(
                     c(
