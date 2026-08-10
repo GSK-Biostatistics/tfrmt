@@ -403,7 +403,7 @@ combine_group_cols_mod <- function(
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
-                        distinct() %>%
+                        dplyr::distinct() %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
                 }
 

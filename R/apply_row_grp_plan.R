@@ -299,7 +299,7 @@ combine_group_cols <- function(
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
-                        distinct()
+                        dplyr::distinct()
 
                     # next all of the other variables (as missing)
                     new_row <- lone_dat %>%

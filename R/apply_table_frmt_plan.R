@@ -128,7 +128,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
     if (is_frmt_combine(cur_fmt$frmt_to_apply[[1]])) {
         complet_combo_grps <- out %>%
             select(!!!group, !!label, !!param) %>%
-            distinct() %>%
+            dplyr::distinct() %>%
             group_by(!!!group, !!label) %>%
             mutate(test = sum(!!parse_expr(parm_expr))) %>%
             filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)) %>%
