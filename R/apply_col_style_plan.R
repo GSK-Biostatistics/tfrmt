@@ -242,7 +242,7 @@ apply_col_alignment_char <- function(col, align) {
             )
     }
 
-    str_c(
+    stringr::str_c(
         tbl_dat$add_left,
         tbl_dat$col,
         tbl_dat$add_right
@@ -376,7 +376,7 @@ apply_col_alignment_pos <- function(col, align) {
                 c("col_sub_1", "to_add_left", "col_sub_2"),
                 ~ replace_na(., "")
             ),
-            col_sub_out = str_c(
+            col_sub_out = stringr::str_c(
                 .data$col_sub_1,
                 .data$to_add_left,
                 .data$col_sub_2
@@ -405,7 +405,10 @@ apply_col_alignment_pos <- function(col, align) {
                 }
         )
 
-    str_c(col_left_padded_sum$col, col_left_padded_sum$to_add_right)
+    stringr::str_c(
+        col_left_padded_sum$col,
+        col_left_padded_sum$to_add_right
+    )
 }
 
 

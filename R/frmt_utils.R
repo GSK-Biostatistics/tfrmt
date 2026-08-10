@@ -343,7 +343,8 @@ as.character.frmt <- function(x, ...) {
             !is.null(x$transform),
             paste0(
                 ", transform = ",
-                deparse(x$transform) %>% str_c(collapse = "")
+                deparse(x$transform) %>%
+                    stringr::str_c(collapse = "")
             ),
             ""
         ),
@@ -368,9 +369,9 @@ as.character.frmt_when <- function(x, ...) {
 
     left <- x$frmt_ls %>%
         map_chr(~ f_lhs(.x)) %>%
-        str_c("'", ., "'")
-    params <- str_c(left, " ~ ", right) %>%
-        str_c(collapse = ", ")
+        stringr::str_c("'", ., "'")
+    params <- stringr::str_c(left, " ~ ", right) %>%
+        stringr::str_c(collapse = ", ")
 
     paste0(
         "frmt_when(",
@@ -390,8 +391,8 @@ as.character.frmt_when <- function(x, ...) {
 as.character.frmt_combine <- function(x, ...) {
     params <- x$frmt_ls %>%
         map_chr(~ as.character(.x)) %>%
-        str_c(names(x$frmt_ls), " = ", .) %>%
-        str_c(collapse = ", ")
+        stringr::str_c(names(x$frmt_ls), " = ", .) %>%
+        stringr::str_c(collapse = ", ")
     paste0(
         "frmt_combine('",
         x$expression,
@@ -420,20 +421,27 @@ as.character.span_structure <- function(x, ...) {
             not_fxs <- elements %>%
                 str_which("^[A-Za-z_.][A-Za-z0-9_.]*\\(", negate = TRUE)
             elements[not_fxs] <- elements[not_fxs] %>%
-                str_c("'", ., "'")
+                stringr::str_c("'", ., "'")
 
             if (rlang::is_named(val)) {
-                elements <- str_c("`", names(val), "`", " = ", elements)
+                elements <- stringr::str_c(
+                    "`",
+                    names(val),
+                    "`",
+                    " = ",
+                    elements
+                )
             }
 
             elements %>%
-                str_c(collapse = ", ") %>%
-                str_c("c(", ., ")")
+                stringr::str_c(collapse = ", ") %>%
+                stringr::str_c("c(", ., ")")
         })
 
     paste0(
         "span_structure(",
-        str_c(names(values), " = ", values) %>% str_c(collapse = ", "),
+        stringr::str_c(names(values), " = ", values) %>%
+            stringr::str_c(collapse = ", "),
         ")"
     )
 }

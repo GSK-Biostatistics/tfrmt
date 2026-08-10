@@ -107,7 +107,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 )
 
             # when scientific is null paste rounded value, if not then append scientific expression
-            fmt_vals <- str_c(
+            fmt_vals <- stringr::str_c(
                 str_dup(" ", fmt_options$space_to_add),
                 fmt_options$rounded,
                 vals_sci_post
@@ -128,7 +128,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             # Combining the additional formatting
             fmt_val_output <- dplyr::case_when(
                 fmt_options$rounded == "NA" ~ miss_val,
-                TRUE ~ str_c(expr_start, fmt_vals, expr_end)
+                TRUE ~ stringr::str_c(expr_start, fmt_vals, expr_end)
             )
         } else {
             fmt_val_output <- frmt_def$expression

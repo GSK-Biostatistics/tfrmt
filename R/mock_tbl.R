@@ -140,7 +140,8 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 #' @noRd
 process_for_mock <- function(x, column, .default = 1:3) {
     if (x == ".default") {
-        str_c(column, "_", .default) %>% list()
+        stringr::str_c(column, "_", .default) %>%
+            list()
     } else {
         list(x)
     }

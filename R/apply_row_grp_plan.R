@@ -332,7 +332,7 @@ combine_group_cols <- function(
                         !!label := ifelse(
                             .data$..tfrmt_summary_row,
                             !!label,
-                            str_c(indent, !!label)
+                            stringr::str_c(indent, !!label)
                         )
                     ) %>%
                     select(-"..tfrmt_summary_row") %>%

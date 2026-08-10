@@ -514,7 +514,7 @@ convert_ws_unicode <- function(gt_table) {
                 space_right <- str_match(x, "\\s*$") %>% nchar()
                 space_right[x_trimmed == ""] <- 0
 
-                str_c(
+                stringr::str_c(
                     str_dup("\U00A0", space_left),
                     # 2 or more spaces are split into a combination of unicode whitespaces and
                     # regular spaces for latex collapsing
