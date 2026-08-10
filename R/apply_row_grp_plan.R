@@ -77,7 +77,7 @@ apply_row_grp_struct <- function(
 
     # get max character width for each column in the full data
     dat_max_widths <- .data %>%
-        summarise(
+        dplyr::summarise(
             dplyr::across(
                 tidyselect::everything(),
                 function(x) {

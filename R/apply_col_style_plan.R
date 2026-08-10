@@ -395,7 +395,9 @@ apply_col_alignment_pos <- function(col, align) {
     # & pad the right hand side
     col_left_padded_sum <- col_left_padded01 %>%
         dplyr::group_by(.data$col_idx) %>%
-        summarise(col = paste0(.data$col_sub_out, collapse = "")) %>%
+        dplyr::summarise(
+            col = paste0(.data$col_sub_out, collapse = "")
+        ) %>%
         mutate(
             to_add_right = .data$col %>%
                 nchar() %>%

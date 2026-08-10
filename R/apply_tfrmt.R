@@ -391,7 +391,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 c(-!!tfrmt$value, -!!tfrmt$param)
             )
         ) %>%
-        summarise(
+        dplyr::summarise(
             param_list = list(!!tfrmt$param),
             n = n()
         )

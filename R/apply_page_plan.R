@@ -302,7 +302,7 @@ apply_page_struct <- function(
             dplyr::group_by(.data$`..tfrmt_split_num`) %>%
             dplyr::filter(!is.na(.data$grouping_val)) %>%
             unique() %>%
-            summarise(
+            dplyr::summarise(
                 `..tfrmt_page_note` = paste0(
                     .data$grouping_col,
                     ": ",
