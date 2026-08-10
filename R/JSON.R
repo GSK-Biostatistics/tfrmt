@@ -86,7 +86,7 @@ as_json.default <- function(x) {
 #' @export
 as_json.quosures <- function(x) {
     x %>%
-        map_chr(as_label)
+        map_chr(x, as_label)
 }
 
 
