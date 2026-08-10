@@ -265,7 +265,7 @@ apply_page_struct <- function(
                         mutate(
                             `..tfrmt_split_idx` = .data$TEMP_row %in% y,
                             # carry it forward to denote start of next table,
-                            `..tfrmt_start_idx` = lag(
+                            `..tfrmt_start_idx` = dplyr::lag(
                                 .data$`..tfrmt_split_idx`,
                                 default = TRUE
                             ),

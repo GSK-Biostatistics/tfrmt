@@ -316,7 +316,7 @@ apply_col_alignment_pos <- function(col, align) {
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),
             col_split_start = dplyr::case_when(
                 is.na(.data$col_split_val) ~ NA,
-                TRUE ~ lag(.data$col_split_end, default = 0) + 1
+                TRUE ~ dplyr::lag(.data$col_split_end, default = 0) + 1
             ),
             col_split_lev = gsub("col_split_", "", .data$col_split_lev) %>%
                 as.numeric()
