@@ -63,7 +63,11 @@ apply_row_grp_struct <- function(
             dplyr::desc(.data$TEMP_block_rank)
         ) %>%
         slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        ) %>%
         dplyr::group_by(
             .data$TEMP_block_rank,
             .data$TEMP_chunk_num,

@@ -276,7 +276,7 @@ apply_frmt.frmt_combine <- function(
 
     # merge on new values, and remove cases other than first occurance of group/label/column pairing
     .data %>%
-        left_join(
+        dplyr::left_join(
             .tmp_data_fmted,
             by = map_chr(merge_group, as_label)
         ) %>%

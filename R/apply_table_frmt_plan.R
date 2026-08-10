@@ -44,7 +44,11 @@ apply_table_frmt_plan <- function(
             dplyr::desc(.data$TEMP_fmt_rank)
         ) %>%
         slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        ) %>%
         dplyr::group_by(.data$TEMP_fmt_rank) %>%
         dplyr::group_split()
 
@@ -140,7 +144,11 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             keep(~ . != "<empty>")
 
         out <- complet_combo_grps %>%
-            left_join(out, by = join_by, multiple = "all")
+            dplyr::left_join(
+                out,
+                by = join_by,
+                multiple = "all"
+            )
     }
     out %>%
         pull(.data$TEMP_row)

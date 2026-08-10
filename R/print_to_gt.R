@@ -461,7 +461,10 @@ format_gt_column_labels <- function(gt_table, .data) {
         # ensure all columns are represented
         lowest_lvl <- names(.data) %>%
             tibble(cols = .) %>%
-            left_join(lowest_lvl, by = "cols") %>%
+            dplyr::left_join(
+                lowest_lvl,
+                by = "cols"
+            ) %>%
             mutate(
                 value = dplyr::coalesce(
                     .data$value,

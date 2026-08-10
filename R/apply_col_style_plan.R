@@ -261,7 +261,7 @@ apply_col_alignment_pos <- function(col, align) {
         col = trimws(col),
         col_as_x = str_replace_all(col, "[0-9]", "x")
     ) %>% # convert column values to x's
-        left_join(
+        dplyr::left_join(
             tibble(
                 align = trimws(align),
                 col_as_x = str_replace_all(align, "\\|", "")

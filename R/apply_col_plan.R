@@ -278,7 +278,10 @@ col_plan_span_structure_to_vars <- function(
         )
 
     split_data_names %>%
-        left_join(ords, by = names(col_selections)) %>%
+        dplyr::left_join(
+            ords,
+            by = names(col_selections)
+        ) %>%
         dplyr::arrange(.data$ord_col) %>%
         select(-"ord_col") %>%
         unite_df_to_data_names(

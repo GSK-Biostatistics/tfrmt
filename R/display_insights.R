@@ -31,7 +31,11 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
             dplyr::desc(.data$TEMP_fmt_rank)
         ) %>%
         slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row"))
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        )
 }
 
 #' Display formatting applied to each row

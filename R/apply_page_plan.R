@@ -309,7 +309,7 @@ apply_page_struct <- function(
             c("..tfrmt_data", "..tfrmt_split_num")
         )
 
-        dat_split_2 <- left_join(
+        dat_split_2 <- dplyr::left_join(
             dat_split_2,
             tbl_nms,
             by = "..tfrmt_split_num"
