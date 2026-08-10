@@ -220,7 +220,7 @@ get_row_loc <- function(
             # Test if there are more than the first group
             highest_grp <- setdiff(
                 names(loc_info$group_val),
-                first(group_str)
+                dplyr::first(group_str)
             ) %>%
                 length() ==
                 0
@@ -256,7 +256,7 @@ get_row_loc <- function(
                         `___tfrmt_test` = !!filter_expr,
                         `___tfrmt_TEMP_rows` = row_number()
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_TEMP_rows`)
 
                 col_info$col <- ifelse(
@@ -268,29 +268,29 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    group_by(!!first(group)) %>%
+                    group_by(!!dplyr::first(group)) %>%
                     mutate(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
                 col_info$col <- ifelse(
                     is.null(col_info$col),
-                    first(group_str),
+                    dplyr::first(group_str),
                     col_info$col
                 )
             } else if (row_grp %in% c("", "gtdefault")) {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    group_by(!!first(group)) %>%
+                    group_by(!!dplyr::first(group)) %>%
                     mutate(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 
@@ -313,7 +313,7 @@ get_row_loc <- function(
                         `___tfrmt_grp_n` = row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
-                    filter(.data$`___tfrmt_test`) %>%
+                    dplyr::filter(.data$`___tfrmt_test`) %>%
                     pull(.data$`___tfrmt_grp_n`) %>%
                     unique()
 

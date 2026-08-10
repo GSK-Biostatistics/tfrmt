@@ -1,6 +1,6 @@
 test_that("extract_data works for a single gt_tbl object", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -63,7 +63,7 @@ test_that("extract_data works for a single gt_tbl object", {
 
 test_that("extract_data extracts updated names changed in the col_plan including group/label vars", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -143,7 +143,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
 
 test_that("extract_data extracts updated names changed in the col_plan including 1 group/label vars", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -219,7 +219,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
 
 test_that("extract_data extracts updated names changed in the col_plan", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -293,7 +293,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
 
 test_that("extract_data works for a gt_group object (paged tables)", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )

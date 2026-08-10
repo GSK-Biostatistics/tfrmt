@@ -26,7 +26,10 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         unnest(cols = c(TEMP_appl_row)) %>%
         group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
-        dplyr::arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_fmt_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row"))
 }
@@ -233,7 +236,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
             tidyselect::everything()
         ) %>%
         dplyr::arrange(nchar(.data$value)) %>%
-        filter(!is.na(.data$value)) %>%
+        dplyr::filter(!is.na(.data$value)) %>%
         pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%

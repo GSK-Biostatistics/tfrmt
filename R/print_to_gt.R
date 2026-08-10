@@ -435,15 +435,17 @@ format_gt_column_labels <- function(gt_table, .data) {
             mutate(cols = spanning) %>%
             pivot_longer(-"cols")
 
-        lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
+        lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
 
         spans_to_apply <- work_df %>%
-            filter(.data$name != max(.data$name)) %>%
-            dplyr::arrange(desc(.data$name)) %>%
+            dplyr::filter(.data$name != max(.data$name)) %>%
+            dplyr::arrange(
+                dplyr::desc(.data$name)
+            ) %>%
             group_by(.data$value) %>%
             nest(set = "cols") %>%
             mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
-            filter(.data$value != "NA")
+            dplyr::filter(.data$value != "NA")
 
         for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format

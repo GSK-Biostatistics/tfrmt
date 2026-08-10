@@ -93,7 +93,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             parse_expr()
 
         .data %>%
-            filter(!!filter_expr) %>%
+            dplyr::filter(!!filter_expr) %>%
             select(
                 tidyselect::any_of(
                     c(

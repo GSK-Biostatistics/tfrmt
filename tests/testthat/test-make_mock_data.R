@@ -670,7 +670,7 @@ test_that("Using col_plan to get column names", {
     ) %>%
         make_mock_data() %>%
         select(test1, test2) %>%
-        distinct(test1, test2)
+        dplyr::distinct(test1, test2)
 
     man_col_df <- tibble(
         test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)),
@@ -702,7 +702,7 @@ test_that("Using col_plan to get column names", {
         )
     ) %>%
         make_mock_data() %>%
-        distinct(trt, visit)
+        dplyr::distinct(trt, visit)
 
     # nolint start: commas_linter
     man_col_crossing <- tibble::tribble(
@@ -795,7 +795,7 @@ test_that("Using col_style_plan to get names", {
     ) %>%
         make_mock_data() %>%
         select(test1, test2) %>%
-        distinct(test1, test2)
+        dplyr::distinct(test1, test2)
 
     man_col_df <- tibble(
         test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2), rep(NA, 3)),
@@ -843,7 +843,7 @@ test_that("Will add big N avaliable", {
     )
 
     auto_big_n_df <- make_mock_data(pop_tbl_tfrmt) %>%
-        filter(param == "big_n")
+        dplyr::filter(param == "big_n")
 
     # nolint start: commas_linter
     man_big_n_df <- tibble::tribble(

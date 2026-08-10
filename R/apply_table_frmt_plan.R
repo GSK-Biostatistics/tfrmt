@@ -39,7 +39,10 @@ apply_table_frmt_plan <- function(
         unnest(cols = c(TEMP_appl_row)) %>%
         group_by(TEMP_appl_row) %>%
         #TODO add warning if there are rows not covered
-        dplyr::arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_fmt_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         group_by(.data$TEMP_fmt_rank) %>%
@@ -119,16 +122,18 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         parse_expr()
 
     out <- .data %>%
-        filter(!!filter_expr)
+        dplyr::filter(!!filter_expr)
 
     # Protect against incomplete frmt_combines
     if (is_frmt_combine(cur_fmt$frmt_to_apply[[1]])) {
         complet_combo_grps <- out %>%
             select(!!!group, !!label, !!param) %>%
-            distinct() %>%
+            dplyr::distinct() %>%
             group_by(!!!group, !!label) %>%
             mutate(test = sum(!!parse_expr(parm_expr))) %>%
-            filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)) %>%
+            dplyr::filter(
+                .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
+            ) %>%
             ungroup()
         join_by <- c(group, label, param) %>%
             map_chr(as_label) %>%
