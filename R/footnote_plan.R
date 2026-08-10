@@ -112,7 +112,9 @@ footnote_structure <- function(
         if (is.null(column_val_names)) {
             cli::cli_abort("when column_val is a list, must be a named list")
         } else if (!all(nzchar(column_val_names))) {
-            cli::cli_abort("when column_val is a list, each entry must be named")
+            cli::cli_abort(
+                "when column_val is a list, each entry must be named"
+            )
         }
     }
 
