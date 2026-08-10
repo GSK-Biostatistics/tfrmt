@@ -516,7 +516,7 @@ convert_ws_unicode <- function(gt_table) {
                 space_right[x_trimmed == ""] <- 0
 
                 stringr::str_c(
-                    str_dup("\U00A0", space_left),
+                    stringr::str_dup("\U00A0", space_left),
                     # 2 or more spaces are split into a combination of unicode whitespaces and
                     # regular spaces for latex collapsing
                     str_replace_all(
@@ -524,7 +524,7 @@ convert_ws_unicode <- function(gt_table) {
                         pattern = "\\s{2,}",
                         break_duplicate_whitespace
                     ),
-                    str_dup("\U00A0", space_right)
+                    stringr::str_dup("\U00A0", space_right)
                 )
             }
         )

@@ -51,7 +51,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (stringr::str_detect(frmt_def$expression, "[x|X]")) {
             # digits following period in expression
             dig <- frmt_def$expression %>%
-                str_extract("(?<=\\.)[X|x]+") %>%
+                stringr::str_extract("(?<=\\.)[X|x]+") %>%
                 stringr::str_count("[X|x]")
 
             ## There were no x's after a `.` to extract, so assume none
@@ -64,16 +64,19 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 vals_sci <- format(vals, scientific = TRUE)
 
                 vals <- vals_sci %>%
-                    str_extract("[^e]+") %>%
+                    stringr::str_extract("[^e]+") %>%
                     as.numeric()
 
                 ## remove x's from end of scientific
                 multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
-                sci_width <- str_extract(frmt_def$scientific, "[xX]+(?<=$)") %>%
+                sci_width <- stringr::str_extract(
+                    frmt_def$scientific,
+                    "[xX]+(?<=$)"
+                ) %>%
                     stringr::str_count("[X|x]")
 
                 vals_sci_post <- vals_sci %>%
-                    str_extract("[^e]+$") %>%
+                    stringr::str_extract("[^e]+$") %>%
                     as.numeric() %>%
                     format(trim = TRUE, width = sci_width) %>%
                     paste0(multiply, .)
@@ -108,16 +111,16 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
             # when scientific is null paste rounded value, if not then append scientific expression
             fmt_vals <- stringr::str_c(
-                str_dup(" ", fmt_options$space_to_add),
+                stringr::str_dup(" ", fmt_options$space_to_add),
                 fmt_options$rounded,
                 vals_sci_post
             )
 
             expr_start <- frmt_def$expression %>%
-                str_extract("^[^X|^x]*(?=[X|x])")
+                stringr::str_extract("^[^X|^x]*(?=[X|x])")
 
             expr_end <- frmt_def$expression %>%
-                str_extract("(?<=[X|x])[^X|^x]*$")
+                stringr::str_extract("(?<=[X|x])[^X|^x]*$")
 
             if (!is.null(frmt_def$missing)) {
                 miss_val <- frmt_def$missing
@@ -159,7 +162,7 @@ apply_frmt.frmt_combine <- function(
     ...
 ) {
     fmt_param_vals <- frmt_def$expression %>%
-        str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
+        stringr::str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
         unlist()
 
     # Adding the unquoted version to match while long

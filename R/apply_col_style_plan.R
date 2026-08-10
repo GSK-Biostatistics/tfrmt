@@ -193,7 +193,10 @@ apply_col_alignment_char <- function(col, align) {
             mutate(
                 string_col = nchar(.data$col),
                 string_tot = max(.data$string_col),
-                space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
+                space_to_add = stringr::str_dup(
+                    " ",
+                    .data$string_tot - .data$string_col
+                )
             )
         if (align == "left") {
             tbl_dat <- tibble(
@@ -235,7 +238,7 @@ apply_col_alignment_char <- function(col, align) {
                                 max(.) - .
                             } %>%
                             {
-                                str_dup(" ", .)
+                                stringr::str_dup(" ", .)
                             }
                     }
                 )
@@ -343,12 +346,12 @@ apply_col_alignment_pos <- function(col, align) {
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
                 !stringr::str_detect(.data$col_sub, " ") &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
-                TRUE ~ str_extract(.data$col_sub, "^.+?(?= )")
+                TRUE ~ stringr::str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space
             col_sub_2 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ .data$col_sub, # first substring so put the whole thing here
                 .data$col_split_lev == .data$n_split_levs ~ NA_character_, # last substring, nothing to left-pad
-                TRUE ~ str_extract(.data$col_sub, "(?= ).*")
+                TRUE ~ stringr::str_extract(.data$col_sub, "(?= ).*")
             )
         ) # extract string following & including first space
 
@@ -361,7 +364,7 @@ apply_col_alignment_pos <- function(col, align) {
                     max(., na.rm = TRUE) - .
                 } %>%
                 {
-                    str_dup(" ", .)
+                    stringr::str_dup(" ", .)
                 }
         )
 
@@ -403,7 +406,7 @@ apply_col_alignment_pos <- function(col, align) {
                     max(.) - .
                 } %>%
                 {
-                    str_dup(" ", .)
+                    stringr::str_dup(" ", .)
                 }
         )
 
@@ -430,8 +433,8 @@ apply_col_width <- function(col, width) {
         col[col_na_idx] <- ""
     }
 
-    pad_left <- str_dup(" ", nchar(col) - nchar(trimws(col, "left")))
-    pad_right <- str_dup(" ", nchar(col) - nchar(trimws(col, "right")))
+    pad_left <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "left")))
+    pad_right <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "right")))
     out <- pmap_chr(list(trimws(col), width, pad_left, pad_right), wrap_string)
 
     if (length(col_na_idx) > 0) {

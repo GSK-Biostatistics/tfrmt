@@ -200,7 +200,7 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
 
     n_vars <- stringr::str_count(expression, everything_but_curly)
-    vars_to_fmt <- str_extract_all(
+    vars_to_fmt <- stringr::str_extract_all(
         expression,
         everything_but_curly,
         simplify = TRUE
