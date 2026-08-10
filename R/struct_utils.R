@@ -46,7 +46,9 @@ expr_to_filter.quosures <- function(cols, val) {
         ) %>%
             paste(collapse = " & ")
     } else {
-        cli::cli_abort("If multiple cols are provided, val must be a named list")
+        cli::cli_abort(
+            "If multiple cols are provided, val must be a named list"
+        )
     }
     out
 }
