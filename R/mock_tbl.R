@@ -302,7 +302,7 @@ col_plan_test <- function(col_plan) {
         all_names <- col_plan$dots %>%
             map_chr(as_label)
         first_chr <- all_names %>%
-            str_sub(end = 1)
+            stringr::str_sub(end = 1)
         out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
     }
     out

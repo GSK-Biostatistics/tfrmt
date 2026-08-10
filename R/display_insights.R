@@ -128,7 +128,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                         stringr::str_remove(" >"),
                     frmt_type == "frmt_when" ~ frmt_details %>%
                         stringr::str_remove("< frmt_when \\| ") %>%
-                        str_sub(end = -2L) %>%
+                        stringr::str_sub(end = -2L) %>%
                         stringr::str_remove_all("[\n]") %>%
                         str_trim() %>%
                         gsub(pattern = "\\s\\s", replacement = ", ")

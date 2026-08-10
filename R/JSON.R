@@ -63,7 +63,7 @@ as_json.tfrmt <- function(x) {
     # Removing names added in by jsonlite
     # only change spaces at the beginning of the row
     json_split <- output_json %>%
-        str_split("\\\n") %>%
+        stringr::str_split("\\\n") %>%
         unlist()
     # Needs updating
     to_replace <- str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')

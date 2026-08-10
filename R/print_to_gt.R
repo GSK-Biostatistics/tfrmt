@@ -431,7 +431,7 @@ format_gt_column_labels <- function(gt_table, .data) {
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
             keep(stringr::str_detect, .tlang_delim) %>%
-            str_split(.tlang_delim, simplify = TRUE) %>%
+            stringr::str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             mutate(cols = spanning) %>%
             pivot_longer(-"cols")

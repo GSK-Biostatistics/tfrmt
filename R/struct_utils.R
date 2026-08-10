@@ -16,7 +16,7 @@ expr_to_filter.quosure <- function(cols, val) {
     } else {
         val <- ifelse(
             stringr::str_detect(val, "^`.*`$"),
-            str_sub(val, 2, -2),
+            stringr::str_sub(val, 2, -2),
             val
         )
         out <- as_label(cols) %>%
