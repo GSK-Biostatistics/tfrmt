@@ -359,7 +359,7 @@ clean_spanning_col_names <- function(data) {
     # remove the layering for unnested columns
     if (lyrs > 0) {
         data <- data %>%
-            rename_with(~ remove_empty_layers(.x, nlayers = lyrs))
+            dplyr::rename_with(~ remove_empty_layers(.x, nlayers = lyrs))
     }
     data
 }
