@@ -546,7 +546,7 @@ test_that("Check combine_group_cols with a multi groups", {
 
     #Should be the same as removing a group
     man_test_with_span <- mock_multi_grp %>%
-        group_by(grp1) %>%
+        dplyr::group_by(grp1) %>%
         group_split() %>%
         map_dfr(
             combine_group_cols,
@@ -758,7 +758,7 @@ test_that("> 2 groups with and without spanner_label", {
             "grp1_1" , "    my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         ) %>%
             # nolint end
-            group_by(grp1)
+            dplyr::group_by(grp1)
     )
 })
 
@@ -841,7 +841,7 @@ test_that("Summary rows are not indented", {
             "cat_3" , "  sub_cat_3b_3" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         ) %>%
             # nolint end
-            group_by(grp1)
+            dplyr::group_by(grp1)
     )
 
     plan_with_column <- row_grp_plan(
@@ -1434,7 +1434,7 @@ test_that("Row group plan indenting handles factor variables", {
 test_that("Check row group plan in tfrmt - expect error when NA in label column", {
     # create data
     data_ae2 <- data_ae %>%
-        group_by(AEBODSYS, AETERM) %>%
+        dplyr::group_by(AEBODSYS, AETERM) %>%
         mutate(
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%

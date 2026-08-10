@@ -268,7 +268,7 @@ tfrmt_efficacy <- tfrmt(
 #--------------------------- Print Examples To {gt} ----------------------------
 
 data_ae2 <- data_ae %>%
-    group_by(AEBODSYS, AETERM) %>%
+    dplyr::group_by(AEBODSYS, AETERM) %>%
     mutate(
         pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
     ) %>%

@@ -37,7 +37,7 @@ apply_table_frmt_plan <- function(
         # TODO? add a warning if a format isn't applied anywhere?
         mutate(TEMP_fmt_rank = row_number()) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
-        group_by(TEMP_appl_row) %>%
+        dplyr::group_by(TEMP_appl_row) %>%
         #TODO add warning if there are rows not covered
         dplyr::arrange(
             TEMP_appl_row,
@@ -45,7 +45,7 @@ apply_table_frmt_plan <- function(
         ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
-        group_by(.data$TEMP_fmt_rank) %>%
+        dplyr::group_by(.data$TEMP_fmt_rank) %>%
         group_split()
 
     ## apply formatting
@@ -129,7 +129,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         complet_combo_grps <- out %>%
             select(!!!group, !!label, !!param) %>%
             dplyr::distinct() %>%
-            group_by(!!!group, !!label) %>%
+            dplyr::group_by(!!!group, !!label) %>%
             mutate(test = sum(!!parse_expr(parm_expr))) %>%
             dplyr::filter(
                 .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
