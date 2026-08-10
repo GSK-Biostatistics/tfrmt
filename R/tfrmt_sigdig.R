@@ -90,9 +90,11 @@ param_set <- function(...) {
                 )
             )
         ) %>%
-        mutate(idx = row_number()) %>%
+        dplyr::mutate(
+            idx = row_number()
+        ) %>%
         unnest("params", keep_empty = TRUE) %>%
-        mutate(
+        dplyr::mutate(
             drop = map2_lgl(
                 .data$param_display,
                 .data$params,
@@ -300,10 +302,14 @@ tfrmt_sigdig <- function(
                 tidyselect::all_of(groups_in_data),
                 remove = FALSE
             ) %>%
-            mutate(def_ord = str_count(.data$def_ord, ".default"))
+            dplyr::mutate(
+                def_ord = str_count(.data$def_ord, ".default")
+            )
     } else {
         data_ord <- sigdig_df %>%
-            mutate(def_ord = 0)
+            dplyr::mutate(
+                def_ord = 0
+            )
     }
 
     # Create body plan

@@ -111,7 +111,9 @@ test_that("applying footnote meta column val", {
 
     # spanning
     es_data2 <- es_data %>%
-        mutate(col2 = "Treatment column")
+        dplyr::mutate(
+            col2 = "Treatment column"
+        )
 
     tfrmt3 <- tfrmt(
         # specify columns in the data
@@ -166,7 +168,9 @@ test_that("applying footnote meta column val", {
 
     # spanned
     es_data3 <- es_data2 %>%
-        mutate(col2 = "Treatment column 2") %>%
+        dplyr::mutate(
+            col2 = "Treatment column 2"
+        ) %>%
         rbind(es_data2)
 
     tfrmt3 <- tfrmt(
@@ -301,7 +305,9 @@ test_that("applying footnote meta group val", {
 
     # spanning
     es_data2 <- es_data %>%
-        mutate(col2 = "Treatment column")
+        dplyr::mutate(
+            col2 = "Treatment column"
+        )
 
     # test warnings
 
@@ -510,7 +516,9 @@ test_that("applying footnote meta group val", {
     # no row group plan
 
     es_data3 <- es_data %>%
-        mutate(rowlbl0 = "Test group")
+        dplyr::mutate(
+            rowlbl0 = "Test group"
+        )
 
     tfrmt5 <- tfrmt(
         # specify columns in the data

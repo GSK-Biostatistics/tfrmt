@@ -356,14 +356,18 @@ test_that("Test when no body_style or values is present", {
     expect_identical(
         gt_out$`_data`,
         input_data %>%
-            mutate(val = "X.X") %>%
+            dplyr::mutate(
+                val = "X.X"
+            ) %>%
             pivot_wider(
                 names_from = c(spanner, columns),
                 names_sep = .tlang_delim,
                 values_from = val
             ) %>%
             select(-param) %>%
-            mutate(..tfrmt_row_grp_lbl = FALSE)
+            dplyr::mutate(
+                ..tfrmt_row_grp_lbl = FALSE
+            )
     )
 })
 

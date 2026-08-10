@@ -148,7 +148,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 max() %>%
                 col_str[.]
 
-            if (last(col_str) == span_lvl) {
+            if (dplyr::last(col_str) == span_lvl) {
                 col_loc <- unite_df_to_data_names(
                     col_loc_df,
                     preselected_cols = c(),
@@ -245,7 +245,7 @@ get_row_loc <- function(
 
                 col_info$row <- .data %>%
                     ungroup() %>%
-                    mutate(
+                    dplyr::mutate(
                         dplyr::across(
                             c(!!!group, !!label),
                             ~ str_remove(
@@ -271,7 +271,7 @@ get_row_loc <- function(
                     dplyr::group_by(
                         !!dplyr::first(group)
                     ) %>%
-                    mutate(
+                    dplyr::mutate(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
@@ -290,7 +290,7 @@ get_row_loc <- function(
                     dplyr::group_by(
                         !!dplyr::first(group)
                     ) %>%
-                    mutate(
+                    dplyr::mutate(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
@@ -313,7 +313,7 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    mutate(
+                    dplyr::mutate(
                         `___tfrmt_grp_n` = row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
