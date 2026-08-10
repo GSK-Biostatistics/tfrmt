@@ -504,10 +504,14 @@ compare_dot_args_against_formals <- function(dot_arg, formals) {
         max.distance = 0.25
     )
     if (length(fuzzy_arg_match)) {
-    arg_message <- c(
-        arg_message,
-        paste0("Did you intend to use the argument `", fuzzy_arg_match[[1]], "`?")
-    )
-}
+        arg_message <- c(
+            arg_message,
+            paste0(
+                "Did you intend to use the argument `",
+                fuzzy_arg_match[[1]],
+                "`?"
+            )
+        )
+    }
     cli::cli_inform(arg_message, class = "tfrmt_unrecognized_argument_inform")
 }
