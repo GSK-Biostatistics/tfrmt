@@ -401,20 +401,27 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
                 ungroup() %>%
-                dplyr::filter(n > 1) %>%
+                dplyr::filter(
+                    .data$n > 1
+                ) %>%
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
-                dplyr::group_by(!!!tfrmt$group, param_list) %>%
+                dplyr::group_by(
+                    !!!tfrmt$group,
+                    param_list
+                ) %>%
                 dplyr::mutate(
                     label_quote = paste0('"', !!tfrmt$label, '"')
                 ) %>%
                 reframe(
-                    label_collapse = as.character(paste(
-                        label_quote,
-                        collapse = ","
-                    )),
+                    label_collapse = as.character(
+                        paste(
+                            label_quote,
+                            collapse = ","
+                        )
+                    ),
                     !!!tfrmt$group,
-                    n
+                    .data$n
                 ) %>%
                 unique() %>%
                 rowwise() %>%
@@ -471,14 +478,16 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     if (
         mock &&
             length(tbl_dat_wide$warnings) > 0 &&
-            any(str_detect(
-                tbl_dat_wide$warnings,
-                paste0(
-                    "Values from `",
-                    as_label(tfrmt$value),
-                    "` are not uniquely identified"
+            any(
+                str_detect(
+                    tbl_dat_wide$warnings,
+                    paste0(
+                        "Values from `",
+                        as_label(tfrmt$value),
+                        "` are not uniquely identified"
+                    )
                 )
-            ))
+            )
     ) {
         message(
             "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."
