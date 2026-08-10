@@ -406,7 +406,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 unique() %>%
                 dplyr::group_by(!!!tfrmt$group, param_list) %>%
                 mutate(label_quote = paste0('"', !!tfrmt$label, '"')) %>%
-                reframe(
+                dplyr::reframe(
                     label_collapse = as.character(paste(
                         label_quote,
                         collapse = ","
