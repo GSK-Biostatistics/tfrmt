@@ -510,7 +510,7 @@ convert_ws_unicode <- function(gt_table) {
             locations = locations,
             fn = function(x) {
                 # leading and trailing whitespace is nonbreaking unicode whitespace to preserve alignment
-                x_trimmed <- str_trim(x)
+                x_trimmed <- stringr::str_trim(x)
                 space_left <- stringr::str_match(x, "^\\s*") %>% nchar()
                 space_right <- stringr::str_match(x, "\\s*$") %>% nchar()
                 space_right[x_trimmed == ""] <- 0

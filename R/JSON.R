@@ -66,7 +66,7 @@ as_json.tfrmt <- function(x) {
         stringr::str_split("\\\n") %>%
         unlist()
     # Needs updating
-    to_replace <- str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
+    to_replace <- stringr::str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
     json_split[to_replace] <- json_split[to_replace] %>%
         stringr::str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
     json_clean <- stringr::str_c(json_split, collapse = "\n")
@@ -280,7 +280,7 @@ ls_to_body_plan <- function(ls) {
     if (!is.null(ls)) {
         frmts_ls <- ls %>%
             map(function(struct) {
-                frmt_loc <- str_which(names(struct), "frmt*")
+                frmt_loc <- stringr::str_which(names(struct), "frmt*")
                 type <- names(struct)[frmt_loc]
                 frmt_val <- do.call(
                     paste0("ls_to_", type),

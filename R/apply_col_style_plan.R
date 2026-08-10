@@ -189,7 +189,12 @@ apply_col_alignment <- function(col, align, type = "char") {
 #' @noRd
 apply_col_alignment_char <- function(col, align) {
     if (all(align %in% c("left", "right"))) {
-        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
+        tbl_dat <- tibble(
+            col = stringr::str_trim(
+                col,
+                side = "right"
+            )
+        ) %>%
             mutate(
                 string_col = nchar(.data$col),
                 string_tot = max(.data$string_col),

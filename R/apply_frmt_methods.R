@@ -98,7 +98,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 decimal.mark = ".",
                 nsmall = dig
             ) %>%
-                str_trim()
+                stringr::str_trim()
 
             fmt_options <- tibble(
                 rounded = rounded_vals,

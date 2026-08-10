@@ -419,7 +419,10 @@ as.character.span_structure <- function(x, ...) {
             # Detect function calls. Matches valid R functions i.e, my_function()
             # Valid column names containing parenthesis i.e., "n (%)" are not captured
             not_fxs <- elements %>%
-                str_which("^[A-Za-z_.][A-Za-z0-9_.]*\\(", negate = TRUE)
+                stringr::str_which(
+                    "^[A-Za-z_.][A-Za-z0-9_.]*\\(",
+                    negate = TRUE
+                )
             elements[not_fxs] <- elements[not_fxs] %>%
                 stringr::str_c("'", ., "'")
 

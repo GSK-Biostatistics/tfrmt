@@ -285,11 +285,11 @@ combine_group_cols <- function(
             map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     mutate(
-                        ..tfrmt_summary_row = str_trim(
+                        ..tfrmt_summary_row = stringr::str_trim(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(!!last(group), side = "left")
+                            stringr::str_trim(!!last(group), side = "left")
                     )
 
                 if (any(lone_dat_summ$..tfrmt_summary_row)) {

@@ -40,8 +40,6 @@
 #'
 #' @importFrom stringi stri_wrap
 #'
-#' @importFrom stringr str_trim str_which
-#'
 #' @importFrom tibble add_row as_tibble as_tibble_row is_tibble tibble
 #'
 #' @importFrom tidyr crossing expand fill nest pivot_longer pivot_wider
