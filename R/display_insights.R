@@ -26,7 +26,10 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         unnest(cols = c(TEMP_appl_row)) %>%
         group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
-        arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_fmt_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row"))
 }
@@ -114,7 +117,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
         # extract < frmt > type from frmt_details
         output <- output %>%
             mutate(
-                frmt_details = case_when(
+                frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
                         str_remove("< frmt \\| Expression: ") %>%
                         str_remove(" >"),
@@ -199,7 +202,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
             )
         ) %>%
         mutate(
-            across(
+            dplyr::across(
                 tidyselect::everything(),
                 ~ str_replace_all(., "[0-9]", "x")
             )
@@ -232,8 +235,8 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         pivot_longer(
             tidyselect::everything()
         ) %>%
-        arrange(nchar(.data$value)) %>%
-        filter(!is.na(.data$value)) %>%
+        dplyr::arrange(nchar(.data$value)) %>%
+        dplyr::filter(!is.na(.data$value)) %>%
         pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%

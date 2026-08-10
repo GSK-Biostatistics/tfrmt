@@ -188,7 +188,11 @@ apply_tfrmt_subtable <- function(
             apply_col_plan,
             append(
                 col_plan_vars,
-                rlang::quos(tidyselect::any_of("..tfrmt_post_space_row"))
+                rlang::quos(
+                    tidyselect::any_of(
+                        "..tfrmt_post_space_row"
+                    )
+                )
             ),
             c(tfrmt$group, tfrmt$label),
             fail_desc = "Unable to subset dataset columns"
@@ -339,7 +343,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
 #'
 #' @noRd
 arrange_enquo <- function(dat, param) {
-    arrange(dat, !!!param)
+    dplyr::arrange(dat, !!!param)
 }
 
 #' Clean Spanning column names
@@ -382,7 +386,11 @@ remove_empty_layers <- function(x, nlayers = 1) {
 pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     # check if data can be transformed wide w/o list columns
     num_rec_by_row <- data %>%
-        group_by(across(c(-!!tfrmt$value, -!!tfrmt$param))) %>%
+        group_by(
+            dplyr::across(
+                c(-!!tfrmt$value, -!!tfrmt$param)
+            )
+        ) %>%
         summarise(
             param_list = list(!!tfrmt$param),
             n = n()
@@ -393,7 +401,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         if (!mock) {
             suggested_frmt_structs <- num_rec_by_row %>%
                 ungroup() %>%
-                filter(n > 1) %>%
+                dplyr::filter(n > 1) %>%
                 select(-c(!!!tfrmt$column)) %>%
                 unique() %>%
                 group_by(!!!tfrmt$group, param_list) %>%
@@ -437,11 +445,11 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     tbl_dat_wide <- data %>%
         select(-!!tfrmt$param) %>%
         mutate(
-            across(
+            dplyr::across(
                 tidyselect::all_of(column_cols),
                 ~ as.character(.x)
             ),
-            across(
+            dplyr::across(
                 tidyselect::all_of(column_cols),
                 ~ na_if(.x, "")
             )
@@ -584,7 +592,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                     expected_grp_vars
                 )
             ) %>%
-                distinct()
+                dplyr::distinct()
         )
         actual_pops <- length(big_n_df)
         actual_grp_levs <- map_dfr(
@@ -595,7 +603,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                     expected_grp_vars
                 )
             ) %>%
-                distinct()
+                dplyr::distinct()
         )
 
         if (

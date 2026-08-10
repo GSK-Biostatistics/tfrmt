@@ -77,9 +77,12 @@ apply_page_max_rows <- function(
 
     .data <- .data %>%
         mutate(
-            across(all_of(group_cols), \(x) {
-                if (is.character(x)) if_else(x == "", " ", x) else x
-            }),
+            dplyr::across(
+                tidyselect::all_of(group_cols),
+                \(x) {
+                    if (is.character(x)) if_else(x == "", " ", x) else x
+                }
+            ),
             TEMP_row = row_number()
         )
 
@@ -137,16 +140,16 @@ apply_page_max_rows <- function(
                 is_empty(label) ||
                 row_grp_plan_label_loc %in% c("gtdefault", "noprint", "column")
         ) {
-            cur_dat_new <- bind_rows(cur_dat, next_dat)
+            cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat)
         } else {
             #  combine any grouping columns that need combining into label
-            cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
+            cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat) %>%
                 combine_group_cols_mod(group, label, row_grp_plan_label_loc)
         }
 
         # if the table is within our limit, keep it
         if (nrow(cur_dat_new) <= max_rows) {
-            cur_dat <- bind_rows(cur_dat, next_dat)
+            cur_dat <- dplyr::bind_rows(cur_dat, next_dat)
             remain_dat <- remain_dat %>% slice(-1)
         }
 
@@ -155,7 +158,7 @@ apply_page_max_rows <- function(
             # summary row groups to carry forward to next tbl
             if ("..tfrmt_summary_row" %in% names(cur_dat_new)) {
                 all_summ_row <- cur_dat_new %>%
-                    filter(.data$`..tfrmt_summary_row`) %>%
+                    dplyr::filter(.data$`..tfrmt_summary_row`) %>%
                     pull(.data$TEMP_row)
             }
 
@@ -290,7 +293,7 @@ apply_page_struct <- function(
                 values_to = "grouping_val"
             ) %>%
             group_by(.data$`..tfrmt_split_num`) %>%
-            filter(!is.na(.data$grouping_val)) %>%
+            dplyr::filter(!is.na(.data$grouping_val)) %>%
             unique() %>%
             summarise(
                 `..tfrmt_page_note` = paste0(
@@ -367,7 +370,7 @@ combine_group_cols_mod <- function(
     .data <- .data %>%
         select(c(!!!group, !!label, "TEMP_row")) %>%
         mutate(
-            across(c(!!!group), ~ fct_inorder(.x)),
+            dplyr::across(c(!!!group), ~ fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
                 str_trim(!!last(group), side = "left")
@@ -400,12 +403,12 @@ combine_group_cols_mod <- function(
                     new_row <- lone_dat %>%
                         select(!!!top_grouping, !!label) %>%
                         mutate(!!label := !!last(group)) %>%
-                        distinct() %>%
+                        dplyr::distinct() %>%
                         mutate(..tfrmt_row_grp_lbl = TRUE)
                 }
 
                 lone_dat_summ %>%
-                    bind_rows(new_row, .)
+                    dplyr::bind_rows(new_row, .)
             })
         group <- group[-length(group)]
         top_grouping <- top_grouping[-length(top_grouping)]
@@ -424,13 +427,18 @@ combine_group_cols_mod <- function(
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%
-        mutate(across(c(!!!group), ~ .x == !!label)) %>%
+        mutate(
+            dplyr::across(
+                c(!!!group),
+                ~ .x == !!label
+            )
+        ) %>%
         pivot_longer(
             map_chr(group, as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
-        filter(.data$`..tfrmt_summ_row`) %>%
+        dplyr::filter(.data$`..tfrmt_summ_row`) %>%
         group_by(.data$TEMP_row) %>%
         slice(1) %>%
         mutate(
@@ -468,7 +476,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     if (any(check_eq)) {
         to_add <- which(check_eq)
 
-        next_dat <- bind_rows(
+        next_dat <- dplyr::bind_rows(
             prev_summ[to_add, ],
             next_dat
         )
