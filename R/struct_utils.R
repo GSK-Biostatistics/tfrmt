@@ -107,8 +107,8 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
                 breaks = .data$TEMP_row == lag(.data$TEMP_row, default = 0) + 1,
                 breaks = cumsum(!.data$breaks)
             ) %>%
-            group_by(.data$breaks) %>%
-            group_split() %>%
+            dplyr::group_by(.data$breaks) %>%
+            dplyr::group_split() %>%
             map(function(x) pull(x, .data$TEMP_row))
     } else {
         .data %>%

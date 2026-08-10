@@ -694,8 +694,8 @@ test_that("frmt_combine only applies when all parameters are in the data", {
                 Param == "pct" ~ Value * 100,
                 TRUE ~ Value
             ),
-            ord1 = if_else(Group == "Age (y)", 1, 2),
-            ord2 = if_else(Label == "n", 1, 2),
+            ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+            ord2 = dplyr::if_else(Label == "n", 1, 2),
             TEMP_row = row_number()
         )
 

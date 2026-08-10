@@ -1051,17 +1051,19 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
     # Create an ARD that stacks hierarchical data of adverse events
     # Grouping by treatment, severity, system organ class, and preferred term
-    ard_ae <- cards::ard_stack_hierarchical(
-        data = adae,
-        # by variables must be present in the denominator dataset
-        by = c(TRT01A, AESEV),
-        variables = c(AESOC, AETERM),
-        denominator = adsl,
-        statistic = ~ c("n", "p"),
-        id = USUBJID,
-        over_variables = TRUE,
-        overall = TRUE
-    )
+    suppressMessages({
+        ard_ae <- cards::ard_stack_hierarchical(
+            data = adae,
+            # by variables must be present in the denominator dataset
+            by = c(TRT01A, AESEV),
+            variables = c(AESOC, AETERM),
+            denominator = adsl,
+            statistic = ~ c("n", "p"),
+            id = USUBJID,
+            over_variables = TRUE,
+            overall = TRUE
+        )
+    })
 
     # create an ARD for where AESEV is "TOTAL"
     ard_ae2 <- cards::ard_stack_hierarchical(
