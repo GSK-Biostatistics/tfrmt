@@ -126,7 +126,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             }
 
             # Combining the additional formatting
-            fmt_val_output <- case_when(
+            fmt_val_output <- dplyr::case_when(
                 fmt_options$rounded == "NA" ~ miss_val,
                 TRUE ~ str_c(expr_start, fmt_vals, expr_end)
             )
@@ -177,7 +177,7 @@ apply_frmt.frmt_combine <- function(
     .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
-            filter(!!param == str_remove_all(`__var`, "`")) %>%
+            dplyr::filter(!!param == str_remove_all(`__var`, "`")) %>%
             apply_frmt(
                 frmt_def = fmt_to_apply,
                 .data = .,
@@ -241,7 +241,7 @@ apply_frmt.frmt_combine <- function(
     ## otherwise concat the params
     .tmp_data_fmted <- .tmp_data_wide %>%
         mutate(
-            !!value := case_when(
+            !!value := dplyr::case_when(
                 .data$.is_all_missing ~ frmt_def$missing,
                 TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
             )
@@ -276,7 +276,7 @@ apply_frmt.frmt_combine <- function(
             .tmp_data_fmted,
             by = map_chr(merge_group, as_label)
         ) %>%
-        group_by(!!!merge_group) %>%
+        dplyr::group_by(!!!merge_group) %>%
         slice(1) %>%
         ungroup()
 }
@@ -312,7 +312,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         left <- frmt_def$frmt_ls %>%
             map_chr(f_lhs_as_char) %>%
-            if_else(. == "TRUE", ., paste0(values_str, .)) %>%
+            dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
             parse_exprs() %>%
             map(eval_tidy, .data)
 

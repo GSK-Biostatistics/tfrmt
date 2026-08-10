@@ -954,7 +954,7 @@ test_that("Order is kept for multi-col columns", {
         unite("new", sep = .tlang_delim) %>%
         pull(new)
 
-    expect_equal(new_name_ord, new_name_ord_in_dat)
+    expect_identical(new_name_ord, new_name_ord_in_dat)
 })
 
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure", {
@@ -1010,7 +1010,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "group",
@@ -1023,12 +1023,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("span 1")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c("span 1___tlang_delim___col1", "span 1___tlang_delim___col2")
@@ -1085,7 +1085,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "new_col_4",
@@ -1098,12 +1098,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("span 1")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c("span 1___tlang_delim___new_col_1", "span 1___tlang_delim___col2")
@@ -1163,7 +1163,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "new_col_4",
@@ -1176,12 +1176,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("new span name")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1251,7 +1251,7 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "label",
@@ -1268,17 +1268,17 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("A", "B", "C", "D", "A_", "B_")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_level,
-        c(1, 1, 1, 1, 2, 2)
+        c(1L, 1L, 1L, 1L, 2L, 2L)
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1368,7 +1368,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "group",
@@ -1382,17 +1382,17 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("cols 1,2", "column cols", "my cols")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_level,
-        c(1, 2, 1)
+        c(1L, 2L, 1L)
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1471,7 +1471,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "group",
@@ -1484,17 +1484,17 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("cols 1,2", "column cols", "my cols")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_level,
-        c(1, 2, 1)
+        c(1L, 2L, 1L)
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1562,7 +1562,7 @@ test_that("Tidyselect subtraction with span_structure", {
                 seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
             ),
-            t_or_p = case_when(
+            t_or_p = dplyr::case_when(
                 column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
                 column %in% c("pl") ~ "Placebo"
             )
@@ -1745,11 +1745,11 @@ test_that("Build simple tfrmt with stub header", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
-    expect_equal(
+    expect_identical(
         processed_gt[["_stubhead"]]$label,
         md("grp")
     )
@@ -1798,11 +1798,11 @@ test_that("Build simple tfrmt with stub header", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
-    expect_equal(
+    expect_identical(
         processed_gt[["_stubhead"]]$label,
         md("")
     )
@@ -1859,11 +1859,11 @@ test_that("Build simple tfrmt with stub header", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c("grp1", "grp2", "label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
-    expect_equal(
+    expect_identical(
         processed_gt[["_stubhead"]]$label,
         md(c("Group 1", "Group 2", "Row label"))
     )

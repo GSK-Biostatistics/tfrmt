@@ -59,7 +59,7 @@ test_that("applying footnote meta column val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data, tfrmt), ".footnote_locs"),
         list(list(
             "col" = "Placebo",
@@ -100,7 +100,7 @@ test_that("applying footnote meta column val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data, tfrmt2), ".footnote_locs"),
         list(list(
             "col" = "Placebo",
@@ -155,7 +155,7 @@ test_that("applying footnote meta column val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data2, tfrmt3), ".footnote_locs"),
         list(list(
             "col" = "Treatment column",
@@ -211,7 +211,7 @@ test_that("applying footnote meta column val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data2, tfrmt3), ".footnote_locs"),
         list(
             list(
@@ -256,8 +256,8 @@ test_that("applying footnote meta column val", {
     expect_snapshot(
         result <- apply_tfrmt(es_data, tfrmt4)
     )
-    expect_equal(
-        attr(result, ".footnote_locs"),
+    expect_identical(
+        attr(suppressMessages(apply_tfrmt(es_data, tfrmt4)), ".footnote_locs"),
         list(list(
             "col" = NULL,
             "spanning" = FALSE,
@@ -443,12 +443,12 @@ test_that("applying footnote meta group val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data2, tfrmt3), ".footnote_locs"),
         list(list(
             "col" = "rowlbl1",
             "spanning" = FALSE,
-            "row" = 1,
+            "row" = 1L,
             "note" = "Test footnote"
         ))
     )
@@ -496,12 +496,12 @@ test_that("applying footnote meta group val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data2, tfrmt4), ".footnote_locs"),
         list(list(
             "col" = "rowlbl2",
             "spanning" = FALSE,
-            "row" = 1,
+            "row" = 1L,
             "note" = "Test footnote"
         ))
     )
@@ -555,12 +555,12 @@ test_that("applying footnote meta group val", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data3, tfrmt5), ".footnote_locs"),
         list(list(
             "col" = "rowlbl1",
             "spanning" = FALSE,
-            "row" = 1,
+            "row" = 1L,
             "note" = "Test footnote"
         ))
     )
@@ -598,7 +598,7 @@ test_that("applying footnote meta group val", {
             footnote_structure("Test footnote")
         )
     )
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data3, tfrmt6), ".footnote_locs"),
         list(list("col" = NULL, "spanning" = FALSE, "note" = "Test footnote"))
     )
@@ -640,7 +640,7 @@ test_that("applying footnote meta group val", {
             marks = "letters"
         )
     )
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(es_data3, tfrmt7), ".footnote_locs"),
         list(list(
             "col" = "rowlbl1",
@@ -658,7 +658,7 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         rowlbl1 = "Completion Status",
         rowlbl2 = c("Completed", "Ongoing", "Unknown")
     ) %>%
-        bind_rows(
+        dplyr::bind_rows(
             tibble(
                 rowlbl1 = "Primary reason for withdrawal",
                 rowlbl2 = c("Other", "Lost to follow-up")
@@ -668,7 +668,7 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
             param = c("n", "pct"),
             trt = c("Placebo", "Trt1", "Trt2", "Trt3")
         ) %>%
-        bind_cols(
+        dplyr::bind_cols(
             # fmt: skip
             value = c(
                 24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18,
@@ -712,7 +712,7 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(dd, tfrmt), ".footnote_locs"),
         list(list(
             "col" = c("Trt1", "Trt2", "Trt3"),
@@ -761,12 +761,12 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         attr(apply_tfrmt(dd, tfrmt), ".footnote_locs"),
         list(list(
             "col" = "rowlbl1",
             "spanning" = FALSE,
-            "row" = c(1, 2),
+            "row" = c(1L, 2L),
             note = "Test footnote 1"
         ))
     )

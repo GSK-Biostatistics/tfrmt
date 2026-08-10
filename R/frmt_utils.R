@@ -108,7 +108,7 @@ format.frmt_when <- function(x, ...) {
     frmt_str <- paste(
         "< frmt_when | ",
         "\n ",
-        paste0(
+        paste(
             map2_chr(lhs, rhs, paste, sep = " ~ "),
             collapse = "\n  "
         ),
@@ -136,7 +136,7 @@ format.frmt_structure <- function(x, ...) {
     fmts <- x$frmt_to_apply[[1]]
 
     if (is.list(groups)) {
-        group_string <- paste0(
+        group_string <- paste(
             sapply(names(groups), function(y) {
                 paste0(
                     " `",
@@ -329,17 +329,17 @@ as.character.frmt <- function(x, ...) {
         "frmt('",
         x$expression,
         "'",
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
         ),
-        if_else(
+        dplyr::if_else(
             !is.null(x$scientific),
             paste0(", scientific = ", x$scientific),
             ""
         ),
-        if_else(
+        dplyr::if_else(
             !is.null(x$transform),
             paste0(
                 ", transform = ",
@@ -375,7 +375,7 @@ as.character.frmt_when <- function(x, ...) {
     paste0(
         "frmt_when(",
         params,
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
@@ -397,7 +397,7 @@ as.character.frmt_combine <- function(x, ...) {
         x$expression,
         "', ",
         params,
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""

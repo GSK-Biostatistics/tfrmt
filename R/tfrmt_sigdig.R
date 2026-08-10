@@ -99,7 +99,7 @@ param_set <- function(...) {
                 ~ (.x %in% args_params || .y %in% args_params)
             )
         ) %>%
-        filter(drop) %>%
+        dplyr::filter(drop) %>%
         pull(.data$idx) %>%
         unique()
 
@@ -254,12 +254,12 @@ tfrmt_sigdig <- function(
         data_names <- sigdig_df %>% select(-"sigdig") %>% names()
         if (length(data_names) == 0) {
             group_msg <- if (length(group_names) > 0) {
-                paste0("group: ", paste(group_names, collapse = ", "), "\n")
+                paste0("group: ", toString(group_names), "\n")
             } else {
                 ""
             }
             label_msg <- if (length(label_name) > 0) {
-                paste0("label: ", paste(label_name, collapse = ", "))
+                paste0("label: ", toString(label_name))
             } else {
                 ""
             }
@@ -307,8 +307,11 @@ tfrmt_sigdig <- function(
 
     # Create body plan
     frmt_structure_list <- data_ord %>%
-        group_by(def_ord = desc(.data$def_ord), .data$sigdig) %>%
-        group_split() %>%
+        dplyr::group_by(
+            def_ord = dplyr::desc(.data$def_ord),
+            .data$sigdig
+        ) %>%
+        dplyr::group_split() %>%
         map(select, -"def_ord") %>%
         map(
             body_plan_builder,

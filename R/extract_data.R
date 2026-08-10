@@ -30,7 +30,10 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
             lookup <- lookup[valid_names]
 
             if (length(lookup) > 0) {
-                df <- df %>% dplyr::rename(dplyr::any_of(lookup))
+                df <- df %>%
+                    dplyr::rename(
+                        tidyselect::any_of(lookup)
+                    )
             }
         }
     }

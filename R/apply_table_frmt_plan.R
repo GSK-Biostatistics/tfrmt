@@ -37,13 +37,16 @@ apply_table_frmt_plan <- function(
         # TODO? add a warning if a format isn't applied anywhere?
         mutate(TEMP_fmt_rank = row_number()) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
-        group_by(TEMP_appl_row) %>%
+        dplyr::group_by(TEMP_appl_row) %>%
         #TODO add warning if there are rows not covered
-        arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_fmt_rank)
+        ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
-        group_by(.data$TEMP_fmt_rank) %>%
-        group_split()
+        dplyr::group_by(.data$TEMP_fmt_rank) %>%
+        dplyr::group_split()
 
     ## apply formatting
     dat_plus_fmt %>%
@@ -64,7 +67,7 @@ apply_table_frmt_plan <- function(
                 # Add message
                 x %>%
                     pull(.data$TEMP_row) %>%
-                    paste0(collapse = ", ") %>%
+                    paste(collapse = ", ") %>%
                     paste(
                         "The following rows of the given dataset have no format applied to them",
                         .
@@ -86,7 +89,7 @@ apply_table_frmt_plan <- function(
 
             out
         }) %>%
-        arrange(.data$TEMP_row) %>%
+        dplyr::arrange(.data$TEMP_row) %>%
         select(
             # drop TEMP_row values
             -tidyselect::starts_with(
@@ -119,16 +122,18 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         parse_expr()
 
     out <- .data %>%
-        filter(!!filter_expr)
+        dplyr::filter(!!filter_expr)
 
     # Protect against incomplete frmt_combines
     if (is_frmt_combine(cur_fmt$frmt_to_apply[[1]])) {
         complet_combo_grps <- out %>%
             select(!!!group, !!label, !!param) %>%
-            distinct() %>%
-            group_by(!!!group, !!label) %>%
+            dplyr::distinct() %>%
+            dplyr::group_by(!!!group, !!label) %>%
             mutate(test = sum(!!parse_expr(parm_expr))) %>%
-            filter(.data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)) %>%
+            dplyr::filter(
+                .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
+            ) %>%
             ungroup()
         join_by <- c(group, label, param) %>%
             map_chr(as_label) %>%
