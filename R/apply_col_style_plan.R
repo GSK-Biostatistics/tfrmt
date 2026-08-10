@@ -295,7 +295,9 @@ apply_col_alignment_pos <- function(col, align) {
     # create splits on the align vec at the |'s and count the number of chars for each
     # this will be used to help us split the col by position
     col_with_pos <- col_with_align %>%
-        mutate(col_idx = row_number()) %>%
+        mutate(
+            col_idx = dplyr::row_number()
+        ) %>%
         separate(
             "align",
             into = paste0("col_split_", 1:n_split_levs_max),

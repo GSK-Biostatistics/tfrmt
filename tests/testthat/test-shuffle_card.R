@@ -117,7 +117,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 stat = list(0.05)
             )
         ) |>
-            dplyr::filter(dplyr::row_number() <= 5L) |>
+            dplyr::filter(
+                dplyr::row_number() <= 5L
+            ) |>
             shuffle_card()
     )
 
@@ -137,7 +139,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 stat = list(0.05)
             )
         ) |>
-            dplyr::filter(dplyr::row_number() <= 5L) |>
+            dplyr::filter(
+                dplyr::row_number() <= 5L
+            ) |>
             shuffle_card(by = "ARM")
     )
 

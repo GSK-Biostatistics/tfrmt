@@ -254,7 +254,7 @@ get_row_loc <- function(
                             )
                         ),
                         `___tfrmt_test` = !!filter_expr,
-                        `___tfrmt_TEMP_rows` = row_number()
+                        `___tfrmt_TEMP_rows` = dplyr::row_number()
                     ) %>%
                     dplyr::filter(.data$`___tfrmt_test`) %>%
                     dplyr::pull(.data$`___tfrmt_TEMP_rows`)
@@ -314,7 +314,7 @@ get_row_loc <- function(
                     parse_expr()
                 col_info$row <- .data %>%
                     mutate(
-                        `___tfrmt_grp_n` = row_number(),
+                        `___tfrmt_grp_n` = dplyr::row_number(),
                         `___tfrmt_test` = !!filter_expr
                     ) %>%
                     dplyr::filter(.data$`___tfrmt_test`) %>%

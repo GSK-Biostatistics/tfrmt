@@ -23,7 +23,9 @@ apply_table_frmt_plan <- function(
     ## identify which formatting needs to be applied where
     .data <- .data %>%
         ungroup() %>%
-        mutate(TEMP_row = row_number())
+        mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     TEMP_appl_row <- table_frmt_plan %>%
         map(fmt_test_data, .data, label, group, param)
@@ -34,11 +36,13 @@ apply_table_frmt_plan <- function(
         TEMP_appl_row,
         TEMP_fmt_to_apply
     ) %>%
-        # TODO? add a warning if a format isn't applied anywhere?
-        mutate(TEMP_fmt_rank = row_number()) %>%
+        # TODO (?) add a warning if a format isn't applied anywhere?
+        mutate(
+            TEMP_fmt_rank = dplyr::row_number()
+        ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
-        #TODO add warning if there are rows not covered
+        # TODO add warning if there are rows not covered
         dplyr::arrange(
             TEMP_appl_row,
             dplyr::desc(.data$TEMP_fmt_rank)

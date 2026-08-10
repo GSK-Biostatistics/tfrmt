@@ -16,7 +16,9 @@ apply_row_grp_struct <- function(
     # Locate which groups need which formatting
     # determine which rows each block applies to
     .data <- .data %>%
-        mutate(TEMP_row = row_number())
+        mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     # for each structure object, (1) split the data on any default values, (2) split the data on specific data values
     # get nested list object:
@@ -48,7 +50,9 @@ apply_row_grp_struct <- function(
         TEMP_appl_row,
         TEMP_block_to_apply
     ) %>%
-        mutate(TEMP_block_rank = row_number()) %>%
+        mutate(
+            TEMP_block_rank = dplyr::row_number()
+        ) %>%
         # unnest to 1 rec per data chunk
         unnest_longer(
             TEMP_appl_row,

@@ -83,7 +83,7 @@ apply_page_max_rows <- function(
                     if (is.character(x)) dplyr::if_else(x == "", " ", x) else x
                 }
             ),
-            TEMP_row = row_number()
+            TEMP_row = dplyr::row_number()
         )
 
     # determine # of rows to be added for the group during row grp lbl formatting
@@ -199,7 +199,9 @@ apply_page_struct <- function(
     transform
 ) {
     .data <- .data %>%
-        mutate(TEMP_row = row_number())
+        mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     # 1. check that only 1 page_structure contains a .default, drop extras
     struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
@@ -233,7 +235,7 @@ apply_page_struct <- function(
                 .by = tidyselect::all_of(grping)
             ) %>%
             mutate(
-                `..tfrmt_split_num` = row_number()
+                `..tfrmt_split_num` = dplyr::row_number()
             )
     } else {
         # no default - just nest to get in same structure for next step

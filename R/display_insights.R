@@ -10,7 +10,9 @@
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     .data <- .data %>%
         ungroup() %>%
-        mutate(TEMP_row = row_number())
+        mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     TEMP_appl_row <- table_frmt_plan %>%
         map(fmt_test_data, .data, label, group, param)
@@ -22,7 +24,9 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         TEMP_fmt_to_apply
     ) %>%
         # TODO add a warning if a format isn't applied anywhere
-        mutate(TEMP_fmt_rank = row_number()) %>%
+        mutate(
+            TEMP_fmt_rank = dplyr::row_number()
+        ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered

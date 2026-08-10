@@ -90,7 +90,9 @@ param_set <- function(...) {
                 )
             )
         ) %>%
-        mutate(idx = row_number()) %>%
+        mutate(
+            idx = dplyr::row_number()
+        ) %>%
         unnest("params", keep_empty = TRUE) %>%
         mutate(
             drop = map2_lgl(
