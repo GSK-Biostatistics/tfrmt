@@ -36,10 +36,10 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 #' @rdname apply_frmt
 apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
-        out <- .data |>
-            dplyr::mutate(
-                !!value := frmt_def$expression
-            )
+        out <- dplyr::mutate(
+            .data,
+            !!value := frmt_def$expression
+        )
     } else {
         vals <- dplyr::pull(.data, !!value)
 
