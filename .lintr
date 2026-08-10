@@ -12,7 +12,6 @@ linters: all_linters(
   implicit_integer_linter = NULL,
   unnecessary_lambda_linter = NULL,
   paste_linter = NULL,
-  nzchar_linter = NULL,
   object_name_linter = NULL,
   # redundancy linters
   nonportable_path_linter = NULL,
