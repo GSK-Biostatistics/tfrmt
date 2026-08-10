@@ -280,7 +280,7 @@ apply_frmt.frmt_combine <- function(
             by = map_chr(merge_group, as_label)
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
-        slice(1) %>%
+        dplyr::slice(1) %>%
         ungroup()
 }
 

@@ -64,12 +64,12 @@ apply_col_style_plan <- function(
     if (length(total_col_style_selection) > 0) {
         total_col_styles <- dplyr::bind_rows(total_col_style_selection) %>%
             dplyr::group_by(col) %>%
-            slice(n()) %>%
+            dplyr::slice(n()) %>%
             ungroup()
 
         for (col_style_idx in seq_len(nrow(total_col_styles))) {
             col_style_to_apply <- total_col_styles %>%
-                slice(col_style_idx) %>%
+                dplyr::slice(col_style_idx) %>%
                 as.list()
 
             col_to_modify <- col_style_to_apply$col %>% char_as_quo()

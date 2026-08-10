@@ -47,7 +47,7 @@ apply_table_frmt_plan <- function(
             TEMP_appl_row,
             dplyr::desc(.data$TEMP_fmt_rank)
         ) %>%
-        slice(1) %>%
+        dplyr::slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         dplyr::group_by(.data$TEMP_fmt_rank) %>%
         dplyr::group_split()

@@ -66,7 +66,7 @@ apply_row_grp_struct <- function(
             TEMP_appl_row,
             dplyr::desc(.data$TEMP_block_rank)
         ) %>%
-        slice(1) %>%
+        dplyr::slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
         dplyr::group_by(
             .data$TEMP_block_rank,
@@ -178,7 +178,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
         # create add-on row
         # utilize TEMP_row to retain the ordering
         grp_row_add <- .data %>%
-            slice(n()) %>%
+            dplyr::slice(n()) %>%
             mutate(
                 dplyr::across(
                     c(
@@ -314,7 +314,7 @@ combine_group_cols <- function(
                                 names(new_row)
                             )
                         ) %>%
-                        slice(0) %>%
+                        dplyr::slice(0) %>%
                         add_row() %>%
                         mutate(
                             dplyr::across(

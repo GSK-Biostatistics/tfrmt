@@ -121,7 +121,8 @@ apply_page_max_rows <- function(
 
     while (nrow(remain_dat) > 0) {
         # candidate row to consider adding to tbl
-        next_dat <- remain_dat %>% slice(1)
+        next_dat <- remain_dat %>%
+            dplyr::slice(1)
 
         # add the previous summary row from previous table if needed
         # (only applies to the start of new page)
@@ -150,7 +151,8 @@ apply_page_max_rows <- function(
         # if the table is within our limit, keep it
         if (nrow(cur_dat_new) <= max_rows) {
             cur_dat <- dplyr::bind_rows(cur_dat, next_dat)
-            remain_dat <- remain_dat %>% slice(-1)
+            remain_dat <- remain_dat %>%
+                dplyr::slice(-1)
         }
 
         # if we have hit or exceeded the limit, save the table & move to next
@@ -445,7 +447,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         ) %>%
         dplyr::filter(.data$`..tfrmt_summ_row`) %>%
         dplyr::group_by(.data$TEMP_row) %>%
-        slice(1) %>%
+        dplyr::slice(1) %>%
         mutate(
             `..tfrmt_summ_grp_num` = which(
                 .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
