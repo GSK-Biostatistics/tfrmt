@@ -205,7 +205,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 tfrmt$row_grp_plan$label_loc$location != "column"
         ) {
             .data <- .data %>%
-                group_by(!!!existing_grp)
+                dplyr::group_by(!!!existing_grp)
         } else {
             # drop groups into row names
             rowname_col <- existing_grp
@@ -442,7 +442,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::arrange(
                 dplyr::desc(.data$name)
             ) %>%
-            group_by(.data$value) %>%
+            dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
             mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
             dplyr::filter(.data$value != "NA")

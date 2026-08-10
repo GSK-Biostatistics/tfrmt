@@ -774,8 +774,10 @@ test_that("json read/write", {
         )
     )
 
-    #Write out to json file
-    tfrmt_to_json(test_tfrmt, path = test_loc)
+    # Write out to json file
+    suppressMessages(
+        tfrmt_to_json(test_tfrmt, path = test_loc)
+    )
 
     # Reading in
     read_tfrmt <- json_to_tfrmt(path = test_loc)

@@ -26,14 +26,14 @@ apply_row_grp_struct <- function(
             grping <- expr_to_grouping(struct, group)
 
             split_dat <- .data %>%
-                group_by(
+                dplyr::group_by(
                     dplyr::across(
                         tidyselect::all_of(
                             grping
                         )
                     )
                 ) %>%
-                group_split()
+                dplyr::group_split()
             map(split_dat, function(dat) {
                 struct_val_idx(struct, dat, group, label)
             }) %>%
@@ -57,14 +57,14 @@ apply_row_grp_struct <- function(
         ) %>%
         # unnest to 1 rec per data row, to handle where chunk >1 row
         unnest(TEMP_appl_row) %>%
-        group_by(TEMP_appl_row) %>%
+        dplyr::group_by(TEMP_appl_row) %>%
         dplyr::arrange(
             TEMP_appl_row,
             dplyr::desc(.data$TEMP_block_rank)
         ) %>%
         slice(1) %>%
         left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
-        group_by(
+        dplyr::group_by(
             .data$TEMP_block_rank,
             .data$TEMP_chunk_num,
             .data$TEMP_block_to_apply
@@ -274,8 +274,10 @@ combine_group_cols <- function(
 
     while (length(group) > 0 && !is.null(label)) {
         split_dat <- .data %>%
-            group_by(run_id = dplyr::consecutive_id(!!!top_grouping)) %>%
-            group_split() %>%
+            dplyr::group_by(
+                run_id = dplyr::consecutive_id(!!!top_grouping)
+            ) %>%
+            dplyr::group_split() %>%
             map(~ select(.x, -run_id))
 
         .data <- split_dat %>%
@@ -380,12 +382,12 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL) {
         } else if (length(group) == 1) {
             #Using the grouping in gt + a single grouping
             add_ln_df <- .data %>%
-                group_by(!!group[[1]])
+                dplyr::group_by(!!group[[1]])
         } else {
             # Using the grouping in gt, but needs to drop all groups in label
             add_ln_df <- .data %>%
                 select(-c(!!!group[-1])) %>%
-                group_by(!!group[[1]])
+                dplyr::group_by(!!group[[1]])
         }
     }
     add_ln_df

@@ -349,7 +349,7 @@ ls_to_frmt_when <- function(x) {
             out
         })
 
-    lhs <- if_else(
+    lhs <- dplyr::if_else(
         names(fmts) == "TRUE",
         names(fmts),
         str_c("'", names(fmts), "'")

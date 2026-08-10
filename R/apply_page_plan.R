@@ -81,7 +81,7 @@ apply_page_max_rows <- function(
                 tidyselect::all_of(group_cols),
                 \(x) {
                     if (is.character(x)) {
-                        if_else(nzchar(x, keepNA = TRUE), x, " ")
+                        dplyr::if_else(nzchar(x, keepNA = TRUE), x, " ")
                     } else {
                         x
                     }
@@ -278,8 +278,8 @@ apply_page_struct <- function(
                             )
                         ) %>%
                         select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
-                        group_by(.data$`..tfrmt_split_after`) %>%
-                        group_split(.keep = FALSE)
+                        dplyr::group_by(.data$`..tfrmt_split_after`) %>%
+                        dplyr::group_split(.keep = FALSE)
                 }
             )
         ) %>%
@@ -296,7 +296,7 @@ apply_page_struct <- function(
                 names_to = "grouping_col",
                 values_to = "grouping_val"
             ) %>%
-            group_by(.data$`..tfrmt_split_num`) %>%
+            dplyr::group_by(.data$`..tfrmt_split_num`) %>%
             dplyr::filter(!is.na(.data$grouping_val)) %>%
             unique() %>%
             summarise(
@@ -386,8 +386,8 @@ combine_group_cols_mod <- function(
 
     while (length(group) > 0 && !is.null(label)) {
         split_dat <- .data %>%
-            group_by(!!!top_grouping) %>%
-            group_split()
+            dplyr::group_by(!!!top_grouping) %>%
+            dplyr::group_split()
 
         .data <- split_dat %>%
             map_dfr(function(lone_dat) {
@@ -443,7 +443,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             values_to = "..tfrmt_summ_row"
         ) %>%
         dplyr::filter(.data$`..tfrmt_summ_row`) %>%
-        group_by(.data$TEMP_row) %>%
+        dplyr::group_by(.data$TEMP_row) %>%
         slice(1) %>%
         mutate(
             `..tfrmt_summ_grp_num` = which(

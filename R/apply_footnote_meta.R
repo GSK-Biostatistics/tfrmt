@@ -108,7 +108,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                 map_chr(as_label),
             col_str
         ) %>%
-            inner_join(loc_col_df, by = col_val_nm)
+            dplyr::inner_join(loc_col_df, by = col_val_nm)
 
         if (nrow(col_loc_df) == 0) {
             message_text <- c(
@@ -155,7 +155,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
                     column_names = col_str
                 )
                 if (!is.null(names(col_loc))) {
-                    col_loc <- if_else(
+                    col_loc <- dplyr::if_else(
                         nzchar(names(col_loc)),
                         names(col_loc),
                         unname(col_loc)
@@ -268,7 +268,9 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    group_by(!!dplyr::first(group)) %>%
+                    dplyr::group_by(
+                        !!dplyr::first(group)
+                    ) %>%
                     mutate(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
@@ -285,7 +287,9 @@ get_row_loc <- function(
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
                     parse_expr()
                 col_info$row <- .data %>%
-                    group_by(!!dplyr::first(group)) %>%
+                    dplyr::group_by(
+                        !!dplyr::first(group)
+                    ) %>%
                     mutate(
                         `___tfrmt_grp_n` = dplyr::cur_group_id(),
                         `___tfrmt_test` = !!filter_expr
