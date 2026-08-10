@@ -56,7 +56,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         all_frmt_spec,
         map(cols_to_add, function(x) tibble(!!x := NA_character_))
     ) %>%
-        mutate(
+        dplyr::mutate(
             ..grp = replace_na(.data$..grp, ".default"),
             dplyr::across(
                 tidyselect::all_of(grp_vars),
@@ -65,7 +65,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         ) %>%
         select(-"..grp") %>%
         rowwise() %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 !!tfrmt$param,
                 ~ process_for_mock(.x, dplyr::cur_column(), 1)
@@ -80,7 +80,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     if (!quo_is_missing(tfrmt$label)) {
         all_frmt_vals <- all_frmt_vals %>%
-            mutate(
+            dplyr::mutate(
                 dplyr::across(
                     !!tfrmt$label,
                     ~ process_for_mock(.x, dplyr::cur_column(), .default)
@@ -112,7 +112,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     )
 
     output_dat <- output_dat %>%
-        mutate(
+        dplyr::mutate(
             `__tfrmt__mock__columns` = list(col_def)
         ) %>%
         unnest("__tfrmt__mock__columns") %>%
@@ -174,7 +174,7 @@ add_sorting_cols <- function(data, sorting_cols) {
         })
 
         data <- data %>%
-            mutate(
+            dplyr::mutate(
                 `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
             ) %>%
             unnest("__tfrmt__mock__sorting_col")
@@ -245,7 +245,7 @@ make_col_df <- function(
                 list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
                 tibble()
-            names(cols_from_sp) <- last(column_vars)
+            names(cols_from_sp) <- dplyr::last(column_vars)
 
             col_def <- dplyr::bind_rows(col_def, cols_from_sp) |>
                 unique()
@@ -279,7 +279,7 @@ make_col_df <- function(
 
 add_mock_big_ns <- function(data, column, param, big_n_struct) {
     if (!is.null(big_n_struct)) {
-        col <- column %>% last()
+        col <- dplyr::last(column)
         col_vals <- data %>%
             pull(!!col) %>%
             unique()

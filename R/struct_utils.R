@@ -105,8 +105,9 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
                 )
             ) %>%
             # split only after non-consecutive sequence
-            mutate(
-                breaks = .data$TEMP_row == lag(.data$TEMP_row, default = 0) + 1,
+            dplyr::mutate(
+                breaks = .data$TEMP_row ==
+                    dplyr::lag(.data$TEMP_row, default = 0) + 1,
                 breaks = cumsum(!.data$breaks)
             ) %>%
             dplyr::group_by(.data$breaks) %>%
