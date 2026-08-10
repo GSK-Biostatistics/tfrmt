@@ -415,8 +415,8 @@ test_that("extract_data works for a table with bigN values", {
                 Param == "pct" ~ Value * 100,
                 TRUE ~ Value
             ),
-            ord1 = dplyr::if_else(Param == "bigN", 0, 1),
-            ord2 = dplyr::if_else(Param == "bigN", 0, 1)
+            ord1 = as.numeric(Param != "bigN"),
+            ord2 = as.numeric(Param != "bigN")
         )
 
     bign <- tfrmt(
