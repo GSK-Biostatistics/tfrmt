@@ -274,7 +274,9 @@ col_plan_span_structure_to_vars <- function(
             )
         ) %>%
         dplyr::mutate(
-            ord_col = seq_len(n())
+            ord_col = seq_len(
+                dplyr::n()
+            )
         )
 
     split_data_names %>%

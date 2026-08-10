@@ -103,7 +103,11 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     # create y variable to preserve ordering and levels
     .data <- apply_grp_ggplot(.data, tfrmt) %>%
         dplyr::mutate(
-            y = rev(seq_len(n()))
+            y = rev(
+                seq_len(
+                    dplyr::n()
+                )
+            )
         )
 
     # handle cases for "..tfrmt_row_grp_lbl pivoting

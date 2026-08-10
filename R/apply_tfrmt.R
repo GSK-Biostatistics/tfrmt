@@ -393,7 +393,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         ) %>%
         summarise(
             param_list = list(!!tfrmt$param),
-            n = n()
+            n = dplyr::n()
         )
 
     if (any(num_rec_by_row$n > 1)) {
