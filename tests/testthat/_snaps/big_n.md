@@ -7,7 +7,8 @@
 
 ---
 
-    The following columns have multiple Big N's associated with them: c("Placebo", "Total", "Treatment")
+    The following columns have multiple Big N's associated with them:
+    c("Placebo", "Total", "Treatment")
 
 # not enough big Ns by page
 
