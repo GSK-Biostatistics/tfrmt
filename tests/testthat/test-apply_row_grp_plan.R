@@ -554,7 +554,7 @@ test_that("Check combine_group_cols with a multi groups", {
             label = sym("my_label")
         ) %>%
         dplyr::select(grp1, grp2, everything()) %>%
-        mutate(grp1 = ifelse(grp1 == "", NA, grp1)) %>%
+        mutate(grp1 = ifelse(nzchar(grp1), grp1, NA)) %>%
         fill(grp1, .direction = "up")
 
     expect_identical(
