@@ -347,7 +347,7 @@ test_that("Test when no body_style or values is present", {
         columns = paste0("col", 1:10)
     )
 
-    expect_equal(
+    expect_identical(
         capture_messages(
             gt_out <- print_mock_gt(tfrmt_obj_one_span, input_data)
         ),
