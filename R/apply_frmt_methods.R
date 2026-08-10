@@ -68,7 +68,10 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                     as.numeric()
 
                 ## remove x's from end of scientific
-                multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
+                multiply <- stringr::str_remove(
+                    frmt_def$scientific,
+                    "[xX]+(?<=$)"
+                )
                 sci_width <- stringr::str_extract(
                     frmt_def$scientific,
                     "[xX]+(?<=$)"
@@ -86,7 +89,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
             # digits preceding period in expression
             pre_dec_expr <- frmt_def$expression %>%
-                str_remove("\\..*$") %>%
+                stringr::str_remove("\\..*$") %>%
                 stringr::str_count("[X|x]")
 
             # vals rounded and trimmed
@@ -101,7 +104,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 rounded = rounded_vals,
                 # digits preceding period in vals
                 act_pre_dec = rounded_vals %>%
-                    str_remove("\\..*$") %>%
+                    stringr::str_remove("\\..*$") %>%
                     stringr::str_count(".")
             ) %>%
                 mutate(
@@ -166,7 +169,7 @@ apply_frmt.frmt_combine <- function(
         unlist()
 
     # Adding the unquoted version to match while long
-    fmt_param_vals_uq <- str_remove_all(fmt_param_vals, "`")
+    fmt_param_vals_uq <- stringr::str_remove_all(fmt_param_vals, "`")
 
     # Check if unspecified param values are in the dataset
 
@@ -180,7 +183,7 @@ apply_frmt.frmt_combine <- function(
     .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
-            dplyr::filter(!!param == str_remove_all(`__var`, "`")) %>%
+            dplyr::filter(!!param == stringr::str_remove_all(`__var`, "`")) %>%
             apply_frmt(
                 frmt_def = fmt_to_apply,
                 .data = .,

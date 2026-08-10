@@ -374,7 +374,7 @@ count_spanning_layers <- function(x) {
 ## also used in select_col_plan to process column names the same way
 remove_empty_layers <- function(x, nlayers = 1) {
     empty_str <- paste0("^", strrep(paste0("NA", .tlang_delim), nlayers))
-    str_remove(x, empty_str)
+    stringr::str_remove(x, empty_str)
 }
 
 #' Pivot formatted values into a wide dataset

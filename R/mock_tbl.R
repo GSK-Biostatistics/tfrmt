@@ -158,9 +158,9 @@ process_for_mock <- function(x, column, .default = 1:3) {
 clean_col_names <- function(names, dont_inc) {
     names %>%
         map_chr(as_label) %>%
-        str_remove_all('^.*\\(\\"') %>%
-        str_remove_all("^-") %>%
-        str_remove_all('\\"\\)') %>%
+        stringr::str_remove_all('^.*\\(\\"') %>%
+        stringr::str_remove_all("^-") %>%
+        stringr::str_remove_all('\\"\\)') %>%
         setdiff(dont_inc)
 }
 
