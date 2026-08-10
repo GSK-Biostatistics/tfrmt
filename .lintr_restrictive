@@ -24,8 +24,6 @@ linters: all_linters(
   # conditions handling linters
   condition_call_linter = NULL,
   condition_message_linter = NULL,
-  # expectations linters
-  expect_identical_linter = NULL,
   # negation linters
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,

@@ -124,7 +124,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
     # use quietly to grab messages from apply_tfrmt
     safe_apply_tfrmt <- purrr::quietly(apply_tfrmt)
 
-    expect_equal(
+    expect_identical(
         safe_apply_tfrmt(
             data_demog %>% filter(rowlbl1 == "Age (y)"),
             tfrmt_temp2,
@@ -153,7 +153,7 @@ test_that("test tentative_process", {
     }
 
     ## function passing in tentative process
-    expect_equal(
+    expect_identical(
         tentative_process("x", passing_func),
         "xvalue"
     )
@@ -163,13 +163,13 @@ test_that("test tentative_process", {
     })
 
     expect_true(is_empty(passing_func_messages))
-    expect_equal(
+    expect_identical(
         passing_func_messages,
         character()
     )
 
     ## function failing in tentative process
-    expect_equal(
+    expect_identical(
         suppressMessages(tentative_process("x", failing_func)),
         "x"
     )
@@ -179,13 +179,13 @@ test_that("test tentative_process", {
     })
 
     expect_false(is_empty(failing_func_messages))
-    expect_equal(
+    expect_identical(
         failing_func_messages,
         "Unable to to apply failing_func.\nReason: this function failed\n"
     )
 
     ## function failing in tentative process
-    expect_equal(
+    expect_identical(
         suppressMessages(tentative_process("x", rlang_abort_func)),
         "x"
     )
@@ -195,7 +195,7 @@ test_that("test tentative_process", {
     })
 
     expect_false(is_empty(rlang_abort_func_messages))
-    expect_equal(
+    expect_identical(
         rlang_abort_func_messages,
         "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"
     )
@@ -219,7 +219,7 @@ test_that("tentative_process handles errors with empty message", {
     expect_snapshot(
         result <- tentative_process("x", empty_msg_func)
     )
-    expect_equal(result, "x")
+    expect_identical(result, "x")
 })
 
 test_that("frmt_struct_string handles no group variables", {

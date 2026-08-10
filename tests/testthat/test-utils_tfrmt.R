@@ -370,7 +370,7 @@ test_that("Check apply_tfrmt for mock data", {
         capture_messages()
 
     ## capturing second message
-    expect_equal(
+    expect_identical(
         make_mock_dat_message,
         "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
     )
