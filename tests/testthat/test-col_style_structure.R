@@ -696,7 +696,7 @@ test_that("Align strings >1 in length", {
     })
 
     expect_false(
-        is_empty(col_style_structure_message)
+        rlang::is_empty(col_style_structure_message)
     )
 
     # nolint start: commas_linter
@@ -780,7 +780,7 @@ test_that("Alphanumeric align string supplied", {
     })
 
     expect_false(
-        is_empty(col_style_structure_message)
+        rlang::is_empty(col_style_structure_message)
     )
 
     # nolint start: commas_linter

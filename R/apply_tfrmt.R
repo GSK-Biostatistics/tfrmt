@@ -251,7 +251,7 @@ apply_tfrmt_subtable <- function(
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
 
-    if (any(map_lgl(args, is_empty))) {
+    if (any(map_lgl(args, rlang::is_empty))) {
         out <- .data
     } else {
         out <- .data %>%
@@ -556,9 +556,9 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
-    if (!is_empty(tfrmt$sorting_cols)) {
+    if (!rlang::is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (is_empty(tfrmt$group)) {
+        if (rlang::is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
                 dplyr::mutate(
@@ -630,7 +630,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
 
         if (
             !identical(expected_pops, actual_pops) ||
-                (!is_empty(actual_grp_levs) &&
+                (!rlang::is_empty(actual_grp_levs) &&
                     !isTRUE(all.equal(
                         expected_grp_levs,
                         actual_grp_levs,

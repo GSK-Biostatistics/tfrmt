@@ -22,7 +22,7 @@
 #'
 #' @importFrom rlang abort
 #' @importFrom rlang .data
-#' @importFrom rlang f_lhs f_rhs f_rhs<- inform is_empty
+#' @importFrom rlang f_lhs f_rhs f_rhs<- inform
 #' @importFrom rlang list2
 #' @importFrom rlang warn
 #' @importFrom rlang := !! !!! %||%

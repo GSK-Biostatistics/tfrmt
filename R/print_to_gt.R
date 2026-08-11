@@ -56,7 +56,7 @@ print_mock_gt <- function(
         )
         tfrmt$param <- rlang::quo(!!rlang::sym("__tfrmt__param"))
     }
-    if (is_empty(tfrmt$column)) {
+    if (rlang::is_empty(tfrmt$column)) {
         message(
             "`tfrmt` will need `column` value(s) to `print_to_gt` when data is available"
         )

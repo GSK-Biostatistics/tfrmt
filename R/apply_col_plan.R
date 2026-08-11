@@ -56,7 +56,7 @@ create_col_order <- function(data_names, columns, cp) {
     if (is.null(cp)) {
         col_selections <- data_names
     } else {
-        if (is_empty(columns)) {
+        if (rlang::is_empty(columns)) {
             # create placeholder
             column_names <- "col"
         } else {
@@ -359,7 +359,7 @@ eval_col_plan_quo <- function(
         # dump any pre-selected columns from everything() call. we are _not_ using
         # the default behavior of everything().
 
-        if (!is_empty(preselected_vals)) {
+        if (!rlang::is_empty(preselected_vals)) {
             data_names <- data_names[-seq_along(preselected_vals)]
         }
     }

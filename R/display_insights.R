@@ -225,7 +225,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         )
 
     col_plan_vars <- as_vars.character(colnames(tbl_dat_wide))
-    if (is_empty(tfrmt$column)) {
+    if (rlang::is_empty(tfrmt$column)) {
         # create placeholder
         column_names <- "col"
     } else {

@@ -15,7 +15,7 @@ apply_page_plan <- function(
     row_grp_plan_label_loc = "indented"
 ) {
     # first apply page structures
-    if (!is_empty(page_plan$struct_list)) {
+    if (!rlang::is_empty(page_plan$struct_list)) {
         .data <- apply_page_struct(
             .data,
             page_struct_list = page_plan$struct_list,
@@ -142,7 +142,7 @@ apply_page_max_rows <- function(
 
         if (
             length(group) == 0 ||
-                is_empty(label) ||
+                rlang::is_empty(label) ||
                 row_grp_plan_label_loc %in% c("gtdefault", "noprint", "column")
         ) {
             cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat)
