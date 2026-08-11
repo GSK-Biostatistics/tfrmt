@@ -12,8 +12,6 @@
 #'
 #' @importFrom glue glue glue_collapse
 #'
-#' @importFrom gt gt md opt_table_font px text_transform
-#'
 #' @importFrom jsonlite parse_json read_json toJSON validate
 #'
 #' @importFrom purrr discard keep list_flatten map map_chr map_dbl map_dfc

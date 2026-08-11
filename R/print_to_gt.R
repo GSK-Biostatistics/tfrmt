@@ -241,7 +241,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     }
 
     gt_out <- .data %>%
-        gt(
+        gt::gt(
             rowname_col = rowname_col
         ) %>%
         gt::sub_missing(
@@ -269,7 +269,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         gt_out <- gt_out %>%
             gt::tab_stubhead(
                 label = do.call(
-                    md,
+                    gt::md,
                     list(
                         attr(
                             .data,
@@ -297,17 +297,17 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_options(
             table.font.size = 14,
-            data_row.padding = px(1),
-            summary_row.padding = px(1),
-            grand_summary_row.padding = px(1),
-            footnotes.padding = px(1),
-            source_notes.padding = px(1),
-            row_group.padding = px(1),
-            stub.border.width = px(0),
+            data_row.padding = gt::px(1),
+            summary_row.padding = gt::px(1),
+            grand_summary_row.padding = gt::px(1),
+            footnotes.padding = gt::px(1),
+            source_notes.padding = gt::px(1),
+            row_group.padding = gt::px(1),
+            stub.border.width = gt::px(0),
             stub.border.color = "transparent",
-            stub_row_group.border.width = px(0),
+            stub_row_group.border.width = gt::px(0),
             stub_row_group.border.color = "transparent",
-            row_group.border.bottom.width = px(0),
+            row_group.border.bottom.width = gt::px(0),
             row_group.border.bottom.color = "transparent",
             row_group.border.top.color = "transparent",
             table.font.names = c("Courier", gt::default_fonts()),
@@ -347,7 +347,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             style = gt::cell_borders(
                 sides = c("top"),
                 color = "transparent",
-                weight = px(0)
+                weight = gt::px(0)
             ),
             locations = list(
                 gt::cells_column_labels()
@@ -356,7 +356,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         gt::tab_style(
             style = gt::cell_borders(
                 sides = c("bottom"),
-                weight = px(0),
+                weight = gt::px(0),
                 color = "transparent"
             ),
             locations = list(
@@ -487,7 +487,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             # convert column spanning labels to markdown format
             gt_table <- gt_table %>%
                 gt::tab_spanner(
-                    md(spans_to_apply$value[i]),
+                    gt::md(spans_to_apply$value[i]),
                     columns = tidyselect::all_of(
                         spans_to_apply$set[[i]]
                     )
@@ -518,7 +518,7 @@ format_gt_column_labels <- function(gt_table, .data) {
     # convert lowest level column labels to markdown format
     gt_table %>%
         gt::cols_label(
-            .list = lapply(renm_vals, md)
+            .list = lapply(renm_vals, gt::md)
         )
 }
 
@@ -544,7 +544,7 @@ convert_ws_unicode <- function(gt_table) {
     }
 
     gt_table %>%
-        text_transform(
+        gt::text_transform(
             locations = locations,
             fn = function(x) {
                 # leading and trailing whitespace is nonbreaking unicode whitespace to preserve alignment
@@ -592,5 +592,5 @@ md_wrap <- function(x) {
     if (is.null(x) || identical(x, "")) {
         return(x)
     }
-    md(x)
+    gt::md(x)
 }
