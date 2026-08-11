@@ -40,12 +40,12 @@ expr_to_filter.quosures <- function(cols, val) {
     } else if (!is.list(val) && all(val == ".default")) {
         out <- "TRUE"
     } else if (is.list(val)) {
-        if (!all(names(val) %in% map_chr(cols, as_label))) {
+        if (!all(names(val) %in% purrr::map_chr(cols, as_label))) {
             stop("Names of val entries do not all match col values")
         }
         out <- map2_chr(
             cols,
-            val[map_chr(cols, as_label)],
+            val[purrr::map_chr(cols, as_label)],
             ~ expr_to_filter(.x, .y)
         ) %>%
             paste(collapse = " & ")
@@ -101,7 +101,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             dplyr::select(
                 tidyselect::any_of(
                     c(
-                        map_chr(keep_vars, as_label),
+                        purrr::map_chr(keep_vars, as_label),
                         "TEMP_row"
                     )
                 )
@@ -114,7 +114,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             ) %>%
             dplyr::group_by(.data$breaks) %>%
             dplyr::group_split() %>%
-            map(function(x) dplyr::pull(x, .data$TEMP_row))
+            purrr::map(function(x) dplyr::pull(x, .data$TEMP_row))
     } else {
         .data %>%
             dplyr::pull(.data$TEMP_row) %>%
@@ -150,7 +150,7 @@ expr_to_grouping <- function(cur_struct, group, label) {
             !is.list(cur_struct$group_val) &&
                 all(cur_struct$group_val == ".default")
         ) {
-            grp_to_add <- map_chr(group, as_label)
+            grp_to_add <- purrr::map_chr(group, as_label)
             grouping <- c(grouping, grp_to_add)
         } else if (
             is.list(cur_struct$group_val) &&

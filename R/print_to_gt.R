@@ -182,7 +182,7 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @keywords internal
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
-    map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
+    purrr::map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
         gt_group(.list = .)
 }
 #' Apply formatting to a single table
@@ -198,7 +198,7 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
 #' @keywords internal
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     existing_grp <- tfrmt$group %>%
-        keep(function(x) {
+        purrr::keep(function(x) {
             as_label(x) %in% names(.data)
         })
     rowname_col <- NULL
@@ -237,7 +237,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 
     # convert to character if not null
     rowname_col <- if (!is.null(rowname_col)) {
-        map_chr(rowname_col, rlang::as_label)
+        purrr::map_chr(rowname_col, rlang::as_label)
     }
 
     gt_out <- .data %>%
@@ -440,10 +440,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @noRd
 format_gt_column_labels <- function(gt_table, .data) {
     spanning <- names(.data) %>%
-        keep(stringr::str_detect, .tlang_delim)
+        purrr::keep(stringr::str_detect, .tlang_delim)
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
-            keep(stringr::str_detect, .tlang_delim) %>%
+            purrr::keep(stringr::str_detect, .tlang_delim) %>%
             stringr::str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(
@@ -461,7 +461,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
             dplyr::mutate(
-                set = map(.data$set, ~ dplyr::pull(., .data$cols))
+                set = purrr::map(.data$set, ~ dplyr::pull(., .data$cols))
             ) %>%
             dplyr::filter(
                 .data$value != "NA"

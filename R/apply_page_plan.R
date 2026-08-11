@@ -38,7 +38,7 @@ apply_page_plan <- function(
             )
         } else {
             .data <- structure(
-                map(
+                purrr::map(
                     .data,
                     ~ apply_page_max_rows(
                         .x,
@@ -48,7 +48,7 @@ apply_page_plan <- function(
                         row_grp_plan_label_loc
                     )
                 ) %>%
-                    list_flatten(),
+                    purrr::list_flatten(),
                 .page_grp_vars = attr(.data, ".page_grp_vars")
             )
         }
@@ -73,7 +73,7 @@ apply_page_max_rows <- function(
 ) {
     # Ensure empty strings in grouping columns are treated as literal spaces
     # so pagination math doesn't break
-    group_cols <- map_chr(group, rlang::as_label)
+    group_cols <- purrr::map_chr(group, rlang::as_label)
 
     .data <- .data %>%
         dplyr::mutate(
@@ -254,8 +254,8 @@ apply_page_struct <- function(
     # find indices of specific values in data
     dat_split_2_idx <- dat_split_1 %>%
         dplyr::mutate(
-            split_idx = map(.data$`..tfrmt_data`, function(x) {
-                map(page_struct_list, function(y) {
+            split_idx = purrr::map(.data$`..tfrmt_data`, function(x) {
+                purrr::map(page_struct_list, function(y) {
                     struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
                         map_dbl(dplyr::last) # keep just the last one to split after
                 }) %>%
@@ -334,7 +334,7 @@ apply_page_struct <- function(
     # prep list of tbsl
     dat_out <- dat_split_2 %>%
         dplyr::mutate(
-            `..tfrmt_data` = map(
+            `..tfrmt_data` = purrr::map(
                 .data$`..tfrmt_data`,
                 ~ dplyr::select(.x, -"TEMP_row")
             )
@@ -455,7 +455,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             )
         ) %>%
         pivot_longer(
-            map_chr(group, as_label),
+            purrr::map_chr(group, as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
@@ -464,12 +464,12 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         dplyr::slice(1) %>%
         dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
-                .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
+                .data$`..tfrmt_summ_grp_num` == purrr::map_chr(group, as_label)
             )
         ) %>%
         dplyr::pull(.data$`..tfrmt_summ_grp_num`)
 
-    prev_summ_top_grp_vars <- map(
+    prev_summ_top_grp_vars <- purrr::map(
         seq_len(nrow(prev_summ)),
         ~ prev_summ[.x, ] %>%
             dplyr::select(c(!!!group)) %>%
@@ -481,7 +481,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     )
 
     # get the grouping values from the next row
-    next_summ_top_grp_vars <- map(
+    next_summ_top_grp_vars <- purrr::map(
         prev_summ_top_grp_vars,
         ~ dplyr::select(next_dat, names(.x))
     )

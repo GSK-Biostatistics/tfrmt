@@ -102,8 +102,9 @@ print.frmt_combine <- function(x, ...) {
 
 #' @export
 format.frmt_when <- function(x, ...) {
-    lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>% map_chr(format)
+    lhs <- purrr::map_chr(x$frmt_ls, f_lhs_as_char)
+    rhs <- purrr::map(x$frmt_ls, f_rhs) %>%
+        purrr::map_chr(format)
 
     frmt_str <- paste(
         "< frmt_when | ",
@@ -127,7 +128,7 @@ print.frmt_when <- function(x, ...) {
 #'
 format.frmt_structure <- function(x, ...) {
     if (is.list(x$group_val)) {
-        groups <- x$group_val %>% map(unique)
+        groups <- purrr::map(x$group_val, unique)
     } else {
         groups <- unique(x$group_val)
     }
@@ -233,7 +234,7 @@ frmt_builder <- function(param, frmt_string, missing = NULL) {
         frmt_string <- setNames(frmt_string, param)
     }
 
-    map(
+    purrr::map(
         frmt_string,
         function(x, missing_val) {
             do.call(frmt, list(expression = x, missing = missing_val))
@@ -357,7 +358,7 @@ as.character.frmt <- function(x, ...) {
 #' @export
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%
-        map_chr(function(x) {
+        purrr::map_chr(function(x) {
             val <- quo(!!f_rhs(x))
             val_eval <- eval_tidy(val)
             if (is_frmt(val_eval)) {
@@ -368,7 +369,7 @@ as.character.frmt_when <- function(x, ...) {
         })
 
     left <- x$frmt_ls %>%
-        map_chr(~ f_lhs(.x)) %>%
+        purrr::map_chr(~ f_lhs(.x)) %>%
         stringr::str_c("'", ., "'")
     params <- stringr::str_c(left, " ~ ", right) %>%
         stringr::str_c(collapse = ", ")
@@ -390,7 +391,7 @@ as.character.frmt_when <- function(x, ...) {
 #' @export
 as.character.frmt_combine <- function(x, ...) {
     params <- x$frmt_ls %>%
-        map_chr(~ as.character(.x)) %>%
+        purrr::map_chr(~ as.character(.x)) %>%
         stringr::str_c(names(x$frmt_ls), " = ", .) %>%
         stringr::str_c(collapse = ", ")
     paste0(
@@ -412,8 +413,8 @@ as.character.frmt_combine <- function(x, ...) {
 #' @export
 as.character.span_structure <- function(x, ...) {
     values <- x %>%
-        map(function(val) {
-            elements <- map_chr(val, as_label) %>%
+        purrr::map(function(val) {
+            elements <- purrr::map_chr(val, as_label) %>%
                 stringr::str_replace_all("\\\"", "'")
 
             # Detect function calls. Matches valid R functions i.e, my_function()

@@ -137,7 +137,7 @@ apply_tfrmt_subtable_mapper <- function(
             )
         } else {
             # there is only 1 set of (overall) big Ns
-            map(
+            purrr::map(
                 .data,
                 ~ apply_tfrmt_subtable(
                     tfrmt,
@@ -304,7 +304,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     .data <- dplyr::ungroup(.data)
 
     req_quo %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
             check <- safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
@@ -320,7 +320,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
         })
 
     req_var %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
             check <- safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {
@@ -448,7 +448,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
     }
 
     column_cols <- tfrmt$column %>%
-        map_chr(as_name)
+        purrr::map_chr(as_name)
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%
         dplyr::mutate(
@@ -509,7 +509,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        map_chr(as_label) %>%
+        purrr::map_chr(as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- capture.output(dput(setNames(grp, group_names)))

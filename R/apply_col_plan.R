@@ -1,6 +1,6 @@
 apply_col_plan <- function(data, col_selection, grp_lbl) {
     if (is.character(col_selection)) {
-        quo_col_selections <- map(col_selection, ~ char_as_quo(.x))
+        quo_col_selections <- purrr::map(col_selection, ~ char_as_quo(.x))
         col_selection <- do.call(vars, quo_col_selections)
     }
 
@@ -24,9 +24,9 @@ create_stub_head <- function(
     row_grp_plan_label_loc
 ) {
     # all group/label vars
-    grps <- map_chr(c(group, label), as_label)
+    grps <- purrr::map_chr(c(group, label), as_label)
     # all column labels
-    col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
+    col_plan_vars_chr <- purrr::map_chr(col_plan_vars, as_label)
 
     stub <- ""
     # subset the column labels to just group/label vars
@@ -60,7 +60,7 @@ create_col_order <- function(data_names, columns, cp) {
             # create placeholder
             column_names <- "col"
         } else {
-            column_names <- map_chr(columns, as_label)
+            column_names <- purrr::map_chr(columns, as_label)
         }
 
         col_selections <- c()
@@ -95,7 +95,7 @@ create_col_order <- function(data_names, columns, cp) {
         }
     }
 
-    quo_col_selections <- map(col_selections, ~ char_as_quo(.x))
+    quo_col_selections <- purrr::map(col_selections, ~ char_as_quo(.x))
 
     do.call(vars, quo_col_selections)
 }

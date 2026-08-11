@@ -28,9 +28,10 @@ apply_table_frmt_plan <- function(
         )
 
     TEMP_appl_row <- table_frmt_plan %>%
-        map(fmt_test_data, .data, label, group, param)
+        purrr::map(fmt_test_data, .data, label, group, param)
 
-    TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
+    TEMP_fmt_to_apply <- table_frmt_plan %>%
+        purrr::map(~ .$frmt_to_apply[[1]])
 
     dat_plus_fmt <- tibble(
         TEMP_appl_row,
@@ -148,8 +149,8 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             ) %>%
             dplyr::ungroup()
         join_by <- c(group, label, param) %>%
-            map_chr(as_label) %>%
-            keep(~ . != "<empty>")
+            purrr::map_chr(as_label) %>%
+            purrr::keep(~ . != "<empty>")
 
         out <- complet_combo_grps %>%
             dplyr::left_join(

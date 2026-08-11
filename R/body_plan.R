@@ -110,7 +110,7 @@ body_plan_builder <- function(
     frmt_vec <- param_tbl %>%
         dplyr::group_by(.data$pos) %>%
         dplyr::group_split() %>%
-        map(function(x) {
+        purrr::map(function(x) {
             if (sum(x$contains_glue) > 1) {
                 frmt_combine_builder(
                     x$param_display[[1]],
@@ -129,7 +129,7 @@ body_plan_builder <- function(
     grp_names <- if (length(group) == 0) {
         character(0)
     } else {
-        group %>% map_chr(as_name)
+        purrr::map_chr(group, as_name)
     }
     lbl_names <- if (quo_is_missing(label)) character(0) else as_name(label)
 
@@ -142,7 +142,7 @@ body_plan_builder <- function(
     if (length(which_grp) > 0) {
         group_val <- data[, which_grp] %>%
             as.list() %>%
-            map(unique)
+            purrr::map(unique)
 
         if (length(grp_names) > length(group_val)) {
             group_val_to_add <- grp_names[!grp_names %in% names(group_val)]

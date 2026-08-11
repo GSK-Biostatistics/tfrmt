@@ -81,7 +81,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp: A", "grp: B", "grp: C")
     )
     expect_identical(
@@ -130,7 +130,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp2: a", "grp2: b")
     )
 
@@ -182,7 +182,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c(
             "grp1: A, grp2: a",
             "grp1: A, grp2: b",
@@ -232,7 +232,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("lbl: n", "lbl: pct")
     )
     expect_identical(
@@ -345,7 +345,7 @@ test_that("page plan with mix of defined & group splits", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -426,7 +426,7 @@ test_that("page plan with multiple structures", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
     )
     expect_identical(

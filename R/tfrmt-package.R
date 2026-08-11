@@ -16,7 +16,7 @@
 #'
 #' @importFrom jsonlite parse_json read_json toJSON validate
 #'
-#' @importFrom purrr discard keep list_flatten map map_chr map_dbl map_dfc
+#' @importFrom purrr map_dbl map_dfc
 #' @importFrom purrr map_dfr map_lgl map2 map2_chr map2_dfr map2_lgl pmap
 #' @importFrom purrr pmap_chr reduce quietly safely
 #'

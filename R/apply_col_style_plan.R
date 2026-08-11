@@ -20,7 +20,7 @@ apply_col_style_plan <- function(
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- map_chr(tfrmt_obj$column, as_label)
+        column_names <- purrr::map_chr(tfrmt_obj$column, as_label)
     }
 
     total_col_style_selection <- list()
@@ -49,7 +49,7 @@ apply_col_style_plan <- function(
                 names(style_el),
                 "cols"
             )] %>%
-                map(list) %>%
+                purrr::map(list) %>%
                 as_tibble() %>%
                 dplyr::bind_cols(
                     tibble(col = unlist(col_selections))
@@ -103,7 +103,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = col_plan_vars %>% map_chr(as_label),
+            preselected_cols = purrr::map_chr(col_plan_vars, as_label),
             return_only_selected = TRUE
         )
     } else {
@@ -111,7 +111,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = col_plan_vars %>% map_chr(as_label),
+            preselected_cols = purrr::map_chr(col_plan_vars, as_label),
             return_only_selected = TRUE,
             default_everything_behavior = TRUE
         )
@@ -441,7 +441,15 @@ apply_col_width <- function(col, width) {
 
     pad_left <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "left")))
     pad_right <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "right")))
-    out <- pmap_chr(list(trimws(col), width, pad_left, pad_right), wrap_string)
+    out <- pmap_chr(
+        list(
+            trimws(col),
+            width,
+            pad_left,
+            pad_right
+        ),
+        wrap_string
+    )
 
     if (length(col_na_idx) > 0) {
         out[col_na_idx] <- NA
