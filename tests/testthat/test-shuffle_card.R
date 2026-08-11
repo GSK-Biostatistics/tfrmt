@@ -148,13 +148,27 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
     # mix of group variables - fills overall only if variable has been calculated by group elsewhere
     expect_snapshot(
         cards::bind_ard(
-            cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                by = ARM,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_categorical(cards::ADSL, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                by = SEX,
+                variables = AGE
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                variables = AGE
+            ) |>
                 dplyr::slice(1)
         ) |>
             shuffle_card(by = c("ARM", "SEX")) |>
@@ -163,13 +177,27 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
     # custom fill
     expect_snapshot(
         cards::bind_ard(
-            cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                by = ARM,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_categorical(cards::ADSL, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                by = SEX,
+                variables = AGE
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                variables = AGE
+            ) |>
                 dplyr::slice(1)
         ) |>
             shuffle_card(by = c("ARM", "SEX"), fill_overall = "{colname}") |>
