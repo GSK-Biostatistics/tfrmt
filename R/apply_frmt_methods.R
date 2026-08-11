@@ -174,6 +174,19 @@ apply_frmt.frmt_combine <- function(
         )
     }
 
+    # Test if all parameters needed for the combination exist in the data
+    miss_param_from_data <- .data %>%
+        dplyr::pull(!!param) %>%
+        unique() %>%
+        setdiff(fmt_param_vals_uq, .)
+
+    if (length(miss_param_from_data) > 0) {
+        missing_params <- paste(miss_param_from_data, collapse = " \n")
+        cli::cli_abort(
+            "Unable to create formatting combination because the following parameters are missing from the data:\n {missing_params}"
+        )
+    }
+
     ## format params as needed
     .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
@@ -191,19 +204,6 @@ apply_frmt.frmt_combine <- function(
                 ...
             )
     })
-
-    #Test if common information exists
-    miss_param_from_data <- .tmp_data %>%
-        dplyr::pull(!!param) %>%
-        unique() %>%
-        setdiff(fmt_param_vals_uq, .)
-
-    if (length(miss_param_from_data) > 0) {
-        missing_params <- paste(miss_param_from_data, collapse = " \n")
-        cli::cli_abort(
-            "Unable to create formatting combination because the following parameters are missing from the data:\n {missing_params}"
-        )
-    }
 
     .tmp_data_wide <- .tmp_data %>%
         dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
