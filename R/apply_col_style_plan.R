@@ -192,10 +192,7 @@ apply_col_alignment <- function(col, align, type = "char") {
 apply_col_alignment_char <- function(col, align) {
     if (all(align %in% c("left", "right"))) {
         tbl_dat <- tibble(
-            col = stringr::str_trim(
-                col,
-                side = "right"
-            )
+            col = stringr::str_trim(col, side = "right")
         ) %>%
             dplyr::mutate(
                 string_col = nchar(.data$col),
