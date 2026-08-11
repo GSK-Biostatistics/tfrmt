@@ -232,11 +232,11 @@ tfrmt_sigdig <- function(
         stop("`sigdig_df` input must contain group and/or label value columns.")
     }
 
-    group_names <- map_chr(tfrmt_inputs$group, as_label)
+    group_names <- map_chr(tfrmt_inputs$group, rlang::as_label)
     label_name <- if (quo_is_missing(tfrmt_inputs$label)) {
         character(0)
     } else {
-        as_label(tfrmt_inputs$label)
+        rlang::as_label(tfrmt_inputs$label)
     }
 
     # if group param is provided, figure out which group/label variables are present in data and only keep those
@@ -285,7 +285,7 @@ tfrmt_sigdig <- function(
     }
 
     # warning if provided group params are not present in the data
-    new_group_names <- map_chr(tfrmt_inputs$group, as_label)
+    new_group_names <- map_chr(tfrmt_inputs$group, rlang::as_label)
 
     if (!all(new_group_names %in% names(sigdig_df))) {
         grp <- setdiff(new_group_names, names(sigdig_df))

@@ -455,7 +455,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             )
         ) %>%
         pivot_longer(
-            map_chr(group, as_label),
+            map_chr(group, rlang::as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
@@ -464,7 +464,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         dplyr::slice(1) %>%
         dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
-                .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
+                .data$`..tfrmt_summ_grp_num` == map_chr(group, rlang::as_label)
             )
         ) %>%
         dplyr::pull(.data$`..tfrmt_summ_grp_num`)

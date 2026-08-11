@@ -188,7 +188,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
             dplyr::mutate(
                 dplyr::across(
                     c(
-                        -map_chr(group, as_name),
+                        -map_chr(group, rlang::as_name),
                         -tidyselect::where(is.numeric)
                     ),
                     ~ replace(
@@ -258,7 +258,7 @@ combine_group_cols <- function(
     label,
     element_row_grp_loc = NULL
 ) {
-    orig_group_names <- map_chr(group, as_name)
+    orig_group_names <- map_chr(group, rlang::as_name)
     top_grouping <- group #used for spliting in case of spanning label
 
     .data <- .data %>%

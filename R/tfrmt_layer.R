@@ -177,13 +177,13 @@ update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]
 
     old_groups <- do.call(vars, unname(dots))
-    new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
+    new_group_map <- setNames(names(dots), map_chr(old_groups, rlang::as_label))
 
     if (is_empty(tfrmt$group)) {
         stop("No group values defined in input tfrmt.")
     } else {
         var_list <- sapply(tfrmt$group, function(x) {
-            x_lab <- as_label(x)
+            x_lab <- rlang::as_label(x)
             if (x_lab %in% names(new_group_map)) {
                 new_group_map[[x_lab]]
             } else {
@@ -281,8 +281,8 @@ update_groups_footnote_plan <- function(tfrmt_footnote_plan, new_group_map) {
 }
 
 append_update_group_message <- function(e, x, y) {
-    x_grp <- map_chr(x$group, as_label)
-    y_grp <- map_chr(y$group, as_label)
+    x_grp <- map_chr(x$group, rlang::as_label)
+    y_grp <- map_chr(y$group, rlang::as_label)
 
     if (!is_empty(y_grp) && !is_empty(x_grp)) {
         update_grp_message <- c(

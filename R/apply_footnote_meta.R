@@ -91,7 +91,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
 
     # Get column information
     if ("column_val" %in% names(loc_info)) {
-        col_str <- columns %>% map_chr(as_label)
+        col_str <- columns %>% map_chr(rlang::as_label)
 
         if (is_empty(names(loc_info$column_val))) {
             col_val_nm <- col_str
@@ -105,7 +105,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
         col_loc_df <- split_data_names_to_df(
             NULL,
             col_plan_vars %>%
-                map_chr(as_label),
+                map_chr(rlang::as_label),
             col_str
         ) %>%
             dplyr::inner_join(loc_col_df, by = col_val_nm)
@@ -216,7 +216,7 @@ get_row_loc <- function(
             )
             col_info$row <- NULL
         } else {
-            group_str <- group %>% map_chr(as_label)
+            group_str <- group %>% map_chr(rlang::as_label)
             # Test if there are more than the first group
             highest_grp <- setdiff(
                 names(loc_info$group_val),
@@ -261,7 +261,7 @@ get_row_loc <- function(
 
                 col_info$col <- ifelse(
                     is.null(col_info$col),
-                    as_label(label),
+                    rlang::as_label(label),
                     col_info$col
                 )
             } else if (highest_grp) {

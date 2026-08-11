@@ -15,7 +15,7 @@ expr_to_filter.quosure <- function(cols, val) {
         out <- "TRUE"
     } else {
         val <- ifelse(str_detect(val, "^`.*`$"), str_sub(val, 2, -2), val)
-        out <- as_label(cols) %>%
+        out <- rlang::as_label(cols) %>%
             paste0("`", ., "`") %>%
             paste0(
                 " %in% c(",
@@ -36,12 +36,12 @@ expr_to_filter.quosures <- function(cols, val) {
     } else if (!is.list(val) && all(val == ".default")) {
         out <- "TRUE"
     } else if (is.list(val)) {
-        if (!all(names(val) %in% map_chr(cols, as_label))) {
+        if (!all(names(val) %in% map_chr(cols, rlang::as_label))) {
             stop("Names of val entries do not all match col values")
         }
         out <- map2_chr(
             cols,
-            val[map_chr(cols, as_label)],
+            val[map_chr(cols, rlang::as_label)],
             ~ expr_to_filter(.x, .y)
         ) %>%
             paste(collapse = " & ")
@@ -97,7 +97,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             dplyr::select(
                 tidyselect::any_of(
                     c(
-                        map_chr(keep_vars, as_label),
+                        map_chr(keep_vars, rlang::as_label),
                         "TEMP_row"
                     )
                 )
@@ -146,7 +146,7 @@ expr_to_grouping <- function(cur_struct, group, label) {
             !is.list(cur_struct$group_val) &&
                 all(cur_struct$group_val == ".default")
         ) {
-            grp_to_add <- map_chr(group, as_label)
+            grp_to_add <- map_chr(group, rlang::as_label)
             grouping <- c(grouping, grp_to_add)
         } else if (
             is.list(cur_struct$group_val) &&
@@ -160,7 +160,7 @@ expr_to_grouping <- function(cur_struct, group, label) {
         }
     }
     if (!is.null(cur_struct$label_val) && cur_struct$label_val == ".default") {
-        grouping <- c(grouping, as_label(label))
+        grouping <- c(grouping, rlang::as_label(label))
     }
 
     grouping %>% unname()

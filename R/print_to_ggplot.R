@@ -81,7 +81,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # Keeping the original data of column to preserve data type later on
-    column_name <- as_label(tfrmt$column[[1]])
+    column_name <- rlang::as_label(tfrmt$column[[1]])
     column_data <- dplyr::pull(.data, !!column_name)
 
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
@@ -114,7 +114,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
         # reshape data for ggplot
         long_data <- .data %>%
             pivot_longer(
-                -c(as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
+                -c(rlang::as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
                 names_to = "column",
                 values_to = "value"
             ) %>%
@@ -128,7 +128,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     } else {
         long_data <- .data %>%
             pivot_longer(
-                -c(as_label(tfrmt$label), "y"),
+                -c(rlang::as_label(tfrmt$label), "y"),
                 names_to = "column",
                 values_to = "value"
             )

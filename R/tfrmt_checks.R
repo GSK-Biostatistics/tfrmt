@@ -31,7 +31,7 @@ check_column_and_col_plan <- function(x) {
     }
 
     if (span_structures_defined) {
-        column_strings <- map_chr(x$column, as_label)
+        column_strings <- map_chr(x$column, rlang::as_label)
 
         for (struct in span_structs) {
             if (!all(vals <- names(struct) %in% column_strings)) {
@@ -81,7 +81,7 @@ check_group_var_consistency_body_plan <- function(x) {
     if (!is.null(x$body_plan)) {
         is_invalid_body_plan <- FALSE
         is_invalid_body_plan_message <- "Inconsistencies between group and body_plan"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- map_chr(x$group, rlang::as_label)
 
         for (idx in seq_along(x$body_plan)) {
             struct <- x$body_plan[[idx]]
@@ -122,7 +122,7 @@ check_group_var_consistency_row_grp_plan <- function(x) {
     if (!is.null(x$row_grp_plan)) {
         is_invalid_row_grp_plan <- FALSE
         is_invalid_row_grp_plan_message <- "Inconsistencies between group and row_grp_plan row_grp_structures"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- map_chr(x$group, rlang::as_label)
 
         for (idx in seq_along(x$row_grp_plan$struct_list)) {
             struct <- x$row_grp_plan$struct_list[[idx]]
@@ -163,7 +163,7 @@ check_group_var_consistency_footnote_plan <- function(x) {
     if (!is.null(x$footnote_plan)) {
         is_invalid_footnote_plan <- FALSE
         is_invalid_footnote_plan_message <- "Inconsistencies between group and footnote_plan footnote_structures"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- map_chr(x$group, rlang::as_label)
 
         for (idx in seq_along(x$footnote_plan$struct_list)) {
             struct <- x$footnote_plan$struct_list[[idx]]
@@ -213,12 +213,12 @@ check_col_style_row_grp_consistency <- function(x) {
     ) {
         is_invalid_plan <- FALSE
         is_invalid_plan_message <- "Invalid Entries based on col_align_plan and row_grp_plan"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- map_chr(x$group, rlang::as_label)
 
         r_grp_plan_col_loc <- x$row_grp_plan$label_loc$location
 
         col_align_plan_as_char <- x$col_style_plan %>%
-            lapply(function(x) x$cols %>% map_chr(as_label))
+            lapply(function(x) x$cols %>% map_chr(rlang::as_label))
         for (cap_vars_idx in seq_along(col_align_plan_as_char)) {
             grp_in_cap <- group_as_char %in%
                 col_align_plan_as_char[[cap_vars_idx]]

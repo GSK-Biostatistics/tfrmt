@@ -447,8 +447,8 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- ""
     }
 
-    column_cols <- tfrmt$column %>%
-        map_chr(as_name)
+    column_cols <- map_chr(tfrmt$column, rlang::as_name)
+
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%
         dplyr::mutate(
@@ -481,7 +481,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                     tbl_dat_wide$warnings,
                     paste0(
                         "Values from `",
-                        as_label(tfrmt$value),
+                        rlang::as_label(tfrmt$value),
                         "` are not uniquely identified"
                     )
                 )
@@ -509,7 +509,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        map_chr(as_label) %>%
+        map_chr(rlang::as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- capture.output(dput(setNames(grp, group_names)))
