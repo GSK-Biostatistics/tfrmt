@@ -382,8 +382,8 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         if (tfrmt$page_plan$note_loc == "preheader") {
             gt_out_final <- gt_out_final %>%
                 tab_header(
-                    title = tfrmt$title,
-                    subtitle = tfrmt$subtitle,
+                    title = md_wrap(tfrmt$title),
+                    subtitle = md_wrap(tfrmt$subtitle),
                     preheader = attr(.data, ".page_note")
                 )
         } else if (tfrmt$page_plan$note_loc == "subtitle") {
@@ -395,19 +395,25 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             )
 
             gt_out_final <- gt_out_final %>%
-                tab_header(title = title, subtitle = subtitle)
+                tab_header(title = md_wrap(title), subtitle = md_wrap(subtitle))
         } else {
             gt_out_final <- gt_out_final %>%
-                tab_header(title = tfrmt$title, subtitle = tfrmt$subtitle)
+                tab_header(
+                    title = md_wrap(tfrmt$title),
+                    subtitle = md_wrap(tfrmt$subtitle)
+                )
 
             if (tfrmt$page_plan$note_loc == "source_note") {
                 gt_out_final <- gt_out_final %>%
-                    tab_source_note(attr(.data, ".page_note"))
+                    tab_source_note(md_wrap(attr(.data, ".page_note")))
             }
         }
     } else {
         gt_out_final <- gt_out_final %>%
-            tab_header(title = tfrmt$title, subtitle = tfrmt$subtitle)
+            tab_header(
+                title = md_wrap(tfrmt$title),
+                subtitle = md_wrap(tfrmt$subtitle)
+            )
     }
 
     # convert white space to unicode
@@ -559,4 +565,13 @@ break_duplicate_whitespace <- function(x) {
     }
 
     x
+}
+
+# Wrap a string in gt::md() for markdown rendering, passing through NULL and
+# empty strings unchanged to preserve default gt behavior
+md_wrap <- function(x) {
+    if (is.null(x) || identical(x, "")) {
+        return(x)
+    }
+    md(x)
 }
