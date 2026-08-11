@@ -222,8 +222,8 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     # Adding ` to expression if not there and there is a space/symbol
     replace_val <- dplyr::case_when(
         stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
-        !stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") &
-            !stringr::str_detect(vars_to_fmt, "`") ~ paste0(
+        stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$", negate = TRUE) &
+            stringr::str_detect(vars_to_fmt, "`", negate = TRUE) ~ paste0(
             "`",
             vars_to_fmt,
             "`"
