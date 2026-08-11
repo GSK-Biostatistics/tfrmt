@@ -376,7 +376,7 @@ quo_get <- function(
                         "`:\n",
                         paste0(" ", arg_call_results$error, collapse = "")
                     ),
-                    call = frame_call(frame = envir)
+                    call = rlang::frame_call(frame = envir)
                 )
             }
         }
