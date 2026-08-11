@@ -795,8 +795,8 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 
     # confirm title is still rendered as markdown when note_loc is preheader
     expect_s3_class(
-      gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
-      "from_markdown"
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
     )
 
     expect_identical(
