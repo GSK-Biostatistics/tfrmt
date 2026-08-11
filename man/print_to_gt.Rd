@@ -62,3 +62,4 @@ print_to_gt(tfrmt_spec,df)
 <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png" alt = "2 by 2 table with labels down the side and placebo and trt1 across the top" style="width:50\%;">
 }}
 }
+
