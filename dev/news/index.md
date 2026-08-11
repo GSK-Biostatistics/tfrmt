@@ -11,6 +11,8 @@
   now returns its elements in the same order as its arguments
   (`footnote_text`, `column_val`, `group_val`, `label_val`)
   ([\#589](https://github.com/GSK-Biostatistics/tfrmt/issues/589)).
+- Add markdown processing of `title`, `subtitle`, and `source_note`
+  ([\#664](https://github.com/GSK-Biostatistics/tfrmt/issues/664)).
 
 ### Bug fixes
 
