@@ -74,7 +74,8 @@ apply_col_style_plan <- function(
                 dplyr::slice(col_style_idx) %>%
                 as.list()
 
-            col_to_modify <- col_style_to_apply$col %>% char_as_quo()
+            col_to_modify <- col_style_to_apply$col %>%
+                char_as_quo()
 
             .data <- .data %>%
                 dplyr::mutate(

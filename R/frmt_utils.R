@@ -357,7 +357,7 @@ as.character.frmt <- function(x, ...) {
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%
         map_chr(function(x) {
-            val <- quo(!!f_rhs(x))
+            val <- rlang::quo(!!f_rhs(x))
             val_eval <- rlang::eval_tidy(val)
             if (is_frmt(val_eval)) {
                 as.character(val_eval)

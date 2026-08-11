@@ -23,8 +23,8 @@
 #' @importFrom rlang abort
 #' @importFrom rlang .data
 #' @importFrom rlang f_lhs f_rhs f_rhs<- frame_call inform is_empty
-#' @importFrom rlang list2 quo quo_get_expr
-#' @importFrom rlang quo_is_missing quo_name warn
+#' @importFrom rlang list2
+#' @importFrom rlang quo_is_missing warn
 #' @importFrom rlang := !! !!! %||%
 #'
 #' @importFrom stats as.formula setNames

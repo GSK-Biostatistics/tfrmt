@@ -116,8 +116,10 @@ col_plan_quo_to_vars <- function(
     )
 
     col_id <- column_names[length(column_names)]
-    col_quo <- quo(!!rlang::sym(col_id))
-    col_name_quo <- quo(!!rlang::sym(paste0("__tfrmt_new_name__", col_id)))
+    col_quo <- rlang::quo(!!rlang::sym(col_id))
+    col_name_quo <- rlang::quo(
+        !!rlang::sym(paste0("__tfrmt_new_name__", col_id))
+    )
 
     ## only apply tidyselect to _bottom_ column
     data_names_tmp <- split_data_names[[col_id]]
@@ -144,7 +146,9 @@ col_plan_quo_to_vars <- function(
             rename_val <- names(x)
 
             if (
-                is_valid_tidyselect_call(quo_get_expr(x[[1]])) &&
+                is_valid_tidyselect_call(
+                    rlang::quo_get_expr(x[[1]])
+                ) &&
                     length(selected) > 1
             ) {
                 rename_val <- paste0(rename_val, seq_along(selected))
@@ -185,8 +189,10 @@ col_plan_span_structure_to_vars <- function(
     ## evaluate selections to identify columns
     for (col_id_idx in seq_along(column_names)) {
         col_id <- column_names[col_id_idx]
-        col_quo <- quo(!!rlang::sym(col_id))
-        col_name_quo <- quo(!!rlang::sym(paste0("__tfrmt_new_name__", col_id)))
+        col_quo <- rlang::quo(!!rlang::sym(col_id))
+        col_name_quo <- rlang::quo(
+            !!rlang::sym(paste0("__tfrmt_new_name__", col_id))
+        )
 
         if (col_id %in% names(x[[1]])) {
             selections <- x[[1]][[col_id]]
@@ -220,7 +226,11 @@ col_plan_span_structure_to_vars <- function(
                         rename_val <- names(selections)[[sel_id_idx]]
 
                         if (
-                            is_valid_tidyselect_call(quo_get_expr(sel_id)) &&
+                            is_valid_tidyselect_call(
+                                rlang::quo_get_expr(
+                                    sel_id
+                                )
+                            ) &&
                                 length(sel_id_col_selections) > 1
                         ) {
                             rename_val <- paste0(
@@ -322,9 +332,9 @@ char_as_quo <- function(x) {
     )
 
     if (is_negative) {
-        expr_to_eval <- paste0("quo(-", x_text, ")")
+        expr_to_eval <- paste0("rlang::quo(-", x_text, ")")
     } else {
-        expr_to_eval <- paste0("quo(", x_text, ")")
+        expr_to_eval <- paste0("rlang::quo(", x_text, ")")
     }
 
     eval(parse(text = expr_to_eval)[[1]])

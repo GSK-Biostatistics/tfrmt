@@ -171,9 +171,9 @@
 tfrmt <- function(
     tfrmt_obj,
     group = vars(),
-    label = quo(),
-    param = quo(),
-    value = quo(),
+    label = rlang::quo(),
+    param = rlang::quo(),
+    value = rlang::quo(),
     column = vars(),
     title,
     subtitle,
@@ -284,7 +284,9 @@ quo_get <- function(
             ## args not defined can quietly return empty expressions.
             return(quote(expr = ))
         } else {
-            if (identical(arg_call, quo()) || identical(arg_call, vars())) {
+            if (
+                identical(arg_call, rlang::quo()) || identical(arg_call, vars())
+            ) {
                 return(arg_call)
             }
 
@@ -321,10 +323,12 @@ quo_get <- function(
                         if (arg %in% as_var_args) {
                             return(as_vars(arg_call_results$result))
                         } else {
-                            return(as_length_one_quo(
-                                arg_call_results$result,
-                                arg = as.character(arg)
-                            ))
+                            return(
+                                as_length_one_quo(
+                                    arg_call_results$result,
+                                    arg = as.character(arg)
+                                )
+                            )
                         }
                     }
                 } else {
@@ -412,7 +416,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
 
 trim_vars_quo_c <- function(x) {
     x_list <- as.list(x)
-    if (as.character(x_list[[1]]) %in% c("c", "quo", "vars")) {
+    if (as.character(x_list[[1]]) %in% c("c", "quo", "rlang::quo", "vars")) {
         x_list[-1]
     } else {
         list(x)
@@ -441,7 +445,7 @@ as_length_one_quo.quosure <- function(x, ...) {
 #' @keywords internal
 as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
     if (length(x) == 0) {
-        quo()
+        rlang::quo()
     } else {
         if (length(x) > 1) {
             warn(
@@ -460,7 +464,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
 #' @export
 #' @keywords internal
 as_length_one_quo.character <- function(x, ...) {
-    quo(!!rlang::sym(x))
+    rlang::quo(!!rlang::sym(x))
 }
 
 as_vars <- function(x) {
@@ -485,7 +489,7 @@ as_vars.character <- function(x) {
     do.call(
         vars,
         lapply(x, function(x) {
-            quo(!!rlang::sym(x))
+            rlang::quo(!!rlang::sym(x))
         })
     )
 }

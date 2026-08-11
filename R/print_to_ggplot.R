@@ -210,7 +210,7 @@ apply_grp_ggplot <- function(.data, tfrmt) {
             !is_empty(tfrmt$group) &&
             tfrmt$row_grp_plan$label_loc$location == "gtdefault"
     ) {
-        group_name <- quo_name(tfrmt$group[[1]])
+        group_name <- rlang::quo_name(tfrmt$group[[1]])
 
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 

@@ -141,11 +141,13 @@ apply_row_grp_lbl <- function(
 
     # check if lbl_col contains NA
     if (anyNA(lbl_col)) {
-        stop(paste0(
-            "`label` column ",
-            quo_name(label),
-            " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."
-        ))
+        stop(
+            paste0(
+                "`label` column ",
+                rlang::quo_name(label),
+                " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."
+            )
+        )
     }
 
     # check which group/label columns are available

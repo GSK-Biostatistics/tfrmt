@@ -54,7 +54,7 @@ print_mock_gt <- function(
         message(
             "`tfrmt` will need a `param` value to `print_to_gt` when data is available"
         )
-        tfrmt$param <- quo(!!rlang::sym("__tfrmt__param"))
+        tfrmt$param <- rlang::quo(!!rlang::sym("__tfrmt__param"))
     }
     if (is_empty(tfrmt$column)) {
         message(
@@ -67,7 +67,7 @@ print_mock_gt <- function(
         message(
             "Message: `tfrmt` will need `value` value to `print_to_gt` when data is available"
         )
-        tfrmt$value <- quo(!!rlang::sym("__tfrmt__val"))
+        tfrmt$value <- rlang::quo(!!rlang::sym("__tfrmt__val"))
     }
 
     if (is.null(tfrmt$body_plan)) {
