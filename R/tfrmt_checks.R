@@ -30,7 +30,12 @@ check_column_and_col_plan <- function(x) {
 
         for (struct in span_structs) {
             if (!all(vals <- names(struct) %in% column_strings)) {
-                column_values <- paste0("`", column_strings, "`", collapse = ", ")
+                column_values <- paste0(
+                    "`",
+                    column_strings,
+                    "`",
+                    collapse = ", "
+                )
                 invalid_col_names <- paste0(
                     "`",
                     names(struct)[!vals],
