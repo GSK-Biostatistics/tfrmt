@@ -547,7 +547,7 @@ test_that("cleaned_data_to_gt() renders markdown in title and subtitle", {
         "mygrp" , "mylbl" , "col1"  , "prm"  ,    1 ,
         "mygrp" , "mylbl" , "col2"  , "prm"  ,    2
     )
-  # nolint end: commas_linter
+    # nolint end: commas_linter
     tfrmt_md <- tfrmt(
         group = "group",
         label = "label",
