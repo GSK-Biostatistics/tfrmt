@@ -45,7 +45,7 @@ test_that("footnote structure", {
         )
     )
 
-    expect_equal(is.list(tfrmt$footnote_plan$struct_list[[1]]$column_val), TRUE)
+    expect_type(tfrmt$footnote_plan$struct_list[[1]]$column_val, "list")
 
     tfrmt2 <- tfrmt(
         # specify columns in the data
@@ -91,7 +91,7 @@ test_that("footnote structure", {
         )
     )
 
-    expect_equal(is.list(tfrmt2$footnote_plan$struct_list[[1]]$group_val), TRUE)
+    expect_type(tfrmt2$footnote_plan$struct_list[[1]]$group_val, "list")
 
     expect_error(
         tfrmt(

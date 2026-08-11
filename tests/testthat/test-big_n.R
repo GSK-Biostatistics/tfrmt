@@ -203,7 +203,7 @@ test_that("Simple Case big_n", {
     )
 
     auto_mock <- apply_tfrmt(
-        .data = select(data, -Value),
+        .data = dplyr::select(data, -Value),
         tfrmt = tfrmt_wit_colplan,
         mock = TRUE
     ) |>
@@ -222,6 +222,7 @@ test_that("Simple Case big_n", {
 })
 
 test_that("Test with spanning headers", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -245,6 +246,7 @@ test_that("Test with spanning headers", {
         NA     , NA          , "column cols" , "col 4"    , "col4"   , "bigN"  ,    6 ,
         NA     , NA          , NA            , NA         , "mycol3" , "bigN"  ,    6 ,
     )
+    # nolint end
 
     auto_tfrmt <- tfrmt(
         group = group,
@@ -551,6 +553,7 @@ test_that("Overlapping Big N's", {
 })
 
 test_that("Missing Big N in dataset", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
@@ -569,6 +572,7 @@ test_that("Missing Big N in dataset", {
         "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
     )
+    # nolint end
 
     tfrmt_test <- tfrmt(
         group = group,
@@ -603,6 +607,7 @@ test_that("Missing Big N in dataset", {
 })
 
 test_that("using 'value' for values column where there may be conflict in big_n", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~value ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,      1 ,
@@ -626,6 +631,7 @@ test_that("using 'value' for values column where there may be conflict in big_n"
         NA     , NA          , "column cols" , "col 4"    , "col4"   , "bigN"  ,      6 ,
         NA     , NA          , NA            , NA         , "mycol3" , "bigN"  ,      6 ,
     )
+    # nolint end
 
     auto <- tfrmt(
         group = group,
@@ -689,7 +695,7 @@ test_that("Test big n with footnotes", {
         dplyr::mutate(
             span = dplyr::case_when(
                 column == "PL" ~ "Placebo",
-                column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
+                column %in% c("T1", "T2", "T1&T2") ~ "Treatment"
             )
         )
 
@@ -769,7 +775,7 @@ test_that("Test big n with footnotes", {
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 4",
-                label_val = list(label = "label 1"),
+                label_val = list(label = "label 1")
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 5",
@@ -791,8 +797,8 @@ test_that("Test big n with footnotes", {
         print_mock_gt(span_df_big_n)
 
     ## ensure big_n got applied
-    expect_identical(
-        names(big_n_footnote_plan_gt$`_data`),
+    expect_named(
+        big_n_footnote_plan_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
@@ -806,7 +812,7 @@ test_that("Test big n with footnotes", {
     ## confirm location of footnotes gets recorded correctly
     expect_identical(
         big_n_footnote_plan_gt$`_footnotes` |>
-            select(
+            dplyr::select(
                 locname,
                 colname,
                 locnum,
@@ -879,7 +885,7 @@ test_that("big Ns vary by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -970,7 +976,7 @@ test_that("big Ns constant by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1127,7 +1133,7 @@ test_that("big Ns constant by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1206,7 +1212,7 @@ test_that("not enough big Ns by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1281,7 +1287,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns) |>
+    data <- dplyr::bind_rows(data, big_ns) |>
         dplyr::arrange(
             dplyr::desc(Group)
         )
@@ -1392,7 +1398,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
             Group
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1460,11 +1466,17 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
         )
 
     # Duplicate the data and add the `by group` column
-    data_101 <- original_data |> dplyr::mutate(`by group` = "101")
-    data_102 <- original_data |> dplyr::mutate(`by group` = "102")
+    data_101 <- original_data |>
+        dplyr::mutate(
+            `by group` = "101"
+        )
+    data_102 <- original_data |>
+        dplyr::mutate(
+            `by group` = "102"
+        )
 
     # Combine the two data frames
-    data <- bind_rows(data_101, data_102)
+    data <- dplyr::bind_rows(data_101, data_102)
 
     # Create mock big Ns
     big_ns <- data |>

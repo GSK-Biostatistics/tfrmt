@@ -64,7 +64,7 @@ test_that("Defining the col plan in tfrmt", {
         )
     )
 
-    expect_true(!is.null(tfrmt_test$col_plan))
+    expect_false(is.null(tfrmt_test$col_plan))
 
     # expect error when writing invalid col_plan
     expect_error(
@@ -182,7 +182,7 @@ test_that("Test applying a col_plan - simple", {
         vars(
             first_col,
             `test val___tlang_delim___val2`,
-            `test val___tlang_delim___val1`,
+            `test val___tlang_delim___val1`
         ),
         ignore_attr = c(".Environment")
     )
@@ -944,17 +944,17 @@ test_that("Order is kept for multi-col columns", {
     )
 
     new_name_ord <- apply_tfrmt(test, tfrmt) %>%
-        select(-label) %>%
+        dplyr::select(-label) %>%
         names()
 
     new_name_ord_in_dat <- test %>%
-        select(
+        dplyr::select(
             tidyselect::starts_with("col")
         ) %>%
         unite("new", sep = .tlang_delim) %>%
-        pull(new)
+        dplyr::pull(new)
 
-    expect_equal(new_name_ord, new_name_ord_in_dat)
+    expect_identical(new_name_ord, new_name_ord_in_dat)
 })
 
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure", {
@@ -982,6 +982,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1000,6 +1001,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1008,7 +1010,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "group",
@@ -1021,12 +1023,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("span 1")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c("span 1___tlang_delim___col1", "span 1___tlang_delim___col2")
@@ -1055,6 +1057,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1073,6 +1076,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1081,7 +1085,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "new_col_4",
@@ -1094,12 +1098,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("span 1")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c("span 1___tlang_delim___new_col_1", "span 1___tlang_delim___col2")
@@ -1131,6 +1135,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1149,6 +1154,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1157,7 +1163,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "new_col_4",
@@ -1170,12 +1176,12 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("new span name")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1187,6 +1193,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 })
 
 test_that("Build simple tfrmt with multiple columns and with renaming duplicated colnames across spans", {
+    # nolint start: commas_linter
     multi_col_df <- tibble::tribble(
         ~label , ~col0 , ~col1 , ~col2 , ~param , ~value ,
         "A"    , "A_"  , "A"   , "AA"  , "p1"   ,    123 ,
@@ -1207,6 +1214,7 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         "B"    , NA    , NA    , "BB"  , "p1"   ,     12 ,
         "B"    , NA    , NA    , "CC"  , "p1"   ,     12
     )
+    # nolint end
 
     multi_column_template <- tfrmt(
         label = label,
@@ -1243,7 +1251,7 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "label",
@@ -1260,17 +1268,17 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("A", "B", "C", "D", "A_", "B_")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_level,
-        c(1, 1, 1, 1, 2, 2)
+        c(1L, 1L, 1L, 1L, 2L, 2L)
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1302,6 +1310,7 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
 })
 
 test_that("Build simple tfrmt with spans with child spans that are and are not spanned", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~top_span     , ~child_span , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2"  , "col1"   , "value" ,    1 ,
@@ -1320,6 +1329,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         "g2"   , "rowlabel3" , "column cols" , NA          , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , "my cols"     , NA          , "mycol5" , "value" ,    3
     )
+    # nolint end
 
     tfrmt_with_parial_child_span <- tfrmt(
         group = group,
@@ -1358,7 +1368,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "group",
@@ -1372,17 +1382,17 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("cols 1,2", "column cols", "my cols")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_level,
-        c(1, 2, 1)
+        c(1L, 2L, 1L)
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1403,6 +1413,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
 })
 
 test_that("Build simple tfrmt with spans with child spans that are and are not spanned - removal", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group , ~label      , ~top_span     , ~child_span , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "column cols" , "cols 1,2"  , "col1"   , "value" ,    1 ,
@@ -1421,6 +1432,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         "g2"   , "rowlabel3" , "column cols" , NA          , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , "my cols"     , NA          , "mycol5" , "value" ,    3
     )
+    # nolint end
 
     tfrmt_with_parial_child_span <- tfrmt(
         group = group,
@@ -1459,7 +1471,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c(
             "group",
@@ -1472,17 +1484,17 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
         )
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
         c("cols 1,2", "column cols", "my cols")
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$spanner_level,
-        c(1, 2, 1)
+        c(1L, 2L, 1L)
     )
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_spanners"]]$vars,
         list(
             c(
@@ -1552,20 +1564,21 @@ test_that("Tidyselect subtraction with span_structure", {
         column = c("trt1", "trt2", "pl", "trt1&trt2"),
         param = c("count", "percent")
     ) %>%
-        mutate(
+        dplyr::mutate(
             ord1 = rep(
-                seq(1:length(unique(.$label))),
+                seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
-            )
-        ) %>%
-        mutate(
-            t_or_p = case_when(
+            ),
+            t_or_p = dplyr::case_when(
                 column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
-                column %in% c("pl") ~ "Placebo",
+                column %in% c("pl") ~ "Placebo"
             )
         )
 
-    df_fake_values <- df %>% mutate(value = runif(nrow(df)))
+    df_fake_values <- df %>%
+        dplyr::mutate(
+            value = runif(nrow(df))
+        )
 
     tfrmt_minus_selection <- tfrmt(
         # Specify columns in the data
@@ -1612,8 +1625,8 @@ test_that("Tidyselect subtraction with span_structure", {
 
     # keeps the spanners & original cols other than ones that start with "ord".
     # renaming occurs as needed
-    expect_equal(
-        names(mock_gt$`_data`),
+    expect_named(
+        mock_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
@@ -1628,8 +1641,8 @@ test_that("Tidyselect subtraction with span_structure", {
 
     # keeps the spanners & original cols other than ones that start with "ord".
     # renaming occurs as needed
-    expect_equal(
-        names(real_gt$`_data`),
+    expect_named(
+        real_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
@@ -1663,8 +1676,8 @@ test_that("Tidyselect subtraction with span_structure", {
     mock_gt2 <- print_mock_gt(tfrmt_minus_selection_2, df)
 
     ## keeps only the spanners, label is dropped
-    expect_equal(
-        names(mock_gt2$`_data`),
+    expect_named(
+        mock_gt2$`_data`,
         c(
             "Treatment___tlang_delim___T1",
             "Treatment___tlang_delim___T2",
@@ -1677,8 +1690,8 @@ test_that("Tidyselect subtraction with span_structure", {
     real_gt2 <- print_to_gt(tfrmt_minus_selection_2, df_fake_values)
 
     ## keeps the spanners & original cols other than ones that start with "ord". renaming occurs as needed
-    expect_equal(
-        names(real_gt$`_data`),
+    expect_named(
+        real_gt$`_data`,
         c(
             "label",
             "Placebo___tlang_delim___PL",
@@ -1714,6 +1727,7 @@ test_that("Build simple tfrmt with stub header", {
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~group , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1732,6 +1746,7 @@ test_that("Build simple tfrmt with stub header", {
         "g2"   , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "g2"   , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1740,11 +1755,11 @@ test_that("Build simple tfrmt with stub header", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
-    expect_equal(
+    expect_identical(
         processed_gt[["_stubhead"]]$label,
         md("grp")
     )
@@ -1765,6 +1780,7 @@ test_that("Build simple tfrmt with stub header", {
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset2 <- tibble::tribble(
         ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1783,6 +1799,7 @@ test_that("Build simple tfrmt with stub header", {
         "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1791,11 +1808,11 @@ test_that("Build simple tfrmt with stub header", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
-    expect_equal(
+    expect_identical(
         processed_gt[["_stubhead"]]$label,
         md("")
     )
@@ -1824,6 +1841,7 @@ test_that("Build simple tfrmt with stub header", {
         )
     )
 
+    # nolint start: commas_linter
     basic_example_dataset <- tibble::tribble(
         ~grp1 , ~grp2 , ~label      , ~test1   , ~test2 , ~parm   , ~val ,
         "G1"  , "g1"  , "rowlabel1" , "span 1" , "col1" , "value" ,    1 ,
@@ -1842,6 +1860,7 @@ test_that("Build simple tfrmt with stub header", {
         "G1"  , "g2"  , "rowlabel3" , NA       , "col4" , "value" ,    3 ,
         "G1"  , "g2"  , "rowlabel3" , NA       , "col5" , "value" ,    3 ,
     )
+    # nolint end
 
     suppressMessages({
         processed_gt <- print_to_gt(
@@ -1850,11 +1869,11 @@ test_that("Build simple tfrmt with stub header", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
         c("grp1", "grp2", "label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
-    expect_equal(
+    expect_identical(
         processed_gt[["_stubhead"]]$label,
         md(c("Group 1", "Group 2", "Row label"))
     )

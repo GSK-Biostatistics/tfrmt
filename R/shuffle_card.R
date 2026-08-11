@@ -64,14 +64,14 @@ shuffle_card <- function(
     # Check if a 'by' variable is available for bind_ard objs
     by_arg <- get_card_attr_arg(x, "by")
     if (is_bind_ard_card(x) && rlang::is_empty(by)) {
-        by_msg <- if (!rlang::is_empty(by_arg)) {
+        by_msg <- if (rlang::is_empty(by_arg)) {
             c(
-                "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
-                "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
+                "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
             )
         } else {
             c(
-                "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
+                "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
+                "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
             )
         }
 
@@ -112,11 +112,11 @@ shuffle_card <- function(
             stat_variable = .data$variable
         ) |>
         cards::rename_ard_columns(
-            fill = '..cards_overall..'
+            fill = "..cards_overall.."
         ) |>
         cards::unlist_ard_columns(
             columns = c(cards::all_ard_groups(), cards::all_ard_variables()),
-            fct_as_chr = TRUE,
+            fct_as_chr = TRUE
         ) |>
         dplyr::relocate(
             "stat_variable",
@@ -189,7 +189,7 @@ shuffle_card <- function(
     dots <- rlang::dots_list(...)
 
     lapply(dots, function(var) {
-        if (any(!map_lgl(x[[var]], is.null))) {
+        if (!all(map_lgl(x[[var]], is.null))) {
             cli::cli_inform(
                 "{.val {var}} column contains messages that will be removed."
             )
@@ -279,7 +279,8 @@ shuffle_card <- function(
             # rows with non-missing group
             x_nonmissing_by <- x |>
                 dplyr::filter(
-                    !is.na(.data[[g]]) & !.data[[g]] == "..cards_overall.."
+                    !is.na(.data[[g]]),
+                    .data[[g]] != "..cards_overall.."
                 )
 
             if (nrow(x_missing_by) > 0 && nrow(x_nonmissing_by) > 0) {
@@ -400,15 +401,15 @@ shuffle_card <- function(
 
     if (!is.na(glue_overall) && overall_val != glue_overall) {
         cli::cli_alert_info(
-            "{.val {glue_overall}} already exists in the {.code {colname}} column. \\
-      Using {.val {overall_val}}."
+            "{.val {glue_overall}} already exists in the {.code {colname}} \\
+            column. Using {.val {overall_val}}."
         )
     }
 
     if (!is.na(glue_any) && any_val != glue_any) {
         cli::cli_alert_info(
-            "{.val {glue_any}} already exists in the {.code {colname}} column. Using\\
-       {.val {any_val}}."
+            "{.val {glue_any}} already exists in the {.code {colname}} \\
+            column. Using {.val {any_val}}."
         )
     }
 

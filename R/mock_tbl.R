@@ -9,12 +9,6 @@
 #'
 #' @return tibble containing mock data
 #'
-#' @importFrom tidyr crossing unnest expand
-#' @importFrom dplyr rowwise mutate pull rename ungroup coalesce group_by tibble
-#'   across cur_column
-#' @importFrom purrr map map_dfr map_chr map_dfc reduce
-#' @importFrom rlang as_name is_empty
-#'
 #' @export
 #' @examples
 #'
@@ -58,27 +52,27 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     # add the missing group variables & fill using .grp
     # & replace .default's
-    all_frmt_vals <- bind_cols(
+    all_frmt_vals <- dplyr::bind_cols(
         all_frmt_spec,
         map(cols_to_add, function(x) tibble(!!x := NA_character_))
     ) %>%
-        mutate(
+        dplyr::mutate(
             ..grp = replace_na(.data$..grp, ".default"),
-            across(
+            dplyr::across(
                 tidyselect::all_of(grp_vars),
-                ~ coalesce(.x, .data$..grp)
+                ~ dplyr::coalesce(.x, .data$..grp)
             )
         ) %>%
-        select(-"..grp") %>%
-        rowwise() %>%
-        mutate(
-            across(
+        dplyr::select(-"..grp") %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(
+            dplyr::across(
                 !!tfrmt$param,
-                ~ process_for_mock(.x, cur_column(), 1)
+                ~ process_for_mock(.x, dplyr::cur_column(), 1)
             ),
-            across(
+            dplyr::across(
                 tidyselect::all_of(grp_vars),
-                ~ process_for_mock(.x, cur_column(), .default)
+                ~ process_for_mock(.x, dplyr::cur_column(), .default)
             )
         )
 
@@ -86,10 +80,10 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     if (!quo_is_missing(tfrmt$label)) {
         all_frmt_vals <- all_frmt_vals %>%
-            mutate(
-                across(
+            dplyr::mutate(
+                dplyr::across(
                     !!tfrmt$label,
-                    ~ process_for_mock(.x, cur_column(), .default)
+                    ~ process_for_mock(.x, dplyr::cur_column(), .default)
                 )
             )
         expand_cols <- c(expand_cols, tfrmt$label)
@@ -101,9 +95,9 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         unnest(
             tidyselect::everything()
         ) %>%
-        group_by(.data$frmt_num) %>%
+        dplyr::group_by(.data$frmt_num) %>%
         expand(!!!expand_cols) %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         add_sorting_cols(tfrmt$sorting_cols)
 
     ## add `column` columns
@@ -118,7 +112,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     )
 
     output_dat <- output_dat %>%
-        mutate(
+        dplyr::mutate(
             `__tfrmt__mock__columns` = list(col_def)
         ) %>%
         unnest("__tfrmt__mock__columns") %>%
@@ -131,7 +125,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     # remove the frmt_num field
     output_dat %>%
-        select(-"frmt_num") %>%
+        dplyr::select(-"frmt_num") %>%
         unique()
 }
 
@@ -146,7 +140,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 #' @noRd
 process_for_mock <- function(x, column, .default = 1:3) {
     if (x == ".default") {
-        str_c(column, "_", .default) %>% list
+        str_c(column, "_", .default) %>% list()
     } else {
         list(x)
     }
@@ -164,7 +158,7 @@ clean_col_names <- function(names, dont_inc) {
     names %>%
         map_chr(as_label) %>%
         str_remove_all('^.*\\(\\"') %>%
-        str_remove_all('^-') %>%
+        str_remove_all("^-") %>%
         str_remove_all('\\"\\)') %>%
         setdiff(dont_inc)
 }
@@ -180,7 +174,7 @@ add_sorting_cols <- function(data, sorting_cols) {
         })
 
         data <- data %>%
-            mutate(
+            dplyr::mutate(
                 `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
             ) %>%
             unnest("__tfrmt__mock__sorting_col")
@@ -216,11 +210,11 @@ make_col_df <- function(
 
     # Use provided column names if there is no spanning
     if (col_plan_test_res || col_style_plan_test_res) {
-        if (col_plan_test_res & n_spans == 1 & is.null(n_cols)) {
+        if (col_plan_test_res && n_spans == 1 && is.null(n_cols)) {
             cols_to_use <- col_plan$dots %>%
                 clean_col_names(dont_inc = grp_lb_vars)
             col_def <- tibble(!!column_vars[n_spans] := cols_to_use)
-        } else if (col_plan_test_res & is.null(n_cols)) {
+        } else if (col_plan_test_res && is.null(n_cols)) {
             # Gets the lowest level columns only
             low_lvl_vars <- col_plan$dots %>%
                 discard(is.list) %>%
@@ -242,7 +236,7 @@ make_col_df <- function(
                     span_df
                 })
 
-            col_def <- bind_rows(low_lvl_def, span_df)
+            col_def <- dplyr::bind_rows(low_lvl_def, span_df)
         }
 
         # get col_style_plan referenced cols
@@ -250,10 +244,11 @@ make_col_df <- function(
             cols_from_sp <- map(col_style_plan, ~ .x$cols) |>
                 list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
-                tibble(.)
-            names(cols_from_sp) <- last(column_vars)
+                tibble()
+            names(cols_from_sp) <- dplyr::last(column_vars)
 
-            col_def <- bind_rows(col_def, cols_from_sp) |> unique()
+            col_def <- dplyr::bind_rows(col_def, cols_from_sp) |>
+                unique()
         }
     } else {
         n_cols <- ifelse(is.null(n_cols), 3, n_cols)
@@ -272,7 +267,10 @@ make_col_df <- function(
                     )
                 )
             })
-            col_def <- bind_cols(col_spans_df, col_def)
+            col_def <- dplyr::bind_cols(
+                col_spans_df,
+                col_def
+            )
         }
     }
 
@@ -281,13 +279,16 @@ make_col_df <- function(
 
 add_mock_big_ns <- function(data, column, param, big_n_struct) {
     if (!is.null(big_n_struct)) {
-        col <- column %>% last()
+        col <- dplyr::last(column)
         col_vals <- data %>%
-            pull(!!col) %>%
+            dplyr::pull(!!col) %>%
             unique()
 
-        data <- tibble(!!col := col_vals, !!param := big_n_struct$param_val) %>%
-            bind_rows(data, .)
+        data <- tibble(
+            !!col := col_vals,
+            !!param := big_n_struct$param_val
+        ) %>%
+            dplyr::bind_rows(data, .)
     }
     data
 }

@@ -25,17 +25,17 @@ test_that("applying frmt", {
         value = quo(x)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_no_dec_frmted$x,
         c("1235", "346", " 57", "4568", "  9")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_single_dec_frmted$x,
         c("1234.6", "345.7", " 56.8", "4567.9", "  8.9")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_double_dec_frmted$x,
         c("1234.57", "345.68", " 56.79", "4567.89", "  8.91")
     )
@@ -75,7 +75,7 @@ test_that("applying frmt - scientific", {
         frmt_def = sample_frmt_exxxx
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_10x$x,
         c(
             "  1.2 x10^3",
@@ -87,7 +87,7 @@ test_that("applying frmt - scientific", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_10xx$x,
         c(
             "  1.2 x10^ 3",
@@ -99,7 +99,7 @@ test_that("applying frmt - scientific", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_ex$x,
         c(
             "  1.2e^3",
@@ -110,7 +110,7 @@ test_that("applying frmt - scientific", {
             "  6.8e^-2"
         )
     )
-    expect_equal(
+    expect_identical(
         sample_df_frmted_exxxx$x,
         c(
             "  1.2e^   3",
@@ -139,9 +139,9 @@ test_that("applying frmt - transform", {
         .data = sample_df,
         value = quo(x)
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
-    expect_equal(
+    expect_identical(
         formula_result,
         c("123457", "34568", "5679", "456789", "891")
     )
@@ -151,9 +151,9 @@ test_that("applying frmt - transform", {
         .data = sample_df,
         value = quo(x)
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
-    expect_equal(
+    expect_identical(
         fx_result,
         c("1524157.7", "119493.9", "3225.0", "20865628.2", " 79.4")
     )
@@ -187,17 +187,17 @@ test_that("applying frmt - preserves decimal places after rounding", {
         frmt_def = sample_frmt_10x
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_1dec$x,
         c(" 10.0", " 12.4", "  3.0", "100.0", "167.3")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_2dec$x,
         c(" 10.00", " 12.36", "  3.00", "100.00", "167.30")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_10x$x,
         c(
             "  1.0 x10^1",
@@ -238,7 +238,7 @@ test_that("applying frmt_combine - 2x", {
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             group = "group",
@@ -287,7 +287,7 @@ test_that("applying frmt_combine missing", {
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             group = "group",
@@ -333,7 +333,7 @@ test_that("applying frmt_combine missing", {
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             group = "group",
@@ -382,7 +382,7 @@ test_that("applying frmt_combine - 3x", {
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             group = "group",
@@ -434,7 +434,7 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
         "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: "
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             group = "group",
@@ -509,6 +509,7 @@ test_that("applying frmt_when", {
         group = vars(group)
     )
 
+    # nolint start: commas_linter
     man_df <- tibble::tribble(
         ~group  , ~lab    , ~col  , ~y  , ~x           ,
         "group" , "lab 1" , "col" , "A" , "1234.6"     ,
@@ -522,8 +523,9 @@ test_that("applying frmt_when", {
         "group" , "lab 4" , "col" , "B" , "Undectable" ,
         "group" , "lab 5" , "col" , "B" , "Undectable" ,
     )
+    # nolint end
 
-    expect_equal(sample_df_frmted, man_df)
+    expect_identical(sample_df_frmted, man_df)
 
     #Test in combination
     sample_frmt_combo <- frmt_combine(
@@ -545,6 +547,7 @@ test_that("applying frmt_when", {
         group = vars(group)
     )
 
+    # nolint start: commas_linter
     man_df_combo <- tibble::tribble(
         ~group  , ~lab    , ~col  , ~y  , ~x                    ,
         "group" , "lab 1" , "col" , "A" , "1234.6 Undetectable" ,
@@ -553,7 +556,8 @@ test_that("applying frmt_when", {
         "group" , "lab 4" , "col" , "A" , "4567.9 (4.6%)"       ,
         "group" , "lab 5" , "col" , "A" , "5678.9 (5.7%)"       ,
     )
-    expect_equal(sample_df_frmted, man_df_combo)
+    # nolint end
+    expect_identical(sample_df_frmted, man_df_combo)
 })
 
 
@@ -565,8 +569,8 @@ test_that("mocks return correctly", {
         value = quo(mock),
         mock = TRUE
     ) %>%
-        pull(mock)
-    expect_equal(frmt_mock, rep("xxx.x", nrow(iris)))
+        dplyr::pull(mock)
+    expect_identical(frmt_mock, rep("xxx.x", nrow(iris)))
 
     # frmt_when
     frmt_when_true <- apply_frmt.frmt_when(
@@ -575,8 +579,8 @@ test_that("mocks return correctly", {
         sym("value"),
         mock = TRUE
     ) %>%
-        pull(value)
-    expect_equal(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
+        dplyr::pull(value)
+    expect_identical(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
 
     frmt_when_no_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt("Hello"), "==0" ~ ""),
@@ -584,8 +588,8 @@ test_that("mocks return correctly", {
         sym("value"),
         mock = TRUE
     ) %>%
-        pull(value)
-    expect_equal(frmt_when_no_true, rep("Hello", nrow(iris)))
+        dplyr::pull(value)
+    expect_identical(frmt_when_no_true, rep("Hello", nrow(iris)))
 
     #frmt_combine
     sample_df <- tibble(
@@ -612,9 +616,9 @@ test_that("mocks return correctly", {
         group = vars(group),
         mock = TRUE
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
-    expect_equal(sample_df_frmted, rep("xxx.x (X.X%)", 5))
+    expect_identical(sample_df_frmted, rep("xxx.x (X.X%)", 5))
 })
 
 
@@ -625,7 +629,7 @@ test_that("Space in Param", {
         `LM stderr` = frmt("xx.xx")
     )
 
-    expect_equal(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
+    expect_identical(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
 
     mixed <- frmt_combine(
         "{mean} ({CV %})",
@@ -633,8 +637,9 @@ test_that("Space in Param", {
         `CV %` = frmt("xx.xx")
     )
 
-    expect_equal(mixed$expression, "{mean} ({`CV %`})")
+    expect_identical(mixed$expression, "{mean} ({`CV %`})")
 
+    # nolint start: commas_linter
     data <- tibble::tribble(
         ~group             , ~type            , ~label             , ~column     , ~param      , ~value ,
         "baseline"         , "description"    , "Week 12 analysis" , "Placebo"   , "LM mean"   , 79.0   ,
@@ -642,6 +647,7 @@ test_that("Space in Param", {
         "Primary analysis" , "trt comparison" , "Week 12 analysis" , "TRT - PBO" , "LM mean"   , -0.3   ,
         "Primary analysis" , "trt comparison" , "Week 12 analysis" , "TRT - PBO" , "LM stderr" ,  0.4
     )
+    # nolint end
 
     space_combo <- frmt_combine(
         "{`LM mean`} ({`LM stderr`})",
@@ -649,7 +655,7 @@ test_that("Space in Param", {
         `LM stderr` = frmt("xx.xx")
     )
 
-    expect_equal(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
+    expect_identical(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
 
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = space_combo,
@@ -661,9 +667,9 @@ test_that("Space in Param", {
         group = vars(group, type),
         mock = FALSE
     ) %>%
-        pull(value)
+        dplyr::pull(value)
 
-    expect_equal(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
+    expect_identical(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
 })
 
 
@@ -682,12 +688,16 @@ test_that("frmt_combine only applies when all parameters are in the data", {
             8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
         )
     ) %>%
-        # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-        mutate(
-            Value = case_when(Param == "pct" ~ Value * 100, TRUE ~ Value),
-            ord1 = if_else(Group == "Age (y)", 1, 2),
-            ord2 = if_else(Label == "n", 1, 2),
-            TEMP_row = row_number()
+        # Note because tfrmt only does rounding we will need to have the
+        # percentages multiplied by 100
+        dplyr::mutate(
+            Value = dplyr::case_when(
+                Param == "pct" ~ Value * 100,
+                TRUE ~ Value
+            ),
+            ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+            ord2 = dplyr::if_else(Label == "n", 1, 2),
+            TEMP_row = dplyr::row_number()
         )
 
     test_combo <- frmt_structure(
@@ -704,10 +714,10 @@ test_that("frmt_combine only applies when all parameters are in the data", {
         param = quo(Param)
     )
     expected <- data %>%
-        filter(Label %in% c("Male", "Female")) %>%
-        pull(TEMP_row)
+        dplyr::filter(Label %in% c("Male", "Female")) %>%
+        dplyr::pull(TEMP_row)
 
-    expect_equal(rows_to_use, expected)
+    expect_identical(rows_to_use, expected)
 })
 
 test_that("frmt_combine fills with partially missing values where a column is missing the value", {
@@ -737,7 +747,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
         mock = FALSE
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             Group = rep(c("Age (y)"), c(3)),
@@ -765,7 +775,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
         mock = FALSE
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
         tibble(
             Group = rep(c("Age (y)"), c(3)),
@@ -778,6 +788,7 @@ test_that("frmt_combine fills with partially missing values where a column is mi
 })
 
 test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~grp , ~lbl , ~param , ~column , ~val ,
         "A"  , "n"  , "n"    , "trt1"  ,    1 ,
@@ -785,6 +796,7 @@ test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows"
         "B"  , "n"  , "n"    , "trt1"  ,    3 ,
         "B"  , "n"  , "n"    , "trt2"  ,    4
     )
+    # nolint end
 
     tfrmt_spec <- tfrmt(
         group = grp,

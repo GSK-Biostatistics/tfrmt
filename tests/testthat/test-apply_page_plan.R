@@ -1,4 +1,5 @@
 test_that("Page plan with defined split", {
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp , ~lbl , ~prm , ~trt ,
         "A"  , "a"  , "n"  ,   22 ,
@@ -8,12 +9,14 @@ test_that("Page plan with defined split", {
         "C"  , "a"  , "n"  ,   12 ,
         "C"  , "b"  , "n"  ,   19 ,
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(group_val = "A")
     )
 
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp), quo(lbl))
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp , ~lbl , ~prm , ~trt ,
             "A"  , "a"  , "n"  ,   22 ,
@@ -26,14 +29,16 @@ test_that("Page plan with defined split", {
             "C"  , "a"  , "n"  ,   12 ,
             "C"  , "b"  , "n"  ,   19 ,
         )
+        # nolint end
     )
 
-    expect_equal(auto_split, man_split)
+    expect_identical(auto_split, man_split)
 })
 
 
 test_that("Page plan with grouped split", {
     # single grouping var
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp , ~lbl , ~prm , ~trt ,
         "A"  , "a"  , "n"  ,   22 ,
@@ -43,12 +48,14 @@ test_that("Page plan with grouped split", {
         "C"  , "a"  , "n"  ,   12 ,
         "C"  , "b"  , "n"  ,   19 ,
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(group_val = ".default")
     )
 
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp), quo(lbl))
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp , ~lbl , ~prm , ~trt ,
             "A"  , "a"  , "n"  ,   22 ,
@@ -64,6 +71,7 @@ test_that("Page plan with grouped split", {
             "C"  , "a"  , "n"  ,   12 ,
             "C"  , "b"  , "n"  ,   19 ,
         )
+        # nolint end
     )
 
     expect_equal(
@@ -72,16 +80,17 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
+    expect_identical(
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp: A", "grp: B", "grp: C")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp"
     )
 
     # multi grouping vars - 1 selected
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
         "A"   , "a"   , "n"  , "n"  ,   22 ,
@@ -91,12 +100,14 @@ test_that("Page plan with grouped split", {
         "C"   , "a"   , "n"  , "n"  ,   12 ,
         "C"   , "b"   , "n"  , "n"  ,   19 ,
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(group_val = list(grp2 = ".default"))
     )
 
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "a"   , "n"  , "n"  ,   22 ,
@@ -109,6 +120,7 @@ test_that("Page plan with grouped split", {
             "B"   , "b"   , "n"  , "n"  ,   55 ,
             "C"   , "b"   , "n"  , "n"  ,   19 ,
         )
+        # nolint end
     )
 
     expect_equal(
@@ -117,16 +129,18 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
+    expect_identical(
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp2: a", "grp2: b")
     )
-    expect_equal(
+
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp2"
     )
 
     # multi grouping vars - 2 selected
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
         "A"   , "a"   , "n"  , "n"  ,   22 ,
@@ -134,6 +148,7 @@ test_that("Page plan with grouped split", {
         "B"   , "a"   , "n"  , "n"  ,   24 ,
         "B"   , "b"   , "n"  , "n"  ,   55
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(group_val = ".default")
     )
@@ -141,6 +156,7 @@ test_that("Page plan with grouped split", {
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "a"   , "n"  , "n"  ,   22
@@ -157,6 +173,7 @@ test_that("Page plan with grouped split", {
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "B"   , "b"   , "n"  , "n"  ,   55
         )
+        # nolint end
     )
     expect_equal(
         auto_split,
@@ -164,7 +181,7 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
+    expect_identical(
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c(
             "grp1: A, grp2: a",
@@ -173,12 +190,13 @@ test_that("Page plan with grouped split", {
             "grp1: B, grp2: b"
         )
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         c("grp1", "grp2")
     )
 
     # multi grouping vars w/ lbl
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl  , ~prm  , ~trt ,
         "A"   , "a"   , "n"   , "n"   ,   22 ,
@@ -186,12 +204,14 @@ test_that("Page plan with grouped split", {
         "A"   , "b"   , "n"   , "n"   ,   24 ,
         "A"   , "b"   , "pct" , "pct" ,   55
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(label_val = ".default")
     )
 
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "a"   , "n"  , "n"  ,   22 ,
@@ -202,6 +222,7 @@ test_that("Page plan with grouped split", {
             "A"   , "a"   , "pct" , "pct" ,   11 ,
             "A"   , "b"   , "pct" , "pct" ,   55
         )
+        # nolint end
     )
 
     expect_equal(
@@ -210,16 +231,17 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
+    expect_identical(
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("lbl: n", "lbl: pct")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "lbl"
     )
 
     # specific lbl value
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl   , ~prm  , ~trt ,
         "A"   , "a"   , "lbl1" , "n"   ,   22 ,
@@ -231,12 +253,14 @@ test_that("Page plan with grouped split", {
         "A"   , "c"   , "lbl2" , "n"   ,   34 ,
         "A"   , "d"   , "lbl2" , "pct" ,   42
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(label_val = "lbl1")
     )
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl   , ~prm  , ~trt ,
             "A"   , "a"   , "lbl1" , "n"   ,   22 ,
@@ -254,6 +278,7 @@ test_that("Page plan with grouped split", {
             "A"   , "c"   , "lbl2" , "n"   ,   34 ,
             "A"   , "d"   , "lbl2" , "pct" ,   42
         )
+        # nolint end
     )
 
     expect_equal(
@@ -265,6 +290,7 @@ test_that("Page plan with grouped split", {
 
 
 test_that("page plan with mix of defined & group splits", {
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl  , ~prm  , ~trt ,
         "A"   , "a"   , "n"   , "n"   ,   22 ,
@@ -276,6 +302,7 @@ test_that("page plan with mix of defined & group splits", {
         "B"   , "b"   , "n"   , "n"   ,   72 ,
         "B"   , "b"   , "pct" , "pct" ,   12
     )
+    # nolint end
     my_page_plan <- page_plan(
         page_structure(group_val = list(grp1 = ".default", grp2 = "a"))
     )
@@ -287,6 +314,7 @@ test_that("page plan with mix of defined & group splits", {
     # 2. within 1, split after each consecutive set of grp2 ="a"
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl  , ~prm  , ~trt ,
             "A"   , "a"   , "n"   , "n"   ,   22 ,
@@ -307,6 +335,7 @@ test_that("page plan with mix of defined & group splits", {
             "B"   , "b"   , "n"   , "n"   ,   72 ,
             "B"   , "b"   , "pct" , "pct" ,   12
         )
+        # nolint end
     )
 
     expect_equal(
@@ -315,17 +344,18 @@ test_that("page plan with mix of defined & group splits", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
+    expect_identical(
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp1"
     )
 })
 
 test_that("page plan with multiple structures", {
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
         "A"   , "a"   , "n"  , "n"  ,   22 ,
@@ -335,6 +365,7 @@ test_that("page plan with multiple structures", {
         "B"   , "b"   , "n"  , "n"  ,   67 ,
         "B"   , "c"   , "n"  , "n"  ,   72
     )
+    # nolint end
 
     # valid
     my_page_plan <- page_plan(
@@ -350,7 +381,7 @@ test_that("page plan with multiple structures", {
             vars(grp1, grp2),
             quo(lbl)
         ),
-        paste0(
+        paste(
             c(
                 "`page_plan` contains multiple `page_structures` with values set to \".default\". ",
                 "Only the last one specified will be used."
@@ -360,6 +391,7 @@ test_that("page plan with multiple structures", {
     )
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "A"   , "a"   , "n"  , "n"  ,   22
@@ -384,6 +416,7 @@ test_that("page plan with multiple structures", {
             ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
             "B"   , "c"   , "n"  , "n"  ,   72
         )
+        # nolint end
     )
 
     expect_equal(
@@ -392,11 +425,11 @@ test_that("page plan with multiple structures", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
+    expect_identical(
         map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp1"
     )
@@ -405,6 +438,7 @@ test_that("page plan with multiple structures", {
 
 test_that("Page plan with max_rows", {
     # one group - row_grp_plan label_loc = "indented"
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp , ~lbl , ~prm , ~trt ,
         "A"  , "a"  , "n"  ,   22 ,
@@ -414,6 +448,7 @@ test_that("Page plan with max_rows", {
         "C"  , "a"  , "n"  ,   12 ,
         "C"  , "b"  , "n"  ,   19 ,
     ) %>%
+        # nolint end
         pivot_longer(trt, names_to = "column", values_to = "value")
 
     mytfrmt <- tfrmt(
@@ -434,6 +469,7 @@ test_that("Page plan with max_rows", {
 
     auto_split <- apply_tfrmt(df, mytfrmt)
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~lbl  , ~trt , ~`..tfrmt_row_grp_lbl` ,
             "A"   , NA   , TRUE                   ,
@@ -452,6 +488,7 @@ test_that("Page plan with max_rows", {
             "  a" , '12' , FALSE                  ,
             "  b" , '19' , FALSE
         )
+        # nolint end
     )
 
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
@@ -479,6 +516,7 @@ test_that("Page plan with max_rows", {
     )
     auto_split <- apply_tfrmt(df, mytfrmt)
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp , ~lbl , ~trt ,
             "A"  , "a"  , '22' ,
@@ -491,10 +529,12 @@ test_that("Page plan with max_rows", {
             "C"  , "a"  , '12' ,
             "C"  , "b"  , '19' ,
         )
+        # nolint end
     )
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
     # two groups - row_grp_plan label_loc = "column"
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
         "AA"  , "A"   , "a"  , "n"  ,   22 ,
@@ -504,6 +544,7 @@ test_that("Page plan with max_rows", {
         "BB"  , "C"   , "a"  , "n"  ,   12 ,
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
+        # nolint end
         pivot_longer(trt, names_to = "column", values_to = "value")
 
     mytfrmt <- tfrmt(
@@ -528,6 +569,7 @@ test_that("Page plan with max_rows", {
     )
     auto_split <- apply_tfrmt(df, mytfrmt)
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~lbl , ~trt ,
             "AA"  , "A"   , "a"  , '22' ,
@@ -540,11 +582,13 @@ test_that("Page plan with max_rows", {
             "BB"  , "C"   , "a"  , '12' ,
             "BB"  , "C"   , "b"  , '19' ,
         )
+        # nolint end
     )
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 })
 
 test_that("Page plan with max_rows & group-level summary rows", {
+    # nolint start: commas_linter
     dat_summ <- tibble::tribble(
         ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
         "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
@@ -564,6 +608,7 @@ test_that("Page plan with max_rows & group-level summary rows", {
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "pla"   ,   35 ,
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "pla"   ,    8 ,
     )
+    # nolint end
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
         label = "my_label",
@@ -587,6 +632,7 @@ test_that("Page plan with max_rows & group-level summary rows", {
     auto_split <- apply_tfrmt(dat_summ, mytfrmt)
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~my_label     , ~trt , ~pla , ~`..tfrmt_row_grp_lbl` ,
             "cat_1"       , "34" , "23" , FALSE                  ,
@@ -616,6 +662,7 @@ test_that("Page plan with max_rows & group-level summary rows", {
             "  sub_cat_3b"     , NA   , NA   , TRUE                   ,
             "    sub_cat_3b_3" , " 5" , " 8" , FALSE
         )
+        # nolint end
     )
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
@@ -643,6 +690,7 @@ test_that("Page plan with max_rows & group-level summary rows", {
     auto_split <- apply_tfrmt(dat_summ, mytfrmt)
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~my_label          , ~trt , ~pla , ~`..tfrmt_row_grp_lbl` ,
             "cat_1"            , "34" , "23" , FALSE                  ,
@@ -660,11 +708,13 @@ test_that("Page plan with max_rows & group-level summary rows", {
             "  sub_cat_3b"     , NA   , NA   , TRUE                   ,
             "    sub_cat_3b_3" , " 5" , " 8" , FALSE
         )
+        # nolint end
     )
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 })
 
 test_that("page plan with both page_structure and max_rows", {
+    # nolint start: commas_linter
     dat_summ <- tibble::tribble(
         ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
         "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
@@ -676,6 +726,7 @@ test_that("page plan with both page_structure and max_rows", {
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "trt"   ,   11 ,
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "trt"   ,    5
     )
+    # nolint end
 
     mypp <- page_plan(
         page_structure(
@@ -709,6 +760,7 @@ test_that("page plan with both page_structure and max_rows", {
     auto_split <- apply_tfrmt(dat_summ, mytfrmt)
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~my_label , ~trt , ~`..tfrmt_row_grp_lbl` ,
             "cat_1"   , "34" , FALSE
@@ -736,6 +788,7 @@ test_that("page plan with both page_structure and max_rows", {
             "  sub_cat_3b"     , NA   , TRUE                   ,
             "    sub_cat_3b_3" , " 5" , FALSE
         )
+        # nolint end
     )
     expect_equal(
         auto_split,
@@ -743,7 +796,7 @@ test_that("page plan with both page_structure and max_rows", {
         ignore_attr = TRUE
     )
 
-    expect_equal(
+    expect_identical(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c(
             "grp1: cat_1",
@@ -756,6 +809,7 @@ test_that("page plan with both page_structure and max_rows", {
 })
 
 test_that("page plan with page_structure, single level variable", {
+    # nolint start: commas_linter
     dat_summ <- tibble::tribble(
         ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
         "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
@@ -767,6 +821,7 @@ test_that("page plan with page_structure, single level variable", {
         "cat_1" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "trt"   ,   11 ,
         "cat_1" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "trt"   ,    5
     )
+    # nolint end
 
     mypp <- page_plan(
         page_structure(
@@ -799,6 +854,7 @@ test_that("page plan with page_structure, single level variable", {
     auto_split <- apply_tfrmt(dat_summ, mytfrmt)
 
     man_split <- list(
+        # nolint start: commas_linter
         tibble::tribble(
             ~my_label          , ~trt , ~`..tfrmt_row_grp_lbl` ,
             "cat_1"            , "34" , FALSE                  ,
@@ -811,11 +867,12 @@ test_that("page plan with page_structure, single level variable", {
             "    sub_cat_3b_1" , "11" , FALSE                  ,
             "    sub_cat_3b_3" , " 5" , FALSE
         )
+        # nolint end
     )
 
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
-    expect_equal(
+    expect_identical(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: cat_1")
     )
@@ -823,6 +880,7 @@ test_that("page plan with page_structure, single level variable", {
 
 test_that("page_plan() with transform", {
     # transform as formula
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
         "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
@@ -834,6 +892,7 @@ test_that("page_plan() with transform", {
         "cat_1" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "trt"   ,   11 ,
         "cat_1" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "trt"   ,    5
     )
+    # nolint end
 
     tfrmt_plan <- tfrmt(
         group = c("grp1", "grp2"),
@@ -865,7 +924,7 @@ test_that("page_plan() with transform", {
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
+    expect_identical(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("group 1: cat_1")
     )
@@ -879,13 +938,14 @@ test_that("page_plan() with transform", {
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
+    expect_identical(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("group 1: category 1")
     )
 })
 
 test_that("page_plan() with transform and multiple 'page by' variables", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~grp1   , ~grp2        , ~my_label      , ~prm  , ~column , ~val ,
         "cat_1" , "cat_1"      , "cat_1"        , "pct" , "trt"   ,   34 ,
@@ -897,6 +957,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
         "cat_1" , "sub_cat_3b" , "sub_cat_3b_1" , "pct" , "trt"   ,   11 ,
         "cat_1" , "sub_cat_3b" , "sub_cat_3b_3" , "pct" , "trt"   ,    5
     )
+    # nolint end
 
     tfrmt_plan <- tfrmt(
         group = c("grp1", "grp2"),
@@ -927,7 +988,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     # without page label transformation
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
+    expect_identical(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c(
             "grp1: cat_1, grp2: cat_1",
@@ -959,7 +1020,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
+    expect_identical(
         purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c(
             "Group 1 (cat_1), Group 2 (cat_1)",
@@ -979,28 +1040,30 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
     # Load adverse event data
     adae <- pharmaverseadam::adae |>
-        dplyr::filter(SAFFL == "Y" & TRTEMFL == "Y")
+        dplyr::filter(SAFFL == "Y", TRTEMFL == "Y")
 
     # limit printed rows
     adae <- adae |>
         dplyr::filter(AESOC %in% unique(AESOC)[1:3]) |>
         dplyr::group_by(AESOC) |>
         dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
-        ungroup()
+        dplyr::ungroup()
 
     # Create an ARD that stacks hierarchical data of adverse events
     # Grouping by treatment, severity, system organ class, and preferred term
-    ard_ae <- cards::ard_stack_hierarchical(
-        data = adae,
-        # by variables must be present in the denominator dataset
-        by = c(TRT01A, AESEV),
-        variables = c(AESOC, AETERM),
-        denominator = adsl,
-        statistic = ~ c("n", "p"),
-        id = USUBJID,
-        over_variables = TRUE,
-        overall = TRUE
-    )
+    suppressMessages({
+        ard_ae <- cards::ard_stack_hierarchical(
+            data = adae,
+            # by variables must be present in the denominator dataset
+            by = c(TRT01A, AESEV),
+            variables = c(AESOC, AETERM),
+            denominator = adsl,
+            statistic = ~ c("n", "p"),
+            id = USUBJID,
+            over_variables = TRUE,
+            overall = TRUE
+        )
+    })
 
     # create an ARD for where AESEV is "TOTAL"
     ard_ae2 <- cards::ard_stack_hierarchical(
@@ -1018,7 +1081,9 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     # Keep required AESEV "TOTAL" rows
     ard_ae2 <- ard_ae2 |>
         dplyr::filter(
-            variable != "TRT01A" & group1 != "AESOC" & group1 != "AESEV"
+            variable != "TRT01A",
+            group1 != "AESOC",
+            group1 != "AESEV"
         )
 
     ard_ae4 <- ard_ae |>
@@ -1245,6 +1310,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 })
 
 test_that("page_plan handles empty string groups without Index 1 error", {
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp , ~lbl   , ~prm , ~trt ,
         ""   , "summ" , "n"  ,   22 ,
@@ -1253,6 +1319,7 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         "B"  , "a"    , "n"  ,   24 ,
         "B"  , "b"    , "n"  ,   55
     ) %>%
+        # nolint end
         pivot_longer(trt, names_to = "column", values_to = "value")
 
     mytfrmt <- tfrmt(
@@ -1291,6 +1358,7 @@ test_that("page_plan handles empty string groups without Index 1 error", {
 
 test_that("page_plan handles empty string groups in factor columns, with no row group plan", {
     # Create data where 'grp' is explicitly a factor
+    # nolint start: commas_linter
     df <- tibble::tribble(
         ~grp , ~lbl   , ~prm , ~trt ,
         ""   , "summ" , "n"  ,   22 ,
@@ -1299,7 +1367,10 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         "B"  , "a"    , "n"  ,   24 ,
         "B"  , "b"    , "n"  ,   55
     ) %>%
-        mutate(grp = factor(grp, levels = c("A", "B", ""))) %>% # Explicitly a factor
+        # nolint end
+        dplyr::mutate(
+            grp = factor(grp, levels = c("A", "B", ""))
+        ) %>% # Explicitly a factor
         tidyr::pivot_longer(trt, names_to = "column", values_to = "value")
 
     mytfrmt <- tfrmt(
@@ -1323,4 +1394,51 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
     })
 
     expect_s3_class(result, "gt_group")
+})
+
+test_that("Page plan with max_rows edge cases: spanning and too-small max_rows", {
+    # nolint start: commas_linter
+    df <- tibble::tribble(
+        ~grp1 , ~grp2 , ~lbl , ~prm , ~trt ,
+        "AA"  , "A"   , "a"  , "n"  ,   22 ,
+        "AA"  , "A"   , "b"  , "n"  ,   11 ,
+        "AA"  , "B"   , "a"  , "n"  ,   24 ,
+        "BB"  , "B"   , "b"  , "n"  ,   55 ,
+        "BB"  , "C"   , "a"  , "n"  ,   12 ,
+        "BB"  , "C"   , "b"  , "n"  ,   19 ,
+    ) %>%
+        # nolint end
+        pivot_longer(trt, names_to = "column", values_to = "value")
+    mytfrmt <- tfrmt(
+        group = c("grp1", "grp2"),
+        label = "lbl",
+        param = "prm",
+        column = "column",
+        value = "value",
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("xx")
+            )
+        ),
+        row_grp_plan = row_grp_plan(
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
+        ),
+        page_plan = page_plan(max_rows = 4)
+    )
+    # Spanning label_loc with adequate max_rows splits correctly
+    expect_snapshot({
+        result <- apply_tfrmt(df, mytfrmt)
+        result
+    })
+    # max_rows too small for group labels triggers early return with message
+    mytfrmt$row_grp_plan <- NULL
+    mytfrmt$page_plan <- page_plan(max_rows = 2)
+    expect_snapshot({
+        result <- apply_tfrmt(df, mytfrmt)
+        result
+    })
 })

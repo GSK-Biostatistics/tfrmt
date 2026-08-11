@@ -1,9 +1,3 @@
-#' @importFrom tidyr unite
-#' @importFrom dplyr as_tibble relocate
-#' @importFrom stringr str_remove str_detect
-#' @importFrom purrr pmap_chr map2
-#' @importFrom utils capture.output
-#' @importFrom rlang quo
 apply_col_plan <- function(data, col_selection, grp_lbl) {
     if (is.character(col_selection)) {
         quo_col_selections <- map(col_selection, ~ char_as_quo(.x))
@@ -16,12 +10,12 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
         names(col_selection)[col_selection_grp_lbl] <- ""
     }
 
-    select(data, !!!col_selection)
+    dplyr::select(data, !!!col_selection)
 }
 
 
 #' create the stub header for table
-#' @importFrom purrr map_chr
+#'
 #' @noRd
 create_stub_head <- function(
     col_plan_vars,
@@ -46,7 +40,7 @@ create_stub_head <- function(
             stub <- nms_grps
 
             # only row_grp_plan "column" option gets >1 stub label
-            if (!row_grp_plan_label_loc == "column") {
+            if (row_grp_plan_label_loc != "column") {
                 stub_no_empty <- setdiff(stub, "")
                 stub <- c(stub_no_empty, "")[1]
             }
@@ -56,9 +50,6 @@ create_stub_head <- function(
 }
 
 #' Creates a named vector explicitly calling all the columns
-#'
-#' @importFrom rlang is_empty
-#' @importFrom purrr map map_chr
 #'
 #' @noRd
 create_col_order <- function(data_names, columns, cp) {
@@ -76,15 +67,15 @@ create_col_order <- function(data_names, columns, cp) {
 
         for (cp_el_idx in seq_along(cp$dots)) {
             cp_el <- cp$dots[cp_el_idx]
-            if (!is_span_structure(cp_el[[1]])) {
-                col_selections <- col_plan_quo_to_vars(
+            if (is_span_structure(cp_el[[1]])) {
+                col_selections <- col_plan_span_structure_to_vars(
                     x = cp_el,
                     column_names = column_names,
                     data_names = data_names,
                     preselected_cols = col_selections
                 )
             } else {
-                col_selections <- col_plan_span_structure_to_vars(
+                col_selections <- col_plan_quo_to_vars(
                     x = cp_el,
                     column_names = column_names,
                     data_names = data_names,
@@ -98,7 +89,7 @@ create_col_order <- function(data_names, columns, cp) {
         }
 
         ## add back in the non-specified columns
-        if (cp$.drop == FALSE) {
+        if (!cp$.drop) {
             missing_cols <- setdiff(data_names, gsub("^-", "", col_selections))
             col_selections <- c(col_selections, missing_cols)
         }
@@ -139,15 +130,15 @@ col_plan_quo_to_vars <- function(
     )
 
     ## if is subtraction, inverse selection to get subtracted columns and prepend with -
-    if (grepl("^-", as_label(x[[1]]))) {
+    if (startsWith(as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
-            filter(!(!!col_quo %in% selected)) %>%
-            mutate(
+            dplyr::filter(!(!!col_quo %in% selected)) %>%
+            dplyr::mutate(
                 subtraction_status = TRUE
             )
     } else {
         split_data_names <- split_data_names %>%
-            filter(!!col_quo %in% selected)
+            dplyr::filter(!!col_quo %in% selected)
 
         if (!is.null(names(x)) && names(x) != "") {
             rename_val <- names(x)
@@ -156,7 +147,7 @@ col_plan_quo_to_vars <- function(
                 is_valid_tidyselect_call(quo_get_expr(x[[1]])) &&
                     length(selected) > 1
             ) {
-                rename_val <- paste0(rename_val, seq_len(length(selected)))
+                rename_val <- paste0(rename_val, seq_along(selected))
             }
 
             rows_to_rename <- split_data_names[[as_label(col_quo)]] %in%
@@ -176,9 +167,6 @@ col_plan_quo_to_vars <- function(
     )
 }
 
-#' @importFrom rlang quo_get_expr quo
-#' @importFrom tidyr separate unite
-#' @importFrom dplyr filter pull mutate arrange left_join select
 col_plan_span_structure_to_vars <- function(
     x,
     column_names,
@@ -211,9 +199,17 @@ col_plan_span_structure_to_vars <- function(
                     split_data_names[[col_id]]
                 ))
 
-                is_subtraction_selection <- grepl("^-", as_label(sel_id))
+                is_subtraction_selection <- startsWith(as_label(sel_id), "-")
 
-                if (!is_subtraction_selection) {
+                if (is_subtraction_selection) {
+                    split_data_selections[[sel_id_idx]] <- split_data_names %>%
+                        dplyr::mutate(
+                            subtraction_status = dplyr::case_when(
+                                !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
+                                TRUE ~ FALSE
+                            )
+                        )
+                } else {
                     if (
                         !is.null(names(selections)) &&
                             names(selections)[[sel_id_idx]] != ""
@@ -226,7 +222,7 @@ col_plan_span_structure_to_vars <- function(
                         ) {
                             rename_val <- paste0(
                                 rename_val,
-                                seq_len(length(sel_id_col_selections))
+                                seq_along(sel_id_col_selections)
                             )
                         }
 
@@ -241,58 +237,55 @@ col_plan_span_structure_to_vars <- function(
                     }
 
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
-                        filter(!!col_quo %in% sel_id_col_selections)
-                } else {
-                    split_data_selections[[sel_id_idx]] <- split_data_names %>%
-                        mutate(
-                            subtraction_status = case_when(
-                                !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
-                                TRUE ~ FALSE
-                            )
-                        )
+                        dplyr::filter(!!col_quo %in% sel_id_col_selections)
                 }
             }
 
-            split_data_names <- bind_rows(split_data_selections) %>%
+            split_data_names <- dplyr::bind_rows(split_data_selections) %>%
                 unique()
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
-                unique
+                dplyr::pull(!!col_quo) %>%
+                unique()
         } else {
             split_data_names <- split_data_names %>%
-                filter(!is.na(!!col_quo))
+                dplyr::filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
-                unique
+                dplyr::pull(!!col_quo) %>%
+                unique()
         }
     }
 
     ## create order df
     ords <- do.call("crossing", col_selections) %>%
-        mutate(
-            across(
+        dplyr::mutate(
+            dplyr::across(
                 tidyselect::everything(),
                 ~ factor(
                     .x,
-                    levels = col_selections[[cur_column()]]
+                    levels = col_selections[[dplyr::cur_column()]]
                 )
             )
         ) %>%
-        arrange(
-            across(
+        dplyr::arrange(
+            dplyr::across(
                 tidyselect::everything()
             )
         ) %>%
-        mutate(
-            ord_col = seq_len(n())
+        dplyr::mutate(
+            ord_col = seq_len(
+                dplyr::n()
+            )
         )
 
     split_data_names %>%
-        left_join(ords, by = names(col_selections)) %>%
-        arrange(.data$ord_col) %>%
-        select(-"ord_col") %>%
+        dplyr::left_join(
+            ords,
+            by = names(col_selections)
+        ) %>%
+        dplyr::arrange(.data$ord_col) %>%
+        dplyr::select(-"ord_col") %>%
         unite_df_to_data_names(
             preselected_cols,
             column_names,
@@ -303,7 +296,7 @@ col_plan_span_structure_to_vars <- function(
 ## given a string - x - see how to convert to a quosure.
 ##  if negative is TRUE, it will mark it as a `-`.
 char_as_quo <- function(x) {
-    is_negative <- grepl("^-", x)
+    is_negative <- startsWith(x, "-")
     x <- gsub("^-", "", x) # Removes the leading '-'
     x <- gsub("^`|`$", "", x) # Removes leading/trailing backticks for col names with spaces in
 
@@ -338,7 +331,6 @@ char_as_quo <- function(x) {
 #' Evaluate a `col_plan` quosure
 #'
 #' @param x a (single) quosure to evaluate
-#' @importFrom rlang quo_get_expr as_label is_empty
 #'
 #' @noRd
 eval_col_plan_quo <- function(
@@ -347,7 +339,9 @@ eval_col_plan_quo <- function(
     preselected_vals,
     default_everything_behavior = FALSE
 ) {
-    if (identical(as_label(x), "everything()") & !default_everything_behavior) {
+    if (
+        identical(as_label(x), "everything()") && !default_everything_behavior
+    ) {
         # dump any pre-selected columns from everything() call. we are _not_ using
         # the default behavior of everything().
 
@@ -373,16 +367,13 @@ eval_col_plan_quo <- function(
 #'
 #' @noRd
 #'
-#' @importFrom dplyr mutate
-#' @importFrom tidyr separate
-#' @importFrom tibble tibble
 split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
     data_names <- c(preselected_cols, setdiff(data_names, preselected_cols))
 
     if (is.null(names(data_names))) {
         names(data_names) <- data_names
     } else {
-        if (any(is_preserved_name <- names(data_names) == "")) {
+        if (any(is_preserved_name <- !nzchar(names(data_names)))) {
             names(data_names)[is_preserved_name] <- data_names[
                 is_preserved_name
             ]
@@ -393,8 +384,8 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
         original = unname(data_names),
         new_name = names(data_names)
     ) %>%
-        mutate(
-            subtraction_status = str_detect(.data$original, "^-"),
+        dplyr::mutate(
+            subtraction_status = startsWith(.data$original, "-"),
             original = str_remove(.data$original, "^-")
         ) %>%
         separate(
@@ -424,9 +415,6 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
 #'
 #' @noRd
 #'
-#' @importFrom dplyr case_when mutate pull
-#' @importFrom tidyr unite
-#' @importFrom tibble tibble
 unite_df_to_data_names <- function(
     split_data_names,
     preselected_cols,
@@ -449,8 +437,8 @@ unite_df_to_data_names <- function(
             tidyselect::starts_with("__tfrmt_new_name__"),
             sep = .tlang_delim
         ) %>%
-        mutate(
-            across(
+        dplyr::mutate(
+            dplyr::across(
                 c("original", "new_name"),
                 ~ remove_empty_layers(
                     .x,
@@ -460,13 +448,13 @@ unite_df_to_data_names <- function(
         )
 
     selected <- new_preselected_cols_full %>%
-        mutate(
-            original = case_when(
-                .data$subtraction_status == TRUE ~ paste0("-", .data$original),
+        dplyr::mutate(
+            original = dplyr::case_when(
+                .data$subtraction_status ~ paste0("-", .data$original),
                 TRUE ~ .data$original
             )
         ) %>%
-        pull(.data$original)
+        dplyr::pull(.data$original)
 
     new_names <- ifelse(
         new_preselected_cols_full$original !=

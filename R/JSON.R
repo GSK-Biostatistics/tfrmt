@@ -12,8 +12,6 @@
 #'   param = param,
 #'   value=value) |>
 #'   tfrmt_to_json()
-#'
-#' @importFrom jsonlite toJSON validate
 tfrmt_to_json <- function(tfrmt, path = NULL) {
     if (!is_tfrmt(tfrmt)) {
         stop("Needs tfrmt")
@@ -47,14 +45,12 @@ as_json <- function(x) {
 }
 
 #' @export
-#' @importFrom jsonlite toJSON validate
-#' @importFrom stringr str_replace_all
 as_json.tfrmt <- function(x) {
     # Prepare each element to get converted to JSON
     tfrmt_nm <- names(x)
 
     out <- vector("list", length = length(x))
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         out[[i]] <- x[[i]] %>%
             as_json()
     }
@@ -89,8 +85,7 @@ as_json.default <- function(x) {
 
 #' @export
 as_json.quosures <- function(x) {
-    x %>%
-        map_chr(., as_label)
+    map_chr(x, as_label)
 }
 
 
@@ -161,7 +156,7 @@ as_json.col_plan <- function(x) {
             map(as_json)
 
         if (!is.null(names(dot_ls))) {
-            names(dot_ls) <- names(x$dots) %>% ifelse(. == "", " ", .)
+            names(dot_ls) <- names(x$dots) %>% ifelse(nzchar(.), ., " ")
         }
         list(col_plan = list(dots = dot_ls, .drop = x$.drop))
     }
@@ -209,7 +204,6 @@ as_json.page_plan <- function(x) {
 #'   will read in json object preferentially. So if both a path and a json
 #'   object are supplied the json object will be read in.
 #'
-#' @importFrom jsonlite read_json parse_json
 #' @export
 json_to_tfrmt <- function(path = NULL, json = NULL) {
     if (!is.null(json)) {
@@ -282,7 +276,6 @@ ls_to_row_grp_plan <- function(ls) {
     ls
 }
 
-#' @importFrom stringr str_which
 ls_to_body_plan <- function(ls) {
     if (!is.null(ls)) {
         frmts_ls <- ls %>%
@@ -340,7 +333,6 @@ ls_to_frmt_combine <- function(x) {
     )
 }
 
-#' @importFrom stats as.formula
 ls_to_frmt_when <- function(x) {
     fmts <- x$frmt_ls %>%
         map(function(a_frmt) {
@@ -356,7 +348,7 @@ ls_to_frmt_when <- function(x) {
             out
         })
 
-    lhs <- if_else(
+    lhs <- dplyr::if_else(
         names(fmts) == "TRUE",
         names(fmts),
         str_c("'", names(fmts), "'")
@@ -413,7 +405,6 @@ ls_to_footnote_plan <- function(ls) {
     }
 }
 
-#' @importFrom rlang parse_expr quo_get_expr
 ls_to_col_plan <- function(ls) {
     if (!is.null(ls)) {
         dots <- ls$col_plan$dots %>%
@@ -442,13 +433,12 @@ ls_to_span_structure <- function(ls) {
                 str_c("'", ., "'") %>%
                 str_c(collapse = ", ") %>%
                 str_c("c(", ., ")") %>%
-                parse_expr(.)
+                parse_expr()
         )
 
     do.call(span_structure, span_ls)
 }
 
-#' @importFrom rlang expr_text
 ls_to_col_style_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls %>%
@@ -472,7 +462,7 @@ ls_to_col_style_plan <- function(ls) {
                             quo_get_expr() %>%
                             expr_text()
                     ) %>%
-                        str_c(., collapse = ", ") %>%
+                        str_c(collapse = ", ") %>%
                         paste0("vars(", ., ")") %>%
                         parse_expr()
                 }

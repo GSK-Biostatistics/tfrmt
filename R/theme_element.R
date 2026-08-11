@@ -111,7 +111,6 @@ element_stub <- function(
     )
 }
 
-#col_labels = element_label(newCol = "Hello World", wrap_txt = 30)
 element_label <- function(..., wrap_txt = 30) {
     structure(
         list(...) %>%

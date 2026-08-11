@@ -65,7 +65,7 @@ test_that("markdown column labels - no spanning", {
         tab_options(container.width = 1000)
 
     # test that format of column headers is markdown
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -76,6 +76,7 @@ test_that("markdown column labels - no spanning", {
 
 test_that("markdown column labels - spanning", {
     # set up data for tfrmt
+    # nolint start: commas_linter
     mock_data <- tibble::tribble(
         ~`Pooled Id` , ~`Site Id` ,
         "701"        , "701"      ,
@@ -97,6 +98,7 @@ test_that("markdown column labels - spanning", {
         "900"        , "717"      ,
         "Total"      , " "
     ) %>%
+        # nolint end
         crossing(
             col1 = c(
                 "Placebo (N=86)",
@@ -109,7 +111,10 @@ test_that("markdown column labels - spanning", {
                 levels = c("ITT </br> (N=10)", "Eff", "Com")
             )
         ) %>%
-        mutate(val = rpois(216, 15), param = "val")
+        dplyr::mutate(
+            val = rpois(216, 15),
+            param = "val"
+        )
 
     # create output with spanning headers
     test_tfrmt <- tfrmt(
@@ -136,14 +141,14 @@ test_that("markdown column labels - spanning", {
         print_to_gt(mock_data)
 
     # test that format of both column headers and spannning headers is markdown
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
             length(test_tfrmt$`_boxhead`$column_label)
         ))
     )
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_spanners`$spanner_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -154,6 +159,7 @@ test_that("markdown column labels - spanning", {
 
 
 test_that("markdown column labels - renamed", {
+    # nolint start: commas_linter
     mock_data <- tibble::tribble(
         ~group , ~label      , ~my_col  , ~parm   , ~val ,
         "g1"   , "rowlabel1" , "col1"   , "value" ,    1 ,
@@ -172,6 +178,7 @@ test_that("markdown column labels - renamed", {
         "g2"   , "rowlabel3" , "col4"   , "value" ,    3 ,
         "g2"   , "rowlabel3" , "mycol5" , "value" ,    3
     )
+    # nolint end
 
     test_tfrmt <- tfrmt(
         group = group,
@@ -196,7 +203,7 @@ test_that("markdown column labels - renamed", {
     ) %>%
         print_to_gt(mock_data)
 
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -206,6 +213,7 @@ test_that("markdown column labels - renamed", {
 })
 
 test_that("column spanners and labels are appropriately aligned", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~group  , ~label  , ~span1   , ~span2  , ~lower     , ~param , ~val ,
         "mygrp" , "mylbl" , "span01" , "span1" , "lower1_a" , "prm"  ,    1 ,
@@ -215,6 +223,7 @@ test_that("column spanners and labels are appropriately aligned", {
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_a" , "prm"  ,    1 ,
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_b" , "prm"  ,    1
     )
+    # nolint end
 
     tfrmt_spec <- tfrmt(
         group = "group",
@@ -238,30 +247,30 @@ test_that("column spanners and labels are appropriately aligned", {
 
     # get spanner labels
     spans <- gt_out$`_spanners` %>%
-        select(var = vars, spanner_label, spanner_level) %>%
+        dplyr::select(var = vars, spanner_label, spanner_level) %>%
         unnest(
             tidyselect::everything()
         )
     # get lower labels
     lower <- gt_out$`_boxhead` %>%
-        select(var, column_label) %>%
+        dplyr::select(var, column_label) %>%
         unnest(
             tidyselect::everything()
         )
 
     # get tfrmt cols from spec
-    chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev
+    chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev()
 
     # combine spanner & lower labels and rename as per tfrmt spec
     gt_cols <- dplyr::full_join(lower, spans, by = "var", multiple = "all") %>%
-        unique %>%
+        unique() %>%
         dplyr::filter(!is.na(spanner_label)) %>%
         tidyr::pivot_wider(
             names_from = spanner_level,
             values_from = spanner_label
         ) %>%
         dplyr::select(-var) %>%
-        setNames(., chr_cols)
+        setNames(chr_cols)
 
     # original data - keep tfrmt spec cols
     orig_cols <- dat %>%
@@ -270,7 +279,7 @@ test_that("column spanners and labels are appropriately aligned", {
                 chr_cols
             )
         ) %>%
-        unique
+        unique()
 
     expect_equal(gt_cols, orig_cols, ignore_attr = TRUE)
 })

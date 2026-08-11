@@ -65,10 +65,12 @@ col_style_plan <- function(...) {
 #'   spaces will be ignored.
 #'
 #' ## Positional alignment (type = "pos"):
-#'  supply a vector of strings covering all formatted cell values, with numeric values represented as x's. These values can be created manually or obtained by utilizing the helper `display_val_frmts()`. Alignment positions will be represented by vertical bars. For example, with starting values: c("12.3", "(5%)", "2.35 (10.23)") we can align all of the first sets of decimals and parentheses by providing align = c("xx|.x", "||(x%)", "x|.xx |")
-#'
-#' @importFrom purrr map
-#' @importFrom rlang check_dots_empty0
+#'  supply a vector of strings covering all formatted cell values, with numeric
+#' values represented as x's. These values can be created manually or obtained
+#' by utilizing the helper `display_val_frmts()`. Alignment positions will be
+#' represented by vertical bars. For example, with starting values:
+#' `c("12.3", "(5%)", "2.35 (10.23)")` we can align all of the first sets of
+#' decimals and parentheses by providing align = c("xx|.x", "||(x%)", "x|.xx |")
 #'
 #' @seealso [col_style_plan()] for more information on how to combine
 #'   col_style_structure()'s together to form a plan.
@@ -113,10 +115,10 @@ col_style_structure <- function(
 
     cols <- as.list(substitute(substitute(col)))[-1] %>%
         map(trim_vars_quo_c) %>%
-        do.call('c', .) %>%
+        do.call("c", .) %>%
         check_col_plan_dots()
 
-    if (is.null(width) & is.null(align)) {
+    if (is.null(width) && is.null(align)) {
         abort(
             "`align` or `width` must be applied to create this col_style_structure",
             class = "missing_col_style_structure_value"
@@ -125,7 +127,7 @@ col_style_structure <- function(
 
     if (!is.null(align)) {
         if (type == "char") {
-            if (!is.character(align) & length(align) > 0) {
+            if (!is.character(align) && length(align) > 0) {
                 abort(
                     "`align` must be a character vector",
                     class = "invalid_col_style_structure_value"

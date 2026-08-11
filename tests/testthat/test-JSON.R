@@ -8,7 +8,7 @@ test_that("json basic tfrmt", {
     tfrmt() %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(tfrmt())
+        expect_identical(tfrmt())
 
     #Complete tfrmt
     basic_filled_in <- tfrmt(
@@ -171,7 +171,7 @@ test_that("json body plan", {
     # Get out the function to see if it runs the same
     fx1 <- frmt4[[6]][[1]][[4]][[1]][[4]]
     fx2 <- new_frmt[[6]][[1]][[4]][[1]][[4]]
-    expect_equal(fx1(1:5), fx2(1:5))
+    expect_identical(fx1(1:5), fx2(1:5))
 
     #Format when test
     frmt_when_simp <- tfrmt(
@@ -203,8 +203,8 @@ test_that("json body plan", {
                 label_val = ".default",
                 frmt_when(
                     "<1" ~ "<1",
-                    '==100' ~ '',
-                    '==0' ~ '',
+                    "==100" ~ "",
+                    "==0" ~ "",
                     TRUE ~ frmt("(xx)")
                 )
             )
@@ -383,7 +383,7 @@ test_that("json footnote plan", {
     gl_fn %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(gl_fn)
+        expect_identical(gl_fn)
 
     # Nest columns
     nested_fn <- tfrmt(
@@ -433,7 +433,7 @@ test_that("json col_plan", {
     #Basic tidyselect
     base_ts <- tfrmt(
         col_plan = col_plan(
-            starts_with('col')
+            starts_with("col")
         )
     )
     base_ts %>%
@@ -774,8 +774,10 @@ test_that("json read/write", {
         )
     )
 
-    #Write out to json file
-    tfrmt_to_json(test_tfrmt, path = test_loc)
+    # Write out to json file
+    suppressMessages(
+        tfrmt_to_json(test_tfrmt, path = test_loc)
+    )
 
     # Reading in
     read_tfrmt <- json_to_tfrmt(path = test_loc)

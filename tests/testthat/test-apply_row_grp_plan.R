@@ -4,7 +4,7 @@ test_that("insert post space - single grouping variable", {
         label = as.character(1:4),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -17,14 +17,15 @@ test_that("insert post space - single grouping variable", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
             vars(grp1),
             sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~label , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -36,6 +37,7 @@ test_that("insert post space - single grouping variable", {
             "D"   , "4"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "D"   , " "    , " "        , " "        , " "        ,
         )
+        # nolint end
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -45,14 +47,15 @@ test_that("insert post space - single grouping variable", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
             vars(grp1),
             sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~label , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -64,6 +67,7 @@ test_that("insert post space - single grouping variable", {
             "D"   , "4"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "D"   , " "    , " "        , " "        , " "        ,
         )
+        # nolint end
     )
 })
 
@@ -76,7 +80,7 @@ test_that("insert post space - two grouping variables", {
         ),
         trtA = rep("xx (xx%)", 12),
         trtB = rep("xx (xx%)", 12),
-        trtC = rep("xx (xx%)", 12),
+        trtC = rep("xx (xx%)", 12)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -94,14 +98,15 @@ test_that("insert post space - two grouping variables", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "a"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -120,6 +125,7 @@ test_that("insert post space - two grouping variables", {
             "C"   , "b"   , "2"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "C"   , "b"   , " "    , " "        , " "        , " "        ,
         )
+        # nolint end
     )
 
     # grouping var not referenced - assumed NULL
@@ -133,14 +139,15 @@ test_that("insert post space - two grouping variables", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "a"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -157,6 +164,7 @@ test_that("insert post space - two grouping variables", {
             "C"   , "b"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "C"   , "b"   , "2"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)"
         )
+        # nolint end
     )
 })
 
@@ -166,7 +174,7 @@ test_that("insert mix - single grouping variable", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -183,9 +191,10 @@ test_that("insert mix - single grouping variable", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -196,6 +205,7 @@ test_that("insert mix - single grouping variable", {
             "C"   , "--------" , "--------" , "--------" ,
             "D"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)"
         )
+        # nolint end
     )
 })
 
@@ -203,10 +213,10 @@ test_that("insert mix - single grouping variable", {
 test_that("insert post space after specific value", {
     df <- tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
-        label = as.character(1),
+        label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
-        trtC = rep("xx (xx%)", 6),
+        trtC = rep("xx (xx%)", 6)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -217,14 +227,15 @@ test_that("insert post space after specific value", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "a"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -235,6 +246,7 @@ test_that("insert post space after specific value", {
             "C"   , "a"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "C"   , "b"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)"
         )
+        # nolint end
     )
 })
 
@@ -242,10 +254,10 @@ test_that("insert post space after specific value", {
 test_that("overlapping row_grp_structures - prefers latest", {
     df <- tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
-        label = as.character(1),
+        label = "1",
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
-        trtC = rep("xx (xx%)", 6),
+        trtC = rep("xx (xx%)", 6)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -262,14 +274,15 @@ test_that("overlapping row_grp_structures - prefers latest", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
             label = sym("label")
         ) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~grp2 , ~label , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "a"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -285,6 +298,7 @@ test_that("overlapping row_grp_structures - prefers latest", {
             "C"   , "b"   , "1"    , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "C"   , "b"   , " "    , " "        , " "        , " "
         )
+        # nolint end
     )
 })
 
@@ -294,7 +308,7 @@ test_that("no post space added if NULL", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -305,8 +319,9 @@ test_that("no post space added if NULL", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -314,6 +329,7 @@ test_that("no post space added if NULL", {
             "C"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "D"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
         )
+        # nolint end
     )
 })
 
@@ -323,7 +339,7 @@ test_that("post space is truncated to data width", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -334,9 +350,10 @@ test_that("post space is truncated to data width", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -348,6 +365,7 @@ test_that("post space is truncated to data width", {
             "D"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "D"   , "--------" , "--------" , "--------"
         )
+        # nolint end
     )
 })
 
@@ -357,7 +375,7 @@ test_that("do not recycle the post space for full width", {
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
-        trtC = rep("xx (xx%)", 4),
+        trtC = rep("xx (xx%)", 4)
     )
 
     sample_grp_plan <- row_grp_plan(
@@ -368,9 +386,10 @@ test_that("do not recycle the post space for full width", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      ,
             "A"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -382,6 +401,7 @@ test_that("do not recycle the post space for full width", {
             "D"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "D"   , "--"       , "--"       , "--"
         )
+        # nolint end
     )
 })
 
@@ -402,9 +422,10 @@ test_that("post space works when data contains NAs", {
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_struct(df, sample_grp_plan$struct_list, vars(grp1)) %>%
-            select(-..tfrmt_post_space_row),
+            dplyr::select(-..tfrmt_post_space_row),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1 , ~trtA      , ~trtB      , ~trtC      , ~other ,
             "A"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , "a"    ,
@@ -416,6 +437,7 @@ test_that("post space works when data contains NAs", {
             "D"   , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , NA     ,
             "D"   , "--------" , "--------" , "--------" , "-"
         )
+        # nolint end
     )
 })
 
@@ -424,7 +446,7 @@ test_that("Check combine_group_cols with a single group", {
         crossing(grp1 = c("A", "B", "C"), lab = c("a", "b")),
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),
-        trtC = rep("xx (xx%)", 6),
+        trtC = rep("xx (xx%)", 6)
     )
 
     auto_test_no_span <- combine_group_cols(
@@ -432,6 +454,7 @@ test_that("Check combine_group_cols with a single group", {
         group = vars(grp1),
         label = sym("lab")
     )
+    # nolint start: commas_linter
     man_test_no_span <- tibble::tribble(
         ~grp1 , ~lab  , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
         "A"   , "A"   , NA         , NA         , NA         , TRUE                 ,
@@ -444,10 +467,11 @@ test_that("Check combine_group_cols with a single group", {
         "C"   , "  a" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
         "C"   , "  b" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
     )
+    # nolint end
 
-    expect_equal(auto_test_no_span, man_test_no_span)
+    expect_identical(auto_test_no_span, man_test_no_span)
     #With spanning (so no change to the data)
-    expect_equal(
+    expect_identical(
         combine_group_cols(
             mock_single_grp,
             group = vars(grp1),
@@ -456,13 +480,14 @@ test_that("Check combine_group_cols with a single group", {
                 location = "spanning"
             )
         ) %>%
-            select(-..tfrmt_row_grp_lbl),
+            dplyr::select(-..tfrmt_row_grp_lbl),
         mock_single_grp
     )
 })
 
 
 test_that("Check combine_group_cols with a multi groups", {
+    # nolint start: commas_linter
     mock_multi_grp <- tibble::tribble(
         ~grp1    , ~grp2    , ~my_label    ,
         "grp1_1" , "grp2_1" , "my_label_1" ,
@@ -474,10 +499,11 @@ test_that("Check combine_group_cols with a multi groups", {
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-        mutate(
+        # nolint end
+        dplyr::mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     auto_test_no_span <- combine_group_cols(
@@ -487,6 +513,7 @@ test_that("Check combine_group_cols with a multi groups", {
         element_row_grp_loc(location = "indented")
     )
 
+    # nolint start: commas_linter
     man_test_no_span <- tibble::tribble(
         ~grp1    , ~my_label        , ~grp2    , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
         "grp1_1" , "grp1_1"         , NA       , NA         , NA         , NA         , TRUE                 ,
@@ -504,8 +531,9 @@ test_that("Check combine_group_cols with a multi groups", {
         "grp1_2" , "    my_label_1" , "grp2_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
         "grp1_2" , "    my_label_2" , "grp2_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
     )
+    # nolint end
 
-    expect_equal(auto_test_no_span, man_test_no_span)
+    expect_identical(auto_test_no_span, man_test_no_span)
 
     auto_test_with_span <- combine_group_cols(
         mock_multi_grp,
@@ -518,18 +546,24 @@ test_that("Check combine_group_cols with a multi groups", {
 
     #Should be the same as removing a group
     man_test_with_span <- mock_multi_grp %>%
-        group_by(grp1) %>%
-        group_split() %>%
+        dplyr::group_by(grp1) %>%
+        dplyr::group_split() %>%
         map_dfr(
             combine_group_cols,
             group = vars(grp2),
             label = sym("my_label")
         ) %>%
-        select(grp1, grp2, everything()) %>%
-        mutate(grp1 = ifelse(grp1 == "", NA, grp1)) %>%
+        dplyr::select(
+            grp1,
+            grp2,
+            everything()
+        ) %>%
+        dplyr::mutate(
+            grp1 = ifelse(nzchar(grp1), grp1, NA)
+        ) %>%
         fill(grp1, .direction = "up")
 
-    expect_equal(
+    expect_identical(
         auto_test_with_span,
         man_test_with_span
     )
@@ -537,6 +571,7 @@ test_that("Check combine_group_cols with a multi groups", {
 
 
 test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_plan)", {
+    # nolint start: commas_linter
     mock_multi_grp <- tibble::tribble(
         ~grp1    , ~grp2    , ~my_label    ,
         "grp1_1" , "grp2_1" , "my_label_1" ,
@@ -548,10 +583,11 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-        mutate(
+        # nolint end
+        dplyr::mutate(
             trtA = rep("xx (xx%)", 8) %>% as.list(),
             trtB = rep("xx (xx%)", 8) %>% as.list(),
-            trtC = rep("xx (xx%)", 8) %>% as.list(),
+            trtC = rep("xx (xx%)", 8) %>% as.list()
         )
 
     sample_grp_plan <- row_grp_plan(
@@ -576,6 +612,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
             label = sym("my_label")
         )
 
+    # nolint start: commas_linter
     man_test_listcols <- tibble::tribble(
         ~my_label        , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
         "grp1_1"         , NA         , NA         , NA         , TRUE                 ,
@@ -593,9 +630,12 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "    my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
         "    my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
     ) %>%
-        mutate(across(trtA:trtC, ~ as.list(.x)))
+        # nolint end
+        dplyr::mutate(
+            dplyr::across(trtA:trtC, ~ as.list(.x))
+        )
 
-    expect_equal(
+    expect_identical(
         auto_test_listcols,
         man_test_listcols
     )
@@ -606,8 +646,9 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         group = vars(grp1, grp2),
         label = sym("my_label")
     ) %>%
-        select(-..tfrmt_post_space_row)
+        dplyr::select(-..tfrmt_post_space_row)
 
+    # nolint start: commas_linter
     man_test_listcols <- tibble::tribble(
         ~grp1    , ~grp2    , ~my_label    , ~trtA      , ~trtB      , ~trtC      ,
         "grp1_1" , "grp2_1" , "my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -623,13 +664,20 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         "grp1_2" , "grp2_2" , "my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
         "grp1_2" , "grp2_2" , " "          , " "        , " "        , " "
     ) %>%
-        mutate(across(trtA:trtC, ~ as.list(.x)))
+        # nolint end
+        dplyr::mutate(
+            dplyr::across(
+                trtA:trtC,
+                ~ as.list(.x)
+            )
+        )
 
-    expect_equal(auto_test_listcols, man_test_listcols)
+    expect_identical(auto_test_listcols, man_test_listcols)
 })
 
 
 test_that("> 2 groups with and without spanner_label", {
+    # nolint start: commas_linter
     mock_multi_grp <- tibble::tribble(
         ~grp1    , ~grp2    , ~grp3    , ~my_label    ,
         "grp1_1" , "grp2_1" , "grp3_1" , "my_label_1" ,
@@ -641,15 +689,16 @@ test_that("> 2 groups with and without spanner_label", {
         "grp1_1" , "grp2_2" , "grp3_2" , "my_label_1" ,
         "grp1_1" , "grp2_2" , "grp3_2" , "my_label_2" ,
     ) %>%
-        mutate(
+        # nolint end
+        dplyr::mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     plan_no_span <- row_grp_plan()
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_no_span$label_loc,
@@ -660,6 +709,7 @@ test_that("> 2 groups with and without spanner_label", {
                 plan_no_span$label_loc,
                 vars(grp1, grp2, grp3)
             ),
+        # nolint start: commas_linter
         tibble::tribble(
             ~my_label          , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "grp1_1"           , NA         , NA         , NA         , TRUE                 ,
@@ -678,6 +728,7 @@ test_that("> 2 groups with and without spanner_label", {
             "      my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
             "      my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         )
+        # nolint end
     )
 
     plan_with_span <- row_grp_plan(
@@ -686,7 +737,7 @@ test_that("> 2 groups with and without spanner_label", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_with_span$label_loc,
@@ -694,6 +745,7 @@ test_that("> 2 groups with and without spanner_label", {
             sym("my_label")
         ) %>%
             remove_grp_cols(plan_with_span$label_loc, vars(grp1, grp2, grp3)),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~my_label        , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "grp1_1" , "grp2_1"         , NA         , NA         , NA         , TRUE                 ,
@@ -711,12 +763,14 @@ test_that("> 2 groups with and without spanner_label", {
             "grp1_1" , "    my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
             "grp1_1" , "    my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         ) %>%
-            group_by(grp1)
+            # nolint end
+            dplyr::group_by(grp1)
     )
 })
 
 
 test_that("Summary rows are not indented", {
+    # nolint start: commas_linter
     mock_multi_grp <- tibble::tribble(
         ~grp1   , ~grp2        , ~my_label      ,
         "cat_1" , "cat_1"      , "cat_1"        ,
@@ -728,15 +782,16 @@ test_that("Summary rows are not indented", {
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_1" ,
         "cat_3" , "sub_cat_3b" , "sub_cat_3b_3" ,
     ) %>%
-        mutate(
+        # nolint end
+        dplyr::mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     plan_no_span <- row_grp_plan()
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_no_span$label_loc,
@@ -747,6 +802,7 @@ test_that("Summary rows are not indented", {
                 plan_no_span$label_loc,
                 vars(grp1, grp2)
             ),
+        # nolint start: commas_linter
         tibble::tribble(
             ~my_label          , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "cat_1"            , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
@@ -759,13 +815,14 @@ test_that("Summary rows are not indented", {
             "    sub_cat_3b_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
             "    sub_cat_3b_3" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         )
+        # nolint end
     )
 
     plan_with_span <- row_grp_plan(
         label_loc = element_row_grp_loc(location = "spanning")
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_with_span$label_loc,
@@ -776,6 +833,7 @@ test_that("Summary rows are not indented", {
                 plan_with_span$label_loc,
                 vars(grp1, grp2)
             ),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1   , ~my_label        , ~trtA      , ~trtB      , ~trtC      , ~..tfrmt_row_grp_lbl ,
             "cat_1" , "cat_1"          , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
@@ -788,7 +846,8 @@ test_that("Summary rows are not indented", {
             "cat_3" , "  sub_cat_3b_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE                ,
             "cat_3" , "  sub_cat_3b_3" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" , FALSE
         ) %>%
-            group_by(grp1)
+            # nolint end
+            dplyr::group_by(grp1)
     )
 
     plan_with_column <- row_grp_plan(
@@ -797,7 +856,7 @@ test_that("Summary rows are not indented", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             plan_with_column$label_loc,
@@ -808,6 +867,7 @@ test_that("Summary rows are not indented", {
                 plan_with_column$label_loc,
                 vars(grp1, grp2)
             ),
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1   , ~grp2        , ~my_label      , ~trtA      , ~trtB      , ~trtC      ,
             "cat_1" , "cat_1"      , "cat_1"        , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -819,10 +879,12 @@ test_that("Summary rows are not indented", {
             "cat_3" , "sub_cat_3b" , "sub_cat_3b_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
             "cat_3" , "sub_cat_3b" , "sub_cat_3b_3" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
         )
+        # nolint end
     )
 })
 
 test_that("row order is retained for all selections", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~column , ~val , ~ord ,
         "d"   , "c"   , "n"  , "n"  ,       1 ,    1 ,    1 ,
@@ -830,6 +892,7 @@ test_that("row order is retained for all selections", {
         "q"   , "v"   , "s"  , "n"  ,       1 ,    3 ,    3 ,
         "b"   , "p"   , "e"  , "n"  ,       1 ,    4 ,    4
     )
+    # nolint end
 
     tfrmt_temp <- tfrmt(
         group = c(grp1, grp2),
@@ -859,6 +922,7 @@ test_that("row order is retained for all selections", {
         print_to_gt(dat)
 
     gt_indented_dat <- gt_indented$`_data`
+    # nolint start: commas_linter
     gt_indented_man <- tibble::tribble(
         ~lbl    , ~`1` , ~..tfrmt_row_grp_lbl ,
         "d"     , NA   , TRUE                 ,
@@ -874,6 +938,7 @@ test_that("row order is retained for all selections", {
         "  p"   , NA   , TRUE                 ,
         "    e" , "4"  , FALSE
     )
+    # nolint end
 
     expect_equal(
         gt_indented_dat,
@@ -892,6 +957,7 @@ test_that("row order is retained for all selections", {
         print_to_gt(dat)
 
     gt_spanning_dat <- gt_spanning$`_data`
+    # nolint start: commas_linter
     gt_spanning_man <- tibble::tribble(
         ~grp1 , ~lbl  , ~`1` , ~..tfrmt_row_grp_lbl ,
         "d"   , "c"   , NA   , TRUE                 ,
@@ -903,7 +969,8 @@ test_that("row order is retained for all selections", {
         "b"   , "p"   , NA   , TRUE                 ,
         "b"   , "  e" , "4"  , FALSE
     )
-    expect_equal(gt_spanning_dat, gt_spanning_man)
+    # nolint end
+    expect_identical(gt_spanning_dat, gt_spanning_man)
 
     gt_column <- tfrmt_temp %>%
         tfrmt(
@@ -916,6 +983,7 @@ test_that("row order is retained for all selections", {
         print_to_gt(dat)
 
     gt_column_dat <- gt_column$`_data`
+    # nolint start: commas_linter
     gt_column_man <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~`1` , ~..tfrmt_row_grp_lbl ,
         "d"   , "c"   , "n"  , "1"  , FALSE                ,
@@ -923,6 +991,7 @@ test_that("row order is retained for all selections", {
         "q"   , "v"   , "s"  , "3"  , FALSE                ,
         "b"   , "p"   , "e"  , "4"  , FALSE
     )
+    # nolint end
     expect_equal(
         gt_column_dat,
         gt_column_man,
@@ -947,9 +1016,13 @@ test_that("row order is retained for all selections", {
             label_loc = element_row_grp_loc(location = "indented")
         )
     ) %>%
-        print_to_gt(dat %>% select(-ord))
+        print_to_gt(
+            dat |>
+                dplyr::select(-ord)
+        )
 
     gt_indented_dat <- gt_indented$`_data`
+    # nolint start: commas_linter
     gt_indented_man <- tibble::tribble(
         ~lbl    , ~`1` , ~..tfrmt_row_grp_lbl ,
         "d"     , NA   , TRUE                 ,
@@ -965,6 +1038,7 @@ test_that("row order is retained for all selections", {
         "  p"   , NA   , TRUE                 ,
         "    e" , "4"  , FALSE
     )
+    # nolint end
     expect_equal(
         gt_indented_dat,
         gt_indented_man,
@@ -978,6 +1052,7 @@ test_that("row order is retained for all selections", {
 
 
 test_that("Row group plans with col style plan", {
+    # nolint start: commas_linter
     raw_dat <- tibble::tribble(
         ~g1   , ~g2  , ~one       , ~param   , ~column , ~value  ,
         "G1"  , "g3" , "n (%)"    , "n"      , "trt1"  , 12      ,
@@ -996,6 +1071,7 @@ test_that("Row group plans with col style plan", {
         "G3"  , "g3" , "(q1, q3)" , "q3"     , "trt2"  , 22      ,
         "G1"  , "g3" , "mean"     , "pval"   , "four"  ,  0.0001
     )
+    # nolint end
 
     plan <- tfrmt(
         label = one,
@@ -1068,9 +1144,9 @@ test_that("Row group plans with col style plan", {
         tfrmt_gt <- print_to_gt(plan, raw_dat)
     })
 
-    expect_equal(
+    expect_identical(
         tfrmt_gt$`_data` %>%
-            select(-`..tfrmt_row_grp_lbl`) %>%
+            dplyr::select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
         # fmt: skip
         list(
@@ -1095,7 +1171,7 @@ test_that("Row group plans with col style plan", {
         )
     )
 
-    # label_loc = "column"
+    # nolint start: commas_linter
     raw_dat <- tibble::tribble(
         ~g1   , ~g2       , ~one    , ~param , ~column , ~value ,
         "G1"  , "g3_long" , "n (%)" , "n"    , "trt1"  , 12     ,
@@ -1107,6 +1183,7 @@ test_that("Row group plans with col style plan", {
         "G2_" , "g3_long" , "mean"  , "mean" , "trt2"  , 15.4   ,
         "G2_" , "g3"      , "sd"    , "sd"   , "trt2"  ,  8.25
     )
+    # nolint end
     plan <- tfrmt(
         label = one,
         group = c(g1, g2),
@@ -1169,7 +1246,7 @@ test_that("Row group plans with col style plan", {
 
     expect_equal(
         tfrmt_gt$`_data` %>%
-            select(-`..tfrmt_row_grp_lbl`) %>%
+            dplyr::select(-`..tfrmt_row_grp_lbl`) %>%
             as.list(),
         # fmt: skip
         list(
@@ -1199,6 +1276,7 @@ test_that("Row group plans with col style plan", {
 
 
 test_that("Suppress printing of groups", {
+    # nolint start: commas_linter
     mock_multi_grp <- tibble::tribble(
         ~grp1    , ~grp2    , ~my_label    ,
         "grp1_1" , "grp2_1" , "my_label_1" ,
@@ -1210,16 +1288,18 @@ test_that("Suppress printing of groups", {
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-        mutate(
+        # nolint end
+        dplyr::mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     my_plan <- row_grp_plan(
         label_loc = element_row_grp_loc(location = "noprint")
     )
 
+    # nolint start: commas_linter
     df_no_grp <- tibble::tribble(
         ~my_label    , ~trtA      , ~trtB      , ~trtC      ,
         "my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
@@ -1231,8 +1311,9 @@ test_that("Suppress printing of groups", {
         "my_label_1" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
         "my_label_2" , "xx (xx%)" , "xx (xx%)" , "xx (xx%)" ,
     )
+    # nolint end
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             mock_multi_grp,
             my_plan$label_loc,
@@ -1246,6 +1327,7 @@ test_that("Suppress printing of groups", {
 
 
 test_that("Row group plan indenting handles factor variables", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~grp_span , ~grp      , ~rowlbl     , ~column , ~param , ~value ,
         "span"    , "topgrp1" , "topgrp1"   , "A"     , "mean" ,      1 ,
@@ -1257,9 +1339,11 @@ test_that("Row group plan indenting handles factor variables", {
         "span"    , "topgrp2" , "lowergrp1" , "A"     , "mean" ,      2 ,
         "span"    , "topgrp2" , "lowergrp1" , "B"     , "mean" ,      1 ,
     )
+    # nolint end
 
     grp_plan <- row_grp_plan()
 
+    # nolint start: commas_linter
     expected <- tibble::tribble(
         ~rowlbl         , ~column , ~param , ~value , ~..tfrmt_row_grp_lbl ,
         "span"          , NA      , NA     , NA     , TRUE                 ,
@@ -1272,12 +1356,16 @@ test_that("Row group plan indenting handles factor variables", {
         "    lowergrp1" , "A"     , "mean" ,      2 , FALSE                ,
         "    lowergrp1" , "B"     , "mean" ,      1 , FALSE
     )
+    # nolint end
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
-                mutate(
-                    across(grp_span:rowlbl, as.factor)
+                dplyr::mutate(
+                    dplyr::across(
+                        grp_span:rowlbl,
+                        as.factor
+                    )
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
@@ -1290,11 +1378,14 @@ test_that("Row group plan indenting handles factor variables", {
         expected
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
-                mutate(
-                    across(rowlbl, as.factor)
+                dplyr::mutate(
+                    dplyr::across(
+                        rowlbl,
+                        as.factor
+                    )
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
@@ -1307,11 +1398,14 @@ test_that("Row group plan indenting handles factor variables", {
         expected
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
-                mutate(
-                    across(grp, as.factor)
+                dplyr::mutate(
+                    dplyr::across(
+                        grp,
+                        as.factor
+                    )
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
@@ -1324,11 +1418,14 @@ test_that("Row group plan indenting handles factor variables", {
         expected
     )
 
-    expect_equal(
+    expect_identical(
         apply_row_grp_lbl(
             dat %>%
-                mutate(
-                    across(grp_span, as.factor)
+                dplyr::mutate(
+                    dplyr::across(
+                        grp_span,
+                        as.factor
+                    )
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
@@ -1346,13 +1443,13 @@ test_that("Row group plan indenting handles factor variables", {
 test_that("Check row group plan in tfrmt - expect error when NA in label column", {
     # create data
     data_ae2 <- data_ae %>%
-        group_by(AEBODSYS, AETERM) %>%
-        mutate(
+        dplyr::group_by(AEBODSYS, AETERM) %>%
+        dplyr::mutate(
             pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
         ) %>%
-        ungroup %>%
-        filter(pct_high > 10) %>%
-        select(-pct_high)
+        dplyr::ungroup() %>%
+        dplyr::filter(pct_high > 10) %>%
+        dplyr::select(-pct_high)
 
     data_ae2$AETERM <- ifelse(
         data_ae2$AETERM == "ANY BODY SYSTEM",
@@ -1413,13 +1510,14 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
             "Unable to to apply apply_row_grp_lbl.",
             "Reason: `label` column AETERM contains NA values. For group-level summary data, `label` and the relevant `group` values should match.",
             sep = "\n"
-        ),
+        )
     )
 })
 
 
 test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
     # create mock data
+    # nolint start: commas_linter
     mock_multi_grp <- tibble::tribble(
         ~grp1    , ~grp2    , ~my_label    ,
         "grp1_1" , "grp2_1" , "my_label_1" ,
@@ -1431,10 +1529,11 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
         "grp1_2" , "grp2_2" , "my_label_1" ,
         "grp1_2" , "grp2_2" , "my_label_2" ,
     ) %>%
-        mutate(
+        # nolint end
+        dplyr::mutate(
             trtA = rep("xx (xx%)", 8),
             trtB = rep("xx (xx%)", 8),
-            trtC = rep("xx (xx%)", 8),
+            trtC = rep("xx (xx%)", 8)
         )
 
     mock_multi_grp$my_label <- ifelse(

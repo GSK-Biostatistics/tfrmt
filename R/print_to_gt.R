@@ -42,12 +42,6 @@
 #'```
 #'
 #'   \if{html}{\out{ `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png\" alt = \"Simple 3 by 3 table without values, but with column names\" style=\"width:50\\%;\">"` }}
-#'
-#'
-#' @importFrom gt gt tab_header tab_style cell_text cells_body px
-#' @importFrom rlang quo_is_missing sym quo is_empty
-#' @importFrom dplyr vars
-#' @importFrom purrr quietly safely
 print_mock_gt <- function(
     tfrmt,
     .data = NULL,
@@ -138,10 +132,14 @@ print_mock_gt <- function(
 #'   ))
 #'
 #' # Create data
-#' df <- tidyr::crossing(label = c("label 1", "label 2"),
-#'                column = c("placebo", "trt1"),
-#'                param = c("count", "percent")) |>
-#'       dplyr::mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#' df <- tidyr::crossing(
+#'         label = c("label 1", "label 2"),
+#'         column = c("placebo", "trt1"),
+#'         param = c("count", "percent")
+#'     ) |>
+#'     dplyr::mutate(
+#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'     )
 #'
 #' print_to_gt(tfrmt_spec,df)
 #'
@@ -149,8 +147,6 @@ print_mock_gt <- function(
 #' \if{html}{\out{
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
-#'
-#' @importFrom gt gt tab_header tab_style cell_text cells_body tab_options
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     if (!is_tfrmt(tfrmt)) {
         stop("Requires a tfrmt object")
@@ -185,8 +181,6 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #' @export
 #'
 #' @keywords internal
-#' @importFrom gt gt_group
-#' @importFrom purrr map2
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
     map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
         gt_group(.list = .)
@@ -202,9 +196,6 @@ cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
 #' @export
 #'
 #' @keywords internal
-#' @importFrom gt cells_stub cells_row_groups default_fonts cell_borders md
-#'   opt_table_font tab_options tab_style cell_text px cells_column_spanners
-#'   cells_body cells_column_labels md cols_hide sub_missing tab_stubhead tab_source_note
 cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     existing_grp <- tfrmt$group %>%
         keep(function(x) {
@@ -215,10 +206,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     if (length(existing_grp) > 0) {
         if (
             !is.null(tfrmt$row_grp_plan) &&
-                !tfrmt$row_grp_plan$label_loc$location == "column"
+                tfrmt$row_grp_plan$label_loc$location != "column"
         ) {
             .data <- .data %>%
-                group_by(!!!existing_grp)
+                dplyr::group_by(!!!existing_grp)
         } else {
             # drop groups into row names
             rowname_col <- existing_grp
@@ -229,7 +220,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         # keep attribute for footnotes
         attr_footnote <- attr(.data, ".footnote_locs")
         attr_stub_header <- attr(.data, ".stub_header")
-        .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
+        .data <- dplyr::mutate(
+            .data,
+            ..tfrmt_row_grp_lbl = FALSE
+        )
         attr(.data, ".footnote_locs") <- attr_footnote
         attr(.data, ".stub_header") <- attr_stub_header
     }
@@ -251,7 +245,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             rowname_col = rowname_col
         ) %>%
         sub_missing(
-            rows = .data$..tfrmt_row_grp_lbl == TRUE,
+            rows = .data$..tfrmt_row_grp_lbl,
             missing_text = ""
         ) %>%
         cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
@@ -280,7 +274,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     gt_out_final <- gt_out %>%
         tab_style(
             style = list(
-                cell_text(whitespace = "pre-wrap", align = "left")
+                cell_text(
+                    whitespace = "pre-wrap",
+                    align = "left"
+                )
             ),
             locations = list(
                 cells_stub(columns = rowname_col),
@@ -308,9 +305,11 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             page.footer.use_tbl_notes = TRUE,
             page.orientation = "landscape"
         ) %>%
-
         tab_style(
-            style = cell_text(whitespace = "pre-wrap", align = "center"),
+            style = cell_text(
+                whitespace = "pre-wrap",
+                align = "center"
+            ),
             locations = list(
                 cells_column_spanners(),
                 cells_column_labels(),
@@ -319,7 +318,6 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 )
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("top", "bottom"),
@@ -334,18 +332,16 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 cells_row_groups()
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("top"),
                 color = "transparent",
-                weight = px(0),
+                weight = px(0)
             ),
             locations = list(
                 cells_column_labels()
             )
         ) %>%
-
         tab_style(
             style = cell_borders(
                 sides = c("bottom"),
@@ -357,7 +353,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             )
         ) %>%
         tab_style(
-            style = cell_text(font = c("Courier", default_fonts())),
+            style = cell_text(
+                font = c("Courier", default_fonts())
+            ),
             locations = list(
                 cells_body(),
                 cells_row_groups(),
@@ -379,7 +377,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     if (
         !is.null(attr(.data, ".page_note")) &&
             !is.null(tfrmt$page_plan) &&
-            !tfrmt$page_plan$note_loc == "noprint"
+            tfrmt$page_plan$note_loc != "noprint"
     ) {
         if (tfrmt$page_plan$note_loc == "preheader") {
             gt_out_final <- gt_out_final %>%
@@ -440,33 +438,35 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom tidyr pivot_longer
-#' @importFrom stringr str_split
-#' @importFrom gt cols_label tab_spanner md
-#' @importFrom dplyr as_tibble desc coalesce left_join mutate
-#' @importFrom purrr keep
-#'
 format_gt_column_labels <- function(gt_table, .data) {
     spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
             keep(str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
-            as_tibble(.name_repair = ~ paste0("V", 1:length(.))) %>%
-            mutate(cols = spanning) %>%
+            as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
+            dplyr::mutate(
+                cols = spanning
+            ) %>%
             pivot_longer(-"cols")
 
-        lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
+        lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
 
         spans_to_apply <- work_df %>%
-            filter(.data$name != max(.data$name)) %>%
-            arrange(desc(.data$name)) %>%
-            group_by(.data$value) %>%
+            dplyr::filter(.data$name != max(.data$name)) %>%
+            dplyr::arrange(
+                dplyr::desc(.data$name)
+            ) %>%
+            dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
-            mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
-            filter(.data$value != "NA")
+            dplyr::mutate(
+                set = map(.data$set, ~ dplyr::pull(., .data$cols))
+            ) %>%
+            dplyr::filter(
+                .data$value != "NA"
+            )
 
-        for (i in 1:nrow(spans_to_apply)) {
+        for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format
             gt_table <- gt_table %>%
                 tab_spanner(
@@ -480,13 +480,19 @@ format_gt_column_labels <- function(gt_table, .data) {
         # ensure all columns are represented
         lowest_lvl <- names(.data) %>%
             tibble(cols = .) %>%
-            left_join(lowest_lvl, by = "cols") %>%
-            mutate(value = coalesce(.data$value, .data$cols))
+            dplyr::left_join(
+                lowest_lvl,
+                by = "cols"
+            ) %>%
+            dplyr::mutate(
+                value = dplyr::coalesce(
+                    .data$value,
+                    .data$cols
+                )
+            )
 
-        renm_vals <- lowest_lvl %>%
-            pull(.data$value)
-        names(renm_vals) <- lowest_lvl %>%
-            pull(.data$cols)
+        renm_vals <- dplyr::pull(lowest_lvl, .data$value)
+        names(renm_vals) <- dplyr::pull(lowest_lvl, .data$cols)
     } else {
         renm_vals <- names(.data)
         names(renm_vals) <- renm_vals
@@ -503,9 +509,6 @@ format_gt_column_labels <- function(gt_table, .data) {
 #'
 #' @return gt object
 #' @noRd
-#' @importFrom gt text_transform cells_body cells_stub cells_column_labels cells_column_spanners
-#' @importFrom stringr str_match str_c str_dup str_trim
-#'
 convert_ws_unicode <- function(gt_table) {
     locations <- list(cells_body())
 
@@ -529,7 +532,7 @@ convert_ws_unicode <- function(gt_table) {
                 x_trimmed <- str_trim(x)
                 space_left <- str_match(x, "^\\s*") %>% nchar()
                 space_right <- str_match(x, "\\s*$") %>% nchar()
-                space_right[x_trimmed == ""] <- 0
+                space_right[!nzchar(x_trimmed)] <- 0
 
                 str_c(
                     str_dup("\U00A0", space_left),
@@ -548,10 +551,9 @@ convert_ws_unicode <- function(gt_table) {
 
 # split duplicate space characters with unicode whitespace ones
 #' @param x whitespace vector of strings of length >1
-#' @importFrom stringr str_sub
 #' @noRd
 break_duplicate_whitespace <- function(x) {
-    for (i in 1:length(x)) {
+    for (i in seq_along(x)) {
         n_spaces <- nchar(x[i])
         if (n_spaces > 1 && !is.na(x[i])) {
             #want to swap every even indice for a unicode character

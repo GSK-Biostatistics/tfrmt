@@ -23,7 +23,6 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_n_percent.png\" alt=\"3 by 3 table\" style=\"width:50\\%;\">"`
 #' }}
 #'
-#' @importFrom rlang parse_expr
 tfrmt_n_pct <- function(
     n = "n",
     pct = "pct",
@@ -36,10 +35,10 @@ tfrmt_n_pct <- function(
     ),
     tfrmt_obj = NULL
 ) {
-    if (is.null(n) | is.na(n) | n == "") {
+    if (is.null(n) || is.na(n) || n == "") {
         stop("`n` value must be provided")
     }
-    if (is.null(pct) | is.na(pct) | pct == "") {
+    if (is.null(pct) || is.na(pct) || pct == "") {
         stop("`pct` value must be provided")
     }
 

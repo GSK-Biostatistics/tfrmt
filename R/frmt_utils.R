@@ -108,7 +108,7 @@ format.frmt_when <- function(x, ...) {
     frmt_str <- paste(
         "< frmt_when | ",
         "\n ",
-        paste0(
+        paste(
             map2_chr(lhs, rhs, paste, sep = " ~ "),
             collapse = "\n  "
         ),
@@ -124,7 +124,7 @@ print.frmt_when <- function(x, ...) {
 }
 
 #' @export
-#' @importFrom purrr map
+#'
 format.frmt_structure <- function(x, ...) {
     if (is.list(x$group_val)) {
         groups <- x$group_val %>% map(unique)
@@ -136,7 +136,7 @@ format.frmt_structure <- function(x, ...) {
     fmts <- x$frmt_to_apply[[1]]
 
     if (is.list(groups)) {
-        group_string <- paste0(
+        group_string <- paste(
             sapply(names(groups), function(y) {
                 paste0(
                     " `",
@@ -189,7 +189,7 @@ format.body_plan <- function(x, ...) {
         paste0(" ", length(x), " Format Structures:")
     )
 
-    frmt_str_seq_len <- seq_len(length(x))
+    frmt_str_seq_len <- seq_along(x)
     frmt_str_num <- format(frmt_str_seq_len)
 
     tabin <- max(nzchar(frmt_str_num))
@@ -228,8 +228,6 @@ print.body_plan <- function(x, ...) {
 #'
 #' @return character string representing `frmt` object with `param` value as name
 #' @noRd
-#' @importFrom purrr map2
-#' @importFrom stats setNames
 frmt_builder <- function(param, frmt_string, missing = NULL) {
     if (!missing(param)) {
         frmt_string <- setNames(frmt_string, param)
@@ -276,8 +274,6 @@ frmt_combine_builder <- function(
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom purrr pmap
-#' @importFrom rlang `%||%`
 frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
     frmt_vec_list <- map2(
@@ -289,16 +285,16 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     crossing(frmt_vec_list, grp_lbl_list) %>%
         pmap(function(frmt_vec_list, grp_lbl_list) {
             if (
-                is.list(grp_lbl_list$group_val) &
-                    length(grp_lbl_list$group_val) == 1 &
+                is.list(grp_lbl_list$group_val) &&
+                    length(grp_lbl_list$group_val) == 1 &&
                     is.null(names(grp_lbl_list$group_val))
             ) {
                 grp_lbl_list$group_val <- grp_lbl_list$group_val[[1]]
             }
 
             if (
-                is.list(grp_lbl_list$label_val) &
-                    length(grp_lbl_list$label_val) == 1 &
+                is.list(grp_lbl_list$label_val) &&
+                    length(grp_lbl_list$label_val) == 1 &&
                     is.null(names(grp_lbl_list$label_val))
             ) {
                 grp_lbl_list$label_val <- grp_lbl_list$label_val[[1]]
@@ -333,17 +329,17 @@ as.character.frmt <- function(x, ...) {
         "frmt('",
         x$expression,
         "'",
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
         ),
-        if_else(
+        dplyr::if_else(
             !is.null(x$scientific),
             paste0(", scientific = ", x$scientific),
             ""
         ),
-        if_else(
+        dplyr::if_else(
             !is.null(x$transform),
             paste0(
                 ", transform = ",
@@ -356,19 +352,17 @@ as.character.frmt <- function(x, ...) {
 }
 
 #' @method as.character frmt_when
-#' @importFrom rlang quo `!!` f_rhs f_lhs eval_tidy as_label
-#' @importFrom stringr str_c
-#' @importFrom dplyr if_else
+#'
 #' @export
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%
         map_chr(function(x) {
             val <- quo(!!f_rhs(x))
             val_eval <- eval_tidy(val)
-            if (!is_frmt(val_eval)) {
-                as_label(val)
-            } else {
+            if (is_frmt(val_eval)) {
                 as.character(val_eval)
+            } else {
+                as_label(val)
             }
         })
 
@@ -381,7 +375,7 @@ as.character.frmt_when <- function(x, ...) {
     paste0(
         "frmt_when(",
         params,
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
@@ -403,7 +397,7 @@ as.character.frmt_combine <- function(x, ...) {
         x$expression,
         "', ",
         params,
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""

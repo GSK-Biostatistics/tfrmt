@@ -31,10 +31,6 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_ggplot.png\" alt=\"Simple table to stack with a KM-plot\" style=\"width:100\\%;\">"`
 #' }}
 #'
-#' @importFrom rlang quo_is_missing as_label
-#' @importFrom dplyr select pull
-#' @importFrom magrittr %>%
-
 print_to_ggplot <- function(tfrmt, .data, ...) {
     if (!is_tfrmt(tfrmt)) {
         stop("Requires a tfrmt object")
@@ -46,7 +42,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # stop if label location is not indented
     if (
-        is.null(tfrmt$row_grp_plan) == FALSE &&
+        !is.null(tfrmt$row_grp_plan) &&
             tfrmt$row_grp_plan$label_loc[1] != "indented"
     ) {
         stop(
@@ -55,7 +51,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if span structures are present
-    if (is.null(tfrmt$col_plan$span_structures) == FALSE) {
+    if (!is.null(tfrmt$col_plan$span_structures)) {
         stop("print_to_ggplot does not support spanning headers")
     }
 
@@ -65,7 +61,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if column style plan added
-    if (is.null(tfrmt$col_style_plan) == FALSE) {
+    if (!is.null(tfrmt$col_style_plan)) {
         stop("print_to_ggplot does not support col_style_plan elements")
     }
 
@@ -86,8 +82,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # Keeping the original data of column to preserve data type later on
     column_name <- as_label(tfrmt$column[[1]])
-    column_data <- .data %>%
-        pull(!!column_name)
+    column_data <- dplyr::pull(.data, !!column_name)
 
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
@@ -102,15 +97,17 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 #'
 #' @return ggplot object
 #' @noRd
-#'
-#' @importFrom ggplot2 ggplot .data ylab xlab theme_void theme scale_y_discrete scale_x_continuous scale_x_discrete element_text aes geom_text margin unit element_blank
-#' @importFrom tidyr pivot_longer
-#' @importFrom magrittr %>%
 cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     # apply grouping if any
     # create y variable to preserve ordering and levels
     .data <- apply_grp_ggplot(.data, tfrmt) %>%
-        mutate(y = n():1)
+        dplyr::mutate(
+            y = rev(
+                seq_len(
+                    dplyr::n()
+                )
+            )
+        )
 
     # handle cases for "..tfrmt_row_grp_lbl pivoting
     if ("..tfrmt_row_grp_lbl" %in% names(.data)) {
@@ -121,9 +118,9 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
                 names_to = "column",
                 values_to = "value"
             ) %>%
-            mutate(
-                value = if_else(
-                    .data$`..tfrmt_row_grp_lbl` == TRUE,
+            dplyr::mutate(
+                value = dplyr::if_else(
+                    .data$`..tfrmt_row_grp_lbl`,
                     "",
                     .data$value
                 )
@@ -187,7 +184,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
             axis.text.x = element_text(size = 10)
         ) + # replace y values with labels
         scale_y_discrete(
-            labels = pull(long_data, !!tfrmt$label),
+            labels = dplyr::pull(long_data, !!tfrmt$label),
             breaks = long_data$y
         )
 }
@@ -199,14 +196,10 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 #'
 #' @return dataset wth grouping columns combined
 #' @noRd
-#'
-#' @importFrom rlang quo_name is_empty
-#' @importFrom magrittr %>%
-#' @importFrom dplyr all_of select
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&
-            is_empty(tfrmt$group) == FALSE &&
+            !is_empty(tfrmt$group) &&
             tfrmt$row_grp_plan$label_loc$location == "gtdefault"
     ) {
         group_name <- quo_name(tfrmt$group[[1]])
@@ -214,7 +207,7 @@ apply_grp_ggplot <- function(.data, tfrmt) {
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 
         combine_group_cols(.data, tfrmt$group, tfrmt$label, element) %>%
-            select(
+            dplyr::select(
                 -tidyselect::all_of(
                     group_name
                 )

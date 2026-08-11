@@ -5,7 +5,9 @@ test_that("Display row formats for tfrmt with <frmt>", {
         param = c("count")
     ) %>%
         dplyr::arrange_all() %>%
-        mutate(value = seq(1:nrow(.)))
+        dplyr::mutate(
+            value = seq_len(nrow(.))
+        )
 
     my_tfrmt <- tfrmt(
         label = label,
@@ -51,24 +53,15 @@ test_that("Display row formats for tfrmt with <frmt>", {
 
     # expect dataframe and tfrmt input
     expect_s3_class(my_tfrmt, "tfrmt")
-    expect_equal(
-        class(df),
-        c("tbl_df", "tbl", "data.frame")
-    )
+    expect_s3_class(df, c("tbl_df", "tbl", "data.frame"))
 
     # expect dataframe output
-    expect_equal(
-        class(row_frmts_table_true),
-        c("tbl_df", "tbl", "data.frame")
-    )
-    expect_equal(
-        class(row_frmts_table_false),
-        c("tbl_df", "tbl", "data.frame")
-    )
+    expect_s3_class(row_frmts_table_true, c("tbl_df", "tbl", "data.frame"))
+    expect_s3_class(row_frmts_table_false, c("tbl_df", "tbl", "data.frame"))
 })
 
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
-    df <- bind_rows(
+    df <- dplyr::bind_rows(
         crossing(
             label = c("label 1"),
             column = c("PL", "T1", "T2"),
@@ -81,7 +74,9 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
         )
     ) %>%
         dplyr::arrange_all() %>%
-        mutate(value = seq(1:nrow(.)))
+        dplyr::mutate(
+            value = seq_len(nrow(.))
+        )
 
     my_tfrmt <- tfrmt(
         label = label,
@@ -136,24 +131,15 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 
     # expect dataframe and tfrmt input
     expect_s3_class(my_tfrmt, "tfrmt")
-    expect_equal(
-        class(df),
-        c("tbl_df", "tbl", "data.frame")
-    )
+    expect_s3_class(df, c("tbl_df", "tbl", "data.frame"))
 
     # expect dataframe output
-    expect_equal(
-        class(row_frmts_table_true),
-        c("tbl_df", "tbl", "data.frame")
-    )
-    expect_equal(
-        class(row_frmts_table_false),
-        c("tbl_df", "tbl", "data.frame")
-    )
+    expect_s3_class(row_frmts_table_true, c("tbl_df", "tbl", "data.frame"))
+    expect_s3_class(row_frmts_table_false, c("tbl_df", "tbl", "data.frame"))
 })
 
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>", {
-    df <- bind_rows(
+    df <- dplyr::bind_rows(
         crossing(
             label = c("label 1"),
             column = c("PL", "T1", "T2"),
@@ -171,7 +157,9 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
         )
     ) %>%
         dplyr::arrange_all() %>%
-        mutate(value = seq(1:nrow(.)))
+        dplyr::mutate(
+            value = seq_len(nrow(.))
+        )
 
     my_tfrmt <- tfrmt(
         label = label,
@@ -229,18 +217,9 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
 
     # expect dataframe and tfrmt input
     expect_s3_class(my_tfrmt, "tfrmt")
-    expect_equal(
-        class(df),
-        c("tbl_df", "tbl", "data.frame")
-    )
+    expect_s3_class(df, c("tbl_df", "tbl", "data.frame"))
 
     # expect dataframe output
-    expect_equal(
-        class(row_frmts_table_true),
-        c("tbl_df", "tbl", "data.frame")
-    )
-    expect_equal(
-        class(row_frmts_table_false),
-        c("tbl_df", "tbl", "data.frame")
-    )
+    expect_s3_class(row_frmts_table_true, c("tbl_df", "tbl", "data.frame"))
+    expect_s3_class(row_frmts_table_false, c("tbl_df", "tbl", "data.frame"))
 })

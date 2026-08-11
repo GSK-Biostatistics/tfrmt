@@ -12,8 +12,6 @@
 #'
 #' @return formatted dataset
 #'
-#' @importFrom stringr str_count str_trim str_dup str_c str_remove
-#' @importFrom dplyr if_else case_when tibble
 #' @export
 #' @examples
 #'
@@ -33,19 +31,17 @@ apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 }
 
 
-#' @importFrom stringr str_count str_trim str_dup str_c str_remove str_extract str_detect
-#' @importFrom dplyr case_when tibble pull mutate
-#' @importFrom rlang := as_function
 #' @export
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
-        out <- .data %>%
-            mutate(!!value := frmt_def$expression)
+        out <- dplyr::mutate(
+            .data,
+            !!value := frmt_def$expression
+        )
     } else {
-        vals <- .data %>%
-            pull(!!value)
+        vals <- dplyr::pull(.data, !!value)
 
         if (length(vals) == 0) {
             return(.data)
@@ -106,9 +102,9 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                     str_remove("\\..*$") %>%
                     str_count(".")
             ) %>%
-                mutate(
+                dplyr::mutate(
                     # keep from being negative
-                    space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0),
+                    space_to_add = pmax(pre_dec_expr - .data$act_pre_dec, 0)
                 )
 
             # when scientific is null paste rounded value, if not then append scientific expression
@@ -131,7 +127,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             }
 
             # Combining the additional formatting
-            fmt_val_output <- case_when(
+            fmt_val_output <- dplyr::case_when(
                 fmt_options$rounded == "NA" ~ miss_val,
                 TRUE ~ str_c(expr_start, fmt_vals, expr_end)
             )
@@ -140,7 +136,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
 
         out <- .data %>%
-            mutate(
+            dplyr::mutate(
                 !!value := fmt_val_output
             )
     }
@@ -149,11 +145,6 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 }
 
 
-#' @importFrom stringr str_extract_all str_count str_trim str_dup str_c str_remove str_glue
-#' @importFrom dplyr case_when tibble filter pull left_join
-#' @importFrom tidyr pivot_wider replace_na
-#' @importFrom purrr map_dfr map_chr discard
-#' @importFrom rlang :=
 #' @export
 #'
 #' @rdname apply_frmt
@@ -187,7 +178,7 @@ apply_frmt.frmt_combine <- function(
     .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
-            filter(!!param == str_remove_all(`__var`, "`")) %>%
+            dplyr::filter(!!param == str_remove_all(`__var`, "`")) %>%
             apply_frmt(
                 frmt_def = fmt_to_apply,
                 .data = .,
@@ -203,24 +194,24 @@ apply_frmt.frmt_combine <- function(
 
     #Test if common information exists
     miss_param_from_data <- .tmp_data %>%
-        pull(!!param) %>%
+        dplyr::pull(!!param) %>%
         unique() %>%
         setdiff(fmt_param_vals_uq, .)
 
     if (length(miss_param_from_data) > 0) {
         stop(paste0(
             "Unable to create formatting combination because the following parameters are missing from the data:\n ",
-            paste0(miss_param_from_data, collapse = " \n")
+            paste(miss_param_from_data, collapse = " \n")
         ))
     }
 
     .tmp_data_wide <- .tmp_data %>%
-        select(!!value, !!param, !!!column, !!label, !!!group) %>%
+        dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
         pivot_wider(
             values_from = !!value,
             names_from = !!param
         ) %>%
-        mutate(
+        dplyr::mutate(
             .is_all_missing = all_missing(fmt_param_vals, .)
         )
 
@@ -238,12 +229,13 @@ apply_frmt.frmt_combine <- function(
     # check that pivot_wider resulted in a reduction of rows, which indicates that at least
     #  1 row will successfully have a frmt_combine in it
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
-        id_cols <- .tmp_data %>% select(!!!column, !!label, !!!group, !!param)
+        id_cols <- .tmp_data %>%
+            dplyr::select(!!!column, !!label, !!!group, !!param)
         warning(paste0(
             "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            paste(names(id_cols %>% select(-!!param)), collapse = ", "),
+            toString(names(id_cols %>% dplyr::select(-!!param))),
             ". Current values:\n",
-            paste(capture.output(id_cols %>% as.data.frame), collapse = "\n")
+            paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
         ))
     }
 
@@ -254,13 +246,13 @@ apply_frmt.frmt_combine <- function(
     ## if both params are missing, then drop in frmt definition missing value
     ## otherwise concat the params
     .tmp_data_fmted <- .tmp_data_wide %>%
-        mutate(
-            !!value := case_when(
+        dplyr::mutate(
+            !!value := dplyr::case_when(
                 .data$.is_all_missing ~ frmt_def$missing,
                 TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
             )
         ) %>%
-        select(
+        dplyr::select(
             -tidyselect::all_of(
                 fmt_param_vals_uq
             ),
@@ -270,7 +262,7 @@ apply_frmt.frmt_combine <- function(
     ## if not mock remove
     if (!mock) {
         .data <- .data %>%
-            select(-!!value)
+            dplyr::select(-!!value)
     }
 
     merge_group <- map(
@@ -286,21 +278,16 @@ apply_frmt.frmt_combine <- function(
 
     # merge on new values, and remove cases other than first occurance of group/label/column pairing
     .data %>%
-        left_join(
+        dplyr::left_join(
             .tmp_data_fmted,
             by = map_chr(merge_group, as_label)
         ) %>%
-        group_by(!!!merge_group) %>%
-        slice(1) %>%
-        ungroup()
+        dplyr::group_by(!!!merge_group) %>%
+        dplyr::slice(1) %>%
+        dplyr::ungroup()
 }
 
 #' @export
-#' @importFrom rlang as_label f_rhs f_lhs parse_exprs eval_tidy
-#' @importFrom dplyr pull if_else mutate
-#' @importFrom purrr map map_chr keep
-#' @importFrom rlang :=
-#' @importFrom tidyr replace_na
 #'
 #' @rdname apply_frmt
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
@@ -312,17 +299,21 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
         str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
         out <- .data %>%
-            mutate(!!value := str_to_prnt)
+            dplyr::mutate(
+                !!value := str_to_prnt
+            )
     } else {
         values_str <- as_label(value)
         n <- length(frmt_def$frmt_ls)
 
-        val_len <- length(pull(.data, !!value))
+        val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
             map(f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
-                    out <- apply_frmt(x, .data, value, ...) %>% pull(!!value)
+                    out <- x %>%
+                        apply_frmt(.data, value, ...) %>%
+                        dplyr::pull(!!value)
                 } else {
                     out <- rep(x, val_len)
                 }
@@ -331,7 +322,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         left <- frmt_def$frmt_ls %>%
             map_chr(f_lhs_as_char) %>%
-            if_else(. == "TRUE", ., paste0(values_str, .)) %>%
+            dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
             parse_exprs() %>%
             map(eval_tidy, .data)
 
@@ -350,7 +341,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         }
 
         out <- .data %>%
-            mutate(
+            dplyr::mutate(
                 !!value := out
             )
     }

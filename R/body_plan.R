@@ -58,11 +58,6 @@ body_plan <- function(...) {
 #'
 #' @return list of `frmt_structure` objects
 #' @noRd
-#' @importFrom stringr str_detect str_extract_all
-#' @importFrom purrr map_dfr map map_chr quietly pmap_chr
-#' @importFrom dplyr mutate group_by filter group_split select across
-#' @importFrom tidyr unnest
-#' @importFrom rlang as_name quo_is_missing
 body_plan_builder <- function(
     data,
     group,
@@ -79,13 +74,13 @@ body_plan_builder <- function(
                 pos = .x
             )
         ) %>%
-        mutate(
+        dplyr::mutate(
             contains_glue = str_detect(.data$param_display, "\\{.*\\}"), # is this to be a frmt_combine
             param = map2(
                 .data$param_display,
                 .data$contains_glue,
-                ~ if (.y == TRUE) {
-                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist
+                ~ if (.y) {
+                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
                 } else {
                     .x
                 }
@@ -93,14 +88,14 @@ body_plan_builder <- function(
             single_glue_to_frmt = pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
-                    if (a == TRUE & length(b) == 1) c else NA_character_
+                    if (a && length(b) == 1) c else NA_character_
                 }
             )
         ) %>%
         unnest(
             tidyselect::everything()
         ) %>%
-        mutate(
+        dplyr::mutate(
             frmt_string = map2_chr(
                 .data$sigdig,
                 .data$single_glue_to_frmt,
@@ -109,8 +104,8 @@ body_plan_builder <- function(
         )
 
     frmt_vec <- param_tbl %>%
-        group_by(.data$pos) %>%
-        group_split() %>%
+        dplyr::group_by(.data$pos) %>%
+        dplyr::group_split() %>%
         map(function(x) {
             if (sum(x$contains_glue) > 1) {
                 frmt_combine_builder(

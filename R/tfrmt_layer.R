@@ -39,8 +39,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
         return(x)
     }
 
-    stopifnot(is_tfrmt(y))
-    stopifnot(is_tfrmt(x))
+    stopifnot(is_tfrmt(y), is_tfrmt(x))
 
     args <- union(names(x), names(y))
 
@@ -95,11 +94,7 @@ layer_tfrmt_arg.default <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val)) {
-        x_arg_val
-    } else {
-        y_arg_val
-    }
+    y_arg_val %||% x_arg_val
 }
 
 ## if group is an empty vars, keep the original value
@@ -107,7 +102,7 @@ layer_tfrmt_arg_vars <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val) | identical(y_arg_val, vars())) {
+    if (is.null(y_arg_val) || identical(y_arg_val, vars())) {
         x_arg_val
     } else {
         y_arg_val
@@ -119,7 +114,7 @@ layer_tfrmt_arg_quo <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val) | identical(y_arg_val, quo())) {
+    if (is.null(y_arg_val) || identical(y_arg_val, quo())) {
         x_arg_val
     } else {
         y_arg_val
@@ -156,8 +151,6 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #' @return
 #' A `tfrmt` with the `group` variables updated in all places
 #'
-#' @importFrom rlang as_label is_empty
-#'
 #' @returns tfrmt object with updated groups#'
 #' @export
 #' @examples
@@ -186,7 +179,9 @@ update_group <- function(tfrmt, ...) {
     old_groups <- do.call(vars, unname(dots))
     new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
 
-    if (!is_empty(tfrmt$group)) {
+    if (is_empty(tfrmt$group)) {
+        stop("No group values defined in input tfrmt.")
+    } else {
         var_list <- sapply(tfrmt$group, function(x) {
             x_lab <- as_label(x)
             if (x_lab %in% names(new_group_map)) {
@@ -197,8 +192,6 @@ update_group <- function(tfrmt, ...) {
         })
 
         tfrmt$group <- as_vars(var_list)
-    } else {
-        stop("No group values defined in input tfrmt.")
     }
 
     ## Update body_plan

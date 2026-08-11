@@ -1,7 +1,8 @@
 test_that("convert_ws_unicode works as expected", {
     gt_with_ws <- data.frame(
         group = "    trailing.   and.   leading.  ws.   ",
-        value = " ( x  x)"
+        value = " ( x  x)",
+        stringsAsFactors = FALSE
     ) |>
         gt::gt()
 
@@ -10,15 +11,15 @@ test_that("convert_ws_unicode works as expected", {
     # test that metadata is present in gt ready to apply transform
 
     # columns to apply to
-    expect_equal(
+    expect_identical(
         gt_with_unicode$`_transforms`[[1]]$resolved$colnames,
         c("group", "value")
     )
 
     # rows to apply to
-    expect_equal(
+    expect_identical(
         gt_with_unicode$`_transforms`[[1]]$resolved$rows,
-        1
+        1L
     )
 
     # function to apply
@@ -32,7 +33,7 @@ test_that("convert_ws_unicode works as expected", {
         "combination of   single and    multiple  spaces ",
         NA,
         "     leading    whitespace",
-        'trailing  whitespace     '
+        "trailing  whitespace     "
     )
 
     unicode_strings <- c(
@@ -42,16 +43,17 @@ test_that("convert_ws_unicode works as expected", {
         "combination of \u00A0 single and \u00A0 \u00A0multiple \u00A0spaces\u00A0",
         NA,
         "\u00A0\u00A0\u00A0\u00A0\u00A0leading \u00A0 \u00A0whitespace",
-        'trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0'
+        "trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0"
     )
 
-    expect_equal(
+    expect_identical(
         whitespace_function(test_strings),
         unicode_strings
     )
 })
 
 test_that("print_to_gt() works", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~group  , ~label  , ~span1   , ~span2  , ~lower     , ~param , ~val ,
         "mygrp" , "mylbl" , "span01" , "span1" , "lower1_a" , "prm"  ,    1 ,
@@ -61,6 +63,7 @@ test_that("print_to_gt() works", {
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_a" , "prm"  ,    1 ,
         "mygrp" , "mylbl" , "span02" , "span3" , "lower2_b" , "prm"  ,    1
     )
+    # nolint end
 
     tfrmt_plan <- tfrmt(
         group = "group",
@@ -805,6 +808,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 })
 
 test_that("cleaned_data_to_gt() with col_style_plan", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~g1   , ~g2  , ~one       , ~param   , ~column , ~value  ,
         "G1"  , "g3" , "n (%)"    , "n"      , "trt1"  , 12      ,
@@ -823,6 +827,7 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         "G3"  , "g3" , "(q1, q3)" , "q3"     , "trt2"  , 22      ,
         "G1"  , "g3" , "mean"     , "pval"   , "four"  ,  0.0001
     )
+    # nolint end
 
     plan <- tfrmt(
         label = one,
@@ -925,6 +930,7 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
 })
 
 test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
+    # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~grp1 , ~grp2 , ~lbl , ~prm , ~column , ~val , ~ord ,
         "d"   , "c"   , "n"  , "n"  ,       1 ,    1 ,    1 ,
@@ -932,6 +938,7 @@ test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
         "q"   , "v"   , "s"  , "n"  ,       1 ,    3 ,    3 ,
         "b"   , "p"   , "e"  , "n"  ,       1 ,    4 ,    4
     )
+    # nolint end
 
     tfrmt_plan <- tfrmt(
         group = c(grp1, grp2),

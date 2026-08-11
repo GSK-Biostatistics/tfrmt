@@ -6,11 +6,11 @@ raw_data_cat <- crossing(
     col = paste("Var", 1:4),
     param2 = c("count", "pct")
 ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
         ord1 = 1,
         ord2 = 26 - which(label == letters),
-        val2 = case_when(
+        val2 = dplyr::case_when(
             label == "w" & param2 == "pct" ~ 100.0,
             param2 == "count" ~ as.double(rpois(n = 1, lambda = 150)),
             param2 == "pct" ~ runif(n = 1, max = 100)
@@ -23,18 +23,21 @@ raw_data_cont <- crossing(
     col = paste("Var", 1:4),
     param2 = c("val")
 ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
         ord1 = 2,
         ord2 = which(label == letters),
-        val2 = case_when(
+        val2 = dplyr::case_when(
             label == "w" ~ as.double(rpois(n = 1, lambda = 150)),
             label == "i" ~ rnorm(n = 1, mean = 75, 13),
             label == "j" ~ rnorm(n = 1, mean = 10, 3),
             label == "k" ~ rnorm(n = 1, mean = 72, 7)
         )
     )
-raw_dat <- bind_rows(raw_data_cat, raw_data_cont)
+raw_dat <- dplyr::bind_rows(
+    raw_data_cat,
+    raw_data_cont
+)
 
 plan <- tfrmt(
     #These are the columns that control the general structure of the data
@@ -97,6 +100,7 @@ plan <- tfrmt(
 )
 
 test_that("Check apply_tfrmt", {
+    # nolint start: commas_linter
     man_df <- tibble::tribble(
         ~group , ~label , ~`Var 1`       , ~`Var 2`       , ~`Var 3`       , ~`Var 4`       ,
         "A"    , "w"    , "135         " , "141         " , "143         " , "137         " ,
@@ -108,25 +112,28 @@ test_that("Check apply_tfrmt", {
         "B"    , "k"    , " 80.3       " , " 72.5       " , " 87.3       " , " 71.6       " ,
         "B"    , "w"    , "147         " , "149         " , "143         " , "159         "
     ) %>%
-        mutate(..tfrmt_row_grp_lbl = FALSE)
+        # nolint end
+        dplyr::mutate(
+            ..tfrmt_row_grp_lbl = FALSE
+        )
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
-            ungroup() %>%
-            arrange(group, label),
+            dplyr::ungroup() %>%
+            dplyr::arrange(group, label),
         man_df %>%
-            arrange(group, label),
+            dplyr::arrange(group, label),
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
 
     plan$sorting_cols <- NULL
 
     man_df_ord <- man_df %>%
-        arrange(group, label)
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
-            ungroup(),
+            dplyr::ungroup(),
         man_df_ord,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -155,8 +162,10 @@ test_that("Check apply_tfrmt", {
 test_that("Check apply_tfrmt for mock data", {
     # mock for example data above
 
-    mock_dat <- raw_dat %>% select(-val2)
+    mock_dat <- raw_dat %>%
+        dplyr::select(-val2)
 
+    # nolint start: commas_linter
     mock_man_df <- tibble::tribble(
         ~group , ~label , ~`Var 1`       , ~`Var 2`       , ~`Var 3`       , ~`Var 4`       ,
         "A"    , "z"    , "XXX (XXX.X%)" , "XXX (XXX.X%)" , "XXX (XXX.X%)" , "XXX (XXX.X%)" ,
@@ -168,13 +177,16 @@ test_that("Check apply_tfrmt for mock data", {
         "B"    , "k"    , " xx.x       " , " xx.x       " , " xx.x       " , " xx.x       " ,
         "B"    , "w"    , "XXX         " , "XXX         " , "XXX         " , "XXX         " ,
     ) %>%
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
-        arrange(group, label)
+        # nolint end
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
-            ungroup() %>%
-            arrange(group, label),
+            dplyr::ungroup() %>%
+            dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -228,6 +240,7 @@ test_that("Check apply_tfrmt for mock data", {
     )
 
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 4)
+    # nolint start: commas_linter
     mock_man_df <- tibble::tribble(
         ~group    , ~label    , ~col1          , ~col2          , ~col3          , ~col4          ,
         "group_1" , "label_1" , "XXX (XXX.X%)" , "XXX (XXX.X%)" , "XXX (XXX.X%)" , "XXX (XXX.X%)" ,
@@ -239,13 +252,16 @@ test_that("Check apply_tfrmt for mock data", {
         "B"       , "k"       , "xx.x"         , "xx.x"         , "xx.x"         , "xx.x"         ,
         "B"       , "j"       , "xx.xx"        , "xx.xx"        , "xx.xx"        , "xx.xx"
     ) %>%
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
-        arrange(group, label)
+        # nolint end
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
-            ungroup() %>%
-            arrange(group, label),
+            dplyr::ungroup() %>%
+            dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -306,6 +322,7 @@ test_that("Check apply_tfrmt for mock data", {
     mock_dat <- make_mock_data(plan, .default = 1, n_cols = 1) %>%
         apply_tfrmt(plan, mock = TRUE)
 
+    # nolint start: commas_linter
     expected_dat <- tibble::tribble(
         ~grp1    , ~grp2    , ~grp3    , ~grp4    , ~my_label    , ~col1  ,
         "A"      , "a"      , "grp3_1" , "grp4_1" , "my_label_1" , "xx.x" ,
@@ -317,6 +334,7 @@ test_that("Check apply_tfrmt for mock data", {
         "grp1_1" , "grp2_1" , "D"      , "a"      , "my_label_1" , "xx.x" ,
         "grp1_1" , "grp2_1" , "D"      , "b"      , "my_label_1" , "xx.x"
     )
+    # nolint end
 
     expect_equal(
         mock_dat,
@@ -359,7 +377,7 @@ test_that("Check apply_tfrmt for mock data", {
         capture_messages()
 
     ## capturing second message
-    expect_equal(
+    expect_identical(
         make_mock_dat_message,
         "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
     )
@@ -370,6 +388,7 @@ test_that("Check apply_tfrmt for mock data", {
 
     expect_equal(
         test_dat,
+        # nolint start: commas_linter
         tibble::tribble(
             ~grp1    , ~my_label    , ~col1  , ~col2  ,
             "grp1_1" , "my_label_1" , "xxx"  , "xxx"  ,
@@ -381,6 +400,7 @@ test_that("Check apply_tfrmt for mock data", {
             "grp1_2" , "my_label_2" , "xxx"  , "xxx"  ,
             "grp1_2" , "my_label_2" , "xx.x" , "xx.x" ,
         ),
+        # nolint end
         ignore_attr = c(
             "class",
             ".col_plan_vars",
@@ -417,9 +437,14 @@ test_that("Test body_plan missing", {
     expect_equal(
         empty_body_plan,
         input_data %>%
-            select(-param) %>%
-            mutate(val = as.character(val)) %>%
-            pivot_wider(names_from = column, values_from = val),
+            dplyr::select(-param) %>%
+            dplyr::mutate(
+                val = as.character(val)
+            ) %>%
+            pivot_wider(
+                names_from = column,
+                values_from = val
+            ),
         ignore_attr = c(
             "class",
             ".col_plan_vars",
@@ -431,6 +456,7 @@ test_that("Test body_plan missing", {
 
 
 test_that("incomplete body_plan where params share label", {
+    # nolint start: commas_linter
     dd <- tibble::tribble(
         ~rowlbl1 , ~grp        , ~rowlbl2 , ~column , ~param , ~value ,
         "topgrp" , "lowergrp1" , "n pct"  , "A"     , "n"    ,      1 ,
@@ -440,6 +466,7 @@ test_that("incomplete body_plan where params share label", {
         "topgrp" , "lowergrp2" , "n pct"  , "A"     , "pct"  ,     40 ,
         "topgrp" , "lowergrp2" , "mean"   , "A"     , "mean" ,      5
     )
+    # nolint end
 
     tfrmt_spec <- tfrmt(
         group = c(rowlbl1, grp),
@@ -467,6 +494,7 @@ test_that("incomplete body_plan where params share label", {
             "Multiple param listed for the same group/label values"
         )
 
+    # nolint start: commas_linter
     man_tfrmt <- tibble::tribble(
         ~rowlbl1 , ~grp        , ~rowlbl2 , ~A           ,
         "topgrp" , "lowergrp1" , "n pct"  , c("1", "50") ,
@@ -474,6 +502,7 @@ test_that("incomplete body_plan where params share label", {
         "topgrp" , "lowergrp2" , "n pct"  , c("2", "40") ,
         "topgrp" , "lowergrp2" , "mean"   , " 5.0"
     )
+    # nolint end
 
     expect_equal(
         auto_tfrmt,
@@ -513,12 +542,6 @@ test_that("incorrect footnote plan formats", {
                     )
                 )
             ),
-
-            # Specify row group plan
-            # Indent the rowlbl2
-            # row_grp_plan = row_grp_plan(
-            #   row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-            #   label_loc = element_row_grp_loc(location = "indented")),
             footnote_plan = footnote_plan(
                 footnote_structure(
                     "Test footnote",
@@ -580,6 +603,7 @@ test_that("incorrect footnote plan formats", {
 
 
 test_that("struct utils quote escaping", {
+    # nolint start: commas_linter
     dd <- tibble::tribble(
         ~grp            , ~rowlbl2 , ~column , ~param , ~value ,
         "lowergrp1's"   , "n"      , "A"     , "n"    ,      1 ,
@@ -587,6 +611,7 @@ test_that("struct utils quote escaping", {
         "\"lowergrp2\"" , "n"      , "A"     , "n"    ,      2 ,
         '"lowergrp2"'   , "mean"   , "A"     , "mean" ,      5
     )
+    # nolint end
 
     tfrmt_spec <- tfrmt(
         group = grp,
@@ -606,7 +631,7 @@ test_that("struct utils quote escaping", {
                 frmt("xx")
             ),
             frmt_structure(
-                group_val = 'lowergrp\'s',
+                group_val = "lowergrp's",
                 label_val = "mean",
                 frmt("xx.x")
             ),
@@ -623,6 +648,7 @@ test_that("struct utils quote escaping", {
         )
     )
 
+    # nolint start: commas_linter
     man_tfrmt <- tibble::tribble(
         ~rowlbl2        , ~A      ,
         "lowergrp1's"   , NA      ,
@@ -632,8 +658,10 @@ test_that("struct utils quote escaping", {
         "  n"           , "   2"  ,
         "  mean"        , " 5.00" ,
     )
+    # nolint end
     expect_equal(
-        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |> dplyr::select(rowlbl2:A),
+        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |>
+            dplyr::select(rowlbl2:A),
         man_tfrmt,
         ignore_attr = c(
             "class",

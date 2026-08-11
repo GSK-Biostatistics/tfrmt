@@ -91,7 +91,7 @@ test_that("col_style_plan - basic", {
         col_style_structure(align = ".", col = c("trt1", "trt2"))
     )
 
-    expect_equal(length(csp), 3)
+    expect_length(csp, 3)
     expect_equal(
         lapply(csp, `[[`, "cols"),
         list(vars(n_tot), vars(p), vars(trt1, trt2)),
@@ -116,12 +116,12 @@ test_that("col_style_plan - error non-element_col", {
 test_that("left & right align works", {
     vec <- c(" xx.xxx", "xx", " x,  x")
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = "left"),
         c(" xx.xxx", "xx     ", " x,  x ")
     )
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = "right"),
         c(" xx.xxx", "     xx", "  x,  x")
     )
@@ -130,18 +130,19 @@ test_that("left & right align works", {
 test_that("decimal align works", {
     vec <- c(" xx.xx", " x, x", "xxx", " x (x.x)")
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = c(".", " ")),
         c(" xx.xx   ", " x, x    ", "xxx      ", "  x (x.x)")
     )
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = c(".", ",", " ")),
         c(" xx.xx   ", "  x, x   ", "xxx      ", "  x (x.x)")
     )
 })
 
 test_that("alignment of multiple columns works", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "two"   , " 12 (34%)" ,
@@ -160,6 +161,7 @@ test_that("alignment of multiple columns works", {
         "(q1, q3)" , "three" , "(11, 22)"  ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     tfrmt_obj <- tfrmt(
         label = one,
@@ -181,6 +183,7 @@ test_that("alignment of multiple columns works", {
         )
     )
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)   " , "two"   , " 12 (34%)" ,
@@ -199,6 +202,7 @@ test_that("alignment of multiple columns works", {
         "median  " , "four"  , "  0.05"    ,
         "(q1, q3)" , "four"  , "      "
     )
+    # nolint end
 
     dat_aligned <- dat %>%
         pivot_wider(
@@ -207,7 +211,7 @@ test_that("alignment of multiple columns works", {
         ) %>%
         apply_col_style_plan(tfrmt_obj)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
             pivot_wider(
@@ -232,6 +236,7 @@ test_that("alignment of multiple columns works", {
         )
     )
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)   " , "two"   , " 12 (34%)" ,
@@ -250,6 +255,7 @@ test_that("alignment of multiple columns works", {
         "median  " , "four"  , "  0.05"    ,
         "(q1, q3)" , "four"  , "      "
     )
+    # nolint end
 
     dat_aligned <- dat %>%
         pivot_wider(
@@ -258,7 +264,7 @@ test_that("alignment of multiple columns works", {
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
             pivot_wider(
@@ -270,6 +276,7 @@ test_that("alignment of multiple columns works", {
 
 
 test_that("tidyselect works", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "trt1"  , " 12 (34%)" ,
@@ -288,6 +295,7 @@ test_that("tidyselect works", {
         "(q1, q3)" , "trt2"  , "(11, 22)"  ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     starts_with_align_dot_plan <- tfrmt(
         label = one,
@@ -325,7 +333,7 @@ test_that("tidyselect works", {
         ) %>%
         apply_col_style_plan(starts_with_align_dot_plan)
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_identical(dat_aligned, dat_aligned_man)
 
     vars_starts_with_plan <- tfrmt(
         label = one,
@@ -359,7 +367,7 @@ test_that("tidyselect works", {
         ) %>%
         apply_col_style_plan(vars_starts_with_plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
@@ -383,7 +391,7 @@ test_that("tidyselect works", {
         ) %>%
         apply_col_style_plan(starts_with_plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
@@ -423,10 +431,11 @@ test_that("tidyselect works", {
             col_plan_vars = vars(one, trt1, trt2, four)
         )
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_identical(dat_aligned, dat_aligned_man)
 })
 
 test_that("span_structure works", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~span_col    , ~column , ~value      ,
         "n (%)"    , "Test Span1" , "trt1"  , " 12 (34%)" ,
@@ -445,6 +454,7 @@ test_that("span_structure works", {
         "(q1, q3)" , "Test Span2" , "trt2"  , "(11, 22)"  ,
         "(q1, q3)" , NA           , "four"  , ""
     )
+    # nolint end
 
     plan <- tfrmt(
         label = one,
@@ -480,18 +490,19 @@ test_that("span_structure works", {
         pivot_wider(
             names_from = c(span_col, column),
             names_sep = .tlang_delim,
-            values_from = value,
+            values_from = value
         ) %>%
         clean_spanning_col_names() %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
 })
 
 test_that("span_structure works on a renamed column", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~span_col    , ~column , ~value      , ~param  ,
         "n (%)"    , "Test Span1" , "trt1"  , " 12 (34%)" , "param" ,
@@ -510,6 +521,7 @@ test_that("span_structure works on a renamed column", {
         "(q1, q3)" , "Test Span2" , "trt2"  , "(11, 22)"  , "param" ,
         "(q1, q3)" , NA           , "four"  , ""          , "param"
     )
+    # nolint end
 
     plan <- tfrmt(
         label = one,
@@ -567,6 +579,7 @@ test_that("span_structure works on a renamed column", {
 })
 
 test_that("Overlapping col_style_structure favors last one", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "trt1"  , " 12 (34%)" ,
@@ -585,6 +598,7 @@ test_that("Overlapping col_style_structure favors last one", {
         "median"   , "four"  , "0.05"      ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     plan <- tfrmt(
         label = one,
@@ -602,6 +616,7 @@ test_that("Overlapping col_style_structure favors last one", {
         )
     )
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "trt1"  , " 12 (34%)" ,
@@ -620,6 +635,7 @@ test_that("Overlapping col_style_structure favors last one", {
         "median"   , "four"  , "0.05"      ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     dat_aligned <- dat %>%
         pivot_wider(
@@ -628,7 +644,7 @@ test_that("Overlapping col_style_structure favors last one", {
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
             pivot_wider(
@@ -640,6 +656,7 @@ test_that("Overlapping col_style_structure favors last one", {
 
 
 test_that("Align strings >1 in length", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "trt1"  , " 12 (34%)" ,
@@ -658,6 +675,7 @@ test_that("Align strings >1 in length", {
         "median"   , "four"  , "0.05"      ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     col_style_structure_message <- capture_messages({
         plan <- tfrmt(
@@ -677,10 +695,11 @@ test_that("Align strings >1 in length", {
         )
     })
 
-    expect_true(
-        !is_empty(col_style_structure_message)
+    expect_false(
+        is_empty(col_style_structure_message)
     )
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "trt1"  , " 12 (34%)" ,
@@ -699,6 +718,7 @@ test_that("Align strings >1 in length", {
         "median"   , "four"  , "0.05"      ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     # informs user
     dat_aligned <- dat %>%
@@ -708,7 +728,7 @@ test_that("Align strings >1 in length", {
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
             pivot_wider(
@@ -720,6 +740,7 @@ test_that("Align strings >1 in length", {
 
 
 test_that("Alphanumeric align string supplied", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one       , ~column , ~value      ,
         "n (%)"    , "trt1"  , " 12 (34%)" ,
@@ -738,6 +759,7 @@ test_that("Alphanumeric align string supplied", {
         "median"   , "four"  , "0.05"      ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     col_style_structure_message <- capture_messages({
         plan <- tfrmt(
@@ -757,10 +779,11 @@ test_that("Alphanumeric align string supplied", {
         )
     })
 
-    expect_true(
-        !is_empty(col_style_structure_message)
+    expect_false(
+        is_empty(col_style_structure_message)
     )
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~one       , ~column , ~value         ,
         "n (%)"    , "trt1"  , "    12 (34%)" ,
@@ -779,6 +802,7 @@ test_that("Alphanumeric align string supplied", {
         "median"   , "four"  , "0.05"         ,
         "(q1, q3)" , "four"  , ""
     )
+    # nolint end
 
     # informs user
     dat_aligned <- dat %>%
@@ -788,7 +812,7 @@ test_that("Alphanumeric align string supplied", {
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
             pivot_wider(
@@ -808,7 +832,7 @@ test_that("multi-positional alignment", {
         type = "pos"
     )
 
-    expect_equal(
+    expect_identical(
         vec_aligned,
         c(
             "xx.x (xx.x)   ",
@@ -826,7 +850,7 @@ test_that("multi-positional alignment", {
         type = "pos"
     )
 
-    expect_equal(
+    expect_identical(
         vec_aligned,
         c(
             "xx.x          ",
@@ -845,7 +869,7 @@ test_that("multi-positional alignment", {
             type = "pos"
         )
     })
-    expect_equal(
+    expect_identical(
         vec_aligned,
         c(
             "          xx.x         ",
@@ -856,6 +880,7 @@ test_that("multi-positional alignment", {
     )
 
     # align on 2 positions - full plan
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~lbl    , ~col      , ~val          ,
         "18-65" , "trt"     , "15 (23.4 %)" ,
@@ -863,6 +888,7 @@ test_that("multi-positional alignment", {
         "66-82" , "trt"     , "34 (33.5 %)" ,
         "66-82" , "placebo" , "48 (82.2%)"
     )
+    # nolint end
 
     tfrmt_obj <- tfrmt(
         label = "lbl",
@@ -884,16 +910,19 @@ test_that("multi-positional alignment", {
         ) %>%
         apply_col_style_plan(tfrmt_obj)
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~lbl    , ~trt          , ~placebo      ,
         "18-65" , "15 (23.4 %)" , " 5  (3.8 %)" ,
         "66-82" , "34 (33.5 %)" , "48 (82.2%) " ,
     )
+    # nolint end
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_identical(dat_aligned, dat_aligned_man)
 
     # align on 3 positions - full plan
 
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~one   , ~column , ~value               ,
         "lbl1" , "two"   , " 12 (34%)"          ,
@@ -905,6 +934,7 @@ test_that("multi-positional alignment", {
         "lbl4" , "two"   , "(10, 20)"           ,
         "lbl4" , "three" , "(11, 22)"
     )
+    # nolint end
 
     tfrmt_obj <- tfrmt(
         label = one,
@@ -931,6 +961,7 @@ test_that("multi-positional alignment", {
         ) %>%
         apply_col_style_plan(tfrmt_obj)
 
+    # nolint start: commas_linter
     dat_aligned_man <- tibble::tribble(
         ~one   , ~two                , ~three              ,
         "lbl1" , "12   (34%)       " , "24   (58%)       " ,
@@ -938,14 +969,16 @@ test_that("multi-positional alignment", {
         "lbl3" , " 4.34            " , " 8.25            " ,
         "lbl4" , "     (10,   20)  " , "     (11,   22)  "
     )
+    # nolint end
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
 })
 
 test_that("multi-positional alignment detects inadequate inputs", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~lbl   , ~col    , ~val          ,
         "lbl1" , "two"   , " 12 (34%)"   ,
@@ -953,6 +986,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         "lbl2" , "two"   , " 12.3 (2.3)" ,
         "lbl2" , "three" , " 15.4 (5.4)"
     )
+    # nolint end
 
     tfrmt_obj <- tfrmt(
         label = lbl,
@@ -976,7 +1010,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         apply_col_style_plan(dat_wide, tfrmt_obj)
     )
 
-    expect_equal(
+    expect_identical(
         msgs,
         c(
             "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
@@ -984,6 +1018,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         )
     )
 
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~lbl   , ~col    , ~val           ,
         "lbl1" , "two"   , " 12(34%)"     ,
@@ -991,6 +1026,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         "lbl2" , "two"   , " 12.3(12.3%)" ,
         "lbl2" , "three" , " 15.4(15.4%)"
     )
+    # nolint end
 
     tfrmt_obj <- tfrmt(
         label = lbl,
@@ -1014,7 +1050,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         apply_col_style_plan(dat_wide, tfrmt_obj)
     )
 
-    expect_equal(
+    expect_identical(
         msgs,
         c(
             "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n",
@@ -1025,6 +1061,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
 
 
 test_that("helper for constructing positional alignment works", {
+    # nolint start: commas_linter
     dat <- tibble::tribble(
         ~lbl   , ~col    , ~param , ~val    ,
         "lbl1" , "two"   , "n"    , 12      ,
@@ -1036,6 +1073,7 @@ test_that("helper for constructing positional alignment works", {
         "lbl2" , "three" , "n"    , 15      ,
         "lbl2" , "three" , "pct"  , 15.354
     )
+    # nolint end
 
     tfrmt_obj <- tfrmt(
         label = lbl,
@@ -1064,7 +1102,7 @@ test_that("helper for constructing positional alignment works", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         display_val_frmts(
             tfrmt_obj,
             .data = dat,
