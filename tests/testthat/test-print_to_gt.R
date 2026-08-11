@@ -837,8 +837,8 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     )
 
     expect_identical(
-      gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
-      md("Title **bold**")
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        md("Title **bold**")
     )
 })
 
