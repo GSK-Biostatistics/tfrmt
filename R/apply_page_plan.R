@@ -211,7 +211,10 @@ apply_page_struct <- function(
         )
 
     # 1. check that only 1 page_structure contains a .default, drop extras
-    struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
+    struct_defaults_idx <- which(purrr::map_lgl(
+        page_struct_list,
+        detect_default
+    ))
     if (length(struct_defaults_idx) > 1) {
         struct_defaults_idx_drop <- struct_defaults_idx[
             -dplyr::last(struct_defaults_idx)
@@ -226,7 +229,10 @@ apply_page_struct <- function(
     # 2. get all the subsets of data
 
     # a) If applicable, split by any group/label vars set to ".default"
-    struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default)) # do this again post-dropping duplicates
+    struct_defaults_idx <- which(purrr::map_lgl(
+        page_struct_list,
+        detect_default
+    )) # do this again post-dropping duplicates
 
     if (length(struct_defaults_idx) > 0) {
         # split on all set to .default
@@ -257,7 +263,7 @@ apply_page_struct <- function(
             split_idx = purrr::map(.data$`..tfrmt_data`, function(x) {
                 purrr::map(page_struct_list, function(y) {
                     struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
-                        map_dbl(dplyr::last) # keep just the last one to split after
+                        purrr::map_dbl(dplyr::last) # keep just the last one to split after
                 }) %>%
                     unlist()
             })
@@ -266,7 +272,7 @@ apply_page_struct <- function(
     # determine where the splits should occur in data
     dat_split_2 <- dat_split_2_idx %>%
         dplyr::mutate(
-            `..tfrmt_data` = map2(
+            `..tfrmt_data` = purrr::map2(
                 .data$`..tfrmt_data`,
                 .data$split_idx,
                 function(x, y) {
@@ -400,7 +406,7 @@ combine_group_cols_mod <- function(
             dplyr::group_split()
 
         .data <- split_dat %>%
-            map_dfr(function(lone_dat) {
+            purrr::map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
                         `..tfrmt_summary_row_cur` = stringr::str_trim(
@@ -487,7 +493,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     )
 
     # check which are identical & add all that match to the data
-    check_eq <- map2_lgl(
+    check_eq <- purrr::map2_lgl(
         prev_summ_top_grp_vars,
         next_summ_top_grp_vars,
         function(x, y) {

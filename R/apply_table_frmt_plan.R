@@ -59,7 +59,7 @@ apply_table_frmt_plan <- function(
 
     ## apply formatting
     dat_plus_fmt %>%
-        map_dfr(function(x) {
+        purrr::map_dfr(function(x) {
             cur_fmt <- x %>%
                 dplyr::pull(.data$TEMP_fmt_to_apply) %>%
                 .[1] %>%

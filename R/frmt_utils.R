@@ -110,7 +110,7 @@ format.frmt_when <- function(x, ...) {
         "< frmt_when | ",
         "\n ",
         paste(
-            map2_chr(lhs, rhs, paste, sep = " ~ "),
+            purrr::map2_chr(lhs, rhs, paste, sep = " ~ "),
             collapse = "\n  "
         ),
         paste0("\n", "  Missing: ", x$missing),
@@ -277,14 +277,14 @@ frmt_combine_builder <- function(
 #' @noRd
 frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
-    frmt_vec_list <- map2(
+    frmt_vec_list <- purrr::map2(
         names(frmt_vec),
         frmt_vec,
         ~ list(param = .x %||% "", frmt = .y)
     )
 
     crossing(frmt_vec_list, grp_lbl_list) %>%
-        pmap(function(frmt_vec_list, grp_lbl_list) {
+        purrr::pmap(function(frmt_vec_list, grp_lbl_list) {
             if (
                 is.list(grp_lbl_list$group_val) &&
                     length(grp_lbl_list$group_val) == 1 &&

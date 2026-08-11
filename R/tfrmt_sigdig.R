@@ -57,7 +57,11 @@ param_set <- function(...) {
     args <- list(...)
 
     if (length(args) > 0) {
-        all_numeric_args <- map_lgl(args, ~ is.numeric(.) || is.na(.)) %>% all()
+        all_numeric_args <- purrr::map_lgl(
+            args,
+            ~ is.numeric(.) || is.na(.)
+        ) %>%
+            all()
         all_named_args <- names(args) %>% nchar() %>% all(. > 0)
         if (!all_numeric_args || !all_named_args) {
             stop("`param_set` entry must be named numeric vector.")
@@ -82,7 +86,7 @@ param_set <- function(...) {
     )
 
     idx_drop <- seq_along(param_list) %>%
-        map_dfr(
+        purrr::map_dfr(
             ~ tibble(
                 param_display = names(param_list)[.x],
                 params = stringr::str_extract_all(
@@ -96,7 +100,7 @@ param_set <- function(...) {
         ) %>%
         unnest("params", keep_empty = TRUE) %>%
         dplyr::mutate(
-            drop = map2_lgl(
+            drop = purrr::map2_lgl(
                 .data$param_display,
                 .data$params,
                 ~ (.x %in% args_params || .y %in% args_params)

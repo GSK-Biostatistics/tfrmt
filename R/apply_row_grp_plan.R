@@ -99,7 +99,7 @@ apply_row_grp_struct <- function(
         )
 
     # apply group block function to data subsets
-    add_ln_df <- map2_dfr(
+    add_ln_df <- purrr::map2_dfr(
         dat_plus_block$data,
         dat_plus_block$TEMP_block_to_apply,
         function(x, y) {
@@ -297,7 +297,7 @@ combine_group_cols <- function(
             purrr::map(~ dplyr::select(.x, -run_id))
 
         .data <- split_dat %>%
-            map_dfr(function(lone_dat) {
+            purrr::map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
                         ..tfrmt_summary_row = stringr::str_trim(

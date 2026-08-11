@@ -181,7 +181,7 @@ apply_frmt.frmt_combine <- function(
     }
 
     ## format params as needed
-    .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
+    .tmp_data <- purrr::map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
             dplyr::filter(!!param == stringr::str_remove_all(`__var`, "`")) %>%
