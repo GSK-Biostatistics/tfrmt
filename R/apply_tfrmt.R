@@ -309,11 +309,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
             check <- safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
                 cli::cli_abort(
-                    paste0(
-                        "Variable Specified in '",
-                        x,
-                        "' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
-                    ),
+                    "Variable Specified in '{x}' doesn't exist in the supplied dataset. Please check the tfrmt and try again.",
                     call = NULL
                 )
             }
@@ -325,11 +321,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
             check <- safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {
                 cli::cli_abort(
-                    paste0(
-                        "Variable Specified in '",
-                        x,
-                        "' doesn't exist in the supplied dataset. Please check the tfrmt and try again."
-                    ),
+                    "Variable Specified in '{x}' doesn't exist in the supplied dataset. Please check the tfrmt and try again.",
                     call = NULL
                 )
             }
@@ -441,12 +433,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             )
 
             cli::cli_inform(
-                paste0(
-                    "Multiple param listed for the same group/label values.\n",
-                    "The following frmt_structures may be missing from the body_plan\n",
-                    "or the order may need to be changed to:\n",
-                    suggested_frmt_structs
-                ),
+                "Multiple param listed for the same group/label values.\nThe following frmt_structures may be missing from the body_plan\nor the order may need to be changed to:\n{suggested_frmt_structs}",
                 class = "_tlang_missing_frmt_structs"
             )
         }

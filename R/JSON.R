@@ -19,7 +19,7 @@ tfrmt_to_json <- function(tfrmt, path = NULL) {
     output <- as_json(tfrmt)
 
     if (!is.null(path)) {
-        cli::cli_inform(paste0("Writing json file out to:\n", path))
+        cli::cli_inform("Writing json file out to:\n{path}")
         write(output, path)
     } else {
         return(output)

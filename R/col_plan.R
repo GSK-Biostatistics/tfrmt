@@ -151,10 +151,7 @@ check_span_structure_dots <- function(x) {
 
     if (is.null(x_names) || !all(nzchar(x_names))) {
         cli::cli_abort(
-            paste0(
-                "Entries of a span_stucture must be named:\n ",
-                format(caller_call())
-            ),
+            "Entries of a span_stucture must be named:\n {format(caller_call())}",
             call = caller_call()
         )
     }
@@ -175,15 +172,7 @@ check_span_structure_dots <- function(x) {
                         return(eval_tidy(x))
                     } else {
                         cli::cli_abort(
-                            message = paste0(
-                                "Invalid entry: `",
-                                format(x),
-                                "`\n",
-                                "Only selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
-                                " or unquoted expressions representing variable names ",
-                                " can be entered as contents.",
-                                " Changing the names of individual variables using new_name = old_name syntax is allowable"
-                            ),
+                            message = "Invalid entry: `{format(x)}`\nOnly selection helpers (See <https://tidyselect.r-lib.org/reference>),  or unquoted expressions representing variable names  can be entered as contents. Changing the names of individual variables using new_name = old_name syntax is allowable",
                             call = caller_call()
                         )
                     }
@@ -244,16 +233,7 @@ check_col_plan_dots <- function(x) {
                 return(eval_tidy(x))
             } else {
                 cli::cli_abort(
-                    paste0(
-                        "Invalid entry: `",
-                        format(x),
-                        "`\n",
-                        "Only span_structures (`span_structure()`), ",
-                        "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
-                        " or unquoted expressions representing variable names ",
-                        " can be entered as contents.",
-                        " Changing the names of individual variables using new_name = old_name syntax is allowable"
-                    ),
+                    "Invalid entry: `{format(x)}`\nOnly span_structures (`span_structure()`), selection helpers (See <https://tidyselect.r-lib.org/reference>),  or unquoted expressions representing variable names  can be entered as contents. Changing the names of individual variables using new_name = old_name syntax is allowable",
                     call = NULL
                 )
             }

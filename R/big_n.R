@@ -179,11 +179,10 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             warn_df <- multi_test |>
                 dplyr::select(-"n")
 
+            warn_vals <- deparse1(as.vector(as.matrix(warn_df)))
+
             cli::cli_warn(
-                paste0(
-                    "The following columns have multiple Big N's associated with them:\n",
-                    deparse1(as.vector(as.matrix(warn_df)))
-                ),
+                "The following columns have multiple Big N's associated with them:\n{warn_vals}",
                 call = NULL
             )
         }

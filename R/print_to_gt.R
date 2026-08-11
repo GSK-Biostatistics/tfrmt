@@ -89,12 +89,9 @@ print_mock_gt <- function(
             data = .data
         )
         if (!is.null(select_try$result)) {
+            value_label <- as_label(tfrmt$value)
             cli::cli_inform(
-                paste0(
-                    " Removing `",
-                    as_label(tfrmt$value),
-                    "` from input data for mocking."
-                )
+                " Removing `{value_label}` from input data for mocking."
             )
             .data <- .data[, -select_try$result$result]
         }

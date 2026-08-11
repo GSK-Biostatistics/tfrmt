@@ -330,11 +330,9 @@ reset_component <- function(tfrmt_obj, component_name) {
 
     # Check if the specified component exists in the list
     if (!component_name %in% names(tfrmt_obj)) {
-        cli::cli_abort(paste0(
-            "component '",
-            component_name,
-            "' does not exist in the tfrmt object."
-        ))
+        cli::cli_abort(
+            "component '{component_name}' does not exist in the tfrmt object."
+        )
     }
 
     # Reset the specified component by setting it to NULL

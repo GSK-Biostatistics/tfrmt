@@ -218,10 +218,7 @@ apply_page_struct <- function(
         ]
         page_struct_list <- page_struct_list[-struct_defaults_idx_drop]
         cli::cli_inform(
-            paste0(
-                "`page_plan` contains multiple `page_structures` with values set to \".default\". \n",
-                "Only the last one specified will be used."
-            )
+            "`page_plan` contains multiple `page_structures` with values set to \".default\". \nOnly the last one specified will be used."
         )
     }
 

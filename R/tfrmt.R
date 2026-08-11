@@ -365,13 +365,9 @@ quo_get <- function(
 
                 return(arg_val)
             } else {
+                error_msg <- paste0(" ", arg_call_results$error, collapse = "")
                 cli::cli_abort(
-                    paste0(
-                        "Error in evaluating argument `",
-                        arg,
-                        "`:\n",
-                        paste0(" ", arg_call_results$error, collapse = "")
-                    ),
+                    "Error in evaluating argument `{arg}`:\n{error_msg}",
                     call = frame_call(frame = envir)
                 )
             }
@@ -395,15 +391,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
         )
 
         cli::cli_abort(
-            paste0(
-                "Entries for `",
-                arg,
-                "` argument must be vars(), a character vector, or unquoted column name.\n",
-                "  Consider updating the argument input to `",
-                arg,
-                "` to:\n\t",
-                new_arg_call
-            ),
+            "Entries for `{arg}` argument must be vars(), a character vector, or unquoted column name.\n  Consider updating the argument input to `{arg}` to:\n\t{new_arg_call}",
             class = c("group_vars_error")
         )
     }
@@ -445,11 +433,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
     } else {
         if (length(x) > 1) {
             cli::cli_warn(
-                paste0(
-                    "Passed more than one quosure to the argument `",
-                    arg,
-                    "`. Selecting the first entry."
-                ),
+                "Passed more than one quosure to the argument `{arg}`. Selecting the first entry.",
                 class = "quo_greater_length_one"
             )
         }

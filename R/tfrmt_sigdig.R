@@ -270,11 +270,7 @@ tfrmt_sigdig <- function(
                 ""
             }
             cli::cli_abort(
-                paste0(
-                    "`sigdig_df` input does not contain any of the specified group/label params:\n",
-                    group_msg,
-                    label_msg
-                )
+                "`sigdig_df` input does not contain any of the specified group/label params:\n{group_msg}{label_msg}"
             )
         }
     }
@@ -293,11 +289,9 @@ tfrmt_sigdig <- function(
 
     if (!all(new_group_names %in% names(sigdig_df))) {
         grp <- setdiff(new_group_names, names(sigdig_df))
+        grp_str <- toString(grp)
         cli::cli_warn(
-            paste0(
-                "`sigdig_df` input does not contain the following group params: ",
-                toString(grp)
-            )
+            "`sigdig_df` input does not contain the following group params: {grp_str}"
         )
     }
 

@@ -43,12 +43,10 @@ row_grp_plan <- function(
 
     for (struct_idx in seq_along(row_grp_structure_list)) {
         if (!is_row_grp_structure(row_grp_structure_list[[struct_idx]])) {
-            cli::cli_abort(paste0(
-                "Entry number ",
-                struct_idx,
-                " is not an object of class `row_grp_structure`.
+            cli::cli_abort(
+                "Entry number {struct_idx} is not an object of class `row_grp_structure`.
                 If you want specify `spanning_label` please enter 'spanning_label ='"
-            ))
+            )
         }
     }
 

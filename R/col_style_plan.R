@@ -28,11 +28,9 @@ col_style_plan <- function(...) {
 
     for (el_idx in seq_along(structure_list)) {
         if (!is_col_style_structure(structure_list[[el_idx]])) {
-            cli::cli_abort(paste0(
-                "Entry number ",
-                el_idx,
-                " is not an object of class `col_style_structure`."
-            ))
+            cli::cli_abort(
+                "Entry number {el_idx} is not an object of class `col_style_structure`."
+            )
         }
     }
 

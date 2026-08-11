@@ -59,7 +59,7 @@ frmt_structure <- function(
     }
 
     if (!is_frmt(param_frmt[[1]])) {
-        cli::cli_abort(paste0("Entry is not an object of class `frmt`"))
+        cli::cli_abort("Entry is not an object of class `frmt`")
     }
 
     if (is.list(group_val)) {

@@ -20,12 +20,7 @@ check_column_and_col_plan <- function(x) {
         }
 
         cli::cli_abort(
-            paste0(
-                n_col_desc,
-                "but provided a span_structure() in `col_plan`.\n",
-                "span_structure()'s are only valid when multiple `column` values are provided.\n",
-                "Add values to `column` or remove span_structures from `col_plan()`"
-            ),
+            "{n_col_desc}but provided a span_structure() in `col_plan`.\nspan_structure()'s are only valid when multiple `column` values are provided.\nAdd values to `column` or remove span_structures from `col_plan()`",
             class = "_tfrmt_invalid_col_plan"
         )
     }
@@ -35,15 +30,15 @@ check_column_and_col_plan <- function(x) {
 
         for (struct in span_structs) {
             if (!all(vals <- names(struct) %in% column_strings)) {
+                column_values <- paste0("`", column_strings, "`", collapse = ", ")
+                invalid_col_names <- paste0(
+                    "`",
+                    names(struct)[!vals],
+                    "`",
+                    collapse = ", "
+                )
                 cli::cli_abort(
-                    paste0(
-                        "Columns defined in `span_structure` are not defined columns in the tfrmt\n",
-                        "Column Values: ",
-                        paste0("`", column_strings, "`", collapse = ", "),
-                        "\n",
-                        "Invalid Column Names in Span Structure: ",
-                        paste0("`", names(struct)[!vals], "`", collapse = ", ")
-                    ),
+                    "Columns defined in `span_structure` are not defined columns in the tfrmt\nColumn Values: {column_values}\nInvalid Column Names in Span Structure: {invalid_col_names}",
                     class = "_tfrmt_invalid_span_structure_col"
                 )
             }
@@ -301,13 +296,7 @@ check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
         if (!inherits(plan_element, plan)) {
             # display error message
             cli::cli_abort(
-                paste0(
-                    "Invalid input supplied to the `",
-                    plan,
-                    "` parameter. Please supply a `",
-                    plan,
-                    "()`."
-                ),
+                "Invalid input supplied to the `{plan}` parameter. Please supply a `{plan}()`.",
                 call = parent_env
             )
         }
@@ -325,9 +314,7 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
         if (!inherits(big_n_element, "big_n_structure")) {
             # display error message
             cli::cli_abort(
-                paste0(
-                    "Invalid input supplied to the `big_n` parameter. Please supply a `big_n_structure()`."
-                ),
+                "Invalid input supplied to the `big_n` parameter. Please supply a `big_n_structure()`.",
                 call = parent_env
             )
         }
