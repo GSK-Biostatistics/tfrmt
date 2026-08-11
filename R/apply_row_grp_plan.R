@@ -46,7 +46,7 @@ apply_row_grp_struct <- function(
 
     # similar to frmts, only allow 1 element_block for a given row
     #   - within block-specific data, split data further by grouping vars
-    dat_plus_block <- tibble(
+    dat_plus_block <- tibble::tibble(
         TEMP_appl_row,
         TEMP_block_to_apply
     ) %>%
@@ -309,7 +309,7 @@ combine_group_cols <- function(
                     )
 
                 if (any(lone_dat_summ$..tfrmt_summary_row)) {
-                    new_row <- tibble()
+                    new_row <- tibble::tibble()
                 } else {
                     # if the set of rows contains NO group-level summary data, create an
                     # extra row to be added
@@ -330,7 +330,7 @@ combine_group_cols <- function(
                             )
                         ) %>%
                         dplyr::slice(0) %>%
-                        add_row() %>%
+                        tibble::add_row() %>%
                         dplyr::mutate(
                             dplyr::across(
                                 #convert NULL to NA in list-cols

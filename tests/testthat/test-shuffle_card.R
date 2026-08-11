@@ -83,7 +83,7 @@ test_that("shuffle_card message if bind_ard is used without a supplied by argume
             variables = "AGE",
             statistic = ~ cards::continuous_summary_fns("mean")
         ),
-        dplyr::tibble(
+        tibble::tibble(
             group1 = "ARM",
             variable = "AGE",
             stat_name = "p",
@@ -109,7 +109,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 variables = "AGE",
                 statistic = ~ cards::continuous_summary_fns("mean")
             ),
-            dplyr::tibble(
+            tibble::tibble(
                 group1 = "ARM",
                 variable = "AGE",
                 stat_name = "p",
@@ -131,7 +131,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 variables = "AGE",
                 statistic = ~ cards::continuous_summary_fns("mean")
             ),
-            dplyr::tibble(
+            tibble::tibble(
                 group1 = "ARM",
                 variable = "AGE",
                 stat_name = "p",
@@ -500,7 +500,7 @@ test_that("shuffle_card() fills with multiple `by` columns", {
 })
 
 test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
-    test_data <- dplyr::tibble(
+    test_data <- tibble::tibble(
         ARM = c("..cards_overall..", "Overall ARM", NA, "BB", NA),
         TRTA = c(NA, NA, "..hierarchical_overall..", "C", "C")
     )

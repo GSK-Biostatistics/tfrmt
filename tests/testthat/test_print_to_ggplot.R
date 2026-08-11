@@ -1,6 +1,6 @@
 test_that("inputs are as expected", {
     # create test data
-    risk <- tibble(
+    risk <- tibble::tibble(
         time = c(rep(c(0, 1000, 2000, 3000), 3)),
         label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
         value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
@@ -97,14 +97,14 @@ test_that("group columns are created correctly", {
         )
     )
 
-    test_data <- tibble(
+    test_data <- tibble::tibble(
         time = c(rep(c(0, 1000, 2000, 3000), 3)),
         label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
         value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
         param = rep("n", 12),
         group = "A"
     )
-    expected_data <- tibble(
+    expected_data <- tibble::tibble(
         label = c(
             "A",
             rep("    Obs", 4),
@@ -122,7 +122,7 @@ test_that("group columns are created correctly", {
 
 test_that("tfrmt is as expected", {
     # create test data
-    test_data <- tibble(
+    test_data <- tibble::tibble(
         time = c(rep(c(0, 1000, 2000, 3000), 3)),
         label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
         value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
@@ -254,7 +254,7 @@ test_that("column type has been preserved", {
     })
 
     # continuous mock data
-    risk <- tibble(
+    risk <- tibble::tibble(
         time = c(rep(c(0, 1000, 2000, 3000), 3)),
         label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
         value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
