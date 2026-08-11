@@ -295,11 +295,11 @@ apply_frmt.frmt_combine <- function(
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
         frmt_to_prt <- frmt_def$frmt_ls %>%
-            keep(~ f_lhs(.) == "TRUE")
+            keep(~ rlang::f_lhs(.) == "TRUE")
         if (length(frmt_to_prt) < 1) {
             frmt_to_prt <- frmt_def$frmt_ls
         }
-        str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
+        str_to_prnt <- rlang::f_rhs(frmt_to_prt[[1]])$expression
         out <- .data %>%
             dplyr::mutate(
                 !!value := str_to_prnt
@@ -310,7 +310,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
-            map(f_rhs) %>%
+            map(rlang::f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
                     out <- x %>%

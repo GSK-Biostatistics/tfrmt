@@ -129,7 +129,7 @@ as_json.frmt <- function(x) {
 #' @export
 as_json.frmt_when <- function(x) {
     lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>% map(as_json)
+    rhs <- map(x$frmt_ls, rlang::f_rhs) %>% map(as_json)
     names(rhs) <- lhs
     list(frmt_when = list(frmt_ls = rhs, missing = x$missing))
 }

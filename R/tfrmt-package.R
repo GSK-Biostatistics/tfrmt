@@ -20,12 +20,8 @@
 #' @importFrom purrr map_dfr map_lgl map2 map2_chr map2_dfr map2_lgl pmap
 #' @importFrom purrr pmap_chr reduce quietly safely
 #'
-#' @importFrom rlang abort
-#' @importFrom rlang .data
-#' @importFrom rlang f_lhs f_rhs f_rhs<- inform
-#' @importFrom rlang list2
-#' @importFrom rlang warn
-#' @importFrom rlang := !! !!! %||%
+#' @importFrom rlang abort inform warn
+#' @importFrom rlang .data := !! !!! %||%
 #'
 #' @importFrom stats as.formula setNames
 #'
