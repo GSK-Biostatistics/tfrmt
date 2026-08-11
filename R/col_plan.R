@@ -153,9 +153,9 @@ check_span_structure_dots <- function(x) {
         abort(
             paste0(
                 "Entries of a span_stucture must be named:\n ",
-                format(caller_call())
+                format(rlang::caller_call())
             ),
-            call = caller_call()
+            call = rlang::caller_call()
         )
     }
 
@@ -184,7 +184,7 @@ check_span_structure_dots <- function(x) {
                                 " can be entered as contents.",
                                 " Changing the names of individual variables using new_name = old_name syntax is allowable"
                             ),
-                            call = caller_call()
+                            call = rlang::caller_call()
                         )
                     }
                 } else if (is.character(x)) {
@@ -192,7 +192,7 @@ check_span_structure_dots <- function(x) {
                 } else {
                     abort(
                         "Unexpected entry type in span_structure()",
-                        call = caller_call()
+                        call = rlang::caller_call()
                     )
                 }
             })
