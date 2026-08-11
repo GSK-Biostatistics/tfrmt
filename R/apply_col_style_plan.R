@@ -51,7 +51,7 @@ apply_col_style_plan <- function(
             )] %>%
                 map(list) %>%
                 as_tibble() %>%
-                bind_cols(
+                dplyr::bind_cols(
                     tibble(col = unlist(col_selections))
                 )
             total_col_style_selection <- c(
@@ -62,20 +62,22 @@ apply_col_style_plan <- function(
     }
 
     if (length(total_col_style_selection) > 0) {
-        total_col_styles <- bind_rows(total_col_style_selection) %>%
-            group_by(col) %>%
-            slice(n()) %>%
-            ungroup()
+        total_col_styles <- dplyr::bind_rows(total_col_style_selection) %>%
+            dplyr::group_by(col) %>%
+            dplyr::slice(
+                dplyr::n()
+            ) %>%
+            dplyr::ungroup()
 
         for (col_style_idx in seq_len(nrow(total_col_styles))) {
             col_style_to_apply <- total_col_styles %>%
-                slice(col_style_idx) %>%
+                dplyr::slice(col_style_idx) %>%
                 as.list()
 
             col_to_modify <- col_style_to_apply$col %>% char_as_quo()
 
             .data <- .data %>%
-                mutate(
+                dplyr::mutate(
                     !!col_to_modify := apply_style_to_col(
                         !!col_to_modify,
                         col_style_to_apply[setdiff(
@@ -96,7 +98,15 @@ apply_col_style_plan <- function(
 
 # function to get all columns the col_style_structure applies to
 col_style_selections <- function(selection, column_names, col_plan_vars) {
-    if (!is_span_structure(selection[[1]])) {
+    if (is_span_structure(selection[[1]])) {
+        col_selection <- col_plan_span_structure_to_vars(
+            x = selection,
+            column_names = column_names,
+            data_names = c(),
+            preselected_cols = col_plan_vars %>% map_chr(as_label),
+            return_only_selected = TRUE
+        )
+    } else {
         col_selection <- col_plan_quo_to_vars(
             x = selection,
             column_names = column_names,
@@ -105,14 +115,6 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             return_only_selected = TRUE,
             default_everything_behavior = TRUE
         )
-    } else {
-        col_selection <- col_plan_span_structure_to_vars(
-            x = selection,
-            column_names = column_names,
-            data_names = c(),
-            preselected_cols = col_plan_vars %>% map_chr(as_label),
-            return_only_selected = TRUE
-        )
     }
 
     col_selection <- col_selection[!startsWith(col_selection, "-")]
@@ -120,9 +122,9 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
     ## use names if they exist, else use content
     if (!is.null(names(col_selection))) {
         col_sel_names <- names(col_selection)
-        if (any(col_sel_names == "")) {
-            col_sel_names[col_sel_names == ""] <- col_selection[
-                col_sel_names == ""
+        if (!all(nzchar(col_sel_names))) {
+            col_sel_names[!nzchar(col_sel_names)] <- col_selection[
+                !nzchar(col_sel_names)
             ]
         }
         col_selection <- col_sel_names
@@ -188,7 +190,27 @@ apply_col_alignment <- function(col, align, type = "char") {
 #'
 #' @noRd
 apply_col_alignment_char <- function(col, align) {
-    if (!all(align %in% c("left", "right"))) {
+    if (all(align %in% c("left", "right"))) {
+        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
+            dplyr::mutate(
+                string_col = nchar(.data$col),
+                string_tot = max(.data$string_col),
+                space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
+            )
+        if (align == "left") {
+            tbl_dat <- tibble(
+                add_left = "",
+                add_right = tbl_dat$space_to_add
+            ) %>%
+                dplyr::bind_cols(tbl_dat, .)
+        } else {
+            tbl_dat <- tibble(
+                add_left = tbl_dat$space_to_add,
+                add_right = ""
+            ) %>%
+                dplyr::bind_cols(tbl_dat, .)
+        }
+    } else {
         align <- ifelse(
             str_detect(align, "[[:alnum:]]"),
             paste0("\"", align, "\""),
@@ -205,36 +227,21 @@ apply_col_alignment_char <- function(col, align) {
                 fill = "right",
                 remove = FALSE
             ) %>%
-            mutate(across(c("add_left", "add_right"), function(x) {
-                replace_na(x, "") %>%
-                    nchar() %>%
-                    {
-                        max(.) - .
-                    } %>%
-                    {
-                        str_dup(" ", .)
+            dplyr::mutate(
+                dplyr::across(
+                    c("add_left", "add_right"),
+                    function(x) {
+                        replace_na(x, "") %>%
+                            nchar() %>%
+                            {
+                                max(.) - .
+                            } %>%
+                            {
+                                str_dup(" ", .)
+                            }
                     }
-            }))
-    } else {
-        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
-            mutate(
-                string_col = nchar(.data$col),
-                string_tot = max(.data$string_col),
-                space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
+                )
             )
-        if (align == "left") {
-            tbl_dat <- tibble(
-                add_left = "",
-                add_right = tbl_dat$space_to_add
-            ) %>%
-                bind_cols(tbl_dat, .)
-        } else {
-            tbl_dat <- tibble(
-                add_left = tbl_dat$space_to_add,
-                add_right = ""
-            ) %>%
-                bind_cols(tbl_dat, .)
-        }
     }
 
     str_c(
@@ -256,7 +263,7 @@ apply_col_alignment_pos <- function(col, align) {
         col = trimws(col),
         col_as_x = str_replace_all(col, "[0-9]", "x")
     ) %>% # convert column values to x's
-        left_join(
+        dplyr::left_join(
             tibble(
                 align = trimws(align),
                 col_as_x = str_replace_all(align, "\\|", "")
@@ -277,11 +284,13 @@ apply_col_alignment_pos <- function(col, align) {
 
     # account for any with missing align strings
     col_with_align <- col_with_align %>%
-        mutate(
+        dplyr::mutate(
             align = ifelse(is.na(.data$align), .data$col_as_x, .data$align)
         ) %>%
-        select(-"col_as_x") %>%
-        mutate(n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1)
+        dplyr::select(-"col_as_x") %>%
+        dplyr::mutate(
+            n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1
+        )
 
     # get the maximum number of splits to make
     # ignore any |'s that have been escaped by user
@@ -290,7 +299,7 @@ apply_col_alignment_pos <- function(col, align) {
     # create splits on the align vec at the |'s and count the number of chars for each
     # this will be used to help us split the col by position
     col_with_pos <- col_with_align %>%
-        mutate(col_idx = row_number()) %>%
+        dplyr::mutate(col_idx = dplyr::row_number()) %>%
         separate(
             "align",
             into = paste0("col_split_", 1:n_split_levs_max),
@@ -305,13 +314,13 @@ apply_col_alignment_pos <- function(col, align) {
             names_to = "col_split_lev",
             values_to = "col_split_val"
         ) %>%
-        arrange(.data$col_idx, .data$col_split_lev) %>%
-        group_by(.data$col_idx) %>%
-        mutate(
+        dplyr::arrange(.data$col_idx, .data$col_split_lev) %>%
+        dplyr::group_by(.data$col_idx) %>%
+        dplyr::mutate(
             col_split_end = nchar(.data$col_split_val) %>% cumsum(),
-            col_split_start = case_when(
+            col_split_start = dplyr::case_when(
                 is.na(.data$col_split_val) ~ NA,
-                TRUE ~ lag(.data$col_split_end, default = 0) + 1
+                TRUE ~ dplyr::lag(.data$col_split_end, default = 0) + 1
             ),
             col_split_lev = gsub("col_split_", "", .data$col_split_lev) %>%
                 as.numeric()
@@ -325,20 +334,20 @@ apply_col_alignment_pos <- function(col, align) {
     #  - if > first substring, split will occur on 1st identified space (if available).
     #       padding will be added to the left of 2nd piece
     col_with_splits <- col_with_pos %>%
-        mutate(
+        dplyr::mutate(
             col_sub = substr(
                 .data$col,
                 .data$col_split_start,
                 .data$col_split_end
             ),
-            col_sub_1 = case_when(
+            col_sub_1 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
                 !str_detect(.data$col_sub, " ") &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
                 TRUE ~ str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space
-            col_sub_2 = case_when(
+            col_sub_2 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ .data$col_sub, # first substring so put the whole thing here
                 .data$col_split_lev == .data$n_split_levs ~ NA_character_, # last substring, nothing to left-pad
                 TRUE ~ str_extract(.data$col_sub, "(?= ).*")
@@ -347,8 +356,8 @@ apply_col_alignment_pos <- function(col, align) {
 
     # within each split level, find the # of chars it needs to take up, then left pad
     col_left_padded00 <- col_with_splits %>%
-        group_by(.data$col_split_lev) %>%
-        mutate(
+        dplyr::group_by(.data$col_split_lev) %>%
+        dplyr::mutate(
             to_add_left = nchar(.data$col_sub) %>%
                 {
                     max(., na.rm = TRUE) - .
@@ -360,18 +369,14 @@ apply_col_alignment_pos <- function(col, align) {
 
     # notify user if left padding was intended but no space found
     col_left_padded01 <- col_left_padded00 %>%
-        mutate(
-            no_space = ifelse(
-                (.data$col_split_lev > 1 &
-                    .data$col_split_lev < .data$n_split_levs) & # not the first or final level
-                    (is.na(.data$col_sub_2)) & # unable to split on a space
-                    (.data$col_sub != "") & # there is actually a value there
-                    (nchar(.data$to_add_left) > 0), # there is postive padding
-                TRUE,
-                FALSE
-            ),
+        dplyr::mutate(
+            no_space = (.data$col_split_lev > 1 &
+                .data$col_split_lev < .data$n_split_levs) & # not the first or final level
+                (is.na(.data$col_sub_2)) & # unable to split on a space
+                (nzchar(.data$col_sub, keepNA = TRUE)) & # there is actually a value there
+                (nzchar(.data$to_add_left)), # there is postive padding
             to_add_left = ifelse(.data$no_space, "", .data$to_add_left),
-            across(
+            dplyr::across(
                 c("col_sub_1", "to_add_left", "col_sub_2"),
                 ~ replace_na(., "")
             ),
@@ -382,7 +387,7 @@ apply_col_alignment_pos <- function(col, align) {
             )
         )
 
-    if (nrow(filter(col_left_padded01, .data$no_space)) > 0) {
+    if (nrow(dplyr::filter(col_left_padded01, .data$no_space)) > 0) {
         message(
             "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value"
         )
@@ -391,9 +396,11 @@ apply_col_alignment_pos <- function(col, align) {
     # collapse back to 1 rec per formatted string
     # & pad the right hand side
     col_left_padded_sum <- col_left_padded01 %>%
-        group_by(.data$col_idx) %>%
-        summarise(col = paste0(.data$col_sub_out, collapse = "")) %>%
-        mutate(
+        dplyr::group_by(.data$col_idx) %>%
+        dplyr::summarise(
+            col = paste(.data$col_sub_out, collapse = "")
+        ) %>%
+        dplyr::mutate(
             to_add_right = .data$col %>%
                 nchar() %>%
                 {

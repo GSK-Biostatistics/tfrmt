@@ -117,7 +117,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 stat = list(0.05)
             )
         ) |>
-            dplyr::filter(dplyr::row_number() <= 5L) |>
+            dplyr::filter(
+                dplyr::row_number() <= 5L
+            ) |>
             shuffle_card()
     )
 
@@ -137,7 +139,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 stat = list(0.05)
             )
         ) |>
-            dplyr::filter(dplyr::row_number() <= 5L) |>
+            dplyr::filter(
+                dplyr::row_number() <= 5L
+            ) |>
             shuffle_card(by = "ARM")
     )
 
@@ -222,7 +226,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
 
     # fills with a unique group value if one already exists in the df
     adsl_new <- cards::ADSL |>
-        dplyr::mutate(ARM = ifelse(ARM == "Placebo", "Overall ARM", ARM))
+        dplyr::mutate(
+            ARM = ifelse(ARM == "Placebo", "Overall ARM", ARM)
+        )
     expect_snapshot(
         cards::bind_ard(
             cards::ard_continuous(
@@ -263,7 +269,9 @@ test_that("shuffle_card doesn't trim off NULL/NA values", {
 
 test_that("shuffle_card coerces all factor groups/variables to character", {
     adsl_ <- cards::ADSL |>
-        dplyr::mutate(RACE = factor(RACE))
+        dplyr::mutate(
+            RACE = factor(RACE)
+        )
 
     res <- cards::ard_categorical(
         data = adsl_,
@@ -280,11 +288,11 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
     expect_true(all(res_classes == "character"))
 
     # correct coersion
-    expect_equal(
+    expect_identical(
         sort(unique(res$RACE)),
         sort(unique(as.character(adsl_$RACE)))
     )
-    expect_equal(
+    expect_identical(
         sort(unique(res$ETHNIC)),
         sort(unique(as.character(adsl_$ETHNIC)))
     )

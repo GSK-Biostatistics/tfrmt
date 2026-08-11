@@ -46,12 +46,12 @@ tfrmt_spec <- tfrmt(
 
 # Create data
 df <- tidyr::crossing(
-    label = c("label 1", "label 2"),
-    column = c("placebo", "trt1"),
-    param = c("count", "percent")
-) |>
+        label = c("label 1", "label 2"),
+        column = c("placebo", "trt1"),
+        param = c("count", "percent")
+    ) |>
     dplyr::mutate(
-        value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+        value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
     )
 
 print_to_gt(tfrmt_spec,df)
@@ -62,4 +62,3 @@ print_to_gt(tfrmt_spec,df)
 <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png" alt = "2 by 2 table with labels down the side and placebo and trt1 across the top" style="width:50\%;">
 }}
 }
-

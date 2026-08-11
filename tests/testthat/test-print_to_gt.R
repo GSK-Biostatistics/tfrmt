@@ -11,15 +11,15 @@ test_that("convert_ws_unicode works as expected", {
     # test that metadata is present in gt ready to apply transform
 
     # columns to apply to
-    expect_equal(
+    expect_identical(
         gt_with_unicode$`_transforms`[[1]]$resolved$colnames,
         c("group", "value")
     )
 
     # rows to apply to
-    expect_equal(
+    expect_identical(
         gt_with_unicode$`_transforms`[[1]]$resolved$rows,
-        1
+        1L
     )
 
     # function to apply
@@ -46,7 +46,7 @@ test_that("convert_ws_unicode works as expected", {
         "trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0"
     )
 
-    expect_equal(
+    expect_identical(
         whitespace_function(test_strings),
         unicode_strings
     )

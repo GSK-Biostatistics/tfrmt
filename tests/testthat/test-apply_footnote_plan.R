@@ -58,7 +58,7 @@ test_that("applying footnote plan", {
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "spanning")
-        ),
+        )
     ) %>%
         print_to_gt(es_data)
 
@@ -94,12 +94,12 @@ test_that("applying footnote plan", {
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
-        ),
+        )
     )
 
     gt1 <- apply_footnote_plan(gt_start, tfrmt1, list())
 
-    expect_equal(nrow(gt1$`_footnotes`), 0)
+    expect_identical(nrow(gt1$`_footnotes`), 0L)
 
     # source footnote #################################################################
 
@@ -146,7 +146,7 @@ test_that("applying footnote plan", {
         list(list(col = NULL, spanning = FALSE, note = "Source Note"))
     )
 
-    expect_equal(gt2$`_footnotes`$footnotes, list("Source Note"))
+    expect_identical(gt2$`_footnotes`$footnotes, list("Source Note"))
 
     # column footnote ##################################################################
 
@@ -182,12 +182,14 @@ test_that("applying footnote plan", {
         tfrmt3,
         list(list(col = "Placebo", spanning = FALSE, note = "Test foontote 2"))
     )
-    expect_equal(nrow(gt3$`_footnotes`), 1)
+    expect_identical(nrow(gt3$`_footnotes`), 1L)
 
     # spanner footnote ##################################################################
 
     es_data2 <- es_data %>%
-        mutate(col2 = "Treatment column")
+        dplyr::mutate(
+            col2 = "Treatment column"
+        )
 
     gt_start2 <- tfrmt(
         # specify columns in the data
@@ -219,7 +221,7 @@ test_that("applying footnote plan", {
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
-        ),
+        )
     ) %>%
         print_to_gt(es_data2)
 
@@ -272,7 +274,7 @@ test_that("applying footnote plan", {
             note = "Test foontote 3"
         ))
     )
-    expect_equal(nrow(gt4$`_footnotes`), 1)
+    expect_identical(nrow(gt4$`_footnotes`), 1L)
 
     # body footnote ##################################################################
 
@@ -318,7 +320,7 @@ test_that("applying footnote plan", {
             note = "Test foontote 2"
         ))
     )
-    expect_equal(nrow(gt5$`_footnotes`), 1)
+    expect_identical(nrow(gt5$`_footnotes`), 1L)
 
     # stub footnote ##################################################################
     tfrmt6 <- tfrmt(
@@ -368,7 +370,7 @@ test_that("applying footnote plan", {
             note = "Test foontote"
         ))
     )
-    expect_equal(nrow(gt6$`_footnotes`), 2)
+    expect_identical(nrow(gt6$`_footnotes`), 2L)
 
     # group footnote ##################################################################
 
@@ -424,7 +426,7 @@ test_that("applying footnote plan", {
             note = "Test foontote"
         ))
     )
-    expect_equal(nrow(gt7$`_footnotes`), 1)
+    expect_identical(nrow(gt7$`_footnotes`), 1L)
 })
 
 
@@ -464,9 +466,9 @@ test_that("Check footnote order option works as expected", {
     })
 
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
-    expect_equal(current_order_opt, "marks_first")
+    expect_identical(current_order_opt, "marks_first")
 
-    #check the footnotes are all printed
+    # check the footnotes are all printed
     actual_fns <- gt_out$`_footnotes`$footnotes
 
     expected_fns <- c(
@@ -476,9 +478,12 @@ test_that("Check footnote order option works as expected", {
         "label_1 footnote"
     )
 
-    expect_equal(as.character(actual_fns), expected_fns)
+    expect_identical(
+        as.character(actual_fns),
+        expected_fns
+    )
 
-    #check preserve_order
+    # check preserve_order
     tfrmt_ord <- tfrmt_ord |>
         tfrmt(
             footnote_plan = footnote_plan(
@@ -499,7 +504,7 @@ test_that("Check footnote order option works as expected", {
     })
 
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
-    expect_equal(current_order_opt, "preserve_order")
+    expect_identical(current_order_opt, "preserve_order")
 
     # check marks last
     tfrmt_ord <- tfrmt_ord |>
@@ -522,5 +527,5 @@ test_that("Check footnote order option works as expected", {
     })
 
     current_order_opt <- gt_out[["_options"]][["value"]][[1]]
-    expect_equal(current_order_opt, "marks_last")
+    expect_identical(current_order_opt, "marks_last")
 })

@@ -6,7 +6,7 @@ test_that("setting param sigdig defaults", {
         "{mean} ({sd})" = c(1, 2),
         n = NA
     )
-    expect_equal(param_set(), defaults)
+    expect_identical(param_set(), defaults)
 
     # nolint start: yoda_test_linter
     expect_equal(
@@ -24,7 +24,7 @@ test_that("setting param sigdig defaults", {
     )
     # nolint end
 
-    expect_equal(
+    expect_identical(
         param_set(new_prm = 4),
         list(
             min = 1,
@@ -36,7 +36,7 @@ test_that("setting param sigdig defaults", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         param_set(mean = 0),
         list(
             min = 1,
@@ -66,7 +66,7 @@ test_that("build frmt objects", {
         param = c("mean", "sd"),
         frmt_string = c("xx.x", "xx.xx")
     )
-    expect_equal(
+    expect_identical(
         frmt_spec,
         list(
             mean = frmt("xx.x"),
@@ -79,7 +79,7 @@ test_that("build frmt objects", {
         frmt_string = c("xx.x", "xx.xx"),
         missing = "--"
     )
-    expect_equal(
+    expect_identical(
         frmt_spec,
         list(
             mean = frmt("xx.x", missing = "--"),
@@ -92,7 +92,7 @@ test_that("build frmt objects", {
         missing = "--"
     )
 
-    expect_equal(
+    expect_identical(
         frmt_spec,
         list(
             frmt("xx.x", missing = "--"),
@@ -113,7 +113,7 @@ test_that("build frmt objects", {
         sd = frmt("xx.xx", missing = "-"),
         missing = "-"
     ))
-    expect_equal(frmt_spec, frmt_string)
+    expect_identical(frmt_spec, frmt_string)
 
     # frmt_structure
     frmt_list <- list(
@@ -149,7 +149,7 @@ test_that("build frmt objects", {
         )
     )
 
-    expect_equal(frmt_spec, frmt_string)
+    expect_identical(frmt_spec, frmt_string)
 
     frmt_spec <- frmt_structure_builder(
         group_val = ".default",
@@ -174,7 +174,7 @@ test_that("build frmt objects", {
             n = frmt("xxx")
         )
     )
-    expect_equal(frmt_spec, frmt_string)
+    expect_identical(frmt_spec, frmt_string)
 
     # build contents of body_plan for a given sigdig value
     # nolint start: commas_linter
@@ -222,7 +222,7 @@ test_that("build frmt objects", {
             n = frmt("x")
         )
     )
-    expect_equal(bp_1grp_1lbl, bp_1grp_1lbl_man)
+    expect_identical(bp_1grp_1lbl, bp_1grp_1lbl_man)
 
     # 2 groups, no label
     bp_2grp_0lbl <- body_plan_builder(
@@ -272,7 +272,7 @@ test_that("build frmt objects", {
             n = frmt("x")
         )
     )
-    expect_equal(bp_2grp_0lbl, bp_2grp_0lbl_man)
+    expect_identical(bp_2grp_0lbl, bp_2grp_0lbl_man)
 
     # custom params
     bp_prm <- body_plan_builder(
@@ -321,7 +321,7 @@ test_that("build frmt objects", {
             pct = frmt("x.x%")
         )
     )
-    expect_equal(bp_prm, bp_prm_man)
+    expect_identical(bp_prm, bp_prm_man)
 
     # custom params
     bp_prm <- body_plan_builder(
@@ -362,7 +362,7 @@ test_that("build frmt objects", {
         )
     )
 
-    expect_equal(bp_prm, bp_prm_man)
+    expect_identical(bp_prm, bp_prm_man)
 })
 
 test_that("no redundant frmt_structures", {
@@ -467,7 +467,7 @@ test_that("no redundant frmt_structures", {
             n = frmt("x")
         )
     )
-    expect_equal(bp, bp_man)
+    expect_identical(bp, bp_man)
 
     # nolint start: commas_linter
     dat_sigdig <- tibble::tribble(
@@ -663,7 +663,7 @@ test_that("no redundant frmt_structures", {
         )
     )
 
-    expect_equal(bp, bp_man)
+    expect_identical(bp, bp_man)
 })
 
 
@@ -728,7 +728,7 @@ test_that("varying group/label inputs", {
         ignore_attr = TRUE
     )
 
-    expect_equal(
+    expect_identical(
         t_out$label,
         quo()
     )
@@ -834,7 +834,7 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
         )
     )
 
-    expect_equal(bp, bp_man)
+    expect_identical(bp, bp_man)
 
     expect_warning(
         bp <- tfrmt_sigdig(
@@ -894,7 +894,7 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
         )
     )
 
-    expect_equal(bp, bp_man)
+    expect_identical(bp, bp_man)
 })
 
 test_that("tfrmt_sigdig can be layered onto another tfrmt", {
@@ -918,11 +918,11 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
         tfrmt_obj = prev_tfrmt
     )
 
-    expect_equal(
+    expect_identical(
         new_tfrmt$group,
         prev_tfrmt$group
     )
-    expect_equal(
+    expect_identical(
         new_tfrmt$lblvar,
         prev_tfrmt$lblvar
     )
@@ -972,7 +972,7 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
         )
     )
 
-    expect_equal(new_tfrmt$body_plan, bp_man)
+    expect_identical(new_tfrmt$body_plan, bp_man)
 
     prev_tfrmt <- tfrmt(
         group = somegrp,
@@ -1053,5 +1053,5 @@ test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan
         )
     )
 
-    expect_equal(bp_actual, bp_man)
+    expect_identical(bp_actual, bp_man)
 })

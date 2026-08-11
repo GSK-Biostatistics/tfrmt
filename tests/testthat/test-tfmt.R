@@ -5,12 +5,12 @@ test_that("basic tfrmt - title", {
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
-    expect_equal(t_frmt$group, vars())
-    expect_equal(t_frmt$label, quo())
-    expect_equal(t_frmt$param, quo())
-    expect_equal(t_frmt$value, quo())
-    expect_equal(t_frmt$column, vars())
+    expect_identical(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$group, vars())
+    expect_identical(t_frmt$label, quo())
+    expect_identical(t_frmt$param, quo())
+    expect_identical(t_frmt$value, quo())
+    expect_identical(t_frmt$column, vars())
 })
 
 test_that("basic tfrmt - selecting group/label/param/value/column - quo", {
@@ -25,7 +25,7 @@ test_that("basic tfrmt - selecting group/label/param/value/column - quo", {
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1), ignore_attr = TRUE)
     expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
     expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
@@ -45,7 +45,7 @@ test_that("basic tfrmt - selecting group/label/param/value/column - quo into var
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1), ignore_attr = TRUE)
     expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
     expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
@@ -65,7 +65,7 @@ test_that("basic tfrmt - selecting group/label/param/value/column - char", {
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1), ignore_attr = TRUE)
     expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
     expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
@@ -84,7 +84,7 @@ test_that("basic tfrmt - selecting group/label/param/value/column - bare", {
     )
 
     expect_s3_class(t_frmt, "tfrmt")
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
     expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
     expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
@@ -104,7 +104,7 @@ test_that("basic tfrmt - length one quo warning", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         single_warning,
         paste0(
             "Passed more than one quosure to the argument `",
@@ -124,7 +124,7 @@ test_that("basic tfrmt - length one quo warning", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         multi_warning,
         c(
             "Passed more than one quosure to the argument `label`. Selecting the first entry.",
@@ -174,21 +174,21 @@ test_that("layering tfrmt - default table elements - func/tfrmt", {
         "tfrmt"
     )
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$title,
         "Table Title"
     )
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$subtitle,
         "Table Subtitle"
     )
 
-    expect_equal(t_frmt_layered$group, vars())
-    expect_equal(t_frmt_layered$label, quo())
-    expect_equal(t_frmt_layered$param, quo())
-    expect_equal(t_frmt_layered$value, quo())
-    expect_equal(t_frmt_layered$column, vars())
+    expect_identical(t_frmt_layered$group, vars())
+    expect_identical(t_frmt_layered$label, quo())
+    expect_identical(t_frmt_layered$param, quo())
+    expect_identical(t_frmt_layered$value, quo())
+    expect_identical(t_frmt_layered$column, vars())
 })
 
 test_that("layering tfrmt - select latest table elements", {
@@ -205,8 +205,8 @@ test_that("layering tfrmt - select latest table elements", {
         )
 
     expect_s3_class(t_frmt_layered, "tfrmt")
-    expect_equal(t_frmt_layered$title, "Table Title 2")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title 2")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
 })
 
 test_that("layering tfrmt - body style elements", {
@@ -234,8 +234,8 @@ test_that("layering tfrmt - body style elements", {
 
     expect_s3_class(t_frmt_layered, "tfrmt")
 
-    expect_equal(t_frmt_layered$title, "Table Title")
-    expect_equal(
+    expect_identical(t_frmt_layered$title, "Table Title")
+    expect_identical(
         t_frmt_layered$body_plan,
         body_plan(
             frmt_structure(
@@ -280,10 +280,10 @@ test_that("layering tfrmt - body style elements - multiple", {
 
     expect_s3_class(t_frmt_layered, "tfrmt")
 
-    expect_equal(t_frmt_layered$title, "Table Title")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$body_plan,
         body_plan(
             frmt_structure(
@@ -333,10 +333,10 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE", {
 
     expect_s3_class(t_frmt_layered, "tfrmt")
 
-    expect_equal(t_frmt_layered$title, "Table Title")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$body_plan,
         body_plan(
             frmt_structure(
@@ -367,8 +367,8 @@ test_that("layering tfrmt - keeping original var/quo", {
         )
 
     expect_s3_class(t_frmt_layered, "tfrmt")
-    expect_equal(t_frmt_layered$title, "Table Title 2")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title 2")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
     expect_equal(t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE)
     expect_equal(t_frmt_layered$label, quo(label1), ignore_attr = TRUE)
 })
@@ -390,8 +390,8 @@ test_that("layering tfrmt - Mixing var/quo", {
         )
 
     expect_s3_class(t_frmt_layered, "tfrmt")
-    expect_equal(t_frmt_layered$title, "Table Title 2")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title 2")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
     expect_equal(t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE)
     expect_equal(t_frmt_layered$label, quo(label3), ignore_attr = TRUE)
 })
@@ -403,7 +403,7 @@ test_that("basic tfrmt - ... args", {
             totally_fake_arg = "my_col"
         )
     )
-    expect_equal(
+    expect_identical(
         message_res,
         "Argument 'totally_fake_arg' passed to tfrmt is not a recognized argument."
     )
@@ -411,10 +411,10 @@ test_that("basic tfrmt - ... args", {
     ## arg is spelled close to actual arg
     message_res <- capture_messages(
         tfrmt(
-            colmn = "my_col",
+            colmn = "my_col"
         )
     )
-    expect_equal(
+    expect_identical(
         message_res,
         "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?"
     )
@@ -425,7 +425,7 @@ test_that("basic tfrmt - ... args", {
             lalbl = "label"
         )
     )
-    expect_equal(
+    expect_identical(
         message_res,
         c(
             "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?",
@@ -441,7 +441,7 @@ test_that("basic tfrmt - erroring args", {
                 frmt_structure(
                     frmt("XX")
                 ),
-            )
+            ) # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error below
         )
     })
 })
@@ -457,7 +457,7 @@ test_that("basic tfrmt - func calls into quo and var args", {
     )
 
     expect_s3_class(t_frmt, "tfrmt")
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(col, df), ignore_attr = TRUE)
     expect_equal(t_frmt$label, quo(runif), ignore_attr = TRUE)
     expect_equal(t_frmt$param, quo(abs), ignore_attr = TRUE)
@@ -536,25 +536,25 @@ test_that("advanced tfrmt - tfrmt maker", {
     )
 
     expect_s3_class(new_tfrmt, "tfrmt")
-    expect_equal(new_tfrmt$title, "Table Title")
+    expect_identical(new_tfrmt$title, "Table Title")
     expect_equal(new_tfrmt$group, vars(value1, value2), ignore_attr = TRUE)
     expect_equal(new_tfrmt$label, quo(labs), ignore_attr = TRUE)
     expect_equal(new_tfrmt$param, quo(parameter), ignore_attr = TRUE)
 
     expect_s3_class(new_tfrmt_char, "tfrmt")
-    expect_equal(new_tfrmt_char$title, "Table Title")
+    expect_identical(new_tfrmt_char$title, "Table Title")
     expect_equal(new_tfrmt_char$group, vars(value1, value2), ignore_attr = TRUE)
     expect_equal(new_tfrmt_char$label, quo(labs), ignore_attr = TRUE)
     expect_equal(new_tfrmt_char$param, quo(parameter), ignore_attr = TRUE)
 
     expect_s3_class(new_tfrmt_2, "tfrmt")
-    expect_equal(new_tfrmt_2$title, "Table Title")
+    expect_identical(new_tfrmt_2$title, "Table Title")
     expect_equal(new_tfrmt_2$group, vars(value1, value2), ignore_attr = TRUE)
     expect_equal(new_tfrmt_2$label, quo(labs), ignore_attr = TRUE)
     expect_equal(new_tfrmt_2$param, quo(parameter), ignore_attr = TRUE)
 
     expect_s3_class(new_tfrmt_2_char, "tfrmt")
-    expect_equal(new_tfrmt_2_char$title, "Table Title")
+    expect_identical(new_tfrmt_2_char$title, "Table Title")
     expect_equal(
         new_tfrmt_2_char$group,
         vars(value1, value2),
@@ -578,7 +578,7 @@ test_that("advanced tfrmt - tfrmt maker", {
     )
 
     expect_s3_class(new_tfrmt_with_bp, "tfrmt")
-    expect_equal(new_tfrmt_with_bp$title, "Table Title")
+    expect_identical(new_tfrmt_with_bp$title, "Table Title")
     expect_equal(
         new_tfrmt_with_bp$group,
         vars(value1, value2),
@@ -621,7 +621,7 @@ test_that("advanced tfrmt - tfrmt maker", {
     )
 
     expect_s3_class(new_tfrmt_with_bp_2, "tfrmt")
-    expect_equal(new_tfrmt_with_bp_2$title, "Table Title")
+    expect_identical(new_tfrmt_with_bp_2$title, "Table Title")
     expect_equal(
         new_tfrmt_with_bp_2$group,
         vars(value1, value2),

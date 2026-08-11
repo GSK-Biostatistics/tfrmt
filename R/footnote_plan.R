@@ -87,7 +87,7 @@ footnote_structure <- function(
     # force column_val and group_val into a list if a named vector
     if (
         length(column_val) > 1 &&
-            is.list(column_val) == FALSE &&
+            !is.list(column_val) &&
             !is.null(names(column_val))
     ) {
         column_val <- as.list(column_val)
@@ -97,7 +97,7 @@ footnote_structure <- function(
 
     if (
         length(group_val) > 1 &&
-            is.list(group_val) == FALSE &&
+            !is.list(group_val) &&
             !is.null(names(group_val))
     ) {
         group_val <- as.list(group_val)
@@ -111,7 +111,7 @@ footnote_structure <- function(
         column_val_names <- names(column_val)
         if (is.null(column_val_names)) {
             stop("when column_val is a list, must be a named list")
-        } else if (any(column_val_names == "")) {
+        } else if (!all(nzchar(column_val_names))) {
             stop("when column_val is a list, each entry must be named")
         }
     }
@@ -120,7 +120,7 @@ footnote_structure <- function(
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
             stop("when group_val is a list, must be a named list")
-        } else if (any(group_val_names == "")) {
+        } else if (!all(nzchar(group_val_names))) {
             stop("when group_val is a list, each entry must be named")
         }
     }

@@ -6,20 +6,9 @@
 # tidyselect)
 
 ## usethis namespace: start
-#' @importFrom dplyr across all_of any_of arrange bind_cols bind_rows case_when
-#' @importFrom dplyr coalesce cur_column cur_group_id desc distinct filter first
-#' @importFrom dplyr group_by group_map group_split if_else inner_join lag last
-#' @importFrom dplyr left_join mutate n n_distinct na_if pull reframe relocate
-#' @importFrom dplyr rename rename_with row_number rowwise select slice
-#' @importFrom dplyr summarise ungroup
-#'
 #' @importFrom dplyr vars
 #'
 #' @importFrom forcats fct_inorder
-#'
-#' @importFrom ggplot2 aes element_blank element_text geom_text ggplot margin
-#' @importFrom ggplot2 scale_x_continuous scale_x_discrete scale_y_discrete
-#' @importFrom ggplot2 theme theme_void unit xlab ylab
 #'
 #' @importFrom glue glue glue_collapse
 #'

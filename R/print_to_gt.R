@@ -151,12 +151,12 @@ print_mock_gt <- function(
 #'
 #' # Create data
 #' df <- tidyr::crossing(
-#'     label = c("label 1", "label 2"),
-#'     column = c("placebo", "trt1"),
-#'     param = c("count", "percent")
-#' ) |>
+#'         label = c("label 1", "label 2"),
+#'         column = c("placebo", "trt1"),
+#'         param = c("count", "percent")
+#'     ) |>
 #'     dplyr::mutate(
-#'         value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
 #'     )
 #'
 #' print_to_gt(tfrmt_spec,df)
@@ -227,7 +227,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 tfrmt$row_grp_plan$label_loc$location != "column"
         ) {
             .data <- .data %>%
-                group_by(!!!existing_grp)
+                dplyr::group_by(!!!existing_grp)
         } else {
             # drop groups into row names
             rowname_col <- existing_grp
@@ -238,7 +238,10 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         # keep attribute for footnotes
         attr_footnote <- attr(.data, ".footnote_locs")
         attr_stub_header <- attr(.data, ".stub_header")
-        .data <- mutate(.data, ..tfrmt_row_grp_lbl = FALSE)
+        .data <- dplyr::mutate(
+            .data,
+            ..tfrmt_row_grp_lbl = FALSE
+        )
         attr(.data, ".footnote_locs") <- attr_footnote
         attr(.data, ".stub_header") <- attr_stub_header
     }
@@ -260,7 +263,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             rowname_col = rowname_col
         ) %>%
         sub_missing(
-            rows = .data$..tfrmt_row_grp_lbl == TRUE,
+            rows = .data$..tfrmt_row_grp_lbl,
             missing_text = ""
         ) %>%
         cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
@@ -351,7 +354,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             style = cell_borders(
                 sides = c("top"),
                 color = "transparent",
-                weight = px(0),
+                weight = px(0)
             ),
             locations = list(
                 cells_column_labels()
@@ -454,18 +457,26 @@ format_gt_column_labels <- function(gt_table, .data) {
             keep(str_detect, .tlang_delim) %>%
             str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
-            mutate(cols = spanning) %>%
+            dplyr::mutate(
+                cols = spanning
+            ) %>%
             pivot_longer(-"cols")
 
-        lowest_lvl <- work_df %>% filter(.data$name == max(.data$name))
+        lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
 
         spans_to_apply <- work_df %>%
-            filter(.data$name != max(.data$name)) %>%
-            arrange(desc(.data$name)) %>%
-            group_by(.data$value) %>%
+            dplyr::filter(.data$name != max(.data$name)) %>%
+            dplyr::arrange(
+                dplyr::desc(.data$name)
+            ) %>%
+            dplyr::group_by(.data$value) %>%
             nest(set = "cols") %>%
-            mutate(set = map(.data$set, ~ pull(., .data$cols))) %>%
-            filter(.data$value != "NA")
+            dplyr::mutate(
+                set = map(.data$set, ~ dplyr::pull(., .data$cols))
+            ) %>%
+            dplyr::filter(
+                .data$value != "NA"
+            )
 
         for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format
@@ -481,13 +492,19 @@ format_gt_column_labels <- function(gt_table, .data) {
         # ensure all columns are represented
         lowest_lvl <- names(.data) %>%
             tibble(cols = .) %>%
-            left_join(lowest_lvl, by = "cols") %>%
-            mutate(value = coalesce(.data$value, .data$cols))
+            dplyr::left_join(
+                lowest_lvl,
+                by = "cols"
+            ) %>%
+            dplyr::mutate(
+                value = dplyr::coalesce(
+                    .data$value,
+                    .data$cols
+                )
+            )
 
-        renm_vals <- lowest_lvl %>%
-            pull(.data$value)
-        names(renm_vals) <- lowest_lvl %>%
-            pull(.data$cols)
+        renm_vals <- dplyr::pull(lowest_lvl, .data$value)
+        names(renm_vals) <- dplyr::pull(lowest_lvl, .data$cols)
     } else {
         renm_vals <- names(.data)
         names(renm_vals) <- renm_vals
@@ -527,7 +544,7 @@ convert_ws_unicode <- function(gt_table) {
                 x_trimmed <- str_trim(x)
                 space_left <- str_match(x, "^\\s*") %>% nchar()
                 space_right <- str_match(x, "\\s*$") %>% nchar()
-                space_right[x_trimmed == ""] <- 0
+                space_right[!nzchar(x_trimmed)] <- 0
 
                 str_c(
                     str_dup("\U00A0", space_left),

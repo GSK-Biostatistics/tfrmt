@@ -280,7 +280,7 @@
       shuffled_ard <- shuffle_card(ard)
     Message
       i "Overall TRTA" already exists in the `TRTA` column. Using "Overall TRTA.1".
-      i "Any AESOC" already exists in the `AESOC` column. Using"Any AESOC.1".
+      i "Any AESOC" already exists in the `AESOC` column. Using "Any AESOC.1".
 
 # shuffle_card() preserves the attributes of a `card` object
 
