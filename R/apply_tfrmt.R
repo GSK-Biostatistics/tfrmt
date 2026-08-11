@@ -255,7 +255,7 @@ tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
         out <- .data
     } else {
         out <- .data %>%
-            safely(fx)(...)
+            purrr::safely(fx)(...)
         if (!is.null(out[["error"]])) {
             if (is.null(fail_desc)) {
                 fx_char <- as.character(substitute(fx))
@@ -306,7 +306,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     req_quo %>%
         purrr::map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(dplyr::select)(.data, !!var_test)
+            check <- purrr::safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -322,7 +322,7 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     req_var %>%
         purrr::map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(dplyr::select)(.data, !!!var_test)
+            check <- purrr::safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -461,7 +461,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ~ dplyr::na_if(.x, "")
             )
         ) %>%
-        quietly(pivot_wider)(
+        purrr::quietly(pivot_wider)(
             names_from = c(
                 tidyselect::starts_with(
                     .tlang_struct_col_prefix

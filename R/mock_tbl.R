@@ -232,7 +232,7 @@ make_col_df <- function(
                 purrr::map_dfr(function(x) {
                     span_df <- x %>%
                         purrr::map(~ clean_col_names(., c())) %>%
-                        reduce(crossing) %>%
+                        purrr::reduce(crossing) %>%
                         unnest(
                             cols = tidyselect::everything()
                         )

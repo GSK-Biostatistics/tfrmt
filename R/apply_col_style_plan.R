@@ -441,7 +441,7 @@ apply_col_width <- function(col, width) {
 
     pad_left <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "left")))
     pad_right <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "right")))
-    out <- pmap_chr(
+    out <- purrr::pmap_chr(
         list(
             trimws(col),
             width,

@@ -89,7 +89,7 @@ body_plan_builder <- function(
                     .x
                 }
             ),
-            single_glue_to_frmt = pmap_chr(
+            single_glue_to_frmt = purrr::pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
                     if (a && length(b) == 1) c else NA_character_
