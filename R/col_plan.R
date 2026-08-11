@@ -150,9 +150,11 @@ check_span_structure_dots <- function(x) {
     x_names <- names(x)
 
     if (is.null(x_names) || !all(nzchar(x_names))) {
+        span_call <- caller_call()
+
         cli::cli_abort(
-            "Entries of a span_stucture must be named:\n {format(caller_call())}",
-            call = caller_call()
+            "Entries of a span_stucture must be named:\n {format(span_call)}",
+            call = span_call
         )
     }
 
