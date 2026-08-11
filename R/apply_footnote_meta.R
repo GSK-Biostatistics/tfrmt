@@ -250,7 +250,7 @@ get_row_loc <- function(
                     dplyr::mutate(
                         dplyr::across(
                             c(!!!group, !!label),
-                            ~ str_remove(
+                            ~ stringr::str_remove(
                                 .x,
                                 paste0("^", element_row_grp_loc$indent, "+")
                             )

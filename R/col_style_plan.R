@@ -139,10 +139,10 @@ col_style_structure <- function(
                     message(
                         "Alignment specified contains strings with >1 characters. Only the first character will be used."
                     )
-                    align <- str_sub(align, start = 1, end = 1)
+                    align <- stringr::str_sub(align, start = 1, end = 1)
                 }
 
-                if (any(str_detect(align, "[[:alnum:]]"))) {
+                if (any(stringr::str_detect(align, "[[:alnum:]]"))) {
                     message(
                         "Alignment specified contains one or more alphanumeric characters. Results may not be as expected."
                     )

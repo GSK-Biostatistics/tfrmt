@@ -9,7 +9,7 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
     if (is.na(sigdig)) {
         frmted_string <- "x"
     } else {
-        frmted_dec <- str_dup("x", sigdig)
+        frmted_dec <- stringr::str_dup("x", sigdig)
         if (frmted_dec != "") {
             frmted_dec <- paste0(".", frmted_dec)
         }
@@ -19,7 +19,7 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
     if (is.na(single_glue_to_frmt)) {
         frmted_string
     } else {
-        str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
+        stringr::str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
     }
 }
 
@@ -77,14 +77,15 @@ param_set <- function(...) {
 
     args_params <- c(
         names(args),
-        str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
+        stringr::str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>%
+            unlist()
     )
 
     idx_drop <- seq_along(param_list) %>%
         map_dfr(
             ~ tibble(
                 param_display = names(param_list)[.x],
-                params = str_extract_all(
+                params = stringr::str_extract_all(
                     .data$param_display,
                     "(?<=\\{)[^\\}]+(?=\\})"
                 )
@@ -310,7 +311,7 @@ tfrmt_sigdig <- function(
                 remove = FALSE
             ) %>%
             dplyr::mutate(
-                def_ord = str_count(.data$def_ord, ".default")
+                def_ord = stringr::str_count(.data$def_ord, ".default")
             )
     } else {
         data_ord <- sigdig_df %>%

@@ -382,8 +382,8 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         if (tfrmt$page_plan$note_loc == "preheader") {
             gt_out_final <- gt_out_final %>%
                 tab_header(
-                    title = tfrmt$title,
-                    subtitle = tfrmt$subtitle,
+                    title = md_wrap(tfrmt$title),
+                    subtitle = md_wrap(tfrmt$subtitle),
                     preheader = attr(.data, ".page_note")
                 )
         } else if (tfrmt$page_plan$note_loc == "subtitle") {
@@ -395,19 +395,25 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             )
 
             gt_out_final <- gt_out_final %>%
-                tab_header(title = title, subtitle = subtitle)
+                tab_header(title = md_wrap(title), subtitle = md_wrap(subtitle))
         } else {
             gt_out_final <- gt_out_final %>%
-                tab_header(title = tfrmt$title, subtitle = tfrmt$subtitle)
+                tab_header(
+                    title = md_wrap(tfrmt$title),
+                    subtitle = md_wrap(tfrmt$subtitle)
+                )
 
             if (tfrmt$page_plan$note_loc == "source_note") {
                 gt_out_final <- gt_out_final %>%
-                    tab_source_note(attr(.data, ".page_note"))
+                    tab_source_note(md_wrap(attr(.data, ".page_note")))
             }
         }
     } else {
         gt_out_final <- gt_out_final %>%
-            tab_header(title = tfrmt$title, subtitle = tfrmt$subtitle)
+            tab_header(
+                title = md_wrap(tfrmt$title),
+                subtitle = md_wrap(tfrmt$subtitle)
+            )
     }
 
     # convert white space to unicode
@@ -433,11 +439,12 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
 #' @return gt object
 #' @noRd
 format_gt_column_labels <- function(gt_table, .data) {
-    spanning <- names(.data) %>% keep(str_detect, .tlang_delim)
+    spanning <- names(.data) %>%
+        keep(stringr::str_detect, .tlang_delim)
     if (length(spanning) > 0) {
         work_df <- names(.data) %>%
-            keep(str_detect, .tlang_delim) %>%
-            str_split(.tlang_delim, simplify = TRUE) %>%
+            keep(stringr::str_detect, .tlang_delim) %>%
+            stringr::str_split(.tlang_delim, simplify = TRUE) %>%
             as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(
                 cols = spanning
@@ -523,21 +530,21 @@ convert_ws_unicode <- function(gt_table) {
             locations = locations,
             fn = function(x) {
                 # leading and trailing whitespace is nonbreaking unicode whitespace to preserve alignment
-                x_trimmed <- str_trim(x)
-                space_left <- str_match(x, "^\\s*") %>% nchar()
-                space_right <- str_match(x, "\\s*$") %>% nchar()
+                x_trimmed <- stringr::str_trim(x)
+                space_left <- stringr::str_match(x, "^\\s*") %>% nchar()
+                space_right <- stringr::str_match(x, "\\s*$") %>% nchar()
                 space_right[!nzchar(x_trimmed)] <- 0
 
-                str_c(
-                    str_dup("\U00A0", space_left),
+                stringr::str_c(
+                    stringr::str_dup("\U00A0", space_left),
                     # 2 or more spaces are split into a combination of unicode whitespaces and
                     # regular spaces for latex collapsing
-                    str_replace_all(
+                    stringr::str_replace_all(
                         x_trimmed,
                         pattern = "\\s{2,}",
                         break_duplicate_whitespace
                     ),
-                    str_dup("\U00A0", space_right)
+                    stringr::str_dup("\U00A0", space_right)
                 )
             }
         )
@@ -559,4 +566,13 @@ break_duplicate_whitespace <- function(x) {
     }
 
     x
+}
+
+# Wrap a string in gt::md() for markdown rendering, passing through NULL and
+# empty strings unchanged to preserve default gt behavior
+md_wrap <- function(x) {
+    if (is.null(x) || identical(x, "")) {
+        return(x)
+    }
+    md(x)
 }

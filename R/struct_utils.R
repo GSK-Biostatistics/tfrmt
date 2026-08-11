@@ -14,7 +14,11 @@ expr_to_filter.quosure <- function(cols, val) {
     if (all(val == ".default")) {
         out <- "TRUE"
     } else {
-        val <- ifelse(str_detect(val, "^`.*`$"), str_sub(val, 2, -2), val)
+        val <- ifelse(
+            stringr::str_detect(val, "^`.*`$"),
+            stringr::str_sub(val, 2, -2),
+            val
+        )
         out <- rlang::as_label(cols) %>%
             paste0("`", ., "`") %>%
             paste0(
