@@ -9,16 +9,10 @@ linters: all_linters(
   cyclocomp_linter(25),
   todo_comment_linter = NULL,
   function_argument_linter = NULL,
-  missing_argument_linter = NULL,
   implicit_integer_linter = NULL,
   unnecessary_lambda_linter = NULL,
-  paste_linter = NULL,
-  nzchar_linter = NULL,
   object_name_linter = NULL,
-  if_not_else_linter = NULL,
   # redundancy linters
-  redundant_equals_linter = NULL,
-  redundant_ifelse_linter = NULL,
   nonportable_path_linter = NULL,
   keyword_quote_linter = NULL,
   duplicate_argument_linter = NULL,
@@ -28,8 +22,6 @@ linters: all_linters(
   # conditions handling linters
   condition_call_linter = NULL,
   condition_message_linter = NULL,
-  # expectations linters
-  expect_identical_linter = NULL,
   # negation linters
   unnecessary_concatenation_linter = NULL,
   unnecessary_nesting_linter = NULL,
@@ -37,7 +29,6 @@ linters: all_linters(
   one_call_pipe_linter = NULL,
   pipe_consistency_linter = NULL,
   nested_pipe_linter = NULL,
-  unnecessary_placeholder_linter = NULL,
   # line_length should also be handled by Air
   line_length_linter = NULL,
   # indentation is handled by Air

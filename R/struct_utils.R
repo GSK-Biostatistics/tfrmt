@@ -19,7 +19,7 @@ expr_to_filter.quosure <- function(cols, val) {
             paste0("`", ., "`") %>%
             paste0(
                 " %in% c(",
-                paste0(shQuote(val, type = "cmd"), collapse = ", "),
+                toString(shQuote(val, type = "cmd")),
                 ")"
             )
     }
@@ -35,9 +35,7 @@ expr_to_filter.quosures <- function(cols, val) {
         out <- expr_to_filter(cols, val)
     } else if (!is.list(val) && all(val == ".default")) {
         out <- "TRUE"
-    } else if (!is.list(val)) {
-        stop("If multiple cols are provided, val must be a named list")
-    } else {
+    } else if (is.list(val)) {
         if (!all(names(val) %in% map_chr(cols, as_label))) {
             stop("Names of val entries do not all match col values")
         }
@@ -46,7 +44,9 @@ expr_to_filter.quosures <- function(cols, val) {
             val[map_chr(cols, as_label)],
             ~ expr_to_filter(.x, .y)
         ) %>%
-            paste0(collapse = " & ")
+            paste(collapse = " & ")
+    } else {
+        stop("If multiple cols are provided, val must be a named list")
     }
     out
 }
@@ -70,13 +70,13 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
     if (detect_non_default(cur_struct$group_val)) {
         grp_expr <- expr_to_filter(group, cur_struct$group_val)
 
-        if (!is.list(cur_struct$group_val)) {
-            keep_vars <- group
-        } else {
+        if (is.list(cur_struct$group_val)) {
             keep_vars <- group[map_lgl(
                 cur_struct$group_val,
                 ~ !all(.x == ".default")
             )]
+        } else {
+            keep_vars <- group
         }
     }
 
@@ -93,8 +93,8 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             parse_expr()
 
         .data %>%
-            filter(!!filter_expr) %>%
-            select(
+            dplyr::filter(!!filter_expr) %>%
+            dplyr::select(
                 tidyselect::any_of(
                     c(
                         map_chr(keep_vars, as_label),
@@ -103,16 +103,17 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
                 )
             ) %>%
             # split only after non-consecutive sequence
-            mutate(
-                breaks = .data$TEMP_row == lag(.data$TEMP_row, default = 0) + 1,
+            dplyr::mutate(
+                breaks = .data$TEMP_row ==
+                    dplyr::lag(.data$TEMP_row, default = 0) + 1,
                 breaks = cumsum(!.data$breaks)
             ) %>%
-            group_by(.data$breaks) %>%
-            group_split() %>%
-            map(function(x) pull(x, .data$TEMP_row))
+            dplyr::group_by(.data$breaks) %>%
+            dplyr::group_split() %>%
+            map(function(x) dplyr::pull(x, .data$TEMP_row))
     } else {
         .data %>%
-            pull(.data$TEMP_row) %>%
+            dplyr::pull(.data$TEMP_row) %>%
             list()
     }
 }

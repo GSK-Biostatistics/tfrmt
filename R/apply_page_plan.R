@@ -76,11 +76,18 @@ apply_page_max_rows <- function(
     group_cols <- map_chr(group, rlang::as_label)
 
     .data <- .data %>%
-        mutate(
-            across(all_of(group_cols), \(x) {
-                if (is.character(x)) if_else(x == "", " ", x) else x
-            }),
-            TEMP_row = row_number()
+        dplyr::mutate(
+            dplyr::across(
+                tidyselect::all_of(group_cols),
+                \(x) {
+                    if (is.character(x)) {
+                        dplyr::if_else(nzchar(x, keepNA = TRUE), x, " ")
+                    } else {
+                        x
+                    }
+                }
+            ),
+            TEMP_row = dplyr::row_number()
         )
 
     # determine # of rows to be added for the group during row grp lbl formatting
@@ -118,7 +125,8 @@ apply_page_max_rows <- function(
 
     while (nrow(remain_dat) > 0) {
         # candidate row to consider adding to tbl
-        next_dat <- remain_dat %>% slice(1)
+        next_dat <- remain_dat %>%
+            dplyr::slice(1)
 
         # add the previous summary row from previous table if needed
         # (only applies to the start of new page)
@@ -137,17 +145,18 @@ apply_page_max_rows <- function(
                 is_empty(label) ||
                 row_grp_plan_label_loc %in% c("gtdefault", "noprint", "column")
         ) {
-            cur_dat_new <- bind_rows(cur_dat, next_dat)
+            cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat)
         } else {
             #  combine any grouping columns that need combining into label
-            cur_dat_new <- bind_rows(cur_dat, next_dat) %>%
+            cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat) %>%
                 combine_group_cols_mod(group, label, row_grp_plan_label_loc)
         }
 
         # if the table is within our limit, keep it
         if (nrow(cur_dat_new) <= max_rows) {
-            cur_dat <- bind_rows(cur_dat, next_dat)
-            remain_dat <- remain_dat %>% slice(-1)
+            cur_dat <- dplyr::bind_rows(cur_dat, next_dat)
+            remain_dat <- remain_dat %>%
+                dplyr::slice(-1)
         }
 
         # if we have hit or exceeded the limit, save the table & move to next
@@ -155,13 +164,14 @@ apply_page_max_rows <- function(
             # summary row groups to carry forward to next tbl
             if ("..tfrmt_summary_row" %in% names(cur_dat_new)) {
                 all_summ_row <- cur_dat_new %>%
-                    filter(.data$`..tfrmt_summary_row`) %>%
-                    pull(.data$TEMP_row)
+                    dplyr::filter(.data$`..tfrmt_summary_row`) %>%
+                    dplyr::pull(.data$TEMP_row)
             }
 
             # save tbl to list
             tbl_list[[i]] <- structure(
-                cur_dat %>% select(-"TEMP_row"),
+                cur_dat %>%
+                    dplyr::select(-"TEMP_row"),
                 .page_note = attr(.data, ".page_note")
             )
             i <- i + 1
@@ -196,13 +206,15 @@ apply_page_struct <- function(
     transform
 ) {
     .data <- .data %>%
-        mutate(TEMP_row = row_number())
+        dplyr::mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     # 1. check that only 1 page_structure contains a .default, drop extras
     struct_defaults_idx <- which(map_lgl(page_struct_list, detect_default))
     if (length(struct_defaults_idx) > 1) {
         struct_defaults_idx_drop <- struct_defaults_idx[
-            -last(struct_defaults_idx)
+            -dplyr::last(struct_defaults_idx)
         ]
         page_struct_list <- page_struct_list[-struct_defaults_idx_drop]
         message(
@@ -229,8 +241,8 @@ apply_page_struct <- function(
                 `..tfrmt_data` = tidyselect::everything(),
                 .by = tidyselect::all_of(grping)
             ) %>%
-            mutate(
-                `..tfrmt_split_num` = row_number()
+            dplyr::mutate(
+                `..tfrmt_split_num` = dplyr::row_number()
             )
     } else {
         # no default - just nest to get in same structure for next step
@@ -241,11 +253,11 @@ apply_page_struct <- function(
 
     # find indices of specific values in data
     dat_split_2_idx <- dat_split_1 %>%
-        mutate(
+        dplyr::mutate(
             split_idx = map(.data$`..tfrmt_data`, function(x) {
                 map(page_struct_list, function(y) {
                     struct_val_idx(y, x, group, label) %>% # returns all indices in the block of data
-                        map_dbl(last) # keep just the last one to split after
+                        map_dbl(dplyr::last) # keep just the last one to split after
                 }) %>%
                     unlist()
             })
@@ -253,16 +265,16 @@ apply_page_struct <- function(
 
     # determine where the splits should occur in data
     dat_split_2 <- dat_split_2_idx %>%
-        mutate(
+        dplyr::mutate(
             `..tfrmt_data` = map2(
                 .data$`..tfrmt_data`,
                 .data$split_idx,
                 function(x, y) {
                     x %>%
-                        mutate(
+                        dplyr::mutate(
                             `..tfrmt_split_idx` = .data$TEMP_row %in% y,
                             # carry it forward to denote start of next table,
-                            `..tfrmt_start_idx` = lag(
+                            `..tfrmt_start_idx` = dplyr::lag(
                                 .data$`..tfrmt_split_idx`,
                                 default = TRUE
                             ),
@@ -270,35 +282,37 @@ apply_page_struct <- function(
                                 .data$`..tfrmt_start_idx`
                             )
                         ) %>%
-                        select(-c("..tfrmt_start_idx", "..tfrmt_split_idx")) %>%
-                        group_by(.data$`..tfrmt_split_after`) %>%
-                        group_split(.keep = FALSE)
+                        dplyr::select(
+                            -c("..tfrmt_start_idx", "..tfrmt_split_idx")
+                        ) %>%
+                        dplyr::group_by(.data$`..tfrmt_split_after`) %>%
+                        dplyr::group_split(.keep = FALSE)
                 }
             )
         ) %>%
-        select(-"split_idx") %>%
+        dplyr::select(-"split_idx") %>%
         unnest(cols = "..tfrmt_data")
 
     # 3. create the page_notes as applicable
     if ("..tfrmt_split_num" %in% names(dat_split_2)) {
         # create the page_notes to be carried forward as names for now
         tbl_nms <- dat_split_2 %>%
-            select(-"..tfrmt_data") %>%
+            dplyr::select(-"..tfrmt_data") %>%
             pivot_longer(
                 cols = -"..tfrmt_split_num",
                 names_to = "grouping_col",
                 values_to = "grouping_val"
             ) %>%
-            group_by(.data$`..tfrmt_split_num`) %>%
-            filter(!is.na(.data$grouping_val)) %>%
+            dplyr::group_by(.data$`..tfrmt_split_num`) %>%
+            dplyr::filter(!is.na(.data$grouping_val)) %>%
             unique() %>%
-            summarise(
+            dplyr::summarise(
                 `..tfrmt_page_note` = paste0(
                     .data$grouping_col,
                     ": ",
                     .data$grouping_val
                 ) %>%
-                    paste0(collapse = ", ")
+                    paste(collapse = ", ")
             )
 
         page_grp_vars <- setdiff(
@@ -306,12 +320,12 @@ apply_page_struct <- function(
             c("..tfrmt_data", "..tfrmt_split_num")
         )
 
-        dat_split_2 <- left_join(
+        dat_split_2 <- dplyr::left_join(
             dat_split_2,
             tbl_nms,
             by = "..tfrmt_split_num"
         ) %>%
-            select(c("..tfrmt_data", "..tfrmt_page_note"))
+            dplyr::select(c("..tfrmt_data", "..tfrmt_page_note"))
     } else {
         page_grp_vars <- NULL
     }
@@ -319,13 +333,13 @@ apply_page_struct <- function(
     # 4. return the values
     # prep list of tbsl
     dat_out <- dat_split_2 %>%
-        mutate(
+        dplyr::mutate(
             `..tfrmt_data` = map(
                 .data$`..tfrmt_data`,
-                ~ select(.x, -"TEMP_row")
+                ~ dplyr::select(.x, -"TEMP_row")
             )
         ) %>%
-        pull(.data$`..tfrmt_data`)
+        dplyr::pull(.data$`..tfrmt_data`)
 
     # add pg_note to individual tbls as applicable
     if ("..tfrmt_page_note" %in% names(dat_split_2)) {
@@ -365,12 +379,15 @@ combine_group_cols_mod <- function(
 
     # to retain the order of the data when splitting by group
     .data <- .data %>%
-        select(c(!!!group, !!label, "TEMP_row")) %>%
-        mutate(
-            across(c(!!!group), ~ fct_inorder(.x)),
+        dplyr::select(c(!!!group, !!label, "TEMP_row")) %>%
+        dplyr::mutate(
+            dplyr::across(c(!!!group), ~ fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = str_trim(!!label, side = "left") ==
-                str_trim(!!last(group), side = "left")
+                str_trim(
+                    !!dplyr::last(group),
+                    side = "left"
+                )
         )
 
     if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
@@ -379,40 +396,47 @@ combine_group_cols_mod <- function(
 
     while (length(group) > 0 && !is.null(label)) {
         split_dat <- .data %>%
-            group_by(!!!top_grouping) %>%
-            group_split()
+            dplyr::group_by(!!!top_grouping) %>%
+            dplyr::group_split()
 
         .data <- split_dat %>%
             map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
-                    mutate(
+                    dplyr::mutate(
                         `..tfrmt_summary_row_cur` = str_trim(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(!!last(group), side = "left")
+                            str_trim(
+                                !!dplyr::last(group),
+                                side = "left"
+                            )
                     )
 
-                if (any(lone_dat_summ$`..tfrmt_summary_row_cur`) == FALSE) {
+                if (any(lone_dat_summ$`..tfrmt_summary_row_cur`)) {
+                    new_row <- tibble()
+                } else {
                     # if the set of rows contains NO group-level summary data, create an extra row to be added
                     new_row <- lone_dat %>%
-                        select(!!!top_grouping, !!label) %>%
-                        mutate(!!label := !!last(group)) %>%
-                        distinct() %>%
-                        mutate(..tfrmt_row_grp_lbl = TRUE)
-                } else {
-                    new_row <- tibble()
+                        dplyr::select(!!!top_grouping, !!label) %>%
+                        dplyr::mutate(
+                            !!label := !!dplyr::last(group)
+                        ) %>%
+                        dplyr::distinct() %>%
+                        dplyr::mutate(
+                            ..tfrmt_row_grp_lbl = TRUE
+                        )
                 }
 
                 lone_dat_summ %>%
-                    bind_rows(new_row, .)
+                    dplyr::bind_rows(new_row, .)
             })
         group <- group[-length(group)]
         top_grouping <- top_grouping[-length(top_grouping)]
     }
 
     .data %>%
-        select(
+        dplyr::select(
             -tidyselect::any_of(
                 "..tfrmt_summary_row_cur"
             )
@@ -424,27 +448,32 @@ combine_group_cols_mod <- function(
 add_summary_rows <- function(next_dat, prev_summ, group, label) {
     #get grouping values from the summary row
     prev_summ_top_grp <- prev_summ %>%
-        mutate(across(c(!!!group), ~ .x == !!label)) %>%
+        dplyr::mutate(
+            dplyr::across(
+                c(!!!group),
+                ~ .x == !!label
+            )
+        ) %>%
         pivot_longer(
             map_chr(group, as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
-        filter(.data$`..tfrmt_summ_row`) %>%
-        group_by(.data$TEMP_row) %>%
-        slice(1) %>%
-        mutate(
+        dplyr::filter(.data$`..tfrmt_summ_row`) %>%
+        dplyr::group_by(.data$TEMP_row) %>%
+        dplyr::slice(1) %>%
+        dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
                 .data$`..tfrmt_summ_grp_num` == map_chr(group, as_label)
             )
         ) %>%
-        pull(.data$`..tfrmt_summ_grp_num`)
+        dplyr::pull(.data$`..tfrmt_summ_grp_num`)
 
     prev_summ_top_grp_vars <- map(
         seq_len(nrow(prev_summ)),
         ~ prev_summ[.x, ] %>%
-            select(c(!!!group)) %>%
-            select(
+            dplyr::select(c(!!!group)) %>%
+            dplyr::select(
                 1:tidyselect::all_of(
                     prev_summ_top_grp[.x]
                 )
@@ -454,7 +483,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     # get the grouping values from the next row
     next_summ_top_grp_vars <- map(
         prev_summ_top_grp_vars,
-        ~ next_dat %>% select(names(.x))
+        ~ dplyr::select(next_dat, names(.x))
     )
 
     # check which are identical & add all that match to the data
@@ -468,7 +497,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
     if (any(check_eq)) {
         to_add <- which(check_eq)
 
-        next_dat <- bind_rows(
+        next_dat <- dplyr::bind_rows(
             prev_summ[to_add, ],
             next_dat
         )

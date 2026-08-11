@@ -74,12 +74,12 @@ body_plan_builder <- function(
                 pos = .x
             )
         ) %>%
-        mutate(
+        dplyr::mutate(
             contains_glue = str_detect(.data$param_display, "\\{.*\\}"), # is this to be a frmt_combine
             param = map2(
                 .data$param_display,
                 .data$contains_glue,
-                ~ if (.y == TRUE) {
+                ~ if (.y) {
                     str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
                 } else {
                     .x
@@ -88,14 +88,14 @@ body_plan_builder <- function(
             single_glue_to_frmt = pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
-                    if (a == TRUE && length(b) == 1) c else NA_character_
+                    if (a && length(b) == 1) c else NA_character_
                 }
             )
         ) %>%
         unnest(
             tidyselect::everything()
         ) %>%
-        mutate(
+        dplyr::mutate(
             frmt_string = map2_chr(
                 .data$sigdig,
                 .data$single_glue_to_frmt,
@@ -104,8 +104,8 @@ body_plan_builder <- function(
         )
 
     frmt_vec <- param_tbl %>%
-        group_by(.data$pos) %>%
-        group_split() %>%
+        dplyr::group_by(.data$pos) %>%
+        dplyr::group_split() %>%
         map(function(x) {
             if (sum(x$contains_glue) > 1) {
                 frmt_combine_builder(

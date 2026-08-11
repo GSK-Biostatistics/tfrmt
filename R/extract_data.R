@@ -30,14 +30,19 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
             lookup <- lookup[valid_names]
 
             if (length(lookup) > 0) {
-                df <- df %>% dplyr::rename(dplyr::any_of(lookup))
+                df <- df %>%
+                    dplyr::rename(
+                        tidyselect::any_of(lookup)
+                    )
             }
         }
     }
 
     df %>%
         # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
-        dplyr::select(-dplyr::starts_with("..tfrmt")) %>%
+        dplyr::select(
+            -dplyr::starts_with("..tfrmt")
+        ) %>%
         # Replace the internal tlang_delim pattern in column names
         dplyr::rename_with(
             ~ stringr::str_replace_all(.x, "___tlang_delim___", delim),

@@ -9,8 +9,10 @@
 #' @noRd
 match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     .data <- .data %>%
-        ungroup() %>%
-        mutate(TEMP_row = row_number())
+        dplyr::ungroup() %>%
+        dplyr::mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     TEMP_appl_row <- table_frmt_plan %>%
         map(fmt_test_data, .data, label, group, param)
@@ -22,13 +24,22 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         TEMP_fmt_to_apply
     ) %>%
         # TODO add a warning if a format isn't applied anywhere
-        mutate(TEMP_fmt_rank = row_number()) %>%
+        dplyr::mutate(
+            TEMP_fmt_rank = dplyr::row_number()
+        ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
-        group_by(TEMP_appl_row) %>%
+        dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
-        arrange(TEMP_appl_row, desc(.data$TEMP_fmt_rank)) %>%
-        slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row"))
+        dplyr::arrange(
+            TEMP_appl_row,
+            dplyr::desc(.data$TEMP_fmt_rank)
+        ) %>%
+        dplyr::slice(1) %>%
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        )
 }
 
 #' Display formatting applied to each row
@@ -63,14 +74,18 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'  ))
 #'
 #'  # Create data
-#'  df <- tidyr::crossing(label = c("label 1", "label 2"),
-#'                 column = c("placebo", "trt1"),
-#'                 param = c("count", "percent")) |>
-#'    dplyr::mutate(value=c(24,19,2400/48,1900/38,5,1,500/48,100/38))
+#'  df <- tidyr::crossing(
+#'         label = c("label 1", "label 2"),
+#'         column = c("placebo", "trt1"),
+#'         param = c("count", "percent")
+#'     ) |>
+#'     dplyr::mutate(
+#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'     )
 #'
 #'  display_row_frmts(tfrmt_spec,df)
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
-    if (convert_to_txt == FALSE) {
+    if (isFALSE(convert_to_txt)) {
         output <- match_frmt_to_rows(
             .data,
             tfrmt$body_plan,
@@ -78,18 +93,20 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             tfrmt$label,
             tfrmt$param
         ) %>%
-            rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-            select(
+            dplyr::rename(
+                frmt_applied = "TEMP_fmt_to_apply"
+            ) %>%
+            dplyr::select(
                 -tidyselect::starts_with(
                     "TEMP"
                 )
             ) %>%
-            mutate(
+            dplyr::mutate(
                 frmt_type = map_chr(.data$frmt_applied, function(x) {
                     unlist(class(x)[1])
                 })
             )
-    } else if (convert_to_txt == TRUE) {
+    } else if (isTRUE(convert_to_txt)) {
         output <- match_frmt_to_rows(
             .data,
             tfrmt$body_plan,
@@ -97,24 +114,26 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             tfrmt$label,
             tfrmt$param
         ) %>%
-            rename(frmt_applied = "TEMP_fmt_to_apply") %>%
-            select(
+            dplyr::rename(
+                frmt_applied = "TEMP_fmt_to_apply"
+            ) %>%
+            dplyr::select(
                 -tidyselect::starts_with(
                     "TEMP"
                 )
             ) %>%
-            mutate(
+            dplyr::mutate(
                 frmt_type = map_chr(.data$frmt_applied, function(x) {
                     unlist(class(x)[1])
                 }),
                 frmt_details = map_chr(.data$frmt_applied, format)
             ) %>%
-            select(-"frmt_applied")
+            dplyr::select(-"frmt_applied")
 
         # extract < frmt > type from frmt_details
         output <- output %>%
-            mutate(
-                frmt_details = case_when(
+            dplyr::mutate(
+                frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
                         str_remove("< frmt \\| Expression: ") %>%
                         str_remove(" >"),
@@ -190,7 +209,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
 
     tbl_dat_wide <- tbl_dat %>%
         pivot_wider_tfrmt(tfrmt, mock) %>%
-        select(
+        dplyr::select(
             -tidyselect::any_of(
                 c(
                     map_chr(tfrmt$group, as_name),
@@ -198,8 +217,8 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
                 )
             )
         ) %>%
-        mutate(
-            across(
+        dplyr::mutate(
+            dplyr::across(
                 tidyselect::everything(),
                 ~ str_replace_all(., "[0-9]", "x")
             )
@@ -224,7 +243,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     )
 
     vec_prep <- tbl_dat_wide %>%
-        select(
+        dplyr::select(
             tidyselect::any_of(
                 col_selection
             )
@@ -232,12 +251,12 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         pivot_longer(
             tidyselect::everything()
         ) %>%
-        arrange(nchar(.data$value)) %>%
-        filter(!is.na(.data$value)) %>%
-        pull(.data$value) %>%
+        dplyr::arrange(nchar(.data$value)) %>%
+        dplyr::filter(!is.na(.data$value)) %>%
+        dplyr::pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%
-        glue_collapse(., ",\n  ")
+        glue_collapse(sep = ",\n  ")
 
     glue("c({vec_prep})")
 }

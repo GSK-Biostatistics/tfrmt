@@ -8,10 +8,15 @@ test_that("inputs are as expected", {
     )
 
     riska <- risk %>%
-        mutate(group = "A")
+        dplyr::mutate(
+            group = "A"
+        )
 
     riskb <- risk %>%
-        mutate(group = "B", value = value + 10)
+        dplyr::mutate(
+            group = "B",
+            value = value + 10
+        )
 
     test_data <- riska %>%
         rbind(riskb)
@@ -112,7 +117,7 @@ test_that("group columns are created correctly", {
         `..tfrmt_row_grp_lbl` = c(TRUE, rep(FALSE, 12))
     )
 
-    expect_equal(apply_grp_ggplot(test_data, tfrmt), expected_data)
+    expect_identical(apply_grp_ggplot(test_data, tfrmt), expected_data)
 })
 
 test_that("tfrmt is as expected", {
@@ -214,8 +219,10 @@ test_that("column type has been preserved", {
 
     dfm <- df %>%
         pivot_longer(January:December) %>%
-        rename("month" = name) %>%
-        mutate(month = substr(month, 1, 3))
+        dplyr::rename("month" = name) %>%
+        dplyr::mutate(
+            month = substr(month, 1, 3)
+        )
 
     # fmt: skip
     dfm$month <- factor(
@@ -227,17 +234,24 @@ test_that("column type has been preserved", {
     )
 
     table_data <- dfm %>%
-        mutate(param = "n") %>%
-        rename("label" = City, "column" = month)
+        dplyr::mutate(
+            param = "n"
+        ) %>%
+        dplyr::rename(
+            "label" = City,
+            "column" = month
+        )
 
-    x2 <- tfrmt(
-        # specify columns in the data
-        label = label,
-        column = column,
-        param = param,
-        value = value
-    ) %>%
-        print_to_ggplot(table_data)
+    suppressMessages({
+        x2 <- tfrmt(
+            # specify columns in the data
+            label = label,
+            column = column,
+            param = param,
+            value = value
+        ) %>%
+            print_to_ggplot(table_data)
+    })
 
     # continuous mock data
     risk <- tibble(
@@ -247,16 +261,27 @@ test_that("column type has been preserved", {
         param = rep("n", 12)
     )
 
-    p2 <- tfrmt(
-        # specify columns in the data
-        label = label,
-        column = time,
-        param = param,
-        value = value
-    ) %>%
-        print_to_ggplot(risk)
+    suppressMessages({
+        p2 <- tfrmt(
+            # specify columns in the data
+            label = label,
+            column = time,
+            param = param,
+            value = value
+        ) %>%
+            print_to_ggplot(risk)
+    })
 
-    expect_s3_class(table_data$column, class(x2$data$column))
+    expect_s3_class(
+        table_data$column,
+        class(x2$data$column)
+    )
+
     # risk$time is numeric (not an S3 object), so expect_s3_class cannot be used here
-    expect_equal(class(risk$time), class(p2$data$column)) # nolint: expect_s3_class_linter.
+    # nolint start: expect_s3_class_linter
+    expect_identical(
+        class(risk$time),
+        class(p2$data$column)
+    )
+    # nolint end
 })

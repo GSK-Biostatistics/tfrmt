@@ -65,7 +65,7 @@ test_that("markdown column labels - no spanning", {
         tab_options(container.width = 1000)
 
     # test that format of column headers is markdown
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -111,7 +111,10 @@ test_that("markdown column labels - spanning", {
                 levels = c("ITT </br> (N=10)", "Eff", "Com")
             )
         ) %>%
-        mutate(val = rpois(216, 15), param = "val")
+        dplyr::mutate(
+            val = rpois(216, 15),
+            param = "val"
+        )
 
     # create output with spanning headers
     test_tfrmt <- tfrmt(
@@ -138,14 +141,14 @@ test_that("markdown column labels - spanning", {
         print_to_gt(mock_data)
 
     # test that format of both column headers and spannning headers is markdown
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
             length(test_tfrmt$`_boxhead`$column_label)
         ))
     )
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_spanners`$spanner_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -200,7 +203,7 @@ test_that("markdown column labels - renamed", {
     ) %>%
         print_to_gt(mock_data)
 
-    expect_equal(
+    expect_identical(
         lapply(test_tfrmt$`_boxhead`$column_label, attr, "class"),
         as.list(rep(
             "from_markdown",
@@ -244,13 +247,13 @@ test_that("column spanners and labels are appropriately aligned", {
 
     # get spanner labels
     spans <- gt_out$`_spanners` %>%
-        select(var = vars, spanner_label, spanner_level) %>%
+        dplyr::select(var = vars, spanner_label, spanner_level) %>%
         unnest(
             tidyselect::everything()
         )
     # get lower labels
     lower <- gt_out$`_boxhead` %>%
-        select(var, column_label) %>%
+        dplyr::select(var, column_label) %>%
         unnest(
             tidyselect::everything()
         )
@@ -267,7 +270,7 @@ test_that("column spanners and labels are appropriately aligned", {
             values_from = spanner_label
         ) %>%
         dplyr::select(-var) %>%
-        setNames(., chr_cols)
+        setNames(chr_cols)
 
     # original data - keep tfrmt spec cols
     orig_cols <- dat %>%

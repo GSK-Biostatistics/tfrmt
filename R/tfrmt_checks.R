@@ -58,7 +58,7 @@ check_column_and_col_plan <- function(x) {
 check_group_var_consistency <- function(x) {
     if (!is_empty(x$group)) {
         group_var_consistency_message <- trimws(
-            paste0(
+            paste(
                 c(
                     check_group_var_consistency_body_plan(x),
                     check_group_var_consistency_row_grp_plan(x),
@@ -103,7 +103,7 @@ check_group_var_consistency_body_plan <- function(x) {
                             ),
                             paste0(
                                 "  Malformed Group: ",
-                                paste0(invalid_groups, collapse = ", "),
+                                toString(invalid_groups),
                                 "\n"
                             )
                         )
@@ -144,7 +144,7 @@ check_group_var_consistency_row_grp_plan <- function(x) {
                             ),
                             paste0(
                                 "  Malformed Group: ",
-                                paste0(invalid_groups, collapse = ", "),
+                                toString(invalid_groups),
                                 "\n"
                             )
                         )
@@ -185,7 +185,7 @@ check_group_var_consistency_footnote_plan <- function(x) {
                             ),
                             paste0(
                                 "  Malformed Group: ",
-                                paste0(invalid_groups, collapse = ", "),
+                                toString(invalid_groups),
                                 "\n"
                             )
                         )
@@ -238,7 +238,7 @@ check_col_style_row_grp_consistency <- function(x) {
                             "  `col` value",
                             ifelse(length(invalid_groups) > 1, "s", ""),
                             ": ",
-                            paste0(invalid_groups, collapse = ", "),
+                            toString(invalid_groups),
                             "\n"
                         )
                     )
@@ -262,10 +262,8 @@ check_footnote_plan <- function(x) {
             # if multiple columns then column_val must be a named list
             if (
                 length(x$column) > 1 &&
-                    is.list(x$footnote_plan$struct_list[[i]]$column_val) ==
-                        FALSE &&
-                    is.null(x$footnote_plan$struct_list[[i]]$column_val) ==
-                        FALSE
+                    !is.list(x$footnote_plan$struct_list[[i]]$column_val) &&
+                    !is.null(x$footnote_plan$struct_list[[i]]$column_val)
             ) {
                 stop(
                     "when tfrmt contains multiple columns, column_val must be a named list"
@@ -275,9 +273,8 @@ check_footnote_plan <- function(x) {
             # if multiple groups then group_val must be a named list
             if (
                 length(x$group) > 1 &&
-                    is.list(x$footnote_plan$struct_list[[i]]$group_val) ==
-                        FALSE &&
-                    is.null(x$footnote_plan$struct_list[[i]]$group_val) == FALSE
+                    !is.list(x$footnote_plan$struct_list[[i]]$group_val) &&
+                    !is.null(x$footnote_plan$struct_list[[i]]$group_val)
             ) {
                 stop(
                     "when tfrmt contains multiple groups, group_val must be a named list"
