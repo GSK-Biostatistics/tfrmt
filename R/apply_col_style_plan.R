@@ -191,11 +191,16 @@ apply_col_alignment <- function(col, align, type = "char") {
 #' @noRd
 apply_col_alignment_char <- function(col, align) {
     if (all(align %in% c("left", "right"))) {
-        tbl_dat <- tibble(col = str_trim(col, side = "right")) %>%
+        tbl_dat <- tibble(
+            col = stringr::str_trim(col, side = "right")
+        ) %>%
             dplyr::mutate(
                 string_col = nchar(.data$col),
                 string_tot = max(.data$string_col),
-                space_to_add = str_dup(" ", .data$string_tot - .data$string_col)
+                space_to_add = stringr::str_dup(
+                    " ",
+                    .data$string_tot - .data$string_col
+                )
             )
         if (align == "left") {
             tbl_dat <- tibble(
@@ -212,7 +217,7 @@ apply_col_alignment_char <- function(col, align) {
         }
     } else {
         align <- ifelse(
-            str_detect(align, "[[:alnum:]]"),
+            stringr::str_detect(align, "[[:alnum:]]"),
             paste0("\"", align, "\""),
             paste0("\\", align)
         )
@@ -237,14 +242,14 @@ apply_col_alignment_char <- function(col, align) {
                                 max(.) - .
                             } %>%
                             {
-                                str_dup(" ", .)
+                                stringr::str_dup(" ", .)
                             }
                     }
                 )
             )
     }
 
-    str_c(
+    stringr::str_c(
         tbl_dat$add_left,
         tbl_dat$col,
         tbl_dat$add_right
@@ -261,12 +266,12 @@ apply_col_alignment_pos <- function(col, align) {
     # merge the alignment vec in with the column
     col_with_align <- tibble(
         col = trimws(col),
-        col_as_x = str_replace_all(col, "[0-9]", "x")
+        col_as_x = stringr::str_replace_all(col, "[0-9]", "x")
     ) %>% # convert column values to x's
         dplyr::left_join(
             tibble(
                 align = trimws(align),
-                col_as_x = str_replace_all(align, "\\|", "")
+                col_as_x = stringr::str_replace_all(align, "\\|", "")
             ),
             by = "col_as_x"
         )
@@ -289,7 +294,7 @@ apply_col_alignment_pos <- function(col, align) {
         ) %>%
         dplyr::select(-"col_as_x") %>%
         dplyr::mutate(
-            n_split_levs = str_count(.data$align, "(?<!\\\\)[\\|]") + 1
+            n_split_levs = stringr::str_count(.data$align, "(?<!\\\\)[\\|]") + 1
         )
 
     # get the maximum number of splits to make
@@ -343,14 +348,14 @@ apply_col_alignment_pos <- function(col, align) {
             col_sub_1 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
-                !str_detect(.data$col_sub, " ") &
+                stringr::str_detect(.data$col_sub, " ", negate = TRUE) &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
-                TRUE ~ str_extract(.data$col_sub, "^.+?(?= )")
+                TRUE ~ stringr::str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space
             col_sub_2 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ .data$col_sub, # first substring so put the whole thing here
                 .data$col_split_lev == .data$n_split_levs ~ NA_character_, # last substring, nothing to left-pad
-                TRUE ~ str_extract(.data$col_sub, "(?= ).*")
+                TRUE ~ stringr::str_extract(.data$col_sub, "(?= ).*")
             )
         ) # extract string following & including first space
 
@@ -363,7 +368,7 @@ apply_col_alignment_pos <- function(col, align) {
                     max(., na.rm = TRUE) - .
                 } %>%
                 {
-                    str_dup(" ", .)
+                    stringr::str_dup(" ", .)
                 }
         )
 
@@ -380,7 +385,7 @@ apply_col_alignment_pos <- function(col, align) {
                 c("col_sub_1", "to_add_left", "col_sub_2"),
                 ~ replace_na(., "")
             ),
-            col_sub_out = str_c(
+            col_sub_out = stringr::str_c(
                 .data$col_sub_1,
                 .data$to_add_left,
                 .data$col_sub_2
@@ -407,11 +412,14 @@ apply_col_alignment_pos <- function(col, align) {
                     max(.) - .
                 } %>%
                 {
-                    str_dup(" ", .)
+                    stringr::str_dup(" ", .)
                 }
         )
 
-    str_c(col_left_padded_sum$col, col_left_padded_sum$to_add_right)
+    stringr::str_c(
+        col_left_padded_sum$col,
+        col_left_padded_sum$to_add_right
+    )
 }
 
 
@@ -431,15 +439,15 @@ apply_col_width <- function(col, width) {
         col[col_na_idx] <- ""
     }
 
-    pad_left <- str_dup(" ", nchar(col) - nchar(trimws(col, "left")))
-    pad_right <- str_dup(" ", nchar(col) - nchar(trimws(col, "right")))
+    pad_left <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "left")))
+    pad_right <- stringr::str_dup(" ", nchar(col) - nchar(trimws(col, "right")))
     out <- pmap_chr(list(trimws(col), width, pad_left, pad_right), wrap_string)
 
     if (length(col_na_idx) > 0) {
         out[col_na_idx] <- NA
     }
     if (length(col_empty_strings_idx) > 0) {
-        out[col_empty_strings_idx] <- str_pad(
+        out[col_empty_strings_idx] <- stringr::str_pad(
             col[col_empty_strings_idx],
             min(c(nchar(col[col_empty_strings_idx]), width))
         )
@@ -449,6 +457,6 @@ apply_col_width <- function(col, width) {
 }
 
 wrap_string <- function(x, width, pad_left, pad_right) {
-    word_list <- stri_wrap(x, width = width, normalize = FALSE)
+    word_list <- stringi::stri_wrap(x, width = width, normalize = FALSE)
     paste0(pad_left, word_list, pad_right, collapse = "\n")
 }
