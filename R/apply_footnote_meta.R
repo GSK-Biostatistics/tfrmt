@@ -111,33 +111,25 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
             dplyr::inner_join(loc_col_df, by = col_val_nm)
 
         if (nrow(col_loc_df) == 0) {
-            message_text <- c(
-                paste0(
-                    "The provided column location does not exist in the provided data for the footnote",
-                    "\"",
-                    footnote_structure$footnote_text,
-                    "\""
-                ),
-                "Provided column location:"
-            )
-
-            for (col_var in col_val_nm) {
-                message_text <- c(
-                    message_text,
-                    paste0(
-                        col_var,
-                        ": ",
-                        paste0(
-                            "`",
-                            loc_info$column_val[[col_var]],
-                            "`",
-                            collapse = ","
-                        )
+            col_val_bullets <- map_chr(
+                col_val_nm,
+                function(col_var) {
+                    vals <- paste0(
+                        "`",
+                        loc_info$column_val[[col_var]],
+                        "`",
+                        collapse = ", "
                     )
-                )
-            }
+                    paste0(col_var, ": ", vals)
+                }
+            )
+            names(col_val_bullets) <- rep_len("*", length(col_val_bullets))
 
-            cli::cli_inform(paste(message_text, collapse = "\n"))
+            cli::cli_inform(c(
+                "The provided column location does not exist in the provided data for the footnote \"{footnote_structure$footnote_text}\"",
+                "i" = "Provided column location:",
+                col_val_bullets
+            ))
 
             out <- list(col = NULL, spanning = FALSE)
         } else {
