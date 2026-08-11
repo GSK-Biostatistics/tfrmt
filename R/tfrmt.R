@@ -363,7 +363,7 @@ quo_get <- function(
                     )
                 }
 
-                return(arg_val)
+                arg_val
             } else {
                 abort(
                     paste0(
