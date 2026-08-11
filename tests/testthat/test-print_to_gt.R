@@ -541,12 +541,13 @@ test_that("cleaned_data_to_gt() works", {
 })
 
 test_that("cleaned_data_to_gt() renders markdown in title and subtitle", {
+  # nolint start: commas_linter
     test_data <- tibble::tribble(
         ~group  , ~label  , ~column , ~param , ~val ,
         "mygrp" , "mylbl" , "col1"  , "prm"  ,    1 ,
         "mygrp" , "mylbl" , "col2"  , "prm"  ,    2
     )
-
+  # nolint end: commas_linter
     tfrmt_md <- tfrmt(
         group = "group",
         label = "label",
