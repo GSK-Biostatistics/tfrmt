@@ -46,7 +46,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (length(vals) == 0) {
             return(.data)
         } else if (!is.null(frmt_def$transform)) {
-            vals <- as_function(frmt_def$transform)(vals)
+            vals <- rlang::as_function(frmt_def$transform)(vals)
         }
 
         if (str_detect(frmt_def$expression, "[x|X]")) {
