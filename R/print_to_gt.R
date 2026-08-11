@@ -183,7 +183,7 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #' @keywords internal
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
     map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
-        gt_group(.list = .)
+        gt::gt_group(.list = .)
 }
 #' Apply formatting to a single table
 #'
@@ -244,7 +244,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         gt(
             rowname_col = rowname_col
         ) %>%
-        sub_missing(
+        gt::sub_missing(
             rows = .data$..tfrmt_row_grp_lbl,
             missing_text = ""
         ) %>%
@@ -259,22 +259,29 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             tfrmt$row_grp_plan$label_loc$location == "column"
     ) {
         gt_out <- gt_out %>%
-            tab_options(row_group.as_column = TRUE)
+            gt::tab_options(
+                row_group.as_column = TRUE
+            )
     }
 
     # stub header
     if (!is.null(attr(.data, ".stub_header"))) {
         gt_out <- gt_out %>%
-            tab_stubhead(
+            gt::tab_stubhead(
                 label = do.call(
                     md,
-                    list(attr(.data, ".stub_header"))
+                    list(
+                        attr(
+                            .data,
+                            ".stub_header"
+                        )
+                    )
                 )
             )
     }
 
     gt_out_final <- gt_out %>%
-        tab_style(
+        gt::tab_style(
             style = list(
                 gt::cell_text(
                     whitespace = "pre-wrap",
@@ -288,7 +295,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 gt::cells_row_groups()
             )
         ) %>%
-        tab_options(
+        gt::tab_options(
             table.font.size = 14,
             data_row.padding = px(1),
             summary_row.padding = px(1),
@@ -303,13 +310,13 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             row_group.border.bottom.width = px(0),
             row_group.border.bottom.color = "transparent",
             row_group.border.top.color = "transparent",
-            table.font.names = c("Courier", default_fonts()),
+            table.font.names = c("Courier", gt::default_fonts()),
             page.numbering = TRUE,
             page.header.use_tbl_headings = FALSE,
             page.footer.use_tbl_notes = TRUE,
             page.orientation = "landscape"
         ) %>%
-        tab_style(
+        gt::tab_style(
             style = gt::cell_text(
                 whitespace = "pre-wrap",
                 align = "center"
@@ -322,7 +329,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 )
             )
         ) %>%
-        tab_style(
+        gt::tab_style(
             style = gt::cell_borders(
                 sides = c("top", "bottom"),
                 color = "transparent"
@@ -336,7 +343,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 gt::cells_row_groups()
             )
         ) %>%
-        tab_style(
+        gt::tab_style(
             style = gt::cell_borders(
                 sides = c("top"),
                 color = "transparent",
@@ -346,7 +353,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 gt::cells_column_labels()
             )
         ) %>%
-        tab_style(
+        gt::tab_style(
             style = gt::cell_borders(
                 sides = c("bottom"),
                 weight = px(0),
@@ -356,9 +363,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
                 gt::cells_column_spanners()
             )
         ) %>%
-        tab_style(
+        gt::tab_style(
             style = gt::cell_text(
-                font = c("Courier", default_fonts())
+                font = c("Courier", gt::default_fonts())
             ),
             locations = list(
                 gt::cells_body(),
@@ -372,7 +379,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     # remove vertical line
     if (utils::packageVersion("gt") >= "1.3.0") {
         gt_out_final <- gt_out_final %>%
-            tab_options(
+            gt::tab_options(
                 stub.separate = FALSE
             )
     }
@@ -385,7 +392,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     ) {
         if (tfrmt$page_plan$note_loc == "preheader") {
             gt_out_final <- gt_out_final %>%
-                tab_header(
+                gt::tab_header(
                     title = md_wrap(tfrmt$title),
                     subtitle = md_wrap(tfrmt$subtitle),
                     preheader = attr(.data, ".page_note")
@@ -399,22 +406,27 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             )
 
             gt_out_final <- gt_out_final %>%
-                tab_header(title = md_wrap(title), subtitle = md_wrap(subtitle))
+                gt::tab_header(
+                    title = md_wrap(title),
+                    subtitle = md_wrap(subtitle)
+                )
         } else {
             gt_out_final <- gt_out_final %>%
-                tab_header(
+                gt::tab_header(
                     title = md_wrap(tfrmt$title),
                     subtitle = md_wrap(tfrmt$subtitle)
                 )
 
             if (tfrmt$page_plan$note_loc == "source_note") {
                 gt_out_final <- gt_out_final %>%
-                    tab_source_note(md_wrap(attr(.data, ".page_note")))
+                    gt::tab_source_note(
+                        md_wrap(attr(.data, ".page_note"))
+                    )
             }
         }
     } else {
         gt_out_final <- gt_out_final %>%
-            tab_header(
+            gt::tab_header(
                 title = md_wrap(tfrmt$title),
                 subtitle = md_wrap(tfrmt$subtitle)
             )
@@ -474,7 +486,7 @@ format_gt_column_labels <- function(gt_table, .data) {
         for (i in seq_len(nrow(spans_to_apply))) {
             # convert column spanning labels to markdown format
             gt_table <- gt_table %>%
-                tab_spanner(
+                gt::tab_spanner(
                     md(spans_to_apply$value[i]),
                     columns = tidyselect::all_of(
                         spans_to_apply$set[[i]]

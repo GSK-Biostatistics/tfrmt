@@ -20,8 +20,12 @@ apply_footnote_plan <- function(gt, tfrmt, footnote_loc) {
                 apply_cells_body(footnote_loc[[i]])
         }
         gt %>%
-            opt_footnote_marks(marks = tfrmt$footnote_plan$marks) %>%
-            tab_options(footnotes.order = tfrmt$footnote_plan$order)
+            gt::opt_footnote_marks(
+                marks = tfrmt$footnote_plan$marks
+            ) %>%
+            gt::tab_options(
+                footnotes.order = tfrmt$footnote_plan$order
+            )
     }
 }
 
@@ -36,7 +40,7 @@ apply_footnote_plan <- function(gt, tfrmt, footnote_loc) {
 apply_general_footnote <- function(gt, loc) {
     if (length(loc$row) == 0 && length(loc$col) == 0) {
         gt <- gt %>%
-            tab_footnote(
+            gt::tab_footnote(
                 footnote = loc$note
             )
     }
@@ -56,7 +60,7 @@ apply_cells_column_labels <- function(gt, loc) {
 
     if (is.null(loc$row) && !loc$spanning) {
         gt <- gt %>%
-            tab_footnote(
+            gt::tab_footnote(
                 footnote = loc$note,
                 locations = gt::cells_column_labels(
                     columns = loc$col
@@ -78,7 +82,7 @@ apply_cells_column_spanners <- function(gt, loc) {
     # check row is empty - therefore a column footnote
     if (!is.null(loc) && is.null(loc$row) && loc$spanning) {
         gt <- gt %>%
-            tab_footnote(
+            gt::tab_footnote(
                 footnote = loc$note,
                 locations = gt::cells_column_spanners(spanners = loc$col)
             )
@@ -110,7 +114,7 @@ apply_cells_stub <- function(gt, tfrmt, loc) {
 
         if (in_stub) {
             gt <- gt %>%
-                tab_footnote(
+                gt::tab_footnote(
                     footnote = loc$note,
                     locations = gt::cells_stub(
                         rows = loc$row,
@@ -135,7 +139,7 @@ apply_cells_row_groups <- function(gt, tfrmt, loc) {
     if (length(loc$col) > 0) {
         if (all(loc$col %in% map_chr(tfrmt$group, as_label))) {
             gt <- gt %>%
-                tab_footnote(
+                gt::tab_footnote(
                     footnote = loc$note,
                     locations = gt::cells_row_groups(
                         groups = loc$row
@@ -157,7 +161,7 @@ apply_cells_row_groups <- function(gt, tfrmt, loc) {
 apply_cells_body <- function(gt, loc) {
     if (!is.null(loc$col) && !is.null(loc$row)) {
         gt <- gt %>%
-            tab_footnote(
+            gt::tab_footnote(
                 footnote = loc$note,
                 locations = gt::cells_body(
                     columns = loc$col,

@@ -12,7 +12,7 @@
 #'
 #' @importFrom glue glue glue_collapse
 #'
-#' @importFrom gt default_fonts gt gt_group md opt_footnote_marks opt_table_font px sub_missing tab_footnote tab_header tab_options tab_source_note tab_spanner tab_stubhead tab_style text_transform
+#' @importFrom gt gt md opt_table_font px text_transform
 #'
 #' @importFrom jsonlite parse_json read_json toJSON validate
 #'
