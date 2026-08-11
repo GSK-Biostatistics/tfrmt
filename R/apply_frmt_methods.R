@@ -323,7 +323,7 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         left <- frmt_def$frmt_ls %>%
             map_chr(f_lhs_as_char) %>%
             dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
-            parse_exprs() %>%
+            rlang::parse_exprs() %>%
             map(rlang::eval_tidy, .data)
 
         out <- rep(NA_character_, val_len)

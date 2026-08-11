@@ -90,7 +90,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             c(lbl_expr, grp_expr),
             collapse = "&"
         ) %>%
-            parse_expr()
+            rlang::parse_expr()
 
         .data %>%
             dplyr::filter(!!filter_expr) %>%
