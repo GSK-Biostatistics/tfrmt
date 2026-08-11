@@ -1506,11 +1506,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
                     container.width = 1000
                 )
         },
-        paste(
-            "Unable to to apply apply_row_grp_lbl.",
-            "Reason: `label` column AETERM contains NA values. For group-level summary data, `label` and the relevant `group` values should match.",
-            sep = "\n"
-        )
+        "Unable to to apply apply_row_grp_lbl. Reason: `label` column AETERM contains NA values. For group-level summary data, `label` and the relevant `group` values should match."
     )
 })
 

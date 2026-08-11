@@ -7,8 +7,7 @@
 
 ---
 
-    The following columns have multiple Big N's associated with them:
-    c("Placebo", "Total", "Treatment")
+    The following columns have multiple Big N's associated with them: c("Placebo", "Total", "Treatment")
 
 # not enough big Ns by page
 
@@ -57,4 +56,3 @@
       2 "  n"     12                14                  31             
       # i 1 more variable: ..tfrmt_row_grp_lbl <lgl>
       
-

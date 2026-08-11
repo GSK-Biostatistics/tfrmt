@@ -33,11 +33,11 @@
 #'
 print_to_ggplot <- function(tfrmt, .data, ...) {
     if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
+        cli::cli_abort("Requires a tfrmt object")
     }
 
     if (!is.data.frame(.data)) {
-        stop("Requires data")
+        cli::cli_abort("Requires data")
     }
 
     # stop if label location is not indented
@@ -45,39 +45,43 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
         !is.null(tfrmt$row_grp_plan) &&
             tfrmt$row_grp_plan$label_loc[1] != "indented"
     ) {
-        stop(
+        cli::cli_abort(
             "print_to_ggplot must have label location 'indented' if row_group_plan is present"
         )
     }
 
     # stop if span structures are present
     if (!is.null(tfrmt$col_plan$span_structures)) {
-        stop("print_to_ggplot does not support spanning headers")
+        cli::cli_abort("print_to_ggplot does not support spanning headers")
     }
 
     # stop if more than one column variable
     if (length(tfrmt$column) > 1) {
-        stop("print_to_ggplot does not support multiple column variables")
+        cli::cli_abort(
+            "print_to_ggplot does not support multiple column variables"
+        )
     }
 
     # stop if column style plan added
     if (!is.null(tfrmt$col_style_plan)) {
-        stop("print_to_ggplot does not support col_style_plan elements")
+        cli::cli_abort(
+            "print_to_ggplot does not support col_style_plan elements"
+        )
     }
 
     # stop if param, column values not provided
     if (quo_is_missing(tfrmt$param)) {
-        stop("param variable required for print_to_ggplot")
+        cli::cli_abort("param variable required for print_to_ggplot")
     }
     if (is_empty(tfrmt$column)) {
-        stop("column variable required for print_to_ggplot")
+        cli::cli_abort("column variable required for print_to_ggplot")
     }
     if (quo_is_missing(tfrmt$label)) {
-        stop("label variable required for print_to_ggplot")
+        cli::cli_abort("label variable required for print_to_ggplot")
     }
 
     if (quo_is_missing(tfrmt$value)) {
-        stop("value variable required for print_to_ggplot")
+        cli::cli_abort("value variable required for print_to_ggplot")
     }
 
     # Keeping the original data of column to preserve data type later on

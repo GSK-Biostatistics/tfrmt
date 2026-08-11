@@ -111,33 +111,25 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
             dplyr::inner_join(loc_col_df, by = col_val_nm)
 
         if (nrow(col_loc_df) == 0) {
-            message_text <- c(
-                paste0(
-                    "The provided column location does not exist in the provided data for the footnote",
-                    "\"",
-                    footnote_structure$footnote_text,
-                    "\""
-                ),
-                "Provided column location:"
-            )
-
-            for (col_var in col_val_nm) {
-                message_text <- c(
-                    message_text,
-                    paste0(
-                        col_var,
-                        ": ",
-                        paste0(
-                            "`",
-                            loc_info$column_val[[col_var]],
-                            "`",
-                            collapse = ","
-                        )
+            col_val_bullets <- map_chr(
+                col_val_nm,
+                function(col_var) {
+                    vals <- paste0(
+                        "`",
+                        loc_info$column_val[[col_var]],
+                        "`",
+                        collapse = ", "
                     )
-                )
-            }
+                    paste0(col_var, ": ", vals)
+                }
+            )
+            names(col_val_bullets) <- rep_len("*", length(col_val_bullets))
 
-            message(paste(message_text, collapse = "\n"))
+            cli::cli_inform(c(
+                "The provided column location does not exist in the provided data for the footnote \"{footnote_structure$footnote_text}\"",
+                "i" = "Provided column location:",
+                col_val_bullets
+            ))
 
             out <- list(col = NULL, spanning = FALSE)
         } else {
@@ -206,12 +198,12 @@ get_row_loc <- function(
     if (any(names(loc_info) %in% c("group_val", "label_val"))) {
         # Things that don't have rows
         if (!is.null(col_info$spanning) && col_info$spanning) {
-            warning(
+            cli::cli_warn(
                 "Cannot apply footnotes to rows when you have only specified a spanning column"
             )
             col_info$row <- NULL
         } else if (row_grp == "noprint" && !is_empty(loc_info$group_val)) {
-            warning(
+            cli::cli_warn(
                 "Can not apply footnotes to group columns when 'noprint' is set"
             )
             col_info$row <- NULL

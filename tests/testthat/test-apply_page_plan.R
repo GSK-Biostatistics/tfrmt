@@ -381,13 +381,7 @@ test_that("page plan with multiple structures", {
             vars(grp1, grp2),
             quo(lbl)
         ),
-        paste(
-            c(
-                "`page_plan` contains multiple `page_structures` with values set to \".default\". ",
-                "Only the last one specified will be used."
-            ),
-            collapse = "\n"
-        )
+        "`page_plan` contains multiple `page_structures` with values set to \".default\"\\.\\s+Only the last one specified will be used\\."
     )
 
     man_split <- list(

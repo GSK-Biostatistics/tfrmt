@@ -36,10 +36,10 @@ tfrmt_n_pct <- function(
     tfrmt_obj = NULL
 ) {
     if (is.null(n) || is.na(n) || n == "") {
-        stop("`n` value must be provided")
+        cli::cli_abort("`n` value must be provided")
     }
     if (is.null(pct) || is.na(pct) || pct == "") {
-        stop("`pct` value must be provided")
+        cli::cli_abort("`pct` value must be provided")
     }
 
     combo <- paste0(

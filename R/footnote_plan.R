@@ -110,18 +110,20 @@ footnote_structure <- function(
     if (is.list(column_val)) {
         column_val_names <- names(column_val)
         if (is.null(column_val_names)) {
-            stop("when column_val is a list, must be a named list")
+            cli::cli_abort("when column_val is a list, must be a named list")
         } else if (!all(nzchar(column_val_names))) {
-            stop("when column_val is a list, each entry must be named")
+            cli::cli_abort(
+                "when column_val is a list, each entry must be named"
+            )
         }
     }
 
     if (is.list(group_val)) {
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
-            stop("when group_val is a list, must be a named list")
+            cli::cli_abort("when group_val is a list, must be a named list")
         } else if (!all(nzchar(group_val_names))) {
-            stop("when group_val is a list, each entry must be named")
+            cli::cli_abort("when group_val is a list, each entry must be named")
         }
     }
 

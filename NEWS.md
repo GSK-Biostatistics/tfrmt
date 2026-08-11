@@ -3,6 +3,7 @@
 ## Improvements
 * Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
 * `footnote_structure()` now returns its elements in the same order as its arguments (`footnote_text`, `column_val`, `group_val`, `label_val`) (#589).
+* Converted to using cli messaging across the package: all errors, warnings, and messages now use {cli} calls (`cli::cli_abort()`, `cli::cli_warn()`, `cli::cli_inform()`) instead of a mixture of base R (`stop()`, `warning()`, `message()`) and {rlang} (`abort()`, `warn()`, `inform()`, `stop_input_type()`) (#800).
 * Add markdown processing of `title`, `subtitle`, and `source_note` (#664).
 
 ## Bug fixes

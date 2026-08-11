@@ -28,11 +28,9 @@ col_style_plan <- function(...) {
 
     for (el_idx in seq_along(structure_list)) {
         if (!is_col_style_structure(structure_list[[el_idx]])) {
-            stop(paste0(
-                "Entry number ",
-                el_idx,
-                " is not an object of class `col_style_structure`."
-            ))
+            cli::cli_abort(
+                "Entry number {el_idx} is not an object of class `col_style_structure`."
+            )
         }
     }
 
@@ -107,7 +105,7 @@ col_style_structure <- function(
     type <- match.arg(type)
 
     if (missing(col)) {
-        abort(
+        cli::cli_abort(
             "Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself",
             class = "missing_col_style_structure_value"
         )
@@ -119,7 +117,7 @@ col_style_structure <- function(
         check_col_plan_dots()
 
     if (is.null(width) && is.null(align)) {
-        abort(
+        cli::cli_abort(
             "`align` or `width` must be applied to create this col_style_structure",
             class = "missing_col_style_structure_value"
         )
@@ -128,7 +126,7 @@ col_style_structure <- function(
     if (!is.null(align)) {
         if (type == "char") {
             if (!is.character(align) && length(align) > 0) {
-                abort(
+                cli::cli_abort(
                     "`align` must be a character vector",
                     class = "invalid_col_style_structure_value"
                 )
@@ -136,14 +134,14 @@ col_style_structure <- function(
 
             if (!all(align %in% c("left", "right"))) {
                 if (!all(nchar(align) == 1)) {
-                    message(
+                    cli::cli_inform(
                         "Alignment specified contains strings with >1 characters. Only the first character will be used."
                     )
                     align <- stringr::str_sub(align, start = 1, end = 1)
                 }
 
                 if (any(stringr::str_detect(align, "[[:alnum:]]"))) {
-                    message(
+                    cli::cli_inform(
                         "Alignment specified contains one or more alphanumeric characters. Results may not be as expected."
                     )
                 }
@@ -155,14 +153,14 @@ col_style_structure <- function(
         if (is.character(width)) {
             suppressWarnings(width <- as.numeric(width))
             if (is.na(width)) {
-                abort(
+                cli::cli_abort(
                     "`width` must be a value that can be converted into a number greater than 0",
                     class = "invalid_col_style_structure_value"
                 )
             }
         }
         if (any(!is.numeric(width), width < 1, length(width) > 1)) {
-            abort(
+            cli::cli_abort(
                 "`width` must be a valid number greater than 0",
                 class = "invalid_col_style_structure_value"
             )

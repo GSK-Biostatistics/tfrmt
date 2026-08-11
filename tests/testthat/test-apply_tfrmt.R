@@ -59,8 +59,10 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         )
     )
 
-    expect_message(
-        processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE),
+    expect_identical(
+        capture_messages(
+            processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE)
+        ),
         paste(
             c(
                 "Multiple param listed for the same group/label values.",
@@ -69,16 +71,17 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
                 "- `frmt_structure(group_val = \"c\", label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
                 "- `frmt_structure(group_val = \"v\", label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
             ),
-            collapse = "\n"
-        ),
-        fixed = TRUE
+            collapse = " "
+        )
     )
 
-    expect_message(
-        processed_dat <- apply_tfrmt(
-            dat2,
-            tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
-            mock = FALSE
+    expect_identical(
+        capture_messages(
+            processed_dat <- apply_tfrmt(
+                dat2,
+                tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
+                mock = FALSE
+            )
         ),
         paste(
             c(
@@ -87,16 +90,17 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
                 "or the order may need to be changed to:",
                 "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`"
             ),
-            collapse = "\n"
-        ),
-        fixed = TRUE
+            collapse = " "
+        )
     )
 
-    expect_message(
-        processed_dat <- apply_tfrmt(
-            dat3,
-            tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
-            mock = FALSE
+    expect_identical(
+        capture_messages(
+            processed_dat <- apply_tfrmt(
+                dat3,
+                tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
+                mock = FALSE
+            )
         ),
         paste(
             c(
@@ -106,9 +110,8 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
                 "- `frmt_structure(group_val = list(grp1 = \"d\", grp2 = \"c\"), label_val = \"n\", frmt_combine(\"{n}, {n_2}\",n = frmt(\"xx\"), n_2 = frmt(\"xx\")))`",
                 "- `frmt_structure(group_val = list(grp1 = \"q\", grp2 = \"v\"), label_val = \"s\", frmt_combine(\"{n}, {n_3}\",n = frmt(\"xx\"), n_3 = frmt(\"xx\")))`"
             ),
-            collapse = "\n"
-        ),
-        fixed = TRUE
+            collapse = " "
+        )
     )
 
     tfrmt_temp2 <- tfrmt(
@@ -132,8 +135,16 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             mock = FALSE
         )$messages,
         c(
-            "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57\n",
-            "Multiple param listed for the same group/label values.\nThe following frmt_structures may be missing from the body_plan\nor the order may need to be changed to:\n- `frmt_structure(group_val = list(rowlbl1 = \"Age (y)\", grp = \"cat\"), label_val = c(\"65-80 yrs\",\"<65 yrs\",\">80 yrs\"), frmt_combine(\"{n}, {pct}\",n = frmt(\"xx\"), pct = frmt(\"xx\")))`"
+            "The following rows of the given dataset have no format applied to them 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57",
+            paste(
+                c(
+                    "Multiple param listed for the same group/label values.",
+                    "The following frmt_structures may be missing from the body_plan",
+                    "or the order may need to be changed to:",
+                    "- `frmt_structure(group_val = list(rowlbl1 = \"Age (y)\", grp = \"cat\"), label_val = c(\"65-80 yrs\",\"<65 yrs\",\">80 yrs\"), frmt_combine(\"{n}, {pct}\",n = frmt(\"xx\"), pct = frmt(\"xx\")))`"
+                ),
+                collapse = " "
+            )
         )
     )
 })
@@ -182,7 +193,7 @@ test_that("test tentative_process", {
     expect_false(is_empty(failing_func_messages))
     expect_identical(
         failing_func_messages,
-        "Unable to to apply failing_func.\nReason: this function failed\n"
+        "Unable to to apply failing_func. Reason: this function failed"
     )
 
     ## function failing in tentative process
@@ -198,7 +209,7 @@ test_that("test tentative_process", {
     expect_false(is_empty(rlang_abort_func_messages))
     expect_identical(
         rlang_abort_func_messages,
-        "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"
+        "Unable to to apply rlang_abort_func. Reason: this function failed2"
     )
 })
 

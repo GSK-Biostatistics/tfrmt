@@ -175,8 +175,21 @@ apply_frmt.frmt_combine <- function(
     # Check if unspecified param values are in the dataset
 
     if (!setequal(names(frmt_def$frmt_ls), fmt_param_vals)) {
-        stop(
+        cli::cli_abort(
             "The values in the expression don't match the names of the given formats "
+        )
+    }
+
+    # Test if all parameters needed for the combination exist in the data
+    miss_param_from_data <- .data %>%
+        dplyr::pull(!!param) %>%
+        unique() %>%
+        setdiff(fmt_param_vals_uq, .)
+
+    if (length(miss_param_from_data) > 0) {
+        missing_params <- paste(miss_param_from_data, collapse = " \n")
+        cli::cli_abort(
+            "Unable to create formatting combination because the following parameters are missing from the data:\n {missing_params}"
         )
     }
 
@@ -197,19 +210,6 @@ apply_frmt.frmt_combine <- function(
                 ...
             )
     })
-
-    #Test if common information exists
-    miss_param_from_data <- .tmp_data %>%
-        dplyr::pull(!!param) %>%
-        unique() %>%
-        setdiff(fmt_param_vals_uq, .)
-
-    if (length(miss_param_from_data) > 0) {
-        stop(paste0(
-            "Unable to create formatting combination because the following parameters are missing from the data:\n ",
-            paste(miss_param_from_data, collapse = " \n")
-        ))
-    }
 
     .tmp_data_wide <- .tmp_data %>%
         dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
@@ -237,12 +237,14 @@ apply_frmt.frmt_combine <- function(
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
         id_cols <- .tmp_data %>%
             dplyr::select(!!!column, !!label, !!!group, !!param)
-        warning(paste0(
-            "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            toString(names(id_cols %>% dplyr::select(-!!param))),
-            ". Current values:\n",
-            paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
-        ))
+        id_col_names <- toString(names(id_cols %>% dplyr::select(-!!param)))
+        id_col_values <- paste(
+            capture.output(id_cols %>% as.data.frame()),
+            collapse = "\n"
+        )
+        cli::cli_warn(
+            "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: {id_col_names}. Current values:\n{id_col_values}"
+        )
     }
 
     if (is.null(frmt_def$missing)) {

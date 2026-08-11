@@ -41,7 +41,7 @@ expr_to_filter.quosures <- function(cols, val) {
         out <- "TRUE"
     } else if (is.list(val)) {
         if (!all(names(val) %in% map_chr(cols, as_label))) {
-            stop("Names of val entries do not all match col values")
+            cli::cli_abort("Names of val entries do not all match col values")
         }
         out <- map2_chr(
             cols,
@@ -50,7 +50,9 @@ expr_to_filter.quosures <- function(cols, val) {
         ) %>%
             paste(collapse = " & ")
     } else {
-        stop("If multiple cols are provided, val must be a named list")
+        cli::cli_abort(
+            "If multiple cols are provided, val must be a named list"
+        )
     }
     out
 }

@@ -351,6 +351,38 @@ test_that("applying frmt_combine missing", {
     )
 })
 
+test_that("frmt_combine errors when a parameter is entirely missing from the data", {
+    sample_df <- tibble(
+        group = "group",
+        lab = paste("lab", 1:5),
+        col = "col",
+        y = rep("A", 5),
+        # fmt: skip
+        x = c(
+            1234.5678, 2345.6789, 3456.7891, 4567.8910, 5678.9101
+        )
+    )
+
+    sample_frmt <- frmt_combine(
+        "{A} {B}",
+        A = frmt("xxx.x"),
+        B = frmt("(X.X%)")
+    )
+
+    expect_error(
+        apply_frmt.frmt_combine(
+            frmt_def = sample_frmt,
+            .data = sample_df,
+            value = quo(x),
+            param = quo(y),
+            column = vars(col),
+            label = quo(lab),
+            group = vars(group)
+        ),
+        "Unable to create formatting combination because the following parameters are missing from the data"
+    )
+})
+
 test_that("applying frmt_combine - 3x", {
     sample_df <- tibble(
         group = "group",

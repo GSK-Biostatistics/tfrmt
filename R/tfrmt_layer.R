@@ -68,10 +68,9 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
             if (inherits(e, "_tfrmt_mismatched_group_vals")) {
                 e <- append_update_group_message(e, x, y)
             }
-            abort(
+            cli::cli_abort(
                 e$message,
-                call = e$call,
-                trace = e$trace
+                call = e$call
             )
         }
     )
@@ -180,7 +179,7 @@ update_group <- function(tfrmt, ...) {
     new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
 
     if (is_empty(tfrmt$group)) {
-        stop("No group values defined in input tfrmt.")
+        cli::cli_abort("No group values defined in input tfrmt.")
     } else {
         var_list <- sapply(tfrmt$group, function(x) {
             x_lab <- as_label(x)
@@ -323,19 +322,17 @@ reset_component <- function(tfrmt_obj, component_name) {
     # Validate inputs
     # check for class attribute
     if (!inherits(tfrmt_obj, "tfrmt")) {
-        stop("The input object must be of class 'tfrmt'.")
+        cli::cli_abort("The input object must be of class 'tfrmt'.")
     }
     if (!is.character(component_name) || length(component_name) != 1) {
-        stop("The component name must be a single string.")
+        cli::cli_abort("The component name must be a single string.")
     }
 
     # Check if the specified component exists in the list
     if (!component_name %in% names(tfrmt_obj)) {
-        stop(paste0(
-            "component '",
-            component_name,
-            "' does not exist in the tfrmt object."
-        ))
+        cli::cli_abort(
+            "component '{component_name}' does not exist in the tfrmt object."
+        )
     }
 
     # Reset the specified component by setting it to NULL

@@ -51,20 +51,20 @@ print_mock_gt <- function(
 ) {
     # fill param, column if not provided
     if (quo_is_missing(tfrmt$param)) {
-        message(
+        cli::cli_inform(
             "`tfrmt` will need a `param` value to `print_to_gt` when data is available"
         )
         tfrmt$param <- quo(!!sym("__tfrmt__param"))
     }
     if (is_empty(tfrmt$column)) {
-        message(
+        cli::cli_inform(
             "`tfrmt` will need `column` value(s) to `print_to_gt` when data is available"
         )
         tfrmt$column <- vars(!!sym("__tfrmt__column"))
     }
 
     if (quo_is_missing(tfrmt$value)) {
-        message(
+        cli::cli_inform(
             "Message: `tfrmt` will need `value` value to `print_to_gt` when data is available"
         )
         tfrmt$value <- quo(!!sym("__tfrmt__val"))
@@ -89,10 +89,9 @@ print_mock_gt <- function(
             data = .data
         )
         if (!is.null(select_try$result)) {
-            message(
-                " Removing `",
-                as_label(tfrmt$value),
-                "` from input data for mocking."
+            value_label <- as_label(tfrmt$value)
+            cli::cli_inform(
+                " Removing `{value_label}` from input data for mocking."
             )
             .data <- .data[, -select_try$result$result]
         }
@@ -149,14 +148,16 @@ print_mock_gt <- function(
 #' }}
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
+        cli::cli_abort("Requires a tfrmt object")
     }
 
     # check required input variables are supplied
     check_inputs(tfrmt, c("column", "param", "value"))
 
     if (!is.data.frame(.data)) {
-        stop("Requires data, if not available please use `print_mock_gt()`")
+        cli::cli_abort(
+            "Requires data, if not available please use `print_mock_gt()`"
+        )
     }
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
         cleaned_data_to_gt(tfrmt, .unicode_ws)

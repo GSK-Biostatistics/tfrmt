@@ -60,7 +60,7 @@ param_set <- function(...) {
         all_numeric_args <- map_lgl(args, ~ is.numeric(.) || is.na(.)) %>% all()
         all_named_args <- names(args) %>% nchar() %>% all(. > 0)
         if (!all_numeric_args || !all_named_args) {
-            stop("`param_set` entry must be named numeric vector.")
+            cli::cli_abort("`param_set` entry must be named numeric vector.")
         }
     }
 
@@ -222,7 +222,7 @@ tfrmt_sigdig <- function(
 
     # error if no sigdig column
     if (!"sigdig" %in% names(sigdig_df)) {
-        stop("`sigdig_df` input must contain `sigdig` column.")
+        cli::cli_abort("`sigdig_df` input must contain `sigdig` column.")
     }
 
     # error if no group/label columns available
@@ -230,7 +230,9 @@ tfrmt_sigdig <- function(
         dplyr::select(-"sigdig") %>%
         names()
     if (length(data_names) == 0) {
-        stop("`sigdig_df` input must contain group and/or label value columns.")
+        cli::cli_abort(
+            "`sigdig_df` input must contain group and/or label value columns."
+        )
     }
 
     group_names <- map_chr(tfrmt_inputs$group, as_label)
@@ -268,10 +270,8 @@ tfrmt_sigdig <- function(
             } else {
                 ""
             }
-            stop(
-                "`sigdig_df` input does not contain any of the specified group/label params:\n",
-                group_msg,
-                label_msg
+            cli::cli_abort(
+                "`sigdig_df` input does not contain any of the specified group/label params:\n{group_msg}{label_msg}"
             )
         }
     }
@@ -290,9 +290,9 @@ tfrmt_sigdig <- function(
 
     if (!all(new_group_names %in% names(sigdig_df))) {
         grp <- setdiff(new_group_names, names(sigdig_df))
-        warning(
-            "`sigdig_df` input does not contain the following group params: ",
-            toString(grp)
+        grp_str <- toString(grp)
+        cli::cli_warn(
+            "`sigdig_df` input does not contain the following group params: {grp_str}"
         )
     }
 

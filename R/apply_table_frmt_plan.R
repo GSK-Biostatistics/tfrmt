@@ -82,7 +82,7 @@ apply_table_frmt_plan <- function(
                         "The following rows of the given dataset have no format applied to them",
                         .
                     ) %>%
-                    message()
+                    cli::cli_inform()
             } else {
                 ## apply the formatting based on method of cur_fmt
                 out <- apply_frmt(

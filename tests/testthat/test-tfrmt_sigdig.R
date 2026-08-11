@@ -780,11 +780,8 @@ test_that("varying group/label inputs", {
 
     expect_error(
         tfrmt_sigdig(dat_sigdig, group = group4, label = group3),
-        paste0(
-            "`sigdig_df` input does not contain any of the specified group/label params:\n",
-            "group: group4\n",
-            "label: group3"
-        )
+        "`sigdig_df` input does not contain any of the specified group/label params:",
+        fixed = TRUE
     )
 })
 
