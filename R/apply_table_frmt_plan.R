@@ -22,8 +22,10 @@ apply_table_frmt_plan <- function(
 ) {
     ## identify which formatting needs to be applied where
     .data <- .data %>%
-        ungroup() %>%
-        mutate(TEMP_row = row_number())
+        dplyr::ungroup() %>%
+        dplyr::mutate(
+            TEMP_row = dplyr::row_number()
+        )
 
     TEMP_appl_row <- table_frmt_plan %>%
         map(fmt_test_data, .data, label, group, param)
@@ -34,17 +36,23 @@ apply_table_frmt_plan <- function(
         TEMP_appl_row,
         TEMP_fmt_to_apply
     ) %>%
-        # TODO? add a warning if a format isn't applied anywhere?
-        mutate(TEMP_fmt_rank = row_number()) %>%
+        # TODO (?) add a warning if a format isn't applied anywhere?
+        dplyr::mutate(
+            TEMP_fmt_rank = dplyr::row_number()
+        ) %>%
         unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
-        #TODO add warning if there are rows not covered
+        # TODO add warning if there are rows not covered
         dplyr::arrange(
             TEMP_appl_row,
             dplyr::desc(.data$TEMP_fmt_rank)
         ) %>%
-        slice(1) %>%
-        left_join(.data, ., by = c("TEMP_row" = "TEMP_appl_row")) %>%
+        dplyr::slice(1) %>%
+        dplyr::left_join(
+            .data,
+            .,
+            by = c("TEMP_row" = "TEMP_appl_row")
+        ) %>%
         dplyr::group_by(.data$TEMP_fmt_rank) %>%
         dplyr::group_split()
 
@@ -52,7 +60,7 @@ apply_table_frmt_plan <- function(
     dat_plus_fmt %>%
         map_dfr(function(x) {
             cur_fmt <- x %>%
-                pull(.data$TEMP_fmt_to_apply) %>%
+                dplyr::pull(.data$TEMP_fmt_to_apply) %>%
                 .[1] %>%
                 .[[1]]
 
@@ -61,13 +69,15 @@ apply_table_frmt_plan <- function(
                     out <- x
                 } else {
                     out <- x %>%
-                        mutate(!!value := as.character(!!value))
+                        dplyr::mutate(
+                            !!value := as.character(!!value)
+                        )
                 }
 
                 # Add message
                 x %>%
-                    pull(.data$TEMP_row) %>%
-                    paste0(collapse = ", ") %>%
+                    dplyr::pull(.data$TEMP_row) %>%
+                    paste(collapse = ", ") %>%
                     paste(
                         "The following rows of the given dataset have no format applied to them",
                         .
@@ -90,7 +100,7 @@ apply_table_frmt_plan <- function(
             out
         }) %>%
         dplyr::arrange(.data$TEMP_row) %>%
-        select(
+        dplyr::select(
             # drop TEMP_row values
             -tidyselect::starts_with(
                 "TEMP_"
@@ -127,23 +137,29 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
     # Protect against incomplete frmt_combines
     if (is_frmt_combine(cur_fmt$frmt_to_apply[[1]])) {
         complet_combo_grps <- out %>%
-            select(!!!group, !!label, !!param) %>%
+            dplyr::select(!!!group, !!label, !!param) %>%
             dplyr::distinct() %>%
             dplyr::group_by(!!!group, !!label) %>%
-            mutate(test = sum(!!parse_expr(parm_expr))) %>%
+            dplyr::mutate(
+                test = sum(!!parse_expr(parm_expr))
+            ) %>%
             dplyr::filter(
                 .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
             ) %>%
-            ungroup()
+            dplyr::ungroup()
         join_by <- c(group, label, param) %>%
             map_chr(as_label) %>%
             keep(~ . != "<empty>")
 
         out <- complet_combo_grps %>%
-            left_join(out, by = join_by, multiple = "all")
+            dplyr::left_join(
+                out,
+                by = join_by,
+                multiple = "all"
+            )
     }
     out %>%
-        pull(.data$TEMP_row)
+        dplyr::pull(.data$TEMP_row)
 }
 
 all_missing <- function(cols, .data) {

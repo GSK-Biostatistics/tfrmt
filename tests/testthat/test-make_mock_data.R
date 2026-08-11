@@ -356,14 +356,18 @@ test_that("Test when no body_style or values is present", {
     expect_identical(
         gt_out$`_data`,
         input_data %>%
-            mutate(val = "X.X") %>%
+            dplyr::mutate(
+                val = "X.X"
+            ) %>%
             pivot_wider(
                 names_from = c(spanner, columns),
                 names_sep = .tlang_delim,
                 values_from = val
             ) %>%
-            select(-param) %>%
-            mutate(..tfrmt_row_grp_lbl = FALSE)
+            dplyr::select(-param) %>%
+            dplyr::mutate(
+                ..tfrmt_row_grp_lbl = FALSE
+            )
     )
 })
 
@@ -635,7 +639,7 @@ test_that("Using col_plan to get column names", {
     )
 
     col_names <- make_mock_data(basic_cols) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
     expect_identical(col_names, c("Placebo", "Low", "High"))
 
@@ -669,7 +673,7 @@ test_that("Using col_plan to get column names", {
         )
     ) %>%
         make_mock_data() %>%
-        select(test1, test2) %>%
+        dplyr::select(test1, test2) %>%
         dplyr::distinct(test1, test2)
 
     man_col_df <- tibble(
@@ -750,7 +754,7 @@ test_that("Using col_style_plan to get names", {
     )
 
     col_names <- make_mock_data(basic_cols) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
     expect_identical(col_names, c("Active", "Placebo", "Total"))
 
@@ -794,7 +798,7 @@ test_that("Using col_style_plan to get names", {
         )
     ) %>%
         make_mock_data() %>%
-        select(test1, test2) %>%
+        dplyr::select(test1, test2) %>%
         dplyr::distinct(test1, test2)
 
     man_col_df <- tibble(
@@ -885,7 +889,7 @@ test_that("Mock data for col_plan with only drops", {
     )
 
     make_mock_data(drop_tfrmt) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique() %>%
         expect_identical(c("column1", "column2", "column3"))
 })
@@ -916,7 +920,7 @@ test_that("Mock data for col_plan does not add group, label, or sorting_cols nam
     )
 
     make_mock_data(tf_cols) %>%
-        pull(col) %>%
+        dplyr::pull(col) %>%
         unique() %>%
         expect_identical(c("col1", "col2"))
 })
@@ -943,7 +947,7 @@ test_that("Mock data ignores col_plan with everything()", {
     )
 
     col_names <- make_mock_data(tf_everything) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
     expect_identical(
         col_names,

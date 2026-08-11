@@ -6,8 +6,8 @@ raw_data_cat <- crossing(
     col = paste("Var", 1:4),
     param2 = c("count", "pct")
 ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
         ord1 = 1,
         ord2 = 26 - which(label == letters),
         val2 = dplyr::case_when(
@@ -23,8 +23,8 @@ raw_data_cont <- crossing(
     col = paste("Var", 1:4),
     param2 = c("val")
 ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
         ord1 = 2,
         ord2 = which(label == letters),
         val2 = dplyr::case_when(
@@ -113,11 +113,13 @@ test_that("Check apply_tfrmt", {
         "B"    , "w"    , "147         " , "149         " , "143         " , "159         "
     ) %>%
         # nolint end
-        mutate(..tfrmt_row_grp_lbl = FALSE)
+        dplyr::mutate(
+            ..tfrmt_row_grp_lbl = FALSE
+        )
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
-            ungroup() %>%
+            dplyr::ungroup() %>%
             dplyr::arrange(group, label),
         man_df %>%
             dplyr::arrange(group, label),
@@ -131,7 +133,7 @@ test_that("Check apply_tfrmt", {
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
-            ungroup(),
+            dplyr::ungroup(),
         man_df_ord,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -160,7 +162,8 @@ test_that("Check apply_tfrmt", {
 test_that("Check apply_tfrmt for mock data", {
     # mock for example data above
 
-    mock_dat <- raw_dat %>% select(-val2)
+    mock_dat <- raw_dat %>%
+        dplyr::select(-val2)
 
     # nolint start: commas_linter
     mock_man_df <- tibble::tribble(
@@ -175,12 +178,14 @@ test_that("Check apply_tfrmt for mock data", {
         "B"    , "w"    , "XXX         " , "XXX         " , "XXX         " , "XXX         " ,
     ) %>%
         # nolint end
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
         dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
-            ungroup() %>%
+            dplyr::ungroup() %>%
             dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
@@ -248,12 +253,14 @@ test_that("Check apply_tfrmt for mock data", {
         "B"       , "j"       , "xx.xx"        , "xx.xx"        , "xx.xx"        , "xx.xx"
     ) %>%
         # nolint end
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
         dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
-            ungroup() %>%
+            dplyr::ungroup() %>%
             dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
@@ -430,9 +437,14 @@ test_that("Test body_plan missing", {
     expect_equal(
         empty_body_plan,
         input_data %>%
-            select(-param) %>%
-            mutate(val = as.character(val)) %>%
-            pivot_wider(names_from = column, values_from = val),
+            dplyr::select(-param) %>%
+            dplyr::mutate(
+                val = as.character(val)
+            ) %>%
+            pivot_wider(
+                names_from = column,
+                values_from = val
+            ),
         ignore_attr = c(
             "class",
             ".col_plan_vars",
@@ -648,7 +660,8 @@ test_that("struct utils quote escaping", {
     )
     # nolint end
     expect_equal(
-        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |> dplyr::select(rowlbl2:A),
+        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |>
+            dplyr::select(rowlbl2:A),
         man_tfrmt,
         ignore_attr = c(
             "class",

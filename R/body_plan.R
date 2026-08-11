@@ -74,7 +74,7 @@ body_plan_builder <- function(
                 pos = .x
             )
         ) %>%
-        mutate(
+        dplyr::mutate(
             contains_glue = stringr::str_detect(
                 .data$param_display,
                 "\\{.*\\}"
@@ -99,7 +99,7 @@ body_plan_builder <- function(
         unnest(
             tidyselect::everything()
         ) %>%
-        mutate(
+        dplyr::mutate(
             frmt_string = map2_chr(
                 .data$sigdig,
                 .data$single_glue_to_frmt,

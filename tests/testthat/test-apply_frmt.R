@@ -139,7 +139,7 @@ test_that("applying frmt - transform", {
         .data = sample_df,
         value = quo(x)
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
     expect_identical(
         formula_result,
@@ -151,7 +151,7 @@ test_that("applying frmt - transform", {
         .data = sample_df,
         value = quo(x)
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
     expect_identical(
         fx_result,
@@ -569,7 +569,7 @@ test_that("mocks return correctly", {
         value = quo(mock),
         mock = TRUE
     ) %>%
-        pull(mock)
+        dplyr::pull(mock)
     expect_identical(frmt_mock, rep("xxx.x", nrow(iris)))
 
     # frmt_when
@@ -579,7 +579,7 @@ test_that("mocks return correctly", {
         sym("value"),
         mock = TRUE
     ) %>%
-        pull(value)
+        dplyr::pull(value)
     expect_identical(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
 
     frmt_when_no_true <- apply_frmt.frmt_when(
@@ -588,7 +588,7 @@ test_that("mocks return correctly", {
         sym("value"),
         mock = TRUE
     ) %>%
-        pull(value)
+        dplyr::pull(value)
     expect_identical(frmt_when_no_true, rep("Hello", nrow(iris)))
 
     #frmt_combine
@@ -616,7 +616,7 @@ test_that("mocks return correctly", {
         group = vars(group),
         mock = TRUE
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
     expect_identical(sample_df_frmted, rep("xxx.x (X.X%)", 5))
 })
@@ -667,7 +667,7 @@ test_that("Space in Param", {
         group = vars(group, type),
         mock = FALSE
     ) %>%
-        pull(value)
+        dplyr::pull(value)
 
     expect_identical(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
 })
@@ -688,15 +688,16 @@ test_that("frmt_combine only applies when all parameters are in the data", {
             8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
         )
     ) %>%
-        # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-        mutate(
+        # Note because tfrmt only does rounding we will need to have the
+        # percentages multiplied by 100
+        dplyr::mutate(
             Value = dplyr::case_when(
                 Param == "pct" ~ Value * 100,
                 TRUE ~ Value
             ),
             ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
             ord2 = dplyr::if_else(Label == "n", 1, 2),
-            TEMP_row = row_number()
+            TEMP_row = dplyr::row_number()
         )
 
     test_combo <- frmt_structure(
@@ -714,7 +715,7 @@ test_that("frmt_combine only applies when all parameters are in the data", {
     )
     expected <- data %>%
         dplyr::filter(Label %in% c("Male", "Female")) %>%
-        pull(TEMP_row)
+        dplyr::pull(TEMP_row)
 
     expect_identical(rows_to_use, expected)
 })

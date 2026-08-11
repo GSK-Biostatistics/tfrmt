@@ -944,15 +944,15 @@ test_that("Order is kept for multi-col columns", {
     )
 
     new_name_ord <- apply_tfrmt(test, tfrmt) %>%
-        select(-label) %>%
+        dplyr::select(-label) %>%
         names()
 
     new_name_ord_in_dat <- test %>%
-        select(
+        dplyr::select(
             tidyselect::starts_with("col")
         ) %>%
         unite("new", sep = .tlang_delim) %>%
-        pull(new)
+        dplyr::pull(new)
 
     expect_identical(new_name_ord, new_name_ord_in_dat)
 })
@@ -1564,7 +1564,7 @@ test_that("Tidyselect subtraction with span_structure", {
         column = c("trt1", "trt2", "pl", "trt1&trt2"),
         param = c("count", "percent")
     ) %>%
-        mutate(
+        dplyr::mutate(
             ord1 = rep(
                 seq_along(unique(.$label)),
                 each = nrow(.) / length(unique(.$label))
@@ -1575,7 +1575,10 @@ test_that("Tidyselect subtraction with span_structure", {
             )
         )
 
-    df_fake_values <- df %>% mutate(value = runif(nrow(df)))
+    df_fake_values <- df %>%
+        dplyr::mutate(
+            value = runif(nrow(df))
+        )
 
     tfrmt_minus_selection <- tfrmt(
         # Specify columns in the data

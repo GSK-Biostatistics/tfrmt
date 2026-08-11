@@ -269,12 +269,12 @@ tfrmt_efficacy <- tfrmt(
 
 data_ae2 <- data_ae %>%
     dplyr::group_by(AEBODSYS, AETERM) %>%
-    mutate(
+    dplyr::mutate(
         pct_high = value[col2 == "Xanomeline High Dose" & param == "pct"]
     ) %>%
-    ungroup() %>%
+    dplyr::ungroup() %>%
     dplyr::filter(pct_high > 10) %>%
-    select(-pct_high)
+    dplyr::select(-pct_high)
 
 
 tfrmt_demog %>% print_to_gt(data_demog)

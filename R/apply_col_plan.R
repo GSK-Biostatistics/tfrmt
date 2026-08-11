@@ -10,7 +10,7 @@ apply_col_plan <- function(data, col_selection, grp_lbl) {
         names(col_selection)[col_selection_grp_lbl] <- ""
     }
 
-    select(data, !!!col_selection)
+    dplyr::select(data, !!!col_selection)
 }
 
 
@@ -133,7 +133,7 @@ col_plan_quo_to_vars <- function(
     if (startsWith(as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
             dplyr::filter(!(!!col_quo %in% selected)) %>%
-            mutate(
+            dplyr::mutate(
                 subtraction_status = TRUE
             )
     } else {
@@ -203,7 +203,7 @@ col_plan_span_structure_to_vars <- function(
 
                 if (is_subtraction_selection) {
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
-                        mutate(
+                        dplyr::mutate(
                             subtraction_status = dplyr::case_when(
                                 !(!!col_quo %in% sel_id_col_selections) ~ TRUE,
                                 TRUE ~ FALSE
@@ -245,21 +245,21 @@ col_plan_span_structure_to_vars <- function(
                 unique()
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
+                dplyr::pull(!!col_quo) %>%
                 unique()
         } else {
             split_data_names <- split_data_names %>%
                 dplyr::filter(!is.na(!!col_quo))
 
             col_selections[[col_id]] <- split_data_names %>%
-                pull(!!col_quo) %>%
+                dplyr::pull(!!col_quo) %>%
                 unique()
         }
     }
 
     ## create order df
     ords <- do.call("crossing", col_selections) %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 tidyselect::everything(),
                 ~ factor(
@@ -273,14 +273,19 @@ col_plan_span_structure_to_vars <- function(
                 tidyselect::everything()
             )
         ) %>%
-        mutate(
-            ord_col = seq_len(n())
+        dplyr::mutate(
+            ord_col = seq_len(
+                dplyr::n()
+            )
         )
 
     split_data_names %>%
-        left_join(ords, by = names(col_selections)) %>%
+        dplyr::left_join(
+            ords,
+            by = names(col_selections)
+        ) %>%
         dplyr::arrange(.data$ord_col) %>%
-        select(-"ord_col") %>%
+        dplyr::select(-"ord_col") %>%
         unite_df_to_data_names(
             preselected_cols,
             column_names,
@@ -379,7 +384,7 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
         original = unname(data_names),
         new_name = names(data_names)
     ) %>%
-        mutate(
+        dplyr::mutate(
             subtraction_status = startsWith(.data$original, "-"),
             original = stringr::str_remove(.data$original, "^-")
         ) %>%
@@ -432,7 +437,7 @@ unite_df_to_data_names <- function(
             tidyselect::starts_with("__tfrmt_new_name__"),
             sep = .tlang_delim
         ) %>%
-        mutate(
+        dplyr::mutate(
             dplyr::across(
                 c("original", "new_name"),
                 ~ remove_empty_layers(
@@ -443,13 +448,13 @@ unite_df_to_data_names <- function(
         )
 
     selected <- new_preselected_cols_full %>%
-        mutate(
+        dplyr::mutate(
             original = dplyr::case_when(
                 .data$subtraction_status ~ paste0("-", .data$original),
                 TRUE ~ .data$original
             )
         ) %>%
-        pull(.data$original)
+        dplyr::pull(.data$original)
 
     new_names <- ifelse(
         new_preselected_cols_full$original !=
