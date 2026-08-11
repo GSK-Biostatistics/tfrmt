@@ -140,7 +140,8 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 #' @noRd
 process_for_mock <- function(x, column, .default = 1:3) {
     if (x == ".default") {
-        str_c(column, "_", .default) %>% list()
+        stringr::str_c(column, "_", .default) %>%
+            list()
     } else {
         list(x)
     }
@@ -157,9 +158,9 @@ process_for_mock <- function(x, column, .default = 1:3) {
 clean_col_names <- function(names, dont_inc) {
     names %>%
         map_chr(as_label) %>%
-        str_remove_all('^.*\\(\\"') %>%
-        str_remove_all("^-") %>%
-        str_remove_all('\\"\\)') %>%
+        stringr::str_remove_all('^.*\\(\\"') %>%
+        stringr::str_remove_all("^-") %>%
+        stringr::str_remove_all('\\"\\)') %>%
         setdiff(dont_inc)
 }
 
@@ -303,7 +304,7 @@ col_plan_test <- function(col_plan) {
         all_names <- col_plan$dots %>%
             map_chr(as_label)
         first_chr <- all_names %>%
-            str_sub(end = 1)
+            stringr::str_sub(end = 1)
         out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
     }
     out

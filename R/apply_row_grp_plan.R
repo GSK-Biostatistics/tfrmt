@@ -86,7 +86,7 @@ apply_row_grp_struct <- function(
                 tidyselect::everything(),
                 function(x) {
                     if (is.character(x)) {
-                        str_split(x, "\\n") %>%
+                        stringr::str_split(x, "\\n") %>%
                             unlist() %>%
                             nchar() %>%
                             max(na.rm = TRUE)
@@ -234,9 +234,10 @@ fill_post_space <- function(post_space, fill, width) {
 
     if (fill) {
         reps <- ceiling(width / length_post_space)
-        fill_val <- strrep(post_space, reps) %>% str_sub(1, width)
+        fill_val <- strrep(post_space, reps) %>%
+            stringr::str_sub(1, width)
     } else {
-        fill_val <- str_sub(post_space, 1, width) # truncate to data width if needed
+        fill_val <- stringr::str_sub(post_space, 1, width) # truncate to data width if needed
     }
 
     return(fill_val)
@@ -298,11 +299,11 @@ combine_group_cols <- function(
             map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
-                        ..tfrmt_summary_row = str_trim(
+                        ..tfrmt_summary_row = stringr::str_trim(
                             !!label,
                             side = "left"
                         ) ==
-                            str_trim(
+                            stringr::str_trim(
                                 !!dplyr::last(group),
                                 side = "left"
                             )
@@ -353,7 +354,7 @@ combine_group_cols <- function(
                         !!label := ifelse(
                             .data$..tfrmt_summary_row,
                             !!label,
-                            str_c(indent, !!label)
+                            stringr::str_c(indent, !!label)
                         )
                     ) %>%
                     dplyr::select(-"..tfrmt_summary_row") %>%
