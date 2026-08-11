@@ -280,7 +280,7 @@ tfrmt_sigdig <- function(
         groups_to_add <- setdiff(data_names, label_name)
         tfrmt_inputs$group <- c(
             tfrmt_inputs$group,
-            vars(!!!syms(groups_to_add))
+            vars(!!!rlang::syms(groups_to_add))
         )
     }
 

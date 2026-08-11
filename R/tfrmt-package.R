@@ -24,7 +24,7 @@
 #' @importFrom rlang .data
 #' @importFrom rlang f_lhs f_rhs f_rhs<- frame_call inform is_empty is_quosure
 #' @importFrom rlang is_quosures list2 quo quo_get_expr
-#' @importFrom rlang quo_is_missing quo_name sym syms warn
+#' @importFrom rlang quo_is_missing quo_name warn
 #' @importFrom rlang := !! !!! %||%
 #'
 #' @importFrom stats as.formula setNames

@@ -53,25 +53,25 @@ test_that("applying frmt - scientific", {
 
     sample_df_frmted_10x <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10x
     )
 
     sample_df_frmted_10xx <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10xx
     )
 
     sample_df_frmted_ex <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_ex
     )
 
     sample_df_frmted_exxxx <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_exxxx
     )
 
@@ -171,19 +171,19 @@ test_that("applying frmt - preserves decimal places after rounding", {
 
     sample_df_frmted_1dec <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_1dec
     )
 
     sample_df_frmted_2dec <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_2dec
     )
 
     sample_df_frmted_10x <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10x
     )
 
@@ -576,7 +576,7 @@ test_that("mocks return correctly", {
     frmt_when_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt(""), "==0" ~ "", "TRUE" ~ frmt("(XXX.X%)")),
         .data = iris,
-        sym("value"),
+        rlang::sym("value"),
         mock = TRUE
     ) %>%
         dplyr::pull(value)
@@ -585,7 +585,7 @@ test_that("mocks return correctly", {
     frmt_when_no_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt("Hello"), "==0" ~ ""),
         .data = iris,
-        sym("value"),
+        rlang::sym("value"),
         mock = TRUE
     ) %>%
         dplyr::pull(value)
