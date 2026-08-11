@@ -248,7 +248,9 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             rows = .data$..tfrmt_row_grp_lbl,
             missing_text = ""
         ) %>%
-        cols_hide(columns = "..tfrmt_row_grp_lbl") %>%
+        gt::cols_hide(
+            columns = "..tfrmt_row_grp_lbl"
+        ) %>%
         format_gt_column_labels(.data)
 
     # group label in its own column
@@ -274,14 +276,16 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
     gt_out_final <- gt_out %>%
         tab_style(
             style = list(
-                cell_text(
+                gt::cell_text(
                     whitespace = "pre-wrap",
                     align = "left"
                 )
             ),
             locations = list(
-                cells_stub(columns = rowname_col),
-                cells_row_groups()
+                gt::cells_stub(
+                    columns = rowname_col
+                ),
+                gt::cells_row_groups()
             )
         ) %>%
         tab_options(
@@ -306,62 +310,62 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
             page.orientation = "landscape"
         ) %>%
         tab_style(
-            style = cell_text(
+            style = gt::cell_text(
                 whitespace = "pre-wrap",
                 align = "center"
             ),
             locations = list(
-                cells_column_spanners(),
-                cells_column_labels(),
-                cells_body(
+                gt::cells_column_spanners(),
+                gt::cells_column_labels(),
+                gt::cells_body(
                     columns = tidyselect::everything()
                 )
             )
         ) %>%
         tab_style(
-            style = cell_borders(
+            style = gt::cell_borders(
                 sides = c("top", "bottom"),
                 color = "transparent"
             ),
             locations = list(
-                cells_body(
+                gt::cells_body(
                     columns = tidyselect::everything(),
                     rows = tidyselect::everything()
                 ),
-                cells_stub(),
-                cells_row_groups()
+                gt::cells_stub(),
+                gt::cells_row_groups()
             )
         ) %>%
         tab_style(
-            style = cell_borders(
+            style = gt::cell_borders(
                 sides = c("top"),
                 color = "transparent",
                 weight = px(0)
             ),
             locations = list(
-                cells_column_labels()
+                gt::cells_column_labels()
             )
         ) %>%
         tab_style(
-            style = cell_borders(
+            style = gt::cell_borders(
                 sides = c("bottom"),
                 weight = px(0),
                 color = "transparent"
             ),
             locations = list(
-                cells_column_spanners()
+                gt::cells_column_spanners()
             )
         ) %>%
         tab_style(
-            style = cell_text(
+            style = gt::cell_text(
                 font = c("Courier", default_fonts())
             ),
             locations = list(
-                cells_body(),
-                cells_row_groups(),
-                cells_stub(),
-                cells_column_labels(),
-                cells_column_spanners()
+                gt::cells_body(),
+                gt::cells_row_groups(),
+                gt::cells_stub(),
+                gt::cells_column_labels(),
+                gt::cells_column_spanners()
             )
         )
 
@@ -501,7 +505,9 @@ format_gt_column_labels <- function(gt_table, .data) {
 
     # convert lowest level column labels to markdown format
     gt_table %>%
-        cols_label(.list = lapply(renm_vals, md))
+        gt::cols_label(
+            .list = lapply(renm_vals, md)
+        )
 }
 
 #' Convert gt whitespace to unicode text
@@ -511,7 +517,7 @@ format_gt_column_labels <- function(gt_table, .data) {
 #' @return gt object
 #' @noRd
 convert_ws_unicode <- function(gt_table) {
-    locations <- list(cells_body())
+    locations <- list(gt::cells_body())
 
     if (
         sum(
@@ -522,7 +528,7 @@ convert_ws_unicode <- function(gt_table) {
                 0
         )
     ) {
-        locations <- c(locations, list(cells_stub()))
+        locations <- c(locations, list(gt::cells_stub()))
     }
 
     gt_table %>%
