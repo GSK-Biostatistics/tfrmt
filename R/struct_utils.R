@@ -6,7 +6,7 @@ expr_to_filter <- function(cols, val) {
 
 expr_to_filter.quosure <- function(cols, val) {
     ## If is missing a quosure, nothing to filter
-    if (quo_is_missing(cols)) {
+    if (rlang::quo_is_missing(cols)) {
         return("TRUE")
     }
 

@@ -212,8 +212,8 @@ tfrmt_sigdig <- function(
             tfrmt_inputs$group <- tfrmt_obj$group
         }
         if (
-            quo_is_missing(tfrmt_inputs$label) &&
-                !quo_is_missing(tfrmt_obj$label)
+            rlang::quo_is_missing(tfrmt_inputs$label) &&
+                !rlang::quo_is_missing(tfrmt_obj$label)
         ) {
             tfrmt_inputs$label <- tfrmt_obj$label
         }
@@ -233,7 +233,7 @@ tfrmt_sigdig <- function(
     }
 
     group_names <- map_chr(tfrmt_inputs$group, rlang::as_label)
-    label_name <- if (quo_is_missing(tfrmt_inputs$label)) {
+    label_name <- if (rlang::quo_is_missing(tfrmt_inputs$label)) {
         character(0)
     } else {
         rlang::as_label(tfrmt_inputs$label)

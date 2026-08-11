@@ -78,7 +78,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     expand_cols <- c(tfrmt$group)
 
-    if (!quo_is_missing(tfrmt$label)) {
+    if (!rlang::quo_is_missing(tfrmt$label)) {
         all_frmt_vals <- all_frmt_vals %>%
             dplyr::mutate(
                 dplyr::across(

@@ -66,17 +66,17 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if param, column values not provided
-    if (quo_is_missing(tfrmt$param)) {
+    if (rlang::quo_is_missing(tfrmt$param)) {
         stop("param variable required for print_to_ggplot")
     }
     if (is_empty(tfrmt$column)) {
         stop("column variable required for print_to_ggplot")
     }
-    if (quo_is_missing(tfrmt$label)) {
+    if (rlang::quo_is_missing(tfrmt$label)) {
         stop("label variable required for print_to_ggplot")
     }
 
-    if (quo_is_missing(tfrmt$value)) {
+    if (rlang::quo_is_missing(tfrmt$value)) {
         stop("value variable required for print_to_ggplot")
     }
 

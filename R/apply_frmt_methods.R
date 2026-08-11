@@ -270,7 +270,7 @@ apply_frmt.frmt_combine <- function(
     merge_group <- map(
         c(column, label, group),
         function(x) {
-            if (!quo_is_missing(x)) {
+            if (!rlang::quo_is_missing(x)) {
                 x
             }
         }
