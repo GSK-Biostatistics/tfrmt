@@ -68,7 +68,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
             if (inherits(e, "_tfrmt_mismatched_group_vals")) {
                 e <- append_update_group_message(e, x, y)
             }
-            abort(
+            rlang::abort(
                 e$message,
                 call = e$call,
                 trace = e$trace

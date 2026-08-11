@@ -433,7 +433,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::pull(.data$suggested_frmt_struct) %>%
                 paste0("- `", ., "`", collapse = "\n")
 
-            inform(
+            rlang::inform(
                 paste0(
                     "Multiple param listed for the same group/label values.\n",
                     "The following frmt_structures may be missing from the body_plan\n",
