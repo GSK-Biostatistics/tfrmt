@@ -165,7 +165,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
 all_missing <- function(cols, .data) {
     paste0("is.na(.data$", cols, ")", collapse = " & ") %>%
         parse_expr() %>%
-        eval_bare(env = environment())
+        rlang::eval_bare(env = environment())
 }
 
 
