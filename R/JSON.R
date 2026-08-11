@@ -460,7 +460,7 @@ ls_to_col_style_plan <- function(ls) {
                         stuct_in[["col"]],
                         ~ char_as_quo(.x) %>%
                             quo_get_expr() %>%
-                            expr_text()
+                            rlang::expr_text()
                     ) %>%
                         str_c(collapse = ", ") %>%
                         paste0("vars(", ., ")") %>%
