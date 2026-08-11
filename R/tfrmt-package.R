@@ -6,11 +6,6 @@
 # tidyselect)
 
 ## usethis namespace: start
-#' @importFrom dplyr lag last
-#' @importFrom dplyr left_join mutate n n_distinct na_if pull reframe relocate
-#' @importFrom dplyr rename rename_with row_number rowwise select slice
-#' @importFrom dplyr summarise ungroup
-#'
 #' @importFrom dplyr vars
 #'
 #' @importFrom forcats fct_inorder

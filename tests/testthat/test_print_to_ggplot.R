@@ -8,10 +8,15 @@ test_that("inputs are as expected", {
     )
 
     riska <- risk %>%
-        mutate(group = "A")
+        dplyr::mutate(
+            group = "A"
+        )
 
     riskb <- risk %>%
-        mutate(group = "B", value = value + 10)
+        dplyr::mutate(
+            group = "B",
+            value = value + 10
+        )
 
     test_data <- riska %>%
         rbind(riskb)
@@ -220,8 +225,10 @@ test_that("column type has been preserved", {
 
     dfm <- df %>%
         pivot_longer(January:December) %>%
-        rename("month" = name) %>%
-        mutate(month = substr(month, 1, 3))
+        dplyr::rename("month" = name) %>%
+        dplyr::mutate(
+            month = substr(month, 1, 3)
+        )
 
     # fmt: skip
     dfm$month <- factor(
@@ -233,8 +240,13 @@ test_that("column type has been preserved", {
     )
 
     table_data <- dfm %>%
-        mutate(param = "n") %>%
-        rename("label" = City, "column" = month)
+        dplyr::mutate(
+            param = "n"
+        ) %>%
+        dplyr::rename(
+            "label" = City,
+            "column" = month
+        )
 
     suppressMessages({
         x2 <- tfrmt(

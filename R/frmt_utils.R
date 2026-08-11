@@ -108,7 +108,7 @@ format.frmt_when <- function(x, ...) {
     frmt_str <- paste(
         "< frmt_when | ",
         "\n ",
-        paste0(
+        paste(
             map2_chr(lhs, rhs, paste, sep = " ~ "),
             collapse = "\n  "
         ),
@@ -136,7 +136,7 @@ format.frmt_structure <- function(x, ...) {
     fmts <- x$frmt_to_apply[[1]]
 
     if (is.list(groups)) {
-        group_string <- paste0(
+        group_string <- paste(
             sapply(names(groups), function(y) {
                 paste0(
                     " `",

@@ -82,8 +82,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
 
     # Keeping the original data of column to preserve data type later on
     column_name <- as_label(tfrmt$column[[1]])
-    column_data <- .data %>%
-        pull(!!column_name)
+    column_data <- dplyr::pull(.data, !!column_name)
 
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
@@ -102,7 +101,13 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     # apply grouping if any
     # create y variable to preserve ordering and levels
     .data <- apply_grp_ggplot(.data, tfrmt) %>%
-        mutate(y = rev(seq_len(n())))
+        dplyr::mutate(
+            y = rev(
+                seq_len(
+                    dplyr::n()
+                )
+            )
+        )
 
     # handle cases for "..tfrmt_row_grp_lbl pivoting
     if ("..tfrmt_row_grp_lbl" %in% names(.data)) {
@@ -113,7 +118,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
                 names_to = "column",
                 values_to = "value"
             ) %>%
-            mutate(
+            dplyr::mutate(
                 value = dplyr::if_else(
                     .data$`..tfrmt_row_grp_lbl`,
                     "",
@@ -187,7 +192,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
             )
         ) + # replace y values with labels
         ggplot2::scale_y_discrete(
-            labels = pull(long_data, !!tfrmt$label),
+            labels = dplyr::pull(long_data, !!tfrmt$label),
             breaks = long_data$y
         )
 }
@@ -210,7 +215,7 @@ apply_grp_ggplot <- function(.data, tfrmt) {
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 
         combine_group_cols(.data, tfrmt$group, tfrmt$label, element) %>%
-            select(
+            dplyr::select(
                 -tidyselect::all_of(
                     group_name
                 )
