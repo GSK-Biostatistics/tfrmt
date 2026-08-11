@@ -358,7 +358,7 @@ clean_spanning_col_names <- function(data) {
 
 count_spanning_layers <- function(x) {
     x %>%
-        str_count(.tlang_delim) %>%
+        stringr::str_count(.tlang_delim) %>%
         max()
 }
 
@@ -366,7 +366,7 @@ count_spanning_layers <- function(x) {
 ## also used in select_col_plan to process column names the same way
 remove_empty_layers <- function(x, nlayers = 1) {
     empty_str <- paste0("^", strrep(paste0("NA", .tlang_delim), nlayers))
-    str_remove(x, empty_str)
+    stringr::str_remove(x, empty_str)
 }
 
 #' Pivot formatted values into a wide dataset
@@ -481,7 +481,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         mock &&
             length(tbl_dat_wide$warnings) > 0 &&
             any(
-                str_detect(
+                stringr::str_detect(
                     tbl_dat_wide$warnings,
                     paste0(
                         "Values from `",
@@ -509,7 +509,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
 
 
 frmt_struct_string <- function(grp, lbl, param_vals) {
-    length_lbl <- str_count(lbl, ",") + 1
+    length_lbl <- stringr::str_count(lbl, ",") + 1
 
     group_names <- substitute(grp) %>%
         as.list() %>%
