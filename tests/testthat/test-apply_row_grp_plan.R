@@ -1,5 +1,5 @@
 test_that("insert post space - single grouping variable", {
-    df <- tibble(
+    df <- tibble::tibble(
         grp1 = c("A", "B", "C", "D"),
         label = as.character(1:4),
         trtA = rep("xx (xx%)", 4),
@@ -72,7 +72,7 @@ test_that("insert post space - single grouping variable", {
 })
 
 test_that("insert post space - two grouping variables", {
-    df <- tibble(
+    df <- tibble::tibble(
         crossing(
             grp1 = c("A", "B", "C"),
             grp2 = c("a", "b"),
@@ -170,7 +170,7 @@ test_that("insert post space - two grouping variables", {
 
 
 test_that("insert mix - single grouping variable", {
-    df <- tibble(
+    df <- tibble::tibble(
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
@@ -211,7 +211,7 @@ test_that("insert mix - single grouping variable", {
 
 
 test_that("insert post space after specific value", {
-    df <- tibble(
+    df <- tibble::tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
         label = "1",
         trtA = rep("xx (xx%)", 6),
@@ -252,7 +252,7 @@ test_that("insert post space after specific value", {
 
 
 test_that("overlapping row_grp_structures - prefers latest", {
-    df <- tibble(
+    df <- tibble::tibble(
         crossing(grp1 = c("A", "B", "C"), grp2 = c("a", "b")),
         label = "1",
         trtA = rep("xx (xx%)", 6),
@@ -304,7 +304,7 @@ test_that("overlapping row_grp_structures - prefers latest", {
 
 
 test_that("no post space added if NULL", {
-    df <- tibble(
+    df <- tibble::tibble(
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
@@ -335,7 +335,7 @@ test_that("no post space added if NULL", {
 
 
 test_that("post space is truncated to data width", {
-    df <- tibble(
+    df <- tibble::tibble(
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
@@ -371,7 +371,7 @@ test_that("post space is truncated to data width", {
 
 
 test_that("do not recycle the post space for full width", {
-    df <- tibble(
+    df <- tibble::tibble(
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
@@ -406,7 +406,7 @@ test_that("do not recycle the post space for full width", {
 })
 
 test_that("post space works when data contains NAs", {
-    df <- tibble(
+    df <- tibble::tibble(
         grp1 = c("A", "B", "C", "D"),
         trtA = rep("xx (xx%)", 4),
         trtB = rep("xx (xx%)", 4),
@@ -442,7 +442,7 @@ test_that("post space works when data contains NAs", {
 })
 
 test_that("Check combine_group_cols with a single group", {
-    mock_single_grp <- tibble(
+    mock_single_grp <- tibble::tibble(
         crossing(grp1 = c("A", "B", "C"), lab = c("a", "b")),
         trtA = rep("xx (xx%)", 6),
         trtB = rep("xx (xx%)", 6),

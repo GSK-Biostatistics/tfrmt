@@ -445,7 +445,7 @@ format_gt_column_labels <- function(gt_table, .data) {
         work_df <- names(.data) %>%
             keep(stringr::str_detect, .tlang_delim) %>%
             stringr::str_split(.tlang_delim, simplify = TRUE) %>%
-            as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
+            tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.))) %>%
             dplyr::mutate(
                 cols = spanning
             ) %>%
@@ -480,7 +480,7 @@ format_gt_column_labels <- function(gt_table, .data) {
 
         # ensure all columns are represented
         lowest_lvl <- names(.data) %>%
-            tibble(cols = .) %>%
+            tibble::tibble(cols = .) %>%
             dplyr::left_join(
                 lowest_lvl,
                 by = "cols"
