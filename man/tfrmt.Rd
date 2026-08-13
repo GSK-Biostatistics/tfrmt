@@ -7,9 +7,9 @@
 tfrmt(
   tfrmt_obj,
   group = vars(),
-  label = quo(),
-  param = quo(),
-  value = quo(),
+  label = rlang::quo(),
+  param = rlang::quo(),
+  value = rlang::quo(),
   column = vars(),
   title,
   subtitle,

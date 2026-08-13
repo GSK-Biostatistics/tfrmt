@@ -214,8 +214,8 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::select(
             -tidyselect::any_of(
                 c(
-                    map_chr(tfrmt$group, as_name),
-                    as_name(tfrmt$label)
+                    map_chr(tfrmt$group, rlang::as_name),
+                    rlang::as_name(tfrmt$label)
                 )
             )
         ) %>%
@@ -227,11 +227,11 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         )
 
     col_plan_vars <- as_vars.character(colnames(tbl_dat_wide))
-    if (is_empty(tfrmt$column)) {
+    if (rlang::is_empty(tfrmt$column)) {
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- map_chr(tfrmt$column, as_label)
+        column_names <- map_chr(tfrmt$column, rlang::as_label)
     }
     selection <- as.list(substitute(substitute(col)))[-1] %>%
         map(trim_vars_quo_c) %>%

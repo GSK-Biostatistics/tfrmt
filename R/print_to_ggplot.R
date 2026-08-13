@@ -69,22 +69,22 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if param, column values not provided
-    if (quo_is_missing(tfrmt$param)) {
+    if (rlang::quo_is_missing(tfrmt$param)) {
         stop("param variable required for print_to_ggplot")
     }
-    if (is_empty(tfrmt$column)) {
+    if (rlang::is_empty(tfrmt$column)) {
         stop("column variable required for print_to_ggplot")
     }
-    if (quo_is_missing(tfrmt$label)) {
+    if (rlang::quo_is_missing(tfrmt$label)) {
         stop("label variable required for print_to_ggplot")
     }
 
-    if (quo_is_missing(tfrmt$value)) {
+    if (rlang::quo_is_missing(tfrmt$value)) {
         stop("value variable required for print_to_ggplot")
     }
 
     # Keeping the original data of column to preserve data type later on
-    column_name <- as_label(tfrmt$column[[1]])
+    column_name <- rlang::as_label(tfrmt$column[[1]])
     column_data <- dplyr::pull(.data, !!column_name)
 
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
@@ -117,7 +117,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
         # reshape data for ggplot
         long_data <- .data %>%
             pivot_longer(
-                -c(as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
+                -c(rlang::as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
                 names_to = "column",
                 values_to = "value"
             ) %>%
@@ -131,7 +131,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     } else {
         long_data <- .data %>%
             pivot_longer(
-                -c(as_label(tfrmt$label), "y"),
+                -c(rlang::as_label(tfrmt$label), "y"),
                 names_to = "column",
                 values_to = "value"
             )
@@ -210,10 +210,10 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&
-            !is_empty(tfrmt$group) &&
+            !rlang::is_empty(tfrmt$group) &&
             tfrmt$row_grp_plan$label_loc$location == "gtdefault"
     ) {
-        group_name <- quo_name(tfrmt$group[[1]])
+        group_name <- rlang::quo_name(tfrmt$group[[1]])
 
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 

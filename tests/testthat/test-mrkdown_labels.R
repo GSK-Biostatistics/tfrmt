@@ -261,7 +261,8 @@ test_that("column spanners and labels are appropriately aligned", {
         )
 
     # get tfrmt cols from spec
-    chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev()
+    chr_cols <- map_chr(tfrmt_spec$column, rlang::as_name) %>%
+        rev()
 
     # combine spanner & lower labels and rename as per tfrmt spec
     gt_cols <- dplyr::full_join(lower, spans, by = "var", multiple = "all") %>%

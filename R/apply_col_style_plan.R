@@ -16,11 +16,11 @@ apply_col_style_plan <- function(
         return(.data)
     }
 
-    if (is_empty(tfrmt_obj$column)) {
+    if (rlang::is_empty(tfrmt_obj$column)) {
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- map_chr(tfrmt_obj$column, as_label)
+        column_names <- map_chr(tfrmt_obj$column, rlang::as_label)
     }
 
     total_col_style_selection <- list()
@@ -74,7 +74,8 @@ apply_col_style_plan <- function(
                 dplyr::slice(col_style_idx) %>%
                 as.list()
 
-            col_to_modify <- col_style_to_apply$col %>% char_as_quo()
+            col_to_modify <- col_style_to_apply$col %>%
+                char_as_quo()
 
             .data <- .data %>%
                 dplyr::mutate(
@@ -103,7 +104,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = col_plan_vars %>% map_chr(as_label),
+            preselected_cols = col_plan_vars %>% map_chr(rlang::as_label),
             return_only_selected = TRUE
         )
     } else {
@@ -111,7 +112,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
             x = selection,
             column_names = column_names,
             data_names = c(),
-            preselected_cols = col_plan_vars %>% map_chr(as_label),
+            preselected_cols = col_plan_vars %>% map_chr(rlang::as_label),
             return_only_selected = TRUE,
             default_everything_behavior = TRUE
         )
