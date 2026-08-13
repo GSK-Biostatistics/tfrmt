@@ -39,6 +39,6 @@ test_that("check_tfrmt", {
         check_tfrmt(
             TRUE
         ),
-        '`TRUE` must be a tfrmt object, not `TRUE`'
+        "`TRUE` must be a tfrmt object, not `TRUE`"
     )
 })
