@@ -62,7 +62,9 @@ test_that("markdown column labels - no spanning", {
         )
     ) %>%
         print_to_gt(mock_data) %>%
-        tab_options(container.width = 1000)
+        gt::tab_options(
+            container.width = 1000
+        )
 
     # test that format of column headers is markdown
     expect_identical(
