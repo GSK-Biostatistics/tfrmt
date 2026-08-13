@@ -148,9 +148,9 @@ print_mock_gt <- function(
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
+    check_tfrmt(tfrmt)
+
+    # TODO add checks for .data & .unicode_ws
 
     # check required input variables are supplied
     check_inputs(tfrmt, c("column", "param", "value"))
