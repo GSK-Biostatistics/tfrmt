@@ -91,3 +91,36 @@ test_that("check_frmt_when", {
         '`"foo"` must be a frmt when object, not the string "foo".'
     )
 })
+
+test_that("is_frmt_structure", {
+    expect_true(
+        is_frmt_structure(
+            frmt_structure(
+                group_val = c("group1"),
+                label_val = ".default",
+                frmt("XXX")
+            )
+        )
+    )
+
+    expect_false(is_frmt_structure("foo"))
+})
+
+test_that("check_frmt_structure", {
+    expect_no_error(
+        check_frmt_structure(
+            frmt_structure(
+                group_val = c("group1"),
+                label_val = ".default",
+                frmt("XXX")
+            )
+        )
+    )
+
+    expect_no_error(check_frmt_structure(NULL, allow_null = TRUE))
+
+    expect_error(
+        check_frmt_structure("foo"),
+        '`"foo"` must be a frmt structure object, not the string "foo".'
+    )
+})
