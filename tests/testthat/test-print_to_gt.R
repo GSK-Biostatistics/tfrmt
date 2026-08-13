@@ -742,12 +742,12 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in subtitle
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$subtitle,
-        md("by group: 101")
+        gt::md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_heading`$subtitle,
-        md("by group: 102")
+        gt::md("by group: 102")
     )
 
     # confirm title is rendered as markdown
@@ -758,7 +758,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
-        md("Title **bold**")
+        gt::md("Title **bold**")
     )
 
     # change note location to preheader
@@ -795,7 +795,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
-        md("Title **bold**")
+        gt::md("Title **bold**")
     )
 
     # change note location to source_note
@@ -816,12 +816,12 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in source_note
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_source_notes`[[1]],
-        md("by group: 101")
+        gt::md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_source_notes`[[1]],
-        md("by group: 102")
+        gt::md("by group: 102")
     )
 
     # confirm title is rendered as markdown when note_loc is source_note
@@ -832,7 +832,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
-        md("Title **bold**")
+        gt::md("Title **bold**")
     )
 })
 

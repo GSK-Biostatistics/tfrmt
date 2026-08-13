@@ -195,7 +195,7 @@ param_set <- function(...) {
 tfrmt_sigdig <- function(
     sigdig_df,
     group = vars(),
-    label = quo(),
+    label = rlang::quo(),
     param_defaults = param_set(),
     missing = NULL,
     tfrmt_obj = NULL,
@@ -209,12 +209,15 @@ tfrmt_sigdig <- function(
 
     # if a tfrmt_obj is supplied and no group or label parameters are passed, use the one from the tfrmt_obj
     if (!is.null(tfrmt_obj)) {
-        if (is_empty(tfrmt_inputs$group) && !is_empty(tfrmt_obj$group)) {
+        if (
+            rlang::is_empty(tfrmt_inputs$group) &&
+                !rlang::is_empty(tfrmt_obj$group)
+        ) {
             tfrmt_inputs$group <- tfrmt_obj$group
         }
         if (
-            quo_is_missing(tfrmt_inputs$label) &&
-                !quo_is_missing(tfrmt_obj$label)
+            rlang::quo_is_missing(tfrmt_inputs$label) &&
+                !rlang::quo_is_missing(tfrmt_obj$label)
         ) {
             tfrmt_inputs$label <- tfrmt_obj$label
         }
@@ -233,11 +236,11 @@ tfrmt_sigdig <- function(
         stop("`sigdig_df` input must contain group and/or label value columns.")
     }
 
-    group_names <- map_chr(tfrmt_inputs$group, as_label)
-    label_name <- if (quo_is_missing(tfrmt_inputs$label)) {
+    group_names <- map_chr(tfrmt_inputs$group, rlang::as_label)
+    label_name <- if (rlang::quo_is_missing(tfrmt_inputs$label)) {
         character(0)
     } else {
-        as_label(tfrmt_inputs$label)
+        rlang::as_label(tfrmt_inputs$label)
     }
 
     # if group param is provided, figure out which group/label variables are present in data and only keep those
@@ -281,12 +284,12 @@ tfrmt_sigdig <- function(
         groups_to_add <- setdiff(data_names, label_name)
         tfrmt_inputs$group <- c(
             tfrmt_inputs$group,
-            vars(!!!syms(groups_to_add))
+            vars(!!!rlang::syms(groups_to_add))
         )
     }
 
     # warning if provided group params are not present in the data
-    new_group_names <- map_chr(tfrmt_inputs$group, as_label)
+    new_group_names <- map_chr(tfrmt_inputs$group, rlang::as_label)
 
     if (!all(new_group_names %in% names(sigdig_df))) {
         grp <- setdiff(new_group_names, names(sigdig_df))

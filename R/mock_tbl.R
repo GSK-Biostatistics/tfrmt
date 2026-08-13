@@ -26,7 +26,7 @@
 #'
 make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     body_plan <- tfrmt$body_plan
-    grp_vars <- tfrmt$group %>% map_chr(as_name)
+    grp_vars <- map_chr(tfrmt$group, rlang::as_name)
 
     # create tibble of all frmt_structure grp/label/param: 1 row per group_val per frmt_structure
     all_frmt_spec <- body_plan %>%
@@ -78,7 +78,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
 
     expand_cols <- c(tfrmt$group)
 
-    if (!quo_is_missing(tfrmt$label)) {
+    if (!rlang::quo_is_missing(tfrmt$label)) {
         all_frmt_vals <- all_frmt_vals %>%
             dplyr::mutate(
                 dplyr::across(
@@ -157,7 +157,7 @@ process_for_mock <- function(x, column, .default = 1:3) {
 #' @noRd
 clean_col_names <- function(names, dont_inc) {
     names %>%
-        map_chr(as_label) %>%
+        map_chr(rlang::as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
         stringr::str_remove_all("^-") %>%
         stringr::str_remove_all('\\"\\)') %>%
@@ -167,7 +167,7 @@ clean_col_names <- function(names, dont_inc) {
 # Adds the sorting columns if relevant otherwise just returns data
 add_sorting_cols <- function(data, sorting_cols) {
     if (!is.null(sorting_cols)) {
-        sorting_cols_vars <- sorting_cols %>% map_chr(as_name)
+        sorting_cols_vars <- map_chr(sorting_cols, rlang::as_name)
         n_sorting_cols <- length(sorting_cols_vars)
 
         sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x) {
@@ -192,11 +192,11 @@ make_col_df <- function(
     col_style_plan,
     n_cols
 ) {
-    column_vars <- column %>% map_chr(as_label)
+    column_vars <- column %>% map_chr(rlang::as_label)
     grp_lb_vars <- c(
-        group %>% map_chr(as_name),
-        as_label(label),
-        sorting_cols %>% map_chr(as_name)
+        map_chr(group, rlang::as_name),
+        rlang::as_label(label),
+        map_chr(sorting_cols, rlang::as_name)
     )
     if (identical(column_vars, "__tfrmt__column")) {
         column_vars <- "col"
@@ -302,7 +302,7 @@ col_plan_test <- function(col_plan) {
         out <- FALSE
     } else {
         all_names <- col_plan$dots %>%
-            map_chr(as_label)
+            map_chr(rlang::as_label)
         first_chr <- all_names %>%
             stringr::str_sub(end = 1)
         out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
@@ -318,7 +318,7 @@ col_style_plan_test <- function(col_style_plan) {
     } else {
         all_names <- map(col_style_plan, ~ .x$cols) |>
             list_flatten() %>%
-            map_chr(as_label)
+            map_chr(rlang::as_label)
         out <- !all("everything()" %in% all_names)
     }
     out

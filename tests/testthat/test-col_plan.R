@@ -15,27 +15,27 @@ test_that("Defining the spanning structure", {
 
     expect_equal(
         s1[["c1"]],
-        list(quo(`Test Label`)),
+        list(rlang::quo(`Test Label`)),
         ignore_attr = c(".Environment")
     )
     expect_equal(
         s1[["c2"]],
-        list(quo(`A`), quo(`B`)),
+        list(rlang::quo(`A`), rlang::quo(`B`)),
         ignore_attr = c(".Environment")
     )
     expect_equal(
         s1[["c1"]],
-        list(quo(`Test Label`)),
+        list(rlang::quo(`Test Label`)),
         ignore_attr = c(".Environment")
     )
     expect_equal(
         s2[["c2"]],
-        list(quo(`Test Sub Label`)),
+        list(rlang::quo(`Test Sub Label`)),
         ignore_attr = c(".Environment")
     )
     expect_equal(
         s2[["c3"]],
-        list(quo(`A`), quo(`B`)),
+        list(rlang::quo(`A`), rlang::quo(`B`)),
         ignore_attr = c(".Environment")
     )
 })
@@ -960,7 +960,7 @@ test_that("Order is kept for multi-col columns", {
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure", {
     basic_multi_column_template <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         value = val,
         column = c(test1, test2),
@@ -1039,7 +1039,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure - with renaming", {
     basic_multi_column_template <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         value = val,
         column = c(test1, test2),
@@ -1114,7 +1114,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
 test_that("Build simple tfrmt with multiple columns and apply to basic data and compare against spanning_structure - with renaming multiple levels", {
     basic_multi_column_template <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         value = val,
         column = c(test1, test2),
@@ -1707,7 +1707,7 @@ test_that("Tidyselect subtraction with span_structure", {
 test_that("Build simple tfrmt with stub header", {
     basic_multi_column_template <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         value = val,
         column = c(test1, test2),
@@ -1761,12 +1761,12 @@ test_that("Build simple tfrmt with stub header", {
     )
     expect_identical(
         processed_gt[["_stubhead"]]$label,
-        md("grp")
+        gt::md("grp")
     )
 
     # no stubhead if no group column
     basic_multi_column_template2 <- tfrmt(
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         value = val,
         column = c(test1, test2),
@@ -1814,13 +1814,13 @@ test_that("Build simple tfrmt with stub header", {
     )
     expect_identical(
         processed_gt[["_stubhead"]]$label,
-        md("")
+        gt::md("")
     )
 
     # multi group stub header
     basic_multi_column_template <- tfrmt(
         group = c(grp1, grp2),
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         value = val,
         column = c(test1, test2),
@@ -1875,6 +1875,6 @@ test_that("Build simple tfrmt with stub header", {
     )
     expect_identical(
         processed_gt[["_stubhead"]]$label,
-        md(c("Group 1", "Group 2", "Row label"))
+        gt::md(c("Group 1", "Group 2", "Row label"))
     )
 })

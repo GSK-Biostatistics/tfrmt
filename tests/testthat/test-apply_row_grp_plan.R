@@ -22,7 +22,7 @@ test_that("insert post space - single grouping variable", {
             df,
             sample_grp_plan$struct_list,
             vars(grp1),
-            sym("label")
+            rlang::sym("label")
         ) %>%
             dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -52,7 +52,7 @@ test_that("insert post space - single grouping variable", {
             df,
             sample_grp_plan$struct_list,
             vars(grp1),
-            sym("label")
+            rlang::sym("label")
         ) %>%
             dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -103,7 +103,7 @@ test_that("insert post space - two grouping variables", {
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
-            label = sym("label")
+            label = rlang::sym("label")
         ) %>%
             dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -144,7 +144,7 @@ test_that("insert post space - two grouping variables", {
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
-            label = sym("label")
+            label = rlang::sym("label")
         ) %>%
             dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -232,7 +232,7 @@ test_that("insert post space after specific value", {
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
-            label = sym("label")
+            label = rlang::sym("label")
         ) %>%
             dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -279,7 +279,7 @@ test_that("overlapping row_grp_structures - prefers latest", {
             df,
             sample_grp_plan$struct_list,
             vars(grp1, grp2),
-            label = sym("label")
+            label = rlang::sym("label")
         ) %>%
             dplyr::select(-..tfrmt_post_space_row),
         # nolint start: commas_linter
@@ -452,7 +452,7 @@ test_that("Check combine_group_cols with a single group", {
     auto_test_no_span <- combine_group_cols(
         mock_single_grp,
         group = vars(grp1),
-        label = sym("lab")
+        label = rlang::sym("lab")
     )
     # nolint start: commas_linter
     man_test_no_span <- tibble::tribble(
@@ -475,7 +475,7 @@ test_that("Check combine_group_cols with a single group", {
         combine_group_cols(
             mock_single_grp,
             group = vars(grp1),
-            label = sym("lab"),
+            label = rlang::sym("lab"),
             element_row_grp_loc(
                 location = "spanning"
             )
@@ -509,7 +509,7 @@ test_that("Check combine_group_cols with a multi groups", {
     auto_test_no_span <- combine_group_cols(
         mock_multi_grp,
         group = vars(grp1, grp2),
-        label = sym("my_label"),
+        label = rlang::sym("my_label"),
         element_row_grp_loc(location = "indented")
     )
 
@@ -538,7 +538,7 @@ test_that("Check combine_group_cols with a multi groups", {
     auto_test_with_span <- combine_group_cols(
         mock_multi_grp,
         group = vars(grp1, grp2),
-        label = sym("my_label"),
+        label = rlang::sym("my_label"),
         element_row_grp_loc(
             location = "spanning"
         )
@@ -551,7 +551,7 @@ test_that("Check combine_group_cols with a multi groups", {
         map_dfr(
             combine_group_cols,
             group = vars(grp2),
-            label = sym("my_label")
+            label = rlang::sym("my_label")
         ) %>%
         dplyr::select(
             grp1,
@@ -604,12 +604,12 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         mock_multi_grp,
         sample_grp_plan$label_loc,
         group = vars(grp1, grp2),
-        label = sym("my_label")
+        label = rlang::sym("my_label")
     ) %>%
         remove_grp_cols(
             sample_grp_plan$label_loc,
             group = vars(grp1, grp2),
-            label = sym("my_label")
+            label = rlang::sym("my_label")
         )
 
     # nolint start: commas_linter
@@ -644,7 +644,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
         mock_multi_grp,
         sample_grp_plan$struct_list,
         group = vars(grp1, grp2),
-        label = sym("my_label")
+        label = rlang::sym("my_label")
     ) %>%
         dplyr::select(-..tfrmt_post_space_row)
 
@@ -703,7 +703,7 @@ test_that("> 2 groups with and without spanner_label", {
             mock_multi_grp,
             plan_no_span$label_loc,
             vars(grp1, grp2, grp3),
-            sym("my_label")
+            rlang::sym("my_label")
         ) %>%
             remove_grp_cols(
                 plan_no_span$label_loc,
@@ -742,7 +742,7 @@ test_that("> 2 groups with and without spanner_label", {
             mock_multi_grp,
             plan_with_span$label_loc,
             vars(grp1, grp2, grp3),
-            sym("my_label")
+            rlang::sym("my_label")
         ) %>%
             remove_grp_cols(plan_with_span$label_loc, vars(grp1, grp2, grp3)),
         # nolint start: commas_linter
@@ -796,7 +796,7 @@ test_that("Summary rows are not indented", {
             mock_multi_grp,
             plan_no_span$label_loc,
             vars(grp1, grp2),
-            sym("my_label")
+            rlang::sym("my_label")
         ) %>%
             remove_grp_cols(
                 plan_no_span$label_loc,
@@ -827,7 +827,7 @@ test_that("Summary rows are not indented", {
             mock_multi_grp,
             plan_with_span$label_loc,
             vars(grp1, grp2),
-            sym("my_label")
+            rlang::sym("my_label")
         ) %>%
             remove_grp_cols(
                 plan_with_span$label_loc,
@@ -861,7 +861,7 @@ test_that("Summary rows are not indented", {
             mock_multi_grp,
             plan_with_column$label_loc,
             vars(grp1, grp2),
-            sym("my_label")
+            rlang::sym("my_label")
         ) %>%
             remove_grp_cols(
                 plan_with_column$label_loc,
@@ -1318,7 +1318,7 @@ test_that("Suppress printing of groups", {
             mock_multi_grp,
             my_plan$label_loc,
             vars(grp1, grp2),
-            sym("my_label")
+            rlang::sym("my_label")
         ) %>%
             remove_grp_cols(my_plan$label_loc, vars(grp1, grp2)),
         df_no_grp
@@ -1369,7 +1369,7 @@ test_that("Row group plan indenting handles factor variables", {
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
-            sym("rowlbl")
+            rlang::sym("rowlbl")
         ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
@@ -1389,7 +1389,7 @@ test_that("Row group plan indenting handles factor variables", {
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
-            sym("rowlbl")
+            rlang::sym("rowlbl")
         ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
@@ -1409,7 +1409,7 @@ test_that("Row group plan indenting handles factor variables", {
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
-            sym("rowlbl")
+            rlang::sym("rowlbl")
         ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
@@ -1429,7 +1429,7 @@ test_that("Row group plan indenting handles factor variables", {
                 ),
             grp_plan$label_loc,
             vars(grp_span, grp),
-            sym("rowlbl")
+            rlang::sym("rowlbl")
         ) %>%
             remove_grp_cols(
                 grp_plan$label_loc,
@@ -1502,7 +1502,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
                 )
             ) %>%
                 print_to_gt(data_ae2) %>%
-                tab_options(
+                gt::tab_options(
                     container.width = 1000
                 )
         },
@@ -1557,7 +1557,7 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
                 mock_multi_grp,
                 sample_grp_plan$label_loc,
                 group = vars(grp1, grp2),
-                label = sym("my_label")
+                label = rlang::sym("my_label")
             )
         },
         paste(

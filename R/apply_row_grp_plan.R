@@ -137,15 +137,17 @@ apply_row_grp_lbl <- function(
     ...
 ) {
     # store values of label column
-    lbl_col <- eval_tidy(label, .data)
+    lbl_col <- rlang::eval_tidy(label, .data)
 
     # check if lbl_col contains NA
     if (anyNA(lbl_col)) {
-        stop(paste0(
-            "`label` column ",
-            quo_name(label),
-            " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."
-        ))
+        stop(
+            paste0(
+                "`label` column ",
+                rlang::quo_name(label),
+                " contains NA values. For group-level summary data, `label` and the relevant `group` values should match."
+            )
+        )
     }
 
     # check which group/label columns are available
@@ -154,7 +156,7 @@ apply_row_grp_lbl <- function(
 
     if (
         length(grps_avail) == 0 ||
-            is_empty(label) ||
+            rlang::is_empty(label) ||
             element_row_grp_loc$location %in%
                 c("gtdefault", "noprint", "column")
     ) {
@@ -188,7 +190,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
             dplyr::mutate(
                 dplyr::across(
                     c(
-                        -map_chr(group, as_name),
+                        -map_chr(group, rlang::as_name),
                         -tidyselect::where(is.numeric)
                     ),
                     ~ replace(
@@ -259,7 +261,7 @@ combine_group_cols <- function(
     label,
     element_row_grp_loc = NULL
 ) {
-    orig_group_names <- map_chr(group, as_name)
+    orig_group_names <- map_chr(group, rlang::as_name)
     top_grouping <- group #used for spliting in case of spanning label
 
     .data <- .data %>%

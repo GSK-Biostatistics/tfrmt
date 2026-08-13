@@ -17,13 +17,15 @@
 #'
 #' library(tibble)
 #' library(dplyr)
+#' library(rlang)
 #' # Set up data
 #' df <- tibble(x = c(20.12,34.54,12.34))
 #'
 #' apply_frmt(
-#'  frmt_def = frmt("XX.X"),
-#'  .data=df,
-#'  value=quo(x))
+#'     frmt_def = frmt("XX.X"),
+#'     .data = df,
+#'     value = quo(x)
+#' )
 #'
 #' @rdname apply_frmt
 apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
@@ -46,7 +48,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (length(vals) == 0) {
             return(.data)
         } else if (!is.null(frmt_def$transform)) {
-            vals <- as_function(frmt_def$transform)(vals)
+            vals <- rlang::as_function(frmt_def$transform)(vals)
         }
 
         if (stringr::str_detect(frmt_def$expression, "[x|X]")) {
@@ -275,7 +277,7 @@ apply_frmt.frmt_combine <- function(
     merge_group <- map(
         c(column, label, group),
         function(x) {
-            if (!quo_is_missing(x)) {
+            if (!rlang::quo_is_missing(x)) {
                 x
             }
         }
@@ -287,7 +289,7 @@ apply_frmt.frmt_combine <- function(
     .data %>%
         dplyr::left_join(
             .tmp_data_fmted,
-            by = map_chr(merge_group, as_label)
+            by = map_chr(merge_group, rlang::as_label)
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
         dplyr::slice(1) %>%
@@ -300,22 +302,22 @@ apply_frmt.frmt_combine <- function(
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
         frmt_to_prt <- frmt_def$frmt_ls %>%
-            keep(~ f_lhs(.) == "TRUE")
+            keep(~ rlang::f_lhs(.) == "TRUE")
         if (length(frmt_to_prt) < 1) {
             frmt_to_prt <- frmt_def$frmt_ls
         }
-        str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
+        str_to_prnt <- rlang::f_rhs(frmt_to_prt[[1]])$expression
         out <- .data %>%
             dplyr::mutate(
                 !!value := str_to_prnt
             )
     } else {
-        values_str <- as_label(value)
+        values_str <- rlang::as_label(value)
         n <- length(frmt_def$frmt_ls)
 
         val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
-            map(f_rhs) %>%
+            map(rlang::f_rhs) %>%
             map(function(x) {
                 if (is_frmt(x)) {
                     out <- x %>%
@@ -330,8 +332,8 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         left <- frmt_def$frmt_ls %>%
             map_chr(f_lhs_as_char) %>%
             dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
-            parse_exprs() %>%
-            map(eval_tidy, .data)
+            rlang::parse_exprs() %>%
+            map(rlang::eval_tidy, .data)
 
         out <- rep(NA_character_, val_len)
         replaced <- rep(FALSE, val_len)

@@ -263,7 +263,7 @@ print.frmt_combine <- function(x, ...) {
 #' @export
 format.frmt_when <- function(x, ...) {
     lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>% map_chr(format)
+    rhs <- map(x$frmt_ls, rlang::f_rhs) %>% map_chr(format)
 
     frmt_str <- paste(
         "< frmt_when | ",
@@ -518,17 +518,17 @@ as.character.frmt <- function(x, ...) {
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%
         map_chr(function(x) {
-            val <- quo(!!f_rhs(x))
-            val_eval <- eval_tidy(val)
+            val <- rlang::quo(!!rlang::f_rhs(x))
+            val_eval <- rlang::eval_tidy(val)
             if (is_frmt(val_eval)) {
                 as.character(val_eval)
             } else {
-                as_label(val)
+                rlang::as_label(val)
             }
         })
 
     left <- x$frmt_ls %>%
-        map_chr(~ f_lhs(.x)) %>%
+        map_chr(~ rlang::f_lhs(.x)) %>%
         stringr::str_c("'", ., "'")
     params <- stringr::str_c(left, " ~ ", right) %>%
         stringr::str_c(collapse = ", ")
@@ -573,7 +573,7 @@ as.character.frmt_combine <- function(x, ...) {
 as.character.span_structure <- function(x, ...) {
     values <- x %>%
         map(function(val) {
-            elements <- map_chr(val, as_label) %>%
+            elements <- map_chr(val, rlang::as_label) %>%
                 stringr::str_replace_all("\\\"", "'")
 
             # Detect function calls. Matches valid R functions i.e, my_function()

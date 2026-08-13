@@ -53,7 +53,7 @@ tfrmt_n_pct <- function(
         pct,
         "=pct_frmt_when)"
     ) %>%
-        parse_expr() %>%
+        rlang::parse_expr() %>%
         eval()
 
     if (!is.null(tfrmt_obj)) {

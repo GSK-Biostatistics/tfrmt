@@ -150,12 +150,12 @@ check_span_structure_dots <- function(x) {
     x_names <- names(x)
 
     if (is.null(x_names) || !all(nzchar(x_names))) {
-        abort(
+        rlang::abort(
             paste0(
                 "Entries of a span_stucture must be named:\n ",
-                format(caller_call())
+                format(rlang::caller_call())
             ),
-            call = caller_call()
+            call = rlang::caller_call()
         )
     }
 
@@ -163,18 +163,18 @@ check_span_structure_dots <- function(x) {
         map(
             ~ lapply(trim_vars_quo_c(.x), function(x) {
                 if (is.name(x)) {
-                    if (identical(as_label(x), "<empty>")) {
+                    if (identical(rlang::as_label(x), "<empty>")) {
                         return(NULL)
                     } else {
-                        return(quo(!!x))
+                        return(rlang::quo(!!x))
                     }
                 } else if (is.call(x)) {
                     if (is_valid_tidyselect_call(x)) {
-                        quo(!!x)
+                        rlang::quo(!!x)
                     } else if (is_valid_quo_call(x)) {
-                        return(eval_tidy(x))
+                        return(rlang::eval_tidy(x))
                     } else {
-                        abort(
+                        rlang::abort(
                             message = paste0(
                                 "Invalid entry: `",
                                 format(x),
@@ -184,15 +184,15 @@ check_span_structure_dots <- function(x) {
                                 " can be entered as contents.",
                                 " Changing the names of individual variables using new_name = old_name syntax is allowable"
                             ),
-                            call = caller_call()
+                            call = rlang::caller_call()
                         )
                     }
                 } else if (is.character(x)) {
                     return(as_length_one_quo.character(x))
                 } else {
-                    abort(
+                    rlang::abort(
                         "Unexpected entry type in span_structure()",
-                        call = caller_call()
+                        call = rlang::caller_call()
                     )
                 }
             })
@@ -230,18 +230,18 @@ is_valid_quo_call <- function(x) {
 check_col_plan_dots <- function(x) {
     lapply(x, function(x) {
         if (is.name(x)) {
-            if (identical(as_label(x), "<empty>")) {
+            if (identical(rlang::as_label(x), "<empty>")) {
                 return(NULL)
             } else {
-                return(quo(!!x))
+                return(rlang::quo(!!x))
             }
         } else if (is.call(x)) {
             if (is_valid_tidyselect_call(x)) {
-                quo(!!x)
+                rlang::quo(!!x)
             } else if (
                 is_valid_quo_call(x) || is_valid_span_structure_call(x)
             ) {
-                return(eval_tidy(x))
+                return(rlang::eval_tidy(x))
             } else {
                 stop(
                     "Invalid entry: `",

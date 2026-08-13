@@ -85,14 +85,14 @@ as_json.default <- function(x) {
 
 #' @export
 as_json.quosures <- function(x) {
-    map_chr(x, as_label)
+    map_chr(x, rlang::as_label)
 }
 
 
 #' @export
 as_json.quosure <- function(x) {
     out <- x %>%
-        as_label()
+        rlang::as_label()
     if (out != "<empty>") {
         return(out)
     }
@@ -129,7 +129,7 @@ as_json.frmt <- function(x) {
 #' @export
 as_json.frmt_when <- function(x) {
     lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>% map(as_json)
+    rhs <- map(x$frmt_ls, rlang::f_rhs) %>% map(as_json)
     names(rhs) <- lhs
     list(frmt_when = list(frmt_ls = rhs, missing = x$missing))
 }
@@ -413,12 +413,12 @@ ls_to_col_plan <- function(ls) {
                     el$span_structure %>%
                         ls_to_span_structure() %>%
                         as.character() %>%
-                        parse_expr()
+                        rlang::parse_expr()
                 } else {
                     el[[1]] %>%
                         stringr::str_replace_all("\\\"", "'") %>%
                         char_as_quo() %>%
-                        quo_get_expr()
+                        rlang::quo_get_expr()
                 }
             })
 
@@ -433,7 +433,7 @@ ls_to_span_structure <- function(ls) {
                 stringr::str_c("'", ., "'") %>%
                 stringr::str_c(collapse = ", ") %>%
                 stringr::str_c("c(", ., ")") %>%
-                parse_expr()
+                rlang::parse_expr()
         )
 
     do.call(span_structure, span_ls)
@@ -454,17 +454,17 @@ ls_to_col_style_plan <- function(ls) {
                     stuct_in[["col"]] <- cols_val[[1]] %>%
                         ls_to_span_structure() %>%
                         as.character() %>%
-                        parse_expr()
+                        rlang::parse_expr()
                 } else {
                     stuct_in[["col"]] <- map_chr(
                         stuct_in[["col"]],
                         ~ char_as_quo(.x) %>%
-                            quo_get_expr() %>%
-                            expr_text()
+                            rlang::quo_get_expr() %>%
+                            rlang::expr_text()
                     ) %>%
                         stringr::str_c(collapse = ", ") %>%
                         paste0("vars(", ., ")") %>%
-                        parse_expr()
+                        rlang::parse_expr()
                 }
                 do.call(col_style_structure, stuct_in)
             })

@@ -10,19 +10,19 @@ test_that("applying frmt", {
     sample_df_no_dec_frmted <- apply_frmt.frmt(
         frmt_def = sample_frmt_no_dec,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     )
 
     sample_df_single_dec_frmted <- apply_frmt.frmt(
         frmt_def = sample_frmt_single_dec,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     )
 
     sample_df_double_dec_frmted <- apply_frmt.frmt(
         frmt_def = sample_frmt_double_dec,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     )
 
     expect_identical(
@@ -53,25 +53,25 @@ test_that("applying frmt - scientific", {
 
     sample_df_frmted_10x <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10x
     )
 
     sample_df_frmted_10xx <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10xx
     )
 
     sample_df_frmted_ex <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_ex
     )
 
     sample_df_frmted_exxxx <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_exxxx
     )
 
@@ -137,7 +137,7 @@ test_that("applying frmt - transform", {
     formula_result <- apply_frmt.frmt(
         frmt_def = formula_transform,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     ) %>%
         dplyr::pull(x)
 
@@ -149,7 +149,7 @@ test_that("applying frmt - transform", {
     fx_result <- apply_frmt.frmt(
         frmt_def = fx_transform,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     ) %>%
         dplyr::pull(x)
 
@@ -171,19 +171,19 @@ test_that("applying frmt - preserves decimal places after rounding", {
 
     sample_df_frmted_1dec <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_1dec
     )
 
     sample_df_frmted_2dec <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_2dec
     )
 
     sample_df_frmted_10x <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10x
     )
 
@@ -231,10 +231,10 @@ test_that("applying frmt_combine - 2x", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -280,10 +280,10 @@ test_that("applying frmt_combine missing", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -326,10 +326,10 @@ test_that("applying frmt_combine missing", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -375,10 +375,10 @@ test_that("applying frmt_combine - 3x", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -425,10 +425,10 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
         sample_df_frmted <- apply_frmt.frmt_combine(
             frmt_def = sample_frmt,
             .data = sample_df,
-            value = quo(x),
-            param = quo(y),
+            value = rlang::quo(x),
+            param = rlang::quo(y),
             column = vars(col),
-            label = quo(lab),
+            label = rlang::quo(lab),
             group = vars(group)
         ),
         "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: "
@@ -502,10 +502,10 @@ test_that("applying frmt_when", {
     sample_df_frmted <- apply_frmt(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
+        value = rlang::quo(x),
         param = "y",
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -540,10 +540,10 @@ test_that("applying frmt_when", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt_combo,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -566,7 +566,7 @@ test_that("mocks return correctly", {
     frmt_mock <- apply_frmt.frmt(
         frmt_def = frmt("xxx.x"),
         .data = iris,
-        value = quo(mock),
+        value = rlang::quo(mock),
         mock = TRUE
     ) %>%
         dplyr::pull(mock)
@@ -576,7 +576,7 @@ test_that("mocks return correctly", {
     frmt_when_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt(""), "==0" ~ "", "TRUE" ~ frmt("(XXX.X%)")),
         .data = iris,
-        sym("value"),
+        rlang::sym("value"),
         mock = TRUE
     ) %>%
         dplyr::pull(value)
@@ -585,7 +585,7 @@ test_that("mocks return correctly", {
     frmt_when_no_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt("Hello"), "==0" ~ ""),
         .data = iris,
-        sym("value"),
+        rlang::sym("value"),
         mock = TRUE
     ) %>%
         dplyr::pull(value)
@@ -609,10 +609,10 @@ test_that("mocks return correctly", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group),
         mock = TRUE
     ) %>%
@@ -660,10 +660,10 @@ test_that("Space in Param", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = space_combo,
         .data = data,
-        value = quo(value),
-        param = quo(param),
+        value = rlang::quo(value),
+        param = rlang::quo(param),
         column = vars(column),
-        label = quo(label),
+        label = rlang::quo(label),
         group = vars(group, type),
         mock = FALSE
     ) %>%
@@ -710,8 +710,8 @@ test_that("frmt_combine only applies when all parameters are in the data", {
         test_combo,
         data,
         group = vars(Group),
-        label = quo(Label),
-        param = quo(Param)
+        label = rlang::quo(Label),
+        param = rlang::quo(Param)
     )
     expected <- data %>%
         dplyr::filter(Label %in% c("Male", "Female")) %>%
@@ -739,10 +739,10 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = test_combo,
         .data = data,
-        value = quo(Value),
-        param = quo(Param),
+        value = rlang::quo(Value),
+        param = rlang::quo(Param),
         column = vars(Column),
-        label = quo(Label),
+        label = rlang::quo(Label),
         group = vars(Group),
         mock = FALSE
     )
@@ -767,10 +767,10 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = test_combo_na,
         .data = data,
-        value = quo(Value),
-        param = quo(Param),
+        value = rlang::quo(Value),
+        param = rlang::quo(Param),
         column = vars(Column),
-        label = quo(Label),
+        label = rlang::quo(Label),
         group = vars(Group),
         mock = FALSE
     )
