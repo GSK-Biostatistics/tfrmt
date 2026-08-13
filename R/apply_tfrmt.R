@@ -7,9 +7,7 @@
 #' @return formatted tibble
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
+    check_tfrmt(tfrmt)
 
     validate_cols_match(.data, tfrmt, mock)
 
