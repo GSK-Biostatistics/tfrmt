@@ -1,137 +1,93 @@
 test_that("is_frmt", {
-    expect_true(
-        is_frmt(
-            structure(
-                "foo",
-                class = "frmt"
-            )
-        )
-    )
-
-    expect_false(
-        is_frmt(
-            "foo"
-        )
-    )
+    expect_true(is_frmt(frmt("XXX.XX")))
+    expect_false(is_frmt("foo"))
 })
 
 test_that("check_frmt", {
-    expect_no_error(
-        check_frmt(
-            structure(
-                "foo",
-                class = "frmt"
-            )
-        )
-    )
-
+    expect_no_error(check_frmt(frmt("XXX.XX")))
     expect_no_error(check_frmt(NULL, allow_null = TRUE))
 
     expect_error(
-        check_frmt("foo", ),
+        check_frmt("foo"),
         '`"foo"` must be a frmt object, not the string "foo".'
     )
 })
 
 test_that("is_frmt_strict", {
-    expect_true(
-        is_frmt_strict(
-            structure(
-                rlang::expr(foo(bar)),
-                class = "frmt"
-            )
-        )
+    expect_true(is_frmt_strict(frmt("XXX.XX")))
+
+    test_frmt <- frmt_when(
+        ">3" ~ frmt("(X.X%)"),
+        "<=3" ~ frmt("Undetectable")
     )
 
     # the input must not have additional classes
-    expect_false(
-        is_frmt_strict(
-            structure(
-                rlang::expr(foo(bar)),
-                class = c("frmt", "frmt_when")
-            )
-        )
+    expect_s3_class(
+        test_frmt,
+        c("frmt_when", "frmt")
     )
+    expect_false(is_frmt_strict(test_frmt))
 })
 
 test_that("check_frmt_strict", {
-    expect_no_error(
-        check_frmt_strict(
-            structure(
-                rlang::expr(foo(bar)),
-                class = "frmt"
-            )
-        )
-    )
+    expect_no_error(check_frmt_strict(frmt("XXX.XX")))
+    expect_no_error(check_frmt_strict(NULL, allow_null = TRUE))
 
-    expect_no_error(
-        check_frmt_strict(
-            NULL,
-            allow_null = TRUE
-        )
+    test_frmt <- frmt_when(
+        ">3" ~ frmt("(X.X%)"),
+        "<=3" ~ frmt("Undetectable")
     )
 
     # the input must not have additional classes
     expect_error(
-        check_frmt_strict(
-            structure(
-                rlang::expr(foo(bar)),
-                class = c("frmt_when", "frmt")
-            )
-        ),
+        check_frmt_strict(test_frmt),
         "must be a <frmt> object, not a <frmt_when> object."
     )
 })
 
 test_that("is_frmt_combine", {
-    expect_true(
-        is_frmt_combine(
-            structure(
-                rlang::expr(foo(bar)),
-                class = c("frmt", "frmt_combine")
-            )
-        )
-    )
+    expect_true(is_frmt_combine(frmt_combine("XXX %", "XX,XXX")))
 
-    expect_true(
-        is_frmt_combine(
-            structure(
-                rlang::expr(foo(bar)),
-                class = c("frmt_combine")
-            )
-        )
-    )
-
-    expect_false(
-        is_frmt_combine(
-            "foo"
-        )
-    )
+    expect_false(is_frmt_combine("foo"))
 })
 
 test_that("check_frmt_combine", {
-    expect_no_error(
-        check_frmt_combine(
-            structure(
-                rlang::expr(foo(bar)),
-                class = c("frmt", "frmt_combine")
-            )
-        )
-    )
-
-    expect_no_error(
-        check_frmt_combine(
-            structure(
-                rlang::expr(foo(bar)),
-                class = c("frmt_combine")
-            )
-        )
-    )
-
+    expect_no_error(check_frmt_combine(frmt_combine("XXX %", "XX,XXX")))
     expect_no_error(check_frmt_combine(NULL, allow_null = TRUE))
 
     expect_error(
         check_frmt_combine("foo"),
         '`"foo"` must be a frmt combine object, not the string "foo".'
+    )
+})
+
+test_that("is_frmt_when", {
+    expect_true(
+        is_frmt_when(
+            frmt_when(
+                ">3" ~ frmt("(X.X%)"),
+                "<=3" ~ frmt("Undetectable")
+            )
+        )
+    )
+
+    expect_false(is_frmt_when("foo"))
+})
+
+test_that("check_frmt_when", {
+    expect_no_error(
+        check_frmt_when(
+            frmt_when(
+                ">3" ~ frmt("(X.X%)"),
+                "<=3" ~ frmt("Undetectable")
+            )
+        )
+    )
+
+    expect_no_error(check_frmt_when(NULL, allow_null = TRUE))
+
+    expect_error(
+        check_frmt_when("foo"),
+        '`"foo"` must be a frmt when object, not the string "foo".'
     )
 })

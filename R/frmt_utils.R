@@ -40,7 +40,7 @@ check_frmt <- function(
 }
 
 is_frmt_strict <- function(x) {
-    inherits(x, "frmt") && !is_frmt_combine(x) && !is_frmt_when(x)
+    inherits(x, "frmt") && length(class(x)) == 1
 }
 
 # this is a stricter check - the input must be a frmt object and not a
