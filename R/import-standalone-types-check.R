@@ -323,7 +323,7 @@ check_logical <- function(
   call = caller_env()
 ) {
   if (!missing(x)) {
-    if (is_logical(x)) {
+    if (rlang::is_logical(x)) {
       if (!allow_na && any(is.na(x))) {
         abort(
           sprintf("`%s` can't contain NA values.", arg),
@@ -333,12 +333,12 @@ check_logical <- function(
       }
       return(invisible(NULL))
     }
-    if (allow_null && is_null(x)) {
+    if (allow_null && rlang::is_null(x)) {
       return(invisible(NULL))
     }
   }
 
-  stop_input_type(
+  rlang::stop_input_type(
     x,
     "a logical vector",
     ...,
