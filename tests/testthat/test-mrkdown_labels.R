@@ -1,5 +1,5 @@
 test_that("markdown column labels - no spanning", {
-    mock_data <- tibble(
+    mock_data <- tibble::tibble(
         rowlbl1 = c(
             rep("Completion Status", 12),
             rep("Primary reason for withdrawal", 28)

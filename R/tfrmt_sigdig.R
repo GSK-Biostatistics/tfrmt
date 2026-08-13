@@ -87,7 +87,7 @@ param_set <- function(...) {
 
     idx_drop <- seq_along(param_list) %>%
         purrr::map_dfr(
-            ~ tibble(
+            ~ tibble::tibble(
                 param_display = names(param_list)[.x],
                 params = stringr::str_extract_all(
                     .data$param_display,

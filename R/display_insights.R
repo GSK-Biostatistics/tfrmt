@@ -20,7 +20,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
     TEMP_fmt_to_apply <- table_frmt_plan %>%
         purrr::map(~ .$frmt_to_apply[[1]])
 
-    dat_plus_fmt <- tibble(
+    dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,
         TEMP_fmt_to_apply
     ) %>%

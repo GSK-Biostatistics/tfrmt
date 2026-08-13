@@ -68,7 +68,7 @@ body_plan_builder <- function(
     # prep params for frmt functions
     param_tbl <- seq_along(param_defaults) %>%
         purrr::map_dfr(
-            ~ tibble(
+            ~ tibble::tibble(
                 param_display = names(param_defaults)[.x],
                 sigdig = list(param_defaults[[.x]] + data$sigdig[[1]]),
                 pos = .x
