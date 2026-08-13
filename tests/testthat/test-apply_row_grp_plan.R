@@ -1502,7 +1502,7 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
                 )
             ) %>%
                 print_to_gt(data_ae2) %>%
-                tab_options(
+                gt::tab_options(
                     container.width = 1000
                 )
         },
