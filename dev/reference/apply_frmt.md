@@ -83,13 +83,15 @@ library(dplyr)
 #> The following objects are masked from ‘package:base’:
 #> 
 #>     intersect, setdiff, setequal, union
+library(rlang)
 # Set up data
 df <- tibble(x = c(20.12,34.54,12.34))
 
 apply_frmt(
- frmt_def = frmt("XX.X"),
- .data=df,
- value=quo(x))
+    frmt_def = frmt("XX.X"),
+    .data = df,
+    value = quo(x)
+)
 #> # A tibble: 3 × 1
 #>   x    
 #>   <chr>
