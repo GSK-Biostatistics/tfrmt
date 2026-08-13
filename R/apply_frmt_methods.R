@@ -103,7 +103,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             ) %>%
                 stringr::str_trim()
 
-            fmt_options <- tibble(
+            fmt_options <- tibble::tibble(
                 rounded = rounded_vals,
                 # digits preceding period in vals
                 act_pre_dec = rounded_vals %>%

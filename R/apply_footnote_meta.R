@@ -95,7 +95,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
 
         if (rlang::is_empty(names(loc_info$column_val))) {
             col_val_nm <- col_str
-            loc_col_df <- tibble(!!col_str := loc_info$column_val)
+            loc_col_df <- tibble::tibble(!!col_str := loc_info$column_val)
         } else {
             loc_col_df <- loc_info$column_val %>%
                 expand.grid(stringsAsFactors = FALSE)

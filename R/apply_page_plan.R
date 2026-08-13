@@ -28,7 +28,7 @@ apply_page_plan <- function(
 
     # then apply max rows splits
     if (!is.null(page_plan$max_rows)) {
-        if (is_tibble(.data)) {
+        if (tibble::is_tibble(.data)) {
             .data <- apply_page_max_rows(
                 .data,
                 page_plan$max_rows,
@@ -118,7 +118,7 @@ apply_page_max_rows <- function(
 
     # start with top row, then add rows 1 by 1, testing # of rows each time
     remain_dat <- .data
-    cur_dat <- tibble()
+    cur_dat <- tibble::tibble()
     all_summ_row <- numeric(0)
     tbl_list <- vector(mode = "list")
     i <- 1
@@ -175,7 +175,7 @@ apply_page_max_rows <- function(
                 .page_note = attr(.data, ".page_note")
             )
             i <- i + 1
-            cur_dat <- tibble()
+            cur_dat <- tibble::tibble()
         }
     }
 
@@ -246,7 +246,7 @@ apply_page_struct <- function(
             )
     } else {
         # no default - just nest to get in same structure for next step
-        dat_split_1 <- tibble(`..tfrmt_data` = list(!!.data))
+        dat_split_1 <- tibble::tibble(`..tfrmt_data` = list(!!.data))
     }
 
     # b) Further split the sub-data based on specific values (loop over all combinations of page_structure & data)
@@ -414,7 +414,7 @@ combine_group_cols_mod <- function(
                     )
 
                 if (any(lone_dat_summ$`..tfrmt_summary_row_cur`)) {
-                    new_row <- tibble()
+                    new_row <- tibble::tibble()
                 } else {
                     # if the set of rows contains NO group-level summary data, create an extra row to be added
                     new_row <- lone_dat %>%
