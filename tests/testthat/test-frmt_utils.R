@@ -124,3 +124,35 @@ test_that("check_frmt_structure", {
         '`"foo"` must be a frmt structure object, not the string "foo".'
     )
 })
+
+test_that("is_row_grp_structure", {
+    expect_true(
+        is_row_grp_structure(
+            row_grp_structure(
+                group_val = c("A", "C"),
+                element_block(post_space = "---")
+            )
+        )
+    )
+
+    expect_false(is_row_grp_structure("foo"))
+})
+
+
+test_that("check_row_grp_structure", {
+    expect_no_error(
+        check_row_grp_structure(
+            row_grp_structure(
+                group_val = c("A", "C"),
+                element_block(post_space = "---")
+            )
+        )
+    )
+
+    expect_no_error(check_row_grp_structure(NULL, allow_null = TRUE))
+
+    expect_error(
+        check_row_grp_structure("foo"),
+        '`"foo"` must be a row group structure object, not the string "foo".'
+    )
+})
