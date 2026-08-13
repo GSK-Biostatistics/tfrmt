@@ -251,7 +251,7 @@ apply_tfrmt_subtable <- function(
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
 
-    if (any(map_lgl(args, is_empty))) {
+    if (any(map_lgl(args, rlang::is_empty))) {
         out <- .data
     } else {
         out <- .data %>%
@@ -433,7 +433,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::pull(.data$suggested_frmt_struct) %>%
                 paste0("- `", ., "`", collapse = "\n")
 
-            inform(
+            rlang::inform(
                 paste0(
                     "Multiple param listed for the same group/label values.\n",
                     "The following frmt_structures may be missing from the body_plan\n",
@@ -447,8 +447,8 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- ""
     }
 
-    column_cols <- tfrmt$column %>%
-        map_chr(as_name)
+    column_cols <- map_chr(tfrmt$column, rlang::as_name)
+
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%
         dplyr::mutate(
@@ -481,7 +481,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                     tbl_dat_wide$warnings,
                     paste0(
                         "Values from `",
-                        as_label(tfrmt$value),
+                        rlang::as_label(tfrmt$value),
                         "` are not uniquely identified"
                     )
                 )
@@ -509,7 +509,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        map_chr(as_label) %>%
+        map_chr(rlang::as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- capture.output(dput(setNames(grp, group_names)))
@@ -556,9 +556,9 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
-    if (!is_empty(tfrmt$sorting_cols)) {
+    if (!rlang::is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (is_empty(tfrmt$group)) {
+        if (rlang::is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
                 dplyr::mutate(
@@ -630,7 +630,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
 
         if (
             !identical(expected_pops, actual_pops) ||
-                (!is_empty(actual_grp_levs) &&
+                (!rlang::is_empty(actual_grp_levs) &&
                     !isTRUE(all.equal(
                         expected_grp_levs,
                         actual_grp_levs,

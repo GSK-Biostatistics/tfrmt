@@ -1,7 +1,7 @@
 test_that("expr_to_filter - quosure", {
     var <- "value1"
     default <- ".default"
-    quo_val <- quo(col)
+    quo_val <- rlang::quo(col)
 
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
     filter_default <- expr_to_filter.quosure(cols = quo_val, val = default)
@@ -71,7 +71,7 @@ test_that("expr_to_filter - quosures", {
 })
 
 test_that("expr_to_filter - quosure - with quotes", {
-    quo_val <- quo(col)
+    quo_val <- rlang::quo(col)
 
     var <- "value1's"
     filter_var <- expr_to_filter.quosure(cols = quo_val, val = var)
