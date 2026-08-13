@@ -920,7 +920,7 @@ test_that("Unorthodox col_plans", {
 })
 
 test_that("Order is kept for multi-col columns", {
-    test <- tibble(
+    test <- tibble::tibble(
         col_1 = "test",
         col_2 = c("this", "other"),
         col_3 = c("delm", "delm"),
