@@ -26,11 +26,11 @@
 #'
 make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     body_plan <- tfrmt$body_plan
-    grp_vars <- map_chr(tfrmt$group, rlang::as_name)
+    grp_vars <- purrr::map_chr(tfrmt$group, rlang::as_name)
 
     # create tibble of all frmt_structure grp/label/param: 1 row per group_val per frmt_structure
     all_frmt_spec <- body_plan %>%
-        map_dfr(
+        purrr::map_dfr(
             function(x) {
                 crossing(
                     # if group_val is a named list, return as a tibble with list names as colnames
@@ -54,7 +54,9 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     # & replace .default's
     all_frmt_vals <- dplyr::bind_cols(
         all_frmt_spec,
-        map(cols_to_add, function(x) tibble::tibble(!!x := NA_character_))
+        purrr::map(cols_to_add, function(x) {
+            tibble::tibble(!!x := NA_character_)
+        })
     ) %>%
         dplyr::mutate(
             ..grp = replace_na(.data$..grp, ".default"),
@@ -157,7 +159,7 @@ process_for_mock <- function(x, column, .default = 1:3) {
 #' @noRd
 clean_col_names <- function(names, dont_inc) {
     names %>%
-        map_chr(rlang::as_label) %>%
+        purrr::map_chr(rlang::as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
         stringr::str_remove_all("^-") %>%
         stringr::str_remove_all('\\"\\)') %>%
@@ -167,12 +169,15 @@ clean_col_names <- function(names, dont_inc) {
 # Adds the sorting columns if relevant otherwise just returns data
 add_sorting_cols <- function(data, sorting_cols) {
     if (!is.null(sorting_cols)) {
-        sorting_cols_vars <- map_chr(sorting_cols, rlang::as_name)
+        sorting_cols_vars <- purrr::map_chr(sorting_cols, rlang::as_name)
         n_sorting_cols <- length(sorting_cols_vars)
 
-        sorting_cols_def <- map_dfc(seq_len(n_sorting_cols), function(x) {
-            tibble::tibble(!!sorting_cols_vars[x] := 1)
-        })
+        sorting_cols_def <- purrr::map_dfc(
+            seq_len(n_sorting_cols),
+            function(x) {
+                tibble::tibble(!!sorting_cols_vars[x] := 1)
+            }
+        )
 
         data <- data %>%
             dplyr::mutate(
@@ -192,11 +197,11 @@ make_col_df <- function(
     col_style_plan,
     n_cols
 ) {
-    column_vars <- column %>% map_chr(rlang::as_label)
+    column_vars <- purrr::map_chr(column, rlang::as_label)
     grp_lb_vars <- c(
-        map_chr(group, rlang::as_name),
+        purrr::map_chr(group, rlang::as_name),
         rlang::as_label(label),
-        map_chr(sorting_cols, rlang::as_name)
+        purrr::map_chr(sorting_cols, rlang::as_name)
     )
     if (identical(column_vars, "__tfrmt__column")) {
         column_vars <- "col"
@@ -218,7 +223,7 @@ make_col_df <- function(
         } else if (col_plan_test_res && is.null(n_cols)) {
             # Gets the lowest level columns only
             low_lvl_vars <- col_plan$dots %>%
-                discard(is.list) %>%
+                purrr::discard(is.list) %>%
                 clean_col_names(dont_inc = grp_lb_vars)
 
             low_lvl_def <- tibble::tibble(
@@ -227,11 +232,11 @@ make_col_df <- function(
 
             # creates a df for each span structure
             span_df <- col_plan$dots %>%
-                keep(is.list) %>%
-                map_dfr(function(x) {
+                purrr::keep(is.list) %>%
+                purrr::map_dfr(function(x) {
                     span_df <- x %>%
-                        map(~ clean_col_names(., c())) %>%
-                        reduce(crossing) %>%
+                        purrr::map(~ clean_col_names(., c())) %>%
+                        purrr::reduce(crossing) %>%
                         unnest(
                             cols = tidyselect::everything()
                         )
@@ -244,8 +249,8 @@ make_col_df <- function(
 
         # get col_style_plan referenced cols
         if (col_style_plan_test_res) {
-            cols_from_sp <- map(col_style_plan, ~ .x$cols) |>
-                list_flatten() |>
+            cols_from_sp <- purrr::map(col_style_plan, ~ .x$cols) |>
+                purrr::list_flatten() |>
                 clean_col_names(dont_inc = grp_lb_vars) %>%
                 tibble::tibble()
             names(cols_from_sp) <- dplyr::last(column_vars)
@@ -262,14 +267,17 @@ make_col_df <- function(
             )
         )
         if (n_spans > 1) {
-            col_spans_df <- map_dfc(seq_len(n_spans - 1), function(x) {
-                tibble::tibble(
-                    !!column_vars[x] := rep(
-                        paste0("span_", column_vars[x]),
-                        n_cols
+            col_spans_df <- purrr::map_dfc(
+                seq_len(n_spans - 1),
+                function(x) {
+                    tibble::tibble(
+                        !!column_vars[x] := rep(
+                            paste0("span_", column_vars[x]),
+                            n_cols
+                        )
                     )
-                )
-            })
+                }
+            )
             col_def <- dplyr::bind_cols(
                 col_spans_df,
                 col_def
@@ -301,10 +309,8 @@ col_plan_test <- function(col_plan) {
     if (is.null(col_plan)) {
         out <- FALSE
     } else {
-        all_names <- col_plan$dots %>%
-            map_chr(rlang::as_label)
-        first_chr <- all_names %>%
-            stringr::str_sub(end = 1)
+        all_names <- purrr::map_chr(col_plan$dots, rlang::as_label)
+        first_chr <- stringr::str_sub(all_names, end = 1)
         out <- (!all(first_chr == "-")) && (!"everything()" %in% all_names)
     }
     out
@@ -316,9 +322,10 @@ col_style_plan_test <- function(col_style_plan) {
     if (is.null(col_style_plan)) {
         out <- FALSE
     } else {
-        all_names <- map(col_style_plan, ~ .x$cols) |>
-            list_flatten() %>%
-            map_chr(rlang::as_label)
+        all_names <- col_style_plan |>
+            purrr::map(~ .x$cols) |>
+            purrr::list_flatten() |>
+            purrr::map_chr(rlang::as_label)
         out <- !all("everything()" %in% all_names)
     }
     out

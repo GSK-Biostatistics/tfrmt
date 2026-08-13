@@ -124,7 +124,7 @@ apply_tfrmt_subtable_mapper <- function(
     if (inherits(.data, "list")) {
         # there is a list of >1 big N tibbles
         if (inherits(big_n_df, "list") && length(big_n_df) > 1) {
-            map2(
+            purrr::map2(
                 .data,
                 big_n_df,
                 ~ apply_tfrmt_subtable(
@@ -137,7 +137,7 @@ apply_tfrmt_subtable_mapper <- function(
             )
         } else {
             # there is only 1 set of (overall) big Ns
-            map(
+            purrr::map(
                 .data,
                 ~ apply_tfrmt_subtable(
                     tfrmt,
@@ -251,11 +251,11 @@ apply_tfrmt_subtable <- function(
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
 
-    if (any(map_lgl(args, rlang::is_empty))) {
+    if (any(purrr::map_lgl(args, rlang::is_empty))) {
         out <- .data
     } else {
         out <- .data %>%
-            safely(fx)(...)
+            purrr::safely(fx)(...)
         if (!is.null(out[["error"]])) {
             if (is.null(fail_desc)) {
                 fx_char <- as.character(substitute(fx))
@@ -304,9 +304,9 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     .data <- dplyr::ungroup(.data)
 
     req_quo %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(dplyr::select)(.data, !!var_test)
+            check <- purrr::safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -320,9 +320,9 @@ validate_cols_match <- function(.data, tfrmt, mock) {
         })
 
     req_var %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(dplyr::select)(.data, !!!var_test)
+            check <- purrr::safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -447,7 +447,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- ""
     }
 
-    column_cols <- map_chr(tfrmt$column, rlang::as_name)
+    column_cols <- purrr::map_chr(tfrmt$column, rlang::as_name)
 
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%
@@ -461,7 +461,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ~ dplyr::na_if(.x, "")
             )
         ) %>%
-        quietly(pivot_wider)(
+        purrr::quietly(pivot_wider)(
             names_from = c(
                 tidyselect::starts_with(
                     .tlang_struct_col_prefix
@@ -509,7 +509,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        map_chr(rlang::as_label) %>%
+        purrr::map_chr(rlang::as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- capture.output(dput(setNames(grp, group_names)))
@@ -606,7 +606,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {
         expected_pops <- length(data_wide)
         expected_grp_vars <- attr(data_wide, ".page_grp_vars")
-        expected_grp_levs <- map_dfr(
+        expected_grp_levs <- purrr::map_dfr(
             data_wide,
             ~ dplyr::select(
                 .x,
@@ -617,7 +617,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                 dplyr::distinct()
         )
         actual_pops <- length(big_n_df)
-        actual_grp_levs <- map_dfr(
+        actual_grp_levs <- purrr::map_dfr(
             big_n_df,
             ~ dplyr::select(
                 .x,

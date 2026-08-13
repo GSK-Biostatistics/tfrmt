@@ -24,7 +24,7 @@ apply_row_grp_struct <- function(
     # get nested list object:
     #  length = number of structures, each element contains list of data splits (row indices)
     TEMP_appl_row <- row_grp_struct_list %>%
-        map(function(struct) {
+        purrr::map(function(struct) {
             grping <- expr_to_grouping(struct, group)
 
             split_dat <- .data %>%
@@ -36,13 +36,14 @@ apply_row_grp_struct <- function(
                     )
                 ) %>%
                 dplyr::group_split()
-            map(split_dat, function(dat) {
+            purrr::map(split_dat, function(dat) {
                 struct_val_idx(struct, dat, group, label)
             }) %>%
-                list_flatten()
+                purrr::list_flatten()
         })
 
-    TEMP_block_to_apply <- row_grp_struct_list %>% map(~ .$block_to_apply)
+    TEMP_block_to_apply <- row_grp_struct_list %>%
+        purrr::map(~ .$block_to_apply)
 
     # similar to frmts, only allow 1 element_block for a given row
     #   - within block-specific data, split data further by grouping vars
@@ -98,7 +99,7 @@ apply_row_grp_struct <- function(
         )
 
     # apply group block function to data subsets
-    add_ln_df <- map2_dfr(
+    add_ln_df <- purrr::map2_dfr(
         dat_plus_block$data,
         dat_plus_block$TEMP_block_to_apply,
         function(x, y) {
@@ -190,7 +191,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
             dplyr::mutate(
                 dplyr::across(
                     c(
-                        -map_chr(group, rlang::as_name),
+                        -purrr::map_chr(group, rlang::as_name),
                         -tidyselect::where(is.numeric)
                     ),
                     ~ replace(
@@ -261,7 +262,7 @@ combine_group_cols <- function(
     label,
     element_row_grp_loc = NULL
 ) {
-    orig_group_names <- map_chr(group, rlang::as_name)
+    orig_group_names <- purrr::map_chr(group, rlang::as_name)
     top_grouping <- group #used for spliting in case of spanning label
 
     .data <- .data %>%
@@ -295,10 +296,10 @@ combine_group_cols <- function(
                 run_id = dplyr::consecutive_id(!!!top_grouping)
             ) %>%
             dplyr::group_split() %>%
-            map(~ dplyr::select(.x, -run_id))
+            purrr::map(~ dplyr::select(.x, -run_id))
 
         .data <- split_dat %>%
-            map_dfr(function(lone_dat) {
+            purrr::map_dfr(function(lone_dat) {
                 lone_dat_summ <- lone_dat %>%
                     dplyr::mutate(
                         ..tfrmt_summary_row = stringr::str_trim(
@@ -338,7 +339,7 @@ combine_group_cols <- function(
                             dplyr::across(
                                 #convert NULL to NA in list-cols
                                 tidyselect::where(is.list),
-                                ~ map(
+                                ~ purrr::map(
                                     .x,
                                     ~ . %||% NA_character_
                                 )

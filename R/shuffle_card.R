@@ -189,7 +189,7 @@ shuffle_card <- function(
     dots <- rlang::dots_list(...)
 
     lapply(dots, function(var) {
-        if (!all(map_lgl(x[[var]], is.null))) {
+        if (!all(purrr::map_lgl(x[[var]], is.null))) {
             cli::cli_inform(
                 "{.val {var}} column contains messages that will be removed."
             )

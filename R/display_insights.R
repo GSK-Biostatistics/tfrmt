@@ -15,9 +15,10 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         )
 
     TEMP_appl_row <- table_frmt_plan %>%
-        map(fmt_test_data, .data, label, group, param)
+        purrr::map(fmt_test_data, .data, label, group, param)
 
-    TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
+    TEMP_fmt_to_apply <- table_frmt_plan %>%
+        purrr::map(~ .$frmt_to_apply[[1]])
 
     dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,
@@ -102,9 +103,12 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             ) %>%
             dplyr::mutate(
-                frmt_type = map_chr(.data$frmt_applied, function(x) {
-                    unlist(class(x)[1])
-                })
+                frmt_type = purrr::map_chr(
+                    .data$frmt_applied,
+                    function(x) {
+                        unlist(class(x)[1])
+                    }
+                )
             )
     } else if (isTRUE(convert_to_txt)) {
         output <- match_frmt_to_rows(
@@ -123,10 +127,16 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             ) %>%
             dplyr::mutate(
-                frmt_type = map_chr(.data$frmt_applied, function(x) {
-                    unlist(class(x)[1])
-                }),
-                frmt_details = map_chr(.data$frmt_applied, format)
+                frmt_type = purrr::map_chr(
+                    .data$frmt_applied,
+                    function(x) {
+                        unlist(class(x)[1])
+                    }
+                ),
+                frmt_details = purrr::map_chr(
+                    .data$frmt_applied,
+                    format
+                )
             ) %>%
             dplyr::select(-"frmt_applied")
 
@@ -214,7 +224,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::select(
             -tidyselect::any_of(
                 c(
-                    map_chr(tfrmt$group, rlang::as_name),
+                    purrr::map_chr(tfrmt$group, rlang::as_name),
                     rlang::as_name(tfrmt$label)
                 )
             )
@@ -231,10 +241,10 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- map_chr(tfrmt$column, rlang::as_label)
+        column_names <- purrr::map_chr(tfrmt$column, rlang::as_label)
     }
     selection <- as.list(substitute(substitute(col)))[-1] %>%
-        map(trim_vars_quo_c) %>%
+        purrr::map(trim_vars_quo_c) %>%
         do.call("c", .) %>%
         check_col_plan_dots()
 

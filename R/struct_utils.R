@@ -40,12 +40,12 @@ expr_to_filter.quosures <- function(cols, val) {
     } else if (!is.list(val) && all(val == ".default")) {
         out <- "TRUE"
     } else if (is.list(val)) {
-        if (!all(names(val) %in% map_chr(cols, rlang::as_label))) {
+        if (!all(names(val) %in% purrr::map_chr(cols, rlang::as_label))) {
             stop("Names of val entries do not all match col values")
         }
-        out <- map2_chr(
+        out <- purrr::map2_chr(
             cols,
-            val[map_chr(cols, rlang::as_label)],
+            val[purrr::map_chr(cols, rlang::as_label)],
             ~ expr_to_filter(.x, .y)
         ) %>%
             paste(collapse = " & ")
@@ -75,7 +75,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
         grp_expr <- expr_to_filter(group, cur_struct$group_val)
 
         if (is.list(cur_struct$group_val)) {
-            keep_vars <- group[map_lgl(
+            keep_vars <- group[purrr::map_lgl(
                 cur_struct$group_val,
                 ~ !all(.x == ".default")
             )]
@@ -101,7 +101,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             dplyr::select(
                 tidyselect::any_of(
                     c(
-                        map_chr(keep_vars, rlang::as_label),
+                        purrr::map_chr(keep_vars, rlang::as_label),
                         "TEMP_row"
                     )
                 )
@@ -114,7 +114,7 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
             ) %>%
             dplyr::group_by(.data$breaks) %>%
             dplyr::group_split() %>%
-            map(function(x) dplyr::pull(x, .data$TEMP_row))
+            purrr::map(function(x) dplyr::pull(x, .data$TEMP_row))
     } else {
         .data %>%
             dplyr::pull(.data$TEMP_row) %>%
@@ -125,7 +125,8 @@ struct_val_idx <- function(cur_struct, .data, group, label) {
 # detect use of .default in a *_structure object
 #' @noRd
 detect_default <- function(struct) {
-    map_lgl(struct, ~ any(!is.null(.x) && any(.x == ".default"))) %>% any()
+    purrr::map_lgl(struct, ~ any(!is.null(.x) && any(.x == ".default"))) %>%
+        any()
 }
 
 # detect use of non-default in a  *_structure object entry
@@ -150,13 +151,13 @@ expr_to_grouping <- function(cur_struct, group, label) {
             !is.list(cur_struct$group_val) &&
                 all(cur_struct$group_val == ".default")
         ) {
-            grp_to_add <- map_chr(group, rlang::as_label)
+            grp_to_add <- purrr::map_chr(group, rlang::as_label)
             grouping <- c(grouping, grp_to_add)
         } else if (
             is.list(cur_struct$group_val) &&
                 any(cur_struct$group_val == ".default")
         ) {
-            grp_to_add <- names(cur_struct$group_val)[map_lgl(
+            grp_to_add <- names(cur_struct$group_val)[purrr::map_lgl(
                 cur_struct$group_val,
                 ~ all(.x == ".default")
             )]
