@@ -58,6 +58,8 @@ frmt_structure <- function(
         param_val <- ".default"
     }
 
+    # TODO checks + expansion a la quosures (list of quosures)
+    # TODO this only checks the first element, not every element of the list
     if (!is_frmt(param_frmt[[1]])) {
         stop(paste0("Entry is not an object of class `frmt`"))
     }
