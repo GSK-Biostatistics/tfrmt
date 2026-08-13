@@ -60,6 +60,7 @@
 # - Added changelog.
 #
 # nocov start
+# nolint start
 
 #' Return English-friendly type
 #' @param x Any R object.
@@ -326,4 +327,5 @@ oxford_comma <- function(chr, sep = ", ", final = "or") {
     }
 }
 
+# nolint end
 # nocov end

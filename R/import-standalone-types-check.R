@@ -74,7 +74,7 @@
 # - Added changelog.
 #
 # nocov start
-
+# nolint start
 check_symbol <- function(
     x,
     ...,
@@ -349,4 +349,5 @@ check_logical <- function(
     )
 }
 
+# nolint end
 # nocov end
