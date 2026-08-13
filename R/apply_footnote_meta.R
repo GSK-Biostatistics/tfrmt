@@ -91,9 +91,9 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
 
     # Get column information
     if ("column_val" %in% names(loc_info)) {
-        col_str <- purrr::map_chr(columns, as_label)
+        col_str <- purrr::map_chr(columns, rlang::as_label)
 
-        if (is_empty(names(loc_info$column_val))) {
+        if (rlang::is_empty(names(loc_info$column_val))) {
             col_val_nm <- col_str
             loc_col_df <- tibble::tibble(!!col_str := loc_info$column_val)
         } else {
@@ -104,7 +104,7 @@ get_col_loc <- function(footnote_structure, .data, col_plan_vars, columns) {
 
         col_loc_df <- split_data_names_to_df(
             NULL,
-            purrr::map_chr(col_plan_vars, as_label),
+            purrr::map_chr(col_plan_vars, rlang::as_label),
             col_str
         ) %>%
             dplyr::inner_join(loc_col_df, by = col_val_nm)
@@ -209,13 +209,15 @@ get_row_loc <- function(
                 "Cannot apply footnotes to rows when you have only specified a spanning column"
             )
             col_info$row <- NULL
-        } else if (row_grp == "noprint" && !is_empty(loc_info$group_val)) {
+        } else if (
+            row_grp == "noprint" && !rlang::is_empty(loc_info$group_val)
+        ) {
             warning(
                 "Can not apply footnotes to group columns when 'noprint' is set"
             )
             col_info$row <- NULL
         } else {
-            group_str <- purrr::map_chr(group, as_label)
+            group_str <- purrr::map_chr(group, rlang::as_label)
             # Test if there are more than the first group
             highest_grp <- setdiff(
                 names(loc_info$group_val),
@@ -240,7 +242,7 @@ get_row_loc <- function(
                 lbl_expr <- expr_to_filter(label, label_vals)
 
                 filter_expr <- paste(c(lbl_expr, grp_expr), collapse = "&") %>%
-                    parse_expr()
+                    rlang::parse_expr()
 
                 col_info$row <- .data %>%
                     dplyr::ungroup() %>%
@@ -260,12 +262,12 @@ get_row_loc <- function(
 
                 col_info$col <- ifelse(
                     is.null(col_info$col),
-                    as_label(label),
+                    rlang::as_label(label),
                     col_info$col
                 )
             } else if (highest_grp) {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
-                    parse_expr()
+                    rlang::parse_expr()
                 col_info$row <- .data %>%
                     dplyr::group_by(
                         !!dplyr::first(group)
@@ -284,7 +286,7 @@ get_row_loc <- function(
                 )
             } else if (row_grp %in% c("", "gtdefault")) {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
-                    parse_expr()
+                    rlang::parse_expr()
                 col_info$row <- .data %>%
                     dplyr::group_by(
                         !!dplyr::first(group)
@@ -310,7 +312,7 @@ get_row_loc <- function(
                 )
             } else if (row_grp == "column") {
                 filter_expr <- expr_to_filter(group, loc_info$group_val) %>%
-                    parse_expr()
+                    rlang::parse_expr()
                 col_info$row <- .data %>%
                     dplyr::mutate(
                         `___tfrmt_grp_n` = dplyr::row_number(),

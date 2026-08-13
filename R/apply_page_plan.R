@@ -15,7 +15,7 @@ apply_page_plan <- function(
     row_grp_plan_label_loc = "indented"
 ) {
     # first apply page structures
-    if (!is_empty(page_plan$struct_list)) {
+    if (!rlang::is_empty(page_plan$struct_list)) {
         .data <- apply_page_struct(
             .data,
             page_struct_list = page_plan$struct_list,
@@ -142,7 +142,7 @@ apply_page_max_rows <- function(
 
         if (
             length(group) == 0 ||
-                is_empty(label) ||
+                rlang::is_empty(label) ||
                 row_grp_plan_label_loc %in% c("gtdefault", "noprint", "column")
         ) {
             cur_dat_new <- dplyr::bind_rows(cur_dat, next_dat)
@@ -461,7 +461,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
             )
         ) %>%
         pivot_longer(
-            purrr::map_chr(group, as_label),
+            purrr::map_chr(group, rlang::as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"
         ) %>%
@@ -470,7 +470,8 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
         dplyr::slice(1) %>%
         dplyr::mutate(
             `..tfrmt_summ_grp_num` = which(
-                .data$`..tfrmt_summ_grp_num` == purrr::map_chr(group, as_label)
+                .data$`..tfrmt_summ_grp_num` ==
+                    purrr::map_chr(group, rlang::as_label)
             )
         ) %>%
         dplyr::pull(.data$`..tfrmt_summ_grp_num`)

@@ -52,10 +52,10 @@ big_n_structure <- function(
 apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
     if (!is.null(big_n_df) && nrow(big_n_df) > 0) {
         col_lab <- columns |>
-            purrr::map_chr(as_label)
+            purrr::map_chr(rlang::as_label)
 
         data_names <- col_plan_vars |>
-            purrr::map_chr(as_label) |>
+            purrr::map_chr(rlang::as_label) |>
             split_data_names_to_df(
                 data_names = c(),
                 preselected_cols = _,
@@ -68,7 +68,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
             data_names <- data_names |>
                 dplyr::mutate(
                     !!big_n_i$`__tfrmt_big_n_names__` := dplyr::if_else(
-                        !!parse_expr(big_n_i$exp),
+                        !!rlang::parse_expr(big_n_i$exp),
                         paste0(
                             !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`),
                             dplyr::pull(big_n_i, !!value)
@@ -160,7 +160,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
         }
 
         # Test for too many big n's
-        grp_vars <- setdiff(names(frmtted_vals), as_label(value))
+        grp_vars <- setdiff(names(frmtted_vals), rlang::as_label(value))
         multi_test <- frmtted_vals |>
             dplyr::group_by(
                 dplyr::across(
@@ -188,7 +188,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             )
         }
 
-        by_var <- setdiff(grp_vars, purrr::map_chr(columns, as_label))
+        by_var <- setdiff(grp_vars, purrr::map_chr(columns, rlang::as_label))
 
         data_out <- frmtted_vals |>
             dplyr::mutate(
@@ -226,7 +226,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             dplyr::select(-"_tfrmt______id")
 
         if (big_n_structure$by_page) {
-            if (is_empty(by_var)) {
+            if (rlang::is_empty(by_var)) {
                 data_out <- data_out |>
                     dplyr::group_split()
             } else {

@@ -646,7 +646,7 @@ test_that("Using col_plan to get column names", {
     #With spanning
     auto_col_df <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(test1, test2),
         body_plan = body_plan(
@@ -685,7 +685,7 @@ test_that("Using col_plan to get column names", {
     # When you do crossing in the span structure
     auto_col_crossing <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(visit, trt),
         body_plan = body_plan(
@@ -761,7 +761,7 @@ test_that("Using col_style_plan to get names", {
     # combination col_style_plan/col_plan
     auto_col_df <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(test1, test2),
         body_plan = body_plan(
