@@ -237,7 +237,11 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     }
 
     structure(
-        list(expression = exp_new, frmt_ls = frmt_ls, missing = missing),
+        list(
+            expression = exp_new,
+            frmt_ls = frmt_ls,
+            missing = missing
+        ),
         class = c("frmt_combine", "frmt")
     )
 }
