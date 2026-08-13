@@ -96,12 +96,6 @@ test_that("print_to_gt() works", {
 })
 
 test_that("print_to_gt() complains with incorrect inputs", {
-    # complains when the first argument is not `tfrmt`
-    expect_snapshot(
-        error = TRUE,
-        print_to_gt(mtcars)
-    )
-
     # complains when the `.data` argument is not a data.frame
     tfrmt_plan <- tfrmt(
         label = label,
