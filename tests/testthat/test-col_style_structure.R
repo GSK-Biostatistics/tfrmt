@@ -313,7 +313,7 @@ test_that("tidyselect works", {
         )
     )
 
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         # fmt: skip
         trt1 = c(
@@ -347,7 +347,7 @@ test_that("tidyselect works", {
         )
     )
 
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         # fmt: skip
         trt1 = c(
@@ -408,7 +408,7 @@ test_that("tidyselect works", {
         )
     )
 
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("   n (%)", "    mean", "      sd", "  median", "(q1, q3)"),
         # fmt: skip
         trt1 = c(
@@ -475,7 +475,7 @@ test_that("span_structure works", {
     )
 
     # fmt: skip
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         `Test Span1___tlang_delim___trt1` = c(
             " 12 (34%)", " 12.3    ", "  4.34   ", " 14      ", "(10, 20) "
@@ -555,7 +555,7 @@ test_that("span_structure works on a renamed column", {
     )
 
     # fmt: skip
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         `Test Span1___tlang_delim___trt1` = c(
             " 12 (34%)", " 12.3", "  4.34", " 14", "(10, 20)"
