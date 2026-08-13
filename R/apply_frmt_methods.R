@@ -183,7 +183,7 @@ apply_frmt.frmt_combine <- function(
     }
 
     ## format params as needed
-    .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
+    .tmp_data <- purrr::map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
             dplyr::filter(!!param == stringr::str_remove_all(`__var`, "`")) %>%
@@ -224,9 +224,9 @@ apply_frmt.frmt_combine <- function(
         )
 
     missing_param_replacements <-
-        map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
+        purrr::map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
         setNames(fmt_param_vals) %>%
-        discard(is.null)
+        purrr::discard(is.null)
 
     if (length(missing_param_replacements) > 0) {
         ## after .is_all_missing so that can be tabulated first
@@ -274,7 +274,7 @@ apply_frmt.frmt_combine <- function(
             dplyr::select(-!!value)
     }
 
-    merge_group <- map(
+    merge_group <- purrr::map(
         c(column, label, group),
         function(x) {
             if (!rlang::quo_is_missing(x)) {
@@ -282,14 +282,14 @@ apply_frmt.frmt_combine <- function(
             }
         }
     ) %>%
-        discard(is.null) %>%
+        purrr::discard(is.null) %>%
         do.call("vars", .)
 
     # merge on new values, and remove cases other than first occurance of group/label/column pairing
     .data %>%
         dplyr::left_join(
             .tmp_data_fmted,
-            by = map_chr(merge_group, rlang::as_label)
+            by = purrr::map_chr(merge_group, rlang::as_label)
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
         dplyr::slice(1) %>%
@@ -302,7 +302,7 @@ apply_frmt.frmt_combine <- function(
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
         frmt_to_prt <- frmt_def$frmt_ls %>%
-            keep(~ rlang::f_lhs(.) == "TRUE")
+            purrr::keep(~ rlang::f_lhs(.) == "TRUE")
         if (length(frmt_to_prt) < 1) {
             frmt_to_prt <- frmt_def$frmt_ls
         }
@@ -317,8 +317,8 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
         val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
-            map(rlang::f_rhs) %>%
-            map(function(x) {
+            purrr::map(rlang::f_rhs) %>%
+            purrr::map(function(x) {
                 if (is_frmt(x)) {
                     out <- x %>%
                         apply_frmt(.data, value, ...) %>%
@@ -330,10 +330,10 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
             })
 
         left <- frmt_def$frmt_ls %>%
-            map_chr(f_lhs_as_char) %>%
+            purrr::map_chr(f_lhs_as_char) %>%
             dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
             rlang::parse_exprs() %>%
-            map(rlang::eval_tidy, .data)
+            purrr::map(rlang::eval_tidy, .data)
 
         out <- rep(NA_character_, val_len)
         replaced <- rep(FALSE, val_len)

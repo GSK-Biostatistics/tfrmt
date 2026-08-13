@@ -69,7 +69,7 @@ body_plan_builder <- function(
 ) {
     # prep params for frmt functions
     param_tbl <- seq_along(param_defaults) %>%
-        map_dfr(
+        purrr::map_dfr(
             ~ tibble::tibble(
                 param_display = names(param_defaults)[.x],
                 sigdig = list(param_defaults[[.x]] + data$sigdig[[1]]),
@@ -81,7 +81,7 @@ body_plan_builder <- function(
                 .data$param_display,
                 "\\{.*\\}"
             ), # is this to be a frmt_combine
-            param = map2(
+            param = purrr::map2(
                 .data$param_display,
                 .data$contains_glue,
                 ~ if (.y) {
@@ -91,7 +91,7 @@ body_plan_builder <- function(
                     .x
                 }
             ),
-            single_glue_to_frmt = pmap_chr(
+            single_glue_to_frmt = purrr::pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
                     if (a && length(b) == 1) c else NA_character_
@@ -102,7 +102,7 @@ body_plan_builder <- function(
             tidyselect::everything()
         ) %>%
         dplyr::mutate(
-            frmt_string = map2_chr(
+            frmt_string = purrr::map2_chr(
                 .data$sigdig,
                 .data$single_glue_to_frmt,
                 sigdig_frmt_string
@@ -112,7 +112,7 @@ body_plan_builder <- function(
     frmt_vec <- param_tbl %>%
         dplyr::group_by(.data$pos) %>%
         dplyr::group_split() %>%
-        map(function(x) {
+        purrr::map(function(x) {
             if (sum(x$contains_glue) > 1) {
                 frmt_combine_builder(
                     x$param_display[[1]],
@@ -131,7 +131,7 @@ body_plan_builder <- function(
     grp_names <- if (length(group) == 0) {
         character(0)
     } else {
-        map_chr(group, rlang::as_name)
+        purrr::map_chr(group, rlang::as_name)
     }
 
     lbl_names <- if (rlang::quo_is_missing(label)) {
@@ -149,7 +149,7 @@ body_plan_builder <- function(
     if (length(which_grp) > 0) {
         group_val <- data[, which_grp] %>%
             as.list() %>%
-            map(unique)
+            purrr::map(unique)
 
         if (length(grp_names) > length(group_val)) {
             group_val_to_add <- grp_names[!grp_names %in% names(group_val)]

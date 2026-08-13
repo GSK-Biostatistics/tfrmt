@@ -85,7 +85,7 @@ as_json.default <- function(x) {
 
 #' @export
 as_json.quosures <- function(x) {
-    map_chr(x, rlang::as_label)
+    purrr::map_chr(x, rlang::as_label)
 }
 
 
@@ -100,14 +100,12 @@ as_json.quosure <- function(x) {
 
 #' @export
 as_json.body_plan <- function(x) {
-    x %>%
-        map(as_json)
+    purrr::map(x, as_json)
 }
 
 #' @export
 as_json.frmt_structure <- function(x) {
-    x$frmt_to_apply <- x$frmt_to_apply %>%
-        map(as_json)
+    x$frmt_to_apply <- purrr::map(x$frmt_to_apply, as_json)
 
     list(
         group_val = x$group_val,
@@ -128,8 +126,10 @@ as_json.frmt <- function(x) {
 
 #' @export
 as_json.frmt_when <- function(x) {
-    lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, rlang::f_rhs) %>% map(as_json)
+    lhs <- purrr::map_chr(x$frmt_ls, f_lhs_as_char)
+    rhs <- x$frmt_ls |>
+        purrr::map(rlang::f_rhs) |>
+        purrr::map(as_json)
     names(rhs) <- lhs
     list(frmt_when = list(frmt_ls = rhs, missing = x$missing))
 }
@@ -137,7 +137,7 @@ as_json.frmt_when <- function(x) {
 #' @export
 as_json.frmt_combine <- function(x) {
     frmts <- x$frmt_ls %>%
-        map(as_json)
+        purrr::map(as_json)
     list(
         frmt_combine = list(
             expression = x$expression,
@@ -153,7 +153,7 @@ as_json.col_plan <- function(x) {
         c()
     } else {
         dot_ls <- x$dots %>%
-            map(as_json)
+            purrr::map(as_json)
 
         if (!is.null(names(dot_ls))) {
             names(dot_ls) <- names(x$dots) %>% ifelse(nzchar(.), ., " ")
@@ -164,11 +164,12 @@ as_json.col_plan <- function(x) {
 
 #' @export
 as_json.span_structure <- function(x) {
-    x %>%
-        map(function(foo) {
-            foo %>%
-                map_chr(as_json)
-        }) %>%
+    purrr::map(
+        x,
+        function(foo) {
+            purrr::map_chr(foo, as_json)
+        }
+    ) %>%
         list(span_structure = .)
 }
 
@@ -176,13 +177,13 @@ as_json.span_structure <- function(x) {
 #' @export
 as_json.col_style_plan <- function(x) {
     x %>%
-        map(as_json)
+        purrr::map(as_json)
 }
 
 #' @export
 as_json.col_style_structure <- function(x) {
     x$cols <- x$cols %>%
-        map(as_json)
+        purrr::map(as_json)
     x
 }
 
@@ -227,7 +228,7 @@ json_to_tfrmt <- function(path = NULL, json = NULL) {
     )
 
     simple_params <- dirty_list[intersect(simple_vars, json_nm)] %>%
-        map(unlist)
+        purrr::map(unlist)
 
     rgp <- ls_to_row_grp_plan(dirty_list$row_grp_plan)
     bp <- ls_to_body_plan(dirty_list$body_plan)
@@ -247,20 +248,20 @@ json_to_tfrmt <- function(path = NULL, json = NULL) {
         list(col_style_plan = csp),
         list(page_plan = pp)
     ) %>%
-        discard(is.null)
+        purrr::discard(is.null)
     do.call(tfrmt, all_params)
 }
 
 ls_to_row_grp_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls$struct_list %>%
-            map(function(struct) {
+            purrr::map(function(struct) {
                 el_block <- do.call(
                     element_block,
-                    struct$block_to_apply %>% map(unlist)
+                    struct$block_to_apply %>% purrr::map(unlist)
                 )
                 if (!is.null(names(struct$group_val))) {
-                    group_val <- map(struct$group_val, unlist)
+                    group_val <- purrr::map(struct$group_val, unlist)
                 } else {
                     group_val <- unlist(struct$group_val)
                 }
@@ -270,7 +271,10 @@ ls_to_row_grp_plan <- function(ls) {
                 )
             })
 
-        label_loc <- do.call(element_row_grp_loc, ls$label_loc %>% map(unlist))
+        label_loc <- do.call(
+            element_row_grp_loc,
+            ls$label_loc %>% purrr::map(unlist)
+        )
         ls <- do.call(row_grp_plan, c(struct_ls, list(label_loc = label_loc)))
     }
     ls
@@ -279,7 +283,7 @@ ls_to_row_grp_plan <- function(ls) {
 ls_to_body_plan <- function(ls) {
     if (!is.null(ls)) {
         frmts_ls <- ls %>%
-            map(function(struct) {
+            purrr::map(function(struct) {
                 frmt_loc <- stringr::str_which(names(struct), "frmt*")
                 type <- names(struct)[frmt_loc]
                 frmt_val <- do.call(
@@ -304,7 +308,7 @@ ls_to_body_plan <- function(ls) {
 
 ls_to_frmt <- function(x) {
     x <- x %>%
-        map(unlist)
+        purrr::map(unlist)
 
     if (!is.null(x$transform)) {
         x$transform <- str2lang(x$transform)
@@ -322,11 +326,11 @@ ls_to_frmt <- function(x) {
 
 ls_to_frmt_combine <- function(x) {
     fmts <- x$frmt_ls %>%
-        map(function(a_frmt) {
+        purrr::map(function(a_frmt) {
             do.call(paste0("ls_to_", names(a_frmt)), list(x = a_frmt[[1]]))
         })
     x <- x %>%
-        map(unlist)
+        purrr::map(unlist)
     do.call(
         frmt_combine,
         c(list(expression = x$expression), fmts, list(missing = x$missing))
@@ -335,7 +339,7 @@ ls_to_frmt_combine <- function(x) {
 
 ls_to_frmt_when <- function(x) {
     fmts <- x$frmt_ls %>%
-        map(function(a_frmt) {
+        purrr::map(function(a_frmt) {
             if (!is.null(names(a_frmt))) {
                 out <- do.call(
                     paste0("ls_to_", names(a_frmt)),
@@ -354,7 +358,7 @@ ls_to_frmt_when <- function(x) {
         stringr::str_c("'", names(fmts), "'")
     )
     formula_ls <- stringr::str_c(lhs, " ~ ", fmts) %>%
-        map(as.formula)
+        purrr::map(as.formula)
 
     do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
 }
@@ -376,11 +380,11 @@ ls_to_big_n <- function(ls) {
 ls_to_footnote_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls$struct_list %>%
-            map(function(struct) {
+            purrr::map(function(struct) {
                 group_val <- simplify_group_val(struct$group_val)
                 column_val <- simplify_group_val(struct$column_val)
                 unlisted <- struct %>%
-                    map(unlist)
+                    purrr::map(unlist)
                 do.call(
                     footnote_structure,
                     list(
@@ -408,7 +412,7 @@ ls_to_footnote_plan <- function(ls) {
 ls_to_col_plan <- function(ls) {
     if (!is.null(ls)) {
         dots <- ls$col_plan$dots %>%
-            map(function(el) {
+            purrr::map(function(el) {
                 if (!is.null(names(el)) && names(el) == "span_structure") {
                     el$span_structure %>%
                         ls_to_span_structure() %>%
@@ -428,7 +432,7 @@ ls_to_col_plan <- function(ls) {
 
 ls_to_span_structure <- function(ls) {
     span_ls <- ls %>%
-        map(
+        purrr::map(
             ~ unlist(.) %>%
                 stringr::str_c("'", ., "'") %>%
                 stringr::str_c(collapse = ", ") %>%
@@ -442,32 +446,34 @@ ls_to_span_structure <- function(ls) {
 ls_to_col_style_plan <- function(ls) {
     if (!is.null(ls)) {
         struct_ls <- ls %>%
-            map(function(struct) {
-                stuct_in <- struct %>% map(unlist)
-                names(stuct_in) <- names(stuct_in) %>%
-                    stringr::str_replace("cols", "col")
-                cols_val <- struct[["cols"]][[1]]
-                if (
-                    !is.null(names(cols_val)) &&
-                        names(cols_val) == "span_structure"
-                ) {
-                    stuct_in[["col"]] <- cols_val[[1]] %>%
-                        ls_to_span_structure() %>%
-                        as.character() %>%
-                        rlang::parse_expr()
-                } else {
-                    stuct_in[["col"]] <- map_chr(
-                        stuct_in[["col"]],
-                        ~ char_as_quo(.x) %>%
-                            rlang::quo_get_expr() %>%
-                            rlang::expr_text()
-                    ) %>%
-                        stringr::str_c(collapse = ", ") %>%
-                        paste0("vars(", ., ")") %>%
-                        rlang::parse_expr()
+            purrr::map(
+                function(struct) {
+                    stuct_in <- purrr::map(struct, unlist)
+                    names(stuct_in) <- names(stuct_in) %>%
+                        stringr::str_replace("cols", "col")
+                    cols_val <- struct[["cols"]][[1]]
+                    if (
+                        !is.null(names(cols_val)) &&
+                            names(cols_val) == "span_structure"
+                    ) {
+                        stuct_in[["col"]] <- cols_val[[1]] %>%
+                            ls_to_span_structure() %>%
+                            as.character() %>%
+                            rlang::parse_expr()
+                    } else {
+                        stuct_in[["col"]] <- purrr::map_chr(
+                            stuct_in[["col"]],
+                            ~ char_as_quo(.x) %>%
+                                rlang::quo_get_expr() %>%
+                                rlang::expr_text()
+                        ) %>%
+                            stringr::str_c(collapse = ", ") %>%
+                            paste0("vars(", ., ")") %>%
+                            rlang::parse_expr()
+                    }
+                    do.call(col_style_structure, stuct_in)
                 }
-                do.call(col_style_structure, stuct_in)
-            })
+            )
 
         do.call(col_style_plan, struct_ls)
     }
@@ -516,7 +522,7 @@ simplify_group_val <- function(group_ls) {
     if (length(group_ls) == 0) {
         group_val <- NULL
     } else if (!is.null(names(group_ls))) {
-        group_val <- map(group_ls, unlist)
+        group_val <- purrr::map(group_ls, unlist)
     } else {
         group_val <- unlist(group_ls)
     }

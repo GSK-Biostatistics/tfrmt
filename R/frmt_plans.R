@@ -254,11 +254,13 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 frmt_when <- function(..., missing = NULL) {
     frmts <- rlang::list2(...)
 
-    frmt_ls <- frmts %>%
-        map(function(x) {
+    frmt_ls <- purrr::map(
+        frmts,
+        function(x) {
             rlang::f_rhs(x) <- eval(rlang::f_rhs(x))
             x
-        })
+        }
+    )
 
     structure(
         list(frmt_ls = frmt_ls, missing = missing),

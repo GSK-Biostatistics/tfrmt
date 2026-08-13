@@ -548,7 +548,7 @@ test_that("Check combine_group_cols with a multi groups", {
     man_test_with_span <- mock_multi_grp %>%
         dplyr::group_by(grp1) %>%
         dplyr::group_split() %>%
-        map_dfr(
+        purrr::map_dfr(
             combine_group_cols,
             group = vars(grp2),
             label = rlang::sym("my_label")

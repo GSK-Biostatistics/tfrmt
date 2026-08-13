@@ -160,7 +160,7 @@ check_span_structure_dots <- function(x) {
     }
 
     x_dots <- x %>%
-        map(
+        purrr::map(
             ~ lapply(trim_vars_quo_c(.x), function(x) {
                 if (is.name(x)) {
                     if (identical(rlang::as_label(x), "<empty>")) {

@@ -1011,7 +1011,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c(
             "group",
             "label",
@@ -1024,7 +1025,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     )
 
     expect_identical(
-        processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+        processed_gt[["_spanners"]]$spanner_label %>%
+            purrr::map_chr(as.character),
         c("span 1")
     )
 
@@ -1086,7 +1088,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c(
             "new_col_4",
             "new_col_1",
@@ -1099,7 +1102,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     )
 
     expect_identical(
-        processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+        processed_gt[["_spanners"]]$spanner_label %>%
+            purrr::map_chr(as.character),
         c("span 1")
     )
 
@@ -1164,7 +1168,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c(
             "new_col_4",
             "new_col_1",
@@ -1177,7 +1182,8 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     )
 
     expect_identical(
-        processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+        processed_gt[["_spanners"]]$spanner_label %>%
+            purrr::map_chr(as.character),
         c("new span name")
     )
 
@@ -1252,7 +1258,8 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c(
             "label",
             "renamed_A",
@@ -1269,7 +1276,8 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
     )
 
     expect_identical(
-        processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+        processed_gt[["_spanners"]]$spanner_label %>%
+            purrr::map_chr(as.character),
         c("A", "B", "C", "D", "A_", "B_")
     )
 
@@ -1369,7 +1377,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c(
             "group",
             "label",
@@ -1383,7 +1392,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     )
 
     expect_identical(
-        processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+        processed_gt[["_spanners"]]$spanner_label %>%
+            purrr::map_chr(as.character),
         c("cols 1,2", "column cols", "my cols")
     )
 
@@ -1472,7 +1482,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c(
             "group",
             "label",
@@ -1485,7 +1496,8 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
     )
 
     expect_identical(
-        processed_gt[["_spanners"]]$spanner_label %>% map_chr(as.character),
+        processed_gt[["_spanners"]]$spanner_label %>%
+            purrr::map_chr(as.character),
         c("cols 1,2", "column cols", "my cols")
     )
 
@@ -1756,7 +1768,8 @@ test_that("Build simple tfrmt with stub header", {
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
     expect_identical(
@@ -1809,7 +1822,8 @@ test_that("Build simple tfrmt with stub header", {
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c("label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
     expect_identical(
@@ -1870,7 +1884,8 @@ test_that("Build simple tfrmt with stub header", {
     })
 
     expect_identical(
-        processed_gt[["_boxhead"]]$column_label %>% map_chr(as.character),
+        processed_gt[["_boxhead"]]$column_label %>%
+            purrr::map_chr(as.character),
         c("grp1", "grp2", "label", "tst", "col3", "col1", "..tfrmt_row_grp_lbl")
     )
     expect_identical(
