@@ -39,6 +39,37 @@ check_frmt <- function(
     )
 }
 
+is_frmt_strict <- function(x) {
+    inherits(x, "frmt") && !is_frmt_combine(x) && !is_frmt_when(x)
+}
+
+# this is a stricter check - the input must be a frmt object and not a
+# `frmt_when` or `frmt_structure`
+check_frmt_strict <- function(
+    frmt,
+    arg = rlang::caller_arg(frmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt)) {
+        if (is_frmt_strict(frmt)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt,
+        "a <frmt> object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
 #' Is object a `frmt_combine`?
 #'
 #' @export
