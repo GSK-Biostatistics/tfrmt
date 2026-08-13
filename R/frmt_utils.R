@@ -1,6 +1,7 @@
-#' Check if input is a frmt
+#' Is object a `frmt`?
 #'
-#' @param x Object to check
+#' @param x An object to test.
+#'
 #' @export
 #' @examples
 #' x1 <- frmt("XXX.XX")
@@ -13,12 +14,36 @@ is_frmt <- function(x) {
     inherits(x, "frmt")
 }
 
-#' Check if input is a frmt_combine
+check_frmt <- function(
+    frmt,
+    arg = rlang::caller_arg(frmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt)) {
+        if (is_frmt(frmt)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt,
+        "a frmt object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `frmt_combine`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
-#' x2 <- frmt_combine("XXX %","XX,XXX")
+#' x2 <- frmt_combine("XXX %", "XX,XXX")
 #' is_frmt_combine(x2)
 #'
 #' @rdname frmt_utils
@@ -26,49 +51,153 @@ is_frmt_combine <- function(x) {
     inherits(x, "frmt_combine")
 }
 
-#' Check if input is a frmt_when
+check_frmt_combine <- function(
+    frmt_combine,
+    arg = rlang::caller_arg(frmt_combine),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt_combine)) {
+        if (is_frmt_combine(frmt_combine)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt_combine)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt_combine,
+        "a frmt combine object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `frmt_when`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
 #' x2 <- frmt_when(
-#' ">3" ~ frmt("(X.X%)"),
-#' "<=3" ~ frmt("Undetectable")
+#'     ">3" ~ frmt("(X.X%)"),
+#'     "<=3" ~ frmt("Undetectable")
 #' )
+#'
 #' is_frmt_when(x2)
 #'
 #' @rdname frmt_utils
 is_frmt_when <- function(x) {
     inherits(x, "frmt_when")
 }
-#' Check if input is a frmt_structure
+
+check_frmt_when <- function(
+    frmt_when,
+    arg = rlang::caller_arg(frmt_when),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt_when)) {
+        if (is_frmt_when(frmt_when)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt_when)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt_when,
+        "a frmt when object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `frmt_structure`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
 #' x3 <- frmt_structure(
-#'  group_val = c("group1"),
-#'  label_val = ".default",
-#' frmt("XXX")
+#'     group_val = c("group1"),
+#'     label_val = ".default",
+#'     frmt("XXX")
 #' )
-#'is_frmt_structure(x3)
+#'
+#' is_frmt_structure(x3)
 #'
 #' @rdname frmt_utils
 is_frmt_structure <- function(x) {
     inherits(x, "frmt_structure")
 }
 
-#' Check if input is a row_grp_structure
+check_frmt_structure <- function(
+    frmt_structure,
+    arg = rlang::caller_arg(frmt_structure),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt_structure)) {
+        if (is_frmt_structure(frmt_structure)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt_structure)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt_structure,
+        "a frmt structure object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `row_grp_structure`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
-#' x4 <- row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+#' x4 <- row_grp_structure(
+#'     group_val = c("A","C"),
+#'     element_block(post_space = "---")
+#' )
+#'
 #' is_row_grp_structure(x4)
 #'
 #' @rdname frmt_utils
 is_row_grp_structure <- function(x) {
     inherits(x, "row_grp_structure")
+}
+
+check_row_grp_structure <- function(
+    row_grp_structure,
+    arg = rlang::caller_arg(row_grp_structure),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(row_grp_structure)) {
+        if (is_row_grp_structure(row_grp_structure)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(row_grp_structure)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        row_grp_structure,
+        "a row group structure object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
 }
 
 #' @export
