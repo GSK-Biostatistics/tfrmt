@@ -225,7 +225,7 @@ apply_col_alignment_char <- function(col, align) {
         align <- paste(align, collapse = "|")
         align <- paste0("(?=[", align, "])")
         tbl_dat <- tibble::tibble(col = trimws(col)) %>%
-            separate(
+            tidyr::separate(
                 col,
                 c("add_left", "add_right"),
                 sep = align,
@@ -306,7 +306,7 @@ apply_col_alignment_pos <- function(col, align) {
     # this will be used to help us split the col by position
     col_with_pos <- col_with_align %>%
         dplyr::mutate(col_idx = dplyr::row_number()) %>%
-        separate(
+        tidyr::separate(
             "align",
             into = paste0("col_split_", 1:n_split_levs_max),
             sep = "(?<!\\\\)[\\|]",

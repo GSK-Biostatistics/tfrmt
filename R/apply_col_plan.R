@@ -402,13 +402,13 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
             subtraction_status = startsWith(.data$original, "-"),
             original = stringr::str_remove(.data$original, "^-")
         ) %>%
-        separate(
+        tidyr::separate(
             .data$original,
             into = column_names,
             sep = .tlang_delim,
             fill = "left"
         ) %>%
-        separate(
+        tidyr::separate(
             .data$new_name,
             into = paste0("__tfrmt_new_name__", column_names),
             sep = .tlang_delim,
