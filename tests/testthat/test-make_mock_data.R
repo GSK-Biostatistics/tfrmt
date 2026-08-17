@@ -273,7 +273,7 @@ test_that("Mock data contains all levels", {
 
 
 test_that("Check mock when value is missing", {
-    data <- crossing(
+    data <- tidyr::crossing(
         label = c(
             "Intent-To-Treat (ITT)",
             "Safety",
@@ -359,7 +359,7 @@ test_that("Test when no body_style or values is present", {
             dplyr::mutate(
                 val = "X.X"
             ) %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = c(spanner, columns),
                 names_sep = .tlang_delim,
                 values_from = val
