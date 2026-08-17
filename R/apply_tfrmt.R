@@ -379,7 +379,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 
 #' Pivot formatted values into a wide dataset
 #'
-#' @param data
+#' @param data A data.frame for pivoting.
 #'
 #' @return data pivoted wider
 #' @noRd
