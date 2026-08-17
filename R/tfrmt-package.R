@@ -4,11 +4,12 @@
 # `vars()` is a bit problematic since vars is deprecated (it originally came
 # from tidyselect and dplyr re-exports it, but it is no longer exported by
 # tidyselect)
+# starts_with() is also a bit problematic since tfrmt supports tidyselect
+# specification of selected columns, but the implementation did not keep up
+# with the subsequent tidyselect changes
 
 ## usethis namespace: start
 #' @importFrom dplyr vars
-#'
-#' @importFrom forcats fct_inorder
 #'
 #' @importFrom glue glue glue_collapse
 #'
