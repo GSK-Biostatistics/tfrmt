@@ -12,8 +12,6 @@
 #'
 #' @importFrom glue glue glue_collapse
 #'
-#' @importFrom jsonlite parse_json read_json toJSON validate
-#'
 #' @importFrom rlang .data := !! !!! %||%
 #'
 #' @importFrom stats as.formula setNames
