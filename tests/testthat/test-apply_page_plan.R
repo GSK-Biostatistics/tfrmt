@@ -474,7 +474,11 @@ test_that("Page plan with max_rows", {
         "C"  , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -570,7 +574,11 @@ test_that("Page plan with max_rows", {
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
@@ -1345,7 +1353,11 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         "B"  , "b"    , "n"  ,   55
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -1396,7 +1408,11 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         dplyr::mutate(
             grp = factor(grp, levels = c("A", "B", ""))
         ) %>% # Explicitly a factor
-        tidyr::pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -1433,7 +1449,11 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
         label = "lbl",

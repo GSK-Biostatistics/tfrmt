@@ -243,7 +243,7 @@ apply_page_struct <- function(
         )
 
         dat_split_1 <- .data %>%
-            nest(
+            tidyr::nest(
                 `..tfrmt_data` = tidyselect::everything(),
                 .by = tidyselect::all_of(grping)
             ) %>%
@@ -297,14 +297,14 @@ apply_page_struct <- function(
             )
         ) %>%
         dplyr::select(-"split_idx") %>%
-        unnest(cols = "..tfrmt_data")
+        tidyr::unnest(cols = "..tfrmt_data")
 
     # 3. create the page_notes as applicable
     if ("..tfrmt_split_num" %in% names(dat_split_2)) {
         # create the page_notes to be carried forward as names for now
         tbl_nms <- dat_split_2 %>%
             dplyr::select(-"..tfrmt_data") %>%
-            pivot_longer(
+            tidyr::pivot_longer(
                 cols = -"..tfrmt_split_num",
                 names_to = "grouping_col",
                 values_to = "grouping_val"
@@ -460,7 +460,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
                 ~ .x == !!label
             )
         ) %>%
-        pivot_longer(
+        tidyr::pivot_longer(
             purrr::map_chr(group, rlang::as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"

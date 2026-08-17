@@ -14,10 +14,18 @@
 #'
 #' @importFrom rlang .data := !! !!! %||%
 #'
-#' @importFrom tidyr crossing expand fill nest pivot_longer pivot_wider
-#' @importFrom tidyr replace_na separate unnest unnest_longer unite
-#'
 #' @importFrom tidyselect starts_with
 #'
 ## usethis namespace: end
 NULL
+
+#  global variables
+utils::globalVariables(
+    c(
+        "."
+    )
+)
+
+# shared variables
+.tlang_delim <- "___tlang_delim___"
+.tlang_struct_col_prefix <- "__tlang_span_structure_column__"
