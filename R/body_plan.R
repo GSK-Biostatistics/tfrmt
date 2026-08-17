@@ -98,9 +98,7 @@ body_plan_builder <- function(
                 }
             )
         ) %>%
-        unnest(
-            tidyselect::everything()
-        ) %>%
+        tidyr::unnest(tidyselect::everything()) %>%
         dplyr::mutate(
             frmt_string = purrr::map2_chr(
                 .data$sigdig,

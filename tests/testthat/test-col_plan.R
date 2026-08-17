@@ -951,7 +951,10 @@ test_that("Order is kept for multi-col columns", {
         dplyr::select(
             tidyselect::starts_with("col")
         ) %>%
-        unite("new", sep = .tlang_delim) %>%
+        tidyr::unite(
+            "new",
+            sep = .tlang_delim
+        ) %>%
         dplyr::pull(new)
 
     expect_identical(new_name_ord, new_name_ord_in_dat)
@@ -1571,7 +1574,7 @@ test_that("span_structure misc, including errors", {
 
 
 test_that("Tidyselect subtraction with span_structure", {
-    df <- crossing(
+    df <- tidyr::crossing(
         label = c("label 1", "label 2", "label 3"),
         column = c("trt1", "trt2", "pl", "trt1&trt2"),
         param = c("count", "percent")

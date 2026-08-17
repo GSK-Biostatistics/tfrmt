@@ -101,7 +101,7 @@ test_that("markdown column labels - spanning", {
         "Total"      , " "
     ) %>%
         # nolint end
-        crossing(
+        tidyr::crossing(
             col1 = c(
                 "Placebo (N=86)",
                 "Xanomeline Low Dose <br /> (N=84)",
@@ -250,13 +250,13 @@ test_that("column spanners and labels are appropriately aligned", {
     # get spanner labels
     spans <- gt_out$`_spanners` %>%
         dplyr::select(var = vars, spanner_label, spanner_level) %>%
-        unnest(
+        tidyr::unnest(
             tidyselect::everything()
         )
     # get lower labels
     lower <- gt_out$`_boxhead` %>%
         dplyr::select(var, column_label) %>%
-        unnest(
+        tidyr::unnest(
             tidyselect::everything()
         )
 

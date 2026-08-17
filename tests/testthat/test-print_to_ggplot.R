@@ -216,7 +216,7 @@ test_that("column type has been preserved", {
     )
 
     dfm <- df %>%
-        pivot_longer(January:December) %>%
+        tidyr::pivot_longer(January:December) %>%
         dplyr::rename("month" = name) %>%
         dplyr::mutate(
             month = substr(month, 1, 3)

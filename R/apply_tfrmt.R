@@ -377,7 +377,7 @@ remove_empty_layers <- function(x, nlayers = 1) {
 
 #' Pivot formatted values into a wide dataset
 #'
-#' @param data
+#' @param data A data.frame for pivoting.
 #'
 #' @return data pivoted wider
 #' @noRd
@@ -404,7 +404,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 unique() %>%
                 dplyr::group_by(
                     !!!tfrmt$group,
-                    param_list
+                    .data$param_list
                 ) %>%
                 dplyr::mutate(
                     label_quote = paste0('"', !!tfrmt$label, '"')
@@ -412,7 +412,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::reframe(
                     label_collapse = as.character(
                         paste(
-                            label_quote,
+                            .data$label_quote,
                             collapse = ","
                         )
                     ),
@@ -424,7 +424,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::mutate(
                     suggested_frmt_struct = frmt_struct_string(
                         grp = list(!!!tfrmt$group),
-                        lbl = label_collapse,
+                        lbl = .data$label_collapse,
                         param_vals = .data$param_list
                     )
                 ) %>%
@@ -459,7 +459,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ~ dplyr::na_if(.x, "")
             )
         ) %>%
-        purrr::quietly(pivot_wider)(
+        purrr::quietly(tidyr::pivot_wider)(
             names_from = c(
                 tidyselect::starts_with(
                     .tlang_struct_col_prefix
@@ -489,9 +489,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."
         )
         tbl_dat_wide <- tbl_dat_wide$result %>%
-            unnest(
-                cols = tidyselect::everything()
-            ) %>%
+            tidyr::unnest(cols = tidyselect::everything()) %>%
             clean_spanning_col_names()
     } else {
         tbl_dat_wide <- tbl_dat_wide$result %>%

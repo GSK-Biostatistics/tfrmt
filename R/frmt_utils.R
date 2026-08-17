@@ -397,7 +397,13 @@ frmt_builder <- function(param, frmt_string, missing = NULL) {
     purrr::map(
         frmt_string,
         function(x, missing_val) {
-            do.call(frmt, list(expression = x, missing = missing_val))
+            do.call(
+                frmt,
+                list(
+                    expression = x,
+                    missing = missing_val
+                )
+            )
         },
         missing_val = missing
     )
@@ -443,7 +449,7 @@ frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
         ~ list(param = .x %||% "", frmt = .y)
     )
 
-    crossing(frmt_vec_list, grp_lbl_list) %>%
+    tidyr::crossing(frmt_vec_list, grp_lbl_list) %>%
         purrr::pmap(function(frmt_vec_list, grp_lbl_list) {
             if (
                 is.list(grp_lbl_list$group_val) &&

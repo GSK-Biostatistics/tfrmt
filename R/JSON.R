@@ -58,7 +58,7 @@ as_json.tfrmt <- function(x) {
 
     # Converts list to a json object
     output_json <- out %>%
-        toJSON(pretty = TRUE, force = TRUE)
+        jsonlite::toJSON(pretty = TRUE, force = TRUE)
 
     # Removing names added in by jsonlite
     # only change spaces at the beginning of the row
@@ -70,7 +70,7 @@ as_json.tfrmt <- function(x) {
     json_split[to_replace] <- json_split[to_replace] %>%
         stringr::str_replace_all('\"\\s(\\.\\d+)?\"', '\"\"')
     json_clean <- stringr::str_c(json_split, collapse = "\n")
-    if (validate(json_clean)) {
+    if (jsonlite::validate(json_clean)) {
         class(json_clean) <- "json"
     } else {
         stop("Error when creating the json object")
@@ -208,9 +208,9 @@ as_json.page_plan <- function(x) {
 #' @export
 json_to_tfrmt <- function(path = NULL, json = NULL) {
     if (!is.null(json)) {
-        dirty_list <- parse_json(json)
+        dirty_list <- jsonlite::parse_json(json)
     } else if (!is.null(path)) {
-        dirty_list <- read_json(path)
+        dirty_list <- jsonlite::read_json(path)
     } else {
         stop("Path or json object needed")
     }
