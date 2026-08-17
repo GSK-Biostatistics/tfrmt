@@ -913,8 +913,6 @@ test_that("row order is retained for all selections", {
         col_plan = col_plan(-ord),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         )
@@ -1016,8 +1014,6 @@ test_that("row order is retained for all selections", {
         param = prm,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -1091,12 +1087,9 @@ test_that("Row group plans with col style plan", {
         param = param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx.xx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n (%)",
                 frmt_combine(
                     "{n} ({pct}%)",
@@ -1105,7 +1098,6 @@ test_that("Row group plans with col style plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "(q1, q3)",
                 frmt_combine(
                     "({q1}, {q3})",
@@ -1114,8 +1106,6 @@ test_that("Row group plans with col style plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 pval = frmt_when(
                     "<.001" ~ "<.001",
                     TRUE ~ frmt("x.xxx")
@@ -1201,12 +1191,9 @@ test_that("Row group plans with col style plan", {
         param = param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx.xx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n (%)",
                 frmt_combine(
                     "{n} ({pct}%)",
@@ -1215,7 +1202,6 @@ test_that("Row group plans with col style plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "(q1, q3)",
                 frmt_combine(
                     "({q1}, {q3})",
@@ -1224,8 +1210,6 @@ test_that("Row group plans with col style plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 pval = frmt_when(
                     "<.001" ~ "<.001",
                     TRUE ~ frmt("x.xxx")
@@ -1478,8 +1462,6 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
                 sorting_cols = c(ord1, ord2),
                 body_plan = body_plan(
                     frmt_structure(
-                        group_val = ".default",
-                        label_val = ".default",
                         frmt_combine(
                             "{n} {pct}",
                             n = frmt("XXX"),
@@ -1491,13 +1473,9 @@ test_that("Check row group plan in tfrmt - expect error when NA in label column"
                         )
                     ),
                     frmt_structure(
-                        group_val = ".default",
-                        label_val = ".default",
                         AEs = frmt("[XXX]")
                     ),
                     frmt_structure(
-                        group_val = ".default",
-                        label_val = ".default",
                         pval = frmt_when(
                             ">0.99" ~ ">0.99",
                             "<0.001" ~ "<0.001",

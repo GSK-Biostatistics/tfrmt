@@ -80,8 +80,6 @@
 #' # Set the formatting for values
 #'   body_plan = body_plan(
 #'     frmt_structure(
-#'       group_val = ".default",
-#'       label_val = ".default",
 #'       frmt_combine("{n} {pct}",
 #'            n = frmt("xxx"),
 #'            pct = frmt_when(
@@ -107,8 +105,6 @@
 #'   # specify value formatting
 #'   body_plan = body_plan(
 #'     frmt_structure(
-#'       group_val = ".default",
-#'       label_val = ".default",
 #'       frmt_combine("{n} {pct}",
 #'            n = frmt("xxx"),
 #'            pct = frmt_when(
@@ -119,27 +115,21 @@
 #'            )
 #'     ),
 #'     frmt_structure(
-#'         group_val = ".default",
 #'         label_val = "n",
 #'         frmt("xxx")
 #'    ),
 #'     frmt_structure(
-#'         group_val = ".default",
 #'         label_val = c("Mean", "Median", "Min","Max"),
 #'         frmt("xxx.x")
 #'      ),
 #'     frmt_structure(
-#'         group_val = ".default",
 #'         label_val = "SD",
 #'         frmt("xxx.xx")
 #'     ),
 #'     frmt_structure(
-#'         group_val = ".default",
-#'         label_val = ".default",
 #'         p = frmt("")
 #'     ),
 #'     frmt_structure(
-#'         group_val = ".default",
 #'         label_val = c("n","<65 yrs","<12 months","<25"),
 #'         p = frmt_when(
 #'             ">0.99" ~ ">0.99",

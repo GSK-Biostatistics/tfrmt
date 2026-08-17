@@ -23,8 +23,6 @@ test_that("Display row formats for tfrmt with <frmt>", {
 
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -92,12 +90,10 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
                 label_val = "label 1",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("label 2", "label 3"),
                 frmt_combine(
                     "{count} ({percent})",
@@ -169,12 +165,10 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
 
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
                 label_val = "label 1",
                 frmt("xx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "label 2",
                 frmt_combine(
                     "{median} ({sd})",
@@ -183,7 +177,6 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "label 3",
                 frmt_when(
                     ">0.99" ~ ">0.99",

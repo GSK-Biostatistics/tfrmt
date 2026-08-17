@@ -1232,8 +1232,6 @@ test_that("Build simple tfrmt with multiple columns and with renaming duplicated
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("XXXX")
             )
         ),
@@ -1605,8 +1603,6 @@ test_that("Tidyselect subtraction with span_structure", {
         # Specify body plan
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("XXX"),

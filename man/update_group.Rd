@@ -26,12 +26,13 @@ tfrmt_spec <- tfrmt(
     body_plan  = body_plan(
       frmt_structure(
          group_val = list(group2 = "value"),
-         label_val = ".default",
          frmt("XXX")
          ),
      frmt_structure(
-         group_val = list(group1 = "value", group2 = "value"),
-         label_val = ".default",
+         group_val = list(
+             group1 = "value",
+             group2 = "value"
+         ),
          frmt("XXX")
        )
     ))

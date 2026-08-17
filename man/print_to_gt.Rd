@@ -25,19 +25,24 @@ Print to gt
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{library(dplyr)
 # Create tfrmt specification
 tfrmt_spec <- tfrmt(
-  label = label,
-  column = column,
-  param = param,
-  value=value,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default",
-                   frmt_combine(
-                     "\{count\} \{percent\}",
-                     count = frmt("xxx"),
-                     percent = frmt_when("==100"~ frmt(""),
-                                         "==0"~ "",
-                                         "TRUE" ~ frmt("(xx.x\%)"))))
-  ))
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+        frmt_structure(
+            frmt_combine(
+                "\{count\} \{percent\}",
+                count = frmt("xxx"),
+                percent = frmt_when(
+                    "==100" ~ frmt(""),
+                    "==0" ~ "",
+                    "TRUE" ~ frmt("(xx.x\%)")
+                )
+            )
+        )
+    )
+)
 
 # Create data
 df <- tidyr::crossing(

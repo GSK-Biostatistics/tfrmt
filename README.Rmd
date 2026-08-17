@@ -4,8 +4,8 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -18,7 +18,7 @@ library(gt)
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml) 
+[![R-CMD-check](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/tfrmt/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/GSK-Biostatistics/tfrmt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/GSK-Biostatistics/tfrmt?branch=main)
 [![status: experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/tfrmt)](https://CRAN.R-project.org/package=tfrmt)
@@ -91,50 +91,76 @@ For more information about how to build your own tfrmt mocks/tables (like the on
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
 data_demog <- data_demog %>%
-  select(-value)
+    select(-value)
 tfrmt <- tfrmt(
-  # specify columns in the data
-  group = vars(rowlbl1,grp),
-  label = rowlbl2,
-  column = column,
-  param = param,
-  value = value,
-  sorting_cols = vars(ord1, ord2),
+    # specify columns in the data
+    group = vars(rowlbl1, grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = vars(ord1, ord2),
 
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} {pct}",
-                                                                                n = frmt("xxx"),
-                                                                                pct = frmt_when("==100" ~ "",
-                                                                                                "==0" ~ "",
-                                                                                                TRUE ~ frmt("(xx.x %)")))),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-    frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"), frmt("xxx.x")),
-    frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-    frmt_structure(group_val = ".default", label_val = ".default", p = frmt("")),
-    frmt_structure(group_val = ".default", label_val = c("n","<65 yrs","<12 months","<25"), p = frmt_when(">0.99" ~ ">0.99",
-                                                                                 "<0.001" ~ "<0.001",
-                                                                                 TRUE ~ frmt("x.xxx", missing = "")))
-  ),
+    # Specify body plan
+    body_plan = body_plan(
+        frmt_structure(
+            frmt_combine(
+                "{n} {pct}",
+                n = frmt("xxx"),
+                pct = frmt_when(
+                    "==100" ~ "",
+                    "==0" ~ "",
+                    TRUE ~ frmt("(xx.x %)")
+                )
+            )
+        ),
+        frmt_structure(
+            label_val = "n",
+            frmt("xxx")
+        ),
+        frmt_structure(
+            label_val = c("Mean", "Median", "Min", "Max"),
+            frmt("xxx.x")
+        ),
+        frmt_structure(
+            label_val = "SD",
+            frmt("xxx.xx")
+        ),
+        frmt_structure(
+            p = frmt("")
+        ),
+        frmt_structure(
+            label_val = c("n", "<65 yrs", "<12 months", "<25"),
+            p = frmt_when(
+                ">0.99" ~ ">0.99",
+                "<0.001" ~ "<0.001",
+                TRUE ~ frmt("x.xxx", missing = "")
+            )
+        )
+    ),
 
-  # Specify row group plan
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " ")),
-    label_loc = element_row_grp_loc(location = "column")
-  ),
+    # Specify row group plan
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block(post_space = " ")
+        ),
+        label_loc = element_row_grp_loc(location = "column")
+    ),
 
-  # Specify column style plan
-  col_style = col_style_plan(
-    col_style_structure(align = c(".",","," "), col = vars(everything()))
-  ),
+    # Specify column style plan
+    col_style = col_style_plan(
+        col_style_structure(align = c(".", ",", " "), col = vars(everything()))
+    ),
 
-  # remove extra cols
-  col_plan = col_plan(Placebo,
-                      starts_with("Xanom"),
-                      Total,
-                      -grp,
-                      -starts_with("ord")
-                      )
+    # remove extra cols
+    col_plan = col_plan(
+        Placebo,
+        starts_with("Xanom"),
+        Total,
+        -grp,
+        -starts_with("ord")
+    )
 )
 
 gt_out <- print_mock_gt(tfrmt, data_demog)
