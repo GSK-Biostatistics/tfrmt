@@ -94,9 +94,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     expand_cols <- c(expand_cols, tfrmt$param)
 
     output_dat <- all_frmt_vals %>%
-        tidyr::unnest(
-            tidyselect::everything()
-        ) %>%
+        tidyr::unnest(tidyselect::everything()) %>%
         dplyr::group_by(.data$frmt_num) %>%
         tidyr::expand(!!!expand_cols) %>%
         dplyr::ungroup() %>%
@@ -237,9 +235,7 @@ make_col_df <- function(
                     span_df <- x %>%
                         purrr::map(~ clean_col_names(., c())) %>%
                         purrr::reduce(tidyr::crossing) %>%
-                        tidyr::unnest(
-                            cols = tidyselect::everything()
-                        )
+                        tidyr::unnest(cols = tidyselect::everything())
                     names(span_df) <- names(x)
                     span_df
                 })

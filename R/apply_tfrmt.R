@@ -491,9 +491,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."
         )
         tbl_dat_wide <- tbl_dat_wide$result %>%
-            tidyr::unnest(
-                cols = tidyselect::everything()
-            ) %>%
+            tidyr::unnest(cols = tidyselect::everything()) %>%
             clean_spanning_col_names()
     } else {
         tbl_dat_wide <- tbl_dat_wide$result %>%

@@ -28,9 +28,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         dplyr::mutate(
             TEMP_fmt_rank = dplyr::row_number()
         ) %>%
-        tidyr::unnest(
-            cols = c(TEMP_appl_row)
-        ) %>%
+        tidyr::unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
         dplyr::arrange(
