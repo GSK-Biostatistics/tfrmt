@@ -297,7 +297,9 @@ apply_page_struct <- function(
             )
         ) %>%
         dplyr::select(-"split_idx") %>%
-        unnest(cols = "..tfrmt_data")
+        tidyr::unnest(
+            cols = "..tfrmt_data"
+        )
 
     # 3. create the page_notes as applicable
     if ("..tfrmt_split_num" %in% names(dat_split_2)) {

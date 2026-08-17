@@ -94,7 +94,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     expand_cols <- c(expand_cols, tfrmt$param)
 
     output_dat <- all_frmt_vals %>%
-        unnest(
+        tidyr::unnest(
             tidyselect::everything()
         ) %>%
         dplyr::group_by(.data$frmt_num) %>%
@@ -117,7 +117,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         dplyr::mutate(
             `__tfrmt__mock__columns` = list(col_def)
         ) %>%
-        unnest("__tfrmt__mock__columns") %>%
+        tidyr::unnest("__tfrmt__mock__columns") %>%
         #Add big N's
         add_mock_big_ns(
             column = tfrmt$column,
@@ -183,7 +183,7 @@ add_sorting_cols <- function(data, sorting_cols) {
             dplyr::mutate(
                 `__tfrmt__mock__sorting_col` = list(sorting_cols_def)
             ) %>%
-            unnest("__tfrmt__mock__sorting_col")
+            tidyr::unnest("__tfrmt__mock__sorting_col")
     }
     data
 }
@@ -237,7 +237,7 @@ make_col_df <- function(
                     span_df <- x %>%
                         purrr::map(~ clean_col_names(., c())) %>%
                         purrr::reduce(tidyr::crossing) %>%
-                        unnest(
+                        tidyr::unnest(
                             cols = tidyselect::everything()
                         )
                     names(span_df) <- names(x)

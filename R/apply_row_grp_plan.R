@@ -61,7 +61,7 @@ apply_row_grp_struct <- function(
             transform = unlist
         ) %>%
         # unnest to 1 rec per data row, to handle where chunk >1 row
-        unnest(TEMP_appl_row) %>%
+        tidyr::unnest(TEMP_appl_row) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         dplyr::arrange(
             TEMP_appl_row,
