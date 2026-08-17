@@ -476,7 +476,7 @@ format_gt_column_labels <- function(gt_table, .data) {
                 dplyr::desc(.data$name)
             ) %>%
             dplyr::group_by(.data$value) %>%
-            nest(set = "cols") %>%
+            tidyr::nest(set = "cols") %>%
             dplyr::mutate(
                 set = purrr::map(.data$set, ~ dplyr::pull(., .data$cols))
             ) %>%

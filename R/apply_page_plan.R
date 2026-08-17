@@ -243,7 +243,7 @@ apply_page_struct <- function(
         )
 
         dat_split_1 <- .data %>%
-            nest(
+            tidyr::nest(
                 `..tfrmt_data` = tidyselect::everything(),
                 .by = tidyselect::all_of(grping)
             ) %>%

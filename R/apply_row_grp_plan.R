@@ -78,7 +78,7 @@ apply_row_grp_struct <- function(
             .data$TEMP_chunk_num,
             .data$TEMP_block_to_apply
         ) %>%
-        nest()
+        tidyr::nest()
 
     # get max character width for each column in the full data
     dat_max_widths <- .data %>%
