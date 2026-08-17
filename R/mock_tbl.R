@@ -59,7 +59,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
         })
     ) %>%
         dplyr::mutate(
-            ..grp = replace_na(.data$..grp, ".default"),
+            ..grp = tidyr::replace_na(.data$..grp, ".default"),
             dplyr::across(
                 tidyselect::all_of(grp_vars),
                 ~ dplyr::coalesce(.x, .data$..grp)

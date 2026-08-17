@@ -237,7 +237,7 @@ apply_col_alignment_char <- function(col, align) {
                 dplyr::across(
                     c("add_left", "add_right"),
                     function(x) {
-                        replace_na(x, "") %>%
+                        tidyr::replace_na(x, "") %>%
                             nchar() %>%
                             {
                                 max(.) - .
@@ -384,7 +384,7 @@ apply_col_alignment_pos <- function(col, align) {
             to_add_left = ifelse(.data$no_space, "", .data$to_add_left),
             dplyr::across(
                 c("col_sub_1", "to_add_left", "col_sub_2"),
-                ~ replace_na(., "")
+                ~ tidyr::replace_na(., "")
             ),
             col_sub_out = stringr::str_c(
                 .data$col_sub_1,
