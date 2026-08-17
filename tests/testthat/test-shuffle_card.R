@@ -727,7 +727,7 @@ test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
     attr(ard_mismatch, "args")$by <- "ARM"
 
     # Capture the raw console text sent to the message/stderr stream
-    msg_output <- capture.output(
+    msg_output <- utils::capture.output(
         res_mismatch <- shuffle_card(ard_mismatch, by = "SEX"),
         type = "message"
     )

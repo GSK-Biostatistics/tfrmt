@@ -19,7 +19,5 @@
 #'
 #' @importFrom tidyselect starts_with
 #'
-#' @importFrom utils capture.output
-#'
 ## usethis namespace: end
 NULL
