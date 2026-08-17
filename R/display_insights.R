@@ -255,14 +255,8 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     )
 
     vec_prep <- tbl_dat_wide %>%
-        dplyr::select(
-            tidyselect::any_of(
-                col_selection
-            )
-        ) %>%
-        tidyr::pivot_longer(
-            tidyselect::everything()
-        ) %>%
+        dplyr::select(tidyselect::any_of(col_selection)) %>%
+        tidyr::pivot_longer(tidyselect::everything()) %>%
         dplyr::arrange(nchar(.data$value)) %>%
         dplyr::filter(!is.na(.data$value)) %>%
         dplyr::pull(.data$value) %>%
