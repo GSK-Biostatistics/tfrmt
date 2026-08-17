@@ -10,8 +10,6 @@
 #'
 #' @importFrom forcats fct_inorder
 #'
-#' @importFrom glue glue glue_collapse
-#'
 #' @importFrom rlang .data := !! !!! %||%
 #'
 #' @importFrom stats as.formula setNames

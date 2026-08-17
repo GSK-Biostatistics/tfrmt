@@ -283,7 +283,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::pull(.data$value) %>%
         unique() %>%
         paste0("\"", ., "\"") %>%
-        glue_collapse(sep = ",\n  ")
+        glue::glue_collapse(sep = ",\n  ")
 
-    glue("c({vec_prep})")
+    glue::glue("c({vec_prep})")
 }
