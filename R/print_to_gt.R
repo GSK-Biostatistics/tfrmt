@@ -466,7 +466,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::mutate(
                 cols = spanning
             ) %>%
-            pivot_longer(-"cols")
+            tidyr::pivot_longer(-"cols")
 
         lowest_lvl <- work_df %>% dplyr::filter(.data$name == max(.data$name))
 

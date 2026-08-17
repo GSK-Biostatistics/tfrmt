@@ -313,7 +313,7 @@ apply_col_alignment_pos <- function(col, align) {
             remove = FALSE,
             fill = "right"
         ) %>%
-        pivot_longer(
+        tidyr::pivot_longer(
             tidyselect::starts_with(
                 "col_split_"
             ),

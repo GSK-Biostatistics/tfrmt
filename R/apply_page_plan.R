@@ -304,7 +304,7 @@ apply_page_struct <- function(
         # create the page_notes to be carried forward as names for now
         tbl_nms <- dat_split_2 %>%
             dplyr::select(-"..tfrmt_data") %>%
-            pivot_longer(
+            tidyr::pivot_longer(
                 cols = -"..tfrmt_split_num",
                 names_to = "grouping_col",
                 values_to = "grouping_val"
@@ -460,7 +460,7 @@ add_summary_rows <- function(next_dat, prev_summ, group, label) {
                 ~ .x == !!label
             )
         ) %>%
-        pivot_longer(
+        tidyr::pivot_longer(
             purrr::map_chr(group, rlang::as_label),
             names_to = "..tfrmt_summ_grp_num",
             values_to = "..tfrmt_summ_row"

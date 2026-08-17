@@ -260,7 +260,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
                 col_selection
             )
         ) %>%
-        pivot_longer(
+        tidyr::pivot_longer(
             tidyselect::everything()
         ) %>%
         dplyr::arrange(nchar(.data$value)) %>%
