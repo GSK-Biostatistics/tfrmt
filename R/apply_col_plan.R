@@ -271,7 +271,7 @@ col_plan_span_structure_to_vars <- function(
     }
 
     ## create order df
-    ords <- do.call("crossing", col_selections) %>%
+    ords <- do.call(tidyr::crossing, col_selections) %>%
         dplyr::mutate(
             dplyr::across(
                 tidyselect::everything(),

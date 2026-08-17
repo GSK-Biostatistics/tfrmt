@@ -1571,7 +1571,7 @@ test_that("span_structure misc, including errors", {
 
 
 test_that("Tidyselect subtraction with span_structure", {
-    df <- crossing(
+    df <- tidyr::crossing(
         label = c("label 1", "label 2", "label 3"),
         column = c("trt1", "trt2", "pl", "trt1&trt2"),
         param = c("count", "percent")

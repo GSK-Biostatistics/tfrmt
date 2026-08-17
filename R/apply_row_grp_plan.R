@@ -208,7 +208,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
 
         # combine with original data
         dplyr::bind_rows(.data, grp_row_add) %>%
-            fill(!!!group) %>%
+            tidyr::fill(!!!group) %>%
             dplyr::mutate(
                 ..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0
             )

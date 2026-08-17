@@ -32,7 +32,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
     all_frmt_spec <- body_plan %>%
         purrr::map_dfr(
             function(x) {
-                crossing(
+                tidyr::crossing(
                     # if group_val is a named list, return as a tibble with list names as colnames
                     # otherwise (group_val = ".default") convert to tibble with colname "grp"
                     if (is.list(x$group_val)) {
@@ -98,7 +98,7 @@ make_mock_data <- function(tfrmt, .default = 1:3, n_cols = NULL) {
             tidyselect::everything()
         ) %>%
         dplyr::group_by(.data$frmt_num) %>%
-        expand(!!!expand_cols) %>%
+        tidyr::expand(!!!expand_cols) %>%
         dplyr::ungroup() %>%
         add_sorting_cols(tfrmt$sorting_cols)
 
@@ -236,7 +236,7 @@ make_col_df <- function(
                 purrr::map_dfr(function(x) {
                     span_df <- x %>%
                         purrr::map(~ clean_col_names(., c())) %>%
-                        purrr::reduce(crossing) %>%
+                        purrr::reduce(tidyr::crossing) %>%
                         unnest(
                             cols = tidyselect::everything()
                         )

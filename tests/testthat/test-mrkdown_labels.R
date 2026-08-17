@@ -101,7 +101,7 @@ test_that("markdown column labels - spanning", {
         "Total"      , " "
     ) %>%
         # nolint end
-        crossing(
+        tidyr::crossing(
             col1 = c(
                 "Placebo (N=86)",
                 "Xanomeline Low Dose <br /> (N=84)",
