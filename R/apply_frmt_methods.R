@@ -225,7 +225,7 @@ apply_frmt.frmt_combine <- function(
 
     missing_param_replacements <-
         purrr::map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
-        setNames(fmt_param_vals) %>%
+        stats::setNames(fmt_param_vals) %>%
         purrr::discard(is.null)
 
     if (length(missing_param_replacements) > 0) {

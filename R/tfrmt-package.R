@@ -14,8 +14,6 @@
 #'
 #' @importFrom rlang .data := !! !!! %||%
 #'
-#' @importFrom stats as.formula setNames
-#'
 #' @importFrom tidyr crossing expand fill nest pivot_longer pivot_wider
 #' @importFrom tidyr replace_na separate unnest unnest_longer unite
 #'

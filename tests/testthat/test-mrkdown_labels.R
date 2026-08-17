@@ -274,7 +274,7 @@ test_that("column spanners and labels are appropriately aligned", {
             values_from = spanner_label
         ) %>%
         dplyr::select(-var) %>%
-        setNames(chr_cols)
+        stats::setNames(chr_cols)
 
     # original data - keep tfrmt spec cols
     orig_cols <- dat %>%
