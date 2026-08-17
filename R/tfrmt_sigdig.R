@@ -312,7 +312,7 @@ tfrmt_sigdig <- function(
 
     if (length(groups_in_data) > 0) {
         data_ord <- sigdig_df %>%
-            unite(
+            tidyr::unite(
                 "def_ord",
                 tidyselect::all_of(groups_in_data),
                 remove = FALSE

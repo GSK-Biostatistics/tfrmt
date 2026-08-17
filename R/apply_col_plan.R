@@ -436,7 +436,7 @@ unite_df_to_data_names <- function(
     return_only_selected = FALSE
 ) {
     new_preselected_cols_full <- split_data_names %>%
-        unite(
+        tidyr::unite(
             "original",
             -c(
                 tidyselect::starts_with(
@@ -446,7 +446,7 @@ unite_df_to_data_names <- function(
             ),
             sep = .tlang_delim
         ) %>%
-        unite(
+        tidyr::unite(
             "new_name",
             tidyselect::starts_with("__tfrmt_new_name__"),
             sep = .tlang_delim

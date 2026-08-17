@@ -18,8 +18,6 @@
 #'
 #' @importFrom stats as.formula setNames
 #'
-#' @importFrom tidyr unite
-#'
 #' @importFrom tidyselect starts_with
 #'
 #' @importFrom utils capture.output
