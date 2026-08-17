@@ -59,13 +59,15 @@ a stylized gt object
 ![Simple 3 by 3 table without
 values](https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt1.png)
 
-      # Create mock data
-      df <- tidyr::crossing(label = c("label 1", "label 2",
-      "label 3"), column = c("placebo", "trt1", "trt2"), param = c("count",
-      "percent"))
+    # Create mock data
+    df <- tidyr::crossing(
+        label = c("label 1", "label 2", "label 3"),
+        column = c("placebo", "trt1", "trt2"),
+        param = c("count", "percent")
+    )
 
-      # Print mock table using mock data
-      print_mock_gt(tfrmt_spec, df)
+    # Print mock table using mock data
+    print_mock_gt(tfrmt_spec, df)
 
 ![Simple 3 by 3 table without values, but with column
 names](https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png)
