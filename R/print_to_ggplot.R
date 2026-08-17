@@ -116,7 +116,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     if ("..tfrmt_row_grp_lbl" %in% names(.data)) {
         # reshape data for ggplot
         long_data <- .data %>%
-            pivot_longer(
+            tidyr::pivot_longer(
                 -c(rlang::as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
                 names_to = "column",
                 values_to = "value"
@@ -130,7 +130,7 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
             )
     } else {
         long_data <- .data %>%
-            pivot_longer(
+            tidyr::pivot_longer(
                 -c(rlang::as_label(tfrmt$label), "y"),
                 names_to = "column",
                 values_to = "value"

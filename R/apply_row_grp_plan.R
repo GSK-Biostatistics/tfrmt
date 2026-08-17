@@ -55,13 +55,13 @@ apply_row_grp_struct <- function(
             TEMP_block_rank = dplyr::row_number()
         ) %>%
         # unnest to 1 rec per data chunk
-        unnest_longer(
+        tidyr::unnest_longer(
             TEMP_appl_row,
             indices_to = "TEMP_chunk_num",
             transform = unlist
         ) %>%
         # unnest to 1 rec per data row, to handle where chunk >1 row
-        unnest(TEMP_appl_row) %>%
+        tidyr::unnest(TEMP_appl_row) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         dplyr::arrange(
             TEMP_appl_row,
@@ -78,7 +78,7 @@ apply_row_grp_struct <- function(
             .data$TEMP_chunk_num,
             .data$TEMP_block_to_apply
         ) %>%
-        nest()
+        tidyr::nest()
 
     # get max character width for each column in the full data
     dat_max_widths <- .data %>%
@@ -208,7 +208,7 @@ apply_grp_block <- function(.data, group, element_block, widths) {
 
         # combine with original data
         dplyr::bind_rows(.data, grp_row_add) %>%
-            fill(!!!group) %>%
+            tidyr::fill(!!!group) %>%
             dplyr::mutate(
                 ..tfrmt_post_space_row = .data$TEMP_row %% 1 != 0
             )

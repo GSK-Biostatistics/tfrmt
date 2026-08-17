@@ -215,7 +215,7 @@ apply_frmt.frmt_combine <- function(
 
     .tmp_data_wide <- .tmp_data %>%
         dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             values_from = !!value,
             names_from = !!param
         ) %>%
@@ -231,7 +231,7 @@ apply_frmt.frmt_combine <- function(
     if (length(missing_param_replacements) > 0) {
         ## after .is_all_missing so that can be tabulated first
         .tmp_data_wide <- .tmp_data_wide %>%
-            replace_na(missing_param_replacements)
+            tidyr::replace_na(missing_param_replacements)
     }
 
     # check that pivot_wider resulted in a reduction of rows, which indicates that at least
@@ -346,7 +346,10 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (is.null(frmt_def$missing)) {
             out <- out
         } else if (!is.null(frmt_def$missing)) {
-            out <- out %>% replace_na(replace = frmt_def$missing)
+            out <- tidyr::replace_na(
+                out,
+                replace = frmt_def$missing
+            )
         }
 
         out <- .data %>%
