@@ -441,7 +441,7 @@ test_that("Test body_plan missing", {
             dplyr::mutate(
                 val = as.character(val)
             ) %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = val
             ),

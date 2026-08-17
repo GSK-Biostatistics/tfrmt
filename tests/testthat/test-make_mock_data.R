@@ -359,7 +359,7 @@ test_that("Test when no body_style or values is present", {
             dplyr::mutate(
                 val = "X.X"
             ) %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = c(spanner, columns),
                 names_sep = .tlang_delim,
                 values_from = val

@@ -461,7 +461,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ~ dplyr::na_if(.x, "")
             )
         ) %>%
-        purrr::quietly(pivot_wider)(
+        purrr::quietly(tidyr::pivot_wider)(
             names_from = c(
                 tidyselect::starts_with(
                     .tlang_struct_col_prefix

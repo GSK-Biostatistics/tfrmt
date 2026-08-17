@@ -215,7 +215,7 @@ apply_frmt.frmt_combine <- function(
 
     .tmp_data_wide <- .tmp_data %>%
         dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             values_from = !!value,
             names_from = !!param
         ) %>%
