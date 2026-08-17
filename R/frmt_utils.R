@@ -237,7 +237,13 @@ frmt_builder <- function(param, frmt_string, missing = NULL) {
     purrr::map(
         frmt_string,
         function(x, missing_val) {
-            do.call(frmt, list(expression = x, missing = missing_val))
+            do.call(
+                frmt,
+                list(
+                    expression = x,
+                    missing = missing_val
+                )
+            )
         },
         missing_val = missing
     )
