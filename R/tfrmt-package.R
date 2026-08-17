@@ -18,7 +18,7 @@
 #'
 #' @importFrom stats as.formula setNames
 #'
-#' @importFrom tidyr unnest_longer unite
+#' @importFrom tidyr unite
 #'
 #' @importFrom tidyselect starts_with
 #'

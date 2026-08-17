@@ -55,7 +55,7 @@ apply_row_grp_struct <- function(
             TEMP_block_rank = dplyr::row_number()
         ) %>%
         # unnest to 1 rec per data chunk
-        unnest_longer(
+        tidyr::unnest_longer(
             TEMP_appl_row,
             indices_to = "TEMP_chunk_num",
             transform = unlist
