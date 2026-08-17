@@ -12,8 +12,6 @@
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom glue glue glue_collapse
-#'
 #' @importFrom rlang .data := !! !!! %||%
 #'
 #' @importFrom tidyselect starts_with
