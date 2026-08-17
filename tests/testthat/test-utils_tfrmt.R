@@ -1,6 +1,6 @@
 set.seed(1234)
 
-raw_data_cat <- crossing(
+raw_data_cat <- tidyr::crossing(
     group = "A",
     label = c("w", "x", "y", "z"),
     col = paste("Var", 1:4),
@@ -17,7 +17,7 @@ raw_data_cat <- crossing(
         )
     )
 
-raw_data_cont <- crossing(
+raw_data_cont <- tidyr::crossing(
     group = "B",
     label = c("w", "i", "j", "k"),
     col = paste("Var", 1:4),
@@ -369,7 +369,7 @@ test_that("Check apply_tfrmt for mock data", {
     )
 
     test_dat <- mock_dat %>%
-        quietly(apply_tfrmt)(plan, mock = TRUE) %>%
+        purrr::quietly(apply_tfrmt)(plan, mock = TRUE) %>%
         .[["result"]]
 
     expect_equal(
@@ -397,7 +397,7 @@ test_that("Check apply_tfrmt for mock data", {
 })
 
 test_that("Test body_plan missing", {
-    input_data <- tibble(
+    input_data <- tibble::tibble(
         group = "groupvar",
         label = paste0("label", 1:10),
         param = "params",
@@ -427,7 +427,7 @@ test_that("Test body_plan missing", {
             dplyr::mutate(
                 val = as.character(val)
             ) %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = val
             ),

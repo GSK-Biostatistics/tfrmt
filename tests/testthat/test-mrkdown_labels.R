@@ -1,5 +1,5 @@
 test_that("markdown column labels - no spanning", {
-    mock_data <- tibble(
+    mock_data <- tibble::tibble(
         rowlbl1 = c(
             rep("Completion Status", 12),
             rep("Primary reason for withdrawal", 28)
@@ -60,7 +60,9 @@ test_that("markdown column labels - no spanning", {
         )
     ) %>%
         print_to_gt(mock_data) %>%
-        tab_options(container.width = 1000)
+        gt::tab_options(
+            container.width = 1000
+        )
 
     # test that format of column headers is markdown
     expect_identical(
@@ -97,7 +99,7 @@ test_that("markdown column labels - spanning", {
         "Total"      , " "
     ) %>%
         # nolint end
-        crossing(
+        tidyr::crossing(
             col1 = c(
                 "Placebo (N=86)",
                 "Xanomeline Low Dose <br /> (N=84)",
@@ -240,18 +242,20 @@ test_that("column spanners and labels are appropriately aligned", {
     # get spanner labels
     spans <- gt_out$`_spanners` %>%
         dplyr::select(var = vars, spanner_label, spanner_level) %>%
-        unnest(
+        tidyr::unnest(
             tidyselect::everything()
         )
     # get lower labels
     lower <- gt_out$`_boxhead` %>%
         dplyr::select(var, column_label) %>%
-        unnest(
+        tidyr::unnest(
             tidyselect::everything()
         )
 
     # get tfrmt cols from spec
-    chr_cols <- map_chr(tfrmt_spec$column, as_name) %>% rev()
+    chr_cols <- tfrmt_spec$column |>
+        purrr::map_chr(rlang::as_name) |>
+        rev()
 
     # combine spanner & lower labels and rename as per tfrmt spec
     gt_cols <- dplyr::full_join(lower, spans, by = "var", multiple = "all") %>%

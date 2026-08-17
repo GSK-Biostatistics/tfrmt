@@ -102,24 +102,24 @@ col_style_structure <- function(
     width = NULL,
     ...
 ) {
-    check_dots_empty0(...)
+    rlang::check_dots_empty0(...)
 
     type <- match.arg(type)
 
     if (missing(col)) {
-        abort(
+        rlang::abort(
             "Column element is missing from col_style_structure. Note: col here refers to the values within the column variable in your data, rather than the variable name itself",
             class = "missing_col_style_structure_value"
         )
     }
 
     cols <- as.list(substitute(substitute(col)))[-1] %>%
-        map(trim_vars_quo_c) %>%
+        purrr::map(trim_vars_quo_c) %>%
         do.call("c", .) %>%
         check_col_plan_dots()
 
     if (is.null(width) && is.null(align)) {
-        abort(
+        rlang::abort(
             "`align` or `width` must be applied to create this col_style_structure",
             class = "missing_col_style_structure_value"
         )
@@ -128,7 +128,7 @@ col_style_structure <- function(
     if (!is.null(align)) {
         if (type == "char") {
             if (!is.character(align) && length(align) > 0) {
-                abort(
+                rlang::abort(
                     "`align` must be a character vector",
                     class = "invalid_col_style_structure_value"
                 )
@@ -139,10 +139,10 @@ col_style_structure <- function(
                     message(
                         "Alignment specified contains strings with >1 characters. Only the first character will be used."
                     )
-                    align <- str_sub(align, start = 1, end = 1)
+                    align <- stringr::str_sub(align, start = 1, end = 1)
                 }
 
-                if (any(str_detect(align, "[[:alnum:]]"))) {
+                if (any(stringr::str_detect(align, "[[:alnum:]]"))) {
                     message(
                         "Alignment specified contains one or more alphanumeric characters. Results may not be as expected."
                     )
@@ -155,14 +155,14 @@ col_style_structure <- function(
         if (is.character(width)) {
             suppressWarnings(width <- as.numeric(width))
             if (is.na(width)) {
-                abort(
+                rlang::abort(
                     "`width` must be a value that can be converted into a number greater than 0",
                     class = "invalid_col_style_structure_value"
                 )
             }
         }
         if (any(!is.numeric(width), width < 1, length(width) > 1)) {
-            abort(
+            rlang::abort(
                 "`width` must be a valid number greater than 0",
                 class = "invalid_col_style_structure_value"
             )

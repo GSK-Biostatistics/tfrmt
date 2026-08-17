@@ -28,11 +28,12 @@ apply_table_frmt_plan <- function(
         )
 
     TEMP_appl_row <- table_frmt_plan %>%
-        map(fmt_test_data, .data, label, group, param)
+        purrr::map(fmt_test_data, .data, label, group, param)
 
-    TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
+    TEMP_fmt_to_apply <- table_frmt_plan %>%
+        purrr::map(~ .$frmt_to_apply[[1]])
 
-    dat_plus_fmt <- tibble(
+    dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,
         TEMP_fmt_to_apply
     ) %>%
@@ -40,7 +41,7 @@ apply_table_frmt_plan <- function(
         dplyr::mutate(
             TEMP_fmt_rank = dplyr::row_number()
         ) %>%
-        unnest(cols = c(TEMP_appl_row)) %>%
+        tidyr::unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
         dplyr::arrange(
@@ -58,7 +59,7 @@ apply_table_frmt_plan <- function(
 
     ## apply formatting
     dat_plus_fmt %>%
-        map_dfr(function(x) {
+        purrr::map_dfr(function(x) {
             cur_fmt <- x %>%
                 dplyr::pull(.data$TEMP_fmt_to_apply) %>%
                 .[1] %>%
@@ -129,7 +130,7 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
         c(lbl_expr, grp_expr, parm_expr),
         collapse = "&"
     ) %>%
-        parse_expr()
+        rlang::parse_expr()
 
     out <- .data %>%
         dplyr::filter(!!filter_expr)
@@ -141,15 +142,15 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
             dplyr::distinct() %>%
             dplyr::group_by(!!!group, !!label) %>%
             dplyr::mutate(
-                test = sum(!!parse_expr(parm_expr))
+                test = sum(!!rlang::parse_expr(parm_expr))
             ) %>%
             dplyr::filter(
                 .data$test == length(cur_fmt$frmt_to_apply[[1]]$frmt_ls)
             ) %>%
             dplyr::ungroup()
         join_by <- c(group, label, param) %>%
-            map_chr(as_label) %>%
-            keep(~ . != "<empty>")
+            purrr::map_chr(rlang::as_label) %>%
+            purrr::keep(~ . != "<empty>")
 
         out <- complet_combo_grps %>%
             dplyr::left_join(
@@ -164,8 +165,8 @@ fmt_test_data <- function(cur_fmt, .data, label, group, param) {
 
 all_missing <- function(cols, .data) {
     paste0("is.na(.data$", cols, ")", collapse = " & ") %>%
-        parse_expr() %>%
-        eval_bare(env = environment())
+        rlang::parse_expr() %>%
+        rlang::eval_bare(env = environment())
 }
 
 

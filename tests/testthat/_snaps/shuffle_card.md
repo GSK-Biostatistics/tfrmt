@@ -114,7 +114,7 @@
     Code
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
       by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns(
-        "mean")), dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
+        "mean")), tibble::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
         stat_label = "p", stat = list(0.05))), dplyr::row_number() <= 5L))
     Message
       The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
@@ -133,9 +133,9 @@
 
     Code
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
-      variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")), dplyr::tibble(
-        group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(
-          0.05))), dplyr::row_number() <= 5L), by = "ARM")
+      variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")),
+      tibble::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p",
+        stat = list(0.05))), dplyr::row_number() <= 5L), by = "ARM")
     Output
       # A tibble: 2 x 7
         ARM         AGE         context    stat_variable stat_name stat_label  stat

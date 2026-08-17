@@ -161,9 +161,9 @@
 tfrmt <- function(
     tfrmt_obj,
     group = vars(),
-    label = quo(),
-    param = quo(),
-    value = quo(),
+    label = rlang::quo(),
+    param = rlang::quo(),
+    value = rlang::quo(),
     column = vars(),
     title,
     subtitle,
@@ -180,7 +180,7 @@ tfrmt <- function(
     tfrmt_el <- tfrmt_find_args(
         ...,
         env = environment(),
-        parent_env = caller_env()
+        parent_env = rlang::caller_env()
     )
 
     new_tfrmt <- structure(
@@ -274,20 +274,22 @@ quo_get <- function(
             ## args not defined can quietly return empty expressions.
             return(quote(expr = ))
         } else {
-            if (identical(arg_call, quo()) || identical(arg_call, vars())) {
+            if (
+                identical(arg_call, rlang::quo()) || identical(arg_call, vars())
+            ) {
                 return(arg_call)
             }
 
             # don't try to eval quosures if it is intended to be a quosure
-            if (is_quosure(arg_call) && arg %in% c(as_quo_args)) {
+            if (rlang::is_quosure(arg_call) && arg %in% c(as_quo_args)) {
                 arg_call_results <- list(result = arg_call, error = NULL)
             } else {
                 # try to safely evaluate arg call
-                arg_call_results_envir <- safely(eval_tidy)(
+                arg_call_results_envir <- purrr::safely(rlang::eval_tidy)(
                     arg_call,
                     env = envir
                 )
-                arg_call_results_parent_env <- safely(eval_tidy)(
+                arg_call_results_parent_env <- purrr::safely(rlang::eval_tidy)(
                     arg_call,
                     env = parent_env
                 )
@@ -311,10 +313,12 @@ quo_get <- function(
                         if (arg %in% as_var_args) {
                             return(as_vars(arg_call_results$result))
                         } else {
-                            return(as_length_one_quo(
-                                arg_call_results$result,
-                                arg = as.character(arg)
-                            ))
+                            return(
+                                as_length_one_quo(
+                                    arg_call_results$result,
+                                    arg = as.character(arg)
+                                )
+                            )
                         }
                     }
                 } else {
@@ -330,9 +334,9 @@ quo_get <- function(
                 arg_call <- trim_vars_quo_c(arg_call)
 
                 ## check if argcall is tidyselect call, give feedback that is invalid if so
-                if (any(map_lgl(arg_call, is_valid_tidyselect_call))) {
+                if (any(purrr::map_lgl(arg_call, is_valid_tidyselect_call))) {
                     if (!allow_tidy_select) {
-                        abort(
+                        rlang::abort(
                             message = "Tidyselect selection helpers are not acceptable to use in this context. Please provide a specific column to use.",
                             class = "invalid_tidyselect_use"
                         )
@@ -355,14 +359,14 @@ quo_get <- function(
 
                 return(arg_val)
             } else {
-                abort(
+                rlang::abort(
                     paste0(
                         "Error in evaluating argument `",
                         arg,
                         "`:\n",
                         paste0(" ", arg_call_results$error, collapse = "")
                     ),
-                    call = frame_call(frame = envir)
+                    call = rlang::frame_call(frame = envir)
                 )
             }
         }
@@ -384,7 +388,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
             ")"
         )
 
-        abort(
+        rlang::abort(
             paste0(
                 "Entries for `",
                 arg,
@@ -402,7 +406,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
 
 trim_vars_quo_c <- function(x) {
     x_list <- as.list(x)
-    if (as.character(x_list[[1]]) %in% c("c", "quo", "vars")) {
+    if (as.character(x_list[[1]]) %in% c("c", "quo", "rlang::quo", "vars")) {
         x_list[-1]
     } else {
         list(x)
@@ -410,7 +414,7 @@ trim_vars_quo_c <- function(x) {
 }
 
 is_basic_list <- function(x) {
-    is.list(x) & !is_quosures(x)
+    is.list(x) & !rlang::is_quosures(x)
 }
 
 is_missing <- function(x) {
@@ -431,10 +435,10 @@ as_length_one_quo.quosure <- function(x, ...) {
 #' @keywords internal
 as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
     if (length(x) == 0) {
-        quo()
+        rlang::quo()
     } else {
         if (length(x) > 1) {
-            warn(
+            rlang::warn(
                 paste0(
                     "Passed more than one quosure to the argument `",
                     arg,
@@ -450,7 +454,7 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
 #' @export
 #' @keywords internal
 as_length_one_quo.character <- function(x, ...) {
-    quo(!!sym(x))
+    rlang::quo(!!rlang::sym(x))
 }
 
 as_vars <- function(x) {
@@ -475,7 +479,7 @@ as_vars.character <- function(x) {
     do.call(
         vars,
         lapply(x, function(x) {
-            quo(!!sym(x))
+            rlang::quo(!!rlang::sym(x))
         })
     )
 }
@@ -502,5 +506,9 @@ compare_dot_args_against_formals <- function(dot_arg, formals) {
             "`?"
         )
     }
-    inform(arg_message, class = "tfrmt_unrecognized_argument_inform")
+
+    rlang::inform(
+        arg_message,
+        class = "tfrmt_unrecognized_argument_inform"
+    )
 }

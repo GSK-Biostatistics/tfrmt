@@ -72,7 +72,7 @@ test_that("tfrmt_n_pct", {
     )
     expect_identical(
         tfrmt_n_pct(tfrmt_obj = test)$column[[1]] %>%
-            as_label(),
+            rlang::as_label(),
         "column"
     )
 

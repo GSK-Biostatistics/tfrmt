@@ -61,7 +61,7 @@ test_that("shuffle/trim works", {
     # only numeric stats
     expect_type(ard_shuff_trim$stat, "double")
     # no list columns
-    expect_false(any(map_lgl(ard_shuff_trim, is.list)))
+    expect_false(any(purrr::map_lgl(ard_shuff_trim, is.list)))
 })
 
 test_that("shuffle_card notifies user about warnings/errors before dropping", {
@@ -83,7 +83,7 @@ test_that("shuffle_card message if bind_ard is used without a supplied by argume
             variables = "AGE",
             statistic = ~ cards::continuous_summary_fns("mean")
         ),
-        dplyr::tibble(
+        tibble::tibble(
             group1 = "ARM",
             variable = "AGE",
             stat_name = "p",
@@ -109,7 +109,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 variables = "AGE",
                 statistic = ~ cards::continuous_summary_fns("mean")
             ),
-            dplyr::tibble(
+            tibble::tibble(
                 group1 = "ARM",
                 variable = "AGE",
                 stat_name = "p",
@@ -131,7 +131,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 variables = "AGE",
                 statistic = ~ cards::continuous_summary_fns("mean")
             ),
-            dplyr::tibble(
+            tibble::tibble(
                 group1 = "ARM",
                 variable = "AGE",
                 stat_name = "p",
@@ -148,13 +148,27 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
     # mix of group variables - fills overall only if variable has been calculated by group elsewhere
     expect_snapshot(
         cards::bind_ard(
-            cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                by = ARM,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_categorical(cards::ADSL, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                by = SEX,
+                variables = AGE
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                variables = AGE
+            ) |>
                 dplyr::slice(1)
         ) |>
             shuffle_card(by = c("ARM", "SEX")) |>
@@ -163,13 +177,27 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
     # custom fill
     expect_snapshot(
         cards::bind_ard(
-            cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                by = ARM,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_categorical(cards::ADSL, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                by = SEX,
+                variables = AGE
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                variables = AGE
+            ) |>
                 dplyr::slice(1)
         ) |>
             shuffle_card(by = c("ARM", "SEX"), fill_overall = "{colname}") |>
@@ -500,7 +528,7 @@ test_that("shuffle_card() fills with multiple `by` columns", {
 })
 
 test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
-    test_data <- dplyr::tibble(
+    test_data <- tibble::tibble(
         ARM = c("..cards_overall..", "Overall ARM", NA, "BB", NA),
         TRTA = c(NA, NA, "..hierarchical_overall..", "C", "C")
     )

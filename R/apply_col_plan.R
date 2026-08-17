@@ -1,6 +1,6 @@
 apply_col_plan <- function(data, col_selection, grp_lbl) {
     if (is.character(col_selection)) {
-        quo_col_selections <- map(col_selection, ~ char_as_quo(.x))
+        quo_col_selections <- purrr::map(col_selection, ~ char_as_quo(.x))
         col_selection <- do.call(vars, quo_col_selections)
     }
 
@@ -24,9 +24,9 @@ create_stub_head <- function(
     row_grp_plan_label_loc
 ) {
     # all group/label vars
-    grps <- map_chr(c(group, label), as_label)
+    grps <- purrr::map_chr(c(group, label), rlang::as_label)
     # all column labels
-    col_plan_vars_chr <- map_chr(col_plan_vars, as_label)
+    col_plan_vars_chr <- purrr::map_chr(col_plan_vars, rlang::as_label)
 
     stub <- ""
     # subset the column labels to just group/label vars
@@ -56,11 +56,11 @@ create_col_order <- function(data_names, columns, cp) {
     if (is.null(cp)) {
         col_selections <- data_names
     } else {
-        if (is_empty(columns)) {
+        if (rlang::is_empty(columns)) {
             # create placeholder
             column_names <- "col"
         } else {
-            column_names <- map_chr(columns, as_label)
+            column_names <- purrr::map_chr(columns, rlang::as_label)
         }
 
         col_selections <- c()
@@ -95,7 +95,7 @@ create_col_order <- function(data_names, columns, cp) {
         }
     }
 
-    quo_col_selections <- map(col_selections, ~ char_as_quo(.x))
+    quo_col_selections <- purrr::map(col_selections, ~ char_as_quo(.x))
 
     do.call(vars, quo_col_selections)
 }
@@ -116,8 +116,10 @@ col_plan_quo_to_vars <- function(
     )
 
     col_id <- column_names[length(column_names)]
-    col_quo <- quo(!!sym(col_id))
-    col_name_quo <- quo(!!sym(paste0("__tfrmt_new_name__", col_id)))
+    col_quo <- rlang::quo(!!rlang::sym(col_id))
+    col_name_quo <- rlang::quo(
+        !!rlang::sym(paste0("__tfrmt_new_name__", col_id))
+    )
 
     ## only apply tidyselect to _bottom_ column
     data_names_tmp <- split_data_names[[col_id]]
@@ -130,7 +132,7 @@ col_plan_quo_to_vars <- function(
     )
 
     ## if is subtraction, inverse selection to get subtracted columns and prepend with -
-    if (startsWith(as_label(x[[1]]), "-")) {
+    if (startsWith(rlang::as_label(x[[1]]), "-")) {
         split_data_names <- split_data_names %>%
             dplyr::filter(!(!!col_quo %in% selected)) %>%
             dplyr::mutate(
@@ -144,17 +146,19 @@ col_plan_quo_to_vars <- function(
             rename_val <- names(x)
 
             if (
-                is_valid_tidyselect_call(quo_get_expr(x[[1]])) &&
+                is_valid_tidyselect_call(
+                    rlang::quo_get_expr(x[[1]])
+                ) &&
                     length(selected) > 1
             ) {
                 rename_val <- paste0(rename_val, seq_along(selected))
             }
 
-            rows_to_rename <- split_data_names[[as_label(col_quo)]] %in%
+            rows_to_rename <- split_data_names[[rlang::as_label(col_quo)]] %in%
                 selected
             split_data_names[
                 rows_to_rename,
-                as_label(col_name_quo)
+                rlang::as_label(col_name_quo)
             ] <- rename_val
         }
     }
@@ -185,8 +189,10 @@ col_plan_span_structure_to_vars <- function(
     ## evaluate selections to identify columns
     for (col_id_idx in seq_along(column_names)) {
         col_id <- column_names[col_id_idx]
-        col_quo <- quo(!!sym(col_id))
-        col_name_quo <- quo(!!sym(paste0("__tfrmt_new_name__", col_id)))
+        col_quo <- rlang::quo(!!rlang::sym(col_id))
+        col_name_quo <- rlang::quo(
+            !!rlang::sym(paste0("__tfrmt_new_name__", col_id))
+        )
 
         if (col_id %in% names(x[[1]])) {
             selections <- x[[1]][[col_id]]
@@ -199,7 +205,10 @@ col_plan_span_structure_to_vars <- function(
                     split_data_names[[col_id]]
                 ))
 
-                is_subtraction_selection <- startsWith(as_label(sel_id), "-")
+                is_subtraction_selection <- startsWith(
+                    rlang::as_label(sel_id),
+                    "-"
+                )
 
                 if (is_subtraction_selection) {
                     split_data_selections[[sel_id_idx]] <- split_data_names %>%
@@ -217,7 +226,11 @@ col_plan_span_structure_to_vars <- function(
                         rename_val <- names(selections)[[sel_id_idx]]
 
                         if (
-                            is_valid_tidyselect_call(quo_get_expr(sel_id)) &&
+                            is_valid_tidyselect_call(
+                                rlang::quo_get_expr(
+                                    sel_id
+                                )
+                            ) &&
                                 length(sel_id_col_selections) > 1
                         ) {
                             rename_val <- paste0(
@@ -226,13 +239,13 @@ col_plan_span_structure_to_vars <- function(
                             )
                         }
 
-                        rows_to_rename <- split_data_names[[as_label(
+                        rows_to_rename <- split_data_names[[rlang::as_label(
                             col_quo
                         )]] %in%
                             sel_id_col_selections
                         split_data_names[
                             rows_to_rename,
-                            as_label(col_name_quo)
+                            rlang::as_label(col_name_quo)
                         ] <- rename_val
                     }
 
@@ -258,7 +271,7 @@ col_plan_span_structure_to_vars <- function(
     }
 
     ## create order df
-    ords <- do.call("crossing", col_selections) %>%
+    ords <- do.call(tidyr::crossing, col_selections) %>%
         dplyr::mutate(
             dplyr::across(
                 tidyselect::everything(),
@@ -319,9 +332,9 @@ char_as_quo <- function(x) {
     )
 
     if (is_negative) {
-        expr_to_eval <- paste0("quo(-", x_text, ")")
+        expr_to_eval <- paste0("rlang::quo(-", x_text, ")")
     } else {
-        expr_to_eval <- paste0("quo(", x_text, ")")
+        expr_to_eval <- paste0("rlang::quo(", x_text, ")")
     }
 
     eval(parse(text = expr_to_eval)[[1]])
@@ -340,12 +353,13 @@ eval_col_plan_quo <- function(
     default_everything_behavior = FALSE
 ) {
     if (
-        identical(as_label(x), "everything()") && !default_everything_behavior
+        identical(rlang::as_label(x), "everything()") &&
+            !default_everything_behavior
     ) {
         # dump any pre-selected columns from everything() call. we are _not_ using
         # the default behavior of everything().
 
-        if (!is_empty(preselected_vals)) {
+        if (!rlang::is_empty(preselected_vals)) {
             data_names <- data_names[-seq_along(preselected_vals)]
         }
     }
@@ -380,21 +394,21 @@ split_data_names_to_df <- function(data_names, preselected_cols, column_names) {
         }
     }
 
-    tibble(
+    tibble::tibble(
         original = unname(data_names),
         new_name = names(data_names)
     ) %>%
         dplyr::mutate(
             subtraction_status = startsWith(.data$original, "-"),
-            original = str_remove(.data$original, "^-")
+            original = stringr::str_remove(.data$original, "^-")
         ) %>%
-        separate(
+        tidyr::separate(
             .data$original,
             into = column_names,
             sep = .tlang_delim,
             fill = "left"
         ) %>%
-        separate(
+        tidyr::separate(
             .data$new_name,
             into = paste0("__tfrmt_new_name__", column_names),
             sep = .tlang_delim,
@@ -422,7 +436,7 @@ unite_df_to_data_names <- function(
     return_only_selected = FALSE
 ) {
     new_preselected_cols_full <- split_data_names %>%
-        unite(
+        tidyr::unite(
             "original",
             -c(
                 tidyselect::starts_with(
@@ -432,7 +446,7 @@ unite_df_to_data_names <- function(
             ),
             sep = .tlang_delim
         ) %>%
-        unite(
+        tidyr::unite(
             "new_name",
             tidyselect::starts_with("__tfrmt_new_name__"),
             sep = .tlang_delim

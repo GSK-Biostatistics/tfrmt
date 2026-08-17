@@ -201,8 +201,8 @@ frmt <- function(
 frmt_combine <- function(expression, ..., missing = NULL) {
     everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
 
-    n_vars <- str_count(expression, everything_but_curly)
-    vars_to_fmt <- str_extract_all(
+    n_vars <- stringr::str_count(expression, everything_but_curly)
+    vars_to_fmt <- stringr::str_extract_all(
         expression,
         everything_but_curly,
         simplify = TRUE
@@ -223,15 +223,19 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 
     # Adding ` to expression if not there and there is a space/symbol
     replace_val <- dplyr::case_when(
-        str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
-        !str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") &
-            !str_detect(vars_to_fmt, "`") ~ paste0("`", vars_to_fmt, "`"),
+        stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
+        stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$", negate = TRUE) &
+            stringr::str_detect(vars_to_fmt, "`", negate = TRUE) ~ paste0(
+            "`",
+            vars_to_fmt,
+            "`"
+        ),
         TRUE ~ vars_to_fmt
     )
 
     exp_new <- expression
     for (i in seq_along(replace_val)) {
-        exp_new <- str_replace(exp_new, vars_to_fmt[i], replace_val[i])
+        exp_new <- stringr::str_replace(exp_new, vars_to_fmt[i], replace_val[i])
     }
 
     structure(
@@ -244,13 +248,15 @@ frmt_combine <- function(expression, ..., missing = NULL) {
 #' @rdname frmt
 #' @export
 frmt_when <- function(..., missing = NULL) {
-    frmts <- list2(...)
+    frmts <- rlang::list2(...)
 
-    frmt_ls <- frmts %>%
-        map(function(x) {
-            f_rhs(x) <- eval(f_rhs(x))
+    frmt_ls <- purrr::map(
+        frmts,
+        function(x) {
+            rlang::f_rhs(x) <- eval(rlang::f_rhs(x))
             x
-        })
+        }
+    )
 
     structure(
         list(frmt_ls = frmt_ls, missing = missing),

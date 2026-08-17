@@ -258,7 +258,7 @@ test_that("Mock data contains all levels", {
 
 
 test_that("Check mock when value is missing", {
-    data <- crossing(
+    data <- tidyr::crossing(
         label = c(
             "Intent-To-Treat (ITT)",
             "Safety",
@@ -322,7 +322,7 @@ test_that("Test when no body_style or values is present", {
         )
     )
 
-    input_data <- tibble(
+    input_data <- tibble::tibble(
         group = "groupvar",
         label = "labels",
         param = "params",
@@ -342,7 +342,7 @@ test_that("Test when no body_style or values is present", {
             dplyr::mutate(
                 val = "X.X"
             ) %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = c(spanner, columns),
                 names_sep = .tlang_delim,
                 values_from = val
@@ -546,7 +546,7 @@ test_that("Mock data can be made and printed without label", {
 
     expect_identical(
         dat,
-        tibble(
+        tibble::tibble(
             param = c("n", "n", "n", "percent", "percent", "percent"),
             column = paste0("column", rep(1:3, times = 2))
         )
@@ -615,7 +615,7 @@ test_that("Using col_plan to get column names", {
     #With spanning
     auto_col_df <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(test1, test2),
         body_plan = body_plan(
@@ -643,7 +643,7 @@ test_that("Using col_plan to get column names", {
         dplyr::select(test1, test2) %>%
         dplyr::distinct(test1, test2)
 
-    man_col_df <- tibble(
+    man_col_df <- tibble::tibble(
         test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)),
         test2 = c("col4", "col3", "col5", "col1", "col2", "col7", "col8")
     )
@@ -652,7 +652,7 @@ test_that("Using col_plan to get column names", {
     # When you do crossing in the span structure
     auto_col_crossing <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(visit, trt),
         body_plan = body_plan(
@@ -724,7 +724,7 @@ test_that("Using col_style_plan to get names", {
     # combination col_style_plan/col_plan
     auto_col_df <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(test1, test2),
         body_plan = body_plan(
@@ -762,7 +762,7 @@ test_that("Using col_style_plan to get names", {
         dplyr::select(test1, test2) %>%
         dplyr::distinct(test1, test2)
 
-    man_col_df <- tibble(
+    man_col_df <- tibble::tibble(
         test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2), rep(NA, 3)),
         test2 = c(
             "col4",

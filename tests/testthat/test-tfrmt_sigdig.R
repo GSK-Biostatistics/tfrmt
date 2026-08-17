@@ -188,7 +188,7 @@ test_that("build frmt objects", {
     bp_1grp_1lbl <- body_plan_builder(
         dat_sigdig,
         group = vars(group1),
-        label = quo(group2),
+        label = rlang::quo(group2),
         param_defaults = param_set()
     )
     bp_1grp_1lbl_man <- list(
@@ -228,7 +228,7 @@ test_that("build frmt objects", {
     bp_2grp_0lbl <- body_plan_builder(
         dat_sigdig,
         group = vars(group1, group2),
-        label = quo(),
+        label = rlang::quo(),
         param_defaults = param_set()
     )
     bp_2grp_0lbl_man <- list(
@@ -278,7 +278,7 @@ test_that("build frmt objects", {
     bp_prm <- body_plan_builder(
         dat_sigdig,
         group = vars(group1),
-        label = quo(group2),
+        label = rlang::quo(group2),
         param_defaults = param_set(
             max = 0,
             "{pct}%" = 0
@@ -327,7 +327,7 @@ test_that("build frmt objects", {
     bp_prm <- body_plan_builder(
         dat_sigdig,
         group = vars(group1),
-        label = quo(group2),
+        label = rlang::quo(group2),
         param_defaults = param_set(max = 0, "{n} ({pct}%)" = c(NA, 0))
     )
     bp_prm_man <- list(
@@ -379,7 +379,7 @@ test_that("no redundant frmt_structures", {
     bp <- tfrmt_sigdig(
         dat_sigdig,
         group = vars(group1),
-        label = quo(group2),
+        label = rlang::quo(group2),
         param_defaults = param_set()
     )$body_plan
 
@@ -690,7 +690,7 @@ test_that("tfrmt_sigdig returns a tfrmt", {
     )
     expect_equal(
         t_frmt$label,
-        quo(group2),
+        rlang::quo(group2),
         ignore_attr = TRUE
     )
 
@@ -730,14 +730,14 @@ test_that("varying group/label inputs", {
 
     expect_identical(
         t_out$label,
-        quo()
+        rlang::quo()
     )
 
     # if only some are specified, assume the rest are groups
     t_out <- tfrmt_sigdig(dat_sigdig, label = group2)
 
     expect_equal(t_out$group, vars(group1, lbl), ignore_attr = TRUE)
-    expect_equal(t_out$label, quo(group2), ignore_attr = TRUE)
+    expect_equal(t_out$label, rlang::quo(group2), ignore_attr = TRUE)
 
     # including a group or label that is not present in the data
     expect_warning(
@@ -758,7 +758,7 @@ test_that("varying group/label inputs", {
     )
     expect_equal(
         t_out$label,
-        quo(mylab),
+        rlang::quo(mylab),
         ignore_attr = TRUE
     )
 
@@ -784,7 +784,7 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
         bp <- tfrmt_sigdig(
             dat_sigdig,
             group = vars(group1, newgrp),
-            label = quo(group2),
+            label = rlang::quo(group2),
             param_defaults = param_set()
         )$body_plan,
         paste0(
@@ -840,7 +840,7 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
         bp <- tfrmt_sigdig(
             dat_sigdig,
             group = vars(group1, newgrp, group2),
-            label = quo(mylab),
+            label = rlang::quo(mylab),
             param_defaults = param_set()
         )$body_plan,
         paste0(
@@ -997,7 +997,7 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
     )
     expect_equal(
         new_tfrmt$label,
-        quo(group2),
+        rlang::quo(group2),
         ignore_attr = TRUE
     )
 })

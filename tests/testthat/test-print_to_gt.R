@@ -514,6 +514,46 @@ test_that("cleaned_data_to_gt() works", {
     )
 })
 
+test_that("cleaned_data_to_gt() renders markdown in title and subtitle", {
+    # nolint start: commas_linter
+    test_data <- tibble::tribble(
+        ~group  , ~label  , ~column , ~param , ~val ,
+        "mygrp" , "mylbl" , "col1"  , "prm"  ,    1 ,
+        "mygrp" , "mylbl" , "col2"  , "prm"  ,    2
+    )
+    # nolint end: commas_linter
+    tfrmt_md <- tfrmt(
+        group = "group",
+        label = "label",
+        param = "param",
+        column = "column",
+        value = "val",
+        title = "Study ABC-123<br>Protocol Amendment 2",
+        subtitle = "Population: **ITT**",
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("x.xx")
+            )
+        )
+    )
+
+    gt_result <- cleaned_data_to_gt(test_data, tfrmt_md, .unicode_ws = TRUE)
+
+    expect_s3_class(gt_result$`_heading`$title, "from_markdown")
+    expect_s3_class(gt_result$`_heading`$subtitle, "from_markdown")
+
+    expect_identical(
+        as.character(gt_result$`_heading`$title),
+        "Study ABC-123<br>Protocol Amendment 2"
+    )
+    expect_identical(
+        as.character(gt_result$`_heading`$subtitle),
+        "Population: **ITT**"
+    )
+})
+
 test_that("cleaned_data_to_gt.list() works", {
     tfrmt <- tfrmt(
         # specify columns in the data
@@ -635,6 +675,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         column = Column,
         value = Value,
         param = Param,
+        title = "Title **bold**",
         body_plan = body_plan(
             frmt_structure(
                 label_val = "n",
@@ -680,12 +721,23 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in subtitle
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$subtitle,
-        "by group: 101"
+        gt::md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_heading`$subtitle,
-        "by group: 102"
+        gt::md("by group: 102")
+    )
+
+    # confirm title is rendered as markdown
+    expect_s3_class(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
+    )
+
+    expect_identical(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        gt::md("Title **bold**")
     )
 
     # change note location to preheader
@@ -714,6 +766,17 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         "by group: 102"
     )
 
+    # confirm title is still rendered as markdown when note_loc is preheader
+    expect_s3_class(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
+    )
+
+    expect_identical(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        gt::md("Title **bold**")
+    )
+
     # change note location to source_note
     tfrmt_two_groups$page_plan$note_loc <- "source_note"
 
@@ -732,12 +795,23 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in source_note
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_source_notes`[[1]],
-        "by group: 101"
+        gt::md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_source_notes`[[1]],
-        "by group: 102"
+        gt::md("by group: 102")
+    )
+
+    # confirm title is rendered as markdown when note_loc is source_note
+    expect_s3_class(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
+    )
+
+    expect_identical(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        gt::md("Title **bold**")
     )
 })
 

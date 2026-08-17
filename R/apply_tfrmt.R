@@ -124,7 +124,7 @@ apply_tfrmt_subtable_mapper <- function(
     if (inherits(.data, "list")) {
         # there is a list of >1 big N tibbles
         if (inherits(big_n_df, "list") && length(big_n_df) > 1) {
-            map2(
+            purrr::map2(
                 .data,
                 big_n_df,
                 ~ apply_tfrmt_subtable(
@@ -137,7 +137,7 @@ apply_tfrmt_subtable_mapper <- function(
             )
         } else {
             # there is only 1 set of (overall) big Ns
-            map(
+            purrr::map(
                 .data,
                 ~ apply_tfrmt_subtable(
                     tfrmt,
@@ -251,11 +251,11 @@ apply_tfrmt_subtable <- function(
 tentative_process <- function(.data, fx, ..., fail_desc = NULL) {
     args <- list(...)
 
-    if (any(map_lgl(args, is_empty))) {
+    if (any(purrr::map_lgl(args, rlang::is_empty))) {
         out <- .data
     } else {
         out <- .data %>%
-            safely(fx)(...)
+            purrr::safely(fx)(...)
         if (!is.null(out[["error"]])) {
             if (is.null(fail_desc)) {
                 fx_char <- as.character(substitute(fx))
@@ -304,9 +304,9 @@ validate_cols_match <- function(.data, tfrmt, mock) {
     .data <- dplyr::ungroup(.data)
 
     req_quo %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(dplyr::select)(.data, !!var_test)
+            check <- purrr::safely(dplyr::select)(.data, !!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -320,9 +320,9 @@ validate_cols_match <- function(.data, tfrmt, mock) {
         })
 
     req_var %>%
-        map(function(x) {
+        purrr::map(function(x) {
             var_test <- tfrmt[[x]]
-            check <- safely(dplyr::select)(.data, !!!var_test)
+            check <- purrr::safely(dplyr::select)(.data, !!!var_test)
             if (!is.null(check$error)) {
                 stop(
                     paste0(
@@ -366,7 +366,7 @@ clean_spanning_col_names <- function(data) {
 
 count_spanning_layers <- function(x) {
     x %>%
-        str_count(.tlang_delim) %>%
+        stringr::str_count(.tlang_delim) %>%
         max()
 }
 
@@ -374,12 +374,12 @@ count_spanning_layers <- function(x) {
 ## also used in select_col_plan to process column names the same way
 remove_empty_layers <- function(x, nlayers = 1) {
     empty_str <- paste0("^", strrep(paste0("NA", .tlang_delim), nlayers))
-    str_remove(x, empty_str)
+    stringr::str_remove(x, empty_str)
 }
 
 #' Pivot formatted values into a wide dataset
 #'
-#' @param data
+#' @param data A data.frame for pivoting.
 #'
 #' @return data pivoted wider
 #' @noRd
@@ -406,7 +406,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 unique() %>%
                 dplyr::group_by(
                     !!!tfrmt$group,
-                    param_list
+                    .data$param_list
                 ) %>%
                 dplyr::mutate(
                     label_quote = paste0('"', !!tfrmt$label, '"')
@@ -414,7 +414,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::reframe(
                     label_collapse = as.character(
                         paste(
-                            label_quote,
+                            .data$label_quote,
                             collapse = ","
                         )
                     ),
@@ -426,14 +426,14 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 dplyr::mutate(
                     suggested_frmt_struct = frmt_struct_string(
                         grp = list(!!!tfrmt$group),
-                        lbl = label_collapse,
+                        lbl = .data$label_collapse,
                         param_vals = .data$param_list
                     )
                 ) %>%
                 dplyr::pull(.data$suggested_frmt_struct) %>%
                 paste0("- `", ., "`", collapse = "\n")
 
-            inform(
+            rlang::inform(
                 paste0(
                     "Multiple param listed for the same group/label values.\n",
                     "The following frmt_structures may be missing from the body_plan\n",
@@ -447,8 +447,8 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         val_fill <- ""
     }
 
-    column_cols <- tfrmt$column %>%
-        map_chr(as_name)
+    column_cols <- purrr::map_chr(tfrmt$column, rlang::as_name)
+
     tbl_dat_wide <- data %>%
         dplyr::select(-!!tfrmt$param) %>%
         dplyr::mutate(
@@ -461,7 +461,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
                 ~ dplyr::na_if(.x, "")
             )
         ) %>%
-        quietly(pivot_wider)(
+        purrr::quietly(tidyr::pivot_wider)(
             names_from = c(
                 tidyselect::starts_with(
                     .tlang_struct_col_prefix
@@ -477,11 +477,11 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
         mock &&
             length(tbl_dat_wide$warnings) > 0 &&
             any(
-                str_detect(
+                stringr::str_detect(
                     tbl_dat_wide$warnings,
                     paste0(
                         "Values from `",
-                        as_label(tfrmt$value),
+                        rlang::as_label(tfrmt$value),
                         "` are not uniquely identified"
                     )
                 )
@@ -491,9 +491,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
             "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows."
         )
         tbl_dat_wide <- tbl_dat_wide$result %>%
-            unnest(
-                cols = tidyselect::everything()
-            ) %>%
+            tidyr::unnest(cols = tidyselect::everything()) %>%
             clean_spanning_col_names()
     } else {
         tbl_dat_wide <- tbl_dat_wide$result %>%
@@ -505,11 +503,11 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
 
 
 frmt_struct_string <- function(grp, lbl, param_vals) {
-    length_lbl <- str_count(lbl, ",") + 1
+    length_lbl <- stringr::str_count(lbl, ",") + 1
 
     group_names <- substitute(grp) %>%
         as.list() %>%
-        map_chr(as_label) %>%
+        purrr::map_chr(rlang::as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
         group_val_char <- capture.output(dput(setNames(grp, group_names)))
@@ -556,9 +554,9 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #'
 #' @noRd
 check_order_vars <- function(.data, tfrmt) {
-    if (!is_empty(tfrmt$sorting_cols)) {
+    if (!rlang::is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
-        if (is_empty(tfrmt$group)) {
+        if (rlang::is_empty(tfrmt$group)) {
             order_check <- .data %>%
                 dplyr::group_by(!!tfrmt$label) %>%
                 dplyr::mutate(
@@ -606,7 +604,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
     if (!is.null(big_n_df) && tfrmt$big_n$by_page) {
         expected_pops <- length(data_wide)
         expected_grp_vars <- attr(data_wide, ".page_grp_vars")
-        expected_grp_levs <- map_dfr(
+        expected_grp_levs <- purrr::map_dfr(
             data_wide,
             ~ dplyr::select(
                 .x,
@@ -617,7 +615,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
                 dplyr::distinct()
         )
         actual_pops <- length(big_n_df)
-        actual_grp_levs <- map_dfr(
+        actual_grp_levs <- purrr::map_dfr(
             big_n_df,
             ~ dplyr::select(
                 .x,
@@ -630,7 +628,7 @@ check_big_n_page <- function(big_n_df, data_wide, tfrmt) {
 
         if (
             !identical(expected_pops, actual_pops) ||
-                (!is_empty(actual_grp_levs) &&
+                (!rlang::is_empty(actual_grp_levs) &&
                     !isTRUE(all.equal(
                         expected_grp_levs,
                         actual_grp_levs,

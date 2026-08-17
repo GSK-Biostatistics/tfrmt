@@ -160,7 +160,7 @@ test_that("test tentative_process", {
         tentative_process("x", passing_func)
     })
 
-    expect_true(is_empty(passing_func_messages))
+    expect_true(rlang::is_empty(passing_func_messages))
     expect_identical(
         passing_func_messages,
         character()
@@ -176,7 +176,7 @@ test_that("test tentative_process", {
         tentative_process("x", failing_func)
     })
 
-    expect_false(is_empty(failing_func_messages))
+    expect_false(rlang::is_empty(failing_func_messages))
     expect_identical(
         failing_func_messages,
         "Unable to to apply failing_func.\nReason: this function failed\n"
@@ -192,7 +192,7 @@ test_that("test tentative_process", {
         tentative_process("x", rlang_abort_func)
     })
 
-    expect_false(is_empty(rlang_abort_func_messages))
+    expect_false(rlang::is_empty(rlang_abort_func_messages))
     expect_identical(
         rlang_abort_func_messages,
         "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"

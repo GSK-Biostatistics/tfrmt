@@ -648,12 +648,12 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         rowlbl2 = c("Completed", "Ongoing", "Unknown")
     ) %>%
         dplyr::bind_rows(
-            tibble(
+            tibble::tibble(
                 rowlbl1 = "Primary reason for withdrawal",
                 rowlbl2 = c("Other", "Lost to follow-up")
             )
         ) %>%
-        crossing(
+        tidyr::crossing(
             param = c("n", "pct"),
             trt = c("Placebo", "Trt1", "Trt2", "Trt3")
         ) %>%

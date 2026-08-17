@@ -57,7 +57,7 @@ shuffle_card <- function(
     if (!inherits(trim, "logical")) {
         cli::cli_abort(
             "{.arg trim} argument must be class {.cls logical}}, not \\
-      {.obj_type_friendly {trim}}"
+            {.obj_type_friendly {trim}}"
         )
     }
 
@@ -189,7 +189,7 @@ shuffle_card <- function(
     dots <- rlang::dots_list(...)
 
     lapply(dots, function(var) {
-        if (!all(map_lgl(x[[var]], is.null))) {
+        if (!all(purrr::map_lgl(x[[var]], is.null))) {
             cli::cli_inform(
                 "{.val {var}} column contains messages that will be removed."
             )
@@ -268,7 +268,7 @@ shuffle_card <- function(
     # determine grouping and merging variables
     id_vars <- setdiff(names(x), unique(c(vars_cards_protected, grp_vars)))
 
-    if (!is_empty(grp_vars) && !is_empty(id_vars)) {
+    if (!rlang::is_empty(grp_vars) && !rlang::is_empty(id_vars)) {
         # replace NA group values with "..cards_overall.." where it is likely to be
         # an overall calculation
         for (g in grp_vars) {

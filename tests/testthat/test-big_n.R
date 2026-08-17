@@ -802,7 +802,7 @@ test_that("Test big n with footnotes", {
                 rownum,
                 footnotes
             ) |>
-            as_tibble(),
+            tibble::as_tibble(),
         tibble::tibble(
             locname = c(
                 "columns_columns",
@@ -911,7 +911,7 @@ test_that("big Ns vary by page", {
             mock = FALSE
         )
 
-    auto_names <- map(auto, names)
+    auto_names <- purrr::map(auto, names)
     man_names <- list(
         c(
             "Label",
@@ -1001,7 +1001,7 @@ test_that("big Ns constant by page", {
         )
 
     expect_identical(
-        map(auto, names),
+        purrr::map(auto, names),
         list(
             c(
                 "Label",
@@ -1066,7 +1066,7 @@ test_that("big Ns constant by page", {
     )
 
     expect_identical(
-        map(auto, names),
+        purrr::map(auto, names),
         list(
             c(
                 "Label",
@@ -1310,7 +1310,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
     # check that the labels have printed in the changed order
     expect_identical(
         # This extracts the first value of the "Label" column from each element
-        map(auto, ~ .x[["Label"]][1]),
+        purrr::map(auto, ~ .x[["Label"]][1]),
         list(
             "Sex",
             "Age (y)"
@@ -1319,7 +1319,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
 
     # check big Ns have been correctly applied
     expect_identical(
-        map(auto, names),
+        purrr::map(auto, names),
         list(
             c(
                 "Label",

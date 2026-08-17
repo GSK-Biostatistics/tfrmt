@@ -3,6 +3,7 @@
 ## Improvements
 * Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
 * `footnote_structure()` now returns its elements in the same order as its arguments (`footnote_text`, `column_val`, `group_val`, `label_val`) (#589).
+* Add markdown processing of `title`, `subtitle`, and `source_note` (#664).
 
 ## Bug fixes
 * Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).

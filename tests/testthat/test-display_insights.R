@@ -1,5 +1,5 @@
 test_that("Display row formats for tfrmt with <frmt>", {
-    df <- crossing(
+    df <- tidyr::crossing(
         label = c("label 1", "label 2", "label 3"),
         column = c("PL", "T1", "T2"),
         param = c("count")
@@ -60,12 +60,12 @@ test_that("Display row formats for tfrmt with <frmt>", {
 
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
     df <- dplyr::bind_rows(
-        crossing(
+        tidyr::crossing(
             label = c("label 1"),
             column = c("PL", "T1", "T2"),
             param = c("count")
         ),
-        crossing(
+        tidyr::crossing(
             label = c("label 2", "label 3"),
             column = c("PL", "T1", "T2"),
             param = c("count", "percent")
@@ -136,17 +136,17 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>", {
     df <- dplyr::bind_rows(
-        crossing(
+        tidyr::crossing(
             label = c("label 1"),
             column = c("PL", "T1", "T2"),
             param = c("n")
         ),
-        crossing(
+        tidyr::crossing(
             label = c("label 2"),
             column = c("PL", "T1", "T2"),
             param = c("median", "sd")
         ),
-        crossing(
+        tidyr::crossing(
             label = c("label 3"),
             column = c("PL", "T1", "T2"),
             param = c("pval")

@@ -382,7 +382,7 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
     if (!rlang::is_character(x)) {
         cli::cli_abort(
             "{.arg x} must be a character vector. You have supplied \\
-      {.obj_type_friendly {x}}.",
+            {.obj_type_friendly {x}}.",
             call = call
         )
     }
@@ -437,15 +437,15 @@ replace_na_pairwise <- function(
     if (!rlang::is_character(pair)) {
         cli::cli_abort(
             "{.arg pair} must be a character vector. You have supplied \\
-      {.obj_type_friendly {pair}}.",
+            {.obj_type_friendly {pair}}.",
             call = call
         )
     }
 
     if (length(pair) != 2) {
         cli::cli_abort(
-            "{.arg pair} must contain exactly 2 elements. The one you supplied has \\
-      {length(pair)}.",
+            "{.arg pair} must contain exactly 2 elements. The one you \\
+            supplied has {length(pair)}.",
             call = call
         )
     }

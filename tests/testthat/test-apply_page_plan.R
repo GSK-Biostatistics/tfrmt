@@ -14,7 +14,7 @@ test_that("Page plan with defined split", {
         page_structure(group_val = "A")
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), quo(lbl))
+    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), rlang::quo(lbl))
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -55,7 +55,7 @@ test_that("Page plan with grouped split", {
         )
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), quo(lbl))
+    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), rlang::quo(lbl))
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -83,7 +83,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp: A", "grp: B", "grp: C")
     )
     expect_identical(
@@ -107,7 +107,12 @@ test_that("Page plan with grouped split", {
         page_structure(group_val = list(grp2 = ".default"))
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -132,7 +137,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp2: a", "grp2: b")
     )
 
@@ -157,7 +162,12 @@ test_that("Page plan with grouped split", {
         )
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
 
     man_split <- list(
         # nolint start: commas_linter
@@ -186,7 +196,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c(
             "grp1: A, grp2: a",
             "grp1: A, grp2: b",
@@ -215,7 +225,12 @@ test_that("Page plan with grouped split", {
         )
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -238,7 +253,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("lbl: n", "lbl: pct")
     )
     expect_identical(
@@ -263,7 +278,12 @@ test_that("Page plan with grouped split", {
     my_page_plan <- page_plan(
         page_structure(label_val = "lbl1")
     )
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
 
     man_split <- list(
         # nolint start: commas_linter
@@ -313,7 +333,12 @@ test_that("page plan with mix of defined & group splits", {
         page_structure(group_val = list(grp1 = ".default", grp2 = "a"))
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
 
     ## CURRENT BEHAVIOR:
     # 1. split every level of grp1
@@ -351,7 +376,7 @@ test_that("page plan with mix of defined & group splits", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -396,7 +421,7 @@ test_that("page plan with multiple structures", {
             df,
             my_page_plan,
             vars(grp1, grp2),
-            quo(lbl)
+            rlang::quo(lbl)
         ),
         paste(
             c(
@@ -443,7 +468,7 @@ test_that("page plan with multiple structures", {
     )
 
     expect_identical(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
         c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -466,7 +491,11 @@ test_that("Page plan with max_rows", {
         "C"  , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -558,7 +587,11 @@ test_that("Page plan with max_rows", {
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
@@ -1319,7 +1352,11 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         "B"  , "b"    , "n"  ,   55
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -1368,7 +1405,11 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         dplyr::mutate(
             grp = factor(grp, levels = c("A", "B", ""))
         ) %>% # Explicitly a factor
-        tidyr::pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -1403,7 +1444,11 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
         label = "lbl",

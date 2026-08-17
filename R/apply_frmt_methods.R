@@ -17,13 +17,15 @@
 #'
 #' library(tibble)
 #' library(dplyr)
+#' library(rlang)
 #' # Set up data
 #' df <- tibble(x = c(20.12,34.54,12.34))
 #'
 #' apply_frmt(
-#'  frmt_def = frmt("XX.X"),
-#'  .data=df,
-#'  value=quo(x))
+#'     frmt_def = frmt("XX.X"),
+#'     .data = df,
+#'     value = quo(x)
+#' )
 #'
 #' @rdname apply_frmt
 apply_frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
@@ -46,14 +48,14 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (length(vals) == 0) {
             return(.data)
         } else if (!is.null(frmt_def$transform)) {
-            vals <- as_function(frmt_def$transform)(vals)
+            vals <- rlang::as_function(frmt_def$transform)(vals)
         }
 
-        if (str_detect(frmt_def$expression, "[x|X]")) {
+        if (stringr::str_detect(frmt_def$expression, "[x|X]")) {
             # digits following period in expression
             dig <- frmt_def$expression %>%
-                str_extract("(?<=\\.)[X|x]+") %>%
-                str_count("[X|x]")
+                stringr::str_extract("(?<=\\.)[X|x]+") %>%
+                stringr::str_count("[X|x]")
 
             ## There were no x's after a `.` to extract, so assume none
             if (is.na(dig)) {
@@ -65,16 +67,22 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 vals_sci <- format(vals, scientific = TRUE)
 
                 vals <- vals_sci %>%
-                    str_extract("[^e]+") %>%
+                    stringr::str_extract("[^e]+") %>%
                     as.numeric()
 
                 ## remove x's from end of scientific
-                multiply <- str_remove(frmt_def$scientific, "[xX]+(?<=$)")
-                sci_width <- str_extract(frmt_def$scientific, "[xX]+(?<=$)") %>%
-                    str_count("[X|x]")
+                multiply <- stringr::str_remove(
+                    frmt_def$scientific,
+                    "[xX]+(?<=$)"
+                )
+                sci_width <- stringr::str_extract(
+                    frmt_def$scientific,
+                    "[xX]+(?<=$)"
+                ) %>%
+                    stringr::str_count("[X|x]")
 
                 vals_sci_post <- vals_sci %>%
-                    str_extract("[^e]+$") %>%
+                    stringr::str_extract("[^e]+$") %>%
                     as.numeric() %>%
                     format(trim = TRUE, width = sci_width) %>%
                     paste0(multiply, .)
@@ -84,8 +92,8 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
 
             # digits preceding period in expression
             pre_dec_expr <- frmt_def$expression %>%
-                str_remove("\\..*$") %>%
-                str_count("[X|x]")
+                stringr::str_remove("\\..*$") %>%
+                stringr::str_count("[X|x]")
 
             # vals rounded and trimmed
             rounded_vals <- format(
@@ -93,14 +101,14 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 decimal.mark = ".",
                 nsmall = dig
             ) %>%
-                str_trim()
+                stringr::str_trim()
 
-            fmt_options <- tibble(
+            fmt_options <- tibble::tibble(
                 rounded = rounded_vals,
                 # digits preceding period in vals
                 act_pre_dec = rounded_vals %>%
-                    str_remove("\\..*$") %>%
-                    str_count(".")
+                    stringr::str_remove("\\..*$") %>%
+                    stringr::str_count(".")
             ) %>%
                 dplyr::mutate(
                     # keep from being negative
@@ -108,17 +116,17 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
                 )
 
             # when scientific is null paste rounded value, if not then append scientific expression
-            fmt_vals <- str_c(
-                str_dup(" ", fmt_options$space_to_add),
+            fmt_vals <- stringr::str_c(
+                stringr::str_dup(" ", fmt_options$space_to_add),
                 fmt_options$rounded,
                 vals_sci_post
             )
 
             expr_start <- frmt_def$expression %>%
-                str_extract("^[^X|^x]*(?=[X|x])")
+                stringr::str_extract("^[^X|^x]*(?=[X|x])")
 
             expr_end <- frmt_def$expression %>%
-                str_extract("(?<=[X|x])[^X|^x]*$")
+                stringr::str_extract("(?<=[X|x])[^X|^x]*$")
 
             if (!is.null(frmt_def$missing)) {
                 miss_val <- frmt_def$missing
@@ -129,7 +137,7 @@ apply_frmt.frmt <- function(frmt_def, .data, value, mock = FALSE, ...) {
             # Combining the additional formatting
             fmt_val_output <- dplyr::case_when(
                 fmt_options$rounded == "NA" ~ miss_val,
-                TRUE ~ str_c(expr_start, fmt_vals, expr_end)
+                TRUE ~ stringr::str_c(expr_start, fmt_vals, expr_end)
             )
         } else {
             fmt_val_output <- frmt_def$expression
@@ -160,11 +168,11 @@ apply_frmt.frmt_combine <- function(
     ...
 ) {
     fmt_param_vals <- frmt_def$expression %>%
-        str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
+        stringr::str_extract_all("(?<=\\{)[^\\}]+(?=\\})") %>%
         unlist()
 
     # Adding the unquoted version to match while long
-    fmt_param_vals_uq <- str_remove_all(fmt_param_vals, "`")
+    fmt_param_vals_uq <- stringr::str_remove_all(fmt_param_vals, "`")
 
     # Check if unspecified param values are in the dataset
 
@@ -175,10 +183,10 @@ apply_frmt.frmt_combine <- function(
     }
 
     ## format params as needed
-    .tmp_data <- map_dfr(fmt_param_vals, function(`__var`) {
+    .tmp_data <- purrr::map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
-            dplyr::filter(!!param == str_remove_all(`__var`, "`")) %>%
+            dplyr::filter(!!param == stringr::str_remove_all(`__var`, "`")) %>%
             apply_frmt(
                 frmt_def = fmt_to_apply,
                 .data = .,
@@ -207,7 +215,7 @@ apply_frmt.frmt_combine <- function(
 
     .tmp_data_wide <- .tmp_data %>%
         dplyr::select(!!value, !!param, !!!column, !!label, !!!group) %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             values_from = !!value,
             names_from = !!param
         ) %>%
@@ -216,14 +224,14 @@ apply_frmt.frmt_combine <- function(
         )
 
     missing_param_replacements <-
-        map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
+        purrr::map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
         setNames(fmt_param_vals) %>%
-        discard(is.null)
+        purrr::discard(is.null)
 
     if (length(missing_param_replacements) > 0) {
         ## after .is_all_missing so that can be tabulated first
         .tmp_data_wide <- .tmp_data_wide %>%
-            replace_na(missing_param_replacements)
+            tidyr::replace_na(missing_param_replacements)
     }
 
     # check that pivot_wider resulted in a reduction of rows, which indicates that at least
@@ -249,7 +257,8 @@ apply_frmt.frmt_combine <- function(
         dplyr::mutate(
             !!value := dplyr::case_when(
                 .data$.is_all_missing ~ frmt_def$missing,
-                TRUE ~ str_glue(!!frmt_def$expression) %>% as.character()
+                TRUE ~ stringr::str_glue(!!frmt_def$expression) %>%
+                    as.character()
             )
         ) %>%
         dplyr::select(
@@ -265,22 +274,22 @@ apply_frmt.frmt_combine <- function(
             dplyr::select(-!!value)
     }
 
-    merge_group <- map(
+    merge_group <- purrr::map(
         c(column, label, group),
         function(x) {
-            if (!quo_is_missing(x)) {
+            if (!rlang::quo_is_missing(x)) {
                 x
             }
         }
     ) %>%
-        discard(is.null) %>%
+        purrr::discard(is.null) %>%
         do.call("vars", .)
 
     # merge on new values, and remove cases other than first occurance of group/label/column pairing
     .data %>%
         dplyr::left_join(
             .tmp_data_fmted,
-            by = map_chr(merge_group, as_label)
+            by = purrr::map_chr(merge_group, rlang::as_label)
         ) %>%
         dplyr::group_by(!!!merge_group) %>%
         dplyr::slice(1) %>%
@@ -293,23 +302,23 @@ apply_frmt.frmt_combine <- function(
 apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
     if (mock) {
         frmt_to_prt <- frmt_def$frmt_ls %>%
-            keep(~ f_lhs(.) == "TRUE")
+            purrr::keep(~ rlang::f_lhs(.) == "TRUE")
         if (length(frmt_to_prt) < 1) {
             frmt_to_prt <- frmt_def$frmt_ls
         }
-        str_to_prnt <- f_rhs(frmt_to_prt[[1]])$expression
+        str_to_prnt <- rlang::f_rhs(frmt_to_prt[[1]])$expression
         out <- .data %>%
             dplyr::mutate(
                 !!value := str_to_prnt
             )
     } else {
-        values_str <- as_label(value)
+        values_str <- rlang::as_label(value)
         n <- length(frmt_def$frmt_ls)
 
         val_len <- length(dplyr::pull(.data, !!value))
         right <- frmt_def$frmt_ls %>%
-            map(f_rhs) %>%
-            map(function(x) {
+            purrr::map(rlang::f_rhs) %>%
+            purrr::map(function(x) {
                 if (is_frmt(x)) {
                     out <- x %>%
                         apply_frmt(.data, value, ...) %>%
@@ -321,10 +330,10 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
             })
 
         left <- frmt_def$frmt_ls %>%
-            map_chr(f_lhs_as_char) %>%
+            purrr::map_chr(f_lhs_as_char) %>%
             dplyr::if_else(. == "TRUE", ., paste0(values_str, .)) %>%
-            parse_exprs() %>%
-            map(eval_tidy, .data)
+            rlang::parse_exprs() %>%
+            purrr::map(rlang::eval_tidy, .data)
 
         out <- rep(NA_character_, val_len)
         replaced <- rep(FALSE, val_len)
@@ -337,7 +346,10 @@ apply_frmt.frmt_when <- function(frmt_def, .data, value, mock = FALSE, ...) {
         if (is.null(frmt_def$missing)) {
             out <- out
         } else if (!is.null(frmt_def$missing)) {
-            out <- out %>% replace_na(replace = frmt_def$missing)
+            out <- tidyr::replace_na(
+                out,
+                replace = frmt_def$missing
+            )
         }
 
         out <- .data %>%

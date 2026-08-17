@@ -15,11 +15,12 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         )
 
     TEMP_appl_row <- table_frmt_plan %>%
-        map(fmt_test_data, .data, label, group, param)
+        purrr::map(fmt_test_data, .data, label, group, param)
 
-    TEMP_fmt_to_apply <- table_frmt_plan %>% map(~ .$frmt_to_apply[[1]])
+    TEMP_fmt_to_apply <- table_frmt_plan %>%
+        purrr::map(~ .$frmt_to_apply[[1]])
 
-    dat_plus_fmt <- tibble(
+    dat_plus_fmt <- tibble::tibble(
         TEMP_appl_row,
         TEMP_fmt_to_apply
     ) %>%
@@ -27,7 +28,7 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
         dplyr::mutate(
             TEMP_fmt_rank = dplyr::row_number()
         ) %>%
-        unnest(cols = c(TEMP_appl_row)) %>%
+        tidyr::unnest(cols = c(TEMP_appl_row)) %>%
         dplyr::group_by(TEMP_appl_row) %>%
         # TODO add warning if there are rows not covered
         dplyr::arrange(
@@ -107,9 +108,12 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             ) %>%
             dplyr::mutate(
-                frmt_type = map_chr(.data$frmt_applied, function(x) {
-                    unlist(class(x)[1])
-                })
+                frmt_type = purrr::map_chr(
+                    .data$frmt_applied,
+                    function(x) {
+                        unlist(class(x)[1])
+                    }
+                )
             )
     } else if (isTRUE(convert_to_txt)) {
         output <- match_frmt_to_rows(
@@ -128,10 +132,16 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 )
             ) %>%
             dplyr::mutate(
-                frmt_type = map_chr(.data$frmt_applied, function(x) {
-                    unlist(class(x)[1])
-                }),
-                frmt_details = map_chr(.data$frmt_applied, format)
+                frmt_type = purrr::map_chr(
+                    .data$frmt_applied,
+                    function(x) {
+                        unlist(class(x)[1])
+                    }
+                ),
+                frmt_details = purrr::map_chr(
+                    .data$frmt_applied,
+                    format
+                )
             ) %>%
             dplyr::select(-"frmt_applied")
 
@@ -140,16 +150,18 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             dplyr::mutate(
                 frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
-                        str_remove("< frmt \\| Expression: ") %>%
-                        str_remove(" >"),
+                        stringr::str_remove("< frmt \\| Expression: ") %>%
+                        stringr::str_remove(" >"),
                     frmt_type == "frmt_combine" ~ frmt_details %>%
-                        str_remove("< frmt_combine \\| Expression: ") %>%
-                        str_remove(" >"),
+                        stringr::str_remove(
+                            "< frmt_combine \\| Expression: "
+                        ) %>%
+                        stringr::str_remove(" >"),
                     frmt_type == "frmt_when" ~ frmt_details %>%
-                        str_remove("< frmt_when \\| ") %>%
-                        str_sub(end = -2L) %>%
-                        str_remove_all("[\n]") %>%
-                        str_trim() %>%
+                        stringr::str_remove("< frmt_when \\| ") %>%
+                        stringr::str_sub(end = -2L) %>%
+                        stringr::str_remove_all("[\n]") %>%
+                        stringr::str_trim() %>%
                         gsub(pattern = "\\s\\s", replacement = ", ")
                 )
             )
@@ -233,27 +245,27 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
         dplyr::select(
             -tidyselect::any_of(
                 c(
-                    map_chr(tfrmt$group, as_name),
-                    as_name(tfrmt$label)
+                    purrr::map_chr(tfrmt$group, rlang::as_name),
+                    rlang::as_name(tfrmt$label)
                 )
             )
         ) %>%
         dplyr::mutate(
             dplyr::across(
                 tidyselect::everything(),
-                ~ str_replace_all(., "[0-9]", "x")
+                ~ stringr::str_replace_all(., "[0-9]", "x")
             )
         )
 
     col_plan_vars <- as_vars.character(colnames(tbl_dat_wide))
-    if (is_empty(tfrmt$column)) {
+    if (rlang::is_empty(tfrmt$column)) {
         # create placeholder
         column_names <- "col"
     } else {
-        column_names <- map_chr(tfrmt$column, as_label)
+        column_names <- purrr::map_chr(tfrmt$column, rlang::as_label)
     }
     selection <- as.list(substitute(substitute(col)))[-1] %>%
-        map(trim_vars_quo_c) %>%
+        purrr::map(trim_vars_quo_c) %>%
         do.call("c", .) %>%
         check_col_plan_dots()
 
@@ -264,14 +276,8 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     )
 
     vec_prep <- tbl_dat_wide %>%
-        dplyr::select(
-            tidyselect::any_of(
-                col_selection
-            )
-        ) %>%
-        pivot_longer(
-            tidyselect::everything()
-        ) %>%
+        dplyr::select(tidyselect::any_of(col_selection)) %>%
+        tidyr::pivot_longer(tidyselect::everything()) %>%
         dplyr::arrange(nchar(.data$value)) %>%
         dplyr::filter(!is.na(.data$value)) %>%
         dplyr::pull(.data$value) %>%
