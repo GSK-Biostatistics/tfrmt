@@ -358,7 +358,7 @@ ls_to_frmt_when <- function(x) {
         stringr::str_c("'", names(fmts), "'")
     )
     formula_ls <- stringr::str_c(lhs, " ~ ", fmts) %>%
-        purrr::map(as.formula)
+        purrr::map(stats::as.formula)
 
     do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
 }

@@ -151,7 +151,7 @@ body_plan_builder <- function(
             group_val_to_add <- grp_names[!grp_names %in% names(group_val)]
             group_list_to_add <- rep(".default", length(group_val_to_add)) %>%
                 as.list() %>%
-                setNames(group_val_to_add)
+                stats::setNames(group_val_to_add)
             group_val <- c(group_val, group_list_to_add)[grp_names]
         }
     } else {

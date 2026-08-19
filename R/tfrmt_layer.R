@@ -177,7 +177,7 @@ update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]
 
     old_groups <- do.call(vars, unname(dots))
-    new_group_map <- setNames(
+    new_group_map <- stats::setNames(
         names(dots),
         purrr::map_chr(old_groups, rlang::as_label)
     )
