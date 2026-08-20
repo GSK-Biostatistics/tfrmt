@@ -272,7 +272,11 @@ apply_col_alignment_pos <- function(col, align) {
         dplyr::left_join(
             tibble::tibble(
                 align = trimws(align),
-                col_as_x = stringr::str_replace_all(align, "\\|", "")
+                col_as_x = stringr::str_replace_all(
+                    align,
+                    stringr::fixed("|"),
+                    ""
+                )
             ),
             by = "col_as_x"
         )
@@ -328,7 +332,12 @@ apply_col_alignment_pos <- function(col, align) {
                 is.na(.data$col_split_val) ~ NA,
                 TRUE ~ dplyr::lag(.data$col_split_end, default = 0) + 1
             ),
-            col_split_lev = gsub("col_split_", "", .data$col_split_lev) %>%
+            col_split_lev = gsub(
+                "col_split_",
+                "",
+                .data$col_split_lev,
+                fixed = TRUE
+            ) %>%
                 as.numeric()
         )
 
@@ -349,7 +358,11 @@ apply_col_alignment_pos <- function(col, align) {
             col_sub_1 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
-                stringr::str_detect(.data$col_sub, " ", negate = TRUE) &
+                stringr::str_detect(
+                    .data$col_sub,
+                    stringr::fixed(" "),
+                    negate = TRUE
+                ) &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
                 TRUE ~ stringr::str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space

@@ -45,7 +45,11 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
         ) %>%
         # Replace the internal tlang_delim pattern in column names
         dplyr::rename_with(
-            ~ stringr::str_replace_all(.x, "___tlang_delim___", delim),
+            ~ stringr::str_replace_all(
+                .x,
+                stringr::fixed("___tlang_delim___"),
+                delim
+            ),
             .cols = tidyselect::everything()
         )
 }
