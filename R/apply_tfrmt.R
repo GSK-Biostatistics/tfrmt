@@ -503,7 +503,7 @@ pivot_wider_tfrmt <- function(data, tfrmt, mock) {
 
 
 frmt_struct_string <- function(grp, lbl, param_vals) {
-    length_lbl <- stringr::str_count(lbl, ",") + 1
+    length_lbl <- stringr::str_count(lbl, stringr::fixed(",")) + 1
 
     group_names <- substitute(grp) %>%
         as.list() %>%

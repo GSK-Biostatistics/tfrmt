@@ -223,7 +223,7 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     replace_val <- dplyr::case_when(
         stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
         stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$", negate = TRUE) &
-            stringr::str_detect(vars_to_fmt, "`", negate = TRUE) ~ paste0(
+            stringr::str_detect(vars_to_fmt, stringr::fixed("`"), negate = TRUE) ~ paste0(
             "`",
             vars_to_fmt,
             "`"

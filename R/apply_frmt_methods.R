@@ -172,7 +172,7 @@ apply_frmt.frmt_combine <- function(
         unlist()
 
     # Adding the unquoted version to match while long
-    fmt_param_vals_uq <- stringr::str_remove_all(fmt_param_vals, "`")
+    fmt_param_vals_uq <- stringr::str_remove_all(fmt_param_vals, stringr::fixed("`"))
 
     # Check if unspecified param values are in the dataset
 
@@ -186,7 +186,7 @@ apply_frmt.frmt_combine <- function(
     .tmp_data <- purrr::map_dfr(fmt_param_vals, function(`__var`) {
         fmt_to_apply <- frmt_def$frmt_ls[[`__var`]]
         .data %>%
-            dplyr::filter(!!param == stringr::str_remove_all(`__var`, "`")) %>%
+            dplyr::filter(!!param == stringr::str_remove_all(`__var`, stringr::fixed("`"))) %>%
             apply_frmt(
                 frmt_def = fmt_to_apply,
                 .data = .,
