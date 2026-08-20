@@ -1,6 +1,6 @@
 apply_col_plan <- function(data, col_selection, grp_lbl) {
     if (is.character(col_selection)) {
-        quo_col_selections <- purrr::map(col_selection, ~ char_as_quo(.x))
+        quo_col_selections <- purrr::map(col_selection, char_as_quo)
         col_selection <- do.call(vars, quo_col_selections)
     }
 
@@ -95,7 +95,7 @@ create_col_order <- function(data_names, columns, cp) {
         }
     }
 
-    quo_col_selections <- purrr::map(col_selections, ~ char_as_quo(.x))
+    quo_col_selections <- purrr::map(col_selections, char_as_quo)
 
     do.call(vars, quo_col_selections)
 }
