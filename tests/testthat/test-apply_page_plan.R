@@ -951,7 +951,11 @@ test_that("page_plan() with transform", {
                     grp1 = ".default"
                 )
             ),
-            transform = ~ stringr::str_replace(.x, stringr::fixed("grp1"), "group 1")
+            transform = ~ stringr::str_replace(
+                .x,
+                stringr::fixed("grp1"),
+                "group 1"
+            )
         )
     )
 
@@ -1280,7 +1284,11 @@ test_that("apply_page_plan() with label transformation in a complex table", {
                     )
                 ),
                 note_loc = "subtitle",
-                transform = ~ stringr::str_replace(.x, stringr::fixed("Treatment"), "Group")
+                transform = ~ stringr::str_replace(
+                    .x,
+                    stringr::fixed("Treatment"),
+                    "Group"
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
