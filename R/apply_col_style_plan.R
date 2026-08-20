@@ -103,7 +103,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
         col_selection <- col_plan_span_structure_to_vars(
             x = selection,
             column_names = column_names,
-            data_names = c(),
+            data_names = NULL,
             preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE
         )
@@ -111,7 +111,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
         col_selection <- col_plan_quo_to_vars(
             x = selection,
             column_names = column_names,
-            data_names = c(),
+            data_names = NULL,
             preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE,
             default_everything_behavior = TRUE

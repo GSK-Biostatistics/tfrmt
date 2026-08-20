@@ -56,11 +56,11 @@ test_that("basic tfrmt - selecting group/label/param/value/column - quo into var
 test_that("basic tfrmt - selecting group/label/param/value/column - char", {
     t_frmt <- tfrmt(
         title = "Table Title",
-        group = c("row_label1"),
-        label = c("row_label2"),
-        param = c("param"),
-        value = c("value"),
-        column = c("column")
+        group = "row_label1",
+        label = "row_label2",
+        param = "param",
+        value = "value",
+        column = "column"
     )
 
     expect_s3_class(t_frmt, "tfrmt")
@@ -214,7 +214,7 @@ test_that("layering tfrmt - body style elements", {
         title = "Table Title",
         body_plan = body_plan(
             frmt_structure(
-                group_val = c("group1"),
+                group_val = "group1",
                 label_val = ".default",
                 frmt("XXX")
             )
@@ -226,7 +226,7 @@ test_that("layering tfrmt - body style elements", {
             tfrmt(
                 body_plan = body_plan(
                     frmt_structure(
-                        group_val = c("group2"),
+                        group_val = "group2",
                         label_val = ".default",
                         frmt("xx.x")
                     )
@@ -730,7 +730,7 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
             group = vars(group1, group2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = c("value"),
+                    group_val = "value",
                     label_val = ".default",
                     frmt("XXX")
                 ),
@@ -988,7 +988,7 @@ test_that("layering tfrmt - error when body_plan groups no longer match group ar
         group = vars(group1, group2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = c("value"),
+                group_val = "value",
                 label_val = ".default",
                 frmt("XXX")
             ),

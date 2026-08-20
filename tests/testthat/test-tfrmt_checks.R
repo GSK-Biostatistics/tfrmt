@@ -114,7 +114,7 @@ test_that("Testing error message for invalid input to plan parameters, specifica
             # col_style_structure() supplied to col_style_plan param instead of col_style_plan() funciton
             col_style_plan = col_style_structure(
                 col = `p-value`,
-                align = c("."),
+                align = ".",
                 type = "char"
             )
         ),
