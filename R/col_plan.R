@@ -202,7 +202,7 @@ check_span_structure_dots <- function(x) {
 }
 
 is_valid_span_structure_call <- function(x) {
-    as.character(as.list(x)[[1]]) %in% "span_structure"
+    as.character(as.list(x)[[1]]) == "span_structure"
 }
 
 is_valid_tidyselect_call <- function(x) {
