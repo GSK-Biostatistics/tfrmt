@@ -95,7 +95,11 @@ set_card_args <- function(x, name, value) {
 #'   from 'bind_ard' and contains an 'args' attribute.
 #' @noRd
 drop_bind_ard_args <- function(x) {
-    if (is_bind_ard_card(x) && !is_ard_stack_card(x) && !is.null(attr(x, "args"))) {
+    if (
+        is_bind_ard_card(x) &&
+            !is_ard_stack_card(x) &&
+            !is.null(attr(x, "args"))
+    ) {
         x <- set_card_args(x, "by", NULL)
         x <- set_card_args(x, "variable", NULL)
         x <- set_card_args(x, "strata", NULL)
