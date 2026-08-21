@@ -661,7 +661,8 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
         attributes(shuffled_ard)[["args"]]
     )
 
-    # ard_stack uses bind_ard under the hood - attributes will be lost
+    # ard_stack uses bind_ard under the hood, but retains its ard_stack class
+    # so by attributes should be preserved
     ard <- cards::ard_stack(
         data = adsl,
         cards::ard_tabulate(variables = "AGEGR1"),
@@ -669,9 +670,10 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
         .by = "ARM"
     )
 
-    expect_snapshot(
+    expect_silent(
         shuffled_ard <- shuffle_card(ard)
     )
+    expect_true("ARM" %in% names(shuffled_ard))
 
     # Binding two ARDs together class without a by attribute
     ard_no_by_attr <- cards::bind_ard(

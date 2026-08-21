@@ -56,6 +56,15 @@ is_bind_ard_card <- function(x) {
     inherits(x, "bind_ard")
 }
 
+#' Check if an object inherits from 'ard_stack'
+#'
+#' @param x An object to check.
+#' @return `TRUE` if the object inherits from 'ard_stack', `FALSE` otherwise.
+#' @noRd
+is_ard_stack_card <- function(x) {
+    inherits(x, "ard_stack")
+}
+
 #' Extract an argument from card attributes
 #'
 #' @param x a card object (data frame)
@@ -86,7 +95,7 @@ set_card_args <- function(x, name, value) {
 #'   from 'bind_ard' and contains an 'args' attribute.
 #' @noRd
 drop_bind_ard_args <- function(x) {
-    if (is_bind_ard_card(x) && !is.null(attr(x, "args"))) {
+    if (is_bind_ard_card(x) && !is_ard_stack_card(x) && !is.null(attr(x, "args"))) {
         x <- set_card_args(x, "by", NULL)
         x <- set_card_args(x, "variable", NULL)
         x <- set_card_args(x, "strata", NULL)

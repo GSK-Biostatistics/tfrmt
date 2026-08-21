@@ -63,7 +63,7 @@ shuffle_card <- function(
 
     # Check if a 'by' variable is available for bind_ard objs
     by_arg <- get_card_attr_arg(x, "by")
-    if (is_bind_ard_card(x) && rlang::is_empty(by)) {
+    if (is_bind_ard_card(x) && !is_ard_stack_card(x) && rlang::is_empty(by)) {
         by_msg <- if (rlang::is_empty(by_arg)) {
             c(
                 "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
