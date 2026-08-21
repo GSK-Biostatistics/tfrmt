@@ -346,7 +346,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_style(
             style = gt::cell_borders(
-                sides = c("top"),
+                sides = "top",
                 color = "transparent",
                 weight = gt::px(0)
             ),
@@ -356,7 +356,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_style(
             style = gt::cell_borders(
-                sides = c("bottom"),
+                sides = "bottom",
                 weight = gt::px(0),
                 color = "transparent"
             ),

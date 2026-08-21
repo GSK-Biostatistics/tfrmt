@@ -16,27 +16,27 @@ test_that("Defining the spanning structure", {
     expect_equal(
         s1[["c1"]],
         list(rlang::quo(`Test Label`)),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
     expect_equal(
         s1[["c2"]],
         list(rlang::quo(`A`), rlang::quo(`B`)),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
     expect_equal(
         s1[["c1"]],
         list(rlang::quo(`Test Label`)),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
     expect_equal(
         s2[["c2"]],
         list(rlang::quo(`Test Sub Label`)),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
     expect_equal(
         s2[["c3"]],
         list(rlang::quo(`A`), rlang::quo(`B`)),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -121,7 +121,7 @@ test_that("Test applying a col_plan - simple", {
     cp_keep <- col_plan(
         first_col,
         span_structure(
-            col1 = c("test val"),
+            col1 = "test val",
             col2 = c("val2", "val1")
         )
     )
@@ -138,7 +138,7 @@ test_that("Test applying a col_plan - simple", {
     cp_subtraction <- col_plan(
         -first_col,
         span_structure(
-            col1 = c("test val"),
+            col1 = "test val",
             col2 = c("val2", "val1")
         )
     )
@@ -146,7 +146,7 @@ test_that("Test applying a col_plan - simple", {
     cp_subtraction_span <- col_plan(
         -first_col,
         span_structure(
-            col1 = c("test val"),
+            col1 = "test val",
             col2 = c(-val1)
         )
     )
@@ -170,7 +170,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val1`,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -184,7 +184,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val2`,
             `test val___tlang_delim___val1`
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -199,7 +199,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val1`,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -214,7 +214,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val2`,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     name_col_mixed_order <- c(
@@ -236,7 +236,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val1`,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -250,7 +250,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val2`,
             `test val___tlang_delim___val1`
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -265,7 +265,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val1`,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -280,7 +280,7 @@ test_that("Test applying a col_plan - simple", {
             `test val___tlang_delim___val2`,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -327,7 +327,7 @@ test_that("Test applying a col_plan - tidyselect", {
             extra_col,
             first_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     cp_vars_drop <- create_col_order(
@@ -344,7 +344,7 @@ test_that("Test applying a col_plan - tidyselect", {
             extra_col,
             first_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     name_col_mixed_order <- c(
@@ -368,7 +368,7 @@ test_that("Test applying a col_plan - tidyselect", {
             extra_col,
             first_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -444,7 +444,7 @@ test_that("Test applying a col_plan - renaming", {
             preserved_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -459,7 +459,7 @@ test_that("Test applying a col_plan - renaming", {
             `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -475,7 +475,7 @@ test_that("Test applying a col_plan - renaming", {
             preserved_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -490,7 +490,7 @@ test_that("Test applying a col_plan - renaming", {
             `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -506,7 +506,7 @@ test_that("Test applying a col_plan - renaming", {
             preserved_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -521,7 +521,7 @@ test_that("Test applying a col_plan - renaming", {
             `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -537,7 +537,7 @@ test_that("Test applying a col_plan - renaming", {
             preserved_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -552,7 +552,7 @@ test_that("Test applying a col_plan - renaming", {
             `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -603,7 +603,7 @@ test_that("Test applying a col_plan - renaming twice", {
             preserved_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -618,7 +618,7 @@ test_that("Test applying a col_plan - renaming twice", {
             `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     name_col_mixed_order <- c(
@@ -642,7 +642,7 @@ test_that("Test applying a col_plan - renaming twice", {
             preserved_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     expect_equal(
@@ -657,7 +657,7 @@ test_that("Test applying a col_plan - renaming twice", {
             `new header col___tlang_delim___val1` = `test val___tlang_delim___val1`,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -712,7 +712,7 @@ test_that("Test applying a col_plan - tidyselect with renaming", {
             col2,
             col3
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     cp_vars_drop <- create_col_order(
@@ -732,7 +732,7 @@ test_that("Test applying a col_plan - tidyselect with renaming", {
             col2,
             col3
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     name_col_mixed_order <- c(
@@ -762,7 +762,7 @@ test_that("Test applying a col_plan - tidyselect with renaming", {
             col1,
             col3
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -805,7 +805,7 @@ test_that("Test applying a col_plan - ordering on multiple columns", {
             extra_col,
             preserved_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     cp <- col_plan(
@@ -842,7 +842,7 @@ test_that("Test applying a col_plan - ordering on multiple columns", {
             first_col,
             extra_col
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -887,7 +887,7 @@ test_that("Unorthodox col_plans", {
             val7,
             val5
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 
     cp2 <- col_plan(
@@ -915,7 +915,7 @@ test_that("Unorthodox col_plans", {
             -val6,
             -val7
         ),
-        ignore_attr = c(".Environment")
+        ignore_attr = ".Environment"
     )
 })
 
@@ -1030,7 +1030,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>%
             purrr::map_chr(as.character),
-        c("span 1")
+        "span 1"
     )
 
     expect_identical(
@@ -1107,7 +1107,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>%
             purrr::map_chr(as.character),
-        c("span 1")
+        "span 1"
     )
 
     expect_identical(
@@ -1187,7 +1187,7 @@ test_that("Build simple tfrmt with multiple columns and apply to basic data and 
     expect_identical(
         processed_gt[["_spanners"]]$spanner_label %>%
             purrr::map_chr(as.character),
-        c("new span name")
+        "new span name"
     )
 
     expect_identical(
@@ -1521,9 +1521,7 @@ test_that("Build simple tfrmt with spans with child spans that are and are not s
                 "column cols___tlang_delim___cols 1,2___tlang_delim___col2",
                 "column cols___tlang_delim___NA___tlang_delim___col4"
             ),
-            c(
-                "my cols___tlang_delim___NA___tlang_delim___new_col_3"
-            )
+            "my cols___tlang_delim___NA___tlang_delim___new_col_3"
         )
     )
 })
@@ -1586,7 +1584,7 @@ test_that("Tidyselect subtraction with span_structure", {
             ),
             t_or_p = dplyr::case_when(
                 column %in% c("trt1", "trt2", "trt1&trt2") ~ "Treatment",
-                column %in% c("pl") ~ "Placebo"
+                column == "pl" ~ "Placebo"
             )
         )
 
