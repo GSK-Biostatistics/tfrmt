@@ -25,9 +25,9 @@ big_n_structure <- function(
     n_frmt = frmt("\nN = xx"),
     by_page = FALSE
 ) {
-    if (!is_frmt(n_frmt) || is_frmt_combine(n_frmt) || is_frmt_when(n_frmt)) {
-        stop("`n_frmt` must be given a frmt object")
-    }
+    # TODO add check for param_val
+    check_frmt_strict(n_frmt)
+    check_logical(by_page, allow_na = FALSE)
 
     structure(
         list(

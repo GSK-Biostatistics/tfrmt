@@ -230,6 +230,31 @@ is_tfrmt <- function(x) {
     inherits(x, "tfrmt")
 }
 
+check_tfrmt <- function(
+    tfrmt,
+    arg = rlang::caller_arg(tfrmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(tfrmt)) {
+        if (is_tfrmt(tfrmt)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(tfrmt)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        tfrmt,
+        "a tfrmt object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
 tfrmt_find_args <- function(
     ...,
     env = parent.frame(),

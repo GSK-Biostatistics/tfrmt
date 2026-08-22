@@ -26,20 +26,25 @@
 #'
 #' tfrmt_1 <- tfrmt(title = "title1")
 #'
-#' tfrmt_2 <- tfrmt(title = "title2",subtitle = "subtitle2")
+#' tfrmt_2 <- tfrmt(
+#'     title = "title2",
+#'     subtitle = "subtitle2"
+#' )
 #'
 #' layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
     if (missing(x)) {
-        stopifnot(is_tfrmt(y))
+        check_tfrmt(y)
         return(y)
     } else if (missing(y)) {
-        stopifnot(is_tfrmt(x))
+        check_tfrmt(x)
         return(x)
     }
 
-    stopifnot(is_tfrmt(y), is_tfrmt(x))
+    check_tfrmt(x)
+    check_tfrmt(y)
+    check_logical(join_body_plans, allow_na = FALSE)
 
     args <- union(names(x), names(y))
 

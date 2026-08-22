@@ -35,13 +35,8 @@
 #' }}
 #'
 print_to_ggplot <- function(tfrmt, .data, ...) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
-
-    if (!is.data.frame(.data)) {
-        stop("Requires data")
-    }
+    check_tfrmt(tfrmt)
+    rlang::check_data_frame(.data)
 
     # stop if label location is not indented
     if (

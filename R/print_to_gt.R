@@ -149,16 +149,18 @@ print_mock_gt <- function(
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
+    check_tfrmt(tfrmt)
+    rlang::check_data_frame(.data)
+    if (missing(.data)) {
+        cli::cli_abort(
+            "Requires data, if not available please use `print_mock_gt()`"
+        )
     }
+    check_logical(.unicode_ws)
 
     # check required input variables are supplied
     check_inputs(tfrmt, c("column", "param", "value"))
 
-    if (!is.data.frame(.data)) {
-        stop("Requires data, if not available please use `print_mock_gt()`")
-    }
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
         cleaned_data_to_gt(tfrmt, .unicode_ws)
 }
