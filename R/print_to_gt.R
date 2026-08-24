@@ -162,7 +162,7 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     check_input_vars(tfrmt, c("column", "param", "value"))
 
     .data |>
-        apply_tfrmt(tfrmt, mock = FALSE) |>
+        apply_tfrmt(tfrmt) |>
         cleaned_data_to_gt(tfrmt, .unicode_ws)
 }
 

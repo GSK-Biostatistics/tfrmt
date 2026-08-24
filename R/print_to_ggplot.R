@@ -83,7 +83,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     column_data <- dplyr::pull(.data, !!column_name)
 
     .data |>
-        apply_tfrmt(tfrmt, mock = FALSE) |>
+        apply_tfrmt(tfrmt) |>
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
 }
 
