@@ -677,8 +677,8 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
 
     # Binding two ARDs together with by variable "ARM"
     ard_no_stack_attr <- cards::bind_ard(
-        cards::ard_tabulate(cards::ADSL, variables = "AGEGR1", by="ARM"),
-        cards::ard_tabulate(cards::ADSL, variables = "SEX", by="ARM")
+        cards::ard_tabulate(cards::ADSL, variables = "AGEGR1", by = "ARM"),
+        cards::ard_tabulate(cards::ADSL, variables = "SEX", by = "ARM")
     )
 
     expect_snapshot(
