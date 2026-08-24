@@ -907,7 +907,7 @@ test_that("page plan with page_structure, single level variable", {
 
     expect_identical(
         purrr::map_chr(auto_split, attr, ".page_note"),
-       "grp1: cat_1"
+        "grp1: cat_1"
     )
 })
 
