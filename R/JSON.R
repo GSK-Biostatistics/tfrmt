@@ -150,7 +150,7 @@ as_json.frmt_combine <- function(x) {
 #' @export
 as_json.col_plan <- function(x) {
     if (is.null(x)) {
-        c()
+        NULL
     } else {
         dot_ls <- x$dots %>%
             purrr::map(as_json)
@@ -166,9 +166,8 @@ as_json.col_plan <- function(x) {
 as_json.span_structure <- function(x) {
     purrr::map(
         x,
-        function(foo) {
-            purrr::map_chr(foo, as_json)
-        }
+        purrr::map_chr,
+        as_json
     ) %>%
         list(span_structure = .)
 }
