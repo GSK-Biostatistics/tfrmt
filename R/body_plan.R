@@ -31,12 +31,7 @@
 #'
 body_plan <- function(...) {
     frmt_structure_list <- list(...)
-
-    if (!purrr::every(frmt_structure_list, is_frmt_structure)) {
-        cli::cli_abort(
-            "Expected a list of `frmt_structure` objects."
-        )
-    }
+    check_frmt_structure_list(frmt_structure_list)
 
     structure(
         frmt_structure_list,

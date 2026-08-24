@@ -125,6 +125,35 @@ test_that("check_frmt_structure", {
     )
 })
 
+test_that("check_frmt_structure_list", {
+    expect_no_error(
+        check_frmt_structure_list(
+            list(
+                frmt_structure(
+                    group_val = c("group1"),
+                    label_val = ".default",
+                    frmt("XXX")
+                ),
+                frmt_structure(
+                    group_val = c("group2"),
+                    label_val = ".default",
+                    frmt("XX")
+                )
+            )
+        )
+    )
+
+    expect_error(
+        check_frmt_structure_list("foo"),
+        "Expected a list of `frmt_structure` objects."
+    )
+
+    expect_error(
+        check_frmt_structure_list(list("foo")),
+        "Expected a list of `frmt_structure` objects."
+    )
+})
+
 test_that("is_row_grp_structure", {
     expect_true(
         is_row_grp_structure(
@@ -154,5 +183,32 @@ test_that("check_row_grp_structure", {
     expect_error(
         check_row_grp_structure("foo"),
         '`"foo"` must be a row group structure object, not the string "foo".'
+    )
+})
+
+test_that("check_row_grp_structure_list", {
+    expect_no_error(
+        check_row_grp_structure_list(
+            list(
+                row_grp_structure(
+                    group_val = c("A", "C"),
+                    element_block(post_space = "---")
+                ),
+                row_grp_structure(
+                    group_val = c("foo", "bar"),
+                    element_block(post_space = "baz")
+                )
+            )
+        )
+    )
+
+    expect_error(
+        check_row_grp_structure_list("foo"),
+        "Expected a list of `row_grp_structure` objects"
+    )
+
+    expect_error(
+        check_row_grp_structure_list(list("foo")),
+        "Expected a list of `row_grp_structure` objects"
     )
 })

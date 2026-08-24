@@ -182,6 +182,17 @@ check_frmt_structure <- function(
     )
 }
 
+# checks if `x` is a list of frmt_structure objects
+check_frmt_structure_list <- function(x) {
+    if (!rlang::is_list(x) || !purrr::every(x, is_frmt_structure)) {
+        cli::cli_abort(
+            "Expected a list of `frmt_structure` objects."
+        )
+    }
+
+    invisible(NULL)
+}
+
 #' Is object a `row_grp_structure`?
 #'
 #' @noRd
@@ -220,6 +231,18 @@ check_row_grp_structure <- function(
         call = call
     )
 }
+
+# checks if `x` is a list of row_grp_structure objects
+check_row_grp_structure_list <- function(x) {
+    if (!rlang::is_list(x) || !purrr::every(x, is_row_grp_structure)) {
+        cli::cli_abort(
+            "Expected a list of `row_grp_structure` objects."
+        )
+    }
+
+    invisible(NULL)
+}
+
 
 #' @export
 format.frmt <- function(x, ...) {
