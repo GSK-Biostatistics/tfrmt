@@ -7,7 +7,11 @@
 
 ## Bug fixes
 * Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
-  
+
+## Changes
+
+* the `frmt_utils` functions (`is_frmt()`, `is_frmt_combine()`, `is_frmt_structure()`, `is_frmt_when()`, and `is_row_grp_structure()`) are no longer exported. (@dragosmg)
+
 # tfrmt 0.4.0
 
 ## Improvements
