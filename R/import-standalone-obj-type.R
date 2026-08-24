@@ -278,7 +278,7 @@ vec_type_friendly <- function(x, length = FALSE) {
     )
 }
 
-.rlang_stop_unexpected_typeof <- function(x, call = caller_env()) {
+.rlang_stop_unexpected_typeof <- function(x, call = rlang::caller_env()) {
     rlang::abort(
         sprintf("Unexpected type <%s>.", typeof(x)),
         call = call
