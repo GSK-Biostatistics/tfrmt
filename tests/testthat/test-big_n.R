@@ -12,7 +12,7 @@ test_that("Defining the big Ns", {
 
     expect_equal(
         bn1[["param_val"]],
-        c("bigN"),
+        "bigN",
         ignore_attr = ".Environment"
     )
 
@@ -738,11 +738,11 @@ test_that("Test big n with footnotes", {
             group,
             label,
             span_structure(
-                span = c("Placebo"),
-                column = c("PL")
+                span = "Placebo",
+                column = "PL"
             ),
             span_structure(
-                span = c("Treatment"),
+                span = "Treatment",
                 column = c("T1", "T2", "T1&T2")
             )
         ),
@@ -786,7 +786,7 @@ test_that("Test big n with footnotes", {
                 label_val = list(label = "label 1"),
                 column_val = list(
                     span = "Treatment",
-                    column = c("T2")
+                    column = "T2"
                 )
             )
         ),
@@ -918,7 +918,7 @@ test_that("big Ns vary by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1009,7 +1009,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = FALSE
         )
     )
@@ -1074,7 +1074,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1166,7 +1166,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = FALSE
         )
     )
@@ -1245,7 +1245,7 @@ test_that("not enough big Ns by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1553,7 +1553,8 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
     expect_identical(
         purrr::map_chr(
             output_list,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "by group: 101",
