@@ -151,12 +151,12 @@ print_mock_gt <- function(
 #' }}
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     check_tfrmt(tfrmt)
-    rlang::check_data_frame(.data)
     if (missing(.data)) {
         cli::cli_abort(
             "Requires data, if not available please use `print_mock_gt()`"
         )
     }
+    rlang::check_data_frame(.data)
     rlang::check_bool(.unicode_ws)
 
     check_input_vars(tfrmt, c("column", "param", "value"))
