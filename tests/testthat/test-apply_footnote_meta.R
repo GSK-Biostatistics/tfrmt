@@ -54,7 +54,10 @@ test_that("applying footnote meta column val", {
             )
         ),
         footnote_plan = footnote_plan(
-            footnote_structure("Test footnote 1", column_val = "Placebo"),
+            footnote_structure(
+                "Test footnote 1",
+                column_val = "Placebo"
+            ),
             marks = "letters"
         )
     )
