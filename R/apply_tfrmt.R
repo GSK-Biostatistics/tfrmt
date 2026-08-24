@@ -6,11 +6,7 @@
 #'
 #' @return formatted tibble
 #' @noRd
-apply_tfrmt <- function(
-    .data,
-    tfrmt,
-    mock = FALSE
-) {
+apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
     # TODO add a call argument and pass it down to the check_ functions
     # TODO check .data?
     check_tfrmt(tfrmt)
