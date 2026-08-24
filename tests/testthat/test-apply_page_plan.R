@@ -907,7 +907,7 @@ test_that("page plan with page_structure, single level variable", {
 
     expect_identical(
         purrr::map_chr(auto_split, attr, ".page_note"),
-        c("grp1: cat_1")
+        "grp1: cat_1"
     )
 })
 
@@ -963,7 +963,7 @@ test_that("page_plan() with transform", {
 
     expect_identical(
         purrr::map_chr(auto_split, attr, ".page_note"),
-        c("group 1: cat_1")
+        "group 1: cat_1"
     )
 
     # transform as function
@@ -977,7 +977,7 @@ test_that("page_plan() with transform", {
 
     expect_identical(
         purrr::map_chr(auto_split, attr, ".page_note"),
-        c("group 1: category 1")
+        "group 1: category 1"
     )
 })
 
@@ -1191,7 +1191,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     ard_ae5 <- ard_ae4 |>
         dplyr::full_join(
             ordering_aesoc,
-            by = c("AESOC")
+            by = "AESOC"
         ) |>
         dplyr::full_join(
             ordering_aeterm,

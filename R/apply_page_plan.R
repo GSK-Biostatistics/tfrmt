@@ -395,7 +395,7 @@ combine_group_cols_mod <- function(
                 )
         )
 
-    if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
+    if (element_row_grp_loc == "spanning" && length(group) > 0) {
         group <- group[-1]
     }
 

@@ -189,7 +189,7 @@ frmt <- function(
             scientific = scientific,
             transform = transform
         ),
-        class = c("frmt")
+        class = "frmt"
     )
 }
 
