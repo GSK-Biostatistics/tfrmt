@@ -183,7 +183,7 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @keywords internal
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
-    purrr::map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
+    purrr::map(.data, cleaned_data_to_gt.default, tfrmt, .unicode_ws) %>%
         gt::gt_group(.list = .)
 }
 #' Apply formatting to a single table
@@ -478,7 +478,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::group_by(.data$value) %>%
             tidyr::nest(set = "cols") %>%
             dplyr::mutate(
-                set = purrr::map(.data$set, ~ dplyr::pull(., .data$cols))
+                set = purrr::map(.data$set, dplyr::pull, .data$cols)
             ) %>%
             dplyr::filter(
                 .data$value != "NA"

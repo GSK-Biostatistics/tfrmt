@@ -406,7 +406,7 @@ apply_col_alignment_pos <- function(col, align) {
             )
         )
 
-    if (nrow(dplyr::filter(col_left_padded01, .data$no_space)) > 0) {
+    if (sum(col_left_padded01$no_space, na.rm = TRUE) > 0) {
         message(
             "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value"
         )
