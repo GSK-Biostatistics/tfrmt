@@ -273,8 +273,9 @@ apply_col_alignment_pos <- function(col, align) {
             tibble::tibble(
                 align = trimws(align),
                 col_as_x = stringr::str_remove_all(
-                  align, 
-                  stringr::fixed("|"))
+                    align,
+                    stringr::fixed("|")
+                )
             ),
             by = "col_as_x"
         )
