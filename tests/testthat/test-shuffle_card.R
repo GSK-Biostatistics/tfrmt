@@ -692,7 +692,7 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
     )
 
     expect_snapshot(
-      shuffle_card(ard_no_by_attr)
+        shuffle_card(ard_no_by_attr)
     )
 })
 
