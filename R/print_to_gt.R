@@ -158,8 +158,6 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     }
     rlang::check_bool(.unicode_ws)
 
-    # TODO rename check_inputs to check_input_cols or check_input_vars?
-    # check required input variables are supplied
     check_input_vars(tfrmt, c("column", "param", "value"))
 
     apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
