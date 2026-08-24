@@ -272,7 +272,7 @@ apply_col_alignment_pos <- function(col, align) {
         dplyr::left_join(
             tibble::tibble(
                 align = trimws(align),
-                col_as_x = stringr::str_replace_all(align, "\\|", "")
+                col_as_x = stringr::str_remove_all(align, stringr::fixed("|"))
             ),
             by = "col_as_x"
         )
@@ -328,7 +328,10 @@ apply_col_alignment_pos <- function(col, align) {
                 is.na(.data$col_split_val) ~ NA,
                 TRUE ~ dplyr::lag(.data$col_split_end, default = 0) + 1
             ),
-            col_split_lev = gsub("col_split_", "", .data$col_split_lev) %>%
+            col_split_lev = stringr::str_remove_all(
+                .data$col_split_lev,
+                stringr::fixed("col_split_")
+            ) %>%
                 as.numeric()
         )
 
