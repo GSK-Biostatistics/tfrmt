@@ -675,14 +675,24 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
     )
     expect_true("ARM" %in% names(shuffled_ard))
 
-    # Binding two ARDs together class without a by attribute
-    ard_no_by_attr <- cards::bind_ard(
-        cards::ard_tabulate(cards::ADSL, variables = "AGEGR1"),
-        cards::ard_tabulate(cards::ADSL, variables = "SEX")
+    # Binding two ARDs together with by variable "ARM"
+    ard_no_stack_attr <- cards::bind_ard(
+        cards::ard_tabulate(cards::ADSL, variables = "AGEGR1", by="ARM"),
+        cards::ard_tabulate(cards::ADSL, variables = "SEX", by="ARM")
     )
 
     expect_snapshot(
-        shuffle_card(ard_no_by_attr)
+        shuffle_card(ard_no_stack_attr)
+    )
+
+    # Binding two ARDs together with no by variable
+    ard_no_by_attr <- cards::bind_ard(
+      cards::ard_tabulate(cards::ADSL, variables = "AGEGR1"),
+      cards::ard_tabulate(cards::ADSL, variables = "SEX")
+    )
+
+    expect_snapshot(
+      shuffle_card(ard_no_by_attr)
     )
 })
 
