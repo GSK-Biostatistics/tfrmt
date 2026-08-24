@@ -994,7 +994,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         value = val,
         col_style_plan = col_style_plan(
             col_style_structure(
-                align = c(" xx |(xx)"),
+                align = " xx |(xx)",
                 type = "pos",
                 col = vars(two, three)
             )

@@ -150,7 +150,7 @@ as_json.frmt_combine <- function(x) {
 #' @export
 as_json.col_plan <- function(x) {
     if (is.null(x)) {
-        c()
+        NULL
     } else {
         dot_ls <- x$dots %>%
             purrr::map(as_json)

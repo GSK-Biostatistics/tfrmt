@@ -63,7 +63,7 @@ create_col_order <- function(data_names, columns, cp) {
             column_names <- purrr::map_chr(columns, rlang::as_label)
         }
 
-        col_selections <- c()
+        col_selections <- NULL
 
         for (cp_el_idx in seq_along(cp$dots)) {
             cp_el <- cp$dots[cp_el_idx]

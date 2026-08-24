@@ -183,7 +183,7 @@ test_that("insert mix - single grouping variable", {
             element_block(post_space = "---")
         ),
         row_grp_structure(
-            group_val = c("B"),
+            group_val = "B",
             element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(
