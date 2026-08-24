@@ -44,7 +44,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
 
     check_tfrmt(x)
     check_tfrmt(y)
-    check_logical(join_body_plans, allow_na = FALSE)
+    rlang::check_bool(join_body_plans)
 
     args <- union(names(x), names(y))
 

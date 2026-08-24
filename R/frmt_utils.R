@@ -1,3 +1,5 @@
+# TODO do we need these exported
+
 #' Is object a `frmt`?
 #'
 #' @param x An object to test.

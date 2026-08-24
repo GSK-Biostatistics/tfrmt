@@ -9,7 +9,7 @@
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
     # TODO check .data?
     check_tfrmt(tfrmt)
-    check_logical(mock, allow_na = FALSE)
+    rlang::check_bool(mock)
 
     validate_cols_match(.data, tfrmt, mock)
 

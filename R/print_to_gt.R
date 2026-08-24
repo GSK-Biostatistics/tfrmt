@@ -156,7 +156,7 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
             "Requires data, if not available please use `print_mock_gt()`"
         )
     }
-    check_logical(.unicode_ws, allow_na = FALSE)
+    rlang::check_bool(.unicode_ws)
 
     # TODO rename check_inputs to check_input_cols or check_input_vars?
     # check required input variables are supplied
