@@ -5,18 +5,16 @@
 # from tidyselect and dplyr re-exports it, but it is no longer exported by
 # tidyselect)
 
+# `tidyselect::starts_with()`` is also a bit problematic since tfrmt supports
+# tidyselect specification of selected columns, but the implementation has not
+# kept up with subsequent tidyselect changes
+
 ## usethis namespace: start
 #' @importFrom dplyr vars
 #'
-#' @importFrom forcats fct_inorder
-#'
 #' @importFrom rlang .data := !! !!! %||%
 #'
-#' @importFrom stats as.formula setNames
-#'
 #' @importFrom tidyselect starts_with
-#'
-#' @importFrom utils capture.output
 #'
 ## usethis namespace: end
 NULL
