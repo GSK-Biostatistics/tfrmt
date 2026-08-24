@@ -535,7 +535,7 @@ as.character.frmt_when <- function(x, ...) {
         })
 
     left <- x$frmt_ls %>%
-        purrr::map_chr(~ rlang::f_lhs(.x)) %>%
+        purrr::map_chr(rlang::f_lhs) %>%
         stringr::str_c("'", ., "'")
     params <- stringr::str_c(left, " ~ ", right) %>%
         stringr::str_c(collapse = ", ")
@@ -557,7 +557,7 @@ as.character.frmt_when <- function(x, ...) {
 #' @export
 as.character.frmt_combine <- function(x, ...) {
     params <- x$frmt_ls %>%
-        purrr::map_chr(~ as.character(.x)) %>%
+        purrr::map_chr(as.character) %>%
         stringr::str_c(names(x$frmt_ls), " = ", .) %>%
         stringr::str_c(collapse = ", ")
     paste0(

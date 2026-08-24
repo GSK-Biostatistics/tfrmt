@@ -166,9 +166,8 @@ as_json.col_plan <- function(x) {
 as_json.span_structure <- function(x) {
     purrr::map(
         x,
-        function(foo) {
-            purrr::map_chr(foo, as_json)
-        }
+        purrr::map_chr,
+        as_json
     ) %>%
         list(span_structure = .)
 }
