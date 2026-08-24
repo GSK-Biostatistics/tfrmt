@@ -71,7 +71,7 @@ shuffle_card <- function(
         } else {
             c(
                 "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
-                "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
+                "i" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
             )
         }
 
