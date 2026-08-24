@@ -233,7 +233,7 @@ make_col_df <- function(
                 purrr::keep(is.list) %>%
                 purrr::map_dfr(function(x) {
                     span_df <- x %>%
-                        purrr::map(clean_col_names, NULL) %>%
+                        purrr::map(clean_col_names) %>%
                         purrr::reduce(tidyr::crossing) %>%
                         tidyr::unnest(cols = tidyselect::everything())
                     names(span_df) <- names(x)
