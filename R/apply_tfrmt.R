@@ -6,7 +6,11 @@
 #'
 #' @return formatted tibble
 #' @noRd
-apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
+apply_tfrmt <- function(
+    .data,
+    tfrmt,
+    mock = FALSE
+) {
     # TODO check .data?
     check_tfrmt(tfrmt)
     rlang::check_bool(mock)
@@ -14,7 +18,10 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
     validate_cols_match(.data, tfrmt, mock)
 
     tbl_dat <- .data %>%
-        remove_big_ns(param = tfrmt$param, big_n_structure = tfrmt$big_n) %>%
+        remove_big_ns(
+            param = tfrmt$param,
+            big_n_structure = tfrmt$big_n
+        ) %>%
         apply_table_frmt_plan(
             .data = .,
             table_frmt_plan = tfrmt$body_plan,
@@ -563,7 +570,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #' @return warning if order variables are causing formatting issues
 #'
 #' @noRd
-check_order_vars <- function(.data, tfrmt) {
+check_order_vars <- function(.data, tfrmt, call = rlang::caller_env()) {
     if (!rlang::is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
         if (rlang::is_empty(tfrmt$group)) {

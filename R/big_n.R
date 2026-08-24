@@ -25,7 +25,7 @@ big_n_structure <- function(
     n_frmt = frmt("\nN = xx"),
     by_page = FALSE
 ) {
-    # TODO add check for param_val
+    # TODO add check for param_val?
     check_frmt_strict(n_frmt)
     rlang::check_bool(by_page)
 
