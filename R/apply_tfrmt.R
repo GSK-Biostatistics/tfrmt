@@ -11,6 +11,7 @@ apply_tfrmt <- function(
     tfrmt,
     mock = FALSE
 ) {
+    # TODO add a call argument and pass it down to the check_ functions
     # TODO check .data?
     check_tfrmt(tfrmt)
     rlang::check_bool(mock)
@@ -570,7 +571,7 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
 #' @return warning if order variables are causing formatting issues
 #'
 #' @noRd
-check_order_vars <- function(.data, tfrmt, call = rlang::caller_env()) {
+check_order_vars <- function(.data, tfrmt) {
     if (!rlang::is_empty(tfrmt$sorting_cols)) {
         # check for values printing on different lines due to incorrect order variables
         if (rlang::is_empty(tfrmt$group)) {
