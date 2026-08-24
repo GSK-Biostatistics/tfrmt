@@ -296,7 +296,7 @@ combine_group_cols <- function(
                 run_id = dplyr::consecutive_id(!!!top_grouping)
             ) %>%
             dplyr::group_split() %>%
-            purrr::map(~ dplyr::select(.x, -run_id))
+            purrr::map(dplyr::select, -run_id)
 
         .data <- split_dat %>%
             purrr::map_dfr(function(lone_dat) {

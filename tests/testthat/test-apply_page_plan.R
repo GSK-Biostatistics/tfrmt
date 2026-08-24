@@ -81,7 +81,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp: A", "grp: B", "grp: C")
     )
     expect_identical(
@@ -135,7 +135,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp2: a", "grp2: b")
     )
 
@@ -192,7 +192,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: A, grp2: a",
             "grp1: A, grp2: b",
@@ -247,7 +247,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("lbl: n", "lbl: pct")
     )
     expect_identical(
@@ -370,7 +370,7 @@ test_that("page plan with mix of defined & group splits", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -451,7 +451,7 @@ test_that("page plan with multiple structures", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -830,7 +830,7 @@ test_that("page plan with both page_structure and max_rows", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: cat_1",
             "grp1: cat_2",
@@ -906,7 +906,7 @@ test_that("page plan with page_structure, single level variable", {
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: cat_1")
     )
 })
@@ -958,7 +958,7 @@ test_that("page_plan() with transform", {
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("group 1: cat_1")
     )
 
@@ -972,7 +972,7 @@ test_that("page_plan() with transform", {
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("group 1: category 1")
     )
 })
@@ -1022,7 +1022,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: cat_1, grp2: cat_1",
             "grp1: cat_1, grp2: cat_2",
@@ -1054,7 +1054,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "Group 1 (cat_1), Group 2 (cat_1)",
             "Group 1 (cat_1), Group 2 (cat_2)",
@@ -1295,7 +1295,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Group: Placebo (N=86)",
@@ -1314,7 +1315,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Group: Placebo (N=86)",
@@ -1332,7 +1334,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Treatment: Placebo (N=86)",
