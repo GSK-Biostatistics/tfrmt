@@ -145,7 +145,8 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
             dplyr::mutate(
                 frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
-                        stringr::str_remove(stringr::fixed(
+                        stringr::str_remove(
+                            stringr::fixed(
                             "< frmt | Expression: "
                         )) %>%
                         stringr::str_remove(stringr::fixed(" >")),
