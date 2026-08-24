@@ -39,7 +39,7 @@ shuffle_card(
 - order_rows:
 
   logical representing whether or not to apply
-  [`cards::tidy_ard_row_order()`](https://insightsengineering.github.io/cards/latest-tag/reference/tidy_ard_order.html)
+  [`cards::tidy_ard_row_order()`](https://pharmaverse.github.io/cards/latest-tag/reference/tidy_ard_order.html)
   to sort the rows
 
 - fill_overall:

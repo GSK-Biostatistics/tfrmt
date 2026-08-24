@@ -10,13 +10,13 @@ is identical to
 If not identical, the input data.frame is returned unchanged. Useful for
 uniting sparsely populated columns, for example when processing an ard
 that was created with
-[`cards::ard_stack()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html)
+[`cards::ard_stack()`](https://pharmaverse.github.io/cards/latest-tag/reference/ard_stack.html)
 then shuffled with `[shuffle_card()]`.
 
 If the data is the result of a hierarchical ard stack (with
-[`cards::ard_stack_hierarchical()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack_hierarchical.html)
+[`cards::ard_stack_hierarchical()`](https://pharmaverse.github.io/cards/latest-tag/reference/ard_stack_hierarchical.html)
 or
-[`cards::ard_stack_hierarchical_count()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack_hierarchical.html)),
+[`cards::ard_stack_hierarchical_count()`](https://pharmaverse.github.io/cards/latest-tag/reference/ard_stack_hierarchical.html)),
 the input is returned unchanged. This is assessed from the information
 in the `context` column which needs to be present. If the input data
 does not have a `context` column, the input will be returned unmodified.

@@ -147,7 +147,7 @@ ard_demog_shuffled
 
 Note that if we take a peek at our stats for the treatment groups, we
 have `n`, `N`, `p` from the
-[`ard_stack()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html)
+[`ard_stack()`](https://pharmaverse.github.io/cards/latest-tag/reference/ard_stack.html)
 call:
 
 ``` r
@@ -392,7 +392,7 @@ ard_ae_shuffled |>
 
 Note that if we take a peek at our stats for the treatment groups, we
 have `n`, `N`, `p` from the
-[`ard_stack()`](https://insightsengineering.github.io/cards/latest-tag/reference/ard_stack.html)
+[`ard_stack()`](https://pharmaverse.github.io/cards/latest-tag/reference/ard_stack.html)
 call:
 
 ``` r
