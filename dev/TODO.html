@@ -86,6 +86,13 @@
 <label><input type="checkbox">revisit <code>is_valid_()</code> functionality</label>
 <ul class="task-list"><li><label><input type="checkbox">the constructor should always produce a valid object</label></li>
 </ul></li>
+<li><label><input type="checkbox">functions should check their inputs. If the function is not user facing, then it should report the error / condition from the calling function. For example, <code>apply_tfrmt()</code> should have a <code>call = rlang::caller_env()</code> argument.</label></li>
+<li>
+<label><input type="checkbox">all user-facing functions should check all their inputs before doing any work.</label>
+<ul><li>for example, <code><a href="reference/big_n_structure.html">big_n_structure()</a></code> should check <code>param_val</code>
+</li>
+</ul></li>
+<li><label><input type="checkbox">all S3 classes introduced by {tfrmt} should have matching <code>is_&lt;class&gt;()</code> and <code>check_&lt;class&gt;()</code> functions.</label></li>
 </ul></div>
 <div class="section level2">
 <h2 id="performance">Performance<a class="anchor" aria-label="anchor" href="#performance"></a></h2>

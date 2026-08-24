@@ -48,7 +48,10 @@ evaluation. Consider setting `join_body_plan` to `FALSE`. Only the y
 
 tfrmt_1 <- tfrmt(title = "title1")
 
-tfrmt_2 <- tfrmt(title = "title2",subtitle = "subtitle2")
+tfrmt_2 <- tfrmt(
+    title = "title2",
+    subtitle = "subtitle2"
+)
 
 layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 ```
