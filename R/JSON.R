@@ -63,7 +63,7 @@ as_json.tfrmt <- function(x) {
     # Removing names added in by jsonlite
     # only change spaces at the beginning of the row
     json_split <- output_json %>%
-        stringr::str_split("\\\n") %>%
+        stringr::str_split(stringr::fixed("\n")) %>%
         unlist()
     # Needs updating
     to_replace <- stringr::str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
@@ -419,7 +419,7 @@ ls_to_col_plan <- function(ls) {
                         rlang::parse_expr()
                 } else {
                     el[[1]] %>%
-                        stringr::str_replace_all("\\\"", "'") %>%
+                        stringr::str_replace_all(stringr::fixed("\""), "'") %>%
                         char_as_quo() %>%
                         rlang::quo_get_expr()
                 }
@@ -449,7 +449,7 @@ ls_to_col_style_plan <- function(ls) {
                 function(struct) {
                     stuct_in <- purrr::map(struct, unlist)
                     names(stuct_in) <- names(stuct_in) %>%
-                        stringr::str_replace("cols", "col")
+                        stringr::str_replace(stringr::fixed("cols"), "col")
                     cols_val <- struct[["cols"]][[1]]
                     if (
                         !is.null(names(cols_val)) &&

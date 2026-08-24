@@ -146,8 +146,9 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 frmt_details = dplyr::case_when(
                     frmt_type == "frmt" ~ frmt_details %>%
                         stringr::str_remove(
-                            stringr::fixed("< frmt | Expression: ")
-                        ) %>%
+                            stringr::fixed(
+                            "< frmt | Expression: "
+                        )) %>%
                         stringr::str_remove(stringr::fixed(" >")),
                     frmt_type == "frmt_combine" ~ frmt_details %>%
                         stringr::str_remove(
@@ -156,10 +157,11 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                         stringr::str_remove(stringr::fixed(" >")),
                     frmt_type == "frmt_when" ~ frmt_details %>%
                         stringr::str_remove(
-                            stringr::fixed("< frmt_when | ")
-                        ) %>%
+                            stringr::fixed(
+                            "< frmt_when | "
+                        )) %>%
                         stringr::str_sub(end = -2L) %>%
-                        stringr::str_remove_all("[\n]") %>%
+                        stringr::str_remove_all(stringr::fixed("\n")) %>%
                         stringr::str_trim() %>%
                         gsub(pattern = "\\s\\s", replacement = ", ")
                 )

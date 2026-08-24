@@ -15,7 +15,6 @@ linters: all_linters(
   keyword_quote_linter = NULL,
   undesirable_function_linter = NULL,
   object_overwrite_linter = NULL,
-  fixed_regex_linter = NULL,
   # conditions handling linters
   condition_call_linter = NULL,
   condition_message_linter = NULL,
