@@ -2,12 +2,14 @@
 #'
 #' @param x An object to test.
 #'
-#' @noRd
+#' @export
 #' @examples
 #' x1 <- frmt("XXX.XX")
 #' is_frmt(x1)
 #'
 #' @return 'TRUE' if yes, 'FALSE' if no
+#'
+#' @rdname frmt_utils
 is_frmt <- function(x) {
     inherits(x, "frmt")
 }
@@ -70,10 +72,12 @@ check_frmt_strict <- function(
 
 #' Is object a `frmt_combine`?
 #'
-#' @noRd
+#' @export
 #' @examples
 #' x2 <- frmt_combine("XXX %", "XX,XXX")
 #' is_frmt_combine(x2)
+#'
+#' @rdname frmt_utils
 is_frmt_combine <- function(x) {
     inherits(x, "frmt_combine")
 }
@@ -105,7 +109,7 @@ check_frmt_combine <- function(
 
 #' Is object a `frmt_when`?
 #'
-#' @noRd
+#' @export
 #' @examples
 #' x2 <- frmt_when(
 #'     ">3" ~ frmt("(X.X%)"),
@@ -113,6 +117,8 @@ check_frmt_combine <- function(
 #' )
 #'
 #' is_frmt_when(x2)
+#'
+#' @rdname frmt_utils
 is_frmt_when <- function(x) {
     inherits(x, "frmt_when")
 }
@@ -144,7 +150,7 @@ check_frmt_when <- function(
 
 #' Is object a `frmt_structure`?
 #'
-#' @noRd
+#' @export
 #' @examples
 #' x3 <- frmt_structure(
 #'     group_val = c("group1"),
@@ -153,6 +159,8 @@ check_frmt_when <- function(
 #' )
 #'
 #' is_frmt_structure(x3)
+#'
+#' @rdname frmt_utils
 is_frmt_structure <- function(x) {
     inherits(x, "frmt_structure")
 }
@@ -195,7 +203,7 @@ check_frmt_structure_list <- function(x) {
 
 #' Is object a `row_grp_structure`?
 #'
-#' @noRd
+#' @export
 #' @examples
 #' x4 <- row_grp_structure(
 #'     group_val = c("A","C"),
@@ -203,6 +211,8 @@ check_frmt_structure_list <- function(x) {
 #' )
 #'
 #' is_row_grp_structure(x4)
+#'
+#' @rdname frmt_utils
 is_row_grp_structure <- function(x) {
     inherits(x, "row_grp_structure")
 }
