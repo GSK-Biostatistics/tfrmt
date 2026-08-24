@@ -14,7 +14,7 @@
 #'   tfrmt_to_json()
 tfrmt_to_json <- function(tfrmt, path = NULL) {
     check_tfrmt(tfrmt)
-    check_character(path, allow_null = TRUE)
+    rlang::check_string(path, allow_null = TRUE)
 
     output <- as_json(tfrmt)
 
