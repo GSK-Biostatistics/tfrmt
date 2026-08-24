@@ -83,7 +83,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
             preselected_cols = NULL,
             column_names = col_lab
         ) |>
-            purrr::map(~ char_as_quo(.x)) |>
+            purrr::map(char_as_quo) |>
             do.call("vars", args = _)
     } else {
         out <- col_plan_vars
@@ -244,7 +244,8 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     dplyr::group_by(.data$`..tfrmt_big_n_order..`) |>
                     dplyr::group_split() |>
                     purrr::map(
-                        ~ dplyr::select(.x, -"..tfrmt_big_n_order..")
+                        dplyr::select,
+                        -"..tfrmt_big_n_order.."
                     )
             }
         }

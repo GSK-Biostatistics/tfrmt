@@ -1553,7 +1553,8 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
     expect_identical(
         purrr::map_chr(
             output_list,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "by group: 101",
