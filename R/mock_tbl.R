@@ -155,7 +155,7 @@ process_for_mock <- function(x, column, .default = 1:3) {
 #'
 #' @return cleaned up string vec
 #' @noRd
-clean_col_names <- function(names, dont_inc) {
+clean_col_names <- function(names, dont_inc = NULL) {
     names %>%
         purrr::map_chr(rlang::as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
