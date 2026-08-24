@@ -147,8 +147,9 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                     frmt_type == "frmt" ~ frmt_details %>%
                         stringr::str_remove(
                             stringr::fixed(
-                            "< frmt | Expression: "
-                        )) %>%
+                                "< frmt | Expression: "
+                            )
+                        ) %>%
                         stringr::str_remove(stringr::fixed(" >")),
                     frmt_type == "frmt_combine" ~ frmt_details %>%
                         stringr::str_remove(
