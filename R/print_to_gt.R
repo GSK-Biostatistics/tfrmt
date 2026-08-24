@@ -158,6 +158,7 @@ print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
     }
     check_logical(.unicode_ws)
 
+    # TODO rename check_inputs to check_input_cols or check_input_vars?
     # check required input variables are supplied
     check_inputs(tfrmt, c("column", "param", "value"))
 
