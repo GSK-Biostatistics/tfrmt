@@ -82,7 +82,8 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     column_name <- rlang::as_label(tfrmt$column[[1]])
     column_data <- dplyr::pull(.data, !!column_name)
 
-    apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
+    .data |>
+        apply_tfrmt(tfrmt, mock = FALSE) |>
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
 }
 
