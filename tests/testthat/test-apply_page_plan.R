@@ -394,20 +394,9 @@ test_that("page plan with multiple structures", {
 
     # valid
     my_page_plan <- page_plan(
-        page_structure(
-            label_val = ".default"
-        ),
-        page_structure(
-            group_val = list(
-                grp1 = ".default",
-                grp2 = "a"
-            )
-        ),
-        page_structure(
-            group_val = list(
-                grp2 = "b"
-            )
-        )
+        page_structure(label_val = ".default"),
+        page_structure(group_val = list(grp1 = ".default", grp2 = "a")),
+        page_structure(group_val = list(grp2 = "b"))
     )
 
     expect_message(
