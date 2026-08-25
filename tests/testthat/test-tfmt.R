@@ -6,11 +6,11 @@ test_that("basic tfrmt - title", {
     expect_s3_class(t_frmt, "tfrmt")
 
     expect_identical(t_frmt$title, "Table Title")
-    expect_identical(t_frmt$group, rlang::quo())
+    expect_identical(t_frmt$group, rlang::quos())
     expect_identical(t_frmt$label, rlang::quo())
     expect_identical(t_frmt$param, rlang::quo())
     expect_identical(t_frmt$value, rlang::quo())
-    expect_identical(t_frmt$column, rlang::quo())
+    expect_identical(t_frmt$column, rlang::quos())
 })
 
 test_that("basic tfrmt - selecting group/label/param/value/column - quo", {
@@ -184,11 +184,11 @@ test_that("layering tfrmt - default table elements - func/tfrmt", {
         "Table Subtitle"
     )
 
-    expect_identical(t_frmt_layered$group, rlang::quo())
+    expect_identical(t_frmt_layered$group, rlang::quos())
     expect_identical(t_frmt_layered$label, rlang::quo())
     expect_identical(t_frmt_layered$param, rlang::quo())
     expect_identical(t_frmt_layered$value, rlang::quo())
-    expect_identical(t_frmt_layered$column, rlang::quo())
+    expect_identical(t_frmt_layered$column, rlang::quos())
 })
 
 test_that("layering tfrmt - select latest table elements", {

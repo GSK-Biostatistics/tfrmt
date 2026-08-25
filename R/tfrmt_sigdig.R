@@ -201,7 +201,7 @@ param_set <- function(...) {
 #'
 tfrmt_sigdig <- function(
     sigdig_df,
-    group = rlang::quo(),
+    group = rlang::quos(),
     label = rlang::quo(),
     param_defaults = param_set(),
     missing = NULL,

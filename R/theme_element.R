@@ -97,8 +97,8 @@ is_element_block <- function(x) {
 
 
 element_stub <- function(
-    collapse_ord = rlang::quo(),
-    collapse_into = rlang::quo(),
+    collapse_ord = rlang::quos(),
+    collapse_into = rlang::quos(),
     remove_dups = NULL
 ) {
     structure(
