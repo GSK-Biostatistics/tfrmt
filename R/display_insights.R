@@ -69,10 +69,10 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'                   frmt_combine(
 #'                     "{count} {percent}",
 #'                     count = frmt("xxx"),
-#'                     percent = frmt_when("==100" ~ frmt(""),
-#'                                         "==0" ~ "",
+#'                     percent = frmt_when("==100"~ frmt(""),
+#'                                         "==0"~ "",
 #'                                         "TRUE" ~ frmt("(xx.x%)"))))
-#'   ))
+#'  ))
 #'
 #'  # Create data
 #'  df <- tidyr::crossing(
