@@ -38,44 +38,47 @@
 #'
 #' @returns frmt_structure object
 #' @export
-frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
-  param_frmt <- list(...)
-  param_val <- names(param_frmt)
+frmt_structure <- function(
+    group_val = ".default",
+    label_val = ".default",
+    ...
+) {
+    param_frmt <- list(...)
+    param_val <- names(param_frmt)
 
-  if(length(param_frmt) > 1){
-    stop("Can only handle one format per frmt_structure function. Use frmt_combine if a combination is needed")
-  }
-
-  if(is_frmt_combine(param_frmt[[1]])){
-    param_val <- names(param_frmt[[1]]$frmt_ls)
-  } else if(is.null(param_val)){
-    param_val <- ".default"
-  }
-
-  if(!is_frmt(param_frmt[[1]])){
-    stop(paste0("Entry is not an object of class `frmt`"))
-  }
-
-
-  if(is.list(group_val)){
-    group_val_names <- names(group_val)
-    if(is.null(group_val_names)){
-      stop("when group_val is a list, must be a named list")
-    }else if(any(group_val_names == "")){
-      stop("when group_val is a list, each entry must be named")
+    if (length(param_frmt) > 1) {
+        stop(
+            "Can only handle one format per frmt_structure function. Use frmt_combine if a combination is needed"
+        )
     }
-  }
 
-  structure(
-    list(
-      group_val = group_val,
-      label_val = label_val,
-      param_val = param_val,
-      frmt_to_apply = param_frmt),
-    class = c("frmt_structure","frmt_table")
-  )
+    check_frmt(param_frmt[[1]])
+
+    if (is_frmt_combine(param_frmt[[1]])) {
+        param_val <- names(param_frmt[[1]]$frmt_ls)
+    } else if (is.null(param_val)) {
+        param_val <- ".default"
+    }
+
+    if (is.list(group_val)) {
+        group_val_names <- names(group_val)
+        if (is.null(group_val_names)) {
+            stop("when group_val is a list, must be a named list")
+        } else if (!all(nzchar(group_val_names))) {
+            stop("when group_val is a list, each entry must be named")
+        }
+    }
+
+    structure(
+        list(
+            group_val = group_val,
+            label_val = label_val,
+            param_val = param_val,
+            frmt_to_apply = param_frmt
+        ),
+        class = c("frmt_structure", "frmt_table")
+    )
 }
-
 
 
 #' Table Value Formatting
@@ -92,8 +95,10 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #' single cell in the table. Each of the rows needs to have a defined `frmt()`
 #' and need to share a label.
 #'
-#' `frmt_when()` is used when a rows format behaviour is dependent on the value itself and is written similarly to [dplyr::case_when()].
-#'  The left hand side of the equation is a `"TRUE"`for the default case or the right hand side of a boolean expression `">50"`.
+#' `frmt_when()` is used when a rows format behaviour is dependent on the value
+#' itself and is written similarly to [dplyr::case_when()].
+#'  The left hand side of the equation is a `"TRUE"`for the default case or the
+#' right hand side of a boolean expression `">50"`.
 #'
 #' @seealso [body_plan()] combines the frmt_structures to be applied to the
 #'   table body, and [frmt_structure()] defines which rows the formats will be applied
@@ -101,9 +106,12 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #'
 #'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html}{Link to related article}
 #'
-#' @param expression this is the string representing the intended format. See details: expression for more a detailed description.
-#' @param missing when a value is missing that is intended to be formatted, what value to place. See details: missing for more a detailed description.
-#' @param scientific a string representing the intended scientific notation to be appended to the expression. Ex. "e^XX" or " x10^XX".
+#' @param expression this is the string representing the intended format. See
+#'   details: expression for more a detailed description.
+#' @param missing when a value is missing that is intended to be formatted, what
+#' value to place. See details: missing for more a detailed description.
+#' @param scientific a string representing the intended scientific notation to
+#' be appended to the expression. Ex. "e^XX" or " x10^XX".
 #' @param transform this is what should happen to the value prior to formatting,
 #'   It should be a formula or function. Ex. `~.*100`if you want to convert a
 #'   percent from a decimal prior to rounding
@@ -165,69 +173,97 @@ frmt_structure <- function(group_val = ".default", label_val = ".default", ...){
 #'   )
 #'
 #' @rdname frmt
-#'
-frmt <- function(expression, missing = NULL, scientific = NULL, transform = NULL, ...){
-  structure(
-    list(expression = expression, missing = missing, scientific = scientific,
-         transform = transform),
-    class = c("frmt")
-  )
+frmt <- function(
+    expression,
+    missing = NULL,
+    scientific = NULL,
+    transform = NULL,
+    ...
+) {
+    structure(
+        list(
+            expression = expression,
+            missing = missing,
+            scientific = scientific,
+            transform = transform
+        ),
+        class = "frmt"
+    )
 }
 
 
 #' @export
 #' @rdname frmt
-#' @importFrom stringr str_extract_all str_count str_replace str_detect
-frmt_combine <- function(expression, ..., missing = NULL){
+frmt_combine <- function(expression, ..., missing = NULL) {
+    everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
 
-  everything_but_curly <- "(?<=\\{)([^}]*)(?=\\})"
+    n_vars <- stringr::str_count(expression, everything_but_curly)
+    vars_to_fmt <- stringr::str_extract_all(
+        expression,
+        everything_but_curly,
+        simplify = TRUE
+    )
+    vars_to_fmt <- as.vector(vars_to_fmt)
+    frmt_ls <- list(...)
 
-  n_vars <- str_count(expression, everything_but_curly)
-  vars_to_fmt <- str_extract_all(expression, everything_but_curly, simplify = TRUE)
-  vars_to_fmt <- as.vector(vars_to_fmt)
-  frmt_ls <- list(...)
+    if (n_vars != length(frmt_ls) && length(frmt_ls) > 1) {
+        stop(
+            "The number of formats must be 1 or match the number of parameters",
+            call. = FALSE
+        )
+    } else if (n_vars > 1 && length(frmt_ls) == 1) {
+        frmt_ls <- frmt_ls[rep(1, n_vars)]
+    }
 
-  if(n_vars != length(frmt_ls) & length(frmt_ls) > 1){
-    stop("The number of formats must be 1 or match the number of parameters", call. = FALSE)
-  } else if (n_vars > 1 & length(frmt_ls) == 1){
-    frmt_ls <- frmt_ls[rep(1,n_vars)]
-  }
+    names(frmt_ls) <- vars_to_fmt
 
-  names(frmt_ls) <- vars_to_fmt
+    # Adding ` to expression if not there and there is a space/symbol
+    replace_val <- dplyr::case_when(
+        stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
+        stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$", negate = TRUE) &
+            stringr::str_detect(
+                vars_to_fmt,
+                stringr::fixed("`"),
+                negate = TRUE
+            ) ~ paste0(
+            "`",
+            vars_to_fmt,
+            "`"
+        ),
+        TRUE ~ vars_to_fmt
+    )
 
-  # Adding ` to expression if not there and there is a space/symbol
-  replace_val <-case_when(
-    str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
-    !str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") & !str_detect(vars_to_fmt, "`") ~ paste0("`", vars_to_fmt, "`"),
-    TRUE ~ vars_to_fmt)
+    exp_new <- expression
+    for (i in seq_along(replace_val)) {
+        exp_new <- stringr::str_replace(exp_new, vars_to_fmt[i], replace_val[i])
+    }
 
-  exp_new <- expression
-  for(i in seq_along(replace_val)){
-    exp_new <- str_replace(exp_new, vars_to_fmt[i], replace_val[i])
-  }
-
-  structure(
-    list(expression = exp_new, frmt_ls = frmt_ls, missing = missing),
-    class = c("frmt_combine","frmt")
-  )
+    structure(
+        list(
+            expression = exp_new,
+            frmt_ls = frmt_ls,
+            missing = missing
+        ),
+        class = c("frmt_combine", "frmt")
+    )
 }
 
 
 #' @rdname frmt
 #' @export
-#' @importFrom rlang list2 f_rhs f_rhs<-
-#' @importFrom purrr map
-frmt_when <- function(..., missing = NULL){
-  frmts <- list2(...)
+frmt_when <- function(..., missing = NULL) {
+    frmts <- rlang::list2(...)
 
-  frmt_ls <- frmts %>%
-    map(function(x){
-      f_rhs(x) <- eval(f_rhs(x))
-      x
-    })
+    frmt_ls <- purrr::map(
+        frmts,
+        function(x) {
+            rlang::f_rhs(x) <- eval(rlang::f_rhs(x))
+            x
+        }
+    )
 
-  structure(
-    list(frmt_ls = frmt_ls, missing = missing),
-    class = c("frmt_when","frmt")
-  )
+    structure(
+        list(frmt_ls = frmt_ls, missing = missing),
+        class = c("frmt_when", "frmt")
+    )
 }

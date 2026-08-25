@@ -452,16 +452,16 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["Source Note"],
               "column_val": {},
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["Source Note"]
+              "label_val": {}
             },
             {
+              "footnote_text": ["Placebo"],
               "column_val": ["PL"],
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["Placebo"]
+              "label_val": {}
             }
           ],
           "marks": ["standard"],
@@ -483,12 +483,12 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["All Treatments"],
               "column_val": {
                 "column": ["T1", "T2", "T1&T2"]
               },
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["All Treatments"]
+              "label_val": {}
             }
           ],
           "marks": ["numbers"],
@@ -510,10 +510,10 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["Footnote goes here"],
               "column_val": {},
               "group_val": ["group 1"],
-              "label_val": ["label 1"],
-              "footnote_text": ["Footnote goes here"]
+              "label_val": ["label 1"]
             }
           ],
           "marks": ["numbers"],
@@ -535,13 +535,13 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["Footnote goes here"],
               "column_val": {
                 "span": ["Treatment"],
                 "column": ["T1&T2"]
               },
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["Footnote goes here"]
+              "label_val": {}
             }
           ],
           "marks": ["numbers"],
@@ -850,7 +850,7 @@
           ],
           "note_loc": ["source_note"],
           "max_rows": {},
-          "transform": ["~stringr::str_replace(.x, \"foo\", \"bar\")"]
+          "transform": ["~stringr::str_replace(.x, stringr::fixed(\"foo\"), \"bar\")"]
         }
       } 
 
@@ -878,7 +878,7 @@
           ],
           "note_loc": ["source_note"],
           "max_rows": {},
-          "transform": ["function (x) \n{\n    stringr::str_replace(x, \"foo\", \"bar\")\n}"]
+          "transform": ["function (x) \n{\n    stringr::str_replace(x, stringr::fixed(\"foo\"), \"bar\")\n}"]
         }
       } 
 

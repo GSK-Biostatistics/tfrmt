@@ -109,13 +109,17 @@
       7 Overall AGEGR1 continuous AGEGR1        min       Min        65-80
       8 Overall AGEGR1 continuous AGEGR1        max       Max        >80  
 
-# shuffle_card fills missing group levels if the group is meaningful
+# shuffle_card correctly handles a combined ARD when by is explicitly supplied
 
     Code
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
       by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns(
-        "mean")), dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
+        "mean")), tibble::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
         stat_label = "p", stat = list(0.05))), dplyr::row_number() <= 5L))
+    Message
+      The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
+      * A `by` value of "ARM" was found in the input object's attributes.
+      i To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
     Output
       # A tibble: 4 x 7
         ARM                  AGE      context stat_variable stat_name stat_label  stat
@@ -129,9 +133,9 @@
 
     Code
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
-      variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")), dplyr::tibble(
-        group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(
-          0.05))), dplyr::row_number() <= 5L))
+      variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")),
+      tibble::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p",
+        stat = list(0.05))), dplyr::row_number() <= 5L), by = "ARM")
     Output
       # A tibble: 2 x 7
         ARM         AGE         context    stat_variable stat_name stat_label  stat
@@ -276,5 +280,41 @@
       shuffled_ard <- shuffle_card(ard)
     Message
       i "Overall TRTA" already exists in the `TRTA` column. Using "Overall TRTA.1".
-      i "Any AESOC" already exists in the `AESOC` column. Using"Any AESOC.1".
+      i "Any AESOC" already exists in the `AESOC` column. Using "Any AESOC.1".
+
+# shuffle_card() preserves the attributes of a `card` object
+
+    Code
+      shuffled_ard <- shuffle_card(ard)
+    Message
+      The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
+      * A `by` value of "ARM" was found in the input object's attributes.
+      i To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
+
+---
+
+    Code
+      shuffle_card(ard_no_by_attr)
+    Message
+      The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
+      * If you want to use a grouping variable, pass it explicitly via the `by` argument.
+    Output
+      # A tibble: 15 x 7
+         AGEGR1 SEX   context  stat_variable stat_name stat_label    stat
+         <chr>  <chr> <chr>    <chr>         <chr>     <chr>        <dbl>
+       1 65-80  <NA>  tabulate AGEGR1        n         n          144    
+       2 65-80  <NA>  tabulate AGEGR1        N         N          254    
+       3 65-80  <NA>  tabulate AGEGR1        p         %            0.567
+       4 <65    <NA>  tabulate AGEGR1        n         n           33    
+       5 <65    <NA>  tabulate AGEGR1        N         N          254    
+       6 <65    <NA>  tabulate AGEGR1        p         %            0.130
+       7 >80    <NA>  tabulate AGEGR1        n         n           77    
+       8 >80    <NA>  tabulate AGEGR1        N         N          254    
+       9 >80    <NA>  tabulate AGEGR1        p         %            0.303
+      10 <NA>   F     tabulate SEX           n         n          143    
+      11 <NA>   F     tabulate SEX           N         N          254    
+      12 <NA>   F     tabulate SEX           p         %            0.563
+      13 <NA>   M     tabulate SEX           n         n          111    
+      14 <NA>   M     tabulate SEX           N         N          254    
+      15 <NA>   M     tabulate SEX           p         %            0.437
 

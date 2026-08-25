@@ -33,20 +33,23 @@
 #'     footnote_structure(footnote_text = "footnote 2", column_val = "Placebo"),
 #'     order = "marks_first")
 #'
-footnote_plan <- function(...,
-                          marks = c("numbers","letters","standard","extended"),
-                          order = c("marks_first", "preserve_order", "marks_last")){
-  footnote_structure_list <- list(...)
-  marks = match.arg(marks)
-  order = match.arg(order)
+footnote_plan <- function(
+    ...,
+    marks = c("numbers", "letters", "standard", "extended"),
+    order = c("marks_first", "preserve_order", "marks_last")
+) {
+    footnote_structure_list <- list(...)
+    marks <- match.arg(marks)
+    order <- match.arg(order)
 
-  structure(
-    list(
-      struct_list = footnote_structure_list,
-      marks = marks,
-      order = order),
-    class = c("footnote_plan", "plan")
-  )
+    structure(
+        list(
+            struct_list = footnote_structure_list,
+            marks = marks,
+            order = order
+        ),
+        class = c("footnote_plan", "plan")
+    )
 }
 
 #' Footnote Structure
@@ -75,49 +78,60 @@ footnote_plan <- function(...,
 #'
 #' # Adds a footnote to the 'Adverse Event' label
 #' footnote_structure <- footnote_structure("Text", label_val = "Adverse Event")
-footnote_structure <- function(footnote_text, column_val = NULL, group_val = NULL, label_val = NULL){
-
-  # force column_val and group_val into a list if a named vector
-  if(length(column_val)>1 && is.list(column_val)==FALSE && !is.null(names(column_val))){
-    column_val <- as.list(column_val)
-  }else if(length(column_val)==1 && !is.null(names(column_val))){
-    column_val<-as.list(column_val)
-  }
-
-  if(length(group_val)>1 && is.list(group_val)==FALSE && !is.null(names(group_val))){
-    group_val <- as.list(group_val)
-  }else if(length(group_val)==1 && !is.null(names(group_val))){
-    group_val<-as.list(group_val)
-  }
-
-  # warnings if elements arent named
-
-  if(is.list(column_val)){
-    column_val_names <- names(column_val)
-    if(is.null(column_val_names)){
-      stop("when column_val is a list, must be a named list")
-    }else if(any(column_val_names == "")){
-      stop("when column_val is a list, each entry must be named")
+footnote_structure <- function(
+    footnote_text,
+    column_val = NULL,
+    group_val = NULL,
+    label_val = NULL
+) {
+    # force column_val and group_val into a list if a named vector
+    if (
+        length(column_val) > 1 &&
+            !is.list(column_val) &&
+            !is.null(names(column_val))
+    ) {
+        column_val <- as.list(column_val)
+    } else if (length(column_val) == 1 && !is.null(names(column_val))) {
+        column_val <- as.list(column_val)
     }
-  }
 
-  if(is.list(group_val)){
-    group_val_names <- names(group_val)
-    if(is.null(group_val_names)){
-      stop("when group_val is a list, must be a named list")
-    }else if(any(group_val_names == "")){
-      stop("when group_val is a list, each entry must be named")
+    if (
+        length(group_val) > 1 &&
+            !is.list(group_val) &&
+            !is.null(names(group_val))
+    ) {
+        group_val <- as.list(group_val)
+    } else if (length(group_val) == 1 && !is.null(names(group_val))) {
+        group_val <- as.list(group_val)
     }
-  }
 
-   structure(
-    list(
-      column_val = column_val,
-      group_val = group_val,
-      label_val = label_val,
-      footnote_text = footnote_text),
-    class = c("footnote_structure","structure")
-  )
+    # warnings if elements arent named
 
+    if (is.list(column_val)) {
+        column_val_names <- names(column_val)
+        if (is.null(column_val_names)) {
+            stop("when column_val is a list, must be a named list")
+        } else if (!all(nzchar(column_val_names))) {
+            stop("when column_val is a list, each entry must be named")
+        }
+    }
 
+    if (is.list(group_val)) {
+        group_val_names <- names(group_val)
+        if (is.null(group_val_names)) {
+            stop("when group_val is a list, must be a named list")
+        } else if (!all(nzchar(group_val_names))) {
+            stop("when group_val is a list, each entry must be named")
+        }
+    }
+
+    structure(
+        list(
+            footnote_text = footnote_text,
+            column_val = column_val,
+            group_val = group_val,
+            label_val = label_val
+        ),
+        class = c("footnote_structure", "structure")
+    )
 }

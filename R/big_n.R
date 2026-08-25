@@ -20,22 +20,23 @@
 #' @return big_n_structure object
 #' @export
 #'
-big_n_structure <- function(param_val,
-                            n_frmt = frmt("\nN = xx"),
-                            by_page = FALSE) {
+big_n_structure <- function(
+    param_val,
+    n_frmt = frmt("\nN = xx"),
+    by_page = FALSE
+) {
+    # TODO add check for param_val?
+    check_frmt_strict(n_frmt)
+    rlang::check_bool(by_page)
 
-  if (!is_frmt(n_frmt) || is_frmt_combine(n_frmt) || is_frmt_when(n_frmt)) {
-    stop("`n_frmt` must be given a frmt object")
-  }
-
-  structure(
-    list(
-      param_val = param_val,
-      n_frmt = n_frmt,
-      by_page = by_page
-    ),
-    class = c("big_n_structure", "structure")
-  )
+    structure(
+        list(
+            param_val = param_val,
+            n_frmt = n_frmt,
+            by_page = by_page
+        ),
+        class = c("big_n_structure", "structure")
+    )
 }
 
 
@@ -49,47 +50,45 @@ big_n_structure <- function(param_val,
 #' @return named string vector
 #' @noRd
 apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
+    if (!is.null(big_n_df) && nrow(big_n_df) > 0) {
+        col_lab <- columns |>
+            purrr::map_chr(rlang::as_label)
 
-  if (!is.null(big_n_df) && nrow(big_n_df) > 0) {
-    col_lab <- columns |>
-      purrr::map_chr(as_label)
+        data_names <- col_plan_vars |>
+            purrr::map_chr(rlang::as_label) |>
+            split_data_names_to_df(
+                data_names = NULL,
+                preselected_cols = _,
+                column_names = col_lab
+            )
 
-    data_names <- col_plan_vars |>
-      purrr::map_chr(as_label) |>
-      split_data_names_to_df(
-        data_names = c(),
-        preselected_cols = _,
-        column_names = col_lab
-      )
+        for (i in seq_len(nrow(big_n_df))) {
+            big_n_i <- big_n_df |>
+                dplyr::slice(i)
+            data_names <- data_names |>
+                dplyr::mutate(
+                    !!big_n_i$`__tfrmt_big_n_names__` := dplyr::if_else(
+                        !!rlang::parse_expr(big_n_i$exp),
+                        paste0(
+                            !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`),
+                            dplyr::pull(big_n_i, !!value)
+                        ),
+                        !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`)
+                    )
+                )
+        }
 
-    for (i in seq_len(nrow(big_n_df))){
-      big_n_i <- big_n_df |>
-        dplyr::slice(i)
-      data_names <- data_names |>
-        dplyr::mutate(
-          !!big_n_i$`__tfrmt_big_n_names__` := dplyr::if_else(
-            !!parse_expr(big_n_i$exp),
-            paste0(
-              !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`),
-              dplyr::pull(big_n_i, !!value)
-            ),
-            !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`)
-          )
-        )
+        out <- unite_df_to_data_names(
+            data_names,
+            preselected_cols = NULL,
+            column_names = col_lab
+        ) |>
+            purrr::map(char_as_quo) |>
+            do.call("vars", args = _)
+    } else {
+        out <- col_plan_vars
     }
-
-    out <- unite_df_to_data_names(
-      data_names,
-      preselected_cols = c(),
-      column_names = col_lab
-    ) |>
-      purrr::map(~ char_as_quo(.x)) |>
-      do.call("vars", args = _)
-
-  } else {
-    out <- col_plan_vars
-  }
-  out
+    out
 }
 
 #' Remove big N's from data
@@ -101,13 +100,13 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
 #' @return ARD with big n's in
 #' @noRd
 remove_big_ns <- function(.data, param, big_n_structure) {
-  if (!is.null(big_n_structure)) {
-    .data <- .data |>
-      dplyr::filter(
-        !(!!param) %in% big_n_structure$param_val
-      )
-  }
-  .data
+    if (!is.null(big_n_structure)) {
+        .data <- .data |>
+            dplyr::filter(
+                !(!!param) %in% big_n_structure$param_val
+            )
+    }
+    .data
 }
 
 
@@ -122,133 +121,136 @@ remove_big_ns <- function(.data, param, big_n_structure) {
 #' @return tibble of the formatted big n's and expressions for where each goes
 #'
 #' @noRd
-get_big_ns <-  function(.data, param, value, columns, big_n_structure, mock) {
-
-  if (!is.null(big_n_structure)) {
-    frmtted_vals <- .data |>
-      dplyr::filter(
-        !!param %in% big_n_structure$param_val
-      ) |>
-      apply_frmt.frmt(
-        big_n_structure$n_frmt,
-        .data = _,
-        value = value,
-        mock = mock
-      )
-
-    if (big_n_structure$by_page) {
-      frmtted_vals <-  frmtted_vals |>
-        dplyr::select(
-          !!!columns,
-          !!value,
-          tidyselect::where(
-            ~sum(is.na(.x)) == 0
-          ),
-          -!!param
-        )
-    } else {
-      frmtted_vals <-  frmtted_vals |>
-        dplyr::select(
-          !!!columns,
-          !!value
-        )
-    }
-
-    # Test for missing big n's
-    if (nrow(frmtted_vals) == 0) {
-      warning(
-        "Unable to add big n's as there are no matching parameter values in the given ARD"
-      )
-    }
-
-    # Test for too many big n's
-    grp_vars <- setdiff(names(frmtted_vals), as_label(value))
-    multi_test <- frmtted_vals |>
-      dplyr::group_by(
-        dplyr::across(
-          tidyselect::all_of(
-            grp_vars
-          )
-        )
-      ) |>
-      dplyr::summarise(n = n()) |>
-      dplyr::filter(n > 1)
-    if (nrow(multi_test) > 0) {
-
-      warn_df <- multi_test |>
-        dplyr::select(-"n")
-
-      warning(
-        c(
-          "The following columns have multiple Big N's associated with them:\n",
-          warn_df
-        ),
-        call. = FALSE
-      )
-    }
-
-    by_var <- setdiff(grp_vars, purrr::map_chr(columns, as_label))
-
-    data_out <- frmtted_vals |>
-      dplyr::mutate(
-        `_tfrmt______id` = row_number()
-      ) |>
-      tidyr::pivot_longer(
-        -c(
-          "_tfrmt______id",
-          !!value,
-          tidyselect::all_of(by_var)
-        ),
-        names_to = "__tfrmt_big_n_names__",
-        values_to = "__tfrmt_big_n_values__"
-      ) |>
-      dplyr::filter(
-        !is.na(.data$`__tfrmt_big_n_values__`) &
-          .data$`__tfrmt_big_n_values__` != ""
-      ) |>
-      dplyr::group_by(.data$`_tfrmt______id`) |>
-      dplyr::mutate(
-        exp = paste0(
-          .data$`__tfrmt_big_n_names__`,
-          "=='",
-          .data$`__tfrmt_big_n_values__`,
-          "'",
-          collapse = "&"
-        ),
-        `__tfrmt_big_n_names__` = paste0(
-          "__tfrmt_new_name__",
-          .data$`__tfrmt_big_n_names__`
-        )
-      ) |>
-      dplyr::slice_tail() |>
-      dplyr::ungroup()|>
-      dplyr::select(-"_tfrmt______id")
-
-    if (big_n_structure$by_page ){
-      if (is_empty(by_var)){
-        data_out <- data_out |>
-          dplyr::group_split()
-      } else {
-        data_out <- data_out |>
-          tidyr::unite(
-            "..tfrmt_big_n_order..",
-            tidyselect::all_of(by_var),
-            remove = FALSE
-          ) |>
-          dplyr::mutate(
-            `..tfrmt_big_n_order..` = forcats::fct_inorder(
-              .data$`..tfrmt_big_n_order..`
+get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
+    if (!is.null(big_n_structure)) {
+        frmtted_vals <- .data |>
+            dplyr::filter(
+                !!param %in% big_n_structure$param_val
+            ) |>
+            apply_frmt.frmt(
+                big_n_structure$n_frmt,
+                .data = _,
+                value = value,
+                mock = mock
             )
-          ) |>
-          dplyr::group_by(.data$`..tfrmt_big_n_order..`) |>
-          dplyr::group_split() |>
-          purrr::map(
-            ~dplyr::select(.x, -"..tfrmt_big_n_order..")
-          )
-      }
+
+        if (big_n_structure$by_page) {
+            frmtted_vals <- frmtted_vals |>
+                dplyr::select(
+                    !!!columns,
+                    !!value,
+                    tidyselect::where(
+                        ~ !anyNA(.x)
+                    ),
+                    -!!param
+                )
+        } else {
+            frmtted_vals <- frmtted_vals |>
+                dplyr::select(
+                    !!!columns,
+                    !!value
+                )
+        }
+
+        # Test for missing big n's
+        if (nrow(frmtted_vals) == 0) {
+            warning(
+                "Unable to add big n's as there are no matching parameter values in the given ARD"
+            )
+        }
+
+        # Test for too many big n's
+        grp_vars <- setdiff(names(frmtted_vals), rlang::as_label(value))
+        multi_test <- frmtted_vals |>
+            dplyr::group_by(
+                dplyr::across(
+                    tidyselect::all_of(
+                        grp_vars
+                    )
+                )
+            ) |>
+            dplyr::summarise(
+                n = dplyr::n()
+            ) |>
+            dplyr::filter(
+                .data$n > 1
+            )
+        if (nrow(multi_test) > 0) {
+            warn_df <- multi_test |>
+                dplyr::select(-"n")
+
+            warning(
+                c(
+                    "The following columns have multiple Big N's associated with them:\n",
+                    warn_df
+                ),
+                call. = FALSE
+            )
+        }
+
+        by_var <- setdiff(grp_vars, purrr::map_chr(columns, rlang::as_label))
+
+        data_out <- frmtted_vals |>
+            dplyr::mutate(
+                `_tfrmt______id` = dplyr::row_number()
+            ) |>
+            tidyr::pivot_longer(
+                -c(
+                    "_tfrmt______id",
+                    !!value,
+                    tidyselect::all_of(by_var)
+                ),
+                names_to = "__tfrmt_big_n_names__",
+                values_to = "__tfrmt_big_n_values__"
+            ) |>
+            dplyr::filter(
+                !is.na(.data$`__tfrmt_big_n_values__`),
+                nzchar(.data$`__tfrmt_big_n_values__`)
+            ) |>
+            dplyr::group_by(.data$`_tfrmt______id`) |>
+            dplyr::mutate(
+                exp = paste0(
+                    .data$`__tfrmt_big_n_names__`,
+                    "=='",
+                    .data$`__tfrmt_big_n_values__`,
+                    "'",
+                    collapse = "&"
+                ),
+                `__tfrmt_big_n_names__` = paste0(
+                    "__tfrmt_new_name__",
+                    .data$`__tfrmt_big_n_names__`
+                )
+            ) |>
+            dplyr::slice_tail() |>
+            dplyr::ungroup() |>
+            dplyr::select(-"_tfrmt______id")
+
+        if (big_n_structure$by_page) {
+            if (rlang::is_empty(by_var)) {
+                data_out <- data_out |>
+                    dplyr::group_split()
+            } else {
+                data_out <- data_out |>
+                    tidyr::unite(
+                        "..tfrmt_big_n_order..",
+                        tidyselect::all_of(by_var),
+                        remove = FALSE
+                    ) |>
+                    dplyr::mutate(
+                        `..tfrmt_big_n_order..` = forcats::fct_inorder(
+                            .data$`..tfrmt_big_n_order..`
+                        )
+                    ) |>
+                    dplyr::group_by(.data$`..tfrmt_big_n_order..`) |>
+                    dplyr::group_split() |>
+                    purrr::map(
+                        dplyr::select,
+                        -"..tfrmt_big_n_order.."
+                    )
+            }
+        }
+    } else {
+        data_out <- NULL
     }
-  } else {
-    data_out <- NULL
-  }
-  data_out
+    data_out
 }

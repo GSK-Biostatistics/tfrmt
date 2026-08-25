@@ -8,43 +8,50 @@
 #' @return A data frame with updated column names.
 #' @noRd
 clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
+    # Update Stub/Group Column Names
+    # Boxhead tells us which columns are 'stub' columns
+    if (!is.null(boxhead) && !is.null(stubhead)) {
+        # Identify the variable names that are marked as 'stub'
+        stub_vars <- boxhead %>%
+            dplyr::filter(.data$type == "stub") %>%
+            dplyr::pull(.data$var)
 
-  # Update Stub/Group Column Names
-  # Boxhead tells us which columns are 'stub' columns
-  if (!is.null(boxhead) && !is.null(stubhead)) {
+        # Get the new labels from stubhead
+        new_stub_labels <- as.character(unlist(stubhead$label))
 
-    # Identify the variable names that are marked as 'stub'
-    stub_vars <- boxhead %>%
-      dplyr::filter(type == "stub") %>%
-      dplyr::pull(var)
+        if (
+            length(stub_vars) > 0 &&
+                length(stub_vars) == length(new_stub_labels)
+        ) {
+            lookup <- stats::setNames(stub_vars, new_stub_labels)
 
-    # Get the new labels from stubhead
-    new_stub_labels <- as.character(unlist(stubhead$label))
+            #  Filter out entries where the new name is empty or NA
+            valid_names <- names(lookup) != "" & !is.na(names(lookup))
+            lookup <- lookup[valid_names]
 
-    if (length(stub_vars) > 0 && length(stub_vars) == length(new_stub_labels)) {
-
-      lookup <- setNames(stub_vars, new_stub_labels)
-
-      #  Filter out entries where the new name is empty or NA
-      valid_names <- names(lookup) != "" & !is.na(names(lookup))
-      lookup <- lookup[valid_names]
-
-      if (length(lookup) > 0) {
-        df <- df %>% dplyr::rename(dplyr::any_of(lookup))
-      }
+            if (length(lookup) > 0) {
+                df <- df %>%
+                    dplyr::rename(
+                        tidyselect::any_of(lookup)
+                    )
+            }
+        }
     }
-  }
 
-
-
-  df %>%
-    # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
-    dplyr::select(-dplyr::starts_with("..tfrmt")) %>%
-    # Replace the internal tlang_delim pattern in column names
-    dplyr::rename_with(
-      ~ stringr::str_replace_all(.x, "___tlang_delim___", delim),
-      .cols = tidyselect::everything()
-    )
+    df %>%
+        # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
+        dplyr::select(
+            -dplyr::starts_with("..tfrmt")
+        ) %>%
+        # Replace the internal tlang_delim pattern in column names
+        dplyr::rename_with(
+            ~ stringr::str_replace_all(
+                .x,
+                stringr::fixed("___tlang_delim___"),
+                delim
+            ),
+            .cols = tidyselect::everything()
+        )
 }
 
 
@@ -57,40 +64,40 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
 #' @param col_delim Character string to replace the internal "tlang_delim"
 #'   separator in column names only for tables with spanning headers. Defaults to "_".
 #' @return If `gt_tbl`, a single data frame. If `gt_group`, a list of data frames.
-#' @importFrom purrr map
+#'
 #' @export
 extract_data <- function(x, col_delim = "_") {
+    #Fallback
+    if (!inherits(x, c("gt_tbl", "gt_group"))) {
+        stop("Input must be a 'gt_tbl' or 'gt_group' object.")
+    }
 
-  #Fallback
-  if (!inherits(x, c("gt_tbl", "gt_group"))) {
-    stop("Input must be a 'gt_tbl' or 'gt_group' object.")
-  }
+    # Single gt table
+    if (inherits(x, "gt_tbl")) {
+        return(clean_data(
+            df = x[["_data"]],
+            delim = col_delim,
+            boxhead = x[["_boxhead"]],
+            stubhead = x[["_stubhead"]]
+        ))
+    }
 
-  # Single gt table
-  if (inherits(x, "gt_tbl")) {
-   return(clean_data(
-      df = x[["_data"]],
-      delim = col_delim,
-      boxhead = x[["_boxhead"]],
-      stubhead = x[["_stubhead"]]
-    ))
-  }
+    # Grouped gt object (created when using `page_plan`)
+    if (inherits(x, "gt_group")) {
+        # Extract the internal list of gt_tbl objects
+        tbl_list <- x$gt_tbls$gt_tbl
 
-  # Grouped gt object (created when using `page_plan`)
-  if (inherits(x, "gt_group")) {
+        # Map over the list to pull the '_data' slot and clean names
+        extracted_list <- purrr::map(
+            tbl_list,
+            ~ clean_data(
+                .x[["_data"]],
+                delim = col_delim,
+                boxhead = .x[["_boxhead"]],
+                stubhead = .x[["_stubhead"]]
+            )
+        )
 
-    # Extract the internal list of gt_tbl objects
-    tbl_list <- x$gt_tbls$gt_tbl
-
-    # Map over the list to pull the '_data' slot and clean names
-    extracted_list <- map(tbl_list, ~ clean_data(.x[["_data"]],
-                                                 delim = col_delim,
-                                                 boxhead = .x[["_boxhead"]],
-                                                 stubhead = .x[["_stubhead"]]
-    ))
-
-    return(extracted_list)
-  }
-
-
+        return(extracted_list)
+    }
 }

@@ -35,21 +35,20 @@
 #'
 #' @export
 #'
-row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indented")){
+row_grp_plan <- function(
+    ...,
+    label_loc = element_row_grp_loc(location = "indented")
+) {
+    row_grp_structure_list <- list(...)
+    check_row_grp_structure_list(row_grp_structure_list)
 
-  row_grp_structure_list <- list(...)
-
-  for(struct_idx in seq_along(row_grp_structure_list)){
-    if(!is_row_grp_structure(row_grp_structure_list[[struct_idx]])){
-      stop(paste0("Entry number ",struct_idx," is not an object of class `row_grp_structure`.
-                  If you want specify `spanning_label` please enter 'spanning_label ='"))
-    }
-  }
-
-  structure(
-    list(struct_list = row_grp_structure_list, label_loc = label_loc),
-    class = c("row_grp_plan", "frmt_table")
-  )
+    structure(
+        list(
+            struct_list = row_grp_structure_list,
+            label_loc = label_loc
+        ),
+        class = c("row_grp_plan", "frmt_table")
+    )
 }
 
 #' Row Group Structure Object
@@ -77,25 +76,25 @@ row_grp_plan <- function(..., label_loc = element_row_grp_loc(location = "indent
 #' ## example with multiple grouping variables
 #' row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
 #'
-row_grp_structure <- function(group_val = ".default", element_block){
-
-  if(!is_element_block(element_block)){
-    stop("element_block, must be an element_block type")
-  }
-
-  if(is.list(group_val)){
-    group_val_names <- names(group_val)
-    if(is.null(group_val_names)){
-      stop("when group_val is a list, must be a named list")
-    }else if(any(group_val_names == "")){
-      stop("when group_val is a list, each entry must be named")
+row_grp_structure <- function(group_val = ".default", element_block) {
+    if (!is_element_block(element_block)) {
+        stop("element_block, must be an element_block type")
     }
-  }
 
-  structure(
-    list(
-      group_val = group_val,
-      block_to_apply = element_block),
-    class = c("row_grp_structure","frmt_table")
-  )
+    if (is.list(group_val)) {
+        group_val_names <- names(group_val)
+        if (is.null(group_val_names)) {
+            stop("when group_val is a list, must be a named list")
+        } else if (!all(nzchar(group_val_names))) {
+            stop("when group_val is a list, each entry must be named")
+        }
+    }
+
+    structure(
+        list(
+            group_val = group_val,
+            block_to_apply = element_block
+        ),
+        class = c("row_grp_structure", "frmt_table")
+    )
 }

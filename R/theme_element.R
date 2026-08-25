@@ -1,4 +1,3 @@
-
 #' Element Row Group Location
 #'
 #'
@@ -41,17 +40,19 @@
 #'
 #'  \if{html}{\out{ `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-row_group_plan-cropped.jpg\" alt=\"Examples showing the difference between the row group locations\" style=\"width:100\\%;\">"` }}
 #'
-element_row_grp_loc <- function(location = c("indented", "spanning", "column", "noprint", "gtdefault"),
-                                indent = "  "){
-  location = match.arg(location)
-  structure(
-    list(location = location, indent = indent),
-    class = c("element_row_grp_loc", "element")
-  )
+element_row_grp_loc <- function(
+    location = c("indented", "spanning", "column", "noprint", "gtdefault"),
+    indent = "  "
+) {
+    location <- match.arg(location)
+    structure(
+        list(location = location, indent = indent),
+        class = c("element_row_grp_loc", "element")
+    )
 }
 
-is_element_row_grp_loc <- function(x){
-  inherits(x, "element_row_grp_loc")
+is_element_row_grp_loc <- function(x) {
+    inherits(x, "element_row_grp_loc")
 }
 
 
@@ -83,37 +84,41 @@ is_element_row_grp_loc <- function(x){
 #'     frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
 #'   )
 #' )
-element_block <- function(post_space = c(NULL, " ", "-"),
-                          fill = TRUE){
-  structure(
-    list(post_space = post_space, fill = fill),
-    class = c("element_block", "element")
-  )
-
+element_block <- function(post_space = c(NULL, " ", "-"), fill = TRUE) {
+    structure(
+        list(post_space = post_space, fill = fill),
+        class = c("element_block", "element")
+    )
 }
 
-is_element_block <- function(x){
-  inherits(x, "element_block")
+is_element_block <- function(x) {
+    inherits(x, "element_block")
 }
 
 
-
-element_stub <- function(collapse_ord = vars(), collapse_into = vars(), remove_dups = NULL){
-  structure(
-    list(collapse_ord = collapse_ord, collapse_into = collapse_into, remove_dups = remove_dups),
-    class = c("element_stub", "element")
-  )
+element_stub <- function(
+    collapse_ord = vars(),
+    collapse_into = vars(),
+    remove_dups = NULL
+) {
+    structure(
+        list(
+            collapse_ord = collapse_ord,
+            collapse_into = collapse_into,
+            remove_dups = remove_dups
+        ),
+        class = c("element_stub", "element")
+    )
 }
 
-#col_labels = element_label(newCol = "Hello World", wrap_txt = 30)
-element_label <- function(..., wrap_txt = 30){
-  structure(
-    list(...) %>%
-      c(wrap_txt = wrap_txt),
-    class = c("element_label", "element")
-  )
+element_label <- function(..., wrap_txt = 30) {
+    structure(
+        list(...) %>%
+            c(wrap_txt = wrap_txt),
+        class = c("element_label", "element")
+    )
 }
 
-is_element_label <- function(x){
-  inherits(x, "element_label")
+is_element_label <- function(x) {
+    inherits(x, "element_label")
 }

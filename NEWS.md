@@ -1,17 +1,29 @@
 # tfrmt (development version)
 
+## Improvements
+* Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
+* `footnote_structure()` now returns its elements in the same order as its arguments (`footnote_text`, `column_val`, `group_val`, `label_val`) (#589).
+* Add markdown processing of `title`, `subtitle`, and `source_note` (#664).
+
+## Bug fixes
+* Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
+
+
+# tfrmt 0.4.0
+
+## Improvements
+* `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
+* Add markdown processing of stub column labels (#617)
+* Update default for `row_grp_plan()`/`row_grp_structure()` to remove trailing post-space rows (#630, @alanahjonas95).
+* Added `extract_data()` function to enable data to be easily extracted from a tfrmt into a data frame (#628, @alanahjonas95).
+* `shuffle_card()` now automatically strips inherited ARD attributes from objects of class `bind_ard` to avoid unreliable metadata (#650).
+* `shuffle_card()` now prioritises the user-supplied `by` argument over inherited ARD attributes, giving users control to override attributes and updating the mismatch message to reflect this change (#650).
+
 ## Bug fixes
 * Fix bug in `tfrmt_sigdig` so it correctly passes the 'missing' argument to the body_plan (#621, @alanahjonas95).
 * Fix bug in `page_plan` where the max_rows argument was returning an error if a value in the group variable was an empty string (#539, @alanahjonas95).
 * Fix bug in `row_grp_plan` where identical labels repeated across different groups were incorrectly forced to the top of the table instead of maintaining their correct order (#634, @alanahjonas95).
 * Fix bug in `as.character.span_structure` where the regex was incorrectly capturing content wrapped in parentheses as an R function even though it did not have a valid R function identifier immediately before the `(`. i.e., "n (%)" incorrectly captured as a function (#643, @LiamHobby).
-  
-## Improvements
-* `footnote_plan()` receives a new argument, `order`, allowing users to specify the order of footnotes (#605, @alanahjonas95).
-* Add markdown processing of stub column labels (#617)
-* Update default for `row_grp_plan()`/`row_grp_structure()` to remove trailing post-space rows (#630, @alanahjonas95).
-* Added `extract_data()` function to enable data to be easily extracted from a tfrmt into a data frame.(#628, @alanahjonas95)
-
 
 # tfrmt 0.3.0
 
