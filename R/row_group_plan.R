@@ -3,9 +3,6 @@
 #' Define the look of the table groups on the output. This function allows you
 #' to add spaces after blocks and allows you to control how the groups are
 #' viewed whether they span the entire table or are nested as a column.
-#' Define the look of the table groups on the output. This function allows you
-#' to add spaces after blocks and allows you to control how the groups are
-#' viewed whether they span the entire table or are nested as a column.
 #'
 #' @seealso [row_grp_structure()] for more details on how to specify row group
 #'   structures, [element_block()] for more details on how to specify spacing

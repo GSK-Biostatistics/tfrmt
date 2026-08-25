@@ -18,9 +18,6 @@ row_grp_plan object
 Define the look of the table groups on the output. This function allows you
 to add spaces after blocks and allows you to control how the groups are
 viewed whether they span the entire table or are nested as a column.
-Define the look of the table groups on the output. This function allows you
-to add spaces after blocks and allows you to control how the groups are
-viewed whether they span the entire table or are nested as a column.
 }
 \examples{
 
