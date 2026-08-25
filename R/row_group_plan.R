@@ -108,9 +108,7 @@ row_grp_plan <- function(
 #' )
 #'
 row_grp_structure <- function(group_val = ".default", element_block) {
-    if (!is_element_block(element_block)) {
-        stop("element_block, must be an element_block type")
-    }
+    check_element_block(element_block)
 
     if (is.list(group_val)) {
         group_val_names <- names(group_val)
