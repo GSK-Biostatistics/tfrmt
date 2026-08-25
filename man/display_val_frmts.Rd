@@ -24,14 +24,14 @@ A helper for creating positional-alignment specifications for the col_style_plan
 Returns all unique formatted values to appear in the column(s) specified. Numeric values are represented by x's.
 }
 \examples{
-tf_spec <- tfrmt(
-    group = c(rowlbl1,grp),
-    label = rowlbl2,
-    column = column,
-    param = param,
-    value = value,
-    sorting_cols = c(ord1, ord2),
-    body_plan = body_plan(
+ tf_spec <- tfrmt(
+ group = c(rowlbl1,grp),
+ label = rowlbl2,
+ column = column,
+ param = param,
+ value = value,
+ sorting_cols = c(ord1, ord2),
+ body_plan = body_plan(
         frmt_structure(
             frmt_combine(
                 "{n} ({pct} \%)",

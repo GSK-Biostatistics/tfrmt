@@ -190,14 +190,14 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #' @return text representing character vector of formatted values to be copied and modified in the col_style_plan
 #' @export
 #' @examples
-#' tf_spec <- tfrmt(
-#'     group = c(rowlbl1,grp),
-#'     label = rowlbl2,
-#'     column = column,
-#'     param = param,
-#'     value = value,
-#'     sorting_cols = c(ord1, ord2),
-#'     body_plan = body_plan(
+#'  tf_spec <- tfrmt(
+#'  group = c(rowlbl1,grp),
+#'  label = rowlbl2,
+#'  column = column,
+#'  param = param,
+#'  value = value,
+#'  sorting_cols = c(ord1, ord2),
+#'  body_plan = body_plan(
 #'         frmt_structure(
 #'             frmt_combine(
 #'                 "{n} ({pct} %)",
