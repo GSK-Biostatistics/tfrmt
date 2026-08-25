@@ -199,7 +199,7 @@ update_group <- function(tfrmt, ...) {
             }
         })
 
-        tfrmt$group <- as_vars(var_list)
+        tfrmt$group <- as_quosures(var_list)
     }
 
     ## Update body_plan

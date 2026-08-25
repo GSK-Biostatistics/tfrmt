@@ -165,7 +165,7 @@ apply_row_grp_lbl <- function(
     } else {
         #  combine any grouping columns that need combining into label
         add_ln_df <- .data %>%
-            combine_group_cols(as_vars(grps_avail), label, element_row_grp_loc)
+            combine_group_cols(as_quosures(grps_avail), label, element_row_grp_loc)
     }
     add_ln_df
 }
@@ -396,7 +396,7 @@ remove_grp_cols <- function(.data, element_row_grp_loc, group, label = NULL) {
     ) {
         add_ln_df <- .data
     } else {
-        group <- as_vars(grps_avail)
+        group <- as_quosures(grps_avail)
 
         # Either drop group columns ("no print"), or format them w/ label
         if (element_row_grp_loc$location == "noprint") {

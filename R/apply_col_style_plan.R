@@ -8,7 +8,7 @@
 apply_col_style_plan <- function(
     .data,
     tfrmt_obj,
-    col_plan_vars = as_vars.character(colnames(.data))
+    col_plan_vars = as_quosures.character(colnames(.data))
 ) {
     style_plan <- tfrmt_obj$col_style_plan
 

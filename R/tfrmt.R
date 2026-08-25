@@ -346,7 +346,7 @@ quo_get <- function(
                             is_basic_list(arg_call_results$result))
                     ) {
                         if (arg %in% as_var_args) {
-                            return(as_vars(arg_call_results$result))
+                            return(as_quosures(arg_call_results$result))
                         } else {
                             return(
                                 as_length_one_quo(
@@ -384,7 +384,7 @@ quo_get <- function(
                         arg,
                         allow_tidy_select = allow_tidy_select
                     )
-                    arg_val <- as_vars(rlang::quos(!!!arg_call, .env = envir))
+                    arg_val <- as_quosures(rlang::quos(!!!arg_call, .env = envir))
                 } else {
                     arg_val <- as_length_one_quo(
                         rlang::quos(!!!arg_call, .env = envir),
@@ -492,25 +492,25 @@ as_length_one_quo.character <- function(x, ...) {
     rlang::quo(!!rlang::sym(x))
 }
 
-as_vars <- function(x) {
-    UseMethod("as_vars", x)
+as_quosures <- function(x) {
+    UseMethod("as_quosures", x)
 }
 
 #' @export
 #' @keywords internal
-as_vars.quosures <- function(x) {
+as_quosures.quosures <- function(x) {
     x
 }
 
 #' @export
 #' @keywords internal
-as_vars.quosure <- function(x) {
+as_quosures.quosure <- function(x) {
     rlang::quos(!!x)
 }
 
 #' @export
 #' @keywords internal
-as_vars.character <- function(x) {
+as_quosures.character <- function(x) {
     rlang::quos(!!!lapply(x, function(x_val) {
         rlang::quo(!!rlang::sym(x_val))
     }))

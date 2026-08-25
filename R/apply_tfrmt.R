@@ -86,7 +86,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
         columns = tfrmt$column,
         fail_desc = "Unable to create dataset subset vars"
     ) %>%
-        as_vars()
+        as_quosures()
 
     # just the stub
     stub_header <- create_stub_head(
@@ -111,7 +111,7 @@ apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
 #'
 #' @param tfrmt tfrmt object
 #' @param .data processed wide tbl or list of processed wide tbls
-#' @param col_plan_vars col plan converted to vars() to be applied
+#' @param col_plan_vars col plan converted to quosures to be applied
 #' @param stub_header stub header (NULL if none)
 #' @param big_n_df tbl of big Ns to apply (if 1 set of overall Ns) or list of tbl of bigNs (if grouping by page)
 #' to apply
@@ -162,7 +162,7 @@ apply_tfrmt_subtable_mapper <- function(
 #'
 #' @param tfrmt tfrmt object
 #' @param .data processed wide tbl
-#' @param col_plan_vars col plan converted to vars() to be applied
+#' @param col_plan_vars col plan converted to quosures to be applied
 #' @param stub_header stub header (NULL if none)
 #' @param big_n_df big Ns to apply
 #' @noRd
