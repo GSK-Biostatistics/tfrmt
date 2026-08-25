@@ -164,15 +164,15 @@ check_span_structure_dots <- function(x) {
             ~ lapply(trim_vars_quo_c(.x), function(x) {
                 if (is.name(x)) {
                     if (identical(rlang::as_label(x), "<empty>")) {
-                        NULL
+                        return(NULL) # nolint: return_linter
                     } else {
-                        rlang::quo(!!x)
+                        return(rlang::quo(!!x)) # nolint: return_linter
                     }
                 } else if (is.call(x)) {
                     if (is_valid_tidyselect_call(x)) {
                         rlang::quo(!!x)
                     } else if (is_valid_quo_call(x)) {
-                        rlang::eval_tidy(x)
+                        return(rlang::eval_tidy(x)) # nolint: return_linter
                     } else {
                         rlang::abort(
                             message = paste0(
@@ -188,7 +188,7 @@ check_span_structure_dots <- function(x) {
                         )
                     }
                 } else if (is.character(x)) {
-                    as_length_one_quo.character(x)
+                    return(as_length_one_quo.character(x)) # nolint: return_linter
                 } else {
                     rlang::abort(
                         "Unexpected entry type in span_structure()",
@@ -210,7 +210,7 @@ is_valid_tidyselect_call <- function(x) {
     if (as.character(as.list(x)[[1]]) == "-") {
         x <- x[[-1]]
         if (is.name(x)) {
-            return(TRUE)
+            return(TRUE) # nolint: return_linter
         }
     }
     as.character(as.list(x)[[1]]) %in% c(names(tidyselect::vars_select_helpers))
@@ -221,7 +221,7 @@ is_valid_quo_call <- function(x) {
     if (as.character(as.list(x)[[1]]) == "-") {
         x <- x[[-1]]
         if (is.name(x)) {
-            return(TRUE)
+            return(TRUE) # nolint: return_linter
         }
     }
     as.character(as.list(x)[[1]]) %in% c("vars", "quo")
@@ -231,9 +231,9 @@ check_col_plan_dots <- function(x) {
     lapply(x, function(x) {
         if (is.name(x)) {
             if (identical(rlang::as_label(x), "<empty>")) {
-                NULL
+                return(NULL) # nolint: return_linter
             } else {
-                rlang::quo(!!x)
+                return(rlang::quo(!!x)) # nolint: return_linter
             }
         } else if (is.call(x)) {
             if (is_valid_tidyselect_call(x)) {
@@ -241,7 +241,7 @@ check_col_plan_dots <- function(x) {
             } else if (
                 is_valid_quo_call(x) || is_valid_span_structure_call(x)
             ) {
-                rlang::eval_tidy(x)
+                return(rlang::eval_tidy(x)) # nolint: return_linter
             } else {
                 stop(
                     "Invalid entry: `",
@@ -256,7 +256,7 @@ check_col_plan_dots <- function(x) {
                 )
             }
         } else if (is.character(x)) {
-            as_length_one_quo.character(x)
+            return(as_length_one_quo.character(x)) # nolint: return_linter
         } else {
             stop("Unexpected entry type in span_structure()")
         }

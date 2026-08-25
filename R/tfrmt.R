@@ -238,11 +238,11 @@ check_tfrmt <- function(
 ) {
     if (!missing(tfrmt)) {
         if (is_tfrmt(tfrmt)) {
-            return(invisible(NULL))
+            return(invisible(NULL)) # nolint: return_linter
         }
 
         if (allow_null && is.null(tfrmt)) {
-            return(invisible(NULL))
+            return(invisible(NULL)) # nolint: return_linter
         }
     }
 
@@ -307,12 +307,12 @@ quo_get <- function(
 
         if (missing(arg_call)) {
             ## args not defined can quietly return empty expressions.
-            return(quote(expr = ))
+            return(quote(expr = )) # nolint: return_linter
         } else {
             if (
                 identical(arg_call, rlang::quo()) || identical(arg_call, vars())
             ) {
-                return(arg_call)
+                return(arg_call) # nolint: return_linter
             }
 
             # don't try to eval quosures if it is intended to be a quosure
@@ -346,9 +346,9 @@ quo_get <- function(
                             is_basic_list(arg_call_results$result))
                     ) {
                         if (arg %in% as_var_args) {
-                            return(as_vars(arg_call_results$result))
+                                return(as_vars(arg_call_results$result)) # nolint: return_linter
                         } else {
-                            return(
+                                return( # nolint: return_linter
                                 as_length_one_quo(
                                     arg_call_results$result,
                                     arg = as.character(arg)
@@ -358,7 +358,7 @@ quo_get <- function(
                     }
                 } else {
                     ## return value as normal if not a var or quo arg
-                    return(arg_call_results$result)
+                    return(arg_call_results$result) # nolint: return_linter
                 }
             }
 
@@ -392,7 +392,7 @@ quo_get <- function(
                     )
                 }
 
-                arg_val
+                return(arg_val) # nolint: return_linter
             } else {
                 rlang::abort(
                     paste0(
