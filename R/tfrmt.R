@@ -384,7 +384,10 @@ quo_get <- function(
                         arg,
                         allow_tidy_select = allow_tidy_select
                     )
-                    arg_val <- as_quosures(rlang::quos(!!!arg_call, .env = envir))
+                    arg_val <- as_quosures(rlang::quos(
+                        !!!arg_call,
+                        .env = envir
+                    ))
                 } else {
                     arg_val <- as_length_one_quo(
                         rlang::quos(!!!arg_call, .env = envir),
