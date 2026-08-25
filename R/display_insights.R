@@ -59,20 +59,20 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'  library(dplyr)
 #'  library(tidyr)
 #'
-#' tfrmt_spec <- tfrmt(
-#' label = label,
-#' column = column,
-#' param = param,
-#' value = value,
-#' body_plan = body_plan(
-#'   frmt_structure(
-#'     frmt_combine(
-#'       "{count} {percent}",
-#'       count = frmt("xxx"),
-#'       percent = frmt_when("==100" ~ frmt(""),
-#'                           "==0" ~ "",
-#'                           "TRUE" ~ frmt("(xx.x%)"))))
-#'     ))
+#'  tfrmt_spec <- tfrmt(
+#'  label = label,
+#'  column = column,
+#'  param = param,
+#'  value = value,
+#'  body_plan = body_plan(
+#'    frmt_structure(
+#'      frmt_combine(
+#'        "{count} {percent}",
+#'        count = frmt("xxx"),
+#'        percent = frmt_when("==100" ~ frmt(""),
+#'                            "==0" ~ "",
+#'                            "TRUE" ~ frmt("(xx.x%)"))))
+#'   ))
 #'
 #'  # Create data
 #'  df <- tidyr::crossing(
