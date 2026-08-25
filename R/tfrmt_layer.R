@@ -102,12 +102,12 @@ layer_tfrmt_arg.default <- function(x, y, arg_name, ...) {
     y_arg_val %||% x_arg_val
 }
 
-## if group is an empty vars, keep the original value
+## if group is an empty quo, keep the original value
 layer_tfrmt_arg_vars <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val) || identical(y_arg_val, vars())) {
+    if (is.null(y_arg_val) || identical(y_arg_val, rlang::quo())) {
         x_arg_val
     } else {
         y_arg_val

@@ -170,11 +170,11 @@
 #'
 tfrmt <- function(
     tfrmt_obj,
-    group = vars(),
+    group = rlang::quo(),
     label = rlang::quo(),
     param = rlang::quo(),
     value = rlang::quo(),
-    column = vars(),
+    column = rlang::quo(),
     title,
     subtitle,
     row_grp_plan, #the style between blocking
@@ -310,7 +310,7 @@ quo_get <- function(
             return(quote(expr = ))
         } else {
             if (
-                identical(arg_call, rlang::quo()) || identical(arg_call, vars())
+                identical(arg_call, rlang::quo())
             ) {
                 return(arg_call)
             }
@@ -384,10 +384,10 @@ quo_get <- function(
                         arg,
                         allow_tidy_select = allow_tidy_select
                     )
-                    arg_val <- as_vars(do.call("vars", arg_call, envir = envir))
+                    arg_val <- as_vars(rlang::quos(!!!arg_call, .env = envir))
                 } else {
                     arg_val <- as_length_one_quo(
-                        do.call("vars", arg_call, envir = envir),
+                        rlang::quos(!!!arg_call, .env = envir),
                         arg = as.character(arg)
                     )
                 }
@@ -427,7 +427,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
             paste0(
                 "Entries for `",
                 arg,
-                "` argument must be vars(), a character vector, or unquoted column name.\n",
+                "` argument must be a character vector or unquoted column name.\n",
                 "  Consider updating the argument input to `",
                 arg,
                 "` to:\n\t",
@@ -441,7 +441,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
 
 trim_vars_quo_c <- function(x) {
     x_list <- as.list(x)
-    if (as.character(x_list[[1]]) %in% c("c", "quo", "rlang::quo", "vars")) {
+    if (as.character(x_list[[1]]) %in% c("c", "quo", "rlang::quo")) {
         x_list[-1]
     } else {
         list(x)
@@ -505,18 +505,15 @@ as_vars.quosures <- function(x) {
 #' @export
 #' @keywords internal
 as_vars.quosure <- function(x) {
-    vars(!!x)
+    rlang::quos(!!x)
 }
 
 #' @export
 #' @keywords internal
 as_vars.character <- function(x) {
-    do.call(
-        vars,
-        lapply(x, function(x) {
-            rlang::quo(!!rlang::sym(x))
-        })
-    )
+    rlang::quos(!!!lapply(x, function(x_val) {
+        rlang::quo(!!rlang::sym(x_val))
+    }))
 }
 
 compare_dot_args_against_formals <- function(dot_arg, formals) {

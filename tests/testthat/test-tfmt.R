@@ -6,11 +6,11 @@ test_that("basic tfrmt - title", {
     expect_s3_class(t_frmt, "tfrmt")
 
     expect_identical(t_frmt$title, "Table Title")
-    expect_identical(t_frmt$group, vars())
+    expect_identical(t_frmt$group, rlang::quo())
     expect_identical(t_frmt$label, rlang::quo())
     expect_identical(t_frmt$param, rlang::quo())
     expect_identical(t_frmt$value, rlang::quo())
-    expect_identical(t_frmt$column, vars())
+    expect_identical(t_frmt$column, rlang::quo())
 })
 
 test_that("basic tfrmt - selecting group/label/param/value/column - quo", {
@@ -147,7 +147,7 @@ test_that("basic tfrmt - bare/char mix error", {
         paste0(
             "Entries for `",
             "group",
-            "` argument must be vars(), a character vector, or unquoted column name.\n",
+            "` argument must be a character vector or unquoted column name.\n",
             "  Consider updating the argument input to `",
             "group",
             "` to:\n\t",
@@ -184,11 +184,11 @@ test_that("layering tfrmt - default table elements - func/tfrmt", {
         "Table Subtitle"
     )
 
-    expect_identical(t_frmt_layered$group, vars())
+    expect_identical(t_frmt_layered$group, rlang::quo())
     expect_identical(t_frmt_layered$label, rlang::quo())
     expect_identical(t_frmt_layered$param, rlang::quo())
     expect_identical(t_frmt_layered$value, rlang::quo())
-    expect_identical(t_frmt_layered$column, vars())
+    expect_identical(t_frmt_layered$column, rlang::quo())
 })
 
 test_that("layering tfrmt - select latest table elements", {
