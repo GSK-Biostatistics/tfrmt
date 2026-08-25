@@ -25,7 +25,7 @@
 #'             frmt("XXX")
 #'         )
 #'       )
-#'   )
+#'     )
 #'
 #' @export
 body_plan <- function(...) {
