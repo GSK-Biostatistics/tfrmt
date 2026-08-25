@@ -514,9 +514,11 @@ as_quosures.quosure <- function(x) {
 #' @export
 #' @keywords internal
 as_quosures.character <- function(x) {
-    rlang::quos(!!!lapply(x, function(x_val) {
-        rlang::quo(!!rlang::sym(x_val))
-    }))
+    rlang::quos(
+        !!!lapply(x, function(x_val) {
+            rlang::quo(!!rlang::sym(x_val))
+        })
+    )
 }
 
 compare_dot_args_against_formals <- function(dot_arg, formals) {
