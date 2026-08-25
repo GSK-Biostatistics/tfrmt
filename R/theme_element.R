@@ -21,7 +21,9 @@
 #'  to related article}
 #'
 #' @returns element_row_grp_loc object
+#'
 #' @export
+#'
 #' @examples
 #'
 #' tfrmt_spec <- tfrmt(
@@ -75,6 +77,7 @@ is_element_row_grp_loc <- function(x) {
 #'   specify whether row group titles span the entire table or collapse.
 #'
 #' @export
+#'
 #' @examples
 #'
 #' tfrmt_spec <- tfrmt(
@@ -86,7 +89,9 @@ is_element_row_grp_loc <- function(x) {
 #'     row_grp_plan = row_grp_plan(
 #'         row_grp_structure(
 #'             group_val = ".default",
-#'             element_block(post_space = "   ")
+#'             element_block = element_block(
+#'                 post_space = "   "
+#'             )
 #'         )
 #'     ),
 #'     body_plan = body_plan(
@@ -94,7 +99,28 @@ is_element_row_grp_loc <- function(x) {
 #'             frmt("xx")
 #'         )
 #'     )
+#'     group = grp1,
+#'     label = label,
+#'     param = param,
+#'     value = value,
+#'     column = column,
+#'     row_grp_plan = row_grp_plan(
+#'         row_grp_structure(
+#'             group_val = ".default",
+#'             element_block = element_block(
+#'                 post_space = "   "
+#'             )
+#'         )
+#'     ),
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = ".default",
+#'             frmt("xx")
+#'         )
+#'     )
 #' )
+#'
 element_block <- function(post_space = c(NULL, " ", "-"), fill = TRUE) {
     structure(
         list(

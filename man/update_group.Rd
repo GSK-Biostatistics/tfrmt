@@ -35,9 +35,10 @@ tfrmt_spec <- tfrmt(
          ),
          frmt("XXX")
        )
-    ))
+    )
+)
 
 tfrmt_spec \%>\%
-  update_group(New_Group = group1)
+    update_group(New_Group = group1)
 
 }

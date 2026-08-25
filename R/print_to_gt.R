@@ -36,8 +36,8 @@
 #'     )
 #' )
 #'
-#'   # Print mock table using default
-#'   print_mock_gt(tfrmt = tfrmt_spec)
+#' # Print mock table using default
+#' print_mock_gt(tfrmt = tfrmt_spec)
 #'
 #'```
 #'
@@ -119,7 +119,8 @@ print_mock_gt <- function(
 #'
 #' @param tfrmt tfrmt object that will dictate the structure of the table
 #' @param .data Data to style in order to make the table
-#' @param .unicode_ws Whether to convert white space to unicode in preparation for output
+#' @param .unicode_ws Whether to convert white space to unicode in preparation
+#' for output
 #'
 #' @return a stylized gt object
 #' @export
@@ -128,6 +129,7 @@ print_mock_gt <- function(
 #'
 #' ```r
 #' library(dplyr)
+#'
 #' # Create tfrmt specification
 #' tfrmt_spec <- tfrmt(
 #'     label = label,
@@ -151,12 +153,12 @@ print_mock_gt <- function(
 #'
 #' # Create data
 #' df <- tidyr::crossing(
-#'         label = c("label 1", "label 2"),
-#'         column = c("placebo", "trt1"),
-#'         param = c("count", "percent")
-#'     ) |>
+#'     label = c("label 1", "label 2"),
+#'     column = c("placebo", "trt1"),
+#'     param = c("count", "percent")
+#' ) |>
 #'     dplyr::mutate(
-#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'         value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
 #'     )
 #'
 #' print_to_gt(tfrmt_spec,df)

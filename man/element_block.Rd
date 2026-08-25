@@ -37,6 +37,7 @@ tfrmt_spec <- tfrmt(
         )
     )
 )
+
 }
 \seealso{
 \code{\link[=row_grp_plan]{row_grp_plan()}} for more details on how to group row group

@@ -17,11 +17,14 @@ display_val_frmts(tfrmt, .data, mock = FALSE, col = NULL)
 or unquoted column name, a tidyselect semantic, or a span_structure.}
 }
 \value{
-text representing character vector of formatted values to be copied and modified in the col_style_plan
+text representing character vector of formatted values to be copied
+and modified in the col_style_plan
 }
 \description{
-A helper for creating positional-alignment specifications for the col_style_plan.
-Returns all unique formatted values to appear in the column(s) specified. Numeric values are represented by x's.
+A helper for creating positional-alignment specifications for the
+col_style_plan.
+Returns all unique formatted values to appear in the column(s) specified.
+Numeric values are represented by x's.
 }
 \examples{
  tf_spec <- tfrmt(

@@ -174,10 +174,11 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #'          ),
 #'          frmt("XXX")
 #'        )
-#'     ))
+#'     )
+#' )
 #'
 #' tfrmt_spec %>%
-#'   update_group(New_Group = group1)
+#'     update_group(New_Group = group1)
 #'
 update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]

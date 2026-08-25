@@ -57,8 +57,8 @@ tfrmt_spec <- tfrmt(
     )
 )
 
-  # Print mock table using default
-  print_mock_gt(tfrmt = tfrmt_spec)
+# Print mock table using default
+print_mock_gt(tfrmt = tfrmt_spec)
 
 }\if{html}{\out{</div>}}
 
@@ -77,4 +77,3 @@ print_mock_gt(tfrmt_spec, df)
 
 \if{html}{\out{ <img src="https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_mock_gt2.png" alt = "Simple 3 by 3 table without values, but with column names" style="width:50\%;"> }}
 }
-

@@ -23,12 +23,13 @@
 #' }}
 #'
 #' @returns frmt_structure object
+#'
 #' @export
 #'
 #' @examples
 #'
 #' sample_structure <- frmt_structure(
-#'     group_val = c("group1"),
+#'     group_val = "group1",
 #'     frmt("XXX")
 #' )
 #'

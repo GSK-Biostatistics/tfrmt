@@ -22,8 +22,8 @@ Used when debugging formatting, it is an easy way to allow you to see which
 formats are applied to each row in your dataset.
 }
 \examples{
- library(dplyr)
- library(tidyr)
+library(dplyr)
+library(tidyr)
 
  tfrmt_spec <- tfrmt(
  label = label,
@@ -40,15 +40,16 @@ formats are applied to each row in your dataset.
                                         "TRUE" ~ frmt("(xx.x\%)"))))
  ))
 
- # Create data
- df <- tidyr::crossing(
-        label = c("label 1", "label 2"),
-        column = c("placebo", "trt1"),
-        param = c("count", "percent")
-    ) |>
+# Create data
+df <- tidyr::crossing(
+    label = c("label 1", "label 2"),
+    column = c("placebo", "trt1"),
+    param = c("count", "percent")
+) |>
     dplyr::mutate(
-        value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+        value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
     )
 
  display_row_frmts(tfrmt_spec,df)
+
 }
