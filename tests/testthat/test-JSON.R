@@ -592,7 +592,9 @@ test_that("page_plan() roundtrip to JSON with transform", {
                 group_val = ".default",
                 label_val = NULL
             ),
-            page_structure(label_val = "A"),
+            page_structure(
+                label_val = "A"
+            ),
             note_loc = "source_note",
             transform = ~ stringr::str_replace(.x, "foo", "bar")
         )
@@ -639,7 +641,9 @@ test_that("page_plan() roundtrip to JSON with transform", {
                 group_val = ".default",
                 label_val = NULL
             ),
-            page_structure(label_val = "A"),
+            page_structure(
+                label_val = "A"
+            ),
             note_loc = "source_note",
             transform = transform_function
         )

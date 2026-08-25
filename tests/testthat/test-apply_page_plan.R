@@ -11,7 +11,9 @@ test_that("Page plan with defined split", {
     )
     # nolint end
     my_page_plan <- page_plan(
-        page_structure(group_val = "A")
+        page_structure(
+            group_val = "A"
+        )
     )
 
     auto_split <- apply_page_plan(df, my_page_plan, vars(grp), rlang::quo(lbl))
@@ -104,7 +106,11 @@ test_that("Page plan with grouped split", {
     )
     # nolint end
     my_page_plan <- page_plan(
-        page_structure(group_val = list(grp2 = ".default"))
+        page_structure(
+            group_val = list(
+                grp2 = ".default"
+            )
+        )
     )
 
     auto_split <- apply_page_plan(
@@ -276,7 +282,9 @@ test_that("Page plan with grouped split", {
     )
     # nolint end
     my_page_plan <- page_plan(
-        page_structure(label_val = "lbl1")
+        page_structure(
+            label_val = "lbl1"
+        )
     )
     auto_split <- apply_page_plan(
         df,
@@ -330,7 +338,12 @@ test_that("page plan with mix of defined & group splits", {
     )
     # nolint end
     my_page_plan <- page_plan(
-        page_structure(group_val = list(grp1 = ".default", grp2 = "a"))
+        page_structure(
+            group_val = list(
+                grp1 = ".default",
+                grp2 = "a"
+            )
+        )
     )
 
     auto_split <- apply_page_plan(
