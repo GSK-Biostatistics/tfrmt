@@ -85,7 +85,6 @@ page_plan <- function(
 #' @param label_val string which represents the value of label to split after.
 #'   Set to ".default" if the split should occur after every unique value of
 #'   the variable.
-
 #'
 #' @return page structure object
 #' @export
