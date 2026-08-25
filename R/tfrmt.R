@@ -346,7 +346,7 @@ quo_get <- function(
                             is_basic_list(arg_call_results$result))
                     ) {
                         if (arg %in% as_var_args) {
-                                return(as_vars(arg_call_results$result)) # nolint: return_linter
+                            return(as_vars(arg_call_results$result)) # nolint: return_linter
                         } else {
                                 return( # nolint: return_linter
                                 as_length_one_quo(
