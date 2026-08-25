@@ -14,20 +14,20 @@
 #'
 #' @return body_plan object
 #'
+#' @export
+#'
 #' @examples
 #'
-#'   tfrmt_spec<- tfrmt(
-#'       title = "Table Title",
-#'       body_plan = body_plan(
+#' tfrmt_spec<- tfrmt(
+#'     title = "Table Title",
+#'     body_plan = body_plan(
 #'         frmt_structure(
-#'           group_val = c("group1"),
-#'           label_val = ".default",
-#'           frmt("XXX")
+#'             group_val = c("group1"),
+#'             label_val = ".default",
+#'             frmt("XXX")
 #'         )
-#'       )
-#'      )
-#'
-#' @export
+#'     )
+#' )
 #'
 body_plan <- function(...) {
     frmt_structure_list <- list(...)

@@ -37,15 +37,30 @@ Print mock table to GT
 
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{
-  # Create tfrmt specification
-  tfrmt_spec <- tfrmt( label = label, column =
-  column, param = param, body_plan = body_plan( frmt_structure(group_val =
-  ".default", label_val = ".default", frmt_combine( "\{count\} \{percent\}",
-  count = frmt("xxx"), percent = frmt_when("==100"~ frmt(""), "==0"~ "",
-  "TRUE" ~ frmt("(xx.x\%)")))) ))
+# Create tfrmt specification
+tfrmt_spec <- tfrmt(
+    label = label,
+    column = column,
+    param = param,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "\{count\} \{percent\}",
+                count = frmt("xxx"),
+                percent = frmt_when(
+                    "==100"~ frmt(""),
+                    "==0"~ "",
+                    "TRUE" ~ frmt("(xx.x\%)")
+                )
+            )
+        )
+    )
+)
 
-  # Print mock table using default
-  print_mock_gt(tfrmt = tfrmt_spec)
+# Print mock table using default
+print_mock_gt(tfrmt = tfrmt_spec)
 
 }\if{html}{\out{</div>}}
 

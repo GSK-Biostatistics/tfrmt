@@ -54,37 +54,47 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'   `TRUE`
 #'
 #' @return formatted tibble
+#'
 #' @export
+#'
 #' @examples
-#'  library(dplyr)
-#'  library(tidyr)
+#' library(dplyr)
+#' library(tidyr)
 #'
-#'  tfrmt_spec <- tfrmt(
-#'  label = label,
-#'  column = column,
-#'  param = param,
-#'  value=value,
-#'  body_plan = body_plan(
-#'    frmt_structure(group_val = ".default", label_val = ".default",
-#'                   frmt_combine(
-#'                     "{count} {percent}",
-#'                     count = frmt("xxx"),
-#'                     percent = frmt_when("==100"~ frmt(""),
-#'                                         "==0"~ "",
-#'                                         "TRUE" ~ frmt("(xx.x%)"))))
-#'  ))
+#' tfrmt_spec <- tfrmt(
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     value = value,
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = ".default",
+#'             frmt_combine(
+#'                 "{count} {percent}",
+#'                 count = frmt("xxx"),
+#'                 percent = frmt_when(
+#'                     "==100" ~ frmt(""),
+#'                     "==0" ~ "",
+#'                     "TRUE" ~ frmt("(xx.x%)")
+#'                 )
+#'             )
+#'         )
+#'     )
+#' )
 #'
-#'  # Create data
-#'  df <- tidyr::crossing(
-#'         label = c("label 1", "label 2"),
-#'         column = c("placebo", "trt1"),
-#'         param = c("count", "percent")
-#'     ) |>
+#' # Create data
+#' df <- tidyr::crossing(
+#'     label = c("label 1", "label 2"),
+#'     column = c("placebo", "trt1"),
+#'     param = c("count", "percent")
+#' ) |>
 #'     dplyr::mutate(
-#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'         value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
 #'     )
 #'
 #'  display_row_frmts(tfrmt_spec,df)
+#'
 display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
     if (isFALSE(convert_to_txt)) {
         output <- match_frmt_to_rows(
@@ -177,8 +187,10 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 
 #' Display formatted values
 #'
-#' A helper for creating positional-alignment specifications for the col_style_plan.
-#' Returns all unique formatted values to appear in the column(s) specified. Numeric values are represented by x's.
+#' A helper for creating positional-alignment specifications for the
+#' col_style_plan.
+#' Returns all unique formatted values to appear in the column(s) specified.
+#' Numeric values are represented by x's.
 #'
 #'
 #' @param tfrmt tfrmt object to apply to the data
@@ -187,29 +199,55 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #' @param col Column value to align on from `column` variable. May be a quoted
 #'   or unquoted column name, a tidyselect semantic, or a span_structure.
 #'
-#' @return text representing character vector of formatted values to be copied and modified in the col_style_plan
+#' @return text representing character vector of formatted values to be copied
+#' and modified in the col_style_plan
+#'
 #' @export
+#'
 #' @examples
-#'  tf_spec <- tfrmt(
-#'  group = c(rowlbl1,grp),
-#'  label = rowlbl2,
-#'  column = column,
-#'  param = param,
-#'  value = value,
-#'  sorting_cols = c(ord1, ord2),
-#'  body_plan = body_plan(
-#'  frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} ({pct} %)",
-#'                                                                              n = frmt("xxx"),
-#'                                                                              pct = frmt("xx.x"))),
-#'  frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-#'  frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"),
-#'                              frmt("xxx.x")),
-#'  frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-#'  frmt_structure(group_val = ".default", label_val = ".default",
-#'                             p = frmt_when(">0.99" ~ ">0.99",
-#'                                           "<0.15" ~ "<0.15",
-#'                                           TRUE ~ frmt("x.xxx", missing = "")))
-#' ))
+#' tf_spec <- tfrmt(
+#'     group = c(rowlbl1,grp),
+#'     label = rowlbl2,
+#'     column = column,
+#'     param = param,
+#'     value = value,
+#'     sorting_cols = c(ord1, ord2),
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = ".default",
+#'             frmt_combine(
+#'                 "{n} ({pct} %)",
+#'                 n = frmt("xxx"),
+#'                 pct = frmt("xx.x")
+#'             )
+#'         ),
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = "n",
+#'             frmt("xxx")
+#'         ),
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = c("Mean", "Median", "Min","Max"),
+#'             frmt("xxx.x")
+#'         ),
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = "SD",
+#'             frmt("xxx.xx")
+#'         ),
+#'         frmt_structure(
+#'             group_val = ".default",
+#'             label_val = ".default",
+#'             p = frmt_when(
+#'                 ">0.99" ~ ">0.99",
+#'                 "<0.15" ~ "<0.15",
+#'                 TRUE ~ frmt("x.xxx", missing = "")
+#'             )
+#'         )
+#'     )
+#' )
 #'
 #'  display_val_frmts(tf_spec, data_demog, col = vars(everything()))
 #'  display_val_frmts(tf_spec, data_demog, col = "p-value")

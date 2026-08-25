@@ -21,11 +21,24 @@ of \code{\link[=row_grp_plan]{row_grp_plan()}}
 }
 \examples{
 
-## single grouping variable example
-row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+# single grouping variable example
+row_grp_structure(
+    group_val = c("A","C"),
+    element_block = element_block(
+        post_space = "---"
+    )
+)
 
-## example with multiple grouping variables
-row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+# example with multiple grouping variables
+row_grp_structure(
+    group_val = list(
+        grp1 = "A",
+        grp2 = "b"
+    ),
+    element_block = element_block(
+        post_space = " "
+    )
+)
 
 }
 \seealso{
