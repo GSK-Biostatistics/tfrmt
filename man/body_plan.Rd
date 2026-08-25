@@ -19,16 +19,16 @@ added structure is the first applied.
 }
 \examples{
 
-  tfrmt_spec<- tfrmt(
-      title = "Table Title",
-      body_plan = body_plan(
+tfrmt_spec<- tfrmt(
+    title = "Table Title",
+    body_plan = body_plan(
         frmt_structure(
-          group_val = c("group1"),
-          label_val = ".default",
-          frmt("XXX")
+            group_val = c("group1"),
+            label_val = ".default",
+            frmt("XXX")
         )
-      )
-     )
+    )
+)
 
 }
 \seealso{
