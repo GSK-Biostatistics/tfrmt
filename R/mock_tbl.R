@@ -10,17 +10,20 @@
 #' @return tibble containing mock data
 #'
 #' @export
+#'
 #' @examples
 #'
 #' tfrmt_spec <- tfrmt(
-#'   label = label,
-#'   column = column,
-#'   param = param,
-#'   value=value,
-#'   body_plan = body_plan(
-#'     frmt_structure(group_val=".default", label_val=".default", frmt("xx.x"))
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     value = value,
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             frmt("xx.x")
+#'         )
 #'     )
-#'   )
+#' )
 #'
 #' make_mock_data(tfrmt_spec)
 #'
