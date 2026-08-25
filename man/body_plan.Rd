@@ -22,10 +22,15 @@ added structure is the first applied.
 tfrmt_spec<- tfrmt(
     title = "Table Title",
     body_plan = body_plan(
+tfrmt_spec<- tfrmt(
+    title = "Table Title",
+    body_plan = body_plan(
         frmt_structure(
               group_val = "group1",
               frmt("XXX")
         )
+    )
+)
     )
 )
 

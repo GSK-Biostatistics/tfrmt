@@ -74,18 +74,13 @@ footnote_plan <- function(
 #'     column_val = "Placebo"
 #' )
 #'
-#' footnote_structure <- footnote_structure(
-#'     footnote_text = "Text",
-#'     column_val = "Placebo"
-#' )
-#'
 #' # Adds a footnote to either 'Placebo' or 'Treatment groups' depending on
 #' # which is last to appear in the column vector
 #' footnote_structure <- footnote_structure(
 #'     footnote_text = "Text",
 #'     column_val = list(
 #'         col1 = "Placebo",
-#'         col2= "Treatment groups"
+#'         col2 = "Treatment groups"
 #'     )
 #' )
 #'

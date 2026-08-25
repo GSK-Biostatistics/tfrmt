@@ -22,7 +22,9 @@
 #'
 #' @returns element_row_grp_loc object
 #'
+#'
 #' @export
+#'
 #'
 #' @examples
 #'
@@ -81,24 +83,6 @@ is_element_row_grp_loc <- function(x) {
 #' @examples
 #'
 #' tfrmt_spec <- tfrmt(
-#'     group = grp1,
-#'     label = label,
-#'     param = param,
-#'     value = value,
-#'     column = column,
-#'     row_grp_plan = row_grp_plan(
-#'         row_grp_structure(
-#'             group_val = ".default",
-#'             element_block = element_block(
-#'                 post_space = "   "
-#'             )
-#'         )
-#'     ),
-#'     body_plan = body_plan(
-#'         frmt_structure(
-#'             frmt("xx")
-#'         )
-#'     ),
 #'     group = grp1,
 #'     label = label,
 #'     param = param,
