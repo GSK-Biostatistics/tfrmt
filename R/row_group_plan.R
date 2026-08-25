@@ -1,8 +1,8 @@
 #' Row Group Plan
 #'
-#' Define the look of the table groups on the output. This function allows you to
-#' add spaces after blocks and allows you to control how the groups are viewed
-#' whether they span the entire table or are nested as a column.
+#' Define the look of the table groups on the output. This function allows you
+#' to add spaces after blocks and allows you to control how the groups are
+#' viewed whether they span the entire table or are nested as a column.
 #'
 #' @seealso [row_grp_structure()] for more details on how to specify row group
 #'   structures, [element_block()] for more details on how to specify spacing
@@ -17,24 +17,42 @@
 #'
 #' @return row_grp_plan object
 #'
-#' @examples
-#'
-#'
-#'   ## single grouping variable example
-#'   sample_grp_plan <- row_grp_plan(
-#'     row_grp_structure(group_val = c("A","C"), element_block(post_space = "---")),
-#'     row_grp_structure(group_val = c("B"), element_block(post_space = " ")),
-#'     label_loc = element_row_grp_loc(location = "column")
-#'   )
-#'
-#'   ## example with multiple grouping variables
-#'   sample_grp_plan <- row_grp_plan(
-#'      row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " ")),
-#'      label_loc = element_row_grp_loc(location = "spanning")
-#'      )
-#'
 #' @export
 #'
+#' @examples
+#' # single grouping variable example
+#' sample_grp_plan <- row_grp_plan(
+#'     row_grp_structure(
+#'         group_val = c("A","C"),
+#'         element_block = element_block(
+#'             post_space = "---"
+#'         )
+#'     ),
+#'     row_grp_structure(
+#'         group_val = c("B"),
+#'         element_block = element_block(
+#'             post_space = " "
+#'         )
+#'     ),
+#'     label_loc = element_row_grp_loc(
+#'         location = "column"
+#'     )
+#' )
+#'
+#' # example with multiple grouping variables
+#' sample_grp_plan <- row_grp_plan(
+#'     row_grp_structure(
+#'         group_val = list(
+#'             grp1 = "A",
+#'             grp2 = "b"),
+#'         element_block = element_block(
+#'             post_space = " "
+#'         )
+#'     ),
+#'     label_loc = element_row_grp_loc(
+#'         location = "spanning"
+#'     )
+#' )
 row_grp_plan <- function(
     ...,
     label_loc = element_row_grp_loc(location = "indented")
@@ -53,8 +71,8 @@ row_grp_plan <- function(
 
 #' Row Group Structure Object
 #'
-#' Function needed to create a row_grp_structure object, which is a building block
-#' of [row_grp_plan()]
+#' Function needed to create a row_grp_structure object, which is a building
+#' block of [row_grp_plan()]
 #'
 #' @seealso [row_grp_plan()] for more details on how to group row group
 #'   structures, [element_block()] for more details on how to specify spacing
@@ -62,32 +80,44 @@ row_grp_plan <- function(
 #'
 #'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
 #'
-#' @param group_val A string or a named list of strings which represent the
-#'   value of group should be when the given frmt is implemented
-#' @param element_block element_block() object to define the block styling
+#' @param group_val A character vector or a named list of strings which
+#'   represent the value of group should be when the given frmt is implemented
+#' @param element_block An [element_block()] object to define the block styling
 #'
-#' @returns row_grp_structure object
+#' @returns A `row_grp_structure` object
 #' @export
 #' @examples
 #'
-#' ## single grouping variable example
-#' row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+#' # single grouping variable example
+#' row_grp_structure(
+#'     group_val = c("A","C"),
+#'     element_block = element_block(
+#'         post_space = "---"
+#'     )
+#' )
 #'
-#' ## example with multiple grouping variables
-#' row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+#' # example with multiple grouping variables
+#' row_grp_structure(
+#'     group_val = list(
+#'         grp1 = "A",
+#'         grp2 = "b"
+#'     ),
+#'     element_block = element_block(
+#'         post_space = " "
+#'     )
+#' )
 #'
 row_grp_structure <- function(group_val = ".default", element_block) {
-    if (!is_element_block(element_block)) {
-        stop("element_block, must be an element_block type")
+    check_element_block(element_block)
+
+    if (!rlang::is_list(group_val)) {
+        check_character(group_val)
     }
 
-    if (is.list(group_val)) {
-        group_val_names <- names(group_val)
-        if (is.null(group_val_names)) {
-            stop("when group_val is a list, must be a named list")
-        } else if (!all(nzchar(group_val_names))) {
-            stop("when group_val is a list, each entry must be named")
-        }
+    if (rlang::is_list(group_val) && !rlang::is_named(group_val)) {
+        cli::cli_abort(
+            "When `group_val` is a list, it must be a named list."
+        )
     }
 
     structure(
