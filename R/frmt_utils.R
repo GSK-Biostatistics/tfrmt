@@ -153,8 +153,7 @@ check_frmt_when <- function(
 #' @export
 #' @examples
 #' x3 <- frmt_structure(
-#'     group_val = c("group1"),
-#'     label_val = ".default",
+#'     group_val = "group1",
 #'     frmt("XXX")
 #' )
 #'
