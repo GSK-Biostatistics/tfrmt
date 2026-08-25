@@ -24,8 +24,8 @@
 #'             group_val = "group1",
 #'             frmt("XXX")
 #'         )
-#'     )
-#' )
+#'       )
+#'   )
 #'
 #' @export
 body_plan <- function(...) {

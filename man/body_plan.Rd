@@ -26,8 +26,8 @@ added structure is the first applied.
             group_val = "group1",
             frmt("XXX")
         )
-    )
-)
+      )
+  )
 
 }
 \seealso{
