@@ -850,7 +850,7 @@
           ],
           "note_loc": ["source_note"],
           "max_rows": {},
-          "transform": ["~stringr::str_replace(.x, \"foo\", \"bar\")"]
+          "transform": ["~stringr::str_replace(.x, stringr::fixed(\"foo\"), \"bar\")"]
         }
       } 
 
@@ -878,7 +878,7 @@
           ],
           "note_loc": ["source_note"],
           "max_rows": {},
-          "transform": ["function (x) \n{\n    stringr::str_replace(x, \"foo\", \"bar\")\n}"]
+          "transform": ["function (x) \n{\n    stringr::str_replace(x, stringr::fixed(\"foo\"), \"bar\")\n}"]
         }
       } 
 
