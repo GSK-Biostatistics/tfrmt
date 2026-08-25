@@ -8,7 +8,7 @@ test_that("json basic tfrmt", {
     tfrmt() %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(tfrmt())
+        expect_identical(tfrmt())
 
     #Complete tfrmt
     basic_filled_in <- tfrmt(
@@ -54,7 +54,7 @@ test_that("json row group plans", {
                 element_block(post_space = "---")
             ),
             row_grp_structure(
-                group_val = c("B"),
+                group_val = "B",
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(
@@ -171,7 +171,7 @@ test_that("json body plan", {
     # Get out the function to see if it runs the same
     fx1 <- frmt4[[6]][[1]][[4]][[1]][[4]]
     fx2 <- new_frmt[[6]][[1]][[4]][[1]][[4]]
-    expect_equal(fx1(1:5), fx2(1:5))
+    expect_identical(fx1(1:5), fx2(1:5))
 
     #Format when test
     frmt_when_simp <- tfrmt(
@@ -383,7 +383,7 @@ test_that("json footnote plan", {
     gl_fn %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(gl_fn)
+        expect_identical(gl_fn)
 
     # Nest columns
     nested_fn <- tfrmt(
@@ -443,14 +443,14 @@ test_that("json col_plan", {
     base_ts %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(base_ts, ignore_attr = c(".Environment"))
+        expect_equal(base_ts, ignore_attr = ".Environment")
 
     #Basic span structure
     span <- tfrmt(
         column = c(span1, col),
         col_plan = col_plan(
             span_structure(
-                span1 = c("col 4")
+                span1 = "col 4"
             )
         )
     )
@@ -471,10 +471,10 @@ test_that("json col_plan", {
             group,
             label,
             span_structure(
-                span1 = c("col 4")
+                span1 = "col 4"
             ),
             span_structure(
-                span1 = c("cols 1,2"),
+                span1 = "cols 1,2",
                 my_col = c("col2", "col1")
             ),
             span_structure(
@@ -610,7 +610,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
             ),
             page_structure(label_val = "A"),
             note_loc = "source_note",
-            transform = ~ stringr::str_replace(.x, "foo", "bar")
+            transform = ~ stringr::str_replace(.x, stringr::fixed("foo"), "bar")
         )
     )
 
@@ -646,7 +646,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
 
     # transform as function
     transform_function <- function(x) {
-        stringr::str_replace(x, "foo", "bar")
+        stringr::str_replace(x, stringr::fixed("foo"), "bar")
     }
 
     page_plan_function <- tfrmt(
@@ -774,8 +774,10 @@ test_that("json read/write", {
         )
     )
 
-    #Write out to json file
-    tfrmt_to_json(test_tfrmt, path = test_loc)
+    # Write out to json file
+    suppressMessages(
+        tfrmt_to_json(test_tfrmt, path = test_loc)
+    )
 
     # Reading in
     read_tfrmt <- json_to_tfrmt(path = test_loc)

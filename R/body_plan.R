@@ -31,16 +31,7 @@
 #'
 body_plan <- function(...) {
     frmt_structure_list <- list(...)
-
-    for (struct_idx in seq_along(frmt_structure_list)) {
-        if (!is_frmt_structure(frmt_structure_list[[struct_idx]])) {
-            stop(paste0(
-                "Entry number ",
-                struct_idx,
-                " is not an object of class `frmt_structure`."
-            ))
-        }
-    }
+    check_frmt_structure_list(frmt_structure_list)
 
     structure(
         frmt_structure_list,
@@ -67,36 +58,38 @@ body_plan_builder <- function(
 ) {
     # prep params for frmt functions
     param_tbl <- seq_along(param_defaults) %>%
-        map_dfr(
-            ~ tibble(
+        purrr::map_dfr(
+            ~ tibble::tibble(
                 param_display = names(param_defaults)[.x],
                 sigdig = list(param_defaults[[.x]] + data$sigdig[[1]]),
                 pos = .x
             )
         ) %>%
-        mutate(
-            contains_glue = str_detect(.data$param_display, "\\{.*\\}"), # is this to be a frmt_combine
-            param = map2(
+        dplyr::mutate(
+            contains_glue = stringr::str_detect(
+                .data$param_display,
+                "\\{.*\\}"
+            ), # is this to be a frmt_combine
+            param = purrr::map2(
                 .data$param_display,
                 .data$contains_glue,
-                ~ if (.y == TRUE) {
-                    str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>% unlist()
+                ~ if (.y) {
+                    stringr::str_extract_all(.x, "(?<=\\{)[^\\}]+(?=\\})") %>%
+                        unlist()
                 } else {
                     .x
                 }
             ),
-            single_glue_to_frmt = pmap_chr(
+            single_glue_to_frmt = purrr::pmap_chr(
                 list(.data$contains_glue, .data$param, .data$param_display),
                 function(a, b, c) {
-                    if (a == TRUE && length(b) == 1) c else NA_character_
+                    if (a && length(b) == 1) c else NA_character_
                 }
             )
         ) %>%
-        unnest(
-            tidyselect::everything()
-        ) %>%
-        mutate(
-            frmt_string = map2_chr(
+        tidyr::unnest(tidyselect::everything()) %>%
+        dplyr::mutate(
+            frmt_string = purrr::map2_chr(
                 .data$sigdig,
                 .data$single_glue_to_frmt,
                 sigdig_frmt_string
@@ -104,9 +97,9 @@ body_plan_builder <- function(
         )
 
     frmt_vec <- param_tbl %>%
-        group_by(.data$pos) %>%
-        group_split() %>%
-        map(function(x) {
+        dplyr::group_by(.data$pos) %>%
+        dplyr::group_split() %>%
+        purrr::map(function(x) {
             if (sum(x$contains_glue) > 1) {
                 frmt_combine_builder(
                     x$param_display[[1]],
@@ -125,9 +118,14 @@ body_plan_builder <- function(
     grp_names <- if (length(group) == 0) {
         character(0)
     } else {
-        group %>% map_chr(as_name)
+        purrr::map_chr(group, rlang::as_name)
     }
-    lbl_names <- if (quo_is_missing(label)) character(0) else as_name(label)
+
+    lbl_names <- if (rlang::quo_is_missing(label)) {
+        character(0)
+    } else {
+        rlang::as_name(label)
+    }
 
     # sigdig value
     sigdig <- data$sigdig[[1]]
@@ -138,13 +136,13 @@ body_plan_builder <- function(
     if (length(which_grp) > 0) {
         group_val <- data[, which_grp] %>%
             as.list() %>%
-            map(unique)
+            purrr::map(unique)
 
         if (length(grp_names) > length(group_val)) {
             group_val_to_add <- grp_names[!grp_names %in% names(group_val)]
             group_list_to_add <- rep(".default", length(group_val_to_add)) %>%
                 as.list() %>%
-                setNames(group_val_to_add)
+                stats::setNames(group_val_to_add)
             group_val <- c(group_val, group_list_to_add)[grp_names]
         }
     } else {

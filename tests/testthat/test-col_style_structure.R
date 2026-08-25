@@ -64,12 +64,12 @@ test_that("col_style_structure - advanced", {
 
     expect_equal(
         element_1$cols,
-        list(quo(n_tot), quo(p), quo(test)),
+        list(rlang::quo(n_tot), rlang::quo(p), rlang::quo(test)),
         ignore_attr = TRUE
     )
     expect_equal(
         element_2$cols,
-        list(quo(n_tot), quo(p), quo(test)),
+        list(rlang::quo(n_tot), rlang::quo(p), rlang::quo(test)),
         ignore_attr = TRUE
     )
     expect_equal(
@@ -79,7 +79,7 @@ test_that("col_style_structure - advanced", {
     )
     expect_equal(
         element_4$cols,
-        list(quo(trt1), list(col = vars(test), col1 = vars(value))),
+        list(rlang::quo(trt1), list(col = vars(test), col1 = vars(value))),
         ignore_attr = TRUE
     )
 })
@@ -116,12 +116,12 @@ test_that("col_style_plan - error non-element_col", {
 test_that("left & right align works", {
     vec <- c(" xx.xxx", "xx", " x,  x")
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = "left"),
         c(" xx.xxx", "xx     ", " x,  x ")
     )
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = "right"),
         c(" xx.xxx", "     xx", "  x,  x")
     )
@@ -130,12 +130,12 @@ test_that("left & right align works", {
 test_that("decimal align works", {
     vec <- c(" xx.xx", " x, x", "xxx", " x (x.x)")
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = c(".", " ")),
         c(" xx.xx   ", " x, x    ", "xxx      ", "  x (x.x)")
     )
 
-    expect_equal(
+    expect_identical(
         apply_col_alignment(vec, align = c(".", ",", " ")),
         c(" xx.xx   ", "  x, x   ", "xxx      ", "  x (x.x)")
     )
@@ -205,16 +205,16 @@ test_that("alignment of multiple columns works", {
     # nolint end
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(tfrmt_obj)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -258,16 +258,16 @@ test_that("alignment of multiple columns works", {
     # nolint end
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -313,7 +313,7 @@ test_that("tidyselect works", {
         )
     )
 
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         # fmt: skip
         trt1 = c(
@@ -327,13 +327,13 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(starts_with_align_dot_plan)
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_identical(dat_aligned, dat_aligned_man)
 
     vars_starts_with_plan <- tfrmt(
         label = one,
@@ -347,7 +347,7 @@ test_that("tidyselect works", {
         )
     )
 
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         # fmt: skip
         trt1 = c(
@@ -361,13 +361,13 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(vars_starts_with_plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
@@ -385,13 +385,13 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(starts_with_plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
@@ -408,7 +408,7 @@ test_that("tidyselect works", {
         )
     )
 
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("   n (%)", "    mean", "      sd", "  median", "(q1, q3)"),
         # fmt: skip
         trt1 = c(
@@ -422,7 +422,7 @@ test_that("tidyselect works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -431,7 +431,7 @@ test_that("tidyselect works", {
             col_plan_vars = vars(one, trt1, trt2, four)
         )
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_identical(dat_aligned, dat_aligned_man)
 })
 
 test_that("span_structure works", {
@@ -475,7 +475,7 @@ test_that("span_structure works", {
     )
 
     # fmt: skip
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         `Test Span1___tlang_delim___trt1` = c(
             " 12 (34%)", " 12.3    ", "  4.34   ", " 14      ", "(10, 20) "
@@ -487,15 +487,15 @@ test_that("span_structure works", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = c(span_col, column),
             names_sep = .tlang_delim,
-            values_from = value,
+            values_from = value
         ) %>%
         clean_spanning_col_names() %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
@@ -555,7 +555,7 @@ test_that("span_structure works on a renamed column", {
     )
 
     # fmt: skip
-    dat_aligned_man <- tibble(
+    dat_aligned_man <- tibble::tibble(
         one = c("n (%)", "mean", "sd", "median", "(q1, q3)"),
         `Test Span1___tlang_delim___trt1` = c(
             " 12 (34%)", " 12.3", "  4.34", " 14", "(10, 20)"
@@ -638,16 +638,16 @@ test_that("Overlapping col_style_structure favors last one", {
     # nolint end
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -695,8 +695,8 @@ test_that("Align strings >1 in length", {
         )
     })
 
-    expect_true(
-        !is_empty(col_style_structure_message)
+    expect_false(
+        rlang::is_empty(col_style_structure_message)
     )
 
     # nolint start: commas_linter
@@ -722,16 +722,16 @@ test_that("Align strings >1 in length", {
 
     # informs user
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -779,8 +779,8 @@ test_that("Alphanumeric align string supplied", {
         )
     })
 
-    expect_true(
-        !is_empty(col_style_structure_message)
+    expect_false(
+        rlang::is_empty(col_style_structure_message)
     )
 
     # nolint start: commas_linter
@@ -806,16 +806,16 @@ test_that("Alphanumeric align string supplied", {
 
     # informs user
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
         apply_col_style_plan(plan)
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man %>%
-            pivot_wider(
+            tidyr::pivot_wider(
                 names_from = column,
                 values_from = value
             )
@@ -832,7 +832,7 @@ test_that("multi-positional alignment", {
         type = "pos"
     )
 
-    expect_equal(
+    expect_identical(
         vec_aligned,
         c(
             "xx.x (xx.x)   ",
@@ -850,7 +850,7 @@ test_that("multi-positional alignment", {
         type = "pos"
     )
 
-    expect_equal(
+    expect_identical(
         vec_aligned,
         c(
             "xx.x          ",
@@ -869,7 +869,7 @@ test_that("multi-positional alignment", {
             type = "pos"
         )
     })
-    expect_equal(
+    expect_identical(
         vec_aligned,
         c(
             "          xx.x         ",
@@ -904,7 +904,7 @@ test_that("multi-positional alignment", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = col,
             values_from = val
         ) %>%
@@ -918,7 +918,7 @@ test_that("multi-positional alignment", {
     )
     # nolint end
 
-    expect_equal(dat_aligned, dat_aligned_man)
+    expect_identical(dat_aligned, dat_aligned_man)
 
     # align on 3 positions - full plan
 
@@ -955,7 +955,7 @@ test_that("multi-positional alignment", {
     )
 
     dat_aligned <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = column,
             values_from = value
         ) %>%
@@ -971,7 +971,7 @@ test_that("multi-positional alignment", {
     )
     # nolint end
 
-    expect_equal(
+    expect_identical(
         dat_aligned,
         dat_aligned_man
     )
@@ -994,14 +994,14 @@ test_that("multi-positional alignment detects inadequate inputs", {
         value = val,
         col_style_plan = col_style_plan(
             col_style_structure(
-                align = c(" xx |(xx)"),
+                align = " xx |(xx)",
                 type = "pos",
                 col = vars(two, three)
             )
         )
     )
     dat_wide <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = col,
             values_from = val
         )
@@ -1010,7 +1010,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         apply_col_style_plan(dat_wide, tfrmt_obj)
     )
 
-    expect_equal(
+    expect_identical(
         msgs,
         c(
             "`align` input for `type`=\"pos\" in col_style_structure does not cover all possible values. Some cells may not be aligned.\n",
@@ -1041,7 +1041,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         )
     )
     dat_wide <- dat %>%
-        pivot_wider(
+        tidyr::pivot_wider(
             names_from = col,
             values_from = val
         )
@@ -1050,7 +1050,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         apply_col_style_plan(dat_wide, tfrmt_obj)
     )
 
-    expect_equal(
+    expect_identical(
         msgs,
         c(
             "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value\n",
@@ -1102,7 +1102,7 @@ test_that("helper for constructing positional alignment works", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         display_val_frmts(
             tfrmt_obj,
             .data = dat,

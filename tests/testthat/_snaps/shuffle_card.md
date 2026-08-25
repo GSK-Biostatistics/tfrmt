@@ -114,12 +114,12 @@
     Code
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
       by = "ARM", variables = "AGE", statistic = ~ cards::continuous_summary_fns(
-        "mean")), dplyr::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
+        "mean")), tibble::tibble(group1 = "ARM", variable = "AGE", stat_name = "p",
         stat_label = "p", stat = list(0.05))), dplyr::row_number() <= 5L))
     Message
       The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
       * A `by` value of "ARM" was found in the input object's attributes.
-      * To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
+      i To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
     Output
       # A tibble: 4 x 7
         ARM                  AGE      context stat_variable stat_name stat_label  stat
@@ -133,9 +133,9 @@
 
     Code
       shuffle_card(dplyr::filter(cards::bind_ard(cards::ard_continuous(cards::ADSL,
-      variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")), dplyr::tibble(
-        group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p", stat = list(
-          0.05))), dplyr::row_number() <= 5L), by = "ARM")
+      variables = "AGE", statistic = ~ cards::continuous_summary_fns("mean")),
+      tibble::tibble(group1 = "ARM", variable = "AGE", stat_name = "p", stat_label = "p",
+        stat = list(0.05))), dplyr::row_number() <= 5L), by = "ARM")
     Output
       # A tibble: 2 x 7
         ARM         AGE         context    stat_variable stat_name stat_label  stat
@@ -280,16 +280,31 @@
       shuffled_ard <- shuffle_card(ard)
     Message
       i "Overall TRTA" already exists in the `TRTA` column. Using "Overall TRTA.1".
-      i "Any AESOC" already exists in the `AESOC` column. Using"Any AESOC.1".
+      i "Any AESOC" already exists in the `AESOC` column. Using "Any AESOC.1".
 
 # shuffle_card() preserves the attributes of a `card` object
 
     Code
-      shuffled_ard <- shuffle_card(ard)
+      shuffle_card(ard_no_stack_attr)
     Message
       The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
       * A `by` value of "ARM" was found in the input object's attributes.
-      * To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
+      i To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
+    Output
+      # A tibble: 45 x 8
+         ARM     AGEGR1 SEX   context  stat_variable stat_name stat_label   stat
+         <chr>   <chr>  <chr> <chr>    <chr>         <chr>     <chr>       <dbl>
+       1 Placebo 65-80  <NA>  tabulate AGEGR1        n         n          42    
+       2 Placebo 65-80  <NA>  tabulate AGEGR1        N         N          86    
+       3 Placebo 65-80  <NA>  tabulate AGEGR1        p         %           0.488
+       4 Placebo <65    <NA>  tabulate AGEGR1        n         n          14    
+       5 Placebo <65    <NA>  tabulate AGEGR1        N         N          86    
+       6 Placebo <65    <NA>  tabulate AGEGR1        p         %           0.163
+       7 Placebo >80    <NA>  tabulate AGEGR1        n         n          30    
+       8 Placebo >80    <NA>  tabulate AGEGR1        N         N          86    
+       9 Placebo >80    <NA>  tabulate AGEGR1        p         %           0.349
+      10 Placebo <NA>   F     tabulate SEX           n         n          53    
+      # i 35 more rows
 
 ---
 

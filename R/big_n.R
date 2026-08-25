@@ -25,9 +25,9 @@ big_n_structure <- function(
     n_frmt = frmt("\nN = xx"),
     by_page = FALSE
 ) {
-    if (!is_frmt(n_frmt) || is_frmt_combine(n_frmt) || is_frmt_when(n_frmt)) {
-        stop("`n_frmt` must be given a frmt object")
-    }
+    # TODO add check for param_val?
+    check_frmt_strict(n_frmt)
+    rlang::check_bool(by_page)
 
     structure(
         list(
@@ -52,12 +52,12 @@ big_n_structure <- function(
 apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
     if (!is.null(big_n_df) && nrow(big_n_df) > 0) {
         col_lab <- columns |>
-            purrr::map_chr(as_label)
+            purrr::map_chr(rlang::as_label)
 
         data_names <- col_plan_vars |>
-            purrr::map_chr(as_label) |>
+            purrr::map_chr(rlang::as_label) |>
             split_data_names_to_df(
-                data_names = c(),
+                data_names = NULL,
                 preselected_cols = _,
                 column_names = col_lab
             )
@@ -68,7 +68,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
             data_names <- data_names |>
                 dplyr::mutate(
                     !!big_n_i$`__tfrmt_big_n_names__` := dplyr::if_else(
-                        !!parse_expr(big_n_i$exp),
+                        !!rlang::parse_expr(big_n_i$exp),
                         paste0(
                             !!rlang::sym(big_n_i$`__tfrmt_big_n_names__`),
                             dplyr::pull(big_n_i, !!value)
@@ -80,10 +80,10 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
 
         out <- unite_df_to_data_names(
             data_names,
-            preselected_cols = c(),
+            preselected_cols = NULL,
             column_names = col_lab
         ) |>
-            purrr::map(~ char_as_quo(.x)) |>
+            purrr::map(char_as_quo) |>
             do.call("vars", args = _)
     } else {
         out <- col_plan_vars
@@ -160,7 +160,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
         }
 
         # Test for too many big n's
-        grp_vars <- setdiff(names(frmtted_vals), as_label(value))
+        grp_vars <- setdiff(names(frmtted_vals), rlang::as_label(value))
         multi_test <- frmtted_vals |>
             dplyr::group_by(
                 dplyr::across(
@@ -169,8 +169,12 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     )
                 )
             ) |>
-            dplyr::summarise(n = n()) |>
-            dplyr::filter(n > 1)
+            dplyr::summarise(
+                n = dplyr::n()
+            ) |>
+            dplyr::filter(
+                .data$n > 1
+            )
         if (nrow(multi_test) > 0) {
             warn_df <- multi_test |>
                 dplyr::select(-"n")
@@ -184,11 +188,11 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             )
         }
 
-        by_var <- setdiff(grp_vars, purrr::map_chr(columns, as_label))
+        by_var <- setdiff(grp_vars, purrr::map_chr(columns, rlang::as_label))
 
         data_out <- frmtted_vals |>
             dplyr::mutate(
-                `_tfrmt______id` = row_number()
+                `_tfrmt______id` = dplyr::row_number()
             ) |>
             tidyr::pivot_longer(
                 -c(
@@ -201,7 +205,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             ) |>
             dplyr::filter(
                 !is.na(.data$`__tfrmt_big_n_values__`),
-                .data$`__tfrmt_big_n_values__` != ""
+                nzchar(.data$`__tfrmt_big_n_values__`)
             ) |>
             dplyr::group_by(.data$`_tfrmt______id`) |>
             dplyr::mutate(
@@ -222,7 +226,7 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
             dplyr::select(-"_tfrmt______id")
 
         if (big_n_structure$by_page) {
-            if (is_empty(by_var)) {
+            if (rlang::is_empty(by_var)) {
                 data_out <- data_out |>
                     dplyr::group_split()
             } else {
@@ -240,7 +244,8 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     dplyr::group_by(.data$`..tfrmt_big_n_order..`) |>
                     dplyr::group_split() |>
                     purrr::map(
-                        ~ dplyr::select(.x, -"..tfrmt_big_n_order..")
+                        dplyr::select,
+                        -"..tfrmt_big_n_order.."
                     )
             }
         }

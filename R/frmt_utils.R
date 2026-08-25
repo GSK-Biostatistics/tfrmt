@@ -1,6 +1,7 @@
-#' Check if input is a frmt
+#' Is object a `frmt`?
 #'
-#' @param x Object to check
+#' @param x An object to test.
+#'
 #' @export
 #' @examples
 #' x1 <- frmt("XXX.XX")
@@ -13,12 +14,67 @@ is_frmt <- function(x) {
     inherits(x, "frmt")
 }
 
-#' Check if input is a frmt_combine
+check_frmt <- function(
+    frmt,
+    arg = rlang::caller_arg(frmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt)) {
+        if (is_frmt(frmt)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt,
+        "a frmt object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+is_frmt_strict <- function(x) {
+    inherits(x, "frmt") && length(class(x)) == 1
+}
+
+# this is a stricter check - the input must be a frmt object and not a
+# `frmt_when` or `frmt_structure`
+check_frmt_strict <- function(
+    frmt,
+    arg = rlang::caller_arg(frmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt)) {
+        if (is_frmt_strict(frmt)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt,
+        "a <frmt> object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `frmt_combine`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
-#' x2 <- frmt_combine("XXX %","XX,XXX")
+#' x2 <- frmt_combine("XXX %", "XX,XXX")
 #' is_frmt_combine(x2)
 #'
 #' @rdname frmt_utils
@@ -26,50 +82,177 @@ is_frmt_combine <- function(x) {
     inherits(x, "frmt_combine")
 }
 
-#' Check if input is a frmt_when
+check_frmt_combine <- function(
+    frmt_combine,
+    arg = rlang::caller_arg(frmt_combine),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt_combine)) {
+        if (is_frmt_combine(frmt_combine)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt_combine)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt_combine,
+        "a frmt combine object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `frmt_when`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
 #' x2 <- frmt_when(
-#' ">3" ~ frmt("(X.X%)"),
-#' "<=3" ~ frmt("Undetectable")
+#'     ">3" ~ frmt("(X.X%)"),
+#'     "<=3" ~ frmt("Undetectable")
 #' )
+#'
 #' is_frmt_when(x2)
 #'
 #' @rdname frmt_utils
 is_frmt_when <- function(x) {
     inherits(x, "frmt_when")
 }
-#' Check if input is a frmt_structure
+
+check_frmt_when <- function(
+    frmt_when,
+    arg = rlang::caller_arg(frmt_when),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt_when)) {
+        if (is_frmt_when(frmt_when)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt_when)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt_when,
+        "a frmt when object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+#' Is object a `frmt_structure`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
 #' x3 <- frmt_structure(
-#'  group_val = c("group1"),
-#'  label_val = ".default",
-#' frmt("XXX")
+#'     group_val = c("group1"),
+#'     label_val = ".default",
+#'     frmt("XXX")
 #' )
-#'is_frmt_structure(x3)
+#'
+#' is_frmt_structure(x3)
 #'
 #' @rdname frmt_utils
 is_frmt_structure <- function(x) {
     inherits(x, "frmt_structure")
 }
 
-#' Check if input is a row_grp_structure
+check_frmt_structure <- function(
+    frmt_structure,
+    arg = rlang::caller_arg(frmt_structure),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(frmt_structure)) {
+        if (is_frmt_structure(frmt_structure)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(frmt_structure)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        frmt_structure,
+        "a frmt structure object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+# checks if `x` is a list of frmt_structure objects
+check_frmt_structure_list <- function(x) {
+    if (!rlang::is_list(x) || !purrr::every(x, is_frmt_structure)) {
+        cli::cli_abort(
+            "Expected a list of `frmt_structure` objects."
+        )
+    }
+
+    invisible(NULL)
+}
+
+#' Is object a `row_grp_structure`?
 #'
-#' @param x Object to check
 #' @export
 #' @examples
-#' x4 <- row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+#' x4 <- row_grp_structure(
+#'     group_val = c("A","C"),
+#'     element_block(post_space = "---")
+#' )
+#'
 #' is_row_grp_structure(x4)
 #'
 #' @rdname frmt_utils
 is_row_grp_structure <- function(x) {
     inherits(x, "row_grp_structure")
 }
+
+check_row_grp_structure <- function(
+    row_grp_structure,
+    arg = rlang::caller_arg(row_grp_structure),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(row_grp_structure)) {
+        if (is_row_grp_structure(row_grp_structure)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(row_grp_structure)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        row_grp_structure,
+        "a row group structure object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
+
+# checks if `x` is a list of row_grp_structure objects
+check_row_grp_structure_list <- function(x) {
+    if (!rlang::is_list(x) || !purrr::every(x, is_row_grp_structure)) {
+        cli::cli_abort(
+            "Expected a list of `row_grp_structure` objects."
+        )
+    }
+
+    invisible(NULL)
+}
+
 
 #' @export
 format.frmt <- function(x, ...) {
@@ -102,14 +285,15 @@ print.frmt_combine <- function(x, ...) {
 
 #' @export
 format.frmt_when <- function(x, ...) {
-    lhs <- map_chr(x$frmt_ls, f_lhs_as_char)
-    rhs <- map(x$frmt_ls, f_rhs) %>% map_chr(format)
+    lhs <- purrr::map_chr(x$frmt_ls, f_lhs_as_char)
+    rhs <- purrr::map(x$frmt_ls, rlang::f_rhs) %>%
+        purrr::map_chr(format)
 
     frmt_str <- paste(
         "< frmt_when | ",
         "\n ",
-        paste0(
-            map2_chr(lhs, rhs, paste, sep = " ~ "),
+        paste(
+            purrr::map2_chr(lhs, rhs, paste, sep = " ~ "),
             collapse = "\n  "
         ),
         paste0("\n", "  Missing: ", x$missing),
@@ -127,7 +311,7 @@ print.frmt_when <- function(x, ...) {
 #'
 format.frmt_structure <- function(x, ...) {
     if (is.list(x$group_val)) {
-        groups <- x$group_val %>% map(unique)
+        groups <- purrr::map(x$group_val, unique)
     } else {
         groups <- unique(x$group_val)
     }
@@ -136,7 +320,7 @@ format.frmt_structure <- function(x, ...) {
     fmts <- x$frmt_to_apply[[1]]
 
     if (is.list(groups)) {
-        group_string <- paste0(
+        group_string <- paste(
             sapply(names(groups), function(y) {
                 paste0(
                     " `",
@@ -230,13 +414,19 @@ print.body_plan <- function(x, ...) {
 #' @noRd
 frmt_builder <- function(param, frmt_string, missing = NULL) {
     if (!missing(param)) {
-        frmt_string <- setNames(frmt_string, param)
+        frmt_string <- stats::setNames(frmt_string, param)
     }
 
-    map(
+    purrr::map(
         frmt_string,
         function(x, missing_val) {
-            do.call(frmt, list(expression = x, missing = missing_val))
+            do.call(
+                frmt,
+                list(
+                    expression = x,
+                    missing = missing_val
+                )
+            )
         },
         missing_val = missing
     )
@@ -276,14 +466,14 @@ frmt_combine_builder <- function(
 #' @noRd
 frmt_structure_builder <- function(group_val, label_val, frmt_vec) {
     grp_lbl_list <- list(list(group_val = group_val, label_val = label_val))
-    frmt_vec_list <- map2(
+    frmt_vec_list <- purrr::map2(
         names(frmt_vec),
         frmt_vec,
         ~ list(param = .x %||% "", frmt = .y)
     )
 
-    crossing(frmt_vec_list, grp_lbl_list) %>%
-        pmap(function(frmt_vec_list, grp_lbl_list) {
+    tidyr::crossing(frmt_vec_list, grp_lbl_list) %>%
+        purrr::pmap(function(frmt_vec_list, grp_lbl_list) {
             if (
                 is.list(grp_lbl_list$group_val) &&
                     length(grp_lbl_list$group_val) == 1 &&
@@ -329,21 +519,22 @@ as.character.frmt <- function(x, ...) {
         "frmt('",
         x$expression,
         "'",
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
         ),
-        if_else(
+        dplyr::if_else(
             !is.null(x$scientific),
             paste0(", scientific = ", x$scientific),
             ""
         ),
-        if_else(
+        dplyr::if_else(
             !is.null(x$transform),
             paste0(
                 ", transform = ",
-                deparse(x$transform) %>% str_c(collapse = "")
+                deparse(x$transform) %>%
+                    stringr::str_c(collapse = "")
             ),
             ""
         ),
@@ -356,26 +547,26 @@ as.character.frmt <- function(x, ...) {
 #' @export
 as.character.frmt_when <- function(x, ...) {
     right <- x$frmt_ls %>%
-        map_chr(function(x) {
-            val <- quo(!!f_rhs(x))
-            val_eval <- eval_tidy(val)
-            if (!is_frmt(val_eval)) {
-                as_label(val)
-            } else {
+        purrr::map_chr(function(x) {
+            val <- rlang::quo(!!rlang::f_rhs(x))
+            val_eval <- rlang::eval_tidy(val)
+            if (is_frmt(val_eval)) {
                 as.character(val_eval)
+            } else {
+                rlang::as_label(val)
             }
         })
 
     left <- x$frmt_ls %>%
-        map_chr(~ f_lhs(.x)) %>%
-        str_c("'", ., "'")
-    params <- str_c(left, " ~ ", right) %>%
-        str_c(collapse = ", ")
+        purrr::map_chr(rlang::f_lhs) %>%
+        stringr::str_c("'", ., "'")
+    params <- stringr::str_c(left, " ~ ", right) %>%
+        stringr::str_c(collapse = ", ")
 
     paste0(
         "frmt_when(",
         params,
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
@@ -389,15 +580,15 @@ as.character.frmt_when <- function(x, ...) {
 #' @export
 as.character.frmt_combine <- function(x, ...) {
     params <- x$frmt_ls %>%
-        map_chr(~ as.character(.x)) %>%
-        str_c(names(x$frmt_ls), " = ", .) %>%
-        str_c(collapse = ", ")
+        purrr::map_chr(as.character) %>%
+        stringr::str_c(names(x$frmt_ls), " = ", .) %>%
+        stringr::str_c(collapse = ", ")
     paste0(
         "frmt_combine('",
         x$expression,
         "', ",
         params,
-        if_else(
+        dplyr::if_else(
             !is.null(x$missing),
             paste0(", missing = ", missing_to_chr(x$missing)),
             ""
@@ -411,29 +602,39 @@ as.character.frmt_combine <- function(x, ...) {
 #' @export
 as.character.span_structure <- function(x, ...) {
     values <- x %>%
-        map(function(val) {
-            elements <- map_chr(val, as_label) %>%
-                str_replace_all("\\\"", "'")
+        purrr::map(function(val) {
+            elements <- purrr::map_chr(val, rlang::as_label) %>%
+                stringr::str_replace_all(stringr::fixed("\""), "'")
 
             # Detect function calls. Matches valid R functions i.e, my_function()
             # Valid column names containing parenthesis i.e., "n (%)" are not captured
             not_fxs <- elements %>%
-                str_which("^[A-Za-z_.][A-Za-z0-9_.]*\\(", negate = TRUE)
+                stringr::str_which(
+                    "^[A-Za-z_.][A-Za-z0-9_.]*\\(",
+                    negate = TRUE
+                )
             elements[not_fxs] <- elements[not_fxs] %>%
-                str_c("'", ., "'")
+                stringr::str_c("'", ., "'")
 
             if (rlang::is_named(val)) {
-                elements <- str_c("`", names(val), "`", " = ", elements)
+                elements <- stringr::str_c(
+                    "`",
+                    names(val),
+                    "`",
+                    " = ",
+                    elements
+                )
             }
 
             elements %>%
-                str_c(collapse = ", ") %>%
-                str_c("c(", ., ")")
+                stringr::str_c(collapse = ", ") %>%
+                stringr::str_c("c(", ., ")")
         })
 
     paste0(
         "span_structure(",
-        str_c(names(values), " = ", values) %>% str_c(collapse = ", "),
+        stringr::str_c(names(values), " = ", values) %>%
+            stringr::str_c(collapse = ", "),
         ")"
     )
 }

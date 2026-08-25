@@ -14,7 +14,7 @@ test_that("Page plan with defined split", {
         page_structure(group_val = "A")
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), quo(lbl))
+    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), rlang::quo(lbl))
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -32,7 +32,7 @@ test_that("Page plan with defined split", {
         # nolint end
     )
 
-    expect_equal(auto_split, man_split)
+    expect_identical(auto_split, man_split)
 })
 
 
@@ -53,7 +53,7 @@ test_that("Page plan with grouped split", {
         page_structure(group_val = ".default")
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), quo(lbl))
+    auto_split <- apply_page_plan(df, my_page_plan, vars(grp), rlang::quo(lbl))
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -80,11 +80,11 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp: A", "grp: B", "grp: C")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp"
     )
@@ -105,7 +105,12 @@ test_that("Page plan with grouped split", {
         page_structure(group_val = list(grp2 = ".default"))
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -129,12 +134,12 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp2: a", "grp2: b")
     )
 
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp2"
     )
@@ -153,7 +158,12 @@ test_that("Page plan with grouped split", {
         page_structure(group_val = ".default")
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
 
     man_split <- list(
         # nolint start: commas_linter
@@ -181,8 +191,8 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: A, grp2: a",
             "grp1: A, grp2: b",
@@ -190,7 +200,7 @@ test_that("Page plan with grouped split", {
             "grp1: B, grp2: b"
         )
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         c("grp1", "grp2")
     )
@@ -209,7 +219,12 @@ test_that("Page plan with grouped split", {
         page_structure(label_val = ".default")
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
     man_split <- list(
         # nolint start: commas_linter
         tibble::tribble(
@@ -231,11 +246,11 @@ test_that("Page plan with grouped split", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("lbl: n", "lbl: pct")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "lbl"
     )
@@ -257,7 +272,12 @@ test_that("Page plan with grouped split", {
     my_page_plan <- page_plan(
         page_structure(label_val = "lbl1")
     )
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
 
     man_split <- list(
         # nolint start: commas_linter
@@ -307,7 +327,12 @@ test_that("page plan with mix of defined & group splits", {
         page_structure(group_val = list(grp1 = ".default", grp2 = "a"))
     )
 
-    auto_split <- apply_page_plan(df, my_page_plan, vars(grp1, grp2), quo(lbl))
+    auto_split <- apply_page_plan(
+        df,
+        my_page_plan,
+        vars(grp1, grp2),
+        rlang::quo(lbl)
+    )
 
     ## CURRENT BEHAVIOR:
     # 1. split every level of grp1
@@ -344,11 +369,11 @@ test_that("page plan with mix of defined & group splits", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp1"
     )
@@ -379,9 +404,9 @@ test_that("page plan with multiple structures", {
             df,
             my_page_plan,
             vars(grp1, grp2),
-            quo(lbl)
+            rlang::quo(lbl)
         ),
-        paste0(
+        paste(
             c(
                 "`page_plan` contains multiple `page_structures` with values set to \".default\". ",
                 "Only the last one specified will be used."
@@ -425,11 +450,11 @@ test_that("page plan with multiple structures", {
         ignore_attr = c(".page_note", ".page_grp_vars")
     )
 
-    expect_equal(
-        map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
     )
-    expect_equal(
+    expect_identical(
         attr(auto_split, ".page_grp_vars"),
         "grp1"
     )
@@ -449,7 +474,11 @@ test_that("Page plan with max_rows", {
         "C"  , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -545,7 +574,11 @@ test_that("Page plan with max_rows", {
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
@@ -796,8 +829,8 @@ test_that("page plan with both page_structure and max_rows", {
         ignore_attr = TRUE
     )
 
-    expect_equal(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: cat_1",
             "grp1: cat_2",
@@ -872,9 +905,9 @@ test_that("page plan with page_structure, single level variable", {
 
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
-    expect_equal(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
-        c("grp1: cat_1")
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
+        "grp1: cat_1"
     )
 })
 
@@ -918,29 +951,33 @@ test_that("page_plan() with transform", {
                     grp1 = ".default"
                 )
             ),
-            transform = ~ stringr::str_replace(.x, "grp1", "group 1")
+            transform = ~ stringr::str_replace(
+                .x,
+                stringr::fixed("grp1"),
+                "group 1"
+            )
         )
     )
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
-        c("group 1: cat_1")
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
+        "group 1: cat_1"
     )
 
     # transform as function
     tfrmt_plan$page_plan$transform <- function(x) {
         x |>
-            stringr::str_replace("grp1", "group 1") |>
-            stringr::str_replace("cat_", "category ")
+            stringr::str_replace(stringr::fixed("grp1"), "group 1") |>
+            stringr::str_replace(stringr::fixed("cat_"), "category ")
     }
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
-        c("group 1: category 1")
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
+        "group 1: category 1"
     )
 })
 
@@ -988,8 +1025,8 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     # without page label transformation
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: cat_1, grp2: cat_1",
             "grp1: cat_1, grp2: cat_2",
@@ -1004,9 +1041,9 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     # we want to go from `grp1: cat_1,\ngrp2: cat_1` to `Group 1 (cat_1),\nGroup 2 (cat_1)`
     tfrmt_plan$page_plan$transform <- function(x) {
         interim <- x |>
-            stringr::str_replace_all("grp", "Group ") |>
-            stringr::str_replace_all(": ", " (") |>
-            stringr::str_replace_all(",", "),")
+            stringr::str_replace_all(stringr::fixed("grp"), "Group ") |>
+            stringr::str_replace_all(stringr::fixed(": "), " (") |>
+            stringr::str_replace_all(stringr::fixed(","), "),")
 
         output <- stringr::str_pad(
             interim,
@@ -1020,8 +1057,8 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
-    expect_equal(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+    expect_identical(
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "Group 1 (cat_1), Group 2 (cat_1)",
             "Group 1 (cat_1), Group 2 (cat_2)",
@@ -1047,21 +1084,23 @@ test_that("apply_page_plan() with label transformation in a complex table", {
         dplyr::filter(AESOC %in% unique(AESOC)[1:3]) |>
         dplyr::group_by(AESOC) |>
         dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
-        ungroup()
+        dplyr::ungroup()
 
     # Create an ARD that stacks hierarchical data of adverse events
     # Grouping by treatment, severity, system organ class, and preferred term
-    ard_ae <- cards::ard_stack_hierarchical(
-        data = adae,
-        # by variables must be present in the denominator dataset
-        by = c(TRT01A, AESEV),
-        variables = c(AESOC, AETERM),
-        denominator = adsl,
-        statistic = ~ c("n", "p"),
-        id = USUBJID,
-        over_variables = TRUE,
-        overall = TRUE
-    )
+    suppressMessages({
+        ard_ae <- cards::ard_stack_hierarchical(
+            data = adae,
+            # by variables must be present in the denominator dataset
+            by = c(TRT01A, AESEV),
+            variables = c(AESOC, AETERM),
+            denominator = adsl,
+            statistic = ~ c("n", "p"),
+            id = USUBJID,
+            over_variables = TRUE,
+            overall = TRUE
+        )
+    })
 
     # create an ARD for where AESEV is "TOTAL"
     ard_ae2 <- cards::ard_stack_hierarchical(
@@ -1152,7 +1191,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     ard_ae5 <- ard_ae4 |>
         dplyr::full_join(
             ordering_aesoc,
-            by = c("AESOC")
+            by = "AESOC"
         ) |>
         dplyr::full_join(
             ordering_aeterm,
@@ -1245,7 +1284,11 @@ test_that("apply_page_plan() with label transformation in a complex table", {
                     )
                 ),
                 note_loc = "subtitle",
-                transform = ~ stringr::str_replace(.x, "Treatment", "Group")
+                transform = ~ stringr::str_replace(
+                    .x,
+                    stringr::fixed("Treatment"),
+                    "Group"
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
@@ -1260,7 +1303,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Group: Placebo (N=86)",
@@ -1271,7 +1315,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
     # test with transform as function
     test_tfrmt$page_plan$transform <- function(x) {
-        stringr::str_replace(x, "Treatment", "Group")
+        stringr::str_replace(x, stringr::fixed("Treatment"), "Group")
     }
 
     auto_split <- apply_tfrmt(ard_ae6, test_tfrmt)
@@ -1279,7 +1323,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Group: Placebo (N=86)",
@@ -1297,7 +1342,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Treatment: Placebo (N=86)",
@@ -1318,7 +1364,11 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         "B"  , "b"    , "n"  ,   55
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -1366,8 +1416,14 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         "B"  , "b"    , "n"  ,   55
     ) %>%
         # nolint end
-        mutate(grp = factor(grp, levels = c("A", "B", ""))) %>% # Explicitly a factor
-        tidyr::pivot_longer(trt, names_to = "column", values_to = "value")
+        dplyr::mutate(
+            grp = factor(grp, levels = c("A", "B", ""))
+        ) %>% # Explicitly a factor
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
 
     mytfrmt <- tfrmt(
         group = "grp",
@@ -1404,7 +1460,11 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         "BB"  , "C"   , "b"  , "n"  ,   19 ,
     ) %>%
         # nolint end
-        pivot_longer(trt, names_to = "column", values_to = "value")
+        tidyr::pivot_longer(
+            trt,
+            names_to = "column",
+            values_to = "value"
+        )
     mytfrmt <- tfrmt(
         group = c("grp1", "grp2"),
         label = "lbl",

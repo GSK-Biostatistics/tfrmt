@@ -35,14 +35,14 @@ Imports:
     jsonlite,
     magrittr,
     purrr,
-    rlang,
+    rlang (>= 1.1.0),
     stringi,
     stringr,
     tibble,
     tidyr,
     tidyselect
 Suggests:
-    cards (>= 0.8.0),
+    cards (>= 0.9.0),
     covr,
     ggfortify,
     knitr,
@@ -57,6 +57,7 @@ Remotes:
 Config/roxygen2/markdown: TRUE
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
 Language: en-GB
 LazyData: true

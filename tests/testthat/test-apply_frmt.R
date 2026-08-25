@@ -10,32 +10,32 @@ test_that("applying frmt", {
     sample_df_no_dec_frmted <- apply_frmt.frmt(
         frmt_def = sample_frmt_no_dec,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     )
 
     sample_df_single_dec_frmted <- apply_frmt.frmt(
         frmt_def = sample_frmt_single_dec,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     )
 
     sample_df_double_dec_frmted <- apply_frmt.frmt(
         frmt_def = sample_frmt_double_dec,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_no_dec_frmted$x,
         c("1235", "346", " 57", "4568", "  9")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_single_dec_frmted$x,
         c("1234.6", "345.7", " 56.8", "4567.9", "  8.9")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_double_dec_frmted$x,
         c("1234.57", "345.68", " 56.79", "4567.89", "  8.91")
     )
@@ -53,29 +53,29 @@ test_that("applying frmt - scientific", {
 
     sample_df_frmted_10x <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10x
     )
 
     sample_df_frmted_10xx <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10xx
     )
 
     sample_df_frmted_ex <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_ex
     )
 
     sample_df_frmted_exxxx <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_exxxx
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_10x$x,
         c(
             "  1.2 x10^3",
@@ -87,7 +87,7 @@ test_that("applying frmt - scientific", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_10xx$x,
         c(
             "  1.2 x10^ 3",
@@ -99,7 +99,7 @@ test_that("applying frmt - scientific", {
         )
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_ex$x,
         c(
             "  1.2e^3",
@@ -110,7 +110,7 @@ test_that("applying frmt - scientific", {
             "  6.8e^-2"
         )
     )
-    expect_equal(
+    expect_identical(
         sample_df_frmted_exxxx$x,
         c(
             "  1.2e^   3",
@@ -137,11 +137,11 @@ test_that("applying frmt - transform", {
     formula_result <- apply_frmt.frmt(
         frmt_def = formula_transform,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
-    expect_equal(
+    expect_identical(
         formula_result,
         c("123457", "34568", "5679", "456789", "891")
     )
@@ -149,11 +149,11 @@ test_that("applying frmt - transform", {
     fx_result <- apply_frmt.frmt(
         frmt_def = fx_transform,
         .data = sample_df,
-        value = quo(x)
+        value = rlang::quo(x)
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
-    expect_equal(
+    expect_identical(
         fx_result,
         c("1524157.7", "119493.9", "3225.0", "20865628.2", " 79.4")
     )
@@ -171,33 +171,33 @@ test_that("applying frmt - preserves decimal places after rounding", {
 
     sample_df_frmted_1dec <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_1dec
     )
 
     sample_df_frmted_2dec <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_2dec
     )
 
     sample_df_frmted_10x <- apply_frmt.frmt(
         .data = sample_df,
-        value = sym("x"),
+        value = rlang::sym("x"),
         frmt_def = sample_frmt_10x
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_1dec$x,
         c(" 10.0", " 12.4", "  3.0", "100.0", "167.3")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_2dec$x,
         c(" 10.00", " 12.36", "  3.00", "100.00", "167.30")
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted_10x$x,
         c(
             "  1.0 x10^1",
@@ -210,7 +210,7 @@ test_that("applying frmt - preserves decimal places after rounding", {
 })
 
 test_that("applying frmt_combine - 2x", {
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -231,16 +231,16 @@ test_that("applying frmt_combine - 2x", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -258,7 +258,7 @@ test_that("applying frmt_combine - 2x", {
 
 test_that("applying frmt_combine missing", {
     # Both missing
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -280,16 +280,16 @@ test_that("applying frmt_combine missing", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -304,7 +304,7 @@ test_that("applying frmt_combine missing", {
         )
     )
     #One Missing
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -326,16 +326,16 @@ test_that("applying frmt_combine missing", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -352,7 +352,7 @@ test_that("applying frmt_combine missing", {
 })
 
 test_that("applying frmt_combine - 3x", {
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 3),
         col = "col",
@@ -375,16 +375,16 @@ test_that("applying frmt_combine - 3x", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             lab = paste("lab", 1:5),
             col = "col",
@@ -401,7 +401,7 @@ test_that("applying frmt_combine - 3x", {
 })
 
 test_that("applying frmt_combine - no unique labels, so unable to frmt_combine", {
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = paste("lab", 1:15),
         col = "col",
@@ -425,18 +425,18 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
         sample_df_frmted <- apply_frmt.frmt_combine(
             frmt_def = sample_frmt,
             .data = sample_df,
-            value = quo(x),
-            param = quo(y),
+            value = rlang::quo(x),
+            param = rlang::quo(y),
             column = vars(col),
-            label = quo(lab),
+            label = rlang::quo(lab),
             group = vars(group)
         ),
         "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: "
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
+        tibble::tibble(
             group = "group",
             # fmt: skip
             lab = c(
@@ -475,7 +475,7 @@ test_that("applying frmt_combine - no unique labels, so unable to frmt_combine",
 
 test_that("applying frmt_when", {
     #Test frmt_when alone
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -502,10 +502,10 @@ test_that("applying frmt_when", {
     sample_df_frmted <- apply_frmt(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
+        value = rlang::quo(x),
         param = "y",
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -525,7 +525,7 @@ test_that("applying frmt_when", {
     )
     # nolint end
 
-    expect_equal(sample_df_frmted, man_df)
+    expect_identical(sample_df_frmted, man_df)
 
     #Test in combination
     sample_frmt_combo <- frmt_combine(
@@ -540,10 +540,10 @@ test_that("applying frmt_when", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt_combo,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group)
     )
 
@@ -557,7 +557,7 @@ test_that("applying frmt_when", {
         "group" , "lab 5" , "col" , "A" , "5678.9 (5.7%)"       ,
     )
     # nolint end
-    expect_equal(sample_df_frmted, man_df_combo)
+    expect_identical(sample_df_frmted, man_df_combo)
 })
 
 
@@ -566,33 +566,33 @@ test_that("mocks return correctly", {
     frmt_mock <- apply_frmt.frmt(
         frmt_def = frmt("xxx.x"),
         .data = iris,
-        value = quo(mock),
+        value = rlang::quo(mock),
         mock = TRUE
     ) %>%
-        pull(mock)
-    expect_equal(frmt_mock, rep("xxx.x", nrow(iris)))
+        dplyr::pull(mock)
+    expect_identical(frmt_mock, rep("xxx.x", nrow(iris)))
 
     # frmt_when
     frmt_when_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt(""), "==0" ~ "", "TRUE" ~ frmt("(XXX.X%)")),
         .data = iris,
-        sym("value"),
+        rlang::sym("value"),
         mock = TRUE
     ) %>%
-        pull(value)
-    expect_equal(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
+        dplyr::pull(value)
+    expect_identical(frmt_when_true, rep("(XXX.X%)", nrow(iris)))
 
     frmt_when_no_true <- apply_frmt.frmt_when(
         frmt_when("==100" ~ frmt("Hello"), "==0" ~ ""),
         .data = iris,
-        sym("value"),
+        rlang::sym("value"),
         mock = TRUE
     ) %>%
-        pull(value)
-    expect_equal(frmt_when_no_true, rep("Hello", nrow(iris)))
+        dplyr::pull(value)
+    expect_identical(frmt_when_no_true, rep("Hello", nrow(iris)))
 
     #frmt_combine
-    sample_df <- tibble(
+    sample_df <- tibble::tibble(
         group = "group",
         lab = rep(paste("lab", 1:5), 2),
         col = "col",
@@ -609,16 +609,16 @@ test_that("mocks return correctly", {
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = sample_frmt,
         .data = sample_df,
-        value = quo(x),
-        param = quo(y),
+        value = rlang::quo(x),
+        param = rlang::quo(y),
         column = vars(col),
-        label = quo(lab),
+        label = rlang::quo(lab),
         group = vars(group),
         mock = TRUE
     ) %>%
-        pull(x)
+        dplyr::pull(x)
 
-    expect_equal(sample_df_frmted, rep("xxx.x (X.X%)", 5))
+    expect_identical(sample_df_frmted, rep("xxx.x (X.X%)", 5))
 })
 
 
@@ -629,7 +629,7 @@ test_that("Space in Param", {
         `LM stderr` = frmt("xx.xx")
     )
 
-    expect_equal(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
+    expect_identical(no_ten$expression, "{`LM mean`} ({`LM stderr`})")
 
     mixed <- frmt_combine(
         "{mean} ({CV %})",
@@ -637,7 +637,7 @@ test_that("Space in Param", {
         `CV %` = frmt("xx.xx")
     )
 
-    expect_equal(mixed$expression, "{mean} ({`CV %`})")
+    expect_identical(mixed$expression, "{mean} ({`CV %`})")
 
     # nolint start: commas_linter
     data <- tibble::tribble(
@@ -655,26 +655,26 @@ test_that("Space in Param", {
         `LM stderr` = frmt("xx.xx")
     )
 
-    expect_equal(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
+    expect_identical(space_combo$expression, "{`LM mean`} ({`LM stderr`})")
 
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = space_combo,
         .data = data,
-        value = quo(value),
-        param = quo(param),
+        value = rlang::quo(value),
+        param = rlang::quo(param),
         column = vars(column),
-        label = quo(label),
+        label = rlang::quo(label),
         group = vars(group, type),
         mock = FALSE
     ) %>%
-        pull(value)
+        dplyr::pull(value)
 
-    expect_equal(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
+    expect_identical(sample_df_frmted, c("79.0 ( 5.00)", "-0.3 ( 0.40)"))
 })
 
 
 test_that("frmt_combine only applies when all parameters are in the data", {
-    data <- tibble(
+    data <- tibble::tibble(
         Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
         Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
         Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
@@ -688,12 +688,16 @@ test_that("frmt_combine only applies when all parameters are in the data", {
             8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27
         )
     ) %>%
-        # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-        mutate(
-            Value = case_when(Param == "pct" ~ Value * 100, TRUE ~ Value),
-            ord1 = if_else(Group == "Age (y)", 1, 2),
-            ord2 = if_else(Label == "n", 1, 2),
-            TEMP_row = row_number()
+        # Note because tfrmt only does rounding we will need to have the
+        # percentages multiplied by 100
+        dplyr::mutate(
+            Value = dplyr::case_when(
+                Param == "pct" ~ Value * 100,
+                TRUE ~ Value
+            ),
+            ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+            ord2 = dplyr::if_else(Label == "n", 1, 2),
+            TEMP_row = dplyr::row_number()
         )
 
     test_combo <- frmt_structure(
@@ -706,22 +710,22 @@ test_that("frmt_combine only applies when all parameters are in the data", {
         test_combo,
         data,
         group = vars(Group),
-        label = quo(Label),
-        param = quo(Param)
+        label = rlang::quo(Label),
+        param = rlang::quo(Param)
     )
     expected <- data %>%
-        filter(Label %in% c("Male", "Female")) %>%
-        pull(TEMP_row)
+        dplyr::filter(Label %in% c("Male", "Female")) %>%
+        dplyr::pull(TEMP_row)
 
-    expect_equal(rows_to_use, expected)
+    expect_identical(rows_to_use, expected)
 })
 
 test_that("frmt_combine fills with partially missing values where a column is missing the value", {
-    data <- tibble(
-        Group = rep(c("Age (y)"), c(6)),
-        Label = rep(c("Mean (SD)"), c(6)),
-        Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
-        Param = rep(c("mean", "sd"), times = c(3)),
+    data <- tibble::tibble(
+        Group = rep("Age (y)", 6),
+        Label = rep("Mean (SD)", 6),
+        Column = rep(c("Placebo", "Treatment", "Total"), each = 2),
+        Param = rep(c("mean", "sd"), times = 3),
         Value = c(1, 2, 3, 4, 5, 6)
     ) %>%
         .[-1, ] # remove first row - where a "mean" is, but is otherwise complete
@@ -735,19 +739,19 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = test_combo,
         .data = data,
-        value = quo(Value),
-        param = quo(Param),
+        value = rlang::quo(Value),
+        param = rlang::quo(Param),
         column = vars(Column),
-        label = quo(Label),
+        label = rlang::quo(Label),
         group = vars(Group),
         mock = FALSE
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
-            Group = rep(c("Age (y)"), c(3)),
-            Label = rep(c("Mean (SD)"), c(3)),
+        tibble::tibble(
+            Group = rep("Age (y)", 3),
+            Label = rep("Mean (SD)", 3),
             Column = c("Placebo", "Total", "Treatment"),
             Param = c("sd", "mean", "mean"),
             Value = c(" - ( 2)", " 5 ( 6)", " 3 ( 4)")
@@ -763,19 +767,19 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     sample_df_frmted <- apply_frmt.frmt_combine(
         frmt_def = test_combo_na,
         .data = data,
-        value = quo(Value),
-        param = quo(Param),
+        value = rlang::quo(Value),
+        param = rlang::quo(Param),
         column = vars(Column),
-        label = quo(Label),
+        label = rlang::quo(Label),
         group = vars(Group),
         mock = FALSE
     )
 
-    expect_equal(
+    expect_identical(
         sample_df_frmted,
-        tibble(
-            Group = rep(c("Age (y)"), c(3)),
-            Label = rep(c("Mean (SD)"), c(3)),
+        tibble::tibble(
+            Group = rep("Age (y)", 3),
+            Label = rep("Mean (SD)", 3),
             Column = c("Placebo", "Total", "Treatment"),
             Param = c("sd", "mean", "mean"),
             Value = c("NA ( 2)", " 5 ( 6)", " 3 ( 4)")

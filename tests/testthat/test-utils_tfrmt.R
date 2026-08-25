@@ -1,40 +1,43 @@
 set.seed(1234)
 
-raw_data_cat <- crossing(
+raw_data_cat <- tidyr::crossing(
     group = "A",
     label = c("w", "x", "y", "z"),
     col = paste("Var", 1:4),
     param2 = c("count", "pct")
 ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
         ord1 = 1,
         ord2 = 26 - which(label == letters),
-        val2 = case_when(
+        val2 = dplyr::case_when(
             label == "w" & param2 == "pct" ~ 100.0,
             param2 == "count" ~ as.double(rpois(n = 1, lambda = 150)),
             param2 == "pct" ~ runif(n = 1, max = 100)
         )
     )
 
-raw_data_cont <- crossing(
+raw_data_cont <- tidyr::crossing(
     group = "B",
     label = c("w", "i", "j", "k"),
     col = paste("Var", 1:4),
     param2 = c("val")
 ) %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
         ord1 = 2,
         ord2 = which(label == letters),
-        val2 = case_when(
+        val2 = dplyr::case_when(
             label == "w" ~ as.double(rpois(n = 1, lambda = 150)),
             label == "i" ~ rnorm(n = 1, mean = 75, 13),
             label == "j" ~ rnorm(n = 1, mean = 10, 3),
             label == "k" ~ rnorm(n = 1, mean = 72, 7)
         )
     )
-raw_dat <- bind_rows(raw_data_cat, raw_data_cont)
+raw_dat <- dplyr::bind_rows(
+    raw_data_cat,
+    raw_data_cont
+)
 
 plan <- tfrmt(
     #These are the columns that control the general structure of the data
@@ -110,25 +113,27 @@ test_that("Check apply_tfrmt", {
         "B"    , "w"    , "147         " , "149         " , "143         " , "159         "
     ) %>%
         # nolint end
-        mutate(..tfrmt_row_grp_lbl = FALSE)
+        dplyr::mutate(
+            ..tfrmt_row_grp_lbl = FALSE
+        )
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
-            ungroup() %>%
-            arrange(group, label),
+            dplyr::ungroup() %>%
+            dplyr::arrange(group, label),
         man_df %>%
-            arrange(group, label),
+            dplyr::arrange(group, label),
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
 
     plan$sorting_cols <- NULL
 
     man_df_ord <- man_df %>%
-        arrange(group, label)
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(raw_dat, plan) %>%
-            ungroup(),
+            dplyr::ungroup(),
         man_df_ord,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -157,7 +162,8 @@ test_that("Check apply_tfrmt", {
 test_that("Check apply_tfrmt for mock data", {
     # mock for example data above
 
-    mock_dat <- raw_dat %>% select(-val2)
+    mock_dat <- raw_dat %>%
+        dplyr::select(-val2)
 
     # nolint start: commas_linter
     mock_man_df <- tibble::tribble(
@@ -172,13 +178,15 @@ test_that("Check apply_tfrmt for mock data", {
         "B"    , "w"    , "XXX         " , "XXX         " , "XXX         " , "XXX         " ,
     ) %>%
         # nolint end
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
-        arrange(group, label)
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
-            ungroup() %>%
-            arrange(group, label),
+            dplyr::ungroup() %>%
+            dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -245,13 +253,15 @@ test_that("Check apply_tfrmt for mock data", {
         "B"       , "j"       , "xx.xx"        , "xx.xx"        , "xx.xx"        , "xx.xx"
     ) %>%
         # nolint end
-        mutate("..tfrmt_row_grp_lbl" = FALSE) %>%
-        arrange(group, label)
+        dplyr::mutate(
+            "..tfrmt_row_grp_lbl" = FALSE
+        ) %>%
+        dplyr::arrange(group, label)
 
     expect_equal(
         apply_tfrmt(mock_dat, plan, mock = TRUE) %>%
-            ungroup() %>%
-            arrange(group, label),
+            dplyr::ungroup() %>%
+            dplyr::arrange(group, label),
         mock_man_df,
         ignore_attr = c("class", ".col_plan_vars", ".footnote_locs")
     )
@@ -367,13 +377,13 @@ test_that("Check apply_tfrmt for mock data", {
         capture_messages()
 
     ## capturing second message
-    expect_equal(
+    expect_identical(
         make_mock_dat_message,
         "Mock data contains more than 1 param per unique label value. Param values will appear in separate rows.\n"
     )
 
     test_dat <- mock_dat %>%
-        quietly(apply_tfrmt)(plan, mock = TRUE) %>%
+        purrr::quietly(apply_tfrmt)(plan, mock = TRUE) %>%
         .[["result"]]
 
     expect_equal(
@@ -401,7 +411,7 @@ test_that("Check apply_tfrmt for mock data", {
 })
 
 test_that("Test body_plan missing", {
-    input_data <- tibble(
+    input_data <- tibble::tibble(
         group = "groupvar",
         label = paste0("label", 1:10),
         param = "params",
@@ -427,9 +437,14 @@ test_that("Test body_plan missing", {
     expect_equal(
         empty_body_plan,
         input_data %>%
-            select(-param) %>%
-            mutate(val = as.character(val)) %>%
-            pivot_wider(names_from = column, values_from = val),
+            dplyr::select(-param) %>%
+            dplyr::mutate(
+                val = as.character(val)
+            ) %>%
+            tidyr::pivot_wider(
+                names_from = column,
+                values_from = val
+            ),
         ignore_attr = c(
             "class",
             ".col_plan_vars",
@@ -645,7 +660,8 @@ test_that("struct utils quote escaping", {
     )
     # nolint end
     expect_equal(
-        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |> dplyr::select(rowlbl2:A),
+        auto_tfrmt <- apply_tfrmt(dd, tfrmt_spec) |>
+            dplyr::select(rowlbl2:A),
         man_tfrmt,
         ignore_attr = c(
             "class",

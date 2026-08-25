@@ -12,7 +12,7 @@ test_that("Defining the big Ns", {
 
     expect_equal(
         bn1[["param_val"]],
-        c("bigN"),
+        "bigN",
         ignore_attr = ".Environment"
     )
 
@@ -203,7 +203,7 @@ test_that("Simple Case big_n", {
     )
 
     auto_mock <- apply_tfrmt(
-        .data = select(data, -Value),
+        .data = dplyr::select(data, -Value),
         tfrmt = tfrmt_wit_colplan,
         mock = TRUE
     ) |>
@@ -695,7 +695,7 @@ test_that("Test big n with footnotes", {
         dplyr::mutate(
             span = dplyr::case_when(
                 column == "PL" ~ "Placebo",
-                column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
+                column %in% c("T1", "T2", "T1&T2") ~ "Treatment"
             )
         )
 
@@ -738,11 +738,11 @@ test_that("Test big n with footnotes", {
             group,
             label,
             span_structure(
-                span = c("Placebo"),
-                column = c("PL")
+                span = "Placebo",
+                column = "PL"
             ),
             span_structure(
-                span = c("Treatment"),
+                span = "Treatment",
                 column = c("T1", "T2", "T1&T2")
             )
         ),
@@ -775,7 +775,7 @@ test_that("Test big n with footnotes", {
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 4",
-                label_val = list(label = "label 1"),
+                label_val = list(label = "label 1")
             ),
             footnote_structure(
                 footnote_text = "Footnote goes here 5",
@@ -786,7 +786,7 @@ test_that("Test big n with footnotes", {
                 label_val = list(label = "label 1"),
                 column_val = list(
                     span = "Treatment",
-                    column = c("T2")
+                    column = "T2"
                 )
             )
         ),
@@ -812,14 +812,14 @@ test_that("Test big n with footnotes", {
     ## confirm location of footnotes gets recorded correctly
     expect_identical(
         big_n_footnote_plan_gt$`_footnotes` |>
-            select(
+            dplyr::select(
                 locname,
                 colname,
                 locnum,
                 rownum,
                 footnotes
             ) |>
-            as_tibble(),
+            tibble::as_tibble(),
         tibble::tibble(
             locname = c(
                 "columns_columns",
@@ -885,7 +885,7 @@ test_that("big Ns vary by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -918,7 +918,7 @@ test_that("big Ns vary by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -930,7 +930,7 @@ test_that("big Ns vary by page", {
             mock = FALSE
         )
 
-    auto_names <- map(auto, names)
+    auto_names <- purrr::map(auto, names)
     man_names <- list(
         c(
             "Label",
@@ -976,7 +976,7 @@ test_that("big Ns constant by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1009,7 +1009,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = FALSE
         )
     )
@@ -1022,7 +1022,7 @@ test_that("big Ns constant by page", {
         )
 
     expect_identical(
-        map(auto, names),
+        purrr::map(auto, names),
         list(
             c(
                 "Label",
@@ -1074,7 +1074,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1089,7 +1089,7 @@ test_that("big Ns constant by page", {
     )
 
     expect_identical(
-        map(auto, names),
+        purrr::map(auto, names),
         list(
             c(
                 "Label",
@@ -1133,7 +1133,7 @@ test_that("big Ns constant by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1166,7 +1166,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = FALSE
         )
     )
@@ -1212,7 +1212,7 @@ test_that("not enough big Ns by page", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1245,7 +1245,7 @@ test_that("not enough big Ns by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1287,7 +1287,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
             Param = "big_N"
         )
 
-    data <- bind_rows(data, big_ns) |>
+    data <- dplyr::bind_rows(data, big_ns) |>
         dplyr::arrange(
             dplyr::desc(Group)
         )
@@ -1339,7 +1339,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
     # check that the labels have printed in the changed order
     expect_identical(
         # This extracts the first value of the "Label" column from each element
-        map(auto, ~ .x[["Label"]][1]),
+        purrr::map(auto, ~ .x[["Label"]][1]),
         list(
             "Sex",
             "Age (y)"
@@ -1348,7 +1348,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
 
     # check big Ns have been correctly applied
     expect_identical(
-        map(auto, names),
+        purrr::map(auto, names),
         list(
             c(
                 "Label",
@@ -1398,7 +1398,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
             Group
         )
 
-    data <- bind_rows(data, big_ns)
+    data <- dplyr::bind_rows(data, big_ns)
 
     mytfrmt <- tfrmt(
         group = Group,
@@ -1466,11 +1466,17 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
         )
 
     # Duplicate the data and add the `by group` column
-    data_101 <- original_data |> dplyr::mutate(`by group` = "101")
-    data_102 <- original_data |> dplyr::mutate(`by group` = "102")
+    data_101 <- original_data |>
+        dplyr::mutate(
+            `by group` = "101"
+        )
+    data_102 <- original_data |>
+        dplyr::mutate(
+            `by group` = "102"
+        )
 
     # Combine the two data frames
-    data <- bind_rows(data_101, data_102)
+    data <- dplyr::bind_rows(data_101, data_102)
 
     # Create mock big Ns
     big_ns <- data |>
@@ -1547,7 +1553,8 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
     expect_identical(
         purrr::map_chr(
             output_list,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "by group: 101",

@@ -92,7 +92,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
 
     interim <- df |>
         dplyr::mutate(
-            var_level_coalesced = coalesce(
+            var_level_coalesced = dplyr::coalesce(
                 !!!rlang::syms(vars)
             )
         ) |>
@@ -104,9 +104,9 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
         ) |>
         dplyr::mutate(
             var_level_untd = dplyr::if_else(
-                .data$var_level_untd == "",
-                NA_character_,
-                .data$var_level_untd
+                nzchar(.data$var_level_untd),
+                .data$var_level_untd,
+                NA_character_
             )
         )
 
@@ -126,7 +126,7 @@ prep_combine_vars <- function(df, vars, remove = TRUE) {
             -"var_level_coalesced"
         ) |>
         dplyr::rename(
-            "variable_level" = "var_level_untd",
+            "variable_level" = "var_level_untd"
         )
 
     output
@@ -174,7 +174,7 @@ prep_big_n <- function(df, vars) {
     if (!rlang::is_character(vars)) {
         cli::cli_abort(
             "{.arg vars} must be a character vector. You have supplied \\
-      {.obj_type_friendly {vars}}."
+            {.obj_type_friendly {vars}}."
         )
     }
 
@@ -382,7 +382,7 @@ generate_pairs <- function(x, call = rlang::caller_env()) {
     if (!rlang::is_character(x)) {
         cli::cli_abort(
             "{.arg x} must be a character vector. You have supplied \\
-      {.obj_type_friendly {x}}.",
+            {.obj_type_friendly {x}}.",
             call = call
         )
     }
@@ -437,15 +437,15 @@ replace_na_pairwise <- function(
     if (!rlang::is_character(pair)) {
         cli::cli_abort(
             "{.arg pair} must be a character vector. You have supplied \\
-      {.obj_type_friendly {pair}}.",
+            {.obj_type_friendly {pair}}.",
             call = call
         )
     }
 
     if (length(pair) != 2) {
         cli::cli_abort(
-            "{.arg pair} must contain exactly 2 elements. The one you supplied has \\
-      {length(pair)}.",
+            "{.arg pair} must contain exactly 2 elements. The one you \\
+            supplied has {length(pair)}.",
             call = call
         )
     }
