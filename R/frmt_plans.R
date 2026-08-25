@@ -26,10 +26,6 @@
 #'
 #' @export
 #'
-#' @returns frmt_structure object
-#'
-#' @export
-#'
 #' @examples
 #'
 #' sample_structure <- frmt_structure(
