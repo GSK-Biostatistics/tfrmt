@@ -441,7 +441,7 @@ test_that("basic tfrmt - erroring args", {
                 frmt_structure(
                     frmt("XX")
                 ),
-            ) # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error below
+            ) # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error
         )
     })
 })
