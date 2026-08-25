@@ -165,7 +165,11 @@ apply_row_grp_lbl <- function(
     } else {
         #  combine any grouping columns that need combining into label
         add_ln_df <- .data %>%
-            combine_group_cols(as_quosures(grps_avail), label, element_row_grp_loc)
+            combine_group_cols(
+                as_quosures(grps_avail),
+                label,
+                element_row_grp_loc
+            )
     }
     add_ln_df
 }
