@@ -6,7 +6,7 @@
 \usage{
 tfrmt_sigdig(
   sigdig_df,
-  group = vars(),
+  group = rlang::quos(),
   label = rlang::quo(),
   param_defaults = param_set(),
   missing = NULL,

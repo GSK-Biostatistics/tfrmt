@@ -6,7 +6,9 @@
 # kept up with subsequent tidyselect changes
 
 ## usethis namespace: start
-#' @importFrom rlang .data := !! !!! %||% quo
+#' @importFrom dplyr vars
+#'
+#' @importFrom rlang .data := !! !!! %||% quo quos
 #'
 #' @importFrom tidyselect starts_with
 #'

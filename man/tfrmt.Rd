@@ -6,11 +6,11 @@
 \usage{
 tfrmt(
   tfrmt_obj,
-  group = vars(),
+  group = rlang::quos(),
   label = rlang::quo(),
   param = rlang::quo(),
   value = rlang::quo(),
-  column = vars(),
+  column = rlang::quos(),
   title,
   subtitle,
   row_grp_plan,
