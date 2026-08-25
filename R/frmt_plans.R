@@ -52,14 +52,12 @@ frmt_structure <- function(
         )
     }
 
+    check_frmt(param_frmt[[1]])
+
     if (is_frmt_combine(param_frmt[[1]])) {
         param_val <- names(param_frmt[[1]]$frmt_ls)
     } else if (is.null(param_val)) {
         param_val <- ".default"
-    }
-
-    if (!is_frmt(param_frmt[[1]])) {
-        stop(paste0("Entry is not an object of class `frmt`"))
     }
 
     if (is.list(group_val)) {
@@ -237,7 +235,11 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     }
 
     structure(
-        list(expression = exp_new, frmt_ls = frmt_ls, missing = missing),
+        list(
+            expression = exp_new,
+            frmt_ls = frmt_ls,
+            missing = missing
+        ),
         class = c("frmt_combine", "frmt")
     )
 }

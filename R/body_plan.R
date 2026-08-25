@@ -31,16 +31,7 @@
 #'
 body_plan <- function(...) {
     frmt_structure_list <- list(...)
-
-    for (struct_idx in seq_along(frmt_structure_list)) {
-        if (!is_frmt_structure(frmt_structure_list[[struct_idx]])) {
-            stop(paste0(
-                "Entry number ",
-                struct_idx,
-                " is not an object of class `frmt_structure`."
-            ))
-        }
-    }
+    check_frmt_structure_list(frmt_structure_list)
 
     structure(
         frmt_structure_list,
