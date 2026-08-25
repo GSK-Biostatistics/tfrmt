@@ -310,8 +310,7 @@ quo_get <- function(
             return(quote(expr = ))
         } else {
             if (
-                identical(arg_call, rlang::quo())
-            ) {
+                identical(arg_call, rlang::quo())) {
                 return(arg_call)
             }
 
