@@ -160,7 +160,7 @@ clean_col_names <- function(names, dont_inc = NULL) {
         purrr::map_chr(rlang::as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
         stringr::str_remove_all("^-") %>%
-        stringr::str_remove_all('\\"\\)') %>%
+        stringr::str_remove_all(stringr::fixed("\")")) %>%
         setdiff(dont_inc)
 }
 

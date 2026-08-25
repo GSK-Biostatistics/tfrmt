@@ -965,7 +965,11 @@ test_that("page_plan() with transform", {
                     grp1 = ".default"
                 )
             ),
-            transform = ~ stringr::str_replace(.x, "grp1", "group 1")
+            transform = ~ stringr::str_replace(
+                .x,
+                stringr::fixed("grp1"),
+                "group 1"
+            )
         )
     )
 
@@ -979,8 +983,8 @@ test_that("page_plan() with transform", {
     # transform as function
     tfrmt_plan$page_plan$transform <- function(x) {
         x |>
-            stringr::str_replace("grp1", "group 1") |>
-            stringr::str_replace("cat_", "category ")
+            stringr::str_replace(stringr::fixed("grp1"), "group 1") |>
+            stringr::str_replace(stringr::fixed("cat_"), "category ")
     }
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
@@ -1049,9 +1053,9 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     # we want to go from `grp1: cat_1,\ngrp2: cat_1` to `Group 1 (cat_1),\nGroup 2 (cat_1)`
     tfrmt_plan$page_plan$transform <- function(x) {
         interim <- x |>
-            stringr::str_replace_all("grp", "Group ") |>
-            stringr::str_replace_all(": ", " (") |>
-            stringr::str_replace_all(",", "),")
+            stringr::str_replace_all(stringr::fixed("grp"), "Group ") |>
+            stringr::str_replace_all(stringr::fixed(": "), " (") |>
+            stringr::str_replace_all(stringr::fixed(","), "),")
 
         output <- stringr::str_pad(
             interim,
@@ -1292,7 +1296,11 @@ test_that("apply_page_plan() with label transformation in a complex table", {
                     )
                 ),
                 note_loc = "subtitle",
-                transform = ~ stringr::str_replace(.x, "Treatment", "Group")
+                transform = ~ stringr::str_replace(
+                    .x,
+                    stringr::fixed("Treatment"),
+                    "Group"
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
@@ -1319,7 +1327,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
     # test with transform as function
     test_tfrmt$page_plan$transform <- function(x) {
-        stringr::str_replace(x, "Treatment", "Group")
+        stringr::str_replace(x, stringr::fixed("Treatment"), "Group")
     }
 
     auto_split <- apply_tfrmt(ard_ae6, test_tfrmt)

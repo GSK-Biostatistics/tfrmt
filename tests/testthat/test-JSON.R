@@ -596,7 +596,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
                 label_val = "A"
             ),
             note_loc = "source_note",
-            transform = ~ stringr::str_replace(.x, "foo", "bar")
+            transform = ~ stringr::str_replace(.x, stringr::fixed("foo"), "bar")
         )
     )
 
@@ -632,7 +632,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
 
     # transform as function
     transform_function <- function(x) {
-        stringr::str_replace(x, "foo", "bar")
+        stringr::str_replace(x, stringr::fixed("foo"), "bar")
     }
 
     page_plan_function <- tfrmt(

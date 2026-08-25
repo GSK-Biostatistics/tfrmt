@@ -457,9 +457,9 @@ test_that("extract_data works for a table with bigN values", {
     expected_patterns <- c("N = 30", "N = 40", "N = 60")
 
     # Assert that the labels contain your expected strings
-    expect_true(any(grepl("N = 30", column_labels)))
-    expect_true(any(grepl("N = 40", column_labels)))
-    expect_true(any(grepl("N = 60", column_labels)))
+    expect_true(any(grepl("N = 30", fixed = TRUE, column_labels)))
+    expect_true(any(grepl("N = 40", fixed = TRUE, column_labels)))
+    expect_true(any(grepl("N = 60", fixed = TRUE, column_labels)))
 })
 
 test_that("extract_data handles various spanning header depths", {
