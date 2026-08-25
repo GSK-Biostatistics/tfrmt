@@ -3,8 +3,12 @@ test_that("is_element_block", {
     expect_false(is_element_block("foo"))
 })
 test_that("check_element_block", {
-    expect_no_error(check_element_block(element_block()))
-    expect_no_error(check_element_block(NULL, allow_null = TRUE))
+    expect_no_error(
+        check_element_block(element_block())
+    )
+    expect_no_error(
+        check_element_block(NULL, allow_null = TRUE)
+    )
 
     expect_error(
         check_element_block("foo"),
