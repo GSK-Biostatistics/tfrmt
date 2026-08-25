@@ -31,32 +31,36 @@ tfrmt object with updated groups#'
 tfrmt_spec <- tfrmt(
     group = c(group1, group2),
     body_plan  = body_plan(
-      frmt_structure(
-         group_val = list(group2 = "value"),
-         label_val = ".default",
-         frmt("XXX")
-         ),
-     frmt_structure(
-         group_val = list(group1 = "value", group2 = "value"),
-         label_val = ".default",
-         frmt("XXX")
+        frmt_structure(
+            group_val = list(group2 = "value"),
+            label_val = ".default",
+            frmt("XXX")
+        ),
+        frmt_structure(
+            group_val = list(
+                group1 = "value",
+                group2 = "value"
+            ),
+            label_val = ".default",
+            frmt("XXX")
        )
-    ))
+    )
+)
 
 tfrmt_spec %>%
-  update_group(New_Group = group1)
+    update_group(New_Group = group1)
 #> $group
 #> <list_of<quosure>>
 #> 
 #> [[1]]
 #> <quosure>
 #> expr: ^New_Group
-#> env:  0x5623dff69e38
+#> env:  0x5647174d9820
 #> 
 #> [[2]]
 #> <quosure>
 #> expr: ^group2
-#> env:  0x5623df1e8060
+#> env:  0x564717411f28
 #> 
 #> 
 #> $label

@@ -37,26 +37,49 @@ modified in the col_style_plan
 ## Examples
 
 ``` r
- tf_spec <- tfrmt(
- group = c(rowlbl1,grp),
- label = rowlbl2,
- column = column,
- param = param,
- value = value,
- sorting_cols = c(ord1, ord2),
- body_plan = body_plan(
- frmt_structure(group_val = ".default", label_val = ".default", frmt_combine("{n} ({pct} %)",
-                                                                             n = frmt("xxx"),
-                                                                             pct = frmt("xx.x"))),
- frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
- frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min","Max"),
-                             frmt("xxx.x")),
- frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
- frmt_structure(group_val = ".default", label_val = ".default",
-                            p = frmt_when(">0.99" ~ ">0.99",
-                                          "<0.15" ~ "<0.15",
-                                          TRUE ~ frmt("x.xxx", missing = "")))
-))
+tf_spec <- tfrmt(
+    group = c(rowlbl1,grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{n} ({pct} %)",
+                n = frmt("xxx"),
+                pct = frmt("xx.x")
+            )
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "n",
+            frmt("xxx")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = c("Mean", "Median", "Min","Max"),
+            frmt("xxx.x")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "SD",
+            frmt("xxx.xx")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            p = frmt_when(
+                ">0.99" ~ ">0.99",
+                "<0.15" ~ "<0.15",
+                TRUE ~ frmt("x.xxx", missing = "")
+            )
+        )
+    )
+)
 
  display_val_frmts(tf_spec, data_demog, col = vars(everything()))
 #> c("",

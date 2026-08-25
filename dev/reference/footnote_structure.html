@@ -110,13 +110,20 @@
 <span class="r-in"><span><span class="va">footnote_structure</span> <span class="op">&lt;-</span> <span class="fu">footnote_structure</span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Source Note"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adds a footnote to the 'Placebo' column</span></span></span>
-<span class="r-in"><span><span class="va">footnote_structure</span> <span class="op">&lt;-</span> <span class="fu">footnote_structure</span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Text"</span>,</span></span>
-<span class="r-in"><span>                               column_val <span class="op">=</span> <span class="st">"Placebo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">footnote_structure</span> <span class="op">&lt;-</span> <span class="fu">footnote_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    footnote_text <span class="op">=</span> <span class="st">"Text"</span>,</span></span>
+<span class="r-in"><span>    column_val <span class="op">=</span> <span class="st">"Placebo"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adds a footnote to either 'Placebo' or 'Treatment groups' depending on which</span></span></span>
 <span class="r-in"><span><span class="co"># which is last to appear in the column vector</span></span></span>
-<span class="r-in"><span><span class="va">footnote_structure</span> <span class="op">&lt;-</span> <span class="fu">footnote_structure</span><span class="op">(</span>footnote_text <span class="op">=</span> <span class="st">"Text"</span>,</span></span>
-<span class="r-in"><span>      column_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Placebo"</span>, col2<span class="op">=</span> <span class="st">"Treatment groups"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">footnote_structure</span> <span class="op">&lt;-</span> <span class="fu">footnote_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    footnote_text <span class="op">=</span> <span class="st">"Text"</span>,</span></span>
+<span class="r-in"><span>    column_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        col1 <span class="op">=</span> <span class="st">"Placebo"</span>,</span></span>
+<span class="r-in"><span>        col2 <span class="op">=</span> <span class="st">"Treatment groups"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adds a footnote to the 'Adverse Event' label</span></span></span>
 <span class="r-in"><span><span class="va">footnote_structure</span> <span class="op">&lt;-</span> <span class="fu">footnote_structure</span><span class="op">(</span><span class="st">"Text"</span>, label_val <span class="op">=</span> <span class="st">"Adverse Event"</span><span class="op">)</span></span></span>

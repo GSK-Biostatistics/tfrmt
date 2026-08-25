@@ -29,30 +29,38 @@ a stylized gt object
 ## Examples
 
     library(dplyr)
+
     # Create tfrmt specification
     tfrmt_spec <- tfrmt(
-      label = label,
-      column = column,
-      param = param,
-      value=value,
-      body_plan = body_plan(
-        frmt_structure(group_val = ".default", label_val = ".default",
-                       frmt_combine(
-                         "{count} {percent}",
-                         count = frmt("xxx"),
-                         percent = frmt_when("==100"~ frmt(""),
-                                             "==0"~ "",
-                                             "TRUE" ~ frmt("(xx.x%)"))))
-      ))
+        label = label,
+        column = column,
+        param = param,
+        value=value,
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt_combine(
+                    "{count} {percent}",
+                    count = frmt("xxx"),
+                    percent = frmt_when(
+                        "==100"~ frmt(""),
+                        "==0"~ "",
+                        "TRUE" ~ frmt("(xx.x%)")
+                    )
+                )
+            )
+        )
+    )
 
     # Create data
     df <- tidyr::crossing(
-            label = c("label 1", "label 2"),
-            column = c("placebo", "trt1"),
-            param = c("count", "percent")
-        ) |>
+        label = c("label 1", "label 2"),
+        column = c("placebo", "trt1"),
+        param = c("count", "percent")
+    ) |>
         dplyr::mutate(
-            value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+            value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
         )
 
     print_to_gt(tfrmt_spec,df)

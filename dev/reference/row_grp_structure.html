@@ -104,8 +104,13 @@ between each group.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## single grouping variable example</span></span></span>
-<span class="r-in"><span><span class="fu">row_grp_structure</span><span class="op">(</span>group_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"C"</span><span class="op">)</span>, <span class="fu"><a href="element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">"---"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># single grouping variable example</span></span></span>
+<span class="r-in"><span><span class="fu">row_grp_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    group_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"C"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    element_block <span class="op">=</span> <span class="fu"><a href="element_block.html">element_block</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        post_space <span class="op">=</span> <span class="st">"---"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $group_val</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "A" "C"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -122,8 +127,16 @@ between each group.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "row_grp_structure" "frmt_table"       </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## example with multiple grouping variables</span></span></span>
-<span class="r-in"><span><span class="fu">row_grp_structure</span><span class="op">(</span>group_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>grp1 <span class="op">=</span> <span class="st">"A"</span>, grp2 <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="element_block.html">element_block</a></span><span class="op">(</span>post_space <span class="op">=</span> <span class="st">" "</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># example with multiple grouping variables</span></span></span>
+<span class="r-in"><span><span class="fu">row_grp_structure</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    group_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        grp1 <span class="op">=</span> <span class="st">"A"</span>,</span></span>
+<span class="r-in"><span>        grp2 <span class="op">=</span> <span class="st">"b"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    element_block <span class="op">=</span> <span class="fu"><a href="element_block.html">element_block</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        post_space <span class="op">=</span> <span class="st">" "</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $group_val</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $group_val$grp1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "A"</span>

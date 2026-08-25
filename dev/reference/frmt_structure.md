@@ -60,14 +60,18 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html)
 ``` r
 
 sample_structure <- frmt_structure(
-          group_val = c("group1"),
-          label_val = ".default",
-          frmt("XXX")
-        )
-## multiple group columns
+    group_val = c("group1"),
+    label_val = ".default",
+    frmt("XXX")
+)
+
+# multiple group columns
 sample_structure <- frmt_structure(
-          group_val = list(grp_col1 = "group1", grp_col2 = "subgroup3"),
-          label_val = ".default",
-          frmt("XXX")
-        )
+    group_val = list(
+        grp_col1 = "group1",
+        grp_col2 = "subgroup3"
+    ),
+    label_val = ".default",
+    frmt("XXX")
+)
 ```

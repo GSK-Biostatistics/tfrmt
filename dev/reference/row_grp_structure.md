@@ -39,8 +39,13 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html)
 
 ``` r
 
-## single grouping variable example
-row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+# single grouping variable example
+row_grp_structure(
+    group_val = c("A","C"),
+    element_block = element_block(
+        post_space = "---"
+    )
+)
 #> $group_val
 #> [1] "A" "C"
 #> 
@@ -57,8 +62,16 @@ row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
 #> attr(,"class")
 #> [1] "row_grp_structure" "frmt_table"       
 
-## example with multiple grouping variables
-row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+# example with multiple grouping variables
+row_grp_structure(
+    group_val = list(
+        grp1 = "A",
+        grp2 = "b"
+    ),
+    element_block = element_block(
+        post_space = " "
+    )
+)
 #> $group_val
 #> $group_val$grp1
 #> [1] "A"
