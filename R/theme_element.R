@@ -98,7 +98,7 @@ is_element_row_grp_loc <- function(x) {
 #'         frmt_structure(
 #'             frmt("xx")
 #'         )
-#'     )
+#'     ),
 #'     group = grp1,
 #'     label = label,
 #'     param = param,

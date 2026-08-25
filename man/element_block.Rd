@@ -37,7 +37,7 @@ tfrmt_spec <- tfrmt(
         frmt_structure(
             frmt("xx")
         )
-    )
+    ),
     group = grp1,
     label = label,
     param = param,
