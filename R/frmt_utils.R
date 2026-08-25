@@ -457,7 +457,8 @@ frmt_combine_builder <- function(
 
 #' Build format structure from a list of `frmt` and `frmt_combine` objects
 #'
-#' @param group_val A string or a named list of strings which represent the value of group should be when the given frmt is implemented
+#' @param group_val A string or a named list of strings which represent the
+#'   value of group should be when the given frmt is implemented
 #' @param label_val A string which represent the value of label should be when the given frmt is implemented
 #' @param frmt_vec Character vector of `frmt` and/or `frmt_combine` objects to be applied to the group_val/label_val combination
 #'
