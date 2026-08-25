@@ -37,6 +37,7 @@ footnote_structure <- footnote_structure(
     footnote_text = "Text",
     column_val = "Placebo"
 )
+
 footnote_structure <- footnote_structure(
     footnote_text = "Text",
     column_val = "Placebo"

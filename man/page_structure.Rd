@@ -8,8 +8,8 @@ page_structure(group_val = NULL, label_val = NULL)
 }
 \arguments{
 \item{group_val}{string or a named list of strings which represent the value
-of group to split after. Set to \code{".default"} if the split should occur
-after every unique value of the variable.}
+of group to split after. Set to ".default" if the split should occur after
+every unique value of the variable.}
 
 \item{label_val}{string which represents the value of label to split after.
 Set to ".default" if the split should occur after every unique value of
