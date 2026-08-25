@@ -348,7 +348,8 @@ quo_get <- function(
                         if (arg %in% as_var_args) {
                             return(as_vars(arg_call_results$result)) # nolint: return_linter
                         } else {
-                                return( # nolint: return_linter
+                            return(
+                                # nolint: return_linter
                                 as_length_one_quo(
                                     arg_call_results$result,
                                     arg = as.character(arg)
