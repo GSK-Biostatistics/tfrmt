@@ -52,9 +52,6 @@ test_that("Testing error messages for missing argument col_style_structure", {
                 col_style_structure(
                     align = c(".", ",", " ")
                 )
-                col_style_structure(
-                    align = c(".", ",", " ")
-                )
             ),
 
             # Specify row group plan
