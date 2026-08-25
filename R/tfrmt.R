@@ -309,7 +309,10 @@ quo_get <- function(
             ## args not defined can quietly return empty expressions.
             return(quote(expr = ))
         } else {
-            if (identical(arg_call, rlang::quo()) || identical(arg_call, rlang::quos())) {
+            if (
+                identical(arg_call, rlang::quo()) ||
+                    identical(arg_call, rlang::quos())
+            ) {
                 return(arg_call)
             }
             # don't try to eval quosures if it is intended to be a quosure
