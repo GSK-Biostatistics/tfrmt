@@ -18,6 +18,9 @@ row_grp_plan object
 Define the look of the table groups on the output. This function allows you
 to add spaces after blocks and allows you to control how the groups are
 viewed whether they span the entire table or are nested as a column.
+Define the look of the table groups on the output. This function allows you
+to add spaces after blocks and allows you to control how the groups are
+viewed whether they span the entire table or are nested as a column.
 }
 \examples{
 
@@ -52,39 +55,6 @@ sample_grp_plan <- row_grp_plan(
     )
 )
 
-# single grouping variable example
-sample_grp_plan <- row_grp_plan(
-    row_grp_structure(
-        group_val = c("A","C"),
-        element_block = element_block(
-            post_space = "---"
-        )
-    ),
-    row_grp_structure(
-        group_val = c("B"),
-        element_block = element_block(
-            post_space = " "
-        )
-    ),
-    label_loc = element_row_grp_loc(
-        location = "column"
-    )
-)
-
-# example with multiple grouping variables
-sample_grp_plan <- row_grp_plan(
-    row_grp_structure(
-        group_val = list(
-            grp1 = "A",
-            grp2 = "b"),
-        element_block = element_block(
-            post_space = " "
-        )
-    ),
-    label_loc = element_row_grp_loc(
-        location = "spanning"
-    )
-)
 }
 \seealso{
 \code{\link[=row_grp_structure]{row_grp_structure()}} for more details on how to specify row group

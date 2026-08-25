@@ -18,6 +18,8 @@ the given frmt is implemented}
 }
 \value{
 frmt_structure object
+
+frmt_structure object
 }
 \description{
 Function needed to create a frmt_structure object, which is a building block
