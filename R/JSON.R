@@ -13,9 +13,9 @@
 #'   value=value) |>
 #'   tfrmt_to_json()
 tfrmt_to_json <- function(tfrmt, path = NULL) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Needs tfrmt")
-    }
+    check_tfrmt(tfrmt)
+    rlang::check_string(path, allow_null = TRUE)
+
     output <- as_json(tfrmt)
 
     if (!is.null(path)) {

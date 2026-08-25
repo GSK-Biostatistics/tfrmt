@@ -342,7 +342,7 @@ check_big_n <- function(tfrmt_object, parent_env = rlang::caller_env()) {
 #' @param parent_env parent environment for error reporting
 #'
 #' @noRd
-check_inputs <- function(
+check_input_vars <- function(
     tfrmt_object,
     var_names,
     parent_env = rlang::caller_env()

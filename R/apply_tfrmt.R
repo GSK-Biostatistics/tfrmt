@@ -7,14 +7,18 @@
 #' @return formatted tibble
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
+    # TODO add a call argument and pass it down to the check_ functions
+    # TODO check .data?
+    check_tfrmt(tfrmt)
+    rlang::check_bool(mock)
 
     validate_cols_match(.data, tfrmt, mock)
 
     tbl_dat <- .data %>%
-        remove_big_ns(param = tfrmt$param, big_n_structure = tfrmt$big_n) %>%
+        remove_big_ns(
+            param = tfrmt$param,
+            big_n_structure = tfrmt$big_n
+        ) %>%
         apply_table_frmt_plan(
             .data = .,
             table_frmt_plan = tfrmt$body_plan,

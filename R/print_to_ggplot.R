@@ -35,13 +35,8 @@
 #' }}
 #'
 print_to_ggplot <- function(tfrmt, .data, ...) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
-
-    if (!is.data.frame(.data)) {
-        stop("Requires data")
-    }
+    check_tfrmt(tfrmt)
+    rlang::check_data_frame(.data)
 
     # stop if label location is not indented
     if (
@@ -87,7 +82,8 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     column_name <- rlang::as_label(tfrmt$column[[1]])
     column_data <- dplyr::pull(.data, !!column_name)
 
-    apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
+    .data |>
+        apply_tfrmt(tfrmt) |>
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
 }
 

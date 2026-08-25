@@ -40,20 +40,13 @@ row_grp_plan <- function(
     label_loc = element_row_grp_loc(location = "indented")
 ) {
     row_grp_structure_list <- list(...)
-
-    for (struct_idx in seq_along(row_grp_structure_list)) {
-        if (!is_row_grp_structure(row_grp_structure_list[[struct_idx]])) {
-            stop(paste0(
-                "Entry number ",
-                struct_idx,
-                " is not an object of class `row_grp_structure`.
-                If you want specify `spanning_label` please enter 'spanning_label ='"
-            ))
-        }
-    }
+    check_row_grp_structure_list(row_grp_structure_list)
 
     structure(
-        list(struct_list = row_grp_structure_list, label_loc = label_loc),
+        list(
+            struct_list = row_grp_structure_list,
+            label_loc = label_loc
+        ),
         class = c("row_grp_plan", "frmt_table")
     )
 }
