@@ -95,6 +95,30 @@ is_element_block <- function(x) {
     inherits(x, "element_block")
 }
 
+check_element_block <- function(
+    element_block,
+    arg = rlang::caller_arg(element_block),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(element_block)) {
+        if (is_element_block(element_block)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(element_block)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        element_block,
+        "an element_block object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
+}
 
 element_stub <- function(
     collapse_ord = vars(),
