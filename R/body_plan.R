@@ -14,7 +14,6 @@
 #'
 #' @return body_plan object
 #'
-#'
 #' @examples
 #'
 #'   tfrmt_spec<- tfrmt(
@@ -25,7 +24,7 @@
 #'             frmt("XXX")
 #'         )
 #'       )
-#'     )
+#'      )
 #'
 #' @export
 body_plan <- function(...) {
