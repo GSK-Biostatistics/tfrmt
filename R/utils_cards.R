@@ -56,7 +56,7 @@ is_bind_ard_card <- function(x) {
     inherits(x, "bind_ard")
 }
 
-#' Check if an object inherits from 'ard_stack'
+#' Is object an 'ard_stack'?
 #'
 #' @param x An object to check.
 #' @return `TRUE` if the object inherits from 'ard_stack', `FALSE` otherwise.
