@@ -13,9 +13,9 @@
 #'   value=value) |>
 #'   tfrmt_to_json()
 tfrmt_to_json <- function(tfrmt, path = NULL) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Needs tfrmt")
-    }
+    check_tfrmt(tfrmt)
+    rlang::check_string(path, allow_null = TRUE)
+
     output <- as_json(tfrmt)
 
     if (!is.null(path)) {
@@ -150,7 +150,7 @@ as_json.frmt_combine <- function(x) {
 #' @export
 as_json.col_plan <- function(x) {
     if (is.null(x)) {
-        c()
+        NULL
     } else {
         dot_ls <- x$dots %>%
             purrr::map(as_json)
@@ -166,9 +166,8 @@ as_json.col_plan <- function(x) {
 as_json.span_structure <- function(x) {
     purrr::map(
         x,
-        function(foo) {
-            purrr::map_chr(foo, as_json)
-        }
+        purrr::map_chr,
+        as_json
     ) %>%
         list(span_structure = .)
 }
@@ -358,7 +357,7 @@ ls_to_frmt_when <- function(x) {
         stringr::str_c("'", names(fmts), "'")
     )
     formula_ls <- stringr::str_c(lhs, " ~ ", fmts) %>%
-        purrr::map(as.formula)
+        purrr::map(stats::as.formula)
 
     do.call(frmt_when, c(formula_ls, list(missing = unlist(x$missing))))
 }

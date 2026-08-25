@@ -185,7 +185,7 @@ tfrmt <- function(
 
     new_tfrmt <- structure(
         tfrmt_el,
-        class = c("tfrmt")
+        class = "tfrmt"
     )
 
     # check non-null plan parameters are supplied with plan function
@@ -218,6 +218,31 @@ tfrmt <- function(
 
 is_tfrmt <- function(x) {
     inherits(x, "tfrmt")
+}
+
+check_tfrmt <- function(
+    tfrmt,
+    arg = rlang::caller_arg(tfrmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(tfrmt)) {
+        if (is_tfrmt(tfrmt)) {
+            return(invisible(NULL))
+        }
+
+        if (allow_null && is.null(tfrmt)) {
+            return(invisible(NULL))
+        }
+    }
+
+    rlang::stop_input_type(
+        tfrmt,
+        "a tfrmt object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
 }
 
 tfrmt_find_args <- function(
@@ -260,8 +285,8 @@ tfrmt_find_args <- function(
 
 quo_get <- function(
     args,
-    as_var_args = c(),
-    as_quo_args = c(),
+    as_var_args = NULL,
+    as_quo_args = NULL,
     envir = parent.frame(),
     parent_env = parent.env(envir),
     allow_tidy_select = FALSE
@@ -398,7 +423,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
                 "` to:\n\t",
                 new_arg_call
             ),
-            class = c("group_vars_error")
+            class = "group_vars_error"
         )
     }
 }

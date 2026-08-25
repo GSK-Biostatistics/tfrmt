@@ -724,10 +724,10 @@ test_that("frmt_combine only applies when all parameters are in the data", {
 
 test_that("frmt_combine fills with partially missing values where a column is missing the value", {
     data <- tibble::tibble(
-        Group = rep(c("Age (y)"), c(6)),
-        Label = rep(c("Mean (SD)"), c(6)),
-        Column = rep(c("Placebo", "Treatment", "Total"), each = c(2)),
-        Param = rep(c("mean", "sd"), times = c(3)),
+        Group = rep("Age (y)", 6),
+        Label = rep("Mean (SD)", 6),
+        Column = rep(c("Placebo", "Treatment", "Total"), each = 2),
+        Param = rep(c("mean", "sd"), times = 3),
         Value = c(1, 2, 3, 4, 5, 6)
     ) %>%
         .[-1, ] # remove first row - where a "mean" is, but is otherwise complete
@@ -752,8 +752,8 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     expect_identical(
         sample_df_frmted,
         tibble::tibble(
-            Group = rep(c("Age (y)"), c(3)),
-            Label = rep(c("Mean (SD)"), c(3)),
+            Group = rep("Age (y)", 3),
+            Label = rep("Mean (SD)", 3),
             Column = c("Placebo", "Total", "Treatment"),
             Param = c("sd", "mean", "mean"),
             Value = c(" - ( 2)", " 5 ( 6)", " 3 ( 4)")
@@ -780,8 +780,8 @@ test_that("frmt_combine fills with partially missing values where a column is mi
     expect_identical(
         sample_df_frmted,
         tibble::tibble(
-            Group = rep(c("Age (y)"), c(3)),
-            Label = rep(c("Mean (SD)"), c(3)),
+            Group = rep("Age (y)", 3),
+            Label = rep("Mean (SD)", 3),
             Column = c("Placebo", "Total", "Treatment"),
             Param = c("sd", "mean", "mean"),
             Value = c("NA ( 2)", " 5 ( 6)", " 3 ( 4)")

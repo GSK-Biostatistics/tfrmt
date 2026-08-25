@@ -119,7 +119,7 @@
     Message
       The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
       * A `by` value of "ARM" was found in the input object's attributes.
-      * To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
+      i To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
     Output
       # A tibble: 4 x 7
         ARM                  AGE      context stat_variable stat_name stat_label  stat
@@ -289,7 +289,7 @@
     Message
       The `by` argument was not supplied and cannot reliably be inferred from objects of class <bind_ard>.
       * A `by` value of "ARM" was found in the input object's attributes.
-      * To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
+      i To use it as a grouping variable, pass it explicitly: `shuffle_card(by = "ARM")`.
 
 ---
 

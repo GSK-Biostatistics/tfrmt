@@ -7,14 +7,18 @@
 #' @return formatted tibble
 #' @noRd
 apply_tfrmt <- function(.data, tfrmt, mock = FALSE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
+    # TODO add a call argument and pass it down to the check_ functions
+    # TODO check .data?
+    check_tfrmt(tfrmt)
+    rlang::check_bool(mock)
 
     validate_cols_match(.data, tfrmt, mock)
 
     tbl_dat <- .data %>%
-        remove_big_ns(param = tfrmt$param, big_n_structure = tfrmt$big_n) %>%
+        remove_big_ns(
+            param = tfrmt$param,
+            big_n_structure = tfrmt$big_n
+        ) %>%
         apply_table_frmt_plan(
             .data = .,
             table_frmt_plan = tfrmt$body_plan,
@@ -510,9 +514,19 @@ frmt_struct_string <- function(grp, lbl, param_vals) {
         purrr::map_chr(rlang::as_label) %>%
         .[-1]
     if (length(group_names) > 1) {
-        group_val_char <- capture.output(dput(setNames(grp, group_names)))
+        group_val_char <- utils::capture.output(
+            dput(
+                stats::setNames(
+                    grp,
+                    group_names
+                )
+            )
+        )
     } else if (length(group_names) == 1) {
-        group_val_char <- paste(capture.output(dput(grp[[1]])), collapse = "")
+        group_val_char <- paste(
+            utils::capture.output(dput(grp[[1]])),
+            collapse = ""
+        )
     } else {
         group_val_char <- "\".default\""
     }

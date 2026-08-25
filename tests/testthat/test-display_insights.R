@@ -2,7 +2,7 @@ test_that("Display row formats for tfrmt with <frmt>", {
     df <- tidyr::crossing(
         label = c("label 1", "label 2", "label 3"),
         column = c("PL", "T1", "T2"),
-        param = c("count")
+        param = "count"
     ) %>%
         dplyr::arrange_all() %>%
         dplyr::mutate(
@@ -61,9 +61,9 @@ test_that("Display row formats for tfrmt with <frmt>", {
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
     df <- dplyr::bind_rows(
         tidyr::crossing(
-            label = c("label 1"),
+            label = "label 1",
             column = c("PL", "T1", "T2"),
-            param = c("count")
+            param = "count"
         ),
         tidyr::crossing(
             label = c("label 2", "label 3"),
@@ -137,19 +137,19 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>", {
     df <- dplyr::bind_rows(
         tidyr::crossing(
-            label = c("label 1"),
+            label = "label 1",
             column = c("PL", "T1", "T2"),
-            param = c("n")
+            param = "n"
         ),
         tidyr::crossing(
-            label = c("label 2"),
+            label = "label 2",
             column = c("PL", "T1", "T2"),
             param = c("median", "sd")
         ),
         tidyr::crossing(
-            label = c("label 3"),
+            label = "label 3",
             column = c("PL", "T1", "T2"),
-            param = c("pval")
+            param = "pval"
         )
     ) %>%
         dplyr::arrange_all() %>%

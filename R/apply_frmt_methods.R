@@ -225,7 +225,7 @@ apply_frmt.frmt_combine <- function(
 
     missing_param_replacements <-
         purrr::map(fmt_param_vals, ~ frmt_def$frmt_ls[[.x]]$missing) %>%
-        setNames(fmt_param_vals) %>%
+        stats::setNames(fmt_param_vals) %>%
         purrr::discard(is.null)
 
     if (length(missing_param_replacements) > 0) {
@@ -239,12 +239,17 @@ apply_frmt.frmt_combine <- function(
     if (nrow(.tmp_data_wide) == nrow(.tmp_data)) {
         id_cols <- .tmp_data %>%
             dplyr::select(!!!column, !!label, !!!group, !!param)
-        warning(paste0(
-            "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
-            toString(names(id_cols %>% dplyr::select(-!!param))),
-            ". Current values:\n",
-            paste(capture.output(id_cols %>% as.data.frame()), collapse = "\n")
-        ))
+        warning(
+            paste0(
+                "Unable to apply `frmt_combine` due to uniqueness of column/row identifiers. Params that are to be combined need to have matching values across: ",
+                toString(names(id_cols %>% dplyr::select(-!!param))),
+                ". Current values:\n",
+                paste(
+                    utils::capture.output(as.data.frame(id_cols)),
+                    collapse = "\n"
+                )
+            )
+        )
     }
 
     if (is.null(frmt_def$missing)) {

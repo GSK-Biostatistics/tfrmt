@@ -110,7 +110,8 @@ print_mock_gt <- function(
         }
     }
 
-    apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
+    .data |>
+        apply_tfrmt(tfrmt, mock = TRUE) |>
         cleaned_data_to_gt(tfrmt, .unicode_ws)
 }
 
@@ -165,17 +166,19 @@ print_mock_gt <- function(
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
+    check_tfrmt(tfrmt)
+    if (missing(.data)) {
+        cli::cli_abort(
+            "Requires data, if not available please use `print_mock_gt()`"
+        )
     }
+    rlang::check_data_frame(.data)
+    rlang::check_bool(.unicode_ws)
 
-    # check required input variables are supplied
-    check_inputs(tfrmt, c("column", "param", "value"))
+    check_input_vars(tfrmt, c("column", "param", "value"))
 
-    if (!is.data.frame(.data)) {
-        stop("Requires data, if not available please use `print_mock_gt()`")
-    }
-    apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
+    .data |>
+        apply_tfrmt(tfrmt) |>
         cleaned_data_to_gt(tfrmt, .unicode_ws)
 }
 
@@ -199,7 +202,7 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @keywords internal
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
-    purrr::map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
+    purrr::map(.data, cleaned_data_to_gt.default, tfrmt, .unicode_ws) %>%
         gt::gt_group(.list = .)
 }
 #' Apply formatting to a single table
@@ -362,7 +365,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_style(
             style = gt::cell_borders(
-                sides = c("top"),
+                sides = "top",
                 color = "transparent",
                 weight = gt::px(0)
             ),
@@ -372,7 +375,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_style(
             style = gt::cell_borders(
-                sides = c("bottom"),
+                sides = "bottom",
                 weight = gt::px(0),
                 color = "transparent"
             ),
@@ -494,7 +497,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::group_by(.data$value) %>%
             tidyr::nest(set = "cols") %>%
             dplyr::mutate(
-                set = purrr::map(.data$set, ~ dplyr::pull(., .data$cols))
+                set = purrr::map(.data$set, dplyr::pull, .data$cols)
             ) %>%
             dplyr::filter(
                 .data$value != "NA"

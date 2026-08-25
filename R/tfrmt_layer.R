@@ -26,20 +26,25 @@
 #'
 #' tfrmt_1 <- tfrmt(title = "title1")
 #'
-#' tfrmt_2 <- tfrmt(title = "title2",subtitle = "subtitle2")
+#' tfrmt_2 <- tfrmt(
+#'     title = "title2",
+#'     subtitle = "subtitle2"
+#' )
 #'
 #' layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
     if (missing(x)) {
-        stopifnot(is_tfrmt(y))
+        check_tfrmt(y)
         return(y)
     } else if (missing(y)) {
-        stopifnot(is_tfrmt(x))
+        check_tfrmt(x)
         return(x)
     }
 
-    stopifnot(is_tfrmt(y), is_tfrmt(x))
+    check_tfrmt(x)
+    check_tfrmt(y)
+    rlang::check_bool(join_body_plans)
 
     args <- union(names(x), names(y))
 
@@ -178,7 +183,7 @@ update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]
 
     old_groups <- do.call(vars, unname(dots))
-    new_group_map <- setNames(
+    new_group_map <- stats::setNames(
         names(dots),
         purrr::map_chr(old_groups, rlang::as_label)
     )

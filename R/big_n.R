@@ -25,9 +25,9 @@ big_n_structure <- function(
     n_frmt = frmt("\nN = xx"),
     by_page = FALSE
 ) {
-    if (!is_frmt(n_frmt) || is_frmt_combine(n_frmt) || is_frmt_when(n_frmt)) {
-        stop("`n_frmt` must be given a frmt object")
-    }
+    # TODO add check for param_val?
+    check_frmt_strict(n_frmt)
+    rlang::check_bool(by_page)
 
     structure(
         list(
@@ -57,7 +57,7 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
         data_names <- col_plan_vars |>
             purrr::map_chr(rlang::as_label) |>
             split_data_names_to_df(
-                data_names = c(),
+                data_names = NULL,
                 preselected_cols = _,
                 column_names = col_lab
             )
@@ -80,10 +80,10 @@ apply_big_n_df <- function(big_n_df, col_plan_vars, columns, value) {
 
         out <- unite_df_to_data_names(
             data_names,
-            preselected_cols = c(),
+            preselected_cols = NULL,
             column_names = col_lab
         ) |>
-            purrr::map(~ char_as_quo(.x)) |>
+            purrr::map(char_as_quo) |>
             do.call("vars", args = _)
     } else {
         out <- col_plan_vars
@@ -244,7 +244,8 @@ get_big_ns <- function(.data, param, value, columns, big_n_structure, mock) {
                     dplyr::group_by(.data$`..tfrmt_big_n_order..`) |>
                     dplyr::group_split() |>
                     purrr::map(
-                        ~ dplyr::select(.x, -"..tfrmt_big_n_order..")
+                        dplyr::select,
+                        -"..tfrmt_big_n_order.."
                     )
             }
         }

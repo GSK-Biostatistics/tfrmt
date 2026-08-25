@@ -490,7 +490,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = ".default"
             ),
-            label_val = c("v2"),
+            label_val = "v2",
             min = frmt("x.xx")
         ),
         frmt_structure(
@@ -498,7 +498,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = ".default"
             ),
-            label_val = c("v2"),
+            label_val = "v2",
             max = frmt("x.xx")
         ),
         frmt_structure(
@@ -506,7 +506,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = ".default"
             ),
-            label_val = c("v2"),
+            label_val = "v2",
             median = frmt("x.xx")
         ),
         frmt_structure(
@@ -514,7 +514,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = ".default"
             ),
-            label_val = c("v2"),
+            label_val = "v2",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -526,39 +526,39 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = ".default"
             ),
-            label_val = c("v2"),
+            label_val = "v2",
             n = frmt("x")
         ),
         frmt_structure(
             group_val = list(
                 group1 = ".default",
-                group2 = c("EOSINOPHILS")
+                group2 = "EOSINOPHILS"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             min = frmt("x.xxx")
         ),
         frmt_structure(
             group_val = list(
                 group1 = ".default",
-                group2 = c("EOSINOPHILS")
+                group2 = "EOSINOPHILS"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             max = frmt("x.xxx")
         ),
         frmt_structure(
             group_val = list(
                 group1 = ".default",
-                group2 = c("EOSINOPHILS")
+                group2 = "EOSINOPHILS"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             median = frmt("x.xxx")
         ),
         frmt_structure(
             group_val = list(
                 group1 = ".default",
-                group2 = c("EOSINOPHILS")
+                group2 = "EOSINOPHILS"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xxx"),
@@ -568,9 +568,9 @@ test_that("no redundant frmt_structures", {
         frmt_structure(
             group_val = list(
                 group1 = ".default",
-                group2 = c("EOSINOPHILS")
+                group2 = "EOSINOPHILS"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             n = frmt("x")
         ),
         frmt_structure(
@@ -578,7 +578,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = "BILIRUBIN"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             min = frmt("x.xx")
         ),
         frmt_structure(
@@ -586,7 +586,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = "BILIRUBIN"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             max = frmt("x.xx")
         ),
         frmt_structure(
@@ -594,7 +594,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = "BILIRUBIN"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             median = frmt("x.xx")
         ),
         frmt_structure(
@@ -602,7 +602,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = "BILIRUBIN"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -614,7 +614,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "CHEM",
                 group2 = "BILIRUBIN"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             n = frmt("x")
         ),
         frmt_structure(
@@ -622,7 +622,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "HEM",
                 group2 = "CHOLESTEROL"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             min = frmt("x.xxx")
         ),
         frmt_structure(
@@ -630,7 +630,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "HEM",
                 group2 = "CHOLESTEROL"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             max = frmt("x.xxx")
         ),
         frmt_structure(
@@ -638,7 +638,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "HEM",
                 group2 = "CHOLESTEROL"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             median = frmt("x.xxx")
         ),
         frmt_structure(
@@ -646,7 +646,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "HEM",
                 group2 = "CHOLESTEROL"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xxx"),
@@ -658,7 +658,7 @@ test_that("no redundant frmt_structures", {
                 group1 = "HEM",
                 group2 = "CHOLESTEROL"
             ),
-            label_val = c("v1"),
+            label_val = "v1",
             n = frmt("x")
         )
     )
@@ -1048,8 +1048,8 @@ test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan
             )
         ),
         frmt_structure(
-            n = frmt("x", missing = target_missing),
-            group_val = list(group1 = "CHEM")
+            group_val = list(group1 = "CHEM"),
+            n = frmt("x", missing = target_missing)
         )
     )
 

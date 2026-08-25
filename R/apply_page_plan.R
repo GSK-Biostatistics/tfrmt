@@ -40,13 +40,11 @@ apply_page_plan <- function(
             .data <- structure(
                 purrr::map(
                     .data,
-                    ~ apply_page_max_rows(
-                        .x,
-                        page_plan$max_rows,
-                        group,
-                        label,
-                        row_grp_plan_label_loc
-                    )
+                    apply_page_max_rows,
+                    page_plan$max_rows,
+                    group,
+                    label,
+                    row_grp_plan_label_loc
                 ) %>%
                     purrr::list_flatten(),
                 .page_grp_vars = attr(.data, ".page_grp_vars")
@@ -342,7 +340,8 @@ apply_page_struct <- function(
         dplyr::mutate(
             `..tfrmt_data` = purrr::map(
                 .data$`..tfrmt_data`,
-                ~ dplyr::select(.x, -"TEMP_row")
+                dplyr::select,
+                -"TEMP_row"
             )
         ) %>%
         dplyr::pull(.data$`..tfrmt_data`)
@@ -387,7 +386,7 @@ combine_group_cols_mod <- function(
     .data <- .data %>%
         dplyr::select(c(!!!group, !!label, "TEMP_row")) %>%
         dplyr::mutate(
-            dplyr::across(c(!!!group), ~ fct_inorder(.x)),
+            dplyr::across(c(!!!group), ~ forcats::fct_inorder(.x)),
             ..tfrmt_row_grp_lbl = FALSE,
             `..tfrmt_summary_row` = stringr::str_trim(!!label, side = "left") ==
                 stringr::str_trim(
@@ -396,7 +395,7 @@ combine_group_cols_mod <- function(
                 )
         )
 
-    if (element_row_grp_loc %in% c("spanning") && length(group) > 0) {
+    if (element_row_grp_loc == "spanning" && length(group) > 0) {
         group <- group[-1]
     }
 

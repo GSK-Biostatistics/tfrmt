@@ -155,7 +155,7 @@ process_for_mock <- function(x, column, .default = 1:3) {
 #'
 #' @return cleaned up string vec
 #' @noRd
-clean_col_names <- function(names, dont_inc) {
+clean_col_names <- function(names, dont_inc = NULL) {
     names %>%
         purrr::map_chr(rlang::as_label) %>%
         stringr::str_remove_all('^.*\\(\\"') %>%
@@ -233,7 +233,7 @@ make_col_df <- function(
                 purrr::keep(is.list) %>%
                 purrr::map_dfr(function(x) {
                     span_df <- x %>%
-                        purrr::map(~ clean_col_names(., c())) %>%
+                        purrr::map(clean_col_names) %>%
                         purrr::reduce(tidyr::crossing) %>%
                         tidyr::unnest(cols = tidyselect::everything())
                     names(span_df) <- names(x)

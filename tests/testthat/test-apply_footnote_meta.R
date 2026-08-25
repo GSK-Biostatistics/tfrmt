@@ -52,18 +52,23 @@ test_that("applying footnote meta column val", {
             )
         ),
         footnote_plan = footnote_plan(
-            footnote_structure("Test footnote 1", column_val = "Placebo"),
+            footnote_structure(
+                "Test footnote 1",
+                column_val = "Placebo"
+            ),
             marks = "letters"
         )
     )
 
     expect_identical(
         attr(apply_tfrmt(es_data, tfrmt), ".footnote_locs"),
-        list(list(
-            "col" = "Placebo",
-            "spanning" = FALSE,
-            "note" = "Test footnote 1"
-        ))
+        list(
+            list(
+                "col" = "Placebo",
+                "spanning" = FALSE,
+                "note" = "Test footnote 1"
+            )
+        )
     )
     # named column vals
     tfrmt2 <- tfrmt(

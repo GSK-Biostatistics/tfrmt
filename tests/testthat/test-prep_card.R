@@ -57,7 +57,7 @@ test_that("prep_...() pipe with demographic data", {
     # manual tidy -------------------------------------------------------------
     ard_tbl <- ard |>
         # rename cols, coalesce variable levels/stat_labels, unnest
-        cards::rename_ard_columns(columns = c("group1")) |>
+        cards::rename_ard_columns(columns = "group1") |>
         cards::unlist_ard_columns() |>
         dplyr::mutate(
             label = purrr::map_chr(

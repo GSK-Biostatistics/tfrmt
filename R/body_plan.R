@@ -30,16 +30,7 @@
 #'
 body_plan <- function(...) {
     frmt_structure_list <- list(...)
-
-    for (struct_idx in seq_along(frmt_structure_list)) {
-        if (!is_frmt_structure(frmt_structure_list[[struct_idx]])) {
-            stop(paste0(
-                "Entry number ",
-                struct_idx,
-                " is not an object of class `frmt_structure`."
-            ))
-        }
-    }
+    check_frmt_structure_list(frmt_structure_list)
 
     structure(
         frmt_structure_list,
@@ -150,7 +141,7 @@ body_plan_builder <- function(
             group_val_to_add <- grp_names[!grp_names %in% names(group_val)]
             group_list_to_add <- rep(".default", length(group_val_to_add)) %>%
                 as.list() %>%
-                setNames(group_val_to_add)
+                stats::setNames(group_val_to_add)
             group_val <- c(group_val, group_list_to_add)[grp_names]
         }
     } else {

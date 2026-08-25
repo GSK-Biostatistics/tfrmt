@@ -54,7 +54,7 @@ test_that("json row group plans", {
                 element_block(post_space = "---")
             ),
             row_grp_structure(
-                group_val = c("B"),
+                group_val = "B",
                 element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(
@@ -427,14 +427,14 @@ test_that("json col_plan", {
     base_ts %>%
         as_json() %>%
         json_to_tfrmt(json = .) %>%
-        expect_equal(base_ts, ignore_attr = c(".Environment"))
+        expect_equal(base_ts, ignore_attr = ".Environment")
 
     #Basic span structure
     span <- tfrmt(
         column = c(span1, col),
         col_plan = col_plan(
             span_structure(
-                span1 = c("col 4")
+                span1 = "col 4"
             )
         )
     )
@@ -455,10 +455,10 @@ test_that("json col_plan", {
             group,
             label,
             span_structure(
-                span1 = c("col 4")
+                span1 = "col 4"
             ),
             span_structure(
-                span1 = c("cols 1,2"),
+                span1 = "cols 1,2",
                 my_col = c("col2", "col1")
             ),
             span_structure(

@@ -325,7 +325,7 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
         sort(unique(as.character(adsl_$ETHNIC)))
     )
 })
-
+#   nolint start: duplicate_argument_linter
 test_that("shuffle_card fills missing group levels if the group is meaningful for cardx output", {
     # cardx ARD: this is a dput() of a cardx result (see commented out code below) SAVED 2024-08-30
     ard_cardx <- structure(
@@ -383,6 +383,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful fo
             as.data.frame()
     )
 })
+#   nolint end: duplicate_argument_linter
 
 test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <var>`", {
     adae <- cards::ADAE |>
@@ -727,7 +728,7 @@ test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
     attr(ard_mismatch, "args")$by <- "ARM"
 
     # Capture the raw console text sent to the message/stderr stream
-    msg_output <- capture.output(
+    msg_output <- utils::capture.output(
         res_mismatch <- shuffle_card(ard_mismatch, by = "SEX"),
         type = "message"
     )
