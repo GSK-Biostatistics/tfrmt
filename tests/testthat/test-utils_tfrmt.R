@@ -467,9 +467,7 @@ test_that("incomplete body_plan where params share label", {
             )
         ),
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(
-                location = "column"
-            )
+            label_loc = element_row_grp_loc(location = "column")
         )
     )
 
