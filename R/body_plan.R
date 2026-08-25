@@ -27,6 +27,7 @@
 #'      )
 #'
 #' @export
+#'
 body_plan <- function(...) {
     frmt_structure_list <- list(...)
     check_frmt_structure_list(frmt_structure_list)

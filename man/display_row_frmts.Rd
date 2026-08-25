@@ -22,28 +22,23 @@ Used when debugging formatting, it is an easy way to allow you to see which
 formats are applied to each row in your dataset.
 }
 \examples{
-library(dplyr)
-library(tidyr)
+ library(dplyr)
+ library(tidyr)
 
 tfrmt_spec <- tfrmt(
-    label = label,
-    column = column,
-    param = param,
-    value = value,
-    body_plan = body_plan(
-        frmt_structure(
-            frmt_combine(
-                "{count} {percent}",
-                count = frmt("xxx"),
-                percent = frmt_when(
-                    "==100" ~ frmt(""),
-                    "==0" ~ "",
-                    "TRUE" ~ frmt("(xx.x\%)")
-                )
-            )
-        )
-    )
-)
+label = label,
+column = column,
+param = param,
+value = value,
+body_plan = body_plan(
+  frmt_structure(
+    frmt_combine(
+      "{count} {percent}",
+      count = frmt("xxx"),
+      percent = frmt_when("==100" ~ frmt(""),
+                          "==0" ~ "",
+                          "TRUE" ~ frmt("(xx.x\%)"))))
+    ))
 
  # Create data
  df <- tidyr::crossing(
