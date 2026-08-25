@@ -14,20 +14,19 @@
 #'
 #' @return body_plan object
 #'
-#' @examples
-#'
-#'   tfrmt_spec<- tfrmt(
-#'       title = "Table Title",
-#'       body_plan = body_plan(
-#'         frmt_structure(
-#'           group_val = c("group1"),
-#'           frmt("XXX")
-#'         )
-#'       )
-#'      )
-#'
 #' @export
 #'
+#' @examples
+#'
+#' tfrmt_spec<- tfrmt(
+#'     title = "Table Title",
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             group_val = "group1",
+#'             frmt("XXX")
+#'         )
+#'     )
+#' )
 body_plan <- function(...) {
     frmt_structure_list <- list(...)
     check_frmt_structure_list(frmt_structure_list)
