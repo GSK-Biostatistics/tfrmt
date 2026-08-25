@@ -6,6 +6,7 @@ test_that("setting param sigdig defaults", {
         "{mean} ({sd})" = c(1, 2),
         n = NA
     )
+
     expect_identical(param_set(), defaults)
 
     # nolint start: yoda_test_linter

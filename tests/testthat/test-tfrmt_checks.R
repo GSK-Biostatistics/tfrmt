@@ -52,6 +52,9 @@ test_that("Testing error messages for missing argument col_style_structure", {
                 col_style_structure(
                     align = c(".", ",", " ")
                 )
+                col_style_structure(
+                    align = c(".", ",", " ")
+                )
             ),
 
             # Specify row group plan
@@ -154,7 +157,9 @@ test_that("Testing error message for invalid input to big_n parameter", {
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(
+                        post_space = " "
+                    )
                 )
             ),
             # col_plan() supplied to big_n parameter instead of big_n_structure() function
@@ -182,14 +187,19 @@ test_that("Testing error for invalid col_style_structure with row_grp_plan when 
                 )
             ),
             col_style_plan = col_style_plan(
-                col_style_structure(col = grp, align = c(".", ",", " "))
+                col_style_structure(
+                    col = grp,
+                    align = c(".", ",", " ")
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "indented")
+                label_loc = element_row_grp_loc(
+                    location = "indented"
+                )
             )
         ),
         class = "_tfrmt_invalid_row_grp_col_style_plan"
@@ -213,14 +223,21 @@ test_that("No error for col_style_structure with row_grp_plan when location is c
                 )
             ),
             col_style_plan = col_style_plan(
-                col_style_structure(col = grp, align = c(".", ",", " "))
+                col_style_structure(
+                    col = grp,
+                    align = c(".", ",", " ")
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(
+                        post_space = " "
+                    )
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             )
         )
     )
@@ -251,7 +268,7 @@ test_that("Error message for invalid col_style_structure includes group details"
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(
+                    element_block = element_block(
                         post_space = " "
                     )
                 ),

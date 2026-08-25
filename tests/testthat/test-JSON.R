@@ -223,13 +223,17 @@ test_that("json body plan", {
             )
         )
     )
-    frmt_comb_simp %>%
-        as_json() %>%
-        expect_snapshot()
-    frmt_comb_simp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(frmt_comb_simp, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(frmt_comb_simp))
+
+    expect_equal(
+        frmt_comb_simp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        frmt_comb_simp,
+        ignore_attr = TRUE
+    )
+
     # Scientific test
     sci <- tfrmt(
         body_plan = body_plan(
@@ -240,16 +244,17 @@ test_that("json body plan", {
         )
     )
 
-    sci %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(sci))
 
-    sci %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(sci, ignore_attr = TRUE)
+    expect_equal(
+        sci %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        sci,
+        ignore_attr = TRUE
+    )
 
-    #Everything test
+    # Everything test
     complex_frmt <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
@@ -281,33 +286,39 @@ test_that("json body plan", {
         )
     )
 
-    complex_frmt %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(complex_frmt))
 
-    complex_frmt %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(complex_frmt, ignore_attr = TRUE)
+    expect_equal(
+        complex_frmt %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        complex_frmt,
+        ignore_attr = TRUE
+    )
 })
 
 
 # big n's
 test_that("json big n", {
     big_n <- tfrmt(
-        big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
+        big_n = big_n_structure(
+            param_val = "bigN",
+            n_frmt = frmt("\nN = xx")
+        )
     )
-    big_n %>%
-        as_json() %>%
-        expect_snapshot()
 
-    big_n %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(big_n, ignore_attr = TRUE)
+    expect_snapshot(as_json(big_n))
+
+    expect_equal(
+        big_n %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        big_n,
+        ignore_attr = TRUE
+    )
 })
 
-#Footnote plans
+# Footnote plans
 test_that("json footnote plan", {
     fn_simp <- tfrmt(
         footnote_plan = footnote_plan(
@@ -321,14 +332,16 @@ test_that("json footnote plan", {
             marks = "standard"
         )
     )
-    fn_simp %>%
-        as_json() %>%
-        expect_snapshot()
 
-    fn_simp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(fn_simp, ignore_attr = TRUE)
+    expect_snapshot(as_json(fn_simp))
+
+    expect_equal(
+        fn_simp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        fn_simp,
+        ignore_attr = TRUE
+    )
 
     # multiple columns
     fn_cols <- tfrmt(
@@ -342,14 +355,16 @@ test_that("json footnote plan", {
             marks = "numbers"
         )
     )
-    fn_cols %>%
-        as_json() %>%
-        expect_snapshot()
 
-    fn_cols %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(fn_cols, ignore_attr = TRUE)
+    expect_snapshot(as_json(fn_cols))
+
+    expect_equal(
+        fn_cols %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        fn_cols,
+        ignore_attr = TRUE
+    )
 
     # group and labels
     gl_fn <- tfrmt(
@@ -361,13 +376,15 @@ test_that("json footnote plan", {
             )
         )
     )
-    gl_fn %>%
-        as_json() %>%
-        expect_snapshot()
-    gl_fn %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_identical(gl_fn)
+
+    expect_snapshot(as_json(gl_fn))
+
+    expect_identical(
+        gl_fn %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        gl_fn
+    )
 
     # Nest columns
     nested_fn <- tfrmt(
@@ -381,53 +398,67 @@ test_that("json footnote plan", {
             )
         )
     )
-    nested_fn %>%
-        as_json() %>%
-        expect_snapshot()
-    nested_fn %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(nested_fn, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(nested_fn))
+
+    expect_equal(
+        nested_fn %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        nested_fn,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("json col_plan", {
-    #Basic test
+    # Basic test
     cp <- tfrmt(col_plan = col_plan(col1, col2, col3))
-    cp %>%
-        as_json() %>%
-        expect_snapshot()
 
-    cp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(cp, ignore_attr = TRUE)
+    expect_snapshot(as_json(cp))
+
+    expect_equal(
+        cp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        cp,
+        ignore_attr = TRUE
+    )
 
     #Basic renaming
-    rename <- tfrmt(col_plan = col_plan("foo" = col1, col2, col3))
+    rename <- tfrmt(
+        col_plan = col_plan(
+            "foo" = col1,
+            col2,
+            col3
+        )
+    )
 
-    rename %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(rename))
 
-    rename %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(rename, ignore_attr = TRUE)
+    expect_equal(
+        rename %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        rename,
+        ignore_attr = TRUE
+    )
 
-    #Basic tidyselect
+    # Basic tidyselect
     base_ts <- tfrmt(
         col_plan = col_plan(
             starts_with("col")
         )
     )
-    base_ts %>%
-        as_json() %>%
-        expect_snapshot()
 
-    base_ts %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(base_ts, ignore_attr = ".Environment")
+    expect_snapshot(as_json(base_ts))
+
+    expect_equal(
+        base_ts %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        base_ts,
+        ignore_attr = ".Environment"
+    )
 
     #Basic span structure
     span <- tfrmt(
@@ -439,14 +470,15 @@ test_that("json col_plan", {
         )
     )
 
-    span %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(span))
 
-    span %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(span, ignore_attr = TRUE)
+    expect_equal(
+        span %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        span,
+        ignore_attr = TRUE
+    )
 
     # Span structure test
     span_tfrmt <- tfrmt(
@@ -484,14 +516,16 @@ test_that("json col_plan", {
             -mycol5
         )
     )
-    span_tfrmt %>%
-        as_json() %>%
-        expect_snapshot()
 
-    span_tfrmt %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(span_tfrmt, ignore_attr = TRUE)
+    expect_snapshot(as_json(span_tfrmt))
+
+    expect_equal(
+        span_tfrmt %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        span_tfrmt,
+        ignore_attr = TRUE
+    )
 })
 
 #col_style_plan
@@ -520,13 +554,16 @@ test_that("json col_style_plan", {
             )
         )
     )
-    csp %>%
-        as_json() %>%
-        expect_snapshot()
-    csp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(csp, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(csp))
+
+    expect_equal(
+        csp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        csp,
+        ignore_attr = TRUE
+    )
 
     csp_spaces <- tfrmt(
         col_style_plan = col_style_plan(
@@ -537,13 +574,16 @@ test_that("json col_style_plan", {
             )
         )
     )
-    csp_spaces %>%
-        as_json() %>%
-        expect_snapshot()
-    csp_spaces %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(csp_spaces, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(csp_spaces))
+
+    expect_equal(
+        csp_spaces %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        csp_spaces,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("json page plan", {
@@ -560,28 +600,31 @@ test_that("json page plan", {
         )
     )
 
-    expect_snapshot(
-        as_json(pp)
-    )
+    expect_snapshot(as_json(pp))
 
-    pp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(pp, ignore_attr = TRUE)
+    expect_equal(
+        pp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        pp,
+        ignore_attr = TRUE
+    )
 
     pp_max_rows <- tfrmt(
         page_plan = page_plan(
             max_rows = 5
         )
     )
-    pp_max_rows %>%
-        as_json() %>%
-        expect_snapshot()
 
-    pp_max_rows %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(pp_max_rows, ignore_attr = TRUE)
+    expect_snapshot(as_json(pp_max_rows))
+
+    expect_equal(
+        pp_max_rows %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        pp_max_rows,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("page_plan() roundtrip to JSON with transform", {
@@ -598,9 +641,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
         )
     )
 
-    expect_snapshot(
-        as_json(page_plan_lambda)
-    )
+    expect_snapshot(as_json(page_plan_lambda))
 
     page_plan_lambda_from_json <- page_plan_lambda |>
         as_json() |>
@@ -645,9 +686,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
         )
     )
 
-    expect_snapshot(
-        as_json(page_plan_function)
-    )
+    expect_snapshot(as_json(page_plan_function))
 
     page_plan_function_from_json <- page_plan_function |>
         as_json() |>
