@@ -218,7 +218,7 @@ check_span_structure_values <- function(
     call = rlang::caller_env()
 ) {
     is_empty_entry <- function(e) {
-        length(e) == 0
+      length(e) == 0 || all(vapply(e, is.null, logical(1)))
     }
 
     empty_entries <- names(x)[sapply(x, is_empty_entry)]
