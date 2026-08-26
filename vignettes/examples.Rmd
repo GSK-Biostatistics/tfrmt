@@ -789,7 +789,7 @@ tfrmt(
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            ).
+            ),
             label_val = "Median (Range)"
         ),
         frmt_structure(
