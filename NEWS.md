@@ -7,7 +7,7 @@
 
 ## Bug fixes
 * Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
-* `span_structure()` now gives a clear error when called with no arguments, rather than a confusing "must be named" message (#639).
+* `span_structure()` now gives a clear error when called with no arguments (#639).
 
 
 # tfrmt 0.4.0
