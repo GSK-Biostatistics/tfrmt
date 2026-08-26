@@ -168,7 +168,7 @@ bign <- tfrmt(
                 sd = frmt("x.xx")
             ),
             group_val = "Age (y)",
-            label_val = "Mean (SD)",
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
             frmt("xx"),
