@@ -51,11 +51,11 @@ test_that("json row group plans", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = c("A", "C"),
-                element_block(post_space = "---")
+                element_block = element_block(post_space = "---")
             ),
             row_grp_structure(
                 group_val = "B",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(
                 location = "column"
@@ -79,7 +79,7 @@ test_that("json row group plans", {
                     grp1 = "A",
                     grp2 = "b"
                 ),
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             ),
@@ -802,7 +802,7 @@ test_that("json read/write", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
