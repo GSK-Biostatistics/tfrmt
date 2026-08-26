@@ -1,0 +1,63 @@
+[
+	{
+		"text": "Latest",
+		"version": "0.1.3",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/"
+	},
+	{
+		"text": "Development",
+		"version": "0.1.3.9000",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/dev/",
+		"banner": {
+			"html": "This is the development version of {tfrmt}. View the <a>latest release</a>.",
+			"class": "alert-warning"
+		}
+	},
+	"---",
+	"Releases",
+	{
+		"text": "v0.1.2",
+		"version": "0.1.2",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/v0.1.2/",
+		"banner": {
+			"html": "A <a>newer version of {tfrmt}</a> is available!",
+			"class": "alert-info"
+		}
+	},
+	{
+		"text": "v0.1.1",
+		"version": "0.1.1",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/v0.1.1/",
+		"banner": {
+			"html": "A <a>newer version of {tfrmt}</a> is available!",
+			"class": "alert-info"
+		}
+	},
+		{
+		"text": "v0.1.0",
+		"version": "0.1.0",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/v0.1.0/",
+		"banner": {
+			"html": "A <a>newer version of {tfrmt}</a> is available!",
+			"class": "alert-info"
+		}
+	},
+		{
+		"text": "v0.0.3",
+		"version": "0.0.3",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/v0.0.3/",
+		"banner": {
+			"html": "A <a>newer version of {tfrmt}</a> is available!",
+			"class": "alert-info"
+		}
+	},
+		{
+		"text": "v0.0.2",
+		"version": "0.0.2",
+		"url": "https://gsk-biostatistics.github.io/tfrmt/v0.0.2/",
+		"banner": {
+			"html": "A <a>newer version of {tfrmt}</a> is available!",
+			"class": "alert-info"
+		}
+	}
+]
