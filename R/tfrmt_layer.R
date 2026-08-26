@@ -167,7 +167,7 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #'             frmt("XXX"),
 #'             group_val = list(
 #'                 group2 = "value"
-#'             ),
+#'             )
 #'         ),
 #'         frmt_structure(
 #'             frmt("XXX"),

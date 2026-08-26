@@ -28,7 +28,7 @@ tfrmt_spec <- tfrmt(
             frmt("XXX"),
             group_val = list(
                 group2 = "value"
-            ),
+            )
         ),
         frmt_structure(
             frmt("XXX"),
