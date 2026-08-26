@@ -86,6 +86,31 @@
 <label><input type="checkbox">revisit <code>is_valid_()</code> functionality</label>
 <ul class="task-list"><li><label><input type="checkbox">the constructor should always produce a valid object</label></li>
 </ul></li>
+<li><label><input type="checkbox">some <code>is_()</code> functions should probably not be user facing (i.e. exported), such as: <code><a href="reference/frmt_utils.html">is_frmt_structure()</a></code>, <code><a href="reference/frmt_utils.html">is_frmt()</a></code>, <code><a href="reference/frmt_utils.html">is_frmt_combine()</a></code>, <code><a href="reference/frmt_utils.html">is_frmt_when()</a></code>, <code><a href="reference/frmt_utils.html">is_row_grp_structure()</a></code>.</label></li>
+<li>
+<label><input type="checkbox">improve messaging (to discuss):</label>
+<ul class="task-list"><li>
+<label><input type="checkbox">messages should be aware of the context (errors and warnings should surface from the functions directly called by the users)</label>
+<ul><li>no <code>call = NULL</code>, but rather <code>call = rlang::caller_env()</code>
+</li>
+</ul></li>
+<li><label><input type="checkbox">improve multi-row cli messages (by adding bullet points)</label></li>
+<li><label><input type="checkbox">use inline formatting</label></li>
+<li><label><input type="checkbox">wrap lines to 80 characters</label></li>
+<li><label><input type="checkbox">revisit / add <code>is_()</code> and <code>check_()</code> functions for the tfrmt classes</label></li>
+<li>
+<label><input type="checkbox">implement existing rlang checks, for example:</label>
+<ul><li>
+<code>check_logical()</code> in <code><a href="reference/display_row_frmts.html">display_row_frmts()</a></code> instead of having a conditional statement and the very bottom of the function body</li>
+<li>
+<code>check_whole_number()</code> for width in <code><a href="reference/theme_element.html">col_style_structure()</a></code>. Do we want to continue supporting <code>width</code> as character in <code><a href="reference/theme_element.html">col_style_structure()</a></code>?</li>
+</ul></li>
+<li>
+<label><input type="checkbox">decide on a consistent approach to:</label>
+<ul><li>classing the message</li>
+<li>including or not including context</li>
+</ul></li>
+</ul></li>
 <li><label><input type="checkbox">functions should check their inputs. If the function is not user facing, then it should report the error / condition from the calling function. For example, <code>apply_tfrmt()</code> should have a <code>call = rlang::caller_env()</code> argument.</label></li>
 <li>
 <label><input type="checkbox">all user-facing functions should check all their inputs before doing any work.</label>
@@ -111,7 +136,7 @@
 <div class="section level1">
 <h1 id="done-">Done ✓<a class="anchor" aria-label="anchor" href="#done-"></a></h1>
 <ul class="task-list"><li><label><input type="checkbox" checked>use namespaced calls @dragosmg</label></li>
-<li><label><input type="checkbox" checked><del>This task has been declined</del> (declined)</label></li>
+<li><label><input type="checkbox" checked><del>This is an example of a declined task</del> (declined)</label></li>
 </ul></div>
 
 
