@@ -195,6 +195,12 @@ check_span_structure_dots <- function(x) {
                         )
                     }
                 } else if (is.character(x)) {
+                    if (!nzchar(x)) {
+                        rlang::abort(
+                            "Empty string values are not allowed in span_structure().",
+                            call = rlang::caller_call()
+                        )
+                    }
                     return(as_length_one_quo.character(x)) # nolint: return_linter
                 } else {
                     rlang::abort(
@@ -204,6 +210,17 @@ check_span_structure_dots <- function(x) {
                 }
             })
         )
+
+    empty_entries <- names(x_dots)[sapply(x_dots, function(e) length(e) == 0)]
+    if (length(empty_entries) > 0) {
+        rlang::abort(
+            paste0(
+                "The following span_structure() arguments have no column values: ",
+                paste0("`", empty_entries, "`", collapse = ", ")
+            ),
+            call = rlang::caller_call()
+        )
+    }
 
     x_dots[!sapply(x_dots, is.null)]
 }

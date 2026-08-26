@@ -1575,6 +1575,20 @@ test_that("span_structure misc, including errors", {
         "Invalid entry: `matrix()`\nOnly selection helpers (See <https://tidyselect.r-lib.org/reference>),",
         fixed = TRUE
     )
+
+    ## empty string column value
+    expect_error(
+        span_structure(col1 = "", col2 = vars(A, B)),
+        "Empty string values are not allowed in span_structure().",
+        fixed = TRUE
+    )
+
+    ## empty c() column value
+    expect_error(
+        span_structure(col1 = "Test Label", col2 = c()),
+        "The following span_structure() arguments have no column values: `col2`",
+        fixed = TRUE
+    )
 })
 
 
