@@ -64,7 +64,9 @@ is_frmt_structure(x3)
 
 x4 <- row_grp_structure(
     group_val = c("A","C"),
-    element_block(post_space = "---")
+    element_block = element_block(
+        post_space = "---"
+    )
 )
 
 is_row_grp_structure(x4)
