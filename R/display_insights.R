@@ -220,7 +220,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #'         ),
 #'         frmt_structure(
 #'             frmt("xxx"),
-#'             label_val = "n",
+#'             label_val = "n"
 #'         ),
 #'         frmt_structure(
 #'             frmt("xxx.x"),

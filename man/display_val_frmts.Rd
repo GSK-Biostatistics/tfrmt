@@ -44,7 +44,7 @@ tf_spec <- tfrmt(
         ),
         frmt_structure(
             frmt("xxx"),
-            label_val = "n",
+            label_val = "n"
         ),
         frmt_structure(
             frmt("xxx.x"),
