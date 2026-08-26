@@ -30,17 +30,15 @@ tfrmt_spec <- tfrmt(
     label = label,
     column = column,
     param = param,
-    value=value,
+    value = value,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "\{count\} \{percent\}",
                 count = frmt("xxx"),
                 percent = frmt_when(
-                    "==100"~ frmt(""),
-                    "==0"~ "",
+                    "==100" ~ frmt(""),
+                    "==0" ~ "",
                     "TRUE" ~ frmt("(xx.x\%)")
                 )
             )

@@ -56,7 +56,8 @@ footnote_plan <- function(
 #'
 #' @param footnote_text string with text for footnote
 #' @param column_val string or a named list of strings which represent the column to apply the footnote to
-#' @param group_val string or a named list of strings which represent the value of group to apply the footnote to
+#' @param group_val string or a named list of strings which represent the value
+#'   of group to apply the footnote to
 #' @param label_val string which represents the value of label to apply the footnote to
 #'
 #' @return footnote structure object
@@ -73,7 +74,7 @@ footnote_plan <- function(
 #'     column_val = "Placebo"
 #' )
 #'
-#' # Adds a footnote to either 'Placebo' or 'Treatment groups' depending on which
+#' # Adds a footnote to either 'Placebo' or 'Treatment groups' depending on
 #' # which is last to appear in the column vector
 #' footnote_structure <- footnote_structure(
 #'     footnote_text = "Text",
@@ -84,7 +85,11 @@ footnote_plan <- function(
 #' )
 #'
 #' # Adds a footnote to the 'Adverse Event' label
-#' footnote_structure <- footnote_structure("Text", label_val = "Adverse Event")
+#' footnote_structure <- footnote_structure(
+#'     "Text",
+#'     label_val = "Adverse Event"
+#' )
+#'
 footnote_structure <- function(
     footnote_text,
     column_val = NULL,

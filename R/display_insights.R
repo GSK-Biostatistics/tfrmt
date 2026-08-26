@@ -68,8 +68,6 @@ match_frmt_to_rows <- function(.data, table_frmt_plan, group, label, param) {
 #'     value = value,
 #'     body_plan = body_plan(
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = ".default",
 #'             frmt_combine(
 #'                 "{count} {percent}",
 #'                 count = frmt("xxx"),
@@ -214,8 +212,6 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #'     sorting_cols = c(ord1, ord2),
 #'     body_plan = body_plan(
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = ".default",
 #'             frmt_combine(
 #'                 "{n} ({pct} %)",
 #'                 n = frmt("xxx"),
@@ -223,23 +219,18 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
 #'             )
 #'         ),
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = "n",
-#'             frmt("xxx")
+#'             frmt("xxx"),
+#'             label_val = "n"
 #'         ),
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = c("Mean", "Median", "Min","Max"),
-#'             frmt("xxx.x")
+#'             frmt("xxx.x"),
+#'             label_val = c("Mean", "Median", "Min","Max")
 #'         ),
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = "SD",
-#'             frmt("xxx.xx")
+#'             frmt("xxx.xx"),
+#'             label_val = "SD"
 #'         ),
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = ".default",
 #'             p = frmt_when(
 #'                 ">0.99" ~ ">0.99",
 #'                 "<0.15" ~ "<0.15",

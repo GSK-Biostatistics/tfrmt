@@ -1,6 +1,8 @@
 # tfrmt (development version)
 
 ## Improvements
+
+* The argument order for `frmt_structure()` has changed, with the ellipsis (`...`) now being in the first position. Users no longer need to explicitly pass `group_val = ".default"` and `label_val = ".default"`. (#501, @dragosmg)
 * Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
 * `footnote_structure()` now returns its elements in the same order as its arguments (`footnote_text`, `column_val`, `group_val`, `label_val`) (#589).
 * Add markdown processing of `title`, `subtitle`, and `source_note` (#664).
