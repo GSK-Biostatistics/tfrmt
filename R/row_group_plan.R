@@ -1,8 +1,8 @@
 #' Row Group Plan
 #'
-#' Define the look of the table groups on the output. This function allows you to
-#' add spaces after blocks and allows you to control how the groups are viewed
-#' whether they span the entire table or are nested as a column.
+#' Define the look of the table groups on the output. This function allows you
+#' to add spaces after blocks and allows you to control how the groups are
+#' viewed whether they span the entire table or are nested as a column.
 #'
 #' @seealso [row_grp_structure()] for more details on how to specify row group
 #'   structures, [element_block()] for more details on how to specify spacing
@@ -14,26 +14,42 @@
 #' @param ...  Row group structure objects separated by commas
 #' @param label_loc [element_row_grp_loc()] object specifying location
 #'
-#'
 #' @return row_grp_plan object
+#'
+#' @export
 #'
 #' @examples
 #'
+#' # single grouping variable example
+#' sample_grp_plan <- row_grp_plan(
+#'     row_grp_structure(
+#'         group_val = c("A","C"),
+#'         element_block(post_space = "---")
+#'     ),
+#'     row_grp_structure(
+#'         group_val = c("B"),
+#'         element_block(post_space = " ")
+#'     ),
+#'     label_loc = element_row_grp_loc(
+#'         location = "column"
+#'     )
+#' )
 #'
-#'   ## single grouping variable example
-#'   sample_grp_plan <- row_grp_plan(
-#'     row_grp_structure(group_val = c("A","C"), element_block(post_space = "---")),
-#'     row_grp_structure(group_val = c("B"), element_block(post_space = " ")),
-#'     label_loc = element_row_grp_loc(location = "column")
-#'   )
-#'
-#'   ## example with multiple grouping variables
-#'   sample_grp_plan <- row_grp_plan(
-#'      row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " ")),
-#'      label_loc = element_row_grp_loc(location = "spanning")
-#'      )
-#'
-#' @export
+#' # example with multiple grouping variables
+#' sample_grp_plan <- row_grp_plan(
+#'     row_grp_structure(
+#'         group_val = list(
+#'             grp1 = "A",
+#'             grp2 = "b"
+#'         ),
+#'         element_block(
+#'             post_space = " "
+#'         )
+#'     ),
+#'     label_loc = element_row_grp_loc(
+#'         location = "spanning"
+#'     )
+#' )
 #'
 row_grp_plan <- function(
     ...,
@@ -67,19 +83,32 @@ row_grp_plan <- function(
 #' @param element_block element_block() object to define the block styling
 #'
 #' @returns row_grp_structure object
+#'
 #' @export
+#'
 #' @examples
 #'
-#' ## single grouping variable example
-#' row_grp_structure(group_val = c("A","C"), element_block(post_space = "---"))
+#' # single grouping variable example
+#' row_grp_structure(
+#'     group_val = c("A","C"),
+#'     element_block = element_block(
+#'         post_space = "---"
+#'     )
+#' )
 #'
-#' ## example with multiple grouping variables
-#' row_grp_structure(group_val = list(grp1 = "A", grp2 = "b"), element_block(post_space = " "))
+#' # example with multiple grouping variables
+#' row_grp_structure(
+#'     group_val = list(
+#'         grp1 = "A",
+#'         grp2 = "b"
+#'     ),
+#'     element_block = element_block(
+#'         post_space = " "
+#'     )
+#' )
 #'
 row_grp_structure <- function(group_val = ".default", element_block) {
-    if (!is_element_block(element_block)) {
-        stop("element_block, must be an element_block type")
-    }
+    check_element_block(element_block)
 
     if (is.list(group_val)) {
         group_val_names <- names(group_val)

@@ -703,7 +703,11 @@ test_that("frmt_combine only applies when all parameters are in the data", {
     test_combo <- frmt_structure(
         group_val = ".default",
         label_val = ".default",
-        frmt_combine("{n} ({pct}%)", n = frmt("XX"), pct = frmt("x.x"))
+        frmt_combine(
+            "{n} ({pct}%)",
+            n = frmt("XX"),
+            pct = frmt("x.x")
+        )
     )
 
     rows_to_use <- fmt_test_data(
@@ -814,9 +818,13 @@ test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows"
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block(
+                    post_space = " "
+                )
             ),
-            label_loc = element_row_grp_loc(location = "indented")
+            label_loc = element_row_grp_loc(
+                location = "indented"
+            )
         ),
         col_plan = col_plan(grp, lbl, trt1, trt2)
     )

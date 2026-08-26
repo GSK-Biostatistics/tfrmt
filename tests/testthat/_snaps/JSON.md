@@ -240,7 +240,7 @@
 ---
 
     Code
-      .
+      as_json(frmt_comb_simp)
     Output
       {
         "group": [],
@@ -282,7 +282,7 @@
 ---
 
     Code
-      .
+      as_json(sci)
     Output
       {
         "group": [],
@@ -308,7 +308,7 @@
 ---
 
     Code
-      .
+      as_json(complex_frmt)
     Output
       {
         "group": [],
@@ -418,7 +418,7 @@
 # json big n
 
     Code
-      .
+      as_json(big_n)
     Output
       {
         "group": [],
@@ -441,7 +441,7 @@
 # json footnote plan
 
     Code
-      .
+      as_json(fn_simp)
     Output
       {
         "group": [],
@@ -472,7 +472,7 @@
 ---
 
     Code
-      .
+      as_json(fn_cols)
     Output
       {
         "group": [],
@@ -499,7 +499,7 @@
 ---
 
     Code
-      .
+      as_json(gl_fn)
     Output
       {
         "group": [],
@@ -524,7 +524,7 @@
 ---
 
     Code
-      .
+      as_json(nested_fn)
     Output
       {
         "group": [],
@@ -552,7 +552,7 @@
 # json col_plan
 
     Code
-      .
+      as_json(cp)
     Output
       {
         "group": [],
@@ -575,7 +575,7 @@
 ---
 
     Code
-      .
+      as_json(rename)
     Output
       {
         "group": [],
@@ -598,7 +598,7 @@
 ---
 
     Code
-      .
+      as_json(base_ts)
     Output
       {
         "group": [],
@@ -619,7 +619,7 @@
 ---
 
     Code
-      .
+      as_json(span)
     Output
       {
         "group": [],
@@ -644,7 +644,7 @@
 ---
 
     Code
-      .
+      as_json(span_tfrmt)
     Output
       {
         "group": [],
@@ -706,7 +706,7 @@
 # json col_style_plan
 
     Code
-      .
+      as_json(csp)
     Output
       {
         "group": [],
@@ -759,7 +759,7 @@
 ---
 
     Code
-      .
+      as_json(csp_spaces)
     Output
       {
         "group": [],
@@ -810,7 +810,7 @@
 ---
 
     Code
-      .
+      as_json(pp_max_rows)
     Output
       {
         "group": [],

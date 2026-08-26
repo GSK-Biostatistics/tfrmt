@@ -266,7 +266,10 @@ ls_to_row_grp_plan <- function(ls) {
                 }
                 do.call(
                     row_grp_structure,
-                    list(group_val = group_val, element_block = el_block)
+                    list(
+                        group_val = group_val,
+                        element_block = el_block
+                    )
                 )
             })
 
