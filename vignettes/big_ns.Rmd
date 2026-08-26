@@ -34,30 +34,10 @@ data <- tibble::tibble(
         c(6, 3, 3, 3, 3, 3, 3)
     ),
     Value = c(
-        15,
-        13,
-        28,
-        14,
-        13,
-        27,
-        73.56,
-        74.231,
-        71.84,
-        9.347,
-        7.234,
-        8.293,
-        8,
-        7,
-        15,
-        8 / 14,
-        7 / 13,
-        15 / 27,
-        6,
-        6,
-        12,
-        6 / 14,
-        6 / 13,
-        12 / 27
+        15, 13, 28, 14, 13, 27,
+        73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
+        8, 7, 15, 8 / 14, 7 / 13, 15 / 27,
+        6, 6, 12, 6 / 14, 6 / 13, 12 / 27
     )
 ) |>
     # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
@@ -101,7 +81,10 @@ tfrmt(
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("X"),
-                pct = frmt("(xx.x%)", missing = " ")
+                pct = frmt(
+                    "(xx.x%)",
+                    missing = " "
+                )
             )
         ),
         frmt_structure(
@@ -119,11 +102,17 @@ tfrmt(
             frmt("xx")
         )
     ),
-    col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
+    col_plan = col_plan(
+        everything(),
+        -starts_with("ord"),
+        "Total"
+    ),
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         )
     ),
     big_n = big_n_structure(
@@ -179,7 +168,7 @@ spanning_tfrmt <- tfrmt(
 print_to_gt(spanning_tfrmt, data)
 ```
 
- If we just want to put the big N on the highest "column cols", we need to add a row to the ARD where `span2` equals `"column cols"` and all other `column` columns are missing.
+If we just want to put the big N on the highest "column cols", we need to add a row to the ARD where `span2` equals `"column cols"` and all other `column` columns are missing.
 ```{r}
 with_big_n_data <- tibble::tribble(
     ~group , ~label , ~span2        , ~span1 , ~my_col , ~parm  , ~val ,

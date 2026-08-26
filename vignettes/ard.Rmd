@@ -9,8 +9,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -45,7 +45,7 @@ Required columns are as follows:
 
 -   **Label column**: A single column containing row label values.
 
--   **Column value columns**: One or more columns containing the values defining each column in your table. These are essentially additional grouping variables. 
+-   **Column value columns**: One or more columns containing the values defining each column in your table. These are essentially additional grouping variables.
 
 -   **Param column**: A single column that labels distinct types of values.
 
