@@ -45,51 +45,61 @@ The output tfrmt generates a table with the subset `data_labs`.
 ``` r
 
 data_labs_subset <- data_labs |>
-  dplyr::filter(
-    group2 %in% c("ALANINE AMINOTRANSFERASE", "ALBUMIN", "ALKALINE PHOSPHATASE", "ASPARTATE AMINOTRANSFERASE", "BASOPHILS"),
-    rowlbl %in% c("Bsln", "End[1]")
-  )
+    dplyr::filter(
+        group2 %in%
+            c(
+                "ALANINE AMINOTRANSFERASE",
+                "ALBUMIN",
+                "ALKALINE PHOSPHATASE",
+                "ASPARTATE AMINOTRANSFERASE",
+                "BASOPHILS"
+            ),
+        rowlbl %in% c("Bsln", "End[1]")
+    )
 
 data_input <- tibble::tribble(
-  ~group1, ~group2, ~sigdig,
-  "CHEMISTRY", ".default", 3,
-  "CHEMISTRY", "ALBUMIN", 1,
-  "CHEMISTRY", "CALCIUM", 1,
-  ".default", ".default", 2
+    ~group1     , ~group2    , ~sigdig ,
+    "CHEMISTRY" , ".default" ,       3 ,
+    "CHEMISTRY" , "ALBUMIN"  ,       1 ,
+    "CHEMISTRY" , "CALCIUM"  ,       1 ,
+    ".default"  , ".default" ,       2
 )
 
 
 labs_tfrmt_template <- tfrmt_sigdig(
-  sigdig_df = data_input,
-  group = vars(group1, group2),
-  label = rowlbl,
-  param_defaults = param_set("[{n}]" = NA)
+    sigdig_df = data_input,
+    group = vars(group1, group2),
+    label = rowlbl,
+    param_defaults = param_set("[{n}]" = NA)
 )
 
 labs_tfrmt <- labs_tfrmt_template |>
-  tfrmt(
-    column = vars(col1, col2),
-    param = param,
-    value = value,
-    sorting_cols = vars(ord1, ord2, ord3),
-    row_grp_plan = row_grp_plan(
-      label_loc = element_row_grp_loc(location = "indent")
-    ),
-    col_plan = col_plan(
-      group1, group2,
-      rowlbl,
-      "Residuals" = res,
-      "Change From Baseline" = cbl,
-      n,
-      -starts_with("ord")
+    tfrmt(
+        column = vars(col1, col2),
+        param = param,
+        value = value,
+        sorting_cols = vars(ord1, ord2, ord3),
+        row_grp_plan = row_grp_plan(
+            label_loc = element_row_grp_loc(
+                location = "indent"
+            )
+        ),
+        col_plan = col_plan(
+            group1,
+            group2,
+            rowlbl,
+            "Residuals" = res,
+            "Change From Baseline" = cbl,
+            n,
+            -starts_with("ord")
+        )
     )
-  )
 
 labs_tfrmt |>
-  print_to_gt(data_labs_subset) |>
-  gt::tab_options(
-    container.width = 1000
-  )
+    print_to_gt(data_labs_subset) |>
+    gt::tab_options(
+        container.width = 1000
+    )
 ```
 
 [TABLE]
@@ -118,30 +128,31 @@ different naming convention than expected.
 
 ## provided data had different column names for groups
 alternate_data_labs_subset <- data_labs_subset |>
-  dplyr::rename(
-    `Lab Type` = group1,
-    `Lab Test` = group2,
-  )
+    dplyr::rename(
+        `Lab Type` = group1,
+        `Lab Test` = group2,
+    )
 
 labs_tfrmt |>
-  update_group(
-    `Lab Type` = group1,
-    `Lab Test` = group2,
-  ) |>
-  tfrmt(
-    col_plan = col_plan(
-      `Lab Type`, `Lab Test`,
-      rowlbl,
-      "Residuals" = res,
-      "Change From Baseline" = cbl,
-      n,
-      -starts_with("ord")
+    update_group(
+        `Lab Type` = group1,
+        `Lab Test` = group2,
+    ) |>
+    tfrmt(
+        col_plan = col_plan(
+            `Lab Type`,
+            `Lab Test`,
+            rowlbl,
+            "Residuals" = res,
+            "Change From Baseline" = cbl,
+            n,
+            -starts_with("ord")
+        )
+    ) |>
+    print_to_gt(alternate_data_labs_subset) |>
+    gt::tab_options(
+        container.width = 1000
     )
-  ) |>
-  print_to_gt(alternate_data_labs_subset) |>
-  gt::tab_options(
-    container.width = 1000
-  )
 ```
 
 [TABLE]

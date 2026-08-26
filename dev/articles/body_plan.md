@@ -149,25 +149,43 @@ needed to cover all values:
 ``` r
 
 body_plan(
-  frmt_structure(
-    group_val = ".default", label_val = ".default",
-    frmt_combine("{n} {pct}",
-      n = frmt("XXX"),
-      pct = frmt_when(
-        "==100" ~ "",
-        "==0" ~ "",
-        TRUE ~ frmt("(XX.X %)")
-      )
+    frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        frmt_combine(
+            "{n} {pct}",
+            n = frmt("XXX"),
+            pct = frmt_when(
+                "==100" ~ "",
+                "==0" ~ "",
+                TRUE ~ frmt("(XX.X %)")
+            )
+        )
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = "n",
+        frmt("xxx")
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = c("Mean", "Median", "Min", "Max"),
+        frmt("xxx.x")
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = "SD",
+        frmt("xxx.xx")
+    ),
+    frmt_structure(
+        group_val = ".default",
+        label_val = ".default",
+        p = frmt_when(
+            ">0.99" ~ ">0.99",
+            "<0.001" ~ "<0.001",
+            TRUE ~ frmt("x.xxx", missing = "")
+        )
     )
-  ),
-  frmt_structure(group_val = ".default", label_val = "n", frmt("xxx")),
-  frmt_structure(group_val = ".default", label_val = c("Mean", "Median", "Min", "Max"), frmt("xxx.x")),
-  frmt_structure(group_val = ".default", label_val = "SD", frmt("xxx.xx")),
-  frmt_structure(group_val = ".default", label_val = ".default", p = frmt_when(
-    ">0.99" ~ ">0.99",
-    "<0.001" ~ "<0.001",
-    TRUE ~ frmt("x.xxx", missing = "")
-  ))
 )
 ```
 

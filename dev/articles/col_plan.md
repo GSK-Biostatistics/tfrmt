@@ -24,22 +24,22 @@ which includes a single `column` variable:
 ``` r
 
 dat <- tibble::tribble(
-  ~group , ~label      , ~my_col  , ~parm   , ~val ,
-  "g1"   , "rowlabel1" , "col1"   , "value" ,    1 ,
-  "g1"   , "rowlabel1" , "col2"   , "value" ,    1 ,
-  "g1"   , "rowlabel1" , "mycol3" , "value" ,    1 ,
-  "g1"   , "rowlabel1" , "col4"   , "value" ,    1 ,
-  "g1"   , "rowlabel1" , "mycol5" , "value" ,    1 ,
-  "g1"   , "rowlabel2" , "col1"   , "value" ,    2 ,
-  "g1"   , "rowlabel2" , "col2"   , "value" ,    2 ,
-  "g1"   , "rowlabel2" , "mycol3" , "value" ,    2 ,
-  "g1"   , "rowlabel2" , "col4"   , "value" ,    2 ,
-  "g1"   , "rowlabel2" , "mycol5" , "value" ,    2 ,
-  "g2"   , "rowlabel3" , "col1"   , "value" ,    3 ,
-  "g2"   , "rowlabel3" , "col2"   , "value" ,    3 ,
-  "g2"   , "rowlabel3" , "mycol3" , "value" ,    3 ,
-  "g2"   , "rowlabel3" , "col4"   , "value" ,    3 ,
-  "g2"   , "rowlabel3" , "mycol5" , "value" ,    3
+    ~group , ~label      , ~my_col  , ~parm   , ~val ,
+    "g1"   , "rowlabel1" , "col1"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "col2"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "mycol3" , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "col4"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "mycol5" , "value" ,    1 ,
+    "g1"   , "rowlabel2" , "col1"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "col2"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "mycol3" , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "col4"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "mycol5" , "value" ,    2 ,
+    "g2"   , "rowlabel3" , "col1"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "col2"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "mycol3" , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "col4"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "mycol5" , "value" ,    3
 )
 ```
 
@@ -48,16 +48,20 @@ This is what this data looks like formatted as a basic table.
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = my_col,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = my_col,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -73,19 +77,23 @@ If we want to remove one of the columns we specify within a `col_plan`:
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = my_col,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    -mycol5
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = my_col,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        -mycol5
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -98,26 +106,30 @@ if we’d like:
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = my_col,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    # reordering
-    group,
-    label,
-    starts_with("col"),
-    # renaming
-    new_col_3 = mycol3,
-    # removing
-    -mycol5
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = my_col,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        # reordering
+        group,
+        label,
+        starts_with("col"),
+        # renaming
+        new_col_3 = mycol3,
+        # removing
+        -mycol5
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -130,23 +142,27 @@ plan. This allows for reordering/moving a column to the end very easily.
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = my_col,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    group,
-    label,
-    starts_with("col"),
-    everything(),
-    col1 # moved to end
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = my_col,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        starts_with("col"),
+        everything(),
+        col1 # moved to end
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -162,26 +178,32 @@ renamed.
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = my_col,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  col_plan = col_plan(
-    my_grp = group, # rename group
-    my_lbl = label, # rename label
-    starts_with("col"),
-    everything(),
-    col1
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = my_col,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
+    ),
+    col_plan = col_plan(
+        my_grp = group, # rename group
+        my_lbl = label, # rename label
+        starts_with("col"),
+        everything(),
+        col1
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 | my_grp | my_lbl    | col2 | col4 | mycol3 | mycol5 | col1 |
@@ -198,23 +220,27 @@ level group name available.
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = my_col,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    my_grp = group, # rename group
-    label,
-    starts_with("col"),
-    everything(),
-    col1
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = my_col,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        my_grp = group, # rename group
+        label,
+        starts_with("col"),
+        everything(),
+        col1
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -235,22 +261,22 @@ indicate there should be no spanning over those values.
 ``` r
 
 dat <- tibble::tribble(
-  ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
-  "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
-  "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col2"   , "value" ,    1 ,
-  "g1"   , "rowlabel1" , NA            , NA         , "mycol3" , "value" ,    1 ,
-  "g1"   , "rowlabel1" , "column cols" , "col 4"    , "col4"   , "value" ,    1 ,
-  "g1"   , "rowlabel1" , NA            , NA         , "mycol5" , "value" ,    1 ,
-  "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col1"   , "value" ,    2 ,
-  "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col2"   , "value" ,    2 ,
-  "g1"   , "rowlabel2" , NA            , NA         , "mycol3" , "value" ,    2 ,
-  "g1"   , "rowlabel2" , "column cols" , "col 4"    , "col4"   , "value" ,    2 ,
-  "g1"   , "rowlabel2" , NA            , NA         , "mycol5" , "value" ,    2 ,
-  "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col1"   , "value" ,    3 ,
-  "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col2"   , "value" ,    3 ,
-  "g2"   , "rowlabel3" , NA            , NA         , "mycol3" , "value" ,    3 ,
-  "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
-  "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
+    ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
+    "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col2"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , NA            , NA         , "mycol3" , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "column cols" , "col 4"    , "col4"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , NA            , NA         , "mycol5" , "value" ,    1 ,
+    "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col1"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col2"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , NA            , NA         , "mycol3" , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "column cols" , "col 4"    , "col4"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , NA            , NA         , "mycol5" , "value" ,    2 ,
+    "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col1"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col2"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , NA            , NA         , "mycol3" , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
 )
 ```
 
@@ -264,24 +290,28 @@ that start with “col” together, as well as rename `mycol3` and drop
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  # specify spanner columns and unique column from data
-  column = c(span2, span1, my_col),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    group,
-    label,
-    starts_with("col"),
-    new_col_3 = mycol3,
-    -mycol5
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    # specify spanner columns and unique column from data
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        starts_with("col"),
+        new_col_3 = mycol3,
+        -mycol5
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -297,32 +327,38 @@ multiple spanners *in different levels* we need to create a new
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = c(span2, span1, my_col),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    # rename column spanner in same level
-    span_structure(
-      span1 = c(
-        "first cols" = "cols 1,2",
-        "just col4" = "col 4"
-      )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
     ),
-    # rename column spanner in different level
-    span_structure(span2 = c("most columns" = "column cols")),
-    group,
-    label,
-    starts_with("col"),
-    new_col_3 = mycol3,
-    -mycol5
-  )
+    col_plan = col_plan(
+        # rename column spanner in same level
+        span_structure(
+            span1 = c(
+                "first cols" = "cols 1,2",
+                "just col4" = "col 4"
+            )
+        ),
+        # rename column spanner in different level
+        span_structure(
+            span2 = c("most columns" = "column cols")
+        ),
+        group,
+        label,
+        starts_with("col"),
+        new_col_3 = mycol3,
+        -mycol5
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -338,26 +374,35 @@ the other columns.
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = c(span2, span1, my_col),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    group,
-    label,
-    # reordering spanners
-    span_structure(span1 = c("col 4")),
-    span_structure(span1 = c("cols 1,2"), my_col = c("col2", "col1")),
-    everything(),
-    new_col_3 = mycol3,
-    -mycol5
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        # reordering spanners
+        span_structure(
+            span1 = c("col 4")
+        ),
+        span_structure(
+            span1 = c("cols 1,2"),
+            my_col = c("col2", "col1")
+        ),
+        everything(),
+        new_col_3 = mycol3,
+        -mycol5
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]
@@ -370,11 +415,11 @@ always the case take the following example:
 ``` r
 
 dat <- tibble::tribble(
-  ~group , ~label  , ~span       , ~my_col , ~parm  , ~val  ,
-  "g1"   , "stats" , "Placebo"   , "sd"    , "sd"   , 1.435 ,
-  "g1"   , "stats" , "Placebo"   , "mean"  , "mean" , 2.843 ,
-  "g1"   , "stats" , "Treatment" , "mean"  , "mean" , 1.234 ,
-  "g1"   , "stats" , "Treatment" , "sd"    , "sd"   , 2.123 ,
+    ~group , ~label  , ~span       , ~my_col , ~parm  , ~val  ,
+    "g1"   , "stats" , "Placebo"   , "sd"    , "sd"   , 1.435 ,
+    "g1"   , "stats" , "Placebo"   , "mean"  , "mean" , 2.843 ,
+    "g1"   , "stats" , "Treatment" , "mean"  , "mean" , 1.234 ,
+    "g1"   , "stats" , "Treatment" , "sd"    , "sd"   , 2.123 ,
 )
 ```
 
@@ -386,24 +431,28 @@ level and the order of the `my_col` level.
 ``` r
 
 tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = c(span, my_col),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x.xx"))
-  ),
-  col_plan = col_plan(
-    group,
-    label,
-    span_structure(
-      span = c("Treatment", "Placebo"),
-      my_col = c("mean", "sd")
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span, my_col),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x.xx")
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        span_structure(
+            span = c("Treatment", "Placebo"),
+            my_col = c("mean", "sd")
+        )
     )
-  )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 [TABLE]

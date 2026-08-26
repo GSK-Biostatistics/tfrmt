@@ -49,26 +49,27 @@ where the desired outcome is:
 ``` r
 
 tfrmt_spec <- tfrmt(
-  # Specify columns in the data
-  label = label,
-  column = c(treatment, column),
-  param = param,
+    # Specify columns in the data
+    label = label,
+    column = c(treatment, column),
+    param = param,
 
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine(
-        "{count} {percent}",
-        count = frmt("xxx"),
-        percent = frmt_when(
-          "==100" ~ frmt(""),
-          "==0" ~ "",
-          "TRUE" ~ frmt("(xx.x%)")
+    # Specify body plan
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} {percent}",
+                count = frmt("xxx"),
+                percent = frmt_when(
+                    "==100" ~ frmt(""),
+                    "==0" ~ "",
+                    "TRUE" ~ frmt("(xx.x%)")
+                )
+            )
         )
-      )
     )
-  )
 )
 ```
 
@@ -110,14 +111,19 @@ Here is an example:
 ``` r
 
 df1 <- tidyr::crossing(
-  label = c("label 1", "label 2", "label 3"),
-  treatment = c("Treatment", "Treatment", "Treatment", "Placebo"),
-  column = c("trt1", "trt2", "trt1&trt2", "pl"),
-  param = c("count", "percent")
-) 
+    label = c("label 1", "label 2", "label 3"),
+    treatment = c("Treatment", "Treatment", "Treatment", "Placebo"),
+    column = c("trt1", "trt2", "trt1&trt2", "pl"),
+    param = c("count", "percent")
+)
 df <- df1 |>
-  # Assign numerical order (optional - keep if using `sorting_cols` parameter)
-  dplyr::mutate(ord1 = rep(seq(1:length(unique(df1$label))), each = nrow(df1) / length(unique(df1$label))))
+    # Assign numerical order (optional - keep if using `sorting_cols` parameter)
+    dplyr::mutate(
+        ord1 = rep(
+            seq(1:length(unique(df1$label))),
+            each = nrow(df1) / length(unique(df1$label))
+        )
+    )
 
 df
 #> # A tibble: 48 × 5
@@ -165,30 +171,30 @@ columns.
 ``` r
 
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") |>
-  tfrmt(
-    # Specify columns in the data
-    label = label,
-    column = c(treatment, column),
-    param = param,
-    value = value,
+    tfrmt(
+        # Specify columns in the data
+        label = label,
+        column = c(treatment, column),
+        param = param,
+        value = value,
 
-    # Specify column structure
-    col_plan = col_plan(
-      -starts_with("ord"),
-      span_structure(
-        treatment = "Treatment",
-        column = c(
-          T1 = trt1,
-          T2 = trt2,
-          `T1&T2` = `trt1&trt2`
+        # Specify column structure
+        col_plan = col_plan(
+            -starts_with("ord"),
+            span_structure(
+                treatment = "Treatment",
+                column = c(
+                    T1 = trt1,
+                    T2 = trt2,
+                    `T1&T2` = `trt1&trt2`
+                )
+            ),
+            span_structure(
+                treatment = "Placebo",
+                column = c(PL = pl)
+            )
         )
-      ),
-      span_structure(
-        treatment = "Placebo",
-        column = c(PL = pl)
-      )
     )
-  )
 
 print_mock_gt(tfrmt_spec, df)
 ```
@@ -209,33 +215,33 @@ parameters.
 ``` r
 
 tfrmt_spec <- tfrmt_n_pct(n = "count", pct = "percent") |>
-  tfrmt(
-    # Specify title, subtitle
-    title = "Table Name",
-    subtitle = "Study ID: GSK12345",
+    tfrmt(
+        # Specify title, subtitle
+        title = "Table Name",
+        subtitle = "Study ID: GSK12345",
 
-    # Specify columns in the data
-    label = label,
-    column = c(treatment, column),
-    param = param,
-    value = value,
-    # Specify column structure
-    col_plan = col_plan(
-      -starts_with("ord"),
-      span_structure(
-        treatment = "Treatment",
-        column = c(
-          T1 = trt1,
-          T2 = trt2,
-          `T1&T2` = `trt1&trt2`
+        # Specify columns in the data
+        label = label,
+        column = c(treatment, column),
+        param = param,
+        value = value,
+        # Specify column structure
+        col_plan = col_plan(
+            -starts_with("ord"),
+            span_structure(
+                treatment = "Treatment",
+                column = c(
+                    T1 = trt1,
+                    T2 = trt2,
+                    `T1&T2` = `trt1&trt2`
+                )
+            ),
+            span_structure(
+                treatment = "Placebo",
+                column = c(PL = pl)
+            )
         )
-      ),
-      span_structure(
-        treatment = "Placebo",
-        column = c(PL = pl)
-      )
     )
-  )
 
 print_mock_gt(tfrmt_spec, df)
 ```
@@ -259,18 +265,18 @@ function twice with differing columns and bound them using
 ``` r
 
 df <- dplyr::bind_rows(
-  tidyr::crossing(
-    label = c("label 1", "label 2", "label 3"),
-    column = c("T1", "T2", "PL"),
-    param = c("count", "percent")
-  ),
-  tidyr::crossing(
-    label = c("label 1", "label 2", "label 3"),
-    column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
-    param = c("num", "lower", "upper")
-  )
+    tidyr::crossing(
+        label = c("label 1", "label 2", "label 3"),
+        column = c("T1", "T2", "PL"),
+        param = c("count", "percent")
+    ),
+    tidyr::crossing(
+        label = c("label 1", "label 2", "label 3"),
+        column = c("Risk Diff T1-PL", "Risk Diff T2-PL"),
+        param = c("num", "lower", "upper")
+    )
 ) |>
-  dplyr::arrange_all()
+    dplyr::arrange_all()
 
 df
 #> # A tibble: 36 × 3
@@ -296,38 +302,39 @@ like to apply to the the new columns.
 ``` r
 
 tfrmt_n_pct(n = "count", pct = "percent") |>
-  tfrmt(
-    # Specify columns in the data
-    label = "label",
-    param = "param",
-    column = "column",
-    value = value,
+    tfrmt(
+        # Specify columns in the data
+        label = "label",
+        param = "param",
+        column = "column",
+        value = value,
 
-    # Specify body plan
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default", label_val = ".default",
-        frmt_combine(
-          "{num} ({lower}, {upper})",
-          num = frmt("xx.x"),
-          lower = frmt_when(
-            "==100" ~ frmt(""),
-            "==0" ~ "",
-            "TRUE" ~ frmt("xx.x%")
-          ),
-          upper = frmt_when(
-            "==100" ~ frmt(""),
-            "==0" ~ "",
-            "TRUE" ~ frmt("xx.x%")
-          )
+        # Specify body plan
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt_combine(
+                    "{num} ({lower}, {upper})",
+                    num = frmt("xx.x"),
+                    lower = frmt_when(
+                        "==100" ~ frmt(""),
+                        "==0" ~ "",
+                        "TRUE" ~ frmt("xx.x%")
+                    ),
+                    upper = frmt_when(
+                        "==100" ~ frmt(""),
+                        "==0" ~ "",
+                        "TRUE" ~ frmt("xx.x%")
+                    )
+                )
+            )
+        ),
+        col_plan = col_plan(
+            -starts_with("ord")
         )
-      )
-    ),
-    col_plan = col_plan(
-      -starts_with("ord")
-    )
-  ) |>
-  print_mock_gt(df)
+    ) |>
+    print_mock_gt(df)
 ```
 
 |         |    PL     |   Risk Diff T1-PL   |   Risk Diff T2-PL   |    T1     |    T2     |
@@ -351,38 +358,42 @@ Here we have decided to select only the placebo and treatment columns.
 ``` r
 
 tfrmt_n_pct(n = "count", pct = "percent") |>
-  tfrmt(
-    # Specify columns in the data
-    label = "label",
-    param = "param",
-    column = "column",
-    value = value,
+    tfrmt(
+        # Specify columns in the data
+        label = "label",
+        param = "param",
+        column = "column",
+        value = value,
 
-    # Specify body plan
-    body_plan = body_plan(
-      frmt_structure(
-        group_val = ".default", label_val = ".default",
-        frmt_combine(
-          "{num} ({lower}, {upper})",
-          num = frmt("xx.x"),
-          lower = frmt_when(
-            "==100" ~ frmt(""),
-            "==0" ~ "",
-            "TRUE" ~ frmt("xx.x%")
-          ),
-          upper = frmt_when(
-            "==100" ~ frmt(""),
-            "==0" ~ "",
-            "TRUE" ~ frmt("xx.x%")
-          )
+        # Specify body plan
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt_combine(
+                    "{num} ({lower}, {upper})",
+                    num = frmt("xx.x"),
+                    lower = frmt_when(
+                        "==100" ~ frmt(""),
+                        "==0" ~ "",
+                        "TRUE" ~ frmt("xx.x%")
+                    ),
+                    upper = frmt_when(
+                        "==100" ~ frmt(""),
+                        "==0" ~ "",
+                        "TRUE" ~ frmt("xx.x%")
+                    )
+                )
+            )
+        ),
+        col_plan = col_plan(
+            label,
+            PL,
+            T1,
+            T2
         )
-      )
-    ),
-    col_plan = col_plan(
-      label, PL, T1, T2
-    )
-  ) |>
-  print_mock_gt(df)
+    ) |>
+    print_mock_gt(df)
 ```
 
 |         |    PL     |    T1     |    T2     |   Risk Diff T1-PL   |   Risk Diff T2-PL   |
@@ -403,28 +414,30 @@ the `group` parameter for
 ``` r
 
 df <- tidyr::crossing(
-  group = c("group 1", "group 2"),
-  label = c("label 1", "label 2"),
-  column = c("PL", "T1", "T2"),
-  param = c("count", "percent")
+    group = c("group 1", "group 2"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2"),
+    param = c("count", "percent")
 ) |>
-  dplyr::arrange_all()
+    dplyr::arrange_all()
 
 tfrmt_n_pct(n = "count", pct = "percent") |>
-  tfrmt(
-    group = group,
-    label = label,
-    column = column,
-    param = param,
-    value = value,
-    row_grp_plan = row_grp_plan(
-      row_grp_structure(
-        group_val = ".default",
-        element_block(post_space = "   ")
-      )
-    )
-  ) |>
-  print_mock_gt(df)
+    tfrmt(
+        group = group,
+        label = label,
+        column = column,
+        param = param,
+        value = value,
+        row_grp_plan = row_grp_plan(
+            row_grp_structure(
+                group_val = ".default",
+                element_block = element_block(
+                    post_space = "   "
+                )
+            )
+        )
+    ) |>
+    print_mock_gt(df)
 ```
 
 [TABLE]
@@ -450,62 +463,74 @@ what these row labels could be.
 ``` r
 
 df <- dplyr::bind_rows(
-  tidyr::crossing(
-    group = c("group 1", "group 2"),
-    label = c("n"),
-    column = c("PL", "T1", "T2"),
-    param = c("count")
-  ),
-  tidyr::crossing(
-    group = c("group 1", "group 2"),
-    label = c("Mean (SD)"),
-    column = c("PL", "T1", "T2"),
-    param = c("mean", "sd")
-  ),
-  tidyr::crossing(
-    group = c("group 1", "group 2"),
-    label = c("Median (Range)"),
-    column = c("PL", "T1", "T2"),
-    param = c("min", "max", "median")
-  )
+    tidyr::crossing(
+        group = c("group 1", "group 2"),
+        label = c("n"),
+        column = c("PL", "T1", "T2"),
+        param = c("count")
+    ),
+    tidyr::crossing(
+        group = c("group 1", "group 2"),
+        label = c("Mean (SD)"),
+        column = c("PL", "T1", "T2"),
+        param = c("mean", "sd")
+    ),
+    tidyr::crossing(
+        group = c("group 1", "group 2"),
+        label = c("Median (Range)"),
+        column = c("PL", "T1", "T2"),
+        param = c("min", "max", "median")
+    )
 ) |>
-  dplyr::arrange_all()
+    dplyr::arrange_all()
 
 tfrmt(
-  # Specify columns in the data
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xx")),
-    frmt_structure(
-      group_val = ".default", label_val = "Median (Range)",
-      frmt_combine("{median} ({min},{max})",
-        median = frmt("xx.x"),
-        min = frmt("xx"),
-        max = frmt("xx"), missing = " "
-      )
+    # Specify columns in the data
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
     ),
-    frmt_structure(
-      group_val = ".default", label_val = "Mean (SD)",
-      frmt_combine("{mean} ({sd})",
-        mean = frmt("xx.x"),
-        sd = frmt("xx.xx"), missing = " "
-      )
+
+    # Specify body plan
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = "n",
+            frmt("xx")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "Median (Range)",
+            frmt_combine(
+                "{median} ({min},{max})",
+                median = frmt("xx.x"),
+                min = frmt("xx"),
+                max = frmt("xx"),
+                missing = " "
+            )
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "Mean (SD)",
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("xx.x"),
+                sd = frmt("xx.xx"),
+                missing = " "
+            )
+        )
     )
-  )
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 ```
 
 [TABLE]
@@ -522,55 +547,64 @@ see the “Row group plan” article.
 ``` r
 
 df <- dplyr::bind_rows(
-  tidyr::crossing(
-    group = c("group 1"),
-    label = c("label 1", "label 2"),
-    column = c("PL", "T1", "T2"),
-    param = c("mean", "sd")
-  ),
-  tidyr::crossing(
-    group = c("group 2"),
-    label = c("label 1", "label 2"),
-    column = c("PL", "T1", "T2"),
-    param = c("median", "min", "max")
-  )
+    tidyr::crossing(
+        group = c("group 1"),
+        label = c("label 1", "label 2"),
+        column = c("PL", "T1", "T2"),
+        param = c("mean", "sd")
+    ),
+    tidyr::crossing(
+        group = c("group 2"),
+        label = c("label 1", "label 2"),
+        column = c("PL", "T1", "T2"),
+        param = c("median", "min", "max")
+    )
 ) |>
-  dplyr::arrange_all()
+    dplyr::arrange_all()
 
 tfrmt(
-  # Specify columns in the data
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = list("group" = c("group 1", "group 2")),
-      element_block(post_space = "   ")
-    )
-  ),
-
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = "group 1", label_val = ".default",
-      frmt_combine("{mean} ({sd})",
-        mean = frmt("xx.x"),
-        sd = frmt("xx.x")
-      )
+    # Specify columns in the data
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = list(
+                group = c("group 1", "group 2")
+            ),
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
     ),
-    frmt_structure(
-      group_val = "group 2", label_val = ".default",
-      frmt_combine("{median} ({min},{max})",
-        median = frmt("xx"),
-        min = frmt("xx"),
-        max = frmt("xx"), missing = " "
-      )
+
+    # Specify body plan
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = "group 1",
+            label_val = ".default",
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("xx.x"),
+                sd = frmt("xx.x")
+            )
+        ),
+        frmt_structure(
+            group_val = "group 2",
+            label_val = ".default",
+            frmt_combine(
+                "{median} ({min},{max})",
+                median = frmt("xx"),
+                min = frmt("xx"),
+                max = frmt("xx"),
+                missing = " "
+            )
+        )
     )
-  )
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 ```
 
 [TABLE]
@@ -590,46 +624,57 @@ supply the label names within [`c()`](https://rdrr.io/r/base/c.html).
 ``` r
 
 tfrmt(
-  # Specify columns in the data
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = list("group" = c("group 1", "group 2")),
-      element_block(post_space = "   ")
-    )
-  ),
+    # Specify columns in the data
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = list(
+                "group" = c("group 1", "group 2")
+            ),
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
 
-  # Specify body plan
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = "group 1", label_val = "label 1",
-      frmt_combine("{mean} ({sd})",
-        mean = frmt("xx"),
-        sd = frmt("xx")
-      )
-    ),
-    frmt_structure(
-      group_val = "group 1", label_val = "label 2",
-      frmt_combine("{mean} ({sd})",
-        mean = frmt("xx.x"),
-        sd = frmt("xx.x")
-      )
-    ),
-    frmt_structure(
-      group_val = "group 2", label_val = c("label 1", "label 2"),
-      frmt_combine("{median} ({min},{max})",
-        median = frmt("xx"),
-        min = frmt("xx"),
-        max = frmt("xx"), missing = " "
-      )
+    # Specify body plan
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = "group 1",
+            label_val = "label 1",
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("xx"),
+                sd = frmt("xx")
+            )
+        ),
+        frmt_structure(
+            group_val = "group 1",
+            label_val = "label 2",
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("xx.x"),
+                sd = frmt("xx.x")
+            )
+        ),
+        frmt_structure(
+            group_val = "group 2",
+            label_val = c("label 1", "label 2"),
+            frmt_combine(
+                "{median} ({min},{max})",
+                median = frmt("xx"),
+                min = frmt("xx"),
+                max = frmt("xx"),
+                missing = " "
+            )
+        )
     )
-  )
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 ```
 
 [TABLE]
@@ -647,56 +692,61 @@ When using more than one grouping level you add the group names to the
 ``` r
 
 df <- dplyr::bind_rows(
-  tidyr::crossing(
-    grp1 = c("group 1.1"),
-    grp2 = c("group 2.1", "group 2.2"),
-    label = c("label 1", "label 2"),
-    column = c("PL", "T1", "T2"),
-    param = c("count")
-  ),
-  tidyr::crossing(
-    grp1 = c("group 1.2"),
-    grp2 = c("group 2.1", "group 2.2"),
-    label = c("label 1", "label 2"),
-    column = c("PL", "T1", "T2"),
-    param = c("mean", "sd")
-  )
+    tidyr::crossing(
+        grp1 = c("group 1.1"),
+        grp2 = c("group 2.1", "group 2.2"),
+        label = c("label 1", "label 2"),
+        column = c("PL", "T1", "T2"),
+        param = c("count")
+    ),
+    tidyr::crossing(
+        grp1 = c("group 1.2"),
+        grp2 = c("group 2.1", "group 2.2"),
+        label = c("label 1", "label 2"),
+        column = c("PL", "T1", "T2"),
+        param = c("mean", "sd")
+    )
 ) |>
-  dplyr::arrange_all()
+    dplyr::arrange_all()
 
 tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = list(
-        "grp1" = "group 1.1",
-        "grp2" = c("group 2.1", "group 2.2")
-      ), label_val = ".default",
-      frmt("xx")
+    group = c(grp1, grp2),
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
     ),
-    frmt_structure(
-      group_val = list(
-        "grp1" = "group 1.2",
-        "grp2" = c("group 2.1", "group 2.2")
-      ), label_val = ".default",
-      frmt_combine("{mean} ({sd})",
-        mean = frmt("xx.x"),
-        sd = frmt("xx.x")
-      )
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = list(
+                "grp1" = "group 1.1",
+                "grp2" = c("group 2.1", "group 2.2")
+            ),
+            label_val = ".default",
+            frmt("xx")
+        ),
+        frmt_structure(
+            group_val = list(
+                "grp1" = "group 1.2",
+                "grp2" = c("group 2.1", "group 2.2")
+            ),
+            label_val = ".default",
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("xx.x"),
+                sd = frmt("xx.x")
+            )
+        )
     )
-  )
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 ```
 
 [TABLE]

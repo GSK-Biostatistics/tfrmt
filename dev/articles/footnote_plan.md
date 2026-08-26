@@ -29,17 +29,20 @@ Here is some mock data we’re going to use.
 
 # Create mock data
 df <- tidyr::crossing(
-  group = c("group 1", "group 2"),
-  label = c("label 1", "label 2"),
-  column = c("PL", "T1", "T2", "T1&T2"),
-  param = c("count", "percent")
+    group = c("group 1", "group 2"),
+    label = c("label 1", "label 2"),
+    column = c("PL", "T1", "T2", "T1&T2"),
+    param = c("count", "percent")
 )
 
 # This one is used for examples 5 and 6
-span_df <- df |> dplyr::mutate(span = dplyr::case_when(
-  column == "PL" ~ "Placebo",
-  column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
-))
+span_df <- df |>
+    dplyr::mutate(
+        span = dplyr::case_when(
+            column == "PL" ~ "Placebo",
+            column %in% c("T1", "T2", "T1&T2") == TRUE ~ "Treatment"
+        )
+    )
 ```
 
 ### Example 1 (one footnote per group/column)
@@ -50,34 +53,44 @@ Different footnotes are separated by individual `footnote_structure`s.
 
 # Create specification
 tfrmt(
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine("{count} ({percent})",
-        count = frmt("xx"),
-        percent = frmt("xx.x")
-      )
-    )
-  ),
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} ({percent})",
+                count = frmt("xx"),
+                percent = frmt("xx.x")
+            )
+        )
+    ),
 
-  # Add footnotes here
-  footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "Source Note", group_val = "group 1"),
-    footnote_structure(footnote_text = "Placebo", column_val = "PL"),
-    marks = "standard"
-  ),
+    # Add footnotes here
+    footnote_plan = footnote_plan(
+        footnote_structure(
+            footnote_text = "Source Note",
+            group_val = "group 1"
+        ),
+        footnote_structure(
+            footnote_text = "Placebo",
+            column_val = "PL"
+        ),
+        marks = "standard"
+    ),
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
@@ -95,33 +108,40 @@ table, and the RHS is the column header name you have selected (“T1”,
 
 # Create specification
 tfrmt(
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine("{count} ({percent})",
-        count = frmt("xx"),
-        percent = frmt("xx.x")
-      )
-    )
-  ),
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} ({percent})",
+                count = frmt("xx"),
+                percent = frmt("xx.x")
+            )
+        )
+    ),
 
-  # Add footnotes here
-  footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "All Treatments", list(column = c("T1", "T2", "T1&T2"))),
-    marks = "numbers"
-  ),
+    # Add footnotes here
+    footnote_plan = footnote_plan(
+        footnote_structure(
+            footnote_text = "All Treatments",
+            list(column = c("T1", "T2", "T1&T2"))
+        ),
+        marks = "numbers"
+    ),
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
@@ -133,33 +153,40 @@ tfrmt(
 
 # Create specification
 tfrmt(
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine("{count} ({percent})",
-        count = frmt("xx"),
-        percent = frmt("xx.x")
-      )
-    )
-  ),
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} ({percent})",
+                count = frmt("xx"),
+                percent = frmt("xx.x")
+            )
+        )
+    ),
 
-  # Add footnotes here
-  footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "Footnote goes here", label_val = "label 1"),
-    marks = "standard"
-  ),
+    # Add footnotes here
+    footnote_plan = footnote_plan(
+        footnote_structure(
+            footnote_text = "Footnote goes here",
+            label_val = "label 1"
+        ),
+        marks = "standard"
+    ),
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
@@ -171,33 +198,41 @@ tfrmt(
 
 # Create specification
 tfrmt(
-  group = group,
-  label = label,
-  column = column,
-  param = param,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine("{count} ({percent})",
-        count = frmt("xx"),
-        percent = frmt("xx.x")
-      )
-    )
-  ),
+    group = group,
+    label = label,
+    column = column,
+    param = param,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} ({percent})",
+                count = frmt("xx"),
+                percent = frmt("xx.x")
+            )
+        )
+    ),
 
-  # Add footnotes here
-  footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "Footnote goes here", group_val = "group 1", label_val = "label 1"),
-    marks = "standard"
-  ),
+    # Add footnotes here
+    footnote_plan = footnote_plan(
+        footnote_structure(
+            footnote_text = "Footnote goes here",
+            group_val = "group 1",
+            label_val = "label 1"
+        ),
+        marks = "standard"
+    ),
 ) |>
-  print_mock_gt(df)
+    print_mock_gt(df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
@@ -209,44 +244,54 @@ tfrmt(
 
 # Add specification
 tfrmt(
-  group = group,
-  label = label,
-  column = c("span", "column"),
-  param = param,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine("{count} ({percent})",
-        count = frmt("xx"),
-        percent = frmt("xx.x")
-      )
-    )
-  ),
-  col_plan = col_plan(
-    group, label,
-    span_structure(
-      span = c("Placebo"),
-      column = c("PL")
+    group = group,
+    label = label,
+    column = c("span", "column"),
+    param = param,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
     ),
-    span_structure(
-      span = c("Treatment"),
-      column = c("T1", "T2", "T1&T2")
-    )
-  ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} ({percent})",
+                count = frmt("xx"),
+                percent = frmt("xx.x")
+            )
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        span_structure(
+            span = c("Placebo"),
+            column = c("PL")
+        ),
+        span_structure(
+            span = c("Treatment"),
+            column = c("T1", "T2", "T1&T2")
+        )
+    ),
 
-  # Add footnote here
-  footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment")),
-    marks = "extended"
-  )
+    # Add footnote here
+    footnote_plan = footnote_plan(
+        footnote_structure(
+            footnote_text = "Footnote goes here",
+            column_val = list(
+                span = "Treatment"
+            )
+        ),
+        marks = "extended"
+    )
 ) |>
-  print_mock_gt(span_df)
+    print_mock_gt(span_df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 
@@ -261,44 +306,55 @@ your column variable.
 
 # Add specification
 tfrmt(
-  group = group,
-  label = label,
-  column = c("span", "column"),
-  param = param,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = "   ")
-    )
-  ),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt_combine("{count} ({percent})",
-        count = frmt("xx"),
-        percent = frmt("xx.x")
-      )
-    )
-  ),
-  col_plan = col_plan(
-    group, label,
-    span_structure(
-      span = c("Placebo"),
-      column = c("PL")
+    group = group,
+    label = label,
+    column = c("span", "column"),
+    param = param,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
     ),
-    span_structure(
-      span = c("Treatment"),
-      column = c("T1", "T2", "T1&T2")
-    )
-  ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{count} ({percent})",
+                count = frmt("xx"),
+                percent = frmt("xx.x")
+            )
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        span_structure(
+            span = c("Placebo"),
+            column = c("PL")
+        ),
+        span_structure(
+            span = c("Treatment"),
+            column = c("T1", "T2", "T1&T2")
+        )
+    ),
 
-  # Add footnote here
-  footnote_plan = footnote_plan(
-    footnote_structure(footnote_text = "Footnote goes here", column_val = list(span = "Treatment", column = "T1&T2")),
-    marks = "extended"
-  )
+    # Add footnote here
+    footnote_plan = footnote_plan(
+        footnote_structure(
+            footnote_text = "Footnote goes here",
+            column_val = list(
+                span = "Treatment",
+                column = "T1&T2"
+            )
+        ),
+        marks = "extended"
+    )
 ) |>
-  print_mock_gt(span_df)
+    print_mock_gt(span_df)
 #> Message: `tfrmt` will need `value` value to `print_to_gt` when data is available
 ```
 

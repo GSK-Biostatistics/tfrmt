@@ -79,7 +79,7 @@ Expand for the code used to produce this subset
 ``` r
 
 data_demog2 <- data_demog |>
-  filter(rowlbl1 %in% unique(rowlbl1)[1:3])
+    filter(rowlbl1 %in% unique(rowlbl1)[1:3])
 ```
 
 ``` r
@@ -102,84 +102,86 @@ The formatted table as a single page is as follows:
 ``` r
 
 base_tfrmt <- tfrmt(
-  # specify columns in the data
-  group = c(rowlbl1, grp),
-  label = rowlbl2,
-  column = column,
-  param = param,
-  value = value,
-  sorting_cols = c(ord1, ord2),
-  # specify value formatting
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      frmt_combine(
-        "{n} {pct}",
-        n = frmt("xxx"),
-        pct = frmt_when(
-          "==100" ~ "",
-          "==0" ~ "",
-          TRUE ~ frmt("(xx.x %)")
+    # specify columns in the data
+    group = c(rowlbl1, grp),
+    label = rowlbl2,
+    column = column,
+    param = param,
+    value = value,
+    sorting_cols = c(ord1, ord2),
+    # specify value formatting
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{n} {pct}",
+                n = frmt("xxx"),
+                pct = frmt_when(
+                    "==100" ~ "",
+                    "==0" ~ "",
+                    TRUE ~ frmt("(xx.x %)")
+                )
+            )
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "n",
+            frmt("xxx")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = c("Mean", "Median", "Min", "Max"),
+            frmt("xxx.x")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "SD",
+            frmt("xxx.xx")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            p = frmt("")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = c("n", "<65 yrs", "<12 months", "<25"),
+            p = frmt_when(
+                ">0.99" ~ ">0.99",
+                "<0.001" ~ "<0.001",
+                TRUE ~ frmt("x.xxx", missing = "")
+            )
         )
-      )
     ),
-    frmt_structure(
-      group_val = ".default",
-      label_val = "n",
-      frmt("xxx")
+    # remove extra cols
+    col_plan = col_plan(
+        -grp,
+        -starts_with("ord")
     ),
-    frmt_structure(
-      group_val = ".default",
-      label_val = c("Mean", "Median", "Min", "Max"),
-      frmt("xxx.x")
+    # Specify column styling plan
+    col_style_plan = col_style_plan(
+        col_style_structure(
+            align = c(".", ",", " "),
+            col = vars(Placebo, contains("Dose"), "Total", "p-value")
+        )
     ),
-    frmt_structure(
-      group_val = ".default",
-      label_val = "SD",
-      frmt("xxx.xx")
-    ),
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      p = frmt("")
-    ),
-    frmt_structure(
-      group_val = ".default",
-      label_val = c("n", "<65 yrs", "<12 months", "<25"),
-      p = frmt_when(
-        ">0.99" ~ ">0.99",
-        "<0.001" ~ "<0.001",
-        TRUE ~ frmt("x.xxx", missing = "")
-      )
+    # Specify row group plan
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = " "
+            )
+        ),
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
     )
-  ),
-  # remove extra cols
-  col_plan = col_plan(
-    -grp,
-    -starts_with("ord")
-  ),
-  # Specify column styling plan
-  col_style_plan = col_style_plan(
-    col_style_structure(
-      align = c(".", ",", " "),
-      col = vars(Placebo, contains("Dose"), "Total", "p-value")
-    )
-  ),
-  # Specify row group plan
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(
-      group_val = ".default",
-      element_block(post_space = " ")
-    ),
-    label_loc = element_row_grp_loc(
-      location = "column"
-    )
-  )
 )
 
 base_tfrmt |>
-  print_to_gt(data_demog2)
+    print_to_gt(data_demog2)
 ```
 
 |  |  | Placebo | Xanomeline Low Dose | Xanomeline High Dose | Total | p-value |
@@ -265,20 +267,20 @@ function to print the individual tables nicely in the vignette.
 ``` r
 
 gts <- base_tfrmt |>
-  layer_tfrmt(
-    tfrmt(
-      # page plan
-      page_plan = page_plan(
-        page_structure(
-          group_val = list(
-            rowlbl1 = ".default"
-          )
-        ),
-        note_loc = "source_note"
-      )
-    )
-  ) |>
-  print_to_gt(data_demog2)
+    layer_tfrmt(
+        tfrmt(
+            # page plan
+            page_plan = page_plan(
+                page_structure(
+                    group_val = list(
+                        rowlbl1 = ".default"
+                    )
+                ),
+                note_loc = "source_note"
+            )
+        )
+    ) |>
+    print_to_gt(data_demog2)
 ```
 
 ``` r
@@ -334,16 +336,18 @@ We could also choose to split on both grouping variables as such
 ``` r
 
 gts <- base_tfrmt |>
-  layer_tfrmt(
-    tfrmt(
-      # page plan
-      page_plan = page_plan(
-        page_structure(group_val = ".default"),
-        note_loc = "source_note"
-      )
-    )
-  ) |>
-  print_to_gt(data_demog2)
+    layer_tfrmt(
+        tfrmt(
+            # page plan
+            page_plan = page_plan(
+                page_structure(
+                    group_val = ".default"
+                ),
+                note_loc = "source_note"
+            )
+        )
+    ) |>
+    print_to_gt(data_demog2)
 ```
 
 ``` r
@@ -395,24 +399,26 @@ i.e. the `transform` argument.
 ``` r
 
 transform_note <- function(x) {
-  x |>
-  stringr::str_replace("rowlbl", "Row label ") |>
-  stringr::str_replace("grp", "Group") |>
-  stringr::str_replace_all(":", " -")
+    x |>
+        stringr::str_replace("rowlbl", "Row label ") |>
+        stringr::str_replace("grp", "Group") |>
+        stringr::str_replace_all(":", " -")
 }
 
 gts <- base_tfrmt |>
-  layer_tfrmt(
-    tfrmt(
-      # page plan
-      page_plan = page_plan(
-        page_structure(group_val = ".default"),
-        note_loc = "source_note",
-        transform = transform_note
-      )
-    )
-  ) |>
-  print_to_gt(data_demog2)
+    layer_tfrmt(
+        tfrmt(
+            # page plan
+            page_plan = page_plan(
+                page_structure(
+                    group_val = ".default"
+                ),
+                note_loc = "source_note",
+                transform = transform_note
+            )
+        )
+    ) |>
+    print_to_gt(data_demog2)
 
 gts |> gt::grp_pull(1)
 ```
@@ -435,20 +441,20 @@ example, `rowlbl1 = "Age (y)"`.
 ``` r
 
 gts <- base_tfrmt |>
-  layer_tfrmt(
-    tfrmt(
-      # page plan
-      page_plan = page_plan(
-        page_structure(
-          group_val = list(
-            rowlbl1 = "Age (y)"
-          )
-        ),
-        note_loc = "source_note"
-      )
-    )
-  ) |>
-  print_to_gt(data_demog2)
+    layer_tfrmt(
+        tfrmt(
+            # page plan
+            page_plan = page_plan(
+                page_structure(
+                    group_val = list(
+                        rowlbl1 = "Age (y)"
+                    )
+                ),
+                note_loc = "source_note"
+            )
+        )
+    ) |>
+    print_to_gt(data_demog2)
 ```
 
 ``` r
@@ -543,15 +549,15 @@ argument as such (showing first 3 tables only):
 ``` r
 
 gts <- base_tfrmt |>
-  layer_tfrmt(
-    tfrmt(
-      # page plan
-      page_plan = page_plan(
-        max_rows = 20
-      )
-    )
-  ) |>
-  print_to_gt(data_demog2)
+    layer_tfrmt(
+        tfrmt(
+            # page plan
+            page_plan = page_plan(
+                max_rows = 20
+            )
+        )
+    ) |>
+    print_to_gt(data_demog2)
 ```
 
 ``` r

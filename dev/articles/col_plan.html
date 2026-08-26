@@ -112,36 +112,40 @@ multiple column columns need to exist in the input dataset.</p>
 which includes a single <code>column</code> variable:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>  <span class="op">~</span><span class="va">group</span> , <span class="op">~</span><span class="va">label</span>      , <span class="op">~</span><span class="va">my_col</span>  , <span class="op">~</span><span class="va">parm</span>   , <span class="op">~</span><span class="va">val</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span></span>
+<span>    <span class="op">~</span><span class="va">group</span> , <span class="op">~</span><span class="va">label</span>      , <span class="op">~</span><span class="va">my_col</span>  , <span class="op">~</span><span class="va">parm</span>   , <span class="op">~</span><span class="va">val</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>This is what this data looks like formatted as a basic table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="va">my_col</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -654,19 +658,23 @@ which includes a single <code>column</code> variable:</p>
 <code>col_plan</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="va">my_col</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="op">-</span><span class="va">mycol5</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="op">-</span><span class="va">mycol5</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="pkzcbwjcfd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#pkzcbwjcfd table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1168,26 +1176,30 @@ and remove columns, using <code>tidyselect</code> syntax if we’d
 like:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="va">my_col</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="co"># reordering</span></span>
-<span>    <span class="va">group</span>,</span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
-<span>    <span class="co"># renaming</span></span>
-<span>    new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
-<span>    <span class="co"># removing</span></span>
-<span>    <span class="op">-</span><span class="va">mycol5</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="co"># reordering</span></span>
+<span>        <span class="va">group</span>,</span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>        <span class="co"># renaming</span></span>
+<span>        new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
+<span>        <span class="co"># removing</span></span>
+<span>        <span class="op">-</span><span class="va">mycol5</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="cmrwtkdbir" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#cmrwtkdbir table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1689,23 +1701,27 @@ like:</p>
 reordering/moving a column to the end very easily.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="va">my_col</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="va">group</span>,</span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    <span class="va">col1</span> <span class="co"># moved to end</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="va">group</span>,</span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        <span class="va">col1</span> <span class="co"># moved to end</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="isysoqowey" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#isysoqowey table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2219,26 +2235,32 @@ plan, just as you would with other columns. If multiple
 <code>group</code> variables exist, any of them can be renamed.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="va">my_col</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
-<span>    label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span>location <span class="op">=</span> <span class="st">"column"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    my_grp <span class="op">=</span> <span class="va">group</span>, <span class="co"># rename group</span></span>
-<span>    my_lbl <span class="op">=</span> <span class="va">label</span>, <span class="co"># rename label</span></span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    <span class="va">col1</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    row_grp_plan <span class="op">=</span> <span class="fu"><a href="../reference/row_grp_plan.html">row_grp_plan</a></span><span class="op">(</span></span>
+<span>        label_loc <span class="op">=</span> <span class="fu"><a href="../reference/element_row_grp_loc.html">element_row_grp_loc</a></span><span class="op">(</span></span>
+<span>            location <span class="op">=</span> <span class="st">"column"</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        my_grp <span class="op">=</span> <span class="va">group</span>, <span class="co"># rename group</span></span>
+<span>        my_lbl <span class="op">=</span> <span class="va">label</span>, <span class="co"># rename label</span></span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        <span class="va">col1</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="vhncrookxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#vhncrookxg table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2734,23 +2756,27 @@ if more than one group/label column is renamed, like below, {tfrmt} will
 use the highest level group name available.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="va">my_col</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    my_grp <span class="op">=</span> <span class="va">group</span>, <span class="co"># rename group</span></span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    <span class="va">col1</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="va">my_col</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        my_grp <span class="op">=</span> <span class="va">group</span>, <span class="co"># rename group</span></span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        <span class="va">col1</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="oqaitrxpww" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#oqaitrxpww table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -3269,22 +3295,22 @@ unique value, <code>span1</code> with two unique values and
 indicate there should be no spanning over those values.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>  <span class="op">~</span><span class="va">group</span> , <span class="op">~</span><span class="va">label</span>      , <span class="op">~</span><span class="va">span2</span>        , <span class="op">~</span><span class="va">span1</span>     , <span class="op">~</span><span class="va">my_col</span>  , <span class="op">~</span><span class="va">parm</span>   , <span class="op">~</span><span class="va">val</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"column cols"</span> , <span class="st">"col 4"</span>    , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"column cols"</span> , <span class="st">"col 4"</span>    , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"column cols"</span> , <span class="st">"col 4"</span>    , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
-<span>  <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="op">~</span><span class="va">group</span> , <span class="op">~</span><span class="va">label</span>      , <span class="op">~</span><span class="va">span2</span>        , <span class="op">~</span><span class="va">span1</span>     , <span class="op">~</span><span class="va">my_col</span>  , <span class="op">~</span><span class="va">parm</span>   , <span class="op">~</span><span class="va">val</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="st">"column cols"</span> , <span class="st">"col 4"</span>    , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel1"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">1</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="st">"column cols"</span> , <span class="st">"col 4"</span>    , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"rowlabel2"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">2</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col1"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"column cols"</span> , <span class="st">"cols 1,2"</span> , <span class="st">"col2"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol3"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="st">"column cols"</span> , <span class="st">"col 4"</span>    , <span class="st">"col4"</span>   , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
+<span>    <span class="st">"g2"</span>   , <span class="st">"rowlabel3"</span> , <span class="cn">NA</span>            , <span class="cn">NA</span>         , <span class="st">"mycol5"</span> , <span class="st">"value"</span> ,    <span class="fl">3</span> ,</span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Similar to the case of 1 <code>column</code> variable, the user may
 remove and rename values for the lowest level <code>column</code>
@@ -3294,24 +3320,28 @@ to bring all the columns that start with “col” together, as well as
 rename <code>mycol3</code> and drop <code>mycol5</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  <span class="co"># specify spanner columns and unique column from data</span></span>
-<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="va">group</span>,</span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
-<span>    new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
-<span>    <span class="op">-</span><span class="va">mycol5</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    <span class="co"># specify spanner columns and unique column from data</span></span>
+<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="va">group</span>,</span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>        new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
+<span>        <span class="op">-</span><span class="va">mycol5</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="atjcrgnjjo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#atjcrgnjjo table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -3837,32 +3867,38 @@ different levels</em> we need to create a new
 <code>span2</code> level in a separate <code>span_structure</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="co"># rename column spanner in same level</span></span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
-<span>      span1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>        <span class="st">"first cols"</span> <span class="op">=</span> <span class="st">"cols 1,2"</span>,</span>
-<span>        <span class="st">"just col4"</span> <span class="op">=</span> <span class="st">"col 4"</span></span>
-<span>      <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    <span class="co"># rename column spanner in different level</span></span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"most columns"</span> <span class="op">=</span> <span class="st">"column cols"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="va">group</span>,</span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
-<span>    new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
-<span>    <span class="op">-</span><span class="va">mycol5</span></span>
-<span>  <span class="op">)</span></span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="co"># rename column spanner in same level</span></span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>            span1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>                <span class="st">"first cols"</span> <span class="op">=</span> <span class="st">"cols 1,2"</span>,</span>
+<span>                <span class="st">"just col4"</span> <span class="op">=</span> <span class="st">"col 4"</span></span>
+<span>            <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="co"># rename column spanner in different level</span></span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>            span2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"most columns"</span> <span class="op">=</span> <span class="st">"column cols"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="va">group</span>,</span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
+<span>        new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
+<span>        <span class="op">-</span><span class="va">mycol5</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="pyvzqnitvf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#pyvzqnitvf table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -4386,26 +4422,35 @@ select <code>"col 4"</code> from <code>span1</code>. Then use another
 equals <code>"col 1,2"</code>,and finally all the other columns.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="va">group</span>,</span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="co"># reordering spanners</span></span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col 4"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span>span1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cols 1,2"</span><span class="op">)</span>, my_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col2"</span>, <span class="st">"col1"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
-<span>    <span class="op">-</span><span class="va">mycol5</span></span>
-<span>  <span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="va">group</span>,</span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="co"># reordering spanners</span></span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>            span1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col 4"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>            span1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cols 1,2"</span><span class="op">)</span>,</span>
+<span>            my_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col2"</span>, <span class="st">"col1"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        new_col_3 <span class="op">=</span> <span class="va">mycol3</span>,</span>
+<span>        <span class="op">-</span><span class="va">mycol5</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="kigglrttgn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#kigglrttgn table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -4925,11 +4970,11 @@ there is 1 value per column in the final table), like in the example
 above. But, that isn’t always the case take the following example:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>  <span class="op">~</span><span class="va">group</span> , <span class="op">~</span><span class="va">label</span>  , <span class="op">~</span><span class="va">span</span>       , <span class="op">~</span><span class="va">my_col</span> , <span class="op">~</span><span class="va">parm</span>  , <span class="op">~</span><span class="va">val</span>  ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Placebo"</span>   , <span class="st">"sd"</span>    , <span class="st">"sd"</span>   , <span class="fl">1.435</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Placebo"</span>   , <span class="st">"mean"</span>  , <span class="st">"mean"</span> , <span class="fl">2.843</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Treatment"</span> , <span class="st">"mean"</span>  , <span class="st">"mean"</span> , <span class="fl">1.234</span> ,</span>
-<span>  <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Treatment"</span> , <span class="st">"sd"</span>    , <span class="st">"sd"</span>   , <span class="fl">2.123</span> ,</span>
+<span>    <span class="op">~</span><span class="va">group</span> , <span class="op">~</span><span class="va">label</span>  , <span class="op">~</span><span class="va">span</span>       , <span class="op">~</span><span class="va">my_col</span> , <span class="op">~</span><span class="va">parm</span>  , <span class="op">~</span><span class="va">val</span>  ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Placebo"</span>   , <span class="st">"sd"</span>    , <span class="st">"sd"</span>   , <span class="fl">1.435</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Placebo"</span>   , <span class="st">"mean"</span>  , <span class="st">"mean"</span> , <span class="fl">2.843</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Treatment"</span> , <span class="st">"mean"</span>  , <span class="st">"mean"</span> , <span class="fl">1.234</span> ,</span>
+<span>    <span class="st">"g1"</span>   , <span class="st">"stats"</span> , <span class="st">"Treatment"</span> , <span class="st">"sd"</span>    , <span class="st">"sd"</span>   , <span class="fl">2.123</span> ,</span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>For this table we want to ensure <code>"Treatment"</code> is always
 before <code>"Placebo"</code> and that <code>"mean"</code> comes before
@@ -4939,24 +4984,28 @@ before <code>"Placebo"</code> and that <code>"mean"</code> comes before
 level.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tfrmt.html">tfrmt</a></span><span class="op">(</span></span>
-<span>  group <span class="op">=</span> <span class="va">group</span>,</span>
-<span>  label <span class="op">=</span> <span class="va">label</span>,</span>
-<span>  param <span class="op">=</span> <span class="va">parm</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">val</span>,</span>
-<span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
-<span>  body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span>group_val <span class="op">=</span> <span class="st">".default"</span>, label_val <span class="op">=</span> <span class="st">".default"</span>, <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xx"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
-<span>    <span class="va">group</span>,</span>
-<span>    <span class="va">label</span>,</span>
-<span>    <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
-<span>      span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span>
-<span>      my_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span></span>
+<span>    group <span class="op">=</span> <span class="va">group</span>,</span>
+<span>    label <span class="op">=</span> <span class="va">label</span>,</span>
+<span>    param <span class="op">=</span> <span class="va">parm</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">val</span>,</span>
+<span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
+<span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
+<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xx"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
+<span>        <span class="va">group</span>,</span>
+<span>        <span class="va">label</span>,</span>
+<span>        <span class="fu"><a href="../reference/col_plan.html">span_structure</a></span><span class="op">(</span></span>
+<span>            span <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span>, <span class="st">"Placebo"</span><span class="op">)</span>,</span>
+<span>            my_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/print_to_gt.html">print_to_gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <div id="wgoncbvalt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#wgoncbvalt table {
   font-family: Courier, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';

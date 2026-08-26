@@ -19,18 +19,18 @@ function. Suppose we have a basic `tfrmt`:
 ``` r
 
 template_tfrmt <- tfrmt(
-  group = grp,
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      frmt("xx.x")
+    group = grp,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx.x")
+        )
     )
-  )
 )
 template_tfrmt |> print_mock_gt()
 ```
@@ -42,7 +42,7 @@ We can pass this through `tfrmt_to_json` to convert to `JSON` metadata.
 ``` r
 
 template_tfrmt |>
-  tfrmt_to_json()
+    tfrmt_to_json()
 #> {
 #>   "group": ["grp"],
 #>   "label": ["label"],
@@ -71,20 +71,20 @@ as the second argument to the function:
 ``` r
 
 tfrmt(
-  group = grp,
-  label = label,
-  column = column,
-  param = param,
-  value = value,
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      frmt("xx.x")
+    group = grp,
+    label = label,
+    column = column,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx.x")
+        )
     )
-  )
 ) |>
-  tfrmt_to_json(path = "template.JSON")
+    tfrmt_to_json(path = "template.JSON")
 ```
 
 ## JSON to tfrmt
@@ -102,10 +102,10 @@ template as needed.
 ``` r
 
 template_json |>
-  layer_tfrmt(
-    tfrmt(title = "Custom title")
-  ) |>
-  print_mock_gt()
+    layer_tfrmt(
+        tfrmt(title = "Custom title")
+    ) |>
+    print_mock_gt()
 ```
 
 [TABLE]

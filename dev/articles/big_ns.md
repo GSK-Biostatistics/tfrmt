@@ -21,22 +21,29 @@ Total. Below is our ARD prior to incorporating the big Ns:
 ``` r
 
 data <- tibble::tibble(
-  Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
-  Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
-  Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
-  Param = rep(c("n", "mean", "sd", "n", "pct", "n", "pct"), c(6, 3, 3, 3, 3, 3, 3)),
-  Value = c(15, 13, 28, 14, 13, 27, 73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
-  8, 7, 15, 8 / 14, 7 / 13, 15 / 27, 6, 6, 12, 6 / 14, 6 / 13, 12 / 27)
-) |>
-  # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
-  dplyr::mutate(
-    Value = dplyr::case_when(
-      Param == "pct" ~ Value * 100,
-      TRUE ~ Value
+    Group = rep(c("Age (y)", "Sex", "Age (y)", "Sex"), c(3, 3, 6, 12)),
+    Label = rep(c("n", "Mean (SD)", "Male", "Female"), c(6, 6, 6, 6)),
+    Column = rep(c("Placebo", "Treatment", "Total"), times = 8),
+    Param = rep(
+        c("n", "mean", "sd", "n", "pct", "n", "pct"),
+        c(6, 3, 3, 3, 3, 3, 3)
     ),
-    ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
-    ord2 = dplyr::if_else(Label == "n", 1, 2)
-  )
+    Value = c(
+        15, 13, 28, 14, 13, 27,
+        73.56, 74.231, 71.84, 9.347, 7.234, 8.293,
+        8, 7, 15, 8 / 14, 7 / 13, 15 / 27,
+        6, 6, 12, 6 / 14, 6 / 13, 12 / 27
+    )
+) |>
+    # Note because tfrmt only does rounding we will need to have the percents multiplied by 100
+    dplyr::mutate(
+        Value = dplyr::case_when(
+            Param == "pct" ~ Value * 100,
+            TRUE ~ Value
+        ),
+        ord1 = dplyr::if_else(Group == "Age (y)", 1, 2),
+        ord2 = dplyr::if_else(Label == "n", 1, 2)
+    )
 data
 #> # A tibble: 24 × 7
 #>    Group   Label     Column    Param Value  ord1  ord2
@@ -65,9 +72,9 @@ full ARD for this table.
 ``` r
 
 big_ns <- tibble::tibble(
-  Column = c("Placebo", "Treatment", "Total"),
-  Param = "bigN",
-  Value = c(30, 30, 60)
+    Column = c("Placebo", "Treatment", "Total"),
+    Param = "bigN",
+    Value = c(30, 30, 60)
 )
 
 data <- dplyr::bind_rows(data, big_ns)
@@ -81,37 +88,59 @@ they should be formatted as `"N = XX"` and on a separate line.
 ``` r
 
 tfrmt(
-  group = Group,
-  label = Label,
-  column = Column,
-  value = Value,
-  param = Param,
-  sorting_cols = c(ord1, ord2),
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      frmt_combine("{n} {pct}",
-        n = frmt("X"),
-        pct = frmt("(xx.x%)", missing = " ")
-      )
+    group = Group,
+    label = Label,
+    column = Column,
+    value = Value,
+    param = Param,
+    sorting_cols = c(ord1, ord2),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{n} {pct}",
+                n = frmt("X"),
+                pct = frmt(
+                    "(xx.x%)",
+                    missing = " "
+                )
+            )
+        ),
+        frmt_structure(
+            group_val = "Age (y)",
+            label_val = "Mean (SD)",
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("XX.X"),
+                sd = frmt("x.xx")
+            )
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = "n",
+            frmt("xx")
+        )
     ),
-    frmt_structure(
-      group_val = "Age (y)", label_val = "Mean (SD)",
-      frmt_combine("{mean} ({sd})",
-        mean = frmt("XX.X"),
-        sd = frmt("x.xx")
-      )
+    col_plan = col_plan(
+        everything(),
+        -starts_with("ord"),
+        "Total"
     ),
-    frmt_structure(group_val = ".default", label_val = "n", frmt("xx"))
-  ),
-  col_plan = col_plan(everything(), -starts_with("ord"), "Total"),
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = " "))
-  ),
-  big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = " "
+            )
+        )
+    ),
+    big_n = big_n_structure(
+        param_val = "bigN",
+        n_frmt = frmt("\nN = xx")
+    )
 ) |>
-  print_to_gt(data)
+    print_to_gt(data)
 ```
 
 [TABLE]
@@ -127,40 +156,42 @@ variables supplied to the `tfrmt`). Let’s look at this table, which has
 ``` r
 
 data <- tibble::tribble(
-  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
-  "g1", "rowlabel1", "column cols", "cols 1,2", "col1", "value", 1,
-  "g1", "rowlabel1", "column cols", "cols 1,2", "col2", "value", 1,
-  "g1", "rowlabel1", NA, NA, "mycol3", "value", 1,
-  "g1", "rowlabel1", "column cols", "col 4", "col4", "value", 1,
-  "g1", "rowlabel1", NA, NA, "mycol5", "value", 1,
-  "g1", "rowlabel2", "column cols", "cols 1,2", "col1", "value", 2,
-  "g1", "rowlabel2", "column cols", "cols 1,2", "col2", "value", 2,
-  "g1", "rowlabel2", NA, NA, "mycol3", "value", 2,
-  "g1", "rowlabel2", "column cols", "col 4", "col4", "value", 2,
-  "g1", "rowlabel2", NA, NA, "mycol5", "value", 2,
-  "g2", "rowlabel3", "column cols", "cols 1,2", "col1", "value", 3,
-  "g2", "rowlabel3", "column cols", "cols 1,2", "col2", "value", 3,
-  "g2", "rowlabel3", NA, NA, "mycol3", "value", 3,
-  "g2", "rowlabel3", "column cols", "col 4", "col4", "value", 3,
-  "g2", "rowlabel3", NA, NA, "mycol5", "value", 3,
+    ~group , ~label      , ~span2        , ~span1     , ~my_col  , ~parm   , ~val ,
+    "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col1"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "column cols" , "cols 1,2" , "col2"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , NA            , NA         , "mycol3" , "value" ,    1 ,
+    "g1"   , "rowlabel1" , "column cols" , "col 4"    , "col4"   , "value" ,    1 ,
+    "g1"   , "rowlabel1" , NA            , NA         , "mycol5" , "value" ,    1 ,
+    "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col1"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "column cols" , "cols 1,2" , "col2"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , NA            , NA         , "mycol3" , "value" ,    2 ,
+    "g1"   , "rowlabel2" , "column cols" , "col 4"    , "col4"   , "value" ,    2 ,
+    "g1"   , "rowlabel2" , NA            , NA         , "mycol5" , "value" ,    2 ,
+    "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col1"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "column cols" , "cols 1,2" , "col2"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , NA            , NA         , "mycol3" , "value" ,    3 ,
+    "g2"   , "rowlabel3" , "column cols" , "col 4"    , "col4"   , "value" ,    3 ,
+    "g2"   , "rowlabel3" , NA            , NA         , "mycol5" , "value" ,    3 ,
 )
 
-
-
 spanning_tfrmt <- tfrmt(
-  group = group,
-  label = label,
-  param = parm,
-  value = val,
-  column = c(span2, span1, my_col),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x"))
-  ),
-  col_plan = col_plan(
-    group,
-    label,
-    starts_with("col")
-  )
+    group = group,
+    label = label,
+    param = parm,
+    value = val,
+    column = c(span2, span1, my_col),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x")
+        )
+    ),
+    col_plan = col_plan(
+        group,
+        label,
+        starts_with("col")
+    )
 )
 
 print_to_gt(spanning_tfrmt, data)
@@ -175,14 +206,19 @@ other `column` columns are missing.
 ``` r
 
 with_big_n_data <- tibble::tribble(
-  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
-  NA, NA, "column cols", NA, NA, "bigN", 18,
+    ~group , ~label , ~span2        , ~span1 , ~my_col , ~parm  , ~val ,
+    NA     , NA     , "column cols" , NA     , NA      , "bigN" ,   18 ,
 ) |>
-  dplyr::bind_rows(data)
+    dplyr::bind_rows(data)
 
 # Now we can add the big_n to the tfrmt from before
 n_span_tfrmt <- spanning_tfrmt |>
-  tfrmt(big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx")))
+    tfrmt(
+        big_n = big_n_structure(
+            param_val = "bigN",
+            n_frmt = frmt("\nN = xx")
+        )
+    )
 
 print_to_gt(n_span_tfrmt, .data = with_big_n_data)
 ```
@@ -198,12 +234,12 @@ can use the same tfrmt)
 ``` r
 
 with_more_big_n_data <- tibble::tribble(
-  ~group, ~label, ~span2, ~span1, ~my_col, ~parm, ~val,
-  NA, NA, "column cols", "cols 1,2", NA, "bigN", 12,
-  NA, NA, "column cols", "col 4", "col4", "bigN", 6,
-  NA, NA, NA, NA, "mycol3", "bigN", 6
+    ~group , ~label , ~span2        , ~span1     , ~my_col  , ~parm  , ~val ,
+    NA     , NA     , "column cols" , "cols 1,2" , NA       , "bigN" ,   12 ,
+    NA     , NA     , "column cols" , "col 4"    , "col4"   , "bigN" ,    6 ,
+    NA     , NA     , NA            , NA         , "mycol3" , "bigN" ,    6
 ) |>
-  dplyr::bind_rows(with_big_n_data)
+    dplyr::bind_rows(with_big_n_data)
 
 print_to_gt(n_span_tfrmt, .data = with_more_big_n_data)
 ```
@@ -240,18 +276,20 @@ than B, A for the `grp` variable).
 
 
 dat <- tidyr::crossing(
-  grp = c("A", "B"),
-  lbl = c("a", "b"),
-  col = c("Placebo", "Treatment"),
-  param = "mean"
+    grp = c("A", "B"),
+    lbl = c("a", "b"),
+    col = c("Placebo", "Treatment"),
+    param = "mean"
 ) |>
-  dplyr::mutate(val = c(1.254, 3.483, 5.123, 4.239, 4.364, 8.435, 7.645, 2.312))
+    dplyr::mutate(
+        val = c(1.254, 3.483, 5.123, 4.239, 4.364, 8.435, 7.645, 2.312)
+    )
 
 big_ns <- tibble::tibble(
-  col = c("Placebo", "Placebo", "Treatment", "Treatment"),
-  grp = c("A", "B", "A", "B"),
-  param = "bigN",
-  val = c(34, 36, 42, 39)
+    col = c("Placebo", "Placebo", "Treatment", "Treatment"),
+    grp = c("A", "B", "A", "B"),
+    param = "bigN",
+    val = c(34, 36, 42, 39)
 )
 
 dat <- dplyr::bind_rows(dat, big_ns)
@@ -274,20 +312,30 @@ big Ns are assigned to the relevant pages defined by the `page_plan`.
 ``` r
 
 gts <- tfrmt(
-  group = grp,
-  label = lbl,
-  column = col,
-  param = param,
-  value = val,
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("x.x"))
-  ),
-  page_plan = page_plan(
-    page_structure(group_val = ".default")
-  ),
-  big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"), by_page = TRUE)
+    group = grp,
+    label = lbl,
+    column = col,
+    param = param,
+    value = val,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("x.x")
+        )
+    ),
+    page_plan = page_plan(
+        page_structure(
+            group_val = ".default"
+        )
+    ),
+    big_n = big_n_structure(
+        param_val = "bigN",
+        n_frmt = frmt("\nN = xx"),
+        by_page = TRUE
+    )
 ) |>
-  print_to_gt(dat)
+    print_to_gt(dat)
 ```
 
 ``` r
@@ -315,14 +363,16 @@ added if names do get updated in the `col_plan`.
 ``` r
 
 n_span_tfrmt |>
-  tfrmt(col_plan = col_plan(
-    group,
-    label,
-    starts_with("col"),
-    new_col_3 = mycol3,
-    -mycol5
-  )) |>
-  print_to_gt(.data = with_more_big_n_data)
+    tfrmt(
+        col_plan = col_plan(
+            group,
+            label,
+            starts_with("col"),
+            new_col_3 = mycol3,
+            -mycol5
+        )
+    ) |>
+    print_to_gt(.data = with_more_big_n_data)
 ```
 
 [TABLE]

@@ -29,16 +29,17 @@ following {cards} code:
 ``` r
 
 ard_demog <- cards::ard_stack(
-  data = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
-  cards::ard_categorical(
-    variables = "AGEGR1",
-    statistic = ~ c("p")
-  ),
-  cards::ard_continuous(
-    variables = "AGE",
-    statistic = ~ cards::continuous_summary_fns(c("mean", "sd"))
-  ),
-  .by = "ARM"
+    data = pharmaverseadam::adsl |>
+        dplyr::filter(SAFFL == "Y"),
+    cards::ard_categorical(
+        variables = "AGEGR1",
+        statistic = ~ c("p")
+    ),
+    cards::ard_continuous(
+        variables = "AGE",
+        statistic = ~ cards::continuous_summary_fns(c("mean", "sd"))
+    ),
+    .by = "ARM"
 )
 
 ard_demog
@@ -68,7 +69,7 @@ frame without list-columns and extra metadata.
 ``` r
 
 ard_demog_shuffled <- ard_demog |>
-  shuffle_card(by = "ARM")
+    shuffle_card(by = "ARM")
 
 ard_demog_shuffled
 #> # A tibble: 21 × 8
@@ -98,7 +99,7 @@ helper for this:
 ``` r
 
 ard_demog_shuffled <- ard_demog_shuffled |>
-  prep_combine_vars(vars = c("AGEGR1", "AGE"))
+    prep_combine_vars(vars = c("AGEGR1", "AGE"))
 
 ard_demog_shuffled
 #> # A tibble: 21 × 7
@@ -126,7 +127,7 @@ helper for this:
 ``` r
 
 ard_demog_shuffled <- ard_demog_shuffled |>
-  prep_label()
+    prep_label()
 
 ard_demog_shuffled
 #> # A tibble: 21 × 8
@@ -173,7 +174,7 @@ helper takes care of this for us:
 ``` r
 
 ard_demog_shuffled <- ard_demog_shuffled |>
-  prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
+    prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
 
 ard_demog_shuffled
 #> # A tibble: 15 × 8
@@ -202,14 +203,16 @@ ready for our tfrmt!
 ``` r
 
 ard_final <- ard_demog_shuffled |>
-  # drop unneeded variables
-  dplyr::select(-c(variable_level, context, stat_label)) |>
-  # add sorting
-  dplyr::mutate(ord1 = dplyr::case_when(
-    label == "18-64" ~ 1,
-    label == ">64" ~ 2,
-    TRUE ~ 3
-  ))
+    # drop unneeded variables
+    dplyr::select(-c(variable_level, context, stat_label)) |>
+    # add sorting
+    dplyr::mutate(
+        ord1 = dplyr::case_when(
+            label == "18-64" ~ 1,
+            label == ">64" ~ 2,
+            TRUE ~ 3
+        )
+    )
 
 ard_final
 #> # A tibble: 15 × 6
@@ -237,28 +240,30 @@ Create the {tfrmt}
 ``` r
 
 tfrmt(
-  group = stat_variable,
-  label = label,
-  param = stat_name,
-  value = stat,
-  column = ARM,
-  sorting_cols = ord1,
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      frmt("xx.x")
+    group = stat_variable,
+    label = label,
+    param = stat_name,
+    value = stat,
+    column = ARM,
+    sorting_cols = ord1,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx.x")
+        ),
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            p = frmt("xx%", transform = ~ . * 100)
+        )
     ),
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      p = frmt("xx%", transform = ~ . * 100)
-    )
-  ),
-  big_n = big_n_structure(param_val = "bigN"),
-  col_plan = col_plan(-ord1)
+    big_n = big_n_structure(
+        param_val = "bigN"
+    ),
+    col_plan = col_plan(-ord1)
 ) |>
-  print_to_gt(ard_final)
+    print_to_gt(ard_final)
 ```
 
 [TABLE]
@@ -271,19 +276,20 @@ using the following {cards} code:
 ``` r
 
 adae <- pharmaverseadam::adae |>
-  dplyr::filter(SAFFL == "Y") |>
-  dplyr::filter(AESOC %in% unique(AESOC)[1:2]) |>
-  dplyr::group_by(AESOC) |>
-  dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
-  dplyr::ungroup()
+    dplyr::filter(SAFFL == "Y") |>
+    dplyr::filter(AESOC %in% unique(AESOC)[1:2]) |>
+    dplyr::group_by(AESOC) |>
+    dplyr::filter(AEDECOD %in% unique(AEDECOD)[1:3]) |>
+    dplyr::ungroup()
 
 ard_ae <- cards::ard_stack_hierarchical(
-  data = adae,
-  variables = c(AESOC, AEDECOD),
-  by = ARM,
-  denominator = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
-  id = USUBJID,
-  statistic = ~ c("n", "p")
+    data = adae,
+    variables = c(AESOC, AEDECOD),
+    by = ARM,
+    denominator = pharmaverseadam::adsl |>
+        dplyr::filter(SAFFL == "Y"),
+    id = USUBJID,
+    statistic = ~ c("n", "p")
 )
 
 ard_ae
@@ -314,7 +320,7 @@ frame without list-columns and extra metadata.
 ``` r
 
 ard_ae_shuffled <- ard_ae |>
-  shuffle_card()
+    shuffle_card()
 
 ard_ae_shuffled
 #> # A tibble: 57 × 8
@@ -339,7 +345,7 @@ have a missing value for preferred term (AEDECOD):
 ``` r
 
 ard_ae_shuffled |>
-  dplyr::filter(!is.na(AESOC) & is.na(AEDECOD))
+    dplyr::filter(!is.na(AESOC) & is.na(AEDECOD))
 #> # A tibble: 12 × 8
 #>    ARM          AESOC AEDECOD context stat_variable stat_name stat_label    stat
 #>    <chr>        <chr> <chr>   <chr>   <chr>         <chr>     <chr>        <dbl>
@@ -366,13 +372,13 @@ helper to fill the value from AESOC into AEDECOD:
 ``` r
 
 ard_ae_shuffled <- ard_ae_shuffled |>
-  prep_hierarchical_fill(
-    vars = c("AESOC", "AEDECOD"),
-    fill_from_left = TRUE
-  )
+    prep_hierarchical_fill(
+        vars = c("AESOC", "AEDECOD"),
+        fill_from_left = TRUE
+    )
 
 ard_ae_shuffled |>
-  dplyr::filter(AESOC == AEDECOD)
+    dplyr::filter(AESOC == AEDECOD)
 #> # A tibble: 12 × 8
 #>    ARM          AESOC AEDECOD context stat_variable stat_name stat_label    stat
 #>    <chr>        <chr> <chr>   <chr>   <chr>         <chr>     <chr>        <dbl>
@@ -398,7 +404,7 @@ call:
 ``` r
 
 ard_ae_shuffled |>
-  dplyr::filter(is.na(AESOC))
+    dplyr::filter(is.na(AESOC))
 #> # A tibble: 9 × 8
 #>   ARM           AESOC AEDECOD context stat_variable stat_name stat_label    stat
 #>   <chr>         <chr> <chr>   <chr>   <chr>         <chr>     <chr>        <dbl>
@@ -422,7 +428,7 @@ helper takes care of this for us:
 ``` r
 
 ard_ae_shuffled <- ard_ae_shuffled |>
-  prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
+    prep_big_n(vars = "ARM") # the grouping variable we want to prepare big N's for
 
 ard_ae_shuffled
 #> # A tibble: 51 × 8
@@ -447,8 +453,8 @@ ready for our tfrmt!
 ``` r
 
 ard_final <- ard_ae_shuffled |>
-  # drop uneeded variables
-  dplyr::select(-c(context, stat_label, stat_variable))
+    # drop uneeded variables
+    dplyr::select(-c(context, stat_label, stat_variable))
 
 ard_final
 #> # A tibble: 51 × 5
@@ -472,27 +478,27 @@ Create the {tfrmt}
 ``` r
 
 tfrmt(
-  group = AESOC,
-  label = AEDECOD,
-  param = stat_name,
-  value = stat,
-  column = ARM,
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default",
-      label_val = ".default",
-      frmt_combine(
-        "{n} ({p}%)",
-        n = frmt("xx"),
-        p = frmt("xx", transform = ~ . * 100)
-      )
+    group = AESOC,
+    label = AEDECOD,
+    param = stat_name,
+    value = stat,
+    column = ARM,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt_combine(
+                "{n} ({p}%)",
+                n = frmt("xx"),
+                p = frmt("xx", transform = ~ . * 100)
+            )
+        )
+    ),
+    big_n = big_n_structure(
+        param_val = "bigN"
     )
-  ),
-  big_n = big_n_structure(
-    param_val = "bigN"
-  )
 ) |>
-  print_to_gt(ard_final)
+    print_to_gt(ard_final)
 ```
 
 [TABLE]

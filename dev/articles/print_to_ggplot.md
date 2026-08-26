@@ -20,11 +20,14 @@ colon data from the survival package.
 ``` r
 
 # Set up survival data
-fit <- survival::survfit(survival::Surv(time, status) ~ rx, data = survival::colon)
+fit <- survival::survfit(
+    survival::Surv(time, status) ~ rx,
+    data = survival::colon
+)
 
 # Plot kaplan meier between times 0-3000
 km_plot <- autoplot(fit) +
-  ggplot2::xlim(c(0, 3000))
+    ggplot2::xlim(c(0, 3000))
 ```
 
 As with `print_to_gt`, `print_to_ggplot` requires an input table with
@@ -34,10 +37,10 @@ up our mock input table.
 ``` r
 
 risk <- tibble::tibble(
-  time = c(rep(c(0, 1000, 2000, 3000), 3)),
-  label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
-  value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
-  param = rep("n", 12)
+    time = c(rep(c(0, 1000, 2000, 3000), 3)),
+    label = c(rep("Obs", 4), rep("Lev", 4), rep("Lev+5FU", 4)),
+    value = c(630, 372, 256, 11, 620, 360, 266, 8, 608, 425, 328, 14),
+    param = rep("n", 12)
 )
 ```
 
@@ -47,19 +50,20 @@ table. This can then be piped out to `print_to_ggplot` as seen below.
 ``` r
 
 table <- tfrmt(
-  # specify columns in the data
-  label = label,
-  column = time,
-  param = param,
-  value = value,
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt("X")
+    # specify columns in the data
+    label = label,
+    column = time,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("X")
+        )
     )
-  )
 ) |>
-  print_to_ggplot(risk)
+    print_to_ggplot(risk)
 
 table
 ```
@@ -84,7 +88,7 @@ the x-axis labels using the theme
 ``` r
 
 table2 <- table +
-  ggplot2::theme(axis.text.x = NULL)
+    ggplot2::theme(axis.text.x = NULL)
 
 km_plot / table2
 ```
@@ -99,16 +103,16 @@ groupings to the risk table above for a mock example.
 ``` r
 
 riska <- risk |>
-  dplyr::mutate(group = "A")
+    dplyr::mutate(group = "A")
 
 riskb <- risk |>
-  dplyr::mutate(
-    group = "B",
-    value = value + 10
-  )
+    dplyr::mutate(
+        group = "B",
+        value = value + 10
+    )
 
 risk_group <- riska |>
-  rbind(riskb)
+    rbind(riskb)
 ```
 
 Now we need to add group to our tfrmt specification and patch together:
@@ -116,21 +120,22 @@ Now we need to add group to our tfrmt specification and patch together:
 ``` r
 
 group_table <- tfrmt(
-  # specify columns in the data
-  group = group,
-  label = label,
-  column = time,
-  param = param,
-  value = value,
-  body_plan = body_plan(
-    frmt_structure(
-      group_val = ".default", label_val = ".default",
-      frmt("X")
+    # specify columns in the data
+    group = group,
+    label = label,
+    column = time,
+    param = param,
+    value = value,
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("X")
+        )
     )
-  )
 ) |>
-  print_to_ggplot(risk_group) +
-  ggplot2::theme(axis.text.x = NULL)
+    print_to_ggplot(risk_group) +
+    ggplot2::theme(axis.text.x = NULL)
 
 km_plot / group_table
 ```
@@ -145,27 +150,28 @@ side by side. First we can make the table using `print_to_ggplot`.
 
 ``` r
 
-aes <- factor(c("Fever", "Malaise", "Local Allergic Reaction"),
-  levels = c("Fever", "Malaise", "Local Allergic Reaction")
+aes <- factor(
+    c("Fever", "Malaise", "Local Allergic Reaction"),
+    levels = c("Fever", "Malaise", "Local Allergic Reaction")
 )
 
 tbl_dat <- tibble::tibble(
-  grp = "1 to 7 days after treatment",
-  ae = rep(aes, each = 4),
-  trt = rep(rep(c("TRT A", "Placebo"), each = 2), 3),
-  param = rep(c("n", "pct"), 6),
-  value = c(60, 7.7, 26, 3.3, 183, 23.5, 89, 11.4, 94, 12, 55, 7)
+    grp = "1 to 7 days after treatment",
+    ae = rep(aes, each = 4),
+    trt = rep(rep(c("TRT A", "Placebo"), each = 2), 3),
+    param = rep(c("n", "pct"), 6),
+    value = c(60, 7.7, 26, 3.3, 183, 23.5, 89, 11.4, 94, 12, 55, 7)
 )
 
 tbl_p <- tfrmt_n_pct() |>
-  tfrmt(
-    label = ae,
-    group = grp,
-    column = trt,
-    param = param,
-    value = "value"
-  ) |>
-  print_to_ggplot(tbl_dat)
+    tfrmt(
+        label = ae,
+        group = grp,
+        column = trt,
+        param = param,
+        value = "value"
+    ) |>
+    print_to_ggplot(tbl_dat)
 
 tbl_p
 ```
@@ -180,26 +186,29 @@ the group value to make the plots match up correctly.
 ``` r
 
 plot_dat <- tibble::tibble(
-  ae = aes,
-  mean = c(3, 2.3, 2),
-  lower = c(1.95, 1.9, 1.2),
-  upper = c(4, 3.5, 3.4)
+    ae = aes,
+    mean = c(3, 2.3, 2),
+    lower = c(1.95, 1.9, 1.2),
+    upper = c(4, 3.5, 3.4)
 ) |>
-  dplyr::bind_rows(c(ae = "1 to 7 days after treatment"))
+    dplyr::bind_rows(c(ae = "1 to 7 days after treatment"))
 
-plot_p <- ggplot2::ggplot(data = plot_dat, aes(x = ae, y = mean, ymin = lower, ymax = upper)) +
-  ggplot2::geom_pointrange() +
-  ggplot2::geom_hline(yintercept = 1, lty = 2) + # add a dotted line at x=1 after flip
-  ggplot2::coord_flip() +
-  ggplot2::xlab("") +
-  ggplot2::ylab("Adjusted Rate Ratio (95% CI)") +
-  ggplot2::scale_x_discrete(limits = rev) +
-  ggplot2::scale_y_discrete(position = "right") +
-  ggplot2::theme_minimal() +
-  ggplot2::theme(
-    axis.text.y = element_blank(), # remove x axis labels
-    axis.ticks.y = element_blank()
-  )
+plot_p <- ggplot2::ggplot(
+    data = plot_dat,
+    aes(x = ae, y = mean, ymin = lower, ymax = upper)
+) +
+    ggplot2::geom_pointrange() +
+    ggplot2::geom_hline(yintercept = 1, lty = 2) + # add a dotted line at x=1 after flip
+    ggplot2::coord_flip() +
+    ggplot2::xlab("") +
+    ggplot2::ylab("Adjusted Rate Ratio (95% CI)") +
+    ggplot2::scale_x_discrete(limits = rev) +
+    ggplot2::scale_y_discrete(position = "right") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+        axis.text.y = element_blank(), # remove x axis labels
+        axis.ticks.y = element_blank()
+    )
 plot_p
 ```
 
@@ -225,14 +234,14 @@ to the `print_to_ggplot`.
 ``` r
 
 tfrmt_n_pct() |>
-  tfrmt(
-    label = ae,
-    group = grp,
-    column = trt,
-    param = param,
-    value = "value"
-  ) |>
-  print_to_ggplot(tbl_dat, size = 8)
+    tfrmt(
+        label = ae,
+        group = grp,
+        column = trt,
+        param = param,
+        value = "value"
+    ) |>
+    print_to_ggplot(tbl_dat, size = 8)
 ```
 
 ![](print_to_ggplot_files/figure-html/unnamed-chunk-12-1.png)

@@ -40,24 +40,36 @@ To add a post space after all groups of values based on the variable
 ``` r
 
 my_tfrmt <- tfrmt(
-  group = grp1,
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = ".default", element_block(post_space = "   "))
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = grp1,
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = ".default",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 [TABLE]
@@ -68,24 +80,36 @@ following:
 ``` r
 
 my_tfrmt <- tfrmt(
-  group = grp1,
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    row_grp_structure(group_val = "grp1_1", element_block(post_space = "   "))
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = grp1,
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        row_grp_structure(
+            group_val = "grp1_1",
+            element_block = element_block(
+                post_space = "   "
+            )
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 [TABLE]
@@ -115,24 +139,33 @@ indentation to distinguish the hierarchies:
 ``` r
 
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "indented")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 [TABLE]
@@ -147,24 +180,33 @@ rest will combine with the label variable using indentation:
 ``` r
 
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "spanning")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "spanning"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(whitespace = "pre", align = "left"),
-    locations = gt::cells_stub()
-  )
+    gt::tab_style(
+        style = gt::cell_text(
+            whitespace = "pre",
+            align = "left"
+        ),
+        locations = gt::cells_stub()
+    )
 ```
 
 [TABLE]
@@ -181,24 +223,30 @@ with the label variable using indentation.*
 ``` r
 
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "column")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2) |>
-  gt::tab_style(
-    style = gt::cell_text(v_align = "top"),
-    locations = gt::cells_stub(columns = c(1:3))
-  )
+    gt::tab_style(
+        style = gt::cell_text(v_align = "top"),
+        locations = gt::cells_stub(columns = c(1:3))
+    )
 ```
 
 |        |        |         | column1 | column2 | column3 |
@@ -220,17 +268,23 @@ specifying the “noprint” option.
 ``` r
 
 my_tfrmt <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(
-    label_loc = element_row_grp_loc(location = "noprint")
-  ),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "noprint"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
+            frmt("xx")
+        )
+    )
 )
 
 print_mock_gt(my_tfrmt, .default = 1:2)
