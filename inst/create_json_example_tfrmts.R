@@ -20,27 +20,27 @@ tfrmt_demog <- tfrmt(
             )
         ),
         frmt_structure(
-            label_val = "n",
-            frmt("xxx")
+            frmt("xxx"),
+            label_val = "n"
         ),
         frmt_structure(
-            label_val = c("Mean", "Median", "Min", "Max"),
-            frmt("xxx.x")
+            frmt("xxx.x"),
+            label_val = c("Mean", "Median", "Min", "Max")
         ),
         frmt_structure(
-            label_val = "SD",
-            frmt("xxx.xx")
+            frmt("xxx.xx"),
+            label_val = "SD"
         ),
         frmt_structure(
             p = frmt("")
         ),
         frmt_structure(
-            label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
                 TRUE ~ frmt("x.xxx", missing = "")
-            )
+            ),
+            label_val = c("n", "<65 yrs", "<12 months", "<25")
         )
     ),
 
@@ -165,8 +165,8 @@ tfrmt_efficacy <- tfrmt(
     body_plan = body_plan(
         # we could also do: n = frmt("xx")
         frmt_structure(
-            label_val = "n",
-            frmt("xx")
+            frmt("xx"),
+            label_val = "n"
         ),
         frmt_structure(
             p.value = frmt_when(
@@ -176,41 +176,41 @@ tfrmt_efficacy <- tfrmt(
             )
         ),
         frmt_structure(
-            label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
                 median = frmt("xx.x"),
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Median (Range)"
         ),
         frmt_structure(
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
                 sd = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
                 diff = frmt("xx.x"),
                 diff_se = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Diff of LS Means (SE)"
         ),
         frmt_structure(
-            label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
                 diff_lcl = frmt("xx.x"),
                 diff_ucl = frmt("xx.x"),
                 missing = " "
-            )
+            ),
+            label_val = "95% CI"
         )
     ),
     col_plan = col_plan(

@@ -34,17 +34,17 @@ Here are some example outputs:
 \examples{
 
 sample_structure <- frmt_structure(
-    group_val = "group1",
-    frmt("XXX")
+    frmt("XXX"),
+    group_val = "group1"
 )
 
 # multiple group columns
 sample_structure <- frmt_structure(
+    frmt("XXX"),
     group_val = list(
         grp_col1 = "group1",
         grp_col2 = "subgroup3"
-    ),
-    frmt("XXX")
+    )
 )
 }
 \seealso{

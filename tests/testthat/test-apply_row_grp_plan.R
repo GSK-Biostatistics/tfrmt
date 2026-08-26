@@ -1090,20 +1090,20 @@ test_that("Row group plans with col style plan", {
                 frmt("xx.xx")
             ),
             frmt_structure(
-                label_val = "n (%)",
                 frmt_combine(
                     "{n} ({pct}%)",
                     n = frmt("x"),
                     pct = frmt("xx.x")
-                )
+                ),
+                label_val = "n (%)"
             ),
             frmt_structure(
-                label_val = "(q1, q3)",
                 frmt_combine(
                     "({q1}, {q3})",
                     q1 = frmt("xx"),
                     q3 = frmt("xx")
-                )
+                ),
+                label_val = "(q1, q3)"
             ),
             frmt_structure(
                 pval = frmt_when(
@@ -1194,20 +1194,20 @@ test_that("Row group plans with col style plan", {
                 frmt("xx.xx")
             ),
             frmt_structure(
-                label_val = "n (%)",
                 frmt_combine(
                     "{n} ({pct}%)",
                     n = frmt("x"),
                     pct = frmt("xx.x")
-                )
+                ),
+                label_val = "n (%)"
             ),
             frmt_structure(
-                label_val = "(q1, q3)",
                 frmt_combine(
                     "({q1}, {q3})",
                     q1 = frmt("xx"),
                     q3 = frmt("xx")
-                )
+                ),
+                label_val = "(q1, q3)"
             ),
             frmt_structure(
                 pval = frmt_when(

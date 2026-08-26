@@ -46,12 +46,12 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
                 frmt("x.x")
             ),
             frmt_structure(
-                label_val = "m",
                 frmt_combine(
                     "{n}/{n_2}",
                     n = frmt("x"),
                     n_2 = frmt("x.x")
-                )
+                ),
+                label_val = "m"
             )
         )
     )

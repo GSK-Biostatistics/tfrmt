@@ -50,8 +50,8 @@ x2 <- frmt_when(
 is_frmt_when(x2)
 
 x3 <- frmt_structure(
-    group_val = "group1",
-    frmt("XXX")
+    frmt("XXX"),
+    group_val = "group1"
 )
 
 is_frmt_structure(x3)

@@ -43,16 +43,16 @@ tf_spec <- tfrmt(
             )
         ),
         frmt_structure(
+            frmt("xxx"),
             label_val = "n",
-            frmt("xxx")
         ),
         frmt_structure(
-            label_val = c("Mean", "Median", "Min","Max"),
-            frmt("xxx.x")
+            frmt("xxx.x"),
+            label_val = c("Mean", "Median", "Min","Max")
         ),
         frmt_structure(
-            label_val = "SD",
-            frmt("xxx.xx")
+            frmt("xxx.xx"),
+            label_val = "SD"
         ),
         frmt_structure(
             p = frmt_when(

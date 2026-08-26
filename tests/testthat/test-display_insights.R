@@ -90,16 +90,16 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 
         body_plan = body_plan(
             frmt_structure(
-                label_val = "label 1",
-                frmt("xxx")
+                frmt("xxx"),
+                label_val = "label 1"
             ),
             frmt_structure(
-                label_val = c("label 2", "label 3"),
                 frmt_combine(
                     "{count} ({percent})",
                     count = frmt("xx"),
                     percent = frmt("xx.x")
-                )
+                ),
+                label_val = c("label 2", "label 3")
             )
         )
     )
@@ -165,24 +165,24 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
 
         body_plan = body_plan(
             frmt_structure(
-                label_val = "label 1",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "label 1"
             ),
             frmt_structure(
-                label_val = "label 2",
                 frmt_combine(
                     "{median} ({sd})",
                     median = frmt("xx"),
                     sd = frmt("xx.x")
-                )
+                ),
+                label_val = "label 2"
             ),
             frmt_structure(
-                label_val = "label 3",
                 frmt_when(
                     ">0.99" ~ ">0.99",
                     "<0.001" ~ "<0.001",
                     TRUE ~ frmt("x.xxx", missing = "")
-                )
+                ),
+                label_val = "label 3"
             )
         )
     )

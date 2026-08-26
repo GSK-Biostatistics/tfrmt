@@ -163,27 +163,27 @@ tfrmt_spec <- tfrmt(
             )
         ),
         frmt_structure(
-            label_val = "n",
-            frmt("xxx")
+            frmt("xxx"),
+            label_val = "n"
         ),
         frmt_structure(
+            frmt("xxx.x"),
             label_val = c("Mean", "Median", "Min","Max"),
-            frmt("xxx.x")
         ),
         frmt_structure(
+            frmt("xxx.xx"),
             label_val = "SD",
-            frmt("xxx.xx")
         ),
         frmt_structure(
             p = frmt("")
         ),
         frmt_structure(
-            label_val = c("n","<65 yrs","<12 months","<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
                 TRUE ~ frmt("x.xxx", missing = "")
-           )
+           ),
+            label_val = c("n","<65 yrs","<12 months","<25")
         )
     ),
     # remove extra cols

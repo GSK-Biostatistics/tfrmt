@@ -124,17 +124,17 @@ test_that("Simple Case big_n", {
                 )
             ),
             frmt_structure(
-                group_val = "Age (y)",
-                label_val = "Mean (SD)",
                 frmt_combine(
                     "{mean} ({sd})",
                     mean = frmt("XX.X"),
                     sd = frmt("x.xx")
-                )
+                ),
+                group_val = "Age (y)",
+                label_val = "Mean (SD)"
             ),
             frmt_structure(
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         row_grp_plan = row_grp_plan(
@@ -381,17 +381,17 @@ test_that("Multiple big N params", {
                 )
             ),
             frmt_structure(
-                group_val = "Age (y)",
-                label_val = "Mean (SD)",
                 frmt_combine(
                     "{mean} ({sd})",
                     mean = frmt("XX.X"),
                     sd = frmt("x.xx")
-                )
+                ),
+                group_val = "Age (y)",
+                label_val = "Mean (SD)"
             ),
             frmt_structure(
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         col_plan = col_plan(
@@ -502,17 +502,17 @@ test_that("Overlapping Big N's", {
                 )
             ),
             frmt_structure(
-                group_val = "Age (y)",
-                label_val = "Mean (SD)",
                 frmt_combine(
                     "{mean} ({sd})",
                     mean = frmt("XX.X"),
                     sd = frmt("x.xx")
-                )
+                ),
+                group_val = "Age (y)",
+                label_val = "Mean (SD)"
             ),
             frmt_structure(
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         col_plan = col_plan(
@@ -1478,8 +1478,8 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
         param = Param,
         body_plan = body_plan(
             frmt_structure(
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         row_grp_plan = row_grp_plan(
