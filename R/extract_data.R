@@ -98,6 +98,6 @@ extract_data <- function(x, col_delim = "_") {
             )
         )
 
-        return(extracted_list)
+        extracted_list
     }
 }
