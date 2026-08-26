@@ -132,7 +132,7 @@
 #'         ),
 #'         frmt_structure(
 #'             frmt("xxx.xx"),
-#'             label_val = "SD",
+#'             label_val = "SD"
 #'         ),
 #'         frmt_structure(
 #'             p = frmt("")
