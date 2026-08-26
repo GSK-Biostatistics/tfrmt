@@ -7,17 +7,17 @@
 row_grp_structure(group_val = ".default", element_block)
 }
 \arguments{
-\item{group_val}{A string or a named list of strings which represent the
-value of group should be when the given frmt is implemented}
+\item{group_val}{A character vector or a named list of strings which
+represent the value of group should be when the given frmt is implemented}
 
-\item{element_block}{element_block() object to define the block styling}
+\item{element_block}{An \code{\link[=element_block]{element_block()}} object to define the block styling}
 }
 \value{
-row_grp_structure object
+A \code{row_grp_structure} object
 }
 \description{
-Function needed to create a row_grp_structure object, which is a building block
-of \code{\link[=row_grp_plan]{row_grp_plan()}}
+Function needed to create a row_grp_structure object, which is a building
+block of \code{\link[=row_grp_plan]{row_grp_plan()}}
 }
 \examples{
 

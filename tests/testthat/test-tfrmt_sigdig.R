@@ -133,7 +133,6 @@ test_that("build frmt objects", {
     )
     frmt_string <- list(
         frmt_structure(
-            group_val = ".default",
             label_val = "ige",
             frmt_combine(
                 "{mean} ({sd})",
@@ -142,12 +141,10 @@ test_that("build frmt objects", {
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "ige",
             median = frmt("xx.x")
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = "ige",
             n = frmt("xxx")
         )
@@ -162,7 +159,6 @@ test_that("build frmt objects", {
     )
     frmt_string <- list(
         frmt_structure(
-            group_val = ".default",
             label_val = c("ige", "igg"),
             frmt_combine(
                 "{mean} ({sd})",
@@ -171,12 +167,10 @@ test_that("build frmt objects", {
             )
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = c("ige", "igg"),
             median = frmt("xx.x")
         ),
         frmt_structure(
-            group_val = ".default",
             label_val = c("ige", "igg"),
             n = frmt("xxx")
         )
@@ -244,7 +238,6 @@ test_that("build frmt objects", {
                 group1 = "CHEM",
                 group2 = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL")
             ),
-            label_val = ".default",
             min = frmt("x.xx")
         ),
         frmt_structure(
@@ -252,7 +245,6 @@ test_that("build frmt objects", {
                 group1 = "CHEM",
                 group2 = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL")
             ),
-            label_val = ".default",
             max = frmt("x.xx")
         ),
         frmt_structure(
@@ -260,7 +252,6 @@ test_that("build frmt objects", {
                 group1 = "CHEM",
                 group2 = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL")
             ),
-            label_val = ".default",
             median = frmt("x.xx")
         ),
         frmt_structure(
@@ -268,7 +259,6 @@ test_that("build frmt objects", {
                 group1 = "CHEM",
                 group2 = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL")
             ),
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -280,7 +270,6 @@ test_that("build frmt objects", {
                 group1 = "CHEM",
                 group2 = c("ALANINE AMINOTRANSFERASE", "CHOLESTEROL")
             ),
-            label_val = ".default",
             n = frmt("x")
         )
     )
@@ -398,22 +387,18 @@ test_that("no redundant frmt_structures", {
     bp_man <- body_plan(
         frmt_structure(
             group_val = list(group1 = ".default"),
-            label_val = ".default",
             min = frmt("x.xx")
         ),
         frmt_structure(
             group_val = list(group1 = ".default"),
-            label_val = ".default",
             max = frmt("x.xx")
         ),
         frmt_structure(
             group_val = list(group1 = ".default"),
-            label_val = ".default",
             median = frmt("x.xx")
         ),
         frmt_structure(
             group_val = list(group1 = ".default"),
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -422,7 +407,6 @@ test_that("no redundant frmt_structures", {
         ),
         frmt_structure(
             group_val = list(group1 = ".default"),
-            label_val = ".default",
             n = frmt("x")
         ),
         frmt_structure(
@@ -815,7 +799,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 group1 = "test1",
                 newgrp = ".default"
             ),
-            label_val = ".default",
             min = frmt("x.xx")
         ),
         frmt_structure(
@@ -823,7 +806,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 group1 = "test1",
                 newgrp = ".default"
             ),
-            label_val = ".default",
             max = frmt("x.xx")
         ),
         frmt_structure(
@@ -831,7 +813,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 group1 = "test1",
                 newgrp = ".default"
             ),
-            label_val = ".default",
             median = frmt("x.xx")
         ),
         frmt_structure(
@@ -839,7 +820,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 group1 = "test1",
                 newgrp = ".default"
             ),
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -851,7 +831,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 group1 = "test1",
                 newgrp = ".default"
             ),
-            label_val = ".default",
             n = frmt("x")
         )
     )
@@ -876,7 +855,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 newgrp = ".default",
                 group2 = ".default"
             ),
-            label_val = ".default",
             min = frmt("x.xx")
         ),
         frmt_structure(
@@ -885,7 +863,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 newgrp = ".default",
                 group2 = ".default"
             ),
-            label_val = ".default",
             max = frmt("x.xx")
         ),
         frmt_structure(
@@ -894,7 +871,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 newgrp = ".default",
                 group2 = ".default"
             ),
-            label_val = ".default",
             median = frmt("x.xx")
         ),
         frmt_structure(
@@ -903,7 +879,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 newgrp = ".default",
                 group2 = ".default"
             ),
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -916,7 +891,6 @@ test_that("group vars specified in tfrmt but not sigdig data are represented in 
                 newgrp = ".default",
                 group2 = ".default"
             ),
-            label_val = ".default",
             n = frmt("x")
         )
     )
@@ -930,8 +904,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
         label = lblvar,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx.xx")
             )
         )
@@ -958,8 +930,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
 
     bp_man <- body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx.xx")
         ),
         frmt_structure(
@@ -967,7 +937,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
                 group1 = "test1",
                 group2 = "test2"
             ),
-            label_val = ".default",
             min = frmt("x.xx")
         ),
         frmt_structure(
@@ -975,7 +944,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
                 group1 = "test1",
                 group2 = "test2"
             ),
-            label_val = ".default",
             max = frmt("x.xx")
         ),
         frmt_structure(
@@ -983,7 +951,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
                 group1 = "test1",
                 group2 = "test2"
             ),
-            label_val = ".default",
             median = frmt("x.xx")
         ),
         frmt_structure(
@@ -991,7 +958,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
                 group1 = "test1",
                 group2 = "test2"
             ),
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx"),
@@ -1003,7 +969,6 @@ test_that("tfrmt_sigdig can be layered onto another tfrmt", {
                 group1 = "test1",
                 group2 = "test2"
             ),
-            label_val = ".default",
             n = frmt("x")
         )
     )
@@ -1064,22 +1029,18 @@ test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan
     bp_man <- body_plan(
         frmt_structure(
             group_val = list(group1 = "CHEM"),
-            label_val = ".default",
             min = frmt("x.xx", missing = target_missing)
         ),
         frmt_structure(
             group_val = list(group1 = "CHEM"),
-            label_val = ".default",
             max = frmt("x.xx", missing = target_missing)
         ),
         frmt_structure(
             group_val = list(group1 = "CHEM"),
-            label_val = ".default",
             median = frmt("x.xx", missing = target_missing)
         ),
         frmt_structure(
             group_val = list(group1 = "CHEM"),
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("x.xx", missing = target_missing),
@@ -1089,7 +1050,6 @@ test_that("tfrmt_sigdig correctly passes the 'missing' argument to the body_plan
         ),
         frmt_structure(
             group_val = list(group1 = "CHEM"),
-            label_val = ".default",
             n = frmt("x", missing = target_missing)
         )
     )
