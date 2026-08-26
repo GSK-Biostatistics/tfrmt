@@ -159,7 +159,7 @@ test_that("is_row_grp_structure", {
         is_row_grp_structure(
             row_grp_structure(
                 group_val = c("A", "C"),
-                element_block(post_space = "---")
+                element_block = element_block(post_space = "---")
             )
         )
     )
@@ -173,7 +173,7 @@ test_that("check_row_grp_structure", {
         check_row_grp_structure(
             row_grp_structure(
                 group_val = c("A", "C"),
-                element_block(post_space = "---")
+                element_block = element_block(post_space = "---")
             )
         )
     )
@@ -192,11 +192,11 @@ test_that("check_row_grp_structure_list", {
             list(
                 row_grp_structure(
                     group_val = c("A", "C"),
-                    element_block(post_space = "---")
+                    element_block = element_block(post_space = "---")
                 ),
                 row_grp_structure(
                     group_val = c("foo", "bar"),
-                    element_block(post_space = "baz")
+                    element_block = element_block(post_space = "baz")
                 )
             )
         )

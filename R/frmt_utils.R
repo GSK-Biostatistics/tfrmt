@@ -207,7 +207,9 @@ check_frmt_structure_list <- function(x) {
 #' @examples
 #' x4 <- row_grp_structure(
 #'     group_val = c("A","C"),
-#'     element_block(post_space = "---")
+#'     element_block = element_block(
+#'         post_space = "---"
+#'     )
 #' )
 #'
 #' is_row_grp_structure(x4)
