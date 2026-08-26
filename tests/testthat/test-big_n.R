@@ -143,7 +143,7 @@ test_that("Simple Case big_n", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -410,7 +410,7 @@ test_that("Multiple big N params", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -534,7 +534,7 @@ test_that("Overlapping Big N's", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         big_n = big_n_structure(
@@ -720,7 +720,7 @@ test_that("Test big n with footnotes", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             )
         ),
         body_plan = body_plan(
@@ -909,7 +909,7 @@ test_that("big Ns vary by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1000,7 +1000,7 @@ test_that("big Ns constant by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1065,7 +1065,7 @@ test_that("big Ns constant by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1157,7 +1157,7 @@ test_that("big Ns constant by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1236,7 +1236,7 @@ test_that("not enough big Ns by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1313,7 +1313,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1421,7 +1421,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1517,7 +1517,7 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )

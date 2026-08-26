@@ -10,7 +10,7 @@ test_that("insert post space - single grouping variable", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(
             location = "spanning"
@@ -43,7 +43,7 @@ test_that("insert post space - single grouping variable", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         )
     )
 
@@ -89,7 +89,7 @@ test_that("insert post space - two grouping variables", {
                 grp1 = ".default",
                 grp2 = "b"
             ),
-            element_block(
+            element_block = element_block(
                 post_space = " "
             )
         ),
@@ -132,7 +132,7 @@ test_that("insert post space - two grouping variables", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = list(grp1 = "A"),
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(
             location = "spanning"
@@ -180,11 +180,11 @@ test_that("insert mix - single grouping variable", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = c("A", "C"),
-            element_block(post_space = "---")
+            element_block = element_block(post_space = "---")
         ),
         row_grp_structure(
             group_val = "B",
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(
             location = "spanning"
@@ -225,7 +225,7 @@ test_that("insert post space after specific value", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = list(grp1 = "A", grp2 = "b"),
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(location = "spanning")
     )
@@ -269,11 +269,11 @@ test_that("overlapping row_grp_structures - prefers latest", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         row_grp_structure(
             group_val = list(grp1 = "A", grp2 = "b"),
-            element_block(post_space = "***")
+            element_block = element_block(post_space = "***")
         ),
         label_loc = element_row_grp_loc(
             location = "column"
@@ -320,7 +320,7 @@ test_that("no post space added if NULL", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = NULL)
+            element_block = element_block(post_space = NULL)
         ),
         label_loc = element_row_grp_loc(location = "spanning")
     )
@@ -351,7 +351,7 @@ test_that("post space is truncated to data width", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "----------------------")
+            element_block = element_block(post_space = "----------------------")
         ),
         label_loc = element_row_grp_loc(location = "spanning")
     )
@@ -387,7 +387,7 @@ test_that("do not recycle the post space for full width", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "--", fill = FALSE)
+            element_block = element_block(post_space = "--", fill = FALSE)
         ),
         label_loc = element_row_grp_loc(location = "spanning")
     )
@@ -423,7 +423,7 @@ test_that("post space works when data contains NAs", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "----------------------")
+            element_block = element_block(post_space = "----------------------")
         ),
         label_loc = element_row_grp_loc(location = "spanning")
     )
@@ -602,7 +602,7 @@ test_that("Check apply_row_grp_* w/ list-columns (in case of incomplete body_pla
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(
             location = "indented"
@@ -1125,11 +1125,11 @@ test_that("Row group plans with col style plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = list(g1 = "G1"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             row_grp_structure(
                 group_val = list(g1 = "G2_"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             label_loc = element_row_grp_loc(
                 location = "spanning"
@@ -1554,7 +1554,7 @@ test_that("Check apply_row_grp_lbl - expect error when NA in label column", {
     sample_grp_plan <- row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(post_space = " ")
         ),
         label_loc = element_row_grp_loc(location = "indented")
     )

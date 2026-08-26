@@ -818,7 +818,7 @@ test_that("apply_tfrmt drops ..tfrmt_post_space_row and inserts post space rows"
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             ),

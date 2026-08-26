@@ -706,7 +706,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -901,11 +901,11 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = list(g1 = "G1"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             row_grp_structure(
                 group_val = list(g1 = "G2_"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             label_loc = element_row_grp_loc(
                 location = "spanning"
