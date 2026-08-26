@@ -1544,6 +1544,13 @@ test_that("col_plan returns correct errors", {
 })
 
 test_that("span_structure misc, including errors", {
+    ## empty inputs
+    expect_error(
+        span_structure(),
+        "span_structure() requires at least one named argument.",
+        fixed = TRUE
+    )
+
     ## unnamed values
     expect_error(
         span_structure(`blah blah blah`),

@@ -147,6 +147,13 @@ is_span_structure <- function(x) {
 
 #' @noRd
 check_span_structure_dots <- function(x) {
+    if (length(x) == 0) {
+        rlang::abort(
+            "span_structure() requires at least one named argument.",
+            call = rlang::caller_call()
+        )
+    }
+
     x_names <- names(x)
 
     if (is.null(x_names) || !all(nzchar(x_names))) {
