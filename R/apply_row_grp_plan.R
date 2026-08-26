@@ -243,7 +243,7 @@ fill_post_space <- function(post_space, fill, width) {
         fill_val <- stringr::str_sub(post_space, 1, width) # truncate to data width if needed
     }
 
-    return(fill_val)
+    fill_val
 }
 
 
