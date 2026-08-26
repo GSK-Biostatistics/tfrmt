@@ -110,7 +110,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -190,7 +190,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -266,7 +266,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -459,7 +459,7 @@ test_that("extract_data works for a table with bigN values", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         big_n = big_n_structure(
