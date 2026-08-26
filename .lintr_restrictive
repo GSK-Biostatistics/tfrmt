@@ -1,0 +1,36 @@
+linters: all_linters(
+  object_usage_linter = NULL,
+  implicit_assignment_linter = NULL,
+  object_length_linter = NULL,
+  namespace_linter = NULL,
+  cyclocomp_linter(25),
+  todo_comment_linter = NULL,
+  function_argument_linter = NULL,
+  implicit_integer_linter = NULL,
+  object_name_linter = NULL,
+  # redundancy linters
+  nonportable_path_linter = NULL,
+  keyword_quote_linter = NULL,
+  undesirable_function_linter = NULL,
+  object_overwrite_linter = NULL,
+  # conditions handling linters
+  condition_call_linter = NULL,
+  condition_message_linter = NULL,
+  # negation linters
+  unnecessary_concatenation_linter = NULL,
+  unnecessary_nesting_linter = NULL,
+  # piping linters
+  one_call_pipe_linter = NULL,
+  pipe_consistency_linter = NULL,
+  nested_pipe_linter = NULL,
+  # line_length should also be handled by Air
+  line_length_linter = NULL,
+  # indentation is handled by Air
+  indentation_linter = NULL
+  ) # see vignette("lintr")
+encoding: "UTF-8"
+exclusions: list(
+  "data-raw/",
+  "tests/testthat.R",
+  "vignettes/"
+  ) # see ?lintr::exclude

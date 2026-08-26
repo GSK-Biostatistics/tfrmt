@@ -7,7 +7,8 @@
 page_plan(
   ...,
   note_loc = c("noprint", "preheader", "subtitle", "source_note"),
-  max_rows = NULL
+  max_rows = NULL,
+  transform = NULL
 )
 }
 \arguments{
@@ -18,7 +19,20 @@ Useful if the \code{page_structure} contains only ".default" values (meaning the
 table is split by every unique level of a grouping variable), and that
 variable is dropped in the col_plan. \code{preheader} only available for rtf output.}
 
-\item{max_rows}{Option to set a maximum number of rows per page. Takes a numeric value.}
+\item{max_rows}{Option to set a maximum number of rows per page. Takes a
+numeric value.}
+
+\item{transform}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} optional, a function
+or formula to transform the page label.
+
+It should take a character vector as input and return a modified character
+vector as output.
+
+A \strong{function} is used as is, e.g. \code{function(x) {stringr::str_replace(x, "grp", "Group")}}
+
+A \strong{formula}, e.g. \code{~ stringr::str_remove_all(.x, "_")} is converted to a
+function. This allows you to create more compact anonymous functions
+(lambdas).}
 }
 \value{
 page_plan object
@@ -30,13 +44,31 @@ page_structure's and the row_every_n argument, respectively.
 \examples{
  # use of page_struct
  page_plan(
-    page_structure(group_val = "grp1", label_val = "lbl1")
+   page_structure(
+     group_val = "grp1",
+     label_val = "lbl1"
+   )
  )
 
  # use of #  rows
  page_plan(
-    max_rows = 5
+   max_rows = 5
  )
 
+ # use of transform with a formula
+ page_plan(
+   page_structure(group_val = ".default"),
+   transform = ~ stringr::str_replace(.x, "grp", "Group")
+ )
+
+ # use of transform with a function
+ transformation_function <- function(x) {
+   stringr::str_replace(x, "grp", "Group")
+ }
+
+ page_plan(
+   page_structure(group_val = ".default"),
+   transform = transformation_function
+ )
 
 }

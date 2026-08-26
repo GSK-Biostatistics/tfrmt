@@ -240,7 +240,7 @@
 ---
 
     Code
-      .
+      as_json(frmt_comb_simp)
     Output
       {
         "group": [],
@@ -282,7 +282,7 @@
 ---
 
     Code
-      .
+      as_json(sci)
     Output
       {
         "group": [],
@@ -308,7 +308,7 @@
 ---
 
     Code
-      .
+      as_json(complex_frmt)
     Output
       {
         "group": [],
@@ -418,7 +418,7 @@
 # json big n
 
     Code
-      .
+      as_json(big_n)
     Output
       {
         "group": [],
@@ -441,7 +441,7 @@
 # json footnote plan
 
     Code
-      .
+      as_json(fn_simp)
     Output
       {
         "group": [],
@@ -452,26 +452,27 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["Source Note"],
               "column_val": {},
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["Source Note"]
+              "label_val": {}
             },
             {
+              "footnote_text": ["Placebo"],
               "column_val": ["PL"],
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["Placebo"]
+              "label_val": {}
             }
           ],
-          "marks": ["standard"]
+          "marks": ["standard"],
+          "order": ["marks_first"]
         }
       } 
 
 ---
 
     Code
-      .
+      as_json(fn_cols)
     Output
       {
         "group": [],
@@ -482,22 +483,23 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["All Treatments"],
               "column_val": {
                 "column": ["T1", "T2", "T1&T2"]
               },
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["All Treatments"]
+              "label_val": {}
             }
           ],
-          "marks": ["numbers"]
+          "marks": ["numbers"],
+          "order": ["marks_first"]
         }
       } 
 
 ---
 
     Code
-      .
+      as_json(gl_fn)
     Output
       {
         "group": [],
@@ -508,20 +510,21 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["Footnote goes here"],
               "column_val": {},
               "group_val": ["group 1"],
-              "label_val": ["label 1"],
-              "footnote_text": ["Footnote goes here"]
+              "label_val": ["label 1"]
             }
           ],
-          "marks": ["numbers"]
+          "marks": ["numbers"],
+          "order": ["marks_first"]
         }
       } 
 
 ---
 
     Code
-      .
+      as_json(nested_fn)
     Output
       {
         "group": [],
@@ -532,23 +535,24 @@
         "footnote_plan": {
           "struct_list": [
             {
+              "footnote_text": ["Footnote goes here"],
               "column_val": {
                 "span": ["Treatment"],
                 "column": ["T1&T2"]
               },
               "group_val": {},
-              "label_val": {},
-              "footnote_text": ["Footnote goes here"]
+              "label_val": {}
             }
           ],
-          "marks": ["numbers"]
+          "marks": ["numbers"],
+          "order": ["marks_first"]
         }
       } 
 
 # json col_plan
 
     Code
-      .
+      as_json(cp)
     Output
       {
         "group": [],
@@ -571,7 +575,7 @@
 ---
 
     Code
-      .
+      as_json(rename)
     Output
       {
         "group": [],
@@ -594,7 +598,7 @@
 ---
 
     Code
-      .
+      as_json(base_ts)
     Output
       {
         "group": [],
@@ -615,7 +619,7 @@
 ---
 
     Code
-      .
+      as_json(span)
     Output
       {
         "group": [],
@@ -640,7 +644,7 @@
 ---
 
     Code
-      .
+      as_json(span_tfrmt)
     Output
       {
         "group": [],
@@ -702,7 +706,7 @@
 # json col_style_plan
 
     Code
-      .
+      as_json(csp)
     Output
       {
         "group": [],
@@ -755,7 +759,7 @@
 ---
 
     Code
-      .
+      as_json(csp_spaces)
     Output
       {
         "group": [],
@@ -778,7 +782,7 @@
 # json page plan
 
     Code
-      .
+      as_json(pp)
     Output
       {
         "group": [],
@@ -798,14 +802,15 @@
             }
           ],
           "note_loc": ["source_note"],
-          "max_rows": {}
+          "max_rows": {},
+          "transform": {}
         }
       } 
 
 ---
 
     Code
-      .
+      as_json(pp_max_rows)
     Output
       {
         "group": [],
@@ -816,7 +821,64 @@
         "page_plan": {
           "struct_list": [],
           "note_loc": ["noprint"],
-          "max_rows": [5]
+          "max_rows": [5],
+          "transform": {}
+        }
+      } 
+
+# page_plan() roundtrip to JSON with transform
+
+    Code
+      as_json(page_plan_lambda)
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [
+            {
+              "group_val": [".default"],
+              "label_val": {}
+            },
+            {
+              "group_val": {},
+              "label_val": ["A"]
+            }
+          ],
+          "note_loc": ["source_note"],
+          "max_rows": {},
+          "transform": ["~stringr::str_replace(.x, stringr::fixed(\"foo\"), \"bar\")"]
+        }
+      } 
+
+---
+
+    Code
+      as_json(page_plan_function)
+    Output
+      {
+        "group": [],
+        "label": {},
+        "param": {},
+        "value": {},
+        "column": [],
+        "page_plan": {
+          "struct_list": [
+            {
+              "group_val": [".default"],
+              "label_val": {}
+            },
+            {
+              "group_val": {},
+              "label_val": ["A"]
+            }
+          ],
+          "note_loc": ["source_note"],
+          "max_rows": {},
+          "transform": ["function (x) \n{\n    stringr::str_replace(x, stringr::fixed(\"foo\"), \"bar\")\n}"]
         }
       } 
 

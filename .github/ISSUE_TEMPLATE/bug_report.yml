@@ -1,0 +1,13 @@
+name: Bug Report
+description: File a bug report.
+title: 'Bug Report: <Describe bug>'
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Include a *minimal* [reproducible example](https://www.tidyverse.org/help/) as well as a call to sessionInfo(). 
+      placeholder: Tell us what you see!
+      value: "Brief description of the problem."
+    validations:
+      required: true

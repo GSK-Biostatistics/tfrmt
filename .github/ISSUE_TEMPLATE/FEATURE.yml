@@ -1,0 +1,13 @@
+name: ✨ Feature Request
+description: Request or propose a new feature
+title: 'Feature Request: <Description>'
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: What's the feature?
+      description: Describe the feature and, if applicable, create a mock-up of what you'd like to see.
+      placeholder: Tell us what you see!
+      value: "Brief description of the feature request."
+    validations:
+      required: true

@@ -16,3 +16,8 @@ vignettes
 man/figures/
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^[.]?air[.]toml$
+^\.vscode$
+^\.lintr$
+^\.lintr_restrictive$
+^TODO\.md$

@@ -27,11 +27,17 @@ articles:
   - layer
   - building_mocks
   - templates
+- title: Data Preparation
+  navbar: Data Preparation
+  contents:
+  - ard
+  - cards_to_tfrmt
 - title:
   navbar: More
   contents:
   - json
   - print_to_ggplot
+  - extract_data
   - faq
   - mock_examples
   - unusual_tables
@@ -61,6 +67,7 @@ reference:
   contents:
   - layer_tfrmt
   - update_group
+  - reset_component
 - title: Print/Export
   contents:
   - print_mock_gt
@@ -85,3 +92,11 @@ reference:
   - cleaned_data_to_gt
   - starts_with("is_")
   - make_mock_data
+  - extract_data
+- title: "ARD Helpers for {cards} to {tfrmt}"
+  contents:
+  - shuffle_card
+  - prep_big_n
+  - prep_combine_vars
+  - prep_hierarchical_fill
+  - prep_label

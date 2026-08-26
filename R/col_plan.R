@@ -92,6 +92,18 @@
 #'    )
 #'  )
 #'
+#' ## To one or more stub headers rename the corresponding group/label variables in the column plan.
+#' ## If multiple group variables exist, any of them can be renamed.
+#' ## Note: Multiple stub headers are only possible if the `row_grp_plan` label
+#' ## location is set to "column". Otherwise, if more than one group/label column is renamed,
+#' ## {tfrmt} will use the highest level group name available.
+#'
+#'  renaming_group <- col_plan(
+#'     my_grp = group, # rename group
+#'     label,
+#'     starts_with("col")
+#'   )
+#'
 ##' @section Images:
 #' Here are some example outputs:
 #'
@@ -99,20 +111,19 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-span_structure-cropped.jpg\" alt =\"Example of a dataset being turned into a table with spanning columns\" style=\"width:100\\%;\">"`
 #' }}
 #'
-col_plan <- function(..., .drop = FALSE){
+col_plan <- function(..., .drop = FALSE) {
+    ## selectively evaluate dots (only if is a span_structure)
+    ## confirm contents otherwise
+    dots <- as.list(substitute(substitute(...)))[-1]
+    dots <- check_col_plan_dots(dots)
 
-  ## selectively evaluate dots (only if is a span_structure)
-  ## confirm contents otherwise
-  dots <- as.list(substitute(substitute(...)))[-1]
-  dots <- check_col_plan_dots(dots)
-
-  structure(
-    list(
-      dots = dots,
-      .drop = .drop
-    ),
-    class = c("col_plan","plan")
-  )
+    structure(
+        list(
+            dots = dots,
+            .drop = .drop
+        ),
+        class = c("col_plan", "plan")
+    )
 }
 
 #' @rdname col_plan
@@ -120,128 +131,134 @@ col_plan <- function(..., .drop = FALSE){
 #' @return span_structure object
 #'
 #' @export
-span_structure <- function(...){
+span_structure <- function(...) {
+    span_cols <- as.list(substitute(substitute(...)))[-1]
+    span_cols <- check_span_structure_dots(span_cols)
 
-  span_cols <- as.list(substitute(substitute(...)))[-1]
-  span_cols <- check_span_structure_dots(span_cols)
-
-  structure(
-    span_cols,
-    class = c("span_structure")
-  )
-}
-
-is_span_structure <- function(x){
-  inherits(x, "span_structure")
-}
-
-#' @importFrom rlang eval_tidy
-#' @noRd
-check_span_structure_dots <- function(x){
-
-  x_names <- names(x)
-
-  if(is.null(x_names) | any(x_names == "")){
-    abort(
-      paste0("Entries of a span_stucture must be named:\n ",format(caller_call())),
-      call = caller_call()
+    structure(
+        span_cols,
+        class = "span_structure"
     )
-  }
+}
 
-  x_dots <- x %>%
-    map(~lapply(trim_vars_quo_c(.x),function(x){
+is_span_structure <- function(x) {
+    inherits(x, "span_structure")
+}
 
-    if(is.name(x)){
-      if(identical(as_label(x), "<empty>")){
-        return(NULL)
-      }else{
-        return(quo(!!x))
-      }
-    }else if(is.call(x)){
-      if(is_valid_tidyselect_call(x)){
-        quo(!!x)
-      }else if(is_valid_quo_call(x)){
-        return(eval_tidy(x))
-      }else{
-        abort(
-          message = paste0(
-            "Invalid entry: `",format(x),"`\n",
-          "Only selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
-          " or unquoted expressions representing variable names ",
-          " can be entered as contents.",
-          " Changing the names of individual variables using new_name = old_name syntax is allowable"
-          ),
-          call = caller_call()
+#' @noRd
+check_span_structure_dots <- function(x) {
+    x_names <- names(x)
+
+    if (is.null(x_names) || !all(nzchar(x_names))) {
+        rlang::abort(
+            paste0(
+                "Entries of a span_stucture must be named:\n ",
+                format(rlang::caller_call())
+            ),
+            call = rlang::caller_call()
         )
-      }
-    }else if(is.character(x)){
-      return(as_length_one_quo.character(x))
-    }else{
-      abort("Unexpected entry type in span_structure()",
-            call = caller_call())
     }
-  }))
 
-  x_dots[!sapply(x_dots, is.null)]
-}
-
-is_valid_span_structure_call <- function(x){
-  as.character(as.list(x)[[1]]) %in% c("span_structure")
-}
-
-#' @importFrom tidyselect vars_select_helpers
-is_valid_tidyselect_call <- function(x){
-  ## drop - from determining if
-  if(as.character(as.list(x)[[1]]) == "-"){
-    x <- x[[-1]]
-    if(is.name(x)){
-      return(TRUE)
-    }
-  }
-  as.character(as.list(x)[[1]]) %in% c(names(vars_select_helpers))
-}
-
-is_valid_quo_call <- function(x){
-  ## drop - from determining if
-  if(as.character(as.list(x)[[1]]) == "-"){
-    x <- x[[-1]]
-    if(is.name(x)){
-      return(TRUE)
-    }
-  }
-  as.character(as.list(x)[[1]]) %in% c("vars","quo")
-}
-
-check_col_plan_dots <- function(x){
-
-  lapply(x,function(x){
-    if(is.name(x)){
-      if(identical(as_label(x), "<empty>")){
-        return(NULL)
-      }else{
-        return(quo(!!x))
-      }
-    }else if(is.call(x)){
-      if(is_valid_tidyselect_call(x)){
-        quo(!!x)
-      }else if(is_valid_quo_call(x) | is_valid_span_structure_call(x)){
-        return(eval_tidy(x))
-      }else{
-        stop(
-          "Invalid entry: `",format(x),"`\n",
-          "Only span_structures (`span_structure()`), ",
-          "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
-          " or unquoted expressions representing variable names ",
-          " can be entered as contents.",
-          " Changing the names of individual variables using new_name = old_name syntax is allowable",
-          call. = FALSE
+    x_dots <- x %>%
+        purrr::map(
+            ~ lapply(trim_vars_quo_c(.x), function(x) {
+                if (is.name(x)) {
+                    if (identical(rlang::as_label(x), "<empty>")) {
+                        return(NULL) # nolint: return_linter
+                    } else {
+                        return(rlang::quo(!!x)) # nolint: return_linter
+                    }
+                } else if (is.call(x)) {
+                    if (is_valid_tidyselect_call(x)) {
+                        rlang::quo(!!x)
+                    } else if (is_valid_quo_call(x)) {
+                        return(rlang::eval_tidy(x)) # nolint: return_linter
+                    } else {
+                        rlang::abort(
+                            message = paste0(
+                                "Invalid entry: `",
+                                format(x),
+                                "`\n",
+                                "Only selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
+                                " or unquoted expressions representing variable names ",
+                                " can be entered as contents.",
+                                " Changing the names of individual variables using new_name = old_name syntax is allowable"
+                            ),
+                            call = rlang::caller_call()
+                        )
+                    }
+                } else if (is.character(x)) {
+                    return(as_length_one_quo.character(x)) # nolint: return_linter
+                } else {
+                    rlang::abort(
+                        "Unexpected entry type in span_structure()",
+                        call = rlang::caller_call()
+                    )
+                }
+            })
         )
-      }
-    }else if(is.character(x)){
-      return(as_length_one_quo.character(x))
-    }else{
-      stop("Unexpected entry type in span_structure()")
-    }
-  })
+
+    x_dots[!sapply(x_dots, is.null)]
 }
 
+is_valid_span_structure_call <- function(x) {
+    as.character(as.list(x)[[1]]) == "span_structure"
+}
+
+is_valid_tidyselect_call <- function(x) {
+    ## drop - from determining if
+    if (as.character(as.list(x)[[1]]) == "-") {
+        x <- x[[-1]]
+        if (is.name(x)) {
+            return(TRUE) # nolint: return_linter
+        }
+    }
+    as.character(as.list(x)[[1]]) %in% c(names(tidyselect::vars_select_helpers))
+}
+
+is_valid_quo_call <- function(x) {
+    ## drop - from determining if
+    if (as.character(as.list(x)[[1]]) == "-") {
+        x <- x[[-1]]
+        if (is.name(x)) {
+            return(TRUE) # nolint: return_linter
+        }
+    }
+    as.character(as.list(x)[[1]]) %in% c("vars", "quo")
+}
+
+check_col_plan_dots <- function(x) {
+    lapply(x, function(x) {
+        if (is.name(x)) {
+            if (identical(rlang::as_label(x), "<empty>")) {
+                return(NULL) # nolint: return_linter
+            } else {
+                return(rlang::quo(!!x)) # nolint: return_linter
+            }
+        } else if (is.call(x)) {
+            if (is_valid_tidyselect_call(x)) {
+                rlang::quo(!!x)
+            } else if (
+                is_valid_quo_call(x) || is_valid_span_structure_call(x)
+            ) {
+                return(rlang::eval_tidy(x)) # nolint: return_linter
+            } else {
+                stop(
+                    "Invalid entry: `",
+                    format(x),
+                    "`\n",
+                    "Only span_structures (`span_structure()`), ",
+                    "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
+                    " or unquoted expressions representing variable names ",
+                    " can be entered as contents.",
+                    " Changing the names of individual variables using new_name = old_name syntax is allowable",
+                    call. = FALSE
+                )
+            }
+        } else if (is.character(x)) {
+            return(as_length_one_quo.character(x)) # nolint: return_linter
+        } else {
+            stop("Unexpected entry type in span_structure()")
+        }
+    })
+}

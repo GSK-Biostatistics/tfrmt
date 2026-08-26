@@ -1,4 +1,3 @@
-
 #' Create frmt character string from significant digits spec
 #'
 #' @param sigdig Number of significant digits to add to default setting for that param
@@ -6,25 +5,22 @@
 #'
 #' @return formatted spec as character string
 #' @noRd
-#'
-#' @importFrom stringr str_dup str_replace
 sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
-
-  if (is.na(sigdig)){
-    frmted_string <- "x"
-  } else {
-    frmted_dec <- str_dup("x", sigdig)
-    if (!frmted_dec==""){
-      frmted_dec <- paste0(".", frmted_dec)
+    if (is.na(sigdig)) {
+        frmted_string <- "x"
+    } else {
+        frmted_dec <- stringr::str_dup("x", sigdig)
+        if (frmted_dec != "") {
+            frmted_dec <- paste0(".", frmted_dec)
+        }
+        frmted_string <- paste0("x", frmted_dec)
     }
-    frmted_string <- paste0("x", frmted_dec)
-  }
 
-  if (is.na(single_glue_to_frmt)){
-     frmted_string
-  } else {
-    str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
-  }
+    if (is.na(single_glue_to_frmt)) {
+        frmted_string
+    } else {
+        stringr::str_replace(single_glue_to_frmt, "\\{.*\\}", frmted_string)
+    }
 }
 
 
@@ -55,50 +51,73 @@ sigdig_frmt_string <- function(sigdig = 2, single_glue_to_frmt) {
 #' param_set("{pct} %" = 1)
 #'
 #' @return list of default parameter-level significant digits rounding
+#'
 #' @export
-#' @importFrom purrr map_lgl map2_lgl
-param_set <- function(...){
-  args <-  list(...)
+param_set <- function(...) {
+    args <- list(...)
 
-  if (length(args)>0){
-    all_numeric_args <- map_lgl(args, ~is.numeric(.) || is.na(.))  %>% all()
-    all_named_args <- names(args) %>% nchar() %>% all(.>0)
-    if (!all_numeric_args || !all_named_args){
-      stop("`param_set` entry must be named numeric vector.")
+    if (length(args) > 0) {
+        all_numeric_args <- purrr::map_lgl(
+            args,
+            ~ is.numeric(.) || is.na(.)
+        ) %>%
+            all()
+        all_named_args <- names(args) %>% nchar() %>% all(. > 0)
+        if (!all_numeric_args || !all_named_args) {
+            stop("`param_set` entry must be named numeric vector.")
+        }
     }
-  }
 
-  # make list of all params: default + user specified
-  param_list <- list(
-    "min" = 1,
-    "max" = 1,
-    "median" = 1,
-    "{mean} ({sd})" = c(1,2),
-    "n" = NA
-  )
+    # make list of all params: default + user specified
+    param_list <- list(
+        "min" = 1,
+        "max" = 1,
+        "median" = 1,
+        "{mean} ({sd})" = c(1, 2),
+        "n" = NA
+    )
 
-  # determine if any existing params need to be overwritten
+    # determine if any existing params need to be overwritten
 
-  args_params <- c(names(args), str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>% unlist)
+    args_params <- c(
+        names(args),
+        stringr::str_extract_all(names(args), "(?<=\\{)[^\\}]+(?=\\})") %>%
+            unlist()
+    )
 
-  idx_drop <- seq_along(param_list) %>%
-    map_dfr(~tibble(param_display = names(param_list)[.x],
-                    params = str_extract_all(.data$param_display, "(?<=\\{)[^\\}]+(?=\\})"))) %>%
-    mutate(idx = row_number()) %>%
-    unnest("params", keep_empty = TRUE) %>%
-    mutate(drop = map2_lgl(.data$param_display, .data$params, ~  (.x %in% args_params || .y %in% args_params))) %>%
-    filter(drop == TRUE) %>%
-    pull(.data$idx) %>%
-    unique()
+    idx_drop <- seq_along(param_list) %>%
+        purrr::map_dfr(
+            ~ tibble::tibble(
+                param_display = names(param_list)[.x],
+                params = stringr::str_extract_all(
+                    .data$param_display,
+                    "(?<=\\{)[^\\}]+(?=\\})"
+                )
+            )
+        ) %>%
+        dplyr::mutate(
+            idx = dplyr::row_number()
+        ) %>%
+        tidyr::unnest(
+            "params",
+            keep_empty = TRUE
+        ) %>%
+        dplyr::mutate(
+            drop = purrr::map2_lgl(
+                .data$param_display,
+                .data$params,
+                ~ (.x %in% args_params || .y %in% args_params)
+            )
+        ) %>%
+        dplyr::filter(drop) %>%
+        dplyr::pull(.data$idx) %>%
+        unique()
 
-  if(length(idx_drop)>0){
-    param_list <- param_list[-idx_drop]
-  }
-  c(param_list,
-    args)
-
+    if (length(idx_drop) > 0) {
+        param_list <- param_list[-idx_drop]
+    }
+    c(param_list, args)
 }
-
 
 
 #' Create tfrmt object from significant digits spec
@@ -165,12 +184,12 @@ param_set <- function(...){
 #' tfrmt_sigdig(sigdig_df = sig_input,
 #'              group = vars(group1, group2),
 #'              label = rowlbl,
-#'              param_defaults = param_set("[{n}]" = NA)) %>%
+#'              param_defaults = param_set("[{n}]" = NA)) |>
 #'   tfrmt(column = vars(col1, col2),
 #'         param = param,
 #'         value = value,
 #'         sorting_cols = vars(ord1, ord2, ord3),
-#'         col_plan = col_plan(-starts_with("ord"))) %>%
+#'         col_plan = col_plan(-starts_with("ord"))) |>
 #'   print_to_gt(.data = data)
 #' ```
 #' \if{html}{\out{
@@ -180,111 +199,164 @@ param_set <- function(...){
 #'
 #' @export
 #'
-#' @importFrom dplyr rowwise group_split desc vars all_of
-#' @importFrom tidyr unite
-#' @importFrom purrr map
-#' @importFrom rlang quo_is_missing syms as_name as_label
-tfrmt_sigdig <- function(sigdig_df,
-                         group=vars(),
-                         label=quo(),
-                         param_defaults = param_set(),
-                         missing = NULL,
-                         tfrmt_obj = NULL,
-                         ...){
+tfrmt_sigdig <- function(
+    sigdig_df,
+    group = vars(),
+    label = rlang::quo(),
+    param_defaults = param_set(),
+    missing = NULL,
+    tfrmt_obj = NULL,
+    ...
+) {
+    tfrmt_inputs <- quo_get(
+        c("group", "label"),
+        as_var_args = "group",
+        as_quo_args = "label"
+    )
 
-  tfrmt_inputs <-  quo_get(c("group","label"), as_var_args = "group", as_quo_args = "label")
-
-  # if a tfrmt_obj is supplied and no group or label parameters are passed, use the one from the tfrmt_obj
-  if(!is.null(tfrmt_obj)){
-    if(is_empty(tfrmt_inputs$group) && !is_empty(tfrmt_obj$group)){
-        tfrmt_inputs$group <- tfrmt_obj$group
+    # if a tfrmt_obj is supplied and no group or label parameters are passed, use the one from the tfrmt_obj
+    if (!is.null(tfrmt_obj)) {
+        if (
+            rlang::is_empty(tfrmt_inputs$group) &&
+                !rlang::is_empty(tfrmt_obj$group)
+        ) {
+            tfrmt_inputs$group <- tfrmt_obj$group
+        }
+        if (
+            rlang::quo_is_missing(tfrmt_inputs$label) &&
+                !rlang::quo_is_missing(tfrmt_obj$label)
+        ) {
+            tfrmt_inputs$label <- tfrmt_obj$label
+        }
     }
-    if(quo_is_missing(tfrmt_inputs$label) && !quo_is_missing(tfrmt_obj$label)){
-      tfrmt_inputs$label <- tfrmt_obj$label
+
+    # error if no sigdig column
+    if (!"sigdig" %in% names(sigdig_df)) {
+        stop("`sigdig_df` input must contain `sigdig` column.")
     }
-  }
 
-  # error if no sigdig column
-  if (!"sigdig" %in% names(sigdig_df)){
-    stop("`sigdig_df` input must contain `sigdig` column.")
-  }
-
-  # error if no group/label columns available
-  data_names <- sigdig_df %>% select(-"sigdig") %>% names()
-  if (length(data_names)==0){
-    stop("`sigdig_df` input must contain group and/or label value columns.")
-  }
-
-  group_names <- map_chr(tfrmt_inputs$group, as_label)
-  label_name <- if (quo_is_missing(tfrmt_inputs$label)) character(0) else as_label(tfrmt_inputs$label)
-
-  # if group param is provided, figure out which group/label variables are present in data and only keep those
-  if (length(group_names)>0){
-    sigdig_df <- sigdig_df %>% select(any_of(c(group_names, label_name, "sigdig")))
-
-    # error if mismatch between provided group (and label, if it exists) & data columns
-    data_names <- sigdig_df %>% select(-"sigdig") %>% names()
-    if (length(data_names)==0){
-      group_msg <- if(length(group_names)>0) paste0("group: ", paste(group_names, collapse = ", "), "\n") else ""
-      label_msg <- if(length(label_name)>0) paste0("label: ", paste(label_name, collapse = ", ")) else ""
-      stop("`sigdig_df` input does not contain any of the specified group/label params:\n",
-           group_msg,
-           label_msg)
+    # error if no group/label columns available
+    data_names <- sigdig_df %>%
+        dplyr::select(-"sigdig") %>%
+        names()
+    if (length(data_names) == 0) {
+        stop("`sigdig_df` input must contain group and/or label value columns.")
     }
-  }
 
-  # if group param is NOT provided, any columns not covered by label param will be set to group param
-  if (length(group_names)==0){
-    groups_to_add <- setdiff(data_names, label_name)
-    tfrmt_inputs$group <- c(tfrmt_inputs$group, vars(!!!syms(groups_to_add)))
-  }
+    group_names <- purrr::map_chr(tfrmt_inputs$group, rlang::as_label)
+    label_name <- if (rlang::quo_is_missing(tfrmt_inputs$label)) {
+        character(0)
+    } else {
+        rlang::as_label(tfrmt_inputs$label)
+    }
 
+    # if group param is provided, figure out which group/label variables are present in data and only keep those
+    if (length(group_names) > 0) {
+        sigdig_df <- sigdig_df %>%
+            dplyr::select(
+                tidyselect::any_of(
+                    c(
+                        group_names,
+                        label_name,
+                        "sigdig"
+                    )
+                )
+            )
 
-  # warning if provided group params are not present in the data
-  new_group_names <- map_chr(tfrmt_inputs$group, as_label)
+        # error if mismatch between provided group (and label, if it exists) & data columns
+        data_names <- sigdig_df %>%
+            dplyr::select(-"sigdig") %>%
+            names()
+        if (length(data_names) == 0) {
+            group_msg <- if (length(group_names) > 0) {
+                paste0("group: ", toString(group_names), "\n")
+            } else {
+                ""
+            }
+            label_msg <- if (length(label_name) > 0) {
+                paste0("label: ", toString(label_name))
+            } else {
+                ""
+            }
+            stop(
+                "`sigdig_df` input does not contain any of the specified group/label params:\n",
+                group_msg,
+                label_msg
+            )
+        }
+    }
 
-  if (!all(new_group_names %in% names(sigdig_df))){
-    grp <- setdiff(new_group_names, names(sigdig_df))
-    warning("`sigdig_df` input does not contain the following group params: ", paste0(grp, collapse = ", "))
-  }
+    # if group param is NOT provided, any columns not covered by label param will be set to group param
+    if (length(group_names) == 0) {
+        groups_to_add <- setdiff(data_names, label_name)
+        tfrmt_inputs$group <- c(
+            tfrmt_inputs$group,
+            vars(!!!rlang::syms(groups_to_add))
+        )
+    }
 
+    # warning if provided group params are not present in the data
+    new_group_names <- purrr::map_chr(tfrmt_inputs$group, rlang::as_label)
 
-  # if input data contains grouping variables, establish ordering based on
-  # whether any of the grouping values are set to .default
-  groups_in_data <- intersect(data_names, new_group_names)
+    if (!all(new_group_names %in% names(sigdig_df))) {
+        grp <- setdiff(new_group_names, names(sigdig_df))
+        warning(
+            "`sigdig_df` input does not contain the following group params: ",
+            toString(grp)
+        )
+    }
 
-  if (length(groups_in_data)>0){
-    data_ord <- sigdig_df %>%
-      unite("def_ord", all_of(groups_in_data), remove = FALSE) %>%
-      mutate(def_ord = str_count(.data$def_ord, ".default"))
-  } else {
-    data_ord <- sigdig_df %>%
-      mutate(def_ord = 0)
-  }
+    # if input data contains grouping variables, establish ordering based on
+    # whether any of the grouping values are set to .default
+    groups_in_data <- intersect(data_names, new_group_names)
 
-  # Create body plan
-  frmt_structure_list <- data_ord %>%
-    group_by(def_ord = desc(.data$def_ord), .data$sigdig) %>%
-    group_split() %>%
-    map(select, -"def_ord") %>%
-    map(body_plan_builder, tfrmt_inputs$group, tfrmt_inputs$label, param_defaults, missing = NULL)
+    if (length(groups_in_data) > 0) {
+        data_ord <- sigdig_df %>%
+            tidyr::unite(
+                "def_ord",
+                tidyselect::all_of(groups_in_data),
+                remove = FALSE
+            ) %>%
+            dplyr::mutate(
+                def_ord = stringr::str_count(.data$def_ord, ".default")
+            )
+    } else {
+        data_ord <- sigdig_df %>%
+            dplyr::mutate(
+                def_ord = 0
+            )
+    }
 
-  bp <- frmt_structure_list %>%
-    do.call("c",.)   %>%
-    do.call("body_plan", .)
+    # Create body plan
+    frmt_structure_list <- data_ord %>%
+        dplyr::group_by(
+            def_ord = dplyr::desc(.data$def_ord),
+            .data$sigdig
+        ) %>%
+        dplyr::group_split() %>%
+        purrr::map(dplyr::select, -"def_ord") %>%
+        purrr::map(
+            body_plan_builder,
+            tfrmt_inputs$group,
+            tfrmt_inputs$label,
+            param_defaults,
+            missing = missing
+        )
 
+    bp <- frmt_structure_list %>%
+        do.call("c", .) %>%
+        do.call("body_plan", .)
 
-  # output tfrmt (layer with previous, if applicable)
-  tfrmt_out <- tfrmt(
-    group = tfrmt_inputs$group,
-    label = tfrmt_inputs$label,
-    body_plan = bp)
+    # output tfrmt (layer with previous, if applicable)
+    tfrmt_out <- tfrmt(
+        group = tfrmt_inputs$group,
+        label = tfrmt_inputs$label,
+        body_plan = bp
+    )
 
-  if(!is.null(tfrmt_obj)){
-    layer_tfrmt(x = tfrmt_obj,
-                y = tfrmt_out)
-  } else {
-     tfrmt_out
-  }
-
+    if (!is.null(tfrmt_obj)) {
+        layer_tfrmt(x = tfrmt_obj, y = tfrmt_out)
+    } else {
+        tfrmt_out
+    }
 }
