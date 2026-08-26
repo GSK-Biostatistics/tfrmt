@@ -26,20 +26,25 @@
 #'
 #' tfrmt_1 <- tfrmt(title = "title1")
 #'
-#' tfrmt_2 <- tfrmt(title = "title2",subtitle = "subtitle2")
+#' tfrmt_2 <- tfrmt(
+#'     title = "title2",
+#'     subtitle = "subtitle2"
+#' )
 #'
 #' layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
     if (missing(x)) {
-        stopifnot(is_tfrmt(y))
+        check_tfrmt(y)
         return(y)
     } else if (missing(y)) {
-        stopifnot(is_tfrmt(x))
+        check_tfrmt(x)
         return(x)
     }
 
-    stopifnot(is_tfrmt(y), is_tfrmt(x))
+    check_tfrmt(x)
+    check_tfrmt(y)
+    rlang::check_bool(join_body_plans)
 
     args <- union(names(x), names(y))
 
@@ -68,7 +73,7 @@ layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
             if (inherits(e, "_tfrmt_mismatched_group_vals")) {
                 e <- append_update_group_message(e, x, y)
             }
-            abort(
+            rlang::abort(
                 e$message,
                 call = e$call,
                 trace = e$trace
@@ -114,7 +119,7 @@ layer_tfrmt_arg_quo <- function(x, y, arg_name, ...) {
     x_arg_val <- x[[arg_name]]
     y_arg_val <- y[[arg_name]]
 
-    if (is.null(y_arg_val) || identical(y_arg_val, quo())) {
+    if (is.null(y_arg_val) || identical(y_arg_val, rlang::quo())) {
         x_arg_val
     } else {
         y_arg_val
@@ -158,30 +163,39 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #' tfrmt_spec <- tfrmt(
 #'     group = c(group1, group2),
 #'     body_plan  = body_plan(
-#'       frmt_structure(
-#'          group_val = list(group2 = "value"),
-#'          label_val = ".default",
-#'          frmt("XXX")
-#'          ),
-#'      frmt_structure(
-#'          group_val = list(group1 = "value", group2 = "value"),
-#'          label_val = ".default",
-#'          frmt("XXX")
+#'         frmt_structure(
+#'             group_val = list(group2 = "value"),
+#'             label_val = ".default",
+#'             frmt("XXX")
+#'         ),
+#'         frmt_structure(
+#'             group_val = list(
+#'                 group1 = "value",
+#'                 group2 = "value"
+#'             ),
+#'             label_val = ".default",
+#'             frmt("XXX")
 #'        )
-#'     ))
+#'     )
+#' )
 #'
 #' tfrmt_spec %>%
-#'   update_group(New_Group = group1)
+#'     update_group(New_Group = group1)
 #'
 update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]
 
     old_groups <- do.call(vars, unname(dots))
-    new_group_map <- setNames(names(dots), map_chr(old_groups, as_label))
+    new_group_map <- stats::setNames(
+        names(dots),
+        purrr::map_chr(old_groups, rlang::as_label)
+    )
 
-    if (!is_empty(tfrmt$group)) {
+    if (rlang::is_empty(tfrmt$group)) {
+        stop("No group values defined in input tfrmt.")
+    } else {
         var_list <- sapply(tfrmt$group, function(x) {
-            x_lab <- as_label(x)
+            x_lab <- rlang::as_label(x)
             if (x_lab %in% names(new_group_map)) {
                 new_group_map[[x_lab]]
             } else {
@@ -190,8 +204,6 @@ update_group <- function(tfrmt, ...) {
         })
 
         tfrmt$group <- as_vars(var_list)
-    } else {
-        stop("No group values defined in input tfrmt.")
     }
 
     ## Update body_plan
@@ -281,10 +293,10 @@ update_groups_footnote_plan <- function(tfrmt_footnote_plan, new_group_map) {
 }
 
 append_update_group_message <- function(e, x, y) {
-    x_grp <- map_chr(x$group, as_label)
-    y_grp <- map_chr(y$group, as_label)
+    x_grp <- purrr::map_chr(x$group, rlang::as_label)
+    y_grp <- purrr::map_chr(y$group, rlang::as_label)
 
-    if (!is_empty(y_grp) && !is_empty(x_grp)) {
+    if (!rlang::is_empty(y_grp) && !rlang::is_empty(x_grp)) {
         update_grp_message <- c(
             i = paste0(
                 "You might need to update group names using ",
@@ -342,5 +354,5 @@ reset_component <- function(tfrmt_obj, component_name) {
     tfrmt_obj[[component_name]] <- NULL
 
     # Return the modified tfrmt object
-    return(tfrmt_obj)
+    tfrmt_obj
 }

@@ -15,7 +15,10 @@ test_that("Mock data column names are correct", {
     )
     mock_dat <- make_mock_data(plan)
 
-    expect_equal(c("my_group", "my_label", "param2", "col"), names(mock_dat))
+    expect_identical(
+        c("my_group", "my_label", "param2", "col"),
+        names(mock_dat)
+    )
 })
 
 test_that("Mock data contains all levels", {
@@ -36,7 +39,7 @@ test_that("Mock data contains all levels", {
     )
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -97,7 +100,7 @@ test_that("Mock data contains all levels", {
     )
     mock_dat <- make_mock_data(plan, .default = 1, n_cols = 1)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -134,7 +137,7 @@ test_that("Mock data contains all levels", {
     )
     mock_dat <- make_mock_data(plan, .default = 1, n_cols = 1)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -150,7 +153,7 @@ test_that("Mock data contains all levels", {
     # group & label specified + multiple levels/columns
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -200,7 +203,7 @@ test_that("Mock data contains all levels", {
     )
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -265,12 +268,12 @@ test_that("Mock data contains all levels", {
     )
     mock_dat2 <- make_mock_data(plan2, .default = 1:2, n_cols = 1)
 
-    expect_equal(mock_dat1, mock_dat2)
+    expect_identical(mock_dat1, mock_dat2)
 })
 
 
 test_that("Check mock when value is missing", {
-    data <- crossing(
+    data <- tidyr::crossing(
         label = c(
             "Intent-To-Treat (ITT)",
             "Safety",
@@ -336,7 +339,7 @@ test_that("Test when no body_style or values is present", {
         )
     )
 
-    input_data <- tibble(
+    input_data <- tibble::tibble(
         group = "groupvar",
         label = "labels",
         param = "params",
@@ -350,17 +353,21 @@ test_that("Test when no body_style or values is present", {
         fixed = TRUE
     )
 
-    expect_equal(
+    expect_identical(
         gt_out$`_data`,
         input_data %>%
-            mutate(val = "X.X") %>%
-            pivot_wider(
+            dplyr::mutate(
+                val = "X.X"
+            ) %>%
+            tidyr::pivot_wider(
                 names_from = c(spanner, columns),
                 names_sep = .tlang_delim,
                 values_from = val
             ) %>%
-            select(-param) %>%
-            mutate(..tfrmt_row_grp_lbl = FALSE)
+            dplyr::select(-param) %>%
+            dplyr::mutate(
+                ..tfrmt_row_grp_lbl = FALSE
+            )
     )
 })
 
@@ -384,7 +391,7 @@ test_that("Mock data contains sorting_cols when available", {
 
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -420,7 +427,7 @@ test_that("Mock data contains sorting_cols when available", {
 
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 1)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -457,7 +464,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -492,7 +499,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -527,7 +534,7 @@ test_that("Mock data includes all columns identified in tfrmt", {
 
     mock_dat <- make_mock_data(plan, .default = 1:2, n_cols = 2)
 
-    expect_equal(
+    expect_identical(
         mock_dat,
         # nolint start: commas_linter
         tibble::tribble(
@@ -566,9 +573,9 @@ test_that("Mock data can be made and printed without label", {
 
     dat <- make_mock_data(plan)
 
-    expect_equal(
+    expect_identical(
         dat,
-        tibble(
+        tibble::tibble(
             param = c("n", "n", "n", "percent", "percent", "percent"),
             column = paste0("column", rep(1:3, times = 2))
         )
@@ -632,14 +639,14 @@ test_that("Using col_plan to get column names", {
     )
 
     col_names <- make_mock_data(basic_cols) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
-    expect_equal(col_names, c("Placebo", "Low", "High"))
+    expect_identical(col_names, c("Placebo", "Low", "High"))
 
     #With spanning
     auto_col_df <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(test1, test2),
         body_plan = body_plan(
@@ -666,19 +673,19 @@ test_that("Using col_plan to get column names", {
         )
     ) %>%
         make_mock_data() %>%
-        select(test1, test2) %>%
-        distinct(test1, test2)
+        dplyr::select(test1, test2) %>%
+        dplyr::distinct(test1, test2)
 
-    man_col_df <- tibble(
+    man_col_df <- tibble::tibble(
         test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2)),
         test2 = c("col4", "col3", "col5", "col1", "col2", "col7", "col8")
     )
-    expect_equal(auto_col_df, man_col_df)
+    expect_identical(auto_col_df, man_col_df)
 
     # When you do crossing in the span structure
     auto_col_crossing <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(visit, trt),
         body_plan = body_plan(
@@ -699,7 +706,7 @@ test_that("Using col_plan to get column names", {
         )
     ) %>%
         make_mock_data() %>%
-        distinct(trt, visit)
+        dplyr::distinct(trt, visit)
 
     # nolint start: commas_linter
     man_col_crossing <- tibble::tribble(
@@ -716,7 +723,7 @@ test_that("Using col_plan to get column names", {
     )
     # nolint end
 
-    expect_equal(auto_col_crossing, man_col_crossing)
+    expect_identical(auto_col_crossing, man_col_crossing)
 })
 
 test_that("Using col_style_plan to get names", {
@@ -747,14 +754,14 @@ test_that("Using col_style_plan to get names", {
     )
 
     col_names <- make_mock_data(basic_cols) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
-    expect_equal(col_names, c("Active", "Placebo", "Total"))
+    expect_identical(col_names, c("Active", "Placebo", "Total"))
 
     # combination col_style_plan/col_plan
     auto_col_df <- tfrmt(
         group = group,
-        label = quo(label),
+        label = rlang::quo(label),
         param = parm,
         column = c(test1, test2),
         body_plan = body_plan(
@@ -791,10 +798,10 @@ test_that("Using col_style_plan to get names", {
         )
     ) %>%
         make_mock_data() %>%
-        select(test1, test2) %>%
-        distinct(test1, test2)
+        dplyr::select(test1, test2) %>%
+        dplyr::distinct(test1, test2)
 
-    man_col_df <- tibble(
+    man_col_df <- tibble::tibble(
         test1 = c(rep(NA, 3), rep(c("span 1", "span 2"), each = 2), rep(NA, 3)),
         test2 = c(
             "col4",
@@ -809,7 +816,7 @@ test_that("Using col_style_plan to get names", {
             "Total"
         )
     )
-    expect_equal(auto_col_df, man_col_df)
+    expect_identical(auto_col_df, man_col_df)
 })
 
 test_that("Will add big N avaliable", {
@@ -840,7 +847,7 @@ test_that("Will add big N avaliable", {
     )
 
     auto_big_n_df <- make_mock_data(pop_tbl_tfrmt) %>%
-        filter(param == "big_n")
+        dplyr::filter(param == "big_n")
 
     # nolint start: commas_linter
     man_big_n_df <- tibble::tribble(
@@ -851,7 +858,7 @@ test_that("Will add big N avaliable", {
     )
     # nolint end
 
-    expect_equal(auto_big_n_df, man_big_n_df)
+    expect_identical(auto_big_n_df, man_big_n_df)
 })
 
 test_that("Mock data for col_plan with only drops", {
@@ -882,9 +889,9 @@ test_that("Mock data for col_plan with only drops", {
     )
 
     make_mock_data(drop_tfrmt) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique() %>%
-        expect_equal(c("column1", "column2", "column3"))
+        expect_identical(c("column1", "column2", "column3"))
 })
 
 test_that("Mock data for col_plan does not add group, label, or sorting_cols names to `column` variable", {
@@ -913,9 +920,9 @@ test_that("Mock data for col_plan does not add group, label, or sorting_cols nam
     )
 
     make_mock_data(tf_cols) %>%
-        pull(col) %>%
+        dplyr::pull(col) %>%
         unique() %>%
-        expect_equal(c("col1", "col2"))
+        expect_identical(c("col1", "col2"))
 })
 
 test_that("Mock data ignores col_plan with everything()", {
@@ -940,9 +947,9 @@ test_that("Mock data ignores col_plan with everything()", {
     )
 
     col_names <- make_mock_data(tf_everything) %>%
-        pull(column) %>%
+        dplyr::pull(column) %>%
         unique()
-    expect_equal(
+    expect_identical(
         col_names,
         c("column1", "column2", "column3")
     )

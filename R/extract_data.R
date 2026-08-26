@@ -23,24 +23,33 @@ clean_data <- function(df, delim, boxhead = NULL, stubhead = NULL) {
             length(stub_vars) > 0 &&
                 length(stub_vars) == length(new_stub_labels)
         ) {
-            lookup <- setNames(stub_vars, new_stub_labels)
+            lookup <- stats::setNames(stub_vars, new_stub_labels)
 
             #  Filter out entries where the new name is empty or NA
             valid_names <- names(lookup) != "" & !is.na(names(lookup))
             lookup <- lookup[valid_names]
 
             if (length(lookup) > 0) {
-                df <- df %>% dplyr::rename(dplyr::any_of(lookup))
+                df <- df %>%
+                    dplyr::rename(
+                        tidyselect::any_of(lookup)
+                    )
             }
         }
     }
 
     df %>%
         # Drop internal tfrmt columns (e.g., ..tfrmt_row_grp_lbl)
-        dplyr::select(-dplyr::starts_with("..tfrmt")) %>%
+        dplyr::select(
+            -dplyr::starts_with("..tfrmt")
+        ) %>%
         # Replace the internal tlang_delim pattern in column names
         dplyr::rename_with(
-            ~ stringr::str_replace_all(.x, "___tlang_delim___", delim),
+            ~ stringr::str_replace_all(
+                .x,
+                stringr::fixed("___tlang_delim___"),
+                delim
+            ),
             .cols = tidyselect::everything()
         )
 }
@@ -79,7 +88,7 @@ extract_data <- function(x, col_delim = "_") {
         tbl_list <- x$gt_tbls$gt_tbl
 
         # Map over the list to pull the '_data' slot and clean names
-        extracted_list <- map(
+        extracted_list <- purrr::map(
             tbl_list,
             ~ clean_data(
                 .x[["_data"]],
@@ -89,6 +98,6 @@ extract_data <- function(x, col_delim = "_") {
             )
         )
 
-        return(extracted_list)
+        extracted_list
     }
 }

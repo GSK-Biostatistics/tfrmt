@@ -57,7 +57,7 @@ test_that("prep_...() pipe with demographic data", {
     # manual tidy -------------------------------------------------------------
     ard_tbl <- ard |>
         # rename cols, coalesce variable levels/stat_labels, unnest
-        cards::rename_ard_columns(columns = c("group1")) |>
+        cards::rename_ard_columns(columns = "group1") |>
         cards::unlist_ard_columns() |>
         dplyr::mutate(
             label = purrr::map_chr(
@@ -156,7 +156,7 @@ test_that("prep_...() pipe with demographic data", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -285,7 +285,7 @@ test_that("prep_...() pipe with adverse effects data", {
             # rows
             AETERM = dplyr::if_else(
                 !is.na(..ard_hierarchical_overall..) &
-                    ..ard_hierarchical_overall.. == TRUE |
+                    ..ard_hierarchical_overall.. |
                     is.na(AETERM) & !is.na(AEBODSYS),
                 "ANY EVENT",
                 AETERM
@@ -340,7 +340,7 @@ test_that("prep_...() pipe with adverse effects data", {
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(
+                    element_block = element_block(
                         post_space = " "
                     )
                 )
@@ -372,8 +372,8 @@ test_that("prep_...() pipe with adverse effects data", {
         dplyr::relocate(stat_name, .after = stat)
 
     expect_equal(
-        arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
-        arrange(prepped_ard, TRT01A, AESEV, AEBODSYS, AETERM),
+        dplyr::arrange(ae2_ard_tbl, TRT01A, AESEV, AEBODSYS, AETERM),
+        dplyr::arrange(prepped_ard, TRT01A, AESEV, AEBODSYS, AETERM),
         ignore_attr = TRUE
     )
 
@@ -604,7 +604,7 @@ test_that("prep_big_n() works", {
         context = rep(c("continuous", "hierarchical", "categorical"), each = 3),
         stat_variable = rep(c("a", "b", "c"), each = 3)
     ) |>
-        bind_rows(
+        dplyr::bind_rows(
             tibble::tibble(
                 stat_name = "n",
                 context = "total_n",
@@ -775,7 +775,7 @@ test_that("prep_hierarchical_fill() returns input when `length(vars) < 2`", {
         prep_hierarchical_fill(
             df,
             vars = "y"
-        ),
+        )
     )
 })
 

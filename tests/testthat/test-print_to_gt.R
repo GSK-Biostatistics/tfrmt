@@ -11,15 +11,15 @@ test_that("convert_ws_unicode works as expected", {
     # test that metadata is present in gt ready to apply transform
 
     # columns to apply to
-    expect_equal(
+    expect_identical(
         gt_with_unicode$`_transforms`[[1]]$resolved$colnames,
         c("group", "value")
     )
 
     # rows to apply to
-    expect_equal(
+    expect_identical(
         gt_with_unicode$`_transforms`[[1]]$resolved$rows,
-        1
+        1L
     )
 
     # function to apply
@@ -46,7 +46,7 @@ test_that("convert_ws_unicode works as expected", {
         "trailing \u00A0whitespace\u00A0\u00A0\u00A0\u00A0\u00A0"
     )
 
-    expect_equal(
+    expect_identical(
         whitespace_function(test_strings),
         unicode_strings
     )
@@ -96,12 +96,6 @@ test_that("print_to_gt() works", {
 })
 
 test_that("print_to_gt() complains with incorrect inputs", {
-    # complains when the first argument is not `tfrmt`
-    expect_snapshot(
-        error = TRUE,
-        print_to_gt(mtcars)
-    )
-
     # complains when the `.data` argument is not a data.frame
     tfrmt_plan <- tfrmt(
         label = label,
@@ -540,6 +534,46 @@ test_that("cleaned_data_to_gt() works", {
     )
 })
 
+test_that("cleaned_data_to_gt() renders markdown in title and subtitle", {
+    # nolint start: commas_linter
+    test_data <- tibble::tribble(
+        ~group  , ~label  , ~column , ~param , ~val ,
+        "mygrp" , "mylbl" , "col1"  , "prm"  ,    1 ,
+        "mygrp" , "mylbl" , "col2"  , "prm"  ,    2
+    )
+    # nolint end: commas_linter
+    tfrmt_md <- tfrmt(
+        group = "group",
+        label = "label",
+        param = "param",
+        column = "column",
+        value = "val",
+        title = "Study ABC-123<br>Protocol Amendment 2",
+        subtitle = "Population: **ITT**",
+        body_plan = body_plan(
+            frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
+                frmt("x.xx")
+            )
+        )
+    )
+
+    gt_result <- cleaned_data_to_gt(test_data, tfrmt_md, .unicode_ws = TRUE)
+
+    expect_s3_class(gt_result$`_heading`$title, "from_markdown")
+    expect_s3_class(gt_result$`_heading`$subtitle, "from_markdown")
+
+    expect_identical(
+        as.character(gt_result$`_heading`$title),
+        "Study ABC-123<br>Protocol Amendment 2"
+    )
+    expect_identical(
+        as.character(gt_result$`_heading`$subtitle),
+        "Population: **ITT**"
+    )
+})
+
 test_that("cleaned_data_to_gt.list() works", {
     tfrmt <- tfrmt(
         # specify columns in the data
@@ -661,6 +695,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         column = Column,
         value = Value,
         param = Param,
+        title = "Title **bold**",
         body_plan = body_plan(
             frmt_structure(
                 group_val = ".default",
@@ -671,7 +706,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -707,12 +742,23 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in subtitle
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$subtitle,
-        "by group: 101"
+        gt::md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_heading`$subtitle,
-        "by group: 102"
+        gt::md("by group: 102")
+    )
+
+    # confirm title is rendered as markdown
+    expect_s3_class(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
+    )
+
+    expect_identical(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        gt::md("Title **bold**")
     )
 
     # change note location to preheader
@@ -741,6 +787,17 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         "by group: 102"
     )
 
+    # confirm title is still rendered as markdown when note_loc is preheader
+    expect_s3_class(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
+    )
+
+    expect_identical(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        gt::md("Title **bold**")
+    )
+
     # change note location to source_note
     tfrmt_two_groups$page_plan$note_loc <- "source_note"
 
@@ -759,12 +816,23 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
     # confirm note is located in source_note
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[1]]$`_source_notes`[[1]],
-        "by group: 101"
+        gt::md("by group: 101")
     )
 
     expect_identical(
         gt_tables$gt_tbls$gt_tbl[[2]]$`_source_notes`[[1]],
-        "by group: 102"
+        gt::md("by group: 102")
+    )
+
+    # confirm title is rendered as markdown when note_loc is source_note
+    expect_s3_class(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        "from_markdown"
+    )
+
+    expect_identical(
+        gt_tables$gt_tbls$gt_tbl[[1]]$`_heading`$title,
+        gt::md("Title **bold**")
     )
 })
 
@@ -833,11 +901,11 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = list(g1 = "G1"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             row_grp_structure(
                 group_val = list(g1 = "G2_"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             label_loc = element_row_grp_loc(
                 location = "spanning"

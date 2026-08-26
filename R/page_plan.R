@@ -80,14 +80,15 @@ page_plan <- function(
 
 #' Page structure
 #'
-#' @param group_val string or a named list of strings which represent the value of group to split after.
-#' Set to ".default" if the split should occur after every unique value of the variable.
+#' @param group_val string or a named list of strings which represent the value
+#' of group to split after. Set to ".default" if the split should occur after
+#' every unique value of the variable.
 #' @param label_val string which represents the value of label to split after.
 #'   Set to ".default" if the split should occur after every unique value of
 #'   the variable.
-
 #'
 #' @return page structure object
+#'
 #' @export
 #'
 #' @examples
@@ -99,7 +100,7 @@ page_plan <- function(
 page_structure <- function(group_val = NULL, label_val = NULL) {
     if (
         length(group_val) > 1 &&
-            is.list(group_val) == FALSE &&
+            !is.list(group_val) &&
             !is.null(names(group_val))
     ) {
         group_val <- as.list(group_val)
@@ -111,7 +112,7 @@ page_structure <- function(group_val = NULL, label_val = NULL) {
         group_val_names <- names(group_val)
         if (is.null(group_val_names)) {
             stop("when group_val is a list, must be a named list")
-        } else if (any(group_val_names == "")) {
+        } else if (!all(nzchar(group_val_names))) {
             stop("when group_val is a list, each entry must be named")
         }
     }

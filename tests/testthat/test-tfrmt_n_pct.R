@@ -1,6 +1,6 @@
 test_that("tfrmt_n_pct", {
     # format to avoid issues with the environment
-    expect_equal(
+    expect_identical(
         format(tfrmt_n_pct()$body_plan),
         body_plan(
             frmt_structure(
@@ -22,7 +22,7 @@ test_that("tfrmt_n_pct", {
             format()
     )
     # See that it can change when n is changed
-    expect_equal(
+    expect_identical(
         format(tfrmt_n_pct("n_distinct")$body_plan),
         body_plan(
             frmt_structure(
@@ -44,7 +44,7 @@ test_that("tfrmt_n_pct", {
             format()
     )
     # Change the frmt_when
-    expect_equal(
+    expect_identical(
         format(
             tfrmt_n_pct(
                 pct_frmt_when = frmt_when(
@@ -76,9 +76,9 @@ test_that("tfrmt_n_pct", {
     test <- tfrmt(
         column = column
     )
-    expect_equal(
+    expect_identical(
         tfrmt_n_pct(tfrmt_obj = test)$column[[1]] %>%
-            as_label(),
+            rlang::as_label(),
         "column"
     )
 

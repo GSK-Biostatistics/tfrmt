@@ -57,21 +57,21 @@ shuffle_card <- function(
     if (!inherits(trim, "logical")) {
         cli::cli_abort(
             "{.arg trim} argument must be class {.cls logical}}, not \\
-      {.obj_type_friendly {trim}}"
+            {.obj_type_friendly {trim}}"
         )
     }
 
     # Check if a 'by' variable is available for bind_ard objs
     by_arg <- get_card_attr_arg(x, "by")
-    if (is_bind_ard_card(x) && rlang::is_empty(by)) {
-        by_msg <- if (!rlang::is_empty(by_arg)) {
+    if (is_bind_ard_card(x) && !is_ard_stack_card(x) && rlang::is_empty(by)) {
+        by_msg <- if (rlang::is_empty(by_arg)) {
             c(
-                "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
-                "*" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
+                "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
             )
         } else {
             c(
-                "*" = "If you want to use a grouping variable, pass it explicitly via the {.arg by} argument."
+                "*" = "A {.arg by} value of {.val {by_arg}} was found in the input object's attributes.",
+                "i" = "To use it as a grouping variable, pass it explicitly: {.code shuffle_card(by = \"{by_arg}\")}."
             )
         }
 
@@ -116,7 +116,7 @@ shuffle_card <- function(
         ) |>
         cards::unlist_ard_columns(
             columns = c(cards::all_ard_groups(), cards::all_ard_variables()),
-            fct_as_chr = TRUE,
+            fct_as_chr = TRUE
         ) |>
         dplyr::relocate(
             "stat_variable",
@@ -189,7 +189,7 @@ shuffle_card <- function(
     dots <- rlang::dots_list(...)
 
     lapply(dots, function(var) {
-        if (!all(map_lgl(x[[var]], is.null))) {
+        if (!all(purrr::map_lgl(x[[var]], is.null))) {
             cli::cli_inform(
                 "{.val {var}} column contains messages that will be removed."
             )
@@ -268,7 +268,7 @@ shuffle_card <- function(
     # determine grouping and merging variables
     id_vars <- setdiff(names(x), unique(c(vars_cards_protected, grp_vars)))
 
-    if (!is_empty(grp_vars) && !is_empty(id_vars)) {
+    if (!rlang::is_empty(grp_vars) && !rlang::is_empty(id_vars)) {
         # replace NA group values with "..cards_overall.." where it is likely to be
         # an overall calculation
         for (g in grp_vars) {
@@ -401,15 +401,15 @@ shuffle_card <- function(
 
     if (!is.na(glue_overall) && overall_val != glue_overall) {
         cli::cli_alert_info(
-            "{.val {glue_overall}} already exists in the {.code {colname}} column. \\
-      Using {.val {overall_val}}."
+            "{.val {glue_overall}} already exists in the {.code {colname}} \\
+            column. Using {.val {overall_val}}."
         )
     }
 
     if (!is.na(glue_any) && any_val != glue_any) {
         cli::cli_alert_info(
-            "{.val {glue_any}} already exists in the {.code {colname}} column. Using\\
-       {.val {any_val}}."
+            "{.val {glue_any}} already exists in the {.code {colname}} \\
+            column. Using {.val {any_val}}."
         )
     }
 

@@ -61,7 +61,7 @@ test_that("shuffle/trim works", {
     # only numeric stats
     expect_type(ard_shuff_trim$stat, "double")
     # no list columns
-    expect_false(any(map_lgl(ard_shuff_trim, is.list)))
+    expect_false(any(purrr::map_lgl(ard_shuff_trim, is.list)))
 })
 
 test_that("shuffle_card notifies user about warnings/errors before dropping", {
@@ -83,7 +83,7 @@ test_that("shuffle_card message if bind_ard is used without a supplied by argume
             variables = "AGE",
             statistic = ~ cards::continuous_summary_fns("mean")
         ),
-        dplyr::tibble(
+        tibble::tibble(
             group1 = "ARM",
             variable = "AGE",
             stat_name = "p",
@@ -109,7 +109,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 variables = "AGE",
                 statistic = ~ cards::continuous_summary_fns("mean")
             ),
-            dplyr::tibble(
+            tibble::tibble(
                 group1 = "ARM",
                 variable = "AGE",
                 stat_name = "p",
@@ -117,7 +117,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 stat = list(0.05)
             )
         ) |>
-            dplyr::filter(dplyr::row_number() <= 5L) |>
+            dplyr::filter(
+                dplyr::row_number() <= 5L
+            ) |>
             shuffle_card()
     )
 
@@ -129,7 +131,7 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 variables = "AGE",
                 statistic = ~ cards::continuous_summary_fns("mean")
             ),
-            dplyr::tibble(
+            tibble::tibble(
                 group1 = "ARM",
                 variable = "AGE",
                 stat_name = "p",
@@ -137,20 +139,36 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
                 stat = list(0.05)
             )
         ) |>
-            dplyr::filter(dplyr::row_number() <= 5L) |>
+            dplyr::filter(
+                dplyr::row_number() <= 5L
+            ) |>
             shuffle_card(by = "ARM")
     )
 
     # mix of group variables - fills overall only if variable has been calculated by group elsewhere
     expect_snapshot(
         cards::bind_ard(
-            cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                by = ARM,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_categorical(cards::ADSL, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                by = SEX,
+                variables = AGE
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                variables = AGE
+            ) |>
                 dplyr::slice(1)
         ) |>
             shuffle_card(by = c("ARM", "SEX")) |>
@@ -159,13 +177,27 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
     # custom fill
     expect_snapshot(
         cards::bind_ard(
-            cards::ard_categorical(cards::ADSL, by = ARM, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                by = ARM,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_categorical(cards::ADSL, variables = AGEGR1) |>
+            cards::ard_categorical(
+                cards::ADSL,
+                variables = AGEGR1
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, by = SEX, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                by = SEX,
+                variables = AGE
+            ) |>
                 dplyr::slice(1),
-            cards::ard_continuous(cards::ADSL, variables = AGE) |>
+            cards::ard_continuous(
+                cards::ADSL,
+                variables = AGE
+            ) |>
                 dplyr::slice(1)
         ) |>
             shuffle_card(by = c("ARM", "SEX"), fill_overall = "{colname}") |>
@@ -222,7 +254,9 @@ test_that("shuffle_card correctly handles a combined ARD when by is explicitly s
 
     # fills with a unique group value if one already exists in the df
     adsl_new <- cards::ADSL |>
-        dplyr::mutate(ARM = ifelse(ARM == "Placebo", "Overall ARM", ARM))
+        dplyr::mutate(
+            ARM = ifelse(ARM == "Placebo", "Overall ARM", ARM)
+        )
     expect_snapshot(
         cards::bind_ard(
             cards::ard_continuous(
@@ -263,7 +297,9 @@ test_that("shuffle_card doesn't trim off NULL/NA values", {
 
 test_that("shuffle_card coerces all factor groups/variables to character", {
     adsl_ <- cards::ADSL |>
-        dplyr::mutate(RACE = factor(RACE))
+        dplyr::mutate(
+            RACE = factor(RACE)
+        )
 
     res <- cards::ard_categorical(
         data = adsl_,
@@ -280,16 +316,16 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
     expect_true(all(res_classes == "character"))
 
     # correct coersion
-    expect_equal(
+    expect_identical(
         sort(unique(res$RACE)),
         sort(unique(as.character(adsl_$RACE)))
     )
-    expect_equal(
+    expect_identical(
         sort(unique(res$ETHNIC)),
         sort(unique(as.character(adsl_$ETHNIC)))
     )
 })
-
+#   nolint start: duplicate_argument_linter
 test_that("shuffle_card fills missing group levels if the group is meaningful for cardx output", {
     # cardx ARD: this is a dput() of a cardx result (see commented out code below) SAVED 2024-08-30
     ard_cardx <- structure(
@@ -347,6 +383,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful fo
             as.data.frame()
     )
 })
+#   nolint end: duplicate_argument_linter
 
 test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <var>`", {
     adae <- cards::ADAE |>
@@ -492,7 +529,7 @@ test_that("shuffle_card() fills with multiple `by` columns", {
 })
 
 test_that("shuffle_card() messages about 'Overall <var>' or 'Any <var>'", {
-    test_data <- dplyr::tibble(
+    test_data <- tibble::tibble(
         ARM = c("..cards_overall..", "Overall ARM", NA, "BB", NA),
         TRTA = c(NA, NA, "..hierarchical_overall..", "C", "C")
     )
@@ -625,7 +662,8 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
         attributes(shuffled_ard)[["args"]]
     )
 
-    # ard_stack uses bind_ard under the hood - attributes will be lost
+    # ard_stack uses bind_ard under the hood, but retains its ard_stack class
+    # so by attributes should be preserved
     ard <- cards::ard_stack(
         data = adsl,
         cards::ard_tabulate(variables = "AGEGR1"),
@@ -633,11 +671,22 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
         .by = "ARM"
     )
 
-    expect_snapshot(
+    expect_silent(
         shuffled_ard <- shuffle_card(ard)
     )
+    expect_true("ARM" %in% names(shuffled_ard))
 
-    # Binding two ARDs together class without a by attribute
+    # Binding two ARDs together with by variable "ARM"
+    ard_no_stack_attr <- cards::bind_ard(
+        cards::ard_tabulate(cards::ADSL, variables = "AGEGR1", by = "ARM"),
+        cards::ard_tabulate(cards::ADSL, variables = "SEX", by = "ARM")
+    )
+
+    expect_snapshot(
+        shuffle_card(ard_no_stack_attr)
+    )
+
+    # Binding two ARDs together with no by variable
     ard_no_by_attr <- cards::bind_ard(
         cards::ard_tabulate(cards::ADSL, variables = "AGEGR1"),
         cards::ard_tabulate(cards::ADSL, variables = "SEX")
@@ -691,7 +740,7 @@ test_that("shuffle_card() prioritizes supplied `by` and messages on mismatch", {
     attr(ard_mismatch, "args")$by <- "ARM"
 
     # Capture the raw console text sent to the message/stderr stream
-    msg_output <- capture.output(
+    msg_output <- utils::capture.output(
         res_mismatch <- shuffle_card(ard_mismatch, by = "SEX"),
         type = "message"
     )

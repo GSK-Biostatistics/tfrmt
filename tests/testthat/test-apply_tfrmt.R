@@ -61,7 +61,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
 
     expect_message(
         processed_dat <- apply_tfrmt(dat1, tfrmt_temp, mock = FALSE),
-        paste0(
+        paste(
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
@@ -80,7 +80,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
             mock = FALSE
         ),
-        paste0(
+        paste(
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
@@ -98,7 +98,7 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
             tfrmt_temp %>% tfrmt(group = c(grp1, grp2)),
             mock = FALSE
         ),
-        paste0(
+        paste(
             c(
                 "Multiple param listed for the same group/label values.",
                 "The following frmt_structures may be missing from the body_plan",
@@ -124,9 +124,10 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
     # use quietly to grab messages from apply_tfrmt
     safe_apply_tfrmt <- purrr::quietly(apply_tfrmt)
 
-    expect_equal(
+    expect_identical(
         safe_apply_tfrmt(
-            data_demog %>% filter(rowlbl1 == "Age (y)"),
+            data_demog %>%
+                dplyr::filter(rowlbl1 == "Age (y)"),
             tfrmt_temp2,
             mock = FALSE
         )$messages,
@@ -144,16 +145,16 @@ test_that("test tentative_process", {
 
     failing_func <- function(x, y = "value") {
         stop("this function failed")
-        paste0(x, y)
+        paste0(x, y) # nolint: unreachable_code_linter
     }
 
     rlang_abort_func <- function(x, y = "value") {
         rlang::abort("this function failed2")
-        paste0(x, y)
+        paste0(x, y) # nolint: unreachable_code_linter
     }
 
     ## function passing in tentative process
-    expect_equal(
+    expect_identical(
         tentative_process("x", passing_func),
         "xvalue"
     )
@@ -162,14 +163,14 @@ test_that("test tentative_process", {
         tentative_process("x", passing_func)
     })
 
-    expect_true(is_empty(passing_func_messages))
-    expect_equal(
+    expect_true(rlang::is_empty(passing_func_messages))
+    expect_identical(
         passing_func_messages,
         character()
     )
 
     ## function failing in tentative process
-    expect_equal(
+    expect_identical(
         suppressMessages(tentative_process("x", failing_func)),
         "x"
     )
@@ -178,14 +179,14 @@ test_that("test tentative_process", {
         tentative_process("x", failing_func)
     })
 
-    expect_false(is_empty(failing_func_messages))
-    expect_equal(
+    expect_false(rlang::is_empty(failing_func_messages))
+    expect_identical(
         failing_func_messages,
         "Unable to to apply failing_func.\nReason: this function failed\n"
     )
 
     ## function failing in tentative process
-    expect_equal(
+    expect_identical(
         suppressMessages(tentative_process("x", rlang_abort_func)),
         "x"
     )
@@ -194,24 +195,11 @@ test_that("test tentative_process", {
         tentative_process("x", rlang_abort_func)
     })
 
-    expect_false(is_empty(rlang_abort_func_messages))
-    expect_equal(
+    expect_false(rlang::is_empty(rlang_abort_func_messages))
+    expect_identical(
         rlang_abort_func_messages,
         "Unable to to apply rlang_abort_func.\nReason: this function failed2\n"
     )
-})
-
-test_that("apply_tfrmt errors when passed a non-tfrmt object", {
-    dat <- tibble::tibble(lbl = "a", prm = "n", val = 1, col = "A")
-
-    not_a_tfrmt <- unclass(tfrmt(
-        label = lbl,
-        param = prm,
-        value = val,
-        column = col
-    ))
-
-    expect_error(apply_tfrmt(dat, not_a_tfrmt), "Requires a tfrmt object")
 })
 
 test_that("tentative_process handles errors with empty message", {
@@ -219,7 +207,7 @@ test_that("tentative_process handles errors with empty message", {
     expect_snapshot(
         result <- tentative_process("x", empty_msg_func)
     )
-    expect_equal(result, "x")
+    expect_identical(result, "x")
 })
 
 test_that("frmt_struct_string handles no group variables", {

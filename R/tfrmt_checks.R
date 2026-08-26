@@ -19,7 +19,7 @@ check_column_and_col_plan <- function(x) {
             n_col_desc <- "No columns defined in the `column` argument of tfrmt "
         }
 
-        abort(
+        rlang::abort(
             paste0(
                 n_col_desc,
                 "but provided a span_structure() in `col_plan`.\n",
@@ -31,11 +31,11 @@ check_column_and_col_plan <- function(x) {
     }
 
     if (span_structures_defined) {
-        column_strings <- map_chr(x$column, as_label)
+        column_strings <- purrr::map_chr(x$column, rlang::as_label)
 
         for (struct in span_structs) {
             if (!all(vals <- names(struct) %in% column_strings)) {
-                abort(
+                rlang::abort(
                     "Columns defined in `span_structure` are not defined columns in the tfrmt",
                     body = paste0(
                         "Column Values: ",
@@ -56,9 +56,9 @@ check_column_and_col_plan <- function(x) {
 #' @param x tfrmt to be checked
 #'
 check_group_var_consistency <- function(x) {
-    if (!is_empty(x$group)) {
+    if (!rlang::is_empty(x$group)) {
         group_var_consistency_message <- trimws(
-            paste0(
+            paste(
                 c(
                     check_group_var_consistency_body_plan(x),
                     check_group_var_consistency_row_grp_plan(x),
@@ -69,7 +69,7 @@ check_group_var_consistency <- function(x) {
         )
 
         if (!identical(group_var_consistency_message, "")) {
-            abort(
+            rlang::abort(
                 group_var_consistency_message,
                 class = "_tfrmt_mismatched_group_vals"
             )
@@ -81,7 +81,7 @@ check_group_var_consistency_body_plan <- function(x) {
     if (!is.null(x$body_plan)) {
         is_invalid_body_plan <- FALSE
         is_invalid_body_plan_message <- "Inconsistencies between group and body_plan"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- purrr::map_chr(x$group, rlang::as_label)
 
         for (idx in seq_along(x$body_plan)) {
             struct <- x$body_plan[[idx]]
@@ -103,7 +103,7 @@ check_group_var_consistency_body_plan <- function(x) {
                             ),
                             paste0(
                                 "  Malformed Group: ",
-                                paste0(invalid_groups, collapse = ", "),
+                                toString(invalid_groups),
                                 "\n"
                             )
                         )
@@ -122,7 +122,7 @@ check_group_var_consistency_row_grp_plan <- function(x) {
     if (!is.null(x$row_grp_plan)) {
         is_invalid_row_grp_plan <- FALSE
         is_invalid_row_grp_plan_message <- "Inconsistencies between group and row_grp_plan row_grp_structures"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- purrr::map_chr(x$group, rlang::as_label)
 
         for (idx in seq_along(x$row_grp_plan$struct_list)) {
             struct <- x$row_grp_plan$struct_list[[idx]]
@@ -144,7 +144,7 @@ check_group_var_consistency_row_grp_plan <- function(x) {
                             ),
                             paste0(
                                 "  Malformed Group: ",
-                                paste0(invalid_groups, collapse = ", "),
+                                toString(invalid_groups),
                                 "\n"
                             )
                         )
@@ -163,7 +163,7 @@ check_group_var_consistency_footnote_plan <- function(x) {
     if (!is.null(x$footnote_plan)) {
         is_invalid_footnote_plan <- FALSE
         is_invalid_footnote_plan_message <- "Inconsistencies between group and footnote_plan footnote_structures"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- purrr::map_chr(x$group, rlang::as_label)
 
         for (idx in seq_along(x$footnote_plan$struct_list)) {
             struct <- x$footnote_plan$struct_list[[idx]]
@@ -185,7 +185,7 @@ check_group_var_consistency_footnote_plan <- function(x) {
                             ),
                             paste0(
                                 "  Malformed Group: ",
-                                paste0(invalid_groups, collapse = ", "),
+                                toString(invalid_groups),
                                 "\n"
                             )
                         )
@@ -207,18 +207,18 @@ check_group_var_consistency_footnote_plan <- function(x) {
 #'
 check_col_style_row_grp_consistency <- function(x) {
     if (
-        !is_empty(x$group) &&
+        !rlang::is_empty(x$group) &&
             !is.null(x$col_style_plan) &&
-            !is_empty(x$row_grp_plan)
+            !rlang::is_empty(x$row_grp_plan)
     ) {
         is_invalid_plan <- FALSE
         is_invalid_plan_message <- "Invalid Entries based on col_align_plan and row_grp_plan"
-        group_as_char <- map_chr(x$group, as_label)
+        group_as_char <- purrr::map_chr(x$group, rlang::as_label)
 
         r_grp_plan_col_loc <- x$row_grp_plan$label_loc$location
 
         col_align_plan_as_char <- x$col_style_plan %>%
-            lapply(function(x) x$cols %>% map_chr(as_label))
+            lapply(function(x) x$cols %>% purrr::map_chr(rlang::as_label))
         for (cap_vars_idx in seq_along(col_align_plan_as_char)) {
             grp_in_cap <- group_as_char %in%
                 col_align_plan_as_char[[cap_vars_idx]]
@@ -238,7 +238,7 @@ check_col_style_row_grp_consistency <- function(x) {
                             "  `col` value",
                             ifelse(length(invalid_groups) > 1, "s", ""),
                             ": ",
-                            paste0(invalid_groups, collapse = ", "),
+                            toString(invalid_groups),
                             "\n"
                         )
                     )
@@ -247,7 +247,7 @@ check_col_style_row_grp_consistency <- function(x) {
         }
 
         if (is_invalid_plan) {
-            abort(
+            rlang::abort(
                 is_invalid_plan_message,
                 class = "_tfrmt_invalid_row_grp_col_style_plan"
             )
@@ -257,15 +257,13 @@ check_col_style_row_grp_consistency <- function(x) {
 
 
 check_footnote_plan <- function(x) {
-    if (!is_empty(x$footnote_plan)) {
+    if (!rlang::is_empty(x$footnote_plan)) {
         for (i in seq_along(x$footnote_plan$struct_list)) {
             # if multiple columns then column_val must be a named list
             if (
                 length(x$column) > 1 &&
-                    is.list(x$footnote_plan$struct_list[[i]]$column_val) ==
-                        FALSE &&
-                    is.null(x$footnote_plan$struct_list[[i]]$column_val) ==
-                        FALSE
+                    !is.list(x$footnote_plan$struct_list[[i]]$column_val) &&
+                    !is.null(x$footnote_plan$struct_list[[i]]$column_val)
             ) {
                 stop(
                     "when tfrmt contains multiple columns, column_val must be a named list"
@@ -275,9 +273,8 @@ check_footnote_plan <- function(x) {
             # if multiple groups then group_val must be a named list
             if (
                 length(x$group) > 1 &&
-                    is.list(x$footnote_plan$struct_list[[i]]$group_val) ==
-                        FALSE &&
-                    is.null(x$footnote_plan$struct_list[[i]]$group_val) == FALSE
+                    !is.list(x$footnote_plan$struct_list[[i]]$group_val) &&
+                    !is.null(x$footnote_plan$struct_list[[i]]$group_val)
             ) {
                 stop(
                     "when tfrmt contains multiple groups, group_val must be a named list"
@@ -294,7 +291,7 @@ check_footnote_plan <- function(x) {
 #' @param plan name of plan, e.g., "col_style_plan"
 #' @param parent_env parent environment
 #'
-check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
+check_plan <- function(tfrmt_object, plan, parent_env = rlang::caller_env()) {
     # extract the plan element from the tfrmt_object
     plan_element <- tfrmt_object[[plan]]
 
@@ -303,7 +300,7 @@ check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
         # check if the plan element inherits the plan attribute
         if (!inherits(plan_element, plan)) {
             # display error message
-            abort(
+            rlang::abort(
                 paste0(
                     "Invalid input supplied to the `",
                     plan,
@@ -318,7 +315,7 @@ check_plan <- function(tfrmt_object, plan, parent_env = caller_env()) {
 }
 
 
-check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
+check_big_n <- function(tfrmt_object, parent_env = rlang::caller_env()) {
     # extract the big_n element from the tfrmt_object
     big_n_element <- tfrmt_object[["big_n"]]
 
@@ -327,7 +324,7 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
         # check if the big_n element inherits the big_n_structure
         if (!inherits(big_n_element, "big_n_structure")) {
             # display error message
-            abort(
+            rlang::abort(
                 paste0(
                     "Invalid input supplied to the `big_n` parameter. Please supply a `big_n_structure()`."
                 ),
@@ -345,14 +342,18 @@ check_big_n <- function(tfrmt_object, parent_env = caller_env()) {
 #' @param parent_env parent environment for error reporting
 #'
 #' @noRd
-check_inputs <- function(tfrmt_object, var_names, parent_env = caller_env()) {
+check_input_vars <- function(
+    tfrmt_object,
+    var_names,
+    parent_env = rlang::caller_env()
+) {
     missing_vars <- character(0)
     for (var_name in var_names) {
         var_val <- tfrmt_object[[var_name]]
         is_missing <- if (var_name == "column") {
-            is_empty(var_val)
+            rlang::is_empty(var_val)
         } else {
-            quo_is_missing(var_val)
+            rlang::quo_is_missing(var_val)
         }
         if (is_missing) {
             missing_vars <- c(missing_vars, var_name)

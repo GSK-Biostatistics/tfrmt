@@ -5,71 +5,71 @@ test_that("basic tfrmt - title", {
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
-    expect_equal(t_frmt$group, vars())
-    expect_equal(t_frmt$label, quo())
-    expect_equal(t_frmt$param, quo())
-    expect_equal(t_frmt$value, quo())
-    expect_equal(t_frmt$column, vars())
+    expect_identical(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$group, vars())
+    expect_identical(t_frmt$label, rlang::quo())
+    expect_identical(t_frmt$param, rlang::quo())
+    expect_identical(t_frmt$value, rlang::quo())
+    expect_identical(t_frmt$column, vars())
 })
 
 test_that("basic tfrmt - selecting group/label/param/value/column - quo", {
     t_frmt <- tfrmt(
         title = "Table Title",
         group = vars(row_label1),
-        label = quo(row_label2),
-        param = quo(param),
-        value = quo(value),
+        label = rlang::quo(row_label2),
+        param = rlang::quo(param),
+        value = rlang::quo(value),
         column = vars(column)
     )
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1), ignore_attr = TRUE)
-    expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
-    expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
-    expect_equal(t_frmt$value, quo(value), ignore_attr = TRUE)
+    expect_equal(t_frmt$label, rlang::quo(row_label2), ignore_attr = TRUE)
+    expect_equal(t_frmt$param, rlang::quo(param), ignore_attr = TRUE)
+    expect_equal(t_frmt$value, rlang::quo(value), ignore_attr = TRUE)
     expect_equal(t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
 test_that("basic tfrmt - selecting group/label/param/value/column - quo into var entries", {
     t_frmt <- tfrmt(
         title = "Table Title",
-        group = quo(row_label1),
-        label = quo(row_label2),
-        param = quo(param),
-        value = quo(value),
-        column = quo(column)
+        group = rlang::quo(row_label1),
+        label = rlang::quo(row_label2),
+        param = rlang::quo(param),
+        value = rlang::quo(value),
+        column = rlang::quo(column)
     )
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1), ignore_attr = TRUE)
-    expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
-    expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
-    expect_equal(t_frmt$value, quo(value), ignore_attr = TRUE)
+    expect_equal(t_frmt$label, rlang::quo(row_label2), ignore_attr = TRUE)
+    expect_equal(t_frmt$param, rlang::quo(param), ignore_attr = TRUE)
+    expect_equal(t_frmt$value, rlang::quo(value), ignore_attr = TRUE)
     expect_equal(t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
 test_that("basic tfrmt - selecting group/label/param/value/column - char", {
     t_frmt <- tfrmt(
         title = "Table Title",
-        group = c("row_label1"),
-        label = c("row_label2"),
-        param = c("param"),
-        value = c("value"),
-        column = c("column")
+        group = "row_label1",
+        label = "row_label2",
+        param = "param",
+        value = "value",
+        column = "column"
     )
 
     expect_s3_class(t_frmt, "tfrmt")
 
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1), ignore_attr = TRUE)
-    expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
-    expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
-    expect_equal(t_frmt$value, quo(value), ignore_attr = TRUE)
+    expect_equal(t_frmt$label, rlang::quo(row_label2), ignore_attr = TRUE)
+    expect_equal(t_frmt$param, rlang::quo(param), ignore_attr = TRUE)
+    expect_equal(t_frmt$value, rlang::quo(value), ignore_attr = TRUE)
     expect_equal(t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
@@ -84,11 +84,11 @@ test_that("basic tfrmt - selecting group/label/param/value/column - bare", {
     )
 
     expect_s3_class(t_frmt, "tfrmt")
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(row_label1, row_label4), ignore_attr = TRUE)
-    expect_equal(t_frmt$label, quo(row_label2), ignore_attr = TRUE)
-    expect_equal(t_frmt$param, quo(param), ignore_attr = TRUE)
-    expect_equal(t_frmt$value, quo(value), ignore_attr = TRUE)
+    expect_equal(t_frmt$label, rlang::quo(row_label2), ignore_attr = TRUE)
+    expect_equal(t_frmt$param, rlang::quo(param), ignore_attr = TRUE)
+    expect_equal(t_frmt$value, rlang::quo(value), ignore_attr = TRUE)
     expect_equal(t_frmt$column, vars(column), ignore_attr = TRUE)
 })
 
@@ -104,7 +104,7 @@ test_that("basic tfrmt - length one quo warning", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         single_warning,
         paste0(
             "Passed more than one quosure to the argument `",
@@ -124,7 +124,7 @@ test_that("basic tfrmt - length one quo warning", {
         )
     })
 
-    expect_equal(
+    expect_identical(
         multi_warning,
         c(
             "Passed more than one quosure to the argument `label`. Selecting the first entry.",
@@ -174,21 +174,21 @@ test_that("layering tfrmt - default table elements - func/tfrmt", {
         "tfrmt"
     )
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$title,
         "Table Title"
     )
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$subtitle,
         "Table Subtitle"
     )
 
-    expect_equal(t_frmt_layered$group, vars())
-    expect_equal(t_frmt_layered$label, quo())
-    expect_equal(t_frmt_layered$param, quo())
-    expect_equal(t_frmt_layered$value, quo())
-    expect_equal(t_frmt_layered$column, vars())
+    expect_identical(t_frmt_layered$group, vars())
+    expect_identical(t_frmt_layered$label, rlang::quo())
+    expect_identical(t_frmt_layered$param, rlang::quo())
+    expect_identical(t_frmt_layered$value, rlang::quo())
+    expect_identical(t_frmt_layered$column, vars())
 })
 
 test_that("layering tfrmt - select latest table elements", {
@@ -205,8 +205,8 @@ test_that("layering tfrmt - select latest table elements", {
         )
 
     expect_s3_class(t_frmt_layered, "tfrmt")
-    expect_equal(t_frmt_layered$title, "Table Title 2")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title 2")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
 })
 
 test_that("layering tfrmt - body style elements", {
@@ -214,7 +214,7 @@ test_that("layering tfrmt - body style elements", {
         title = "Table Title",
         body_plan = body_plan(
             frmt_structure(
-                group_val = c("group1"),
+                group_val = "group1",
                 label_val = ".default",
                 frmt("XXX")
             )
@@ -226,7 +226,7 @@ test_that("layering tfrmt - body style elements", {
             tfrmt(
                 body_plan = body_plan(
                     frmt_structure(
-                        group_val = c("group2"),
+                        group_val = "group2",
                         label_val = ".default",
                         frmt("xx.x")
                     )
@@ -236,8 +236,8 @@ test_that("layering tfrmt - body style elements", {
 
     expect_s3_class(t_frmt_layered, "tfrmt")
 
-    expect_equal(t_frmt_layered$title, "Table Title")
-    expect_equal(
+    expect_identical(t_frmt_layered$title, "Table Title")
+    expect_identical(
         t_frmt_layered$body_plan,
         body_plan(
             frmt_structure(
@@ -287,10 +287,10 @@ test_that("layering tfrmt - body style elements - multiple", {
 
     expect_s3_class(t_frmt_layered, "tfrmt")
 
-    expect_equal(t_frmt_layered$title, "Table Title")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$body_plan,
         body_plan(
             frmt_structure(
@@ -346,10 +346,10 @@ test_that("layering tfrmt - body style elements - join_body_style FALSE", {
 
     expect_s3_class(t_frmt_layered, "tfrmt")
 
-    expect_equal(t_frmt_layered$title, "Table Title")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
 
-    expect_equal(
+    expect_identical(
         t_frmt_layered$body_plan,
         body_plan(
             frmt_structure(
@@ -382,10 +382,10 @@ test_that("layering tfrmt - keeping original var/quo", {
         )
 
     expect_s3_class(t_frmt_layered, "tfrmt")
-    expect_equal(t_frmt_layered$title, "Table Title 2")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title 2")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
     expect_equal(t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE)
-    expect_equal(t_frmt_layered$label, quo(label1), ignore_attr = TRUE)
+    expect_equal(t_frmt_layered$label, rlang::quo(label1), ignore_attr = TRUE)
 })
 
 test_that("layering tfrmt - Mixing var/quo", {
@@ -405,10 +405,10 @@ test_that("layering tfrmt - Mixing var/quo", {
         )
 
     expect_s3_class(t_frmt_layered, "tfrmt")
-    expect_equal(t_frmt_layered$title, "Table Title 2")
-    expect_equal(t_frmt_layered$subtitle, "Table Subtitle")
+    expect_identical(t_frmt_layered$title, "Table Title 2")
+    expect_identical(t_frmt_layered$subtitle, "Table Subtitle")
     expect_equal(t_frmt_layered$group, vars(Group1, Group2), ignore_attr = TRUE)
-    expect_equal(t_frmt_layered$label, quo(label3), ignore_attr = TRUE)
+    expect_equal(t_frmt_layered$label, rlang::quo(label3), ignore_attr = TRUE)
 })
 
 test_that("basic tfrmt - ... args", {
@@ -418,7 +418,7 @@ test_that("basic tfrmt - ... args", {
             totally_fake_arg = "my_col"
         )
     )
-    expect_equal(
+    expect_identical(
         message_res,
         "Argument 'totally_fake_arg' passed to tfrmt is not a recognized argument."
     )
@@ -426,10 +426,10 @@ test_that("basic tfrmt - ... args", {
     ## arg is spelled close to actual arg
     message_res <- capture_messages(
         tfrmt(
-            colmn = "my_col",
+            colmn = "my_col"
         )
     )
-    expect_equal(
+    expect_identical(
         message_res,
         "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?"
     )
@@ -440,7 +440,7 @@ test_that("basic tfrmt - ... args", {
             lalbl = "label"
         )
     )
-    expect_equal(
+    expect_identical(
         message_res,
         c(
             "Argument 'colmn' passed to tfrmt is not a recognized argument.\nDid you intend to use the argument `column`?",
@@ -458,7 +458,7 @@ test_that("basic tfrmt - erroring args", {
                     label_val = ".default",
                     frmt("XX")
                 ),
-            )
+            ) # nolint: missing_argument_linter. Trailing comma is intentional to trigger a missing argument error below
         ),
         paste0(
             "Error in evaluating argument `body_plan`:\n ",
@@ -480,11 +480,11 @@ test_that("basic tfrmt - func calls into quo and var args", {
     )
 
     expect_s3_class(t_frmt, "tfrmt")
-    expect_equal(t_frmt$title, "Table Title")
+    expect_identical(t_frmt$title, "Table Title")
     expect_equal(t_frmt$group, vars(col, df), ignore_attr = TRUE)
-    expect_equal(t_frmt$label, quo(runif), ignore_attr = TRUE)
-    expect_equal(t_frmt$param, quo(abs), ignore_attr = TRUE)
-    expect_equal(t_frmt$value, quo(acos), ignore_attr = TRUE)
+    expect_equal(t_frmt$label, rlang::quo(runif), ignore_attr = TRUE)
+    expect_equal(t_frmt$param, rlang::quo(abs), ignore_attr = TRUE)
+    expect_equal(t_frmt$value, rlang::quo(acos), ignore_attr = TRUE)
     expect_equal(t_frmt$column, vars(adist), ignore_attr = TRUE)
 })
 
@@ -536,7 +536,7 @@ test_that("advanced tfrmt - tfrmt maker", {
     new_tfrmt <- tfrmt_maker(
         "Table Title",
         vars(value1, value2),
-        quo(labs),
+        rlang::quo(labs),
         "parameter"
     )
     new_tfrmt_char <- tfrmt_maker(
@@ -548,7 +548,7 @@ test_that("advanced tfrmt - tfrmt maker", {
     new_tfrmt_2 <- tfrmt_maker_2(
         "Table Title",
         vars(value1, value2),
-        quo(labs),
+        rlang::quo(labs),
         "parameter"
     )
     new_tfrmt_2_char <- tfrmt_maker_2(
@@ -559,37 +559,45 @@ test_that("advanced tfrmt - tfrmt maker", {
     )
 
     expect_s3_class(new_tfrmt, "tfrmt")
-    expect_equal(new_tfrmt$title, "Table Title")
+    expect_identical(new_tfrmt$title, "Table Title")
     expect_equal(new_tfrmt$group, vars(value1, value2), ignore_attr = TRUE)
-    expect_equal(new_tfrmt$label, quo(labs), ignore_attr = TRUE)
-    expect_equal(new_tfrmt$param, quo(parameter), ignore_attr = TRUE)
+    expect_equal(new_tfrmt$label, rlang::quo(labs), ignore_attr = TRUE)
+    expect_equal(new_tfrmt$param, rlang::quo(parameter), ignore_attr = TRUE)
 
     expect_s3_class(new_tfrmt_char, "tfrmt")
-    expect_equal(new_tfrmt_char$title, "Table Title")
+    expect_identical(new_tfrmt_char$title, "Table Title")
     expect_equal(new_tfrmt_char$group, vars(value1, value2), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_char$label, quo(labs), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_char$param, quo(parameter), ignore_attr = TRUE)
+    expect_equal(new_tfrmt_char$label, rlang::quo(labs), ignore_attr = TRUE)
+    expect_equal(
+        new_tfrmt_char$param,
+        rlang::quo(parameter),
+        ignore_attr = TRUE
+    )
 
     expect_s3_class(new_tfrmt_2, "tfrmt")
-    expect_equal(new_tfrmt_2$title, "Table Title")
+    expect_identical(new_tfrmt_2$title, "Table Title")
     expect_equal(new_tfrmt_2$group, vars(value1, value2), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_2$label, quo(labs), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_2$param, quo(parameter), ignore_attr = TRUE)
+    expect_equal(new_tfrmt_2$label, rlang::quo(labs), ignore_attr = TRUE)
+    expect_equal(new_tfrmt_2$param, rlang::quo(parameter), ignore_attr = TRUE)
 
     expect_s3_class(new_tfrmt_2_char, "tfrmt")
-    expect_equal(new_tfrmt_2_char$title, "Table Title")
+    expect_identical(new_tfrmt_2_char$title, "Table Title")
     expect_equal(
         new_tfrmt_2_char$group,
         vars(value1, value2),
         ignore_attr = TRUE
     )
-    expect_equal(new_tfrmt_2_char$label, quo(labs), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_2_char$param, quo(parameter), ignore_attr = TRUE)
+    expect_equal(new_tfrmt_2_char$label, rlang::quo(labs), ignore_attr = TRUE)
+    expect_equal(
+        new_tfrmt_2_char$param,
+        rlang::quo(parameter),
+        ignore_attr = TRUE
+    )
 
     new_tfrmt_with_bp <- tfrmt_maker_3(
         "Table Title",
         vars(value1, value2),
-        quo(labs),
+        rlang::quo(labs),
         "parameter",
         frmt_structure(
             group_val = ".default",
@@ -604,14 +612,18 @@ test_that("advanced tfrmt - tfrmt maker", {
     )
 
     expect_s3_class(new_tfrmt_with_bp, "tfrmt")
-    expect_equal(new_tfrmt_with_bp$title, "Table Title")
+    expect_identical(new_tfrmt_with_bp$title, "Table Title")
     expect_equal(
         new_tfrmt_with_bp$group,
         vars(value1, value2),
         ignore_attr = TRUE
     )
-    expect_equal(new_tfrmt_with_bp$label, quo(labs), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_with_bp$param, quo(parameter), ignore_attr = TRUE)
+    expect_equal(new_tfrmt_with_bp$label, rlang::quo(labs), ignore_attr = TRUE)
+    expect_equal(
+        new_tfrmt_with_bp$param,
+        rlang::quo(parameter),
+        ignore_attr = TRUE
+    )
     expect_equal(
         new_tfrmt_with_bp$body_plan,
         body_plan(
@@ -640,7 +652,7 @@ test_that("advanced tfrmt - tfrmt maker", {
     new_tfrmt_with_bp_2 <- tfrmt_maker_3(
         "Table Title",
         vars(value1, value2),
-        quo(labs),
+        rlang::quo(labs),
         "parameter",
         frmt_structure(
             group_val = ".default",
@@ -655,14 +667,22 @@ test_that("advanced tfrmt - tfrmt maker", {
     )
 
     expect_s3_class(new_tfrmt_with_bp_2, "tfrmt")
-    expect_equal(new_tfrmt_with_bp_2$title, "Table Title")
+    expect_identical(new_tfrmt_with_bp_2$title, "Table Title")
     expect_equal(
         new_tfrmt_with_bp_2$group,
         vars(value1, value2),
         ignore_attr = TRUE
     )
-    expect_equal(new_tfrmt_with_bp_2$label, quo(labs), ignore_attr = TRUE)
-    expect_equal(new_tfrmt_with_bp_2$param, quo(parameter), ignore_attr = TRUE)
+    expect_equal(
+        new_tfrmt_with_bp_2$label,
+        rlang::quo(labs),
+        ignore_attr = TRUE
+    )
+    expect_equal(
+        new_tfrmt_with_bp_2$param,
+        rlang::quo(parameter),
+        ignore_attr = TRUE
+    )
     ## make sure it selects the right bp (not the global env one first)
     expect_equal(
         new_tfrmt_with_bp_2$body_plan,
@@ -710,7 +730,7 @@ test_that("basic tfrmt - error when body_plan groups does not match group arg", 
             group = vars(group1, group2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = c("value"),
+                    group_val = "value",
                     label_val = ".default",
                     frmt("XXX")
                 ),
@@ -968,7 +988,7 @@ test_that("layering tfrmt - error when body_plan groups no longer match group ar
         group = vars(group1, group2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = c("value"),
+                group_val = "value",
                 label_val = ".default",
                 frmt("XXX")
             ),

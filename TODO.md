@@ -29,6 +29,10 @@ This text is not a task.
   - [ ] decide on a consistent approach to:
     -  classing the message
     - including or not including context
+- [ ] functions should check their inputs. If the function is not user facing, then it should report the error / condition from the calling function. For example, `apply_tfrmt()` should have a `call = rlang::caller_env()` argument.
+- [ ] all user-facing functions should check all their inputs before doing any work.
+  - for example, `big_n_structure()` should check `param_val`
+- [ ] all S3 classes introduced by {tfrmt} should have matching `is_<class>()` and `check_<class>()` functions.
 
 ## Performance
 

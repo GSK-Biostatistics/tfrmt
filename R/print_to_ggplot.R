@@ -12,19 +12,22 @@
 #' ```r
 #'
 #' # Create data
-#' risk<-tibble(time=c(rep(c(0,1000,2000,3000),3)),
-#'             label=c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),
-#'             value=c(630,372,256,11,620,360,266,8,608,425,328,14),
-#'             param=rep("n",12))
+#' risk <- tibble::tibble(
+#'     time = c(rep(c(0,1000,2000,3000),3)),
+#'     label = c(rep("Obs",4),rep("Lev",4),rep("Lev+5FU",4)),
+#'     value = c(630,372,256,11,620,360,266,8,608,425,328,14),
+#'     param = rep("n",12)
+#' )
 #'
-#'table<-tfrmt(
-#'  label = label ,
-#'  column = time,
-#'  param = param,
-#'  value = value) |>
-#'   print_to_ggplot(risk)
+#' table<-tfrmt(
+#'     label = label,
+#'     column = time,
+#'     param = param,
+#'     value = value
+#'     ) |>
+#'     print_to_ggplot(risk)
 #'
-#'table
+#' table
 #'
 #' ```
 #' \if{html}{\out{
@@ -32,17 +35,12 @@
 #' }}
 #'
 print_to_ggplot <- function(tfrmt, .data, ...) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
-    }
-
-    if (!is.data.frame(.data)) {
-        stop("Requires data")
-    }
+    check_tfrmt(tfrmt)
+    rlang::check_data_frame(.data)
 
     # stop if label location is not indented
     if (
-        is.null(tfrmt$row_grp_plan) == FALSE &&
+        !is.null(tfrmt$row_grp_plan) &&
             tfrmt$row_grp_plan$label_loc[1] != "indented"
     ) {
         stop(
@@ -51,7 +49,7 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if span structures are present
-    if (is.null(tfrmt$col_plan$span_structures) == FALSE) {
+    if (!is.null(tfrmt$col_plan$span_structures)) {
         stop("print_to_ggplot does not support spanning headers")
     }
 
@@ -61,31 +59,31 @@ print_to_ggplot <- function(tfrmt, .data, ...) {
     }
 
     # stop if column style plan added
-    if (is.null(tfrmt$col_style_plan) == FALSE) {
+    if (!is.null(tfrmt$col_style_plan)) {
         stop("print_to_ggplot does not support col_style_plan elements")
     }
 
     # stop if param, column values not provided
-    if (quo_is_missing(tfrmt$param)) {
+    if (rlang::quo_is_missing(tfrmt$param)) {
         stop("param variable required for print_to_ggplot")
     }
-    if (is_empty(tfrmt$column)) {
+    if (rlang::is_empty(tfrmt$column)) {
         stop("column variable required for print_to_ggplot")
     }
-    if (quo_is_missing(tfrmt$label)) {
+    if (rlang::quo_is_missing(tfrmt$label)) {
         stop("label variable required for print_to_ggplot")
     }
 
-    if (quo_is_missing(tfrmt$value)) {
+    if (rlang::quo_is_missing(tfrmt$value)) {
         stop("value variable required for print_to_ggplot")
     }
 
     # Keeping the original data of column to preserve data type later on
-    column_name <- as_label(tfrmt$column[[1]])
-    column_data <- .data %>%
-        pull(!!column_name)
+    column_name <- rlang::as_label(tfrmt$column[[1]])
+    column_data <- dplyr::pull(.data, !!column_name)
 
-    apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
+    .data |>
+        apply_tfrmt(tfrmt) |>
         cleaned_data_to_ggplot(tfrmt, column_data, ...)
 }
 
@@ -102,28 +100,34 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
     # apply grouping if any
     # create y variable to preserve ordering and levels
     .data <- apply_grp_ggplot(.data, tfrmt) %>%
-        mutate(y = rev(seq_len(n())))
+        dplyr::mutate(
+            y = rev(
+                seq_len(
+                    dplyr::n()
+                )
+            )
+        )
 
     # handle cases for "..tfrmt_row_grp_lbl pivoting
     if ("..tfrmt_row_grp_lbl" %in% names(.data)) {
         # reshape data for ggplot
         long_data <- .data %>%
-            pivot_longer(
-                -c(as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
+            tidyr::pivot_longer(
+                -c(rlang::as_label(tfrmt$label), "y", "..tfrmt_row_grp_lbl"),
                 names_to = "column",
                 values_to = "value"
             ) %>%
-            mutate(
-                value = if_else(
-                    .data$`..tfrmt_row_grp_lbl` == TRUE,
+            dplyr::mutate(
+                value = dplyr::if_else(
+                    .data$`..tfrmt_row_grp_lbl`,
                     "",
                     .data$value
                 )
             )
     } else {
         long_data <- .data %>%
-            pivot_longer(
-                -c(as_label(tfrmt$label), "y"),
+            tidyr::pivot_longer(
+                -c(rlang::as_label(tfrmt$label), "y"),
                 names_to = "column",
                 values_to = "value"
             )
@@ -142,44 +146,52 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 
     if (column_type == "numeric") {
         long_data$column <- as.numeric(long_data$column)
-        plot <- ggplot(
+        plot <- ggplot2::ggplot(
             long_data,
-            aes(
+            ggplot2::aes(
                 x = as.numeric(.data$column),
                 y = as.factor(.data$y),
                 label = .data$value
             )
         ) +
-            scale_x_continuous(
+            ggplot2::scale_x_continuous(
                 position = "top",
                 breaks = unique(long_data$column),
                 labels = as.character(unique(long_data$column))
             )
     } else {
-        plot <- ggplot(
+        plot <- ggplot2::ggplot(
             long_data,
-            aes(x = .data$column, y = as.factor(.data$y), label = .data$value)
+            ggplot2::aes(
+                x = .data$column,
+                y = as.factor(.data$y),
+                label = .data$value
+            )
         ) +
-            scale_x_discrete(position = "top")
+            ggplot2::scale_x_discrete(
+                position = "top"
+            )
     }
 
     plot +
-        geom_text(...) +
-        xlab("") +
-        ylab("") +
-        theme_void() +
-        theme(
-            axis.text.y = element_text(
+        ggplot2::geom_text(...) +
+        ggplot2::xlab("") +
+        ggplot2::ylab("") +
+        ggplot2::theme_void() +
+        ggplot2::theme(
+            axis.text.y = ggplot2::element_text(
                 size = 10,
-                margin = margin(r = 0),
+                margin = ggplot2::margin(r = 0),
                 hjust = 0
             ),
-            panel.spacing = unit(0, "mm"),
-            strip.text = element_blank(),
-            axis.text.x = element_text(size = 10)
+            panel.spacing = ggplot2::unit(0, "mm"),
+            strip.text = ggplot2::element_blank(),
+            axis.text.x = ggplot2::element_text(
+                size = 10
+            )
         ) + # replace y values with labels
-        scale_y_discrete(
-            labels = pull(long_data, !!tfrmt$label),
+        ggplot2::scale_y_discrete(
+            labels = dplyr::pull(long_data, !!tfrmt$label),
             breaks = long_data$y
         )
 }
@@ -194,15 +206,15 @@ cleaned_data_to_ggplot <- function(.data, tfrmt, column_data, ...) {
 apply_grp_ggplot <- function(.data, tfrmt) {
     if (
         !is.null(tfrmt$row_grp_plan) &&
-            is_empty(tfrmt$group) == FALSE &&
+            !rlang::is_empty(tfrmt$group) &&
             tfrmt$row_grp_plan$label_loc$location == "gtdefault"
     ) {
-        group_name <- quo_name(tfrmt$group[[1]])
+        group_name <- rlang::quo_name(tfrmt$group[[1]])
 
         element <- element_row_grp_loc(location = "indented", indent = "    ")
 
         combine_group_cols(.data, tfrmt$group, tfrmt$label, element) %>%
-            select(
+            dplyr::select(
                 -tidyselect::all_of(
                     group_name
                 )

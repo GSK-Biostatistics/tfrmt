@@ -1,6 +1,6 @@
 test_that("extract_data works for a single gt_tbl object", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -54,16 +54,16 @@ test_that("extract_data works for a single gt_tbl object", {
 
     tfrmt_data_extracted <- extract_data(tfrmt_dem)
     tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
-        select(-`..tfrmt_row_grp_lbl`)
+        dplyr::select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data extracts updated names changed in the col_plan including group/label vars", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -110,7 +110,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -130,20 +130,20 @@ test_that("extract_data extracts updated names changed in the col_plan including
     tfrmt_data_extracted <- extract_data(tfrmt_dem)
 
     tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
-        rename(
+        dplyr::rename(
             "rowlbl1_new" = "rowlbl1",
             "rowlbl2_new" = "rowlbl2"
         ) |>
-        select(-`..tfrmt_row_grp_lbl`)
+        dplyr::select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data extracts updated names changed in the col_plan including 1 group/label vars", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -190,7 +190,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -209,17 +209,17 @@ test_that("extract_data extracts updated names changed in the col_plan including
     tfrmt_data_extracted <- extract_data(tfrmt_dem)
 
     tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
-        rename("rowlbl2_new" = "rowlbl2") |>
-        select(-`..tfrmt_row_grp_lbl`)
+        dplyr::rename("rowlbl2_new" = "rowlbl2") |>
+        dplyr::select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data extracts updated names changed in the col_plan", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -266,7 +266,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -284,16 +284,16 @@ test_that("extract_data extracts updated names changed in the col_plan", {
     tfrmt_data_extracted <- extract_data(tfrmt_dem)
 
     tfrmt_data_manual <- tfrmt_dem[["_data"]] |>
-        select(-`..tfrmt_row_grp_lbl`)
+        dplyr::select(-`..tfrmt_row_grp_lbl`)
 
     expect_s3_class(tfrmt_data_extracted, "data.frame")
-    expect_equal(tfrmt_data_extracted, tfrmt_data_manual)
+    expect_identical(tfrmt_data_extracted, tfrmt_data_manual)
     expect_gt(nrow(tfrmt_data_extracted), 0)
 })
 
 test_that("extract_data works for a gt_group object (paged tables)", {
     data_demog_test <- data_demog |>
-        filter(
+        dplyr::filter(
             rowlbl1 %in% c("Age (y)", "Sex"),
             column != "p-value"
         )
@@ -358,13 +358,13 @@ test_that("extract_data works for a gt_group object (paged tables)", {
     gt_group_manual <- purrr::map(
         tfrmt_paged$gt_tbls$gt_tbl,
         ~ .x[["_data"]] %>%
-            select(-starts_with("..tfrmt"))
+            dplyr::select(-starts_with("..tfrmt"))
     )
 
     #  Assertions
     expect_type(gt_group_data_extracted, "list")
     expect_length(gt_group_data_extracted, length(gt_group_manual))
-    expect_equal(gt_group_data_extracted, gt_group_manual)
+    expect_identical(gt_group_data_extracted, gt_group_manual)
 
     # Check that each element in the list is a data frame
     expect_s3_class(gt_group_data_extracted[[1]], "data.frame")
@@ -415,8 +415,8 @@ test_that("extract_data works for a table with bigN values", {
                 Param == "pct" ~ Value * 100,
                 TRUE ~ Value
             ),
-            ord1 = dplyr::if_else(Param == "bigN", 0, 1),
-            ord2 = dplyr::if_else(Param == "bigN", 0, 1)
+            ord1 = as.numeric(Param != "bigN"),
+            ord2 = as.numeric(Param != "bigN")
         )
 
     bign <- tfrmt(
@@ -459,7 +459,7 @@ test_that("extract_data works for a table with bigN values", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         big_n = big_n_structure(
@@ -471,11 +471,11 @@ test_that("extract_data works for a table with bigN values", {
 
     extracted <- extract_data(bign)
     manual <- bign[["_data"]] |>
-        select(-`..tfrmt_row_grp_lbl`)
+        dplyr::select(-`..tfrmt_row_grp_lbl`)
 
     # check expected data is equal to manual extraction
     expect_s3_class(extracted, "data.frame")
-    expect_equal(extracted, manual)
+    expect_identical(extracted, manual)
     expect_gt(nrow(extracted), 0)
 
     # check that the bigns are present in the column names of extracted data
@@ -485,9 +485,9 @@ test_that("extract_data works for a table with bigN values", {
     expected_patterns <- c("N = 30", "N = 40", "N = 60")
 
     # Assert that the labels contain your expected strings
-    expect_true(any(grepl("N = 30", column_labels)))
-    expect_true(any(grepl("N = 40", column_labels)))
-    expect_true(any(grepl("N = 60", column_labels)))
+    expect_true(any(grepl("N = 30", fixed = TRUE, column_labels)))
+    expect_true(any(grepl("N = 40", fixed = TRUE, column_labels)))
+    expect_true(any(grepl("N = 60", fixed = TRUE, column_labels)))
 })
 
 test_that("extract_data handles various spanning header depths", {
@@ -546,7 +546,7 @@ test_that("extract_data handles various spanning header depths", {
 
     # 1 layer of spanning headers
     data2 <- data |>
-        select(-span2)
+        dplyr::select(-span2)
 
     spanning_tfrmt2 <- tfrmt(
         group = group,

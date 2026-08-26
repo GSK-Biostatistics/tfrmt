@@ -38,7 +38,7 @@ test_that("turn length one unquoted quo into args", {
 
     expect_equal(
         temp_function(bare_arg_val)$x,
-        quo(bare_arg_val),
+        rlang::quo(bare_arg_val),
         ignore_attr = TRUE
     )
 })
@@ -58,7 +58,7 @@ test_that("turn length two unquoted quo into args", {
 
     expect_equal(
         tempfunc_res$x,
-        quo(bare_arg_val1),
+        rlang::quo(bare_arg_val1),
         ignore_attr = TRUE
     )
 })
@@ -73,7 +73,7 @@ test_that("throw error when input argument errors out", {
     temp_function_2 <- function(..., env = parent.frame()) {
         arg_parent <- names(formals(sys.function(sys.parent(1))))
 
-        args <- setdiff(arg_parent, c("..."))
+        args <- setdiff(arg_parent, "...")
 
         val <- quo_get(
             args,
