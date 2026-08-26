@@ -16,8 +16,6 @@
 #'
 #' @export
 #'
-#' @export
-#'
 #' @examples
 #'
 #' tfrmt_spec<- tfrmt(
