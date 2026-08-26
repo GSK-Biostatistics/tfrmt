@@ -143,14 +143,21 @@ tfrmt <- tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
-        label_loc = element_row_grp_loc(location = "column")
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
     ),
 
     # Specify column style plan
     col_style = col_style_plan(
-        col_style_structure(align = c(".", ",", " "), col = vars(everything()))
+        col_style_structure(
+            align = c(".", ",", " "),
+            col = vars(everything())
+        )
     ),
 
     # remove extra cols
