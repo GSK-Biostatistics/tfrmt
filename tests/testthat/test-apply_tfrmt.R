@@ -145,12 +145,12 @@ test_that("test tentative_process", {
 
     failing_func <- function(x, y = "value") {
         stop("this function failed")
-        paste0(x, y)
+        paste0(x, y) # nolint: unreachable_code_linter
     }
 
     rlang_abort_func <- function(x, y = "value") {
         rlang::abort("this function failed2")
-        paste0(x, y)
+        paste0(x, y) # nolint: unreachable_code_linter
     }
 
     ## function passing in tentative process
