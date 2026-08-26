@@ -134,6 +134,7 @@ col_plan <- function(..., .drop = FALSE) {
 span_structure <- function(...) {
     span_cols <- as.list(substitute(substitute(...)))[-1]
     span_cols <- check_span_structure_dots(span_cols)
+    check_span_structure_values(span_cols)
 
     structure(
         span_cols,
@@ -205,23 +206,33 @@ check_span_structure_dots <- function(x) {
             })
         )
 
+    x_dots[!sapply(x_dots, is.null)]
+}
+
+#' @noRd
+check_span_structure_values <- function(
+    x,
+    call = rlang::caller_env()
+) {
     is_empty_entry <- function(e) {
         length(e) == 0 ||
-            (length(e) == 1 && rlang::is_quosure(e[[1]]) && identical(rlang::as_label(e[[1]]), ""))
+            (length(e) == 1 &&
+                rlang::is_quosure(e[[1]]) &&
+                identical(rlang::as_label(e[[1]]), ""))
     }
 
-    empty_entries <- names(x_dots)[sapply(x_dots, is_empty_entry)]
+    empty_entries <- names(x)[sapply(x, is_empty_entry)]
     if (length(empty_entries) > 0) {
         rlang::abort(
             paste0(
                 "The following span_structure() arguments have no column values: ",
                 paste0("`", empty_entries, "`", collapse = ", ")
             ),
-            call = rlang::caller_call()
+            call = call
         )
     }
 
-    x_dots[!sapply(x_dots, is.null)]
+    invisible(NULL)
 }
 
 is_valid_span_structure_call <- function(x) {
