@@ -152,7 +152,7 @@ test_that("prep_...() pipe with demographic data", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -336,7 +336,7 @@ test_that("prep_...() pipe with adverse effects data", {
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(
+                    element_block = element_block(
                         post_space = " "
                     )
                 )

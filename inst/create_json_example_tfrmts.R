@@ -75,7 +75,9 @@ tfrmt_demog <- tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         label_loc = element_row_grp_loc(
             location = "column"
@@ -224,19 +226,25 @@ tfrmt_efficacy <- tfrmt(
             group_val = list(
                 group = "Change from Baseline"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
             group_val = list(
                 group = "p-value (Dose Response)"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
             group_val = list(
                 group = "p-value (Xan - Placebo)"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         label_loc = element_row_grp_loc(
             location = "indented"

@@ -17,7 +17,7 @@ test_that("Display row formats for tfrmt with <frmt>", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             )
         ),
 
@@ -84,7 +84,7 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             )
         ),
 

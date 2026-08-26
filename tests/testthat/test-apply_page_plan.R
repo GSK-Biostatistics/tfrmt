@@ -1275,7 +1275,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(post_space = " ")
                 )
             )
         )
@@ -1366,7 +1366,7 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(max_rows = 4)

@@ -143,7 +143,7 @@ test_that("applying footnote meta column val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -199,7 +199,7 @@ test_that("applying footnote meta column val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(
                 location = "column"
@@ -337,7 +337,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -383,7 +383,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "noprint")
         ),
@@ -430,7 +430,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -481,7 +481,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "indented")
         ),
@@ -537,7 +537,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "gtdefault")
         ),
