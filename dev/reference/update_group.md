@@ -32,18 +32,18 @@ tfrmt_spec <- tfrmt(
     group = c(group1, group2),
     body_plan  = body_plan(
         frmt_structure(
-            group_val = list(group2 = "value"),
-            label_val = ".default",
-            frmt("XXX")
+            frmt("XXX"),
+            group_val = list(
+                group2 = "value"
+            )
         ),
         frmt_structure(
+            frmt("XXX"),
             group_val = list(
                 group1 = "value",
                 group2 = "value"
-            ),
-            label_val = ".default",
-            frmt("XXX")
-       )
+            )
+        )
     )
 )
 
@@ -55,12 +55,12 @@ tfrmt_spec %>%
 #> [[1]]
 #> <quosure>
 #> expr: ^New_Group
-#> env:  0x56137c99f378
+#> env:  0x55c1ccb29e00
 #> 
 #> [[2]]
 #> <quosure>
 #> expr: ^group2
-#> env:  0x56137c9a1f80
+#> env:  0x55c1cff17ac8
 #> 
 #> 
 #> $label

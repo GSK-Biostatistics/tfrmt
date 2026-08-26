@@ -65,16 +65,12 @@ ae_tfrmt_template <- tfrmt(
     body_plan = body_plan(
         # All entries where the param column is `AEs` (representing total counts)
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
 
         # Combine entries where param column is `n` and `pct` to create a cell
         # for that population
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -89,8 +85,6 @@ ae_tfrmt_template <- tfrmt(
         # All entries where param column is `pval`, format conditionally.
         # When the value is missing, replace the NA with "--".
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -135,16 +129,12 @@ ae_base_tfrmt_template <- function(tfrmt_obj) {
         body_plan = body_plan(
             # All entries where the param column is `AEs` (representing total counts)
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 AEs = frmt("[XXX]")
             ),
 
             # Combine entries where param column is `n` and `pct` to create a
             # cell for that population
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("XXX"),
@@ -167,8 +157,6 @@ ae_pval_tfrmt_template <- function(tfrmt_obj) {
             # All entries where param column is `pval`, format conditionally.
             # When the value is missing, replace the NA with "--".
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 pval = frmt_when(
                     ">0.99" ~ ">0.99",
                     "<0.001" ~ "<0.001",
@@ -318,18 +306,12 @@ tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = int_frmt_func(3)
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             n_pct_frmt
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = pval_frmt
         )
     ),

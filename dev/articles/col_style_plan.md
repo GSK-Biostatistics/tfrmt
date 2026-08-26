@@ -101,13 +101,9 @@ tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -116,8 +112,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -126,8 +120,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -163,13 +155,9 @@ tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -178,8 +166,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -188,8 +174,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -230,13 +214,9 @@ tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -245,8 +225,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -255,8 +233,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -298,13 +274,9 @@ tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -313,8 +285,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -323,8 +293,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -371,13 +339,9 @@ tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -386,8 +350,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -396,8 +358,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -458,13 +418,9 @@ tf <- tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -473,8 +429,6 @@ tf <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -483,8 +437,6 @@ tf <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -593,13 +545,9 @@ tfrmt(
     col_plan = col_plan(-ord),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx", missing = " ")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -608,8 +556,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "[{q1}, {q3}]",
                 q1 = frmt("xx.x"),
@@ -618,8 +564,6 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",

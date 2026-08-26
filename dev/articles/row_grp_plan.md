@@ -55,8 +55,6 @@ my_tfrmt <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx")
         )
     )
@@ -95,8 +93,6 @@ my_tfrmt <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx")
         )
     )
@@ -151,8 +147,6 @@ my_tfrmt <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx")
         )
     )
@@ -192,8 +186,6 @@ my_tfrmt <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx")
         )
     )
@@ -235,8 +227,6 @@ my_tfrmt <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx")
         )
     )
@@ -280,8 +270,6 @@ my_tfrmt <- tfrmt(
     ),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx")
         )
     )

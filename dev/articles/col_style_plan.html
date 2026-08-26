@@ -191,13 +191,9 @@ Expand for the code used to produce the example data
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -206,8 +202,6 @@ Expand for the code used to produce the example data
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -216,8 +210,6 @@ Expand for the code used to produce the example data
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -726,13 +718,9 @@ covered in the plan will be left-aligned by default.</p>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -741,8 +729,6 @@ covered in the plan will be left-aligned by default.</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -751,8 +737,6 @@ covered in the plan will be left-aligned by default.</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -1267,13 +1251,9 @@ better fit:</p>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -1282,8 +1262,6 @@ better fit:</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -1292,8 +1270,6 @@ better fit:</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -1808,13 +1784,9 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -1823,8 +1795,6 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -1833,8 +1803,6 @@ we will align on the first instance of a decimal, comma, or space:</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -2354,13 +2322,9 @@ respectively):</p>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -2369,8 +2333,6 @@ respectively):</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -2379,8 +2341,6 @@ respectively):</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -2915,13 +2875,9 @@ multiple decimal places:</p>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -2930,8 +2886,6 @@ multiple decimal places:</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -2940,8 +2894,6 @@ multiple decimal places:</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -3529,13 +3481,9 @@ apply the widths to that column as well.</p>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span><span class="op">-</span><span class="va">ord</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span>, missing <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -3544,8 +3492,6 @@ apply the widths to that column as well.</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"[{q1}, {q3}]"</span>,</span>
 <span>                q1 <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx.x"</span><span class="op">)</span>,</span>
@@ -3554,8 +3500,6 @@ apply the widths to that column as well.</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>

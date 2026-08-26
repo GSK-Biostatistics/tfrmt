@@ -160,16 +160,12 @@ and finally “pval” is the p-value.</li>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="co"># All entries where the param column is `AEs` (representing total counts)</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span></span>
 <span>        <span class="co"># Combine entries where param column is `n` and `pct` to create a cell</span></span>
 <span>        <span class="co"># for that population</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{n} {pct}"</span>,</span>
 <span>                n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
@@ -184,8 +180,6 @@ and finally “pval” is the p-value.</li>
 <span>        <span class="co"># All entries where param column is `pval`, format conditionally.</span></span>
 <span>        <span class="co"># When the value is missing, replace the NA with "--".</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -225,16 +219,12 @@ p-values, and then finally layer it with the study specific tfrmt.</p>
 <span>        body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>            <span class="co"># All entries where the param column is `AEs` (representing total counts)</span></span>
 <span>            <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>                group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                AEs <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"[XXX]"</span><span class="op">)</span></span>
 <span>            <span class="op">)</span>,</span>
 <span></span>
 <span>            <span class="co"># Combine entries where param column is `n` and `pct` to create a</span></span>
 <span>            <span class="co"># cell for that population</span></span>
 <span>            <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>                group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                    <span class="st">"{n} {pct}"</span>,</span>
 <span>                    n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XXX"</span><span class="op">)</span>,</span>
@@ -257,8 +247,6 @@ p-values, and then finally layer it with the study specific tfrmt.</p>
 <span>            <span class="co"># All entries where param column is `pval`, format conditionally.</span></span>
 <span>            <span class="co"># When the value is missing, replace the NA with "--".</span></span>
 <span>            <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>                group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>                label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>                pval <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt_when</a></span><span class="op">(</span></span>
 <span>                    <span class="st">"&gt;0.99"</span> <span class="op">~</span> <span class="st">"&gt;0.99"</span>,</span>
 <span>                    <span class="st">"&lt;0.001"</span> <span class="op">~</span> <span class="st">"&lt;0.001"</span>,</span>
@@ -1043,18 +1031,12 @@ generate our table too.</p>
 <span>    value <span class="op">=</span> <span class="va">value</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            AEs <span class="op">=</span> <span class="fu">int_frmt_func</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="va">n_pct_frmt</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            pval <span class="op">=</span> <span class="va">pval_frmt</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>

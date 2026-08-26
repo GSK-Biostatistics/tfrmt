@@ -26,8 +26,6 @@ template_tfrmt <- tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx.x")
         )
     )
@@ -78,8 +76,6 @@ tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx.x")
         )
     )

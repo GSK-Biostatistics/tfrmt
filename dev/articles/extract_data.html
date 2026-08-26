@@ -133,8 +133,6 @@ then extract the resulting data frame.</p>
 <span>    <span class="co"># specify value formatting</span></span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{n} {pct}"</span>,</span>
 <span>                n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span>,</span>
@@ -146,19 +144,16 @@ then extract the resulting data frame.</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">"n"</span>,</span>
-<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span></span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx"</span><span class="op">)</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">"n"</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean"</span>, <span class="st">"Median"</span>, <span class="st">"Min"</span>, <span class="st">"Max"</span><span class="op">)</span>,</span>
-<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx.x"</span><span class="op">)</span></span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx.x"</span><span class="op">)</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean"</span>, <span class="st">"Median"</span>, <span class="st">"Min"</span>, <span class="st">"Max"</span><span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">"SD"</span>,</span>
-<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx.xx"</span><span class="op">)</span></span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xxx.xx"</span><span class="op">)</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">"SD"</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    <span class="co"># remove extra cols</span></span>
@@ -1876,8 +1871,6 @@ names in the extracted data frame.</p>
 <span>    sorting_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ord1</span>, <span class="va">ord2</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{n} {pct}"</span>,</span>
 <span>                n <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"X"</span><span class="op">)</span>,</span>
@@ -1885,18 +1878,17 @@ names in the extracted data frame.</p>
 <span>            <span class="op">)</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">"Age (y)"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">"Mean (SD)"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt_combine</a></span><span class="op">(</span></span>
 <span>                <span class="st">"{mean} ({sd})"</span>,</span>
 <span>                mean <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"XX.X"</span><span class="op">)</span>,</span>
 <span>                sd <span class="op">=</span> <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x.xx"</span><span class="op">)</span></span>
-<span>            <span class="op">)</span></span>
+<span>            <span class="op">)</span>,</span>
+<span>            group_val <span class="op">=</span> <span class="st">"Age (y)"</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">"Mean (SD)"</span></span>
 <span>        <span class="op">)</span>,</span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">"n"</span>,</span>
-<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span></span>
+<span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"xx"</span><span class="op">)</span>,</span>
+<span>            label_val <span class="op">=</span> <span class="st">"n"</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    col_plan <span class="op">=</span> <span class="fu"><a href="../reference/col_plan.html">col_plan</a></span><span class="op">(</span></span>
@@ -2531,8 +2523,6 @@ delimiter using the <code>col_delim</code> argument.</p>
 <span>    column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">span2</span>, <span class="va">span1</span>, <span class="va">my_col</span><span class="op">)</span>,</span>
 <span>    body_plan <span class="op">=</span> <span class="fu"><a href="../reference/body_plan.html">body_plan</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="../reference/frmt_structure.html">frmt_structure</a></span><span class="op">(</span></span>
-<span>            group_val <span class="op">=</span> <span class="st">".default"</span>,</span>
-<span>            label_val <span class="op">=</span> <span class="st">".default"</span>,</span>
 <span>            <span class="fu"><a href="../reference/frmt.html">frmt</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>

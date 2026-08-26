@@ -96,8 +96,6 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("X"),
@@ -108,18 +106,17 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = "Age (y)",
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("XX.X"),
                 sd = frmt("x.xx")
-            )
+            ),
+            group_val = "Age (y)",
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
+            frmt("xx"),
+            label_val = "n"
         )
     ),
     col_plan = col_plan(
@@ -182,8 +179,6 @@ spanning_tfrmt <- tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -319,8 +314,6 @@ gts <- tfrmt(
     value = val,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x.x")
         )
     ),

@@ -150,8 +150,6 @@ needed to cover all values:
 
 body_plan(
     frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
         frmt_combine(
             "{n} {pct}",
             n = frmt("XXX"),
@@ -163,23 +161,18 @@ body_plan(
         )
     ),
     frmt_structure(
-        group_val = ".default",
-        label_val = "n",
-        frmt("xxx")
+        frmt("xxx"),
+        label_val = "n"
     ),
     frmt_structure(
-        group_val = ".default",
-        label_val = c("Mean", "Median", "Min", "Max"),
-        frmt("xxx.x")
+        frmt("xxx.x"),
+        label_val = c("Mean", "Median", "Min", "Max")
     ),
     frmt_structure(
-        group_val = ".default",
-        label_val = "SD",
-        frmt("xxx.xx")
+        frmt("xxx.xx"),
+        label_val = "SD"
     ),
     frmt_structure(
-        group_val = ".default",
-        label_val = ".default",
         p = frmt_when(
             ">0.99" ~ ">0.99",
             "<0.001" ~ "<0.001",

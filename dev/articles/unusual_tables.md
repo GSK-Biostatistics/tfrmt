@@ -86,8 +86,6 @@ tfrmt(
     column = vars(col1, col2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("XX")
         )
     ),

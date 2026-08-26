@@ -152,10 +152,9 @@ p-values. This is a bit more complicated, since the p-value sits in the
 same row as other parameters; therefore the group and label value are
 not specific enough and we need something more granular. As such, we
 will need to specify the parameter in the `frmt_structure` like so:
-`frmt_structure(group_val = ".default", label_val = ".default", p = frmt("x.xx")`.
-Further, we also need to make sure it never displays a rounded p-value
-of 0 or 1. So we can use `frmt_when` to specify the formatting based on
-the value.
+`frmt_structure(p = frmt("x.xx")`. Further, we also need to make sure it
+never displays a rounded p-value of 0 or 1. So we can use `frmt_when` to
+specify the formatting based on the value.
 
 ``` r
 
@@ -170,8 +169,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} ({pct} %)",
                 n = frmt("xxx"),
@@ -179,23 +176,18 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xxx")
+            frmt("xxx"),
+            label_val = "n"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("Mean", "Median", "Min", "Max"),
-            frmt("xxx.x")
+            frmt("xxx.x"),
+            label_val = c("Mean", "Median", "Min", "Max")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "SD",
-            frmt("xxx.xx")
+            frmt("xxx.xx"),
+            label_val = "SD"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -231,8 +223,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -244,33 +234,27 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xxx")
+            frmt("xxx"),
+            label_val = "n"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("Mean", "Median", "Min", "Max"),
-            frmt("xxx.x")
+            frmt("xxx.x"),
+            label_val = c("Mean", "Median", "Min", "Max")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "SD",
-            frmt("xxx.xx")
+            frmt("xxx.xx"),
+            label_val = "SD"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
                 TRUE ~ frmt("x.xxx", missing = "")
-            )
+            ),
+            label_val = c("n", "<65 yrs", "<12 months", "<25")
         )
     ),
     # remove extra cols
@@ -340,8 +324,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -353,33 +335,27 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xxx")
+            frmt("xxx"),
+            label_val = "n"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("Mean", "Median", "Min", "Max"),
-            frmt("xxx.x")
+            frmt("xxx.x"),
+            label_val = c("Mean", "Median", "Min", "Max")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "SD",
-            frmt("xxx.xx")
+            frmt("xxx.xx"),
+            label_val = "SD"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
                 TRUE ~ frmt("x.xxx", missing = "")
-            )
+            ),
+            label_val = c("n", "<65 yrs", "<12 months", "<25")
         )
     ),
     # remove extra cols
@@ -597,8 +573,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -610,13 +584,9 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -653,8 +623,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -666,13 +634,9 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -712,8 +676,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -725,13 +687,9 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -781,8 +739,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -794,13 +750,9 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -853,8 +805,6 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -866,13 +816,9 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -1022,13 +968,11 @@ tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
-        ), # we could also do: label_val = ".default", n = frmt("xx")
+            # we could also do: n = frmt("xx")
+            frmt("xx"),
+            label_val = "n"
+        ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1070,13 +1014,11 @@ tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
-        ), # we could also do: label_val = ".default", n = frmt("xx")
+            # we could also do: n = frmt("xx")
+            frmt("xx"),
+            label_val = "n"
+        ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1084,45 +1026,41 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
                 median = frmt("xx.x"),
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Median (Range)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
                 sd = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
                 diff = frmt("xx.x"),
                 diff_se = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Diff of LS Means (SE)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
                 diff_lcl = frmt("xx.x"),
                 diff_ucl = frmt("xx.x"),
                 missing = " "
-            )
+            ),
+            label_val = "95% CI"
         )
     )
 ) |>
@@ -1150,13 +1088,11 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
-        ), # we could also do: label_val = ".default", n = frmt("xx")
+            # we could also do: n = frmt("xx")
+            frmt("xx"),
+            label_val = "n"
+        ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1164,45 +1100,41 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
                 median = frmt("xx.x"),
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Median (Range)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
                 sd = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
                 diff = frmt("xx.x"),
                 diff_se = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Diff of LS Means (SE)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
                 diff_lcl = frmt("xx.x"),
                 diff_ucl = frmt("xx.x"),
                 missing = " "
-            )
+            ),
+            label_val = "95% CI"
         )
     ),
     col_plan = col_plan(
@@ -1242,13 +1174,11 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
-        ), # we could also do: label_val = ".default", n = frmt("xx")
+            # we could also do: n = frmt("xx")
+            frmt("xx"),
+            label_val = "n"
+        ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1256,45 +1186,41 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
                 median = frmt("xx.x"),
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Median (Range)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
                 sd = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
                 diff = frmt("xx.x"),
                 diff_se = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Diff of LS Means (SE)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
                 diff_lcl = frmt("xx.x"),
                 diff_ucl = frmt("xx.x"),
                 missing = " "
-            )
+            ),
+            label_val = "95% CI"
         )
     ),
     col_plan = col_plan(
@@ -1337,13 +1263,11 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
-        ), # we could also do: label_val = ".default", n = frmt("xx")
+            # we could also do: n = frmt("xx")
+            frmt("xx"),
+            label_val = "n"
+        ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1351,45 +1275,41 @@ tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
                 median = frmt("xx.x"),
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Median (Range)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
                 sd = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
                 diff = frmt("xx.x"),
                 diff_se = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Diff of LS Means (SE)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
                 diff_lcl = frmt("xx.x"),
                 diff_ucl = frmt("xx.x"),
                 missing = " "
-            )
+            ),
+            label_val = "95% CI"
         )
     ),
     col_plan = col_plan(

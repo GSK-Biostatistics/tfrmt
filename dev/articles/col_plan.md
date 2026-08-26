@@ -55,8 +55,6 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     )
@@ -84,8 +82,6 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -113,8 +109,6 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -149,8 +143,6 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -185,8 +177,6 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -227,8 +217,6 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -298,8 +286,6 @@ tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -334,8 +320,6 @@ tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -381,8 +365,6 @@ tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x")
         )
     ),
@@ -438,8 +420,6 @@ tfrmt(
     column = c(span, my_col),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("x.xx")
         )
     ),

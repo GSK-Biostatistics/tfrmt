@@ -50,7 +50,7 @@ footnote_structure <- footnote_structure(
     column_val = "Placebo"
 )
 
-# Adds a footnote to either 'Placebo' or 'Treatment groups' depending on which
+# Adds a footnote to either 'Placebo' or 'Treatment groups' depending on
 # which is last to appear in the column vector
 footnote_structure <- footnote_structure(
     footnote_text = "Text",
@@ -61,5 +61,8 @@ footnote_structure <- footnote_structure(
 )
 
 # Adds a footnote to the 'Adverse Event' label
-footnote_structure <- footnote_structure("Text", label_val = "Adverse Event")
+footnote_structure <- footnote_structure(
+    "Text",
+    label_val = "Adverse Event"
+)
 ```

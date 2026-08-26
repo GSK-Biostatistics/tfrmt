@@ -8,10 +8,19 @@ This specifies the rows the format will be applied to.
 ## Usage
 
 ``` r
-frmt_structure(group_val = ".default", label_val = ".default", ...)
+frmt_structure(..., group_val = ".default", label_val = ".default")
 ```
 
 ## Arguments
+
+- ...:
+
+  either a
+  [`frmt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md),
+  [`frmt_combine()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md),
+  or a
+  [`frmt_when()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md)
+  object. This can be named to also specify the parameter value
 
 - group_val:
 
@@ -22,15 +31,6 @@ frmt_structure(group_val = ".default", label_val = ".default", ...)
 
   A string which represent the value of label should be when the given
   frmt is implemented
-
-- ...:
-
-  either a
-  [`frmt()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md),
-  [`frmt_combine()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md),
-  or a
-  [`frmt_when()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt.md)
-  object. This can be named to also specify the parameter value
 
 ## Value
 
@@ -60,18 +60,16 @@ article](https://gsk-biostatistics.github.io/tfrmt/articles/body_plan.html)
 ``` r
 
 sample_structure <- frmt_structure(
-    group_val = c("group1"),
-    label_val = ".default",
-    frmt("XXX")
+    frmt("XXX"),
+    group_val = "group1"
 )
 
 # multiple group columns
 sample_structure <- frmt_structure(
+    frmt("XXX"),
     group_val = list(
         grp_col1 = "group1",
         grp_col2 = "subgroup3"
-    ),
-    label_val = ".default",
-    frmt("XXX")
+    )
 )
 ```

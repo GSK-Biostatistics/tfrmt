@@ -248,13 +248,9 @@ tfrmt(
     sorting_cols = ord1,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt("xx.x")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p = frmt("xx%", transform = ~ . * 100)
         )
     ),
@@ -485,8 +481,6 @@ tfrmt(
     column = ARM,
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} ({p}%)",
                 n = frmt("xx"),

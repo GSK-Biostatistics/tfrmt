@@ -4,6 +4,13 @@
 
 ### Improvements
 
+- The argument order for
+  [`frmt_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/frmt_structure.md)
+  has changed, with the ellipsis (`...`) now being in the first
+  position. Users no longer need to explicitly pass
+  `group_val = ".default"` and `label_val = ".default"`.
+  ([\#501](https://github.com/GSK-Biostatistics/tfrmt/issues/501),
+  [@dragosmg](https://github.com/dragosmg))
 - Removed unused `grp_row_test_data` function, which improves test
   coverage for `R/apply_row_grp_plan.R`
   ([\#662](https://github.com/GSK-Biostatistics/tfrmt/issues/662)).

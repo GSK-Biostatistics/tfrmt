@@ -14,16 +14,18 @@ row_grp_structure(group_val = ".default", element_block)
 
 - group_val:
 
-  A string or a named list of strings which represent the value of group
-  should be when the given frmt is implemented
+  A character vector or a named list of strings which represent the
+  value of group should be when the given frmt is implemented
 
 - element_block:
 
-  element_block() object to define the block styling
+  An
+  [`element_block()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/element_block.md)
+  object to define the block styling
 
 ## Value
 
-row_grp_structure object
+A `row_grp_structure` object
 
 ## See also
 

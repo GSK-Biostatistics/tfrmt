@@ -54,9 +54,8 @@ is_frmt_when(x2)
 #> [1] TRUE
 
 x3 <- frmt_structure(
-    group_val = c("group1"),
-    label_val = ".default",
-    frmt("XXX")
+    frmt("XXX"),
+    group_val = "group1"
 )
 
 is_frmt_structure(x3)
