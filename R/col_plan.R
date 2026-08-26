@@ -195,12 +195,6 @@ check_span_structure_dots <- function(x) {
                         )
                     }
                 } else if (is.character(x)) {
-                    if (!nzchar(x)) {
-                        rlang::abort(
-                            "Empty string values are not allowed in span_structure().",
-                            call = rlang::caller_call()
-                        )
-                    }
                     return(as_length_one_quo.character(x)) # nolint: return_linter
                 } else {
                     rlang::abort(
@@ -211,7 +205,12 @@ check_span_structure_dots <- function(x) {
             })
         )
 
-    empty_entries <- names(x_dots)[sapply(x_dots, function(e) length(e) == 0)]
+    is_empty_entry <- function(e) {
+        length(e) == 0 ||
+            (length(e) == 1 && rlang::is_quosure(e[[1]]) && identical(rlang::as_label(e[[1]]), ""))
+    }
+
+    empty_entries <- names(x_dots)[sapply(x_dots, is_empty_entry)]
     if (length(empty_entries) > 0) {
         rlang::abort(
             paste0(

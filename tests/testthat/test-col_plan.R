@@ -1579,7 +1579,7 @@ test_that("span_structure misc, including errors", {
     ## empty string column value
     expect_error(
         span_structure(col1 = "", col2 = vars(A, B)),
-        "Empty string values are not allowed in span_structure().",
+        "The following span_structure() arguments have no column values: `col1`",
         fixed = TRUE
     )
 
