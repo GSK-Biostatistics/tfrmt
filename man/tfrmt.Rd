@@ -168,7 +168,7 @@ tfrmt_spec <- tfrmt(
         ),
         frmt_structure(
             frmt("xxx.x"),
-            label_val = c("Mean", "Median", "Min","Max"),
+            label_val = c("Mean", "Median", "Min","Max")
         ),
         frmt_structure(
             frmt("xxx.xx"),
