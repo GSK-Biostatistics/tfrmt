@@ -196,6 +196,9 @@ check_span_structure_dots <- function(x) {
                         )
                     }
                 } else if (is.character(x)) {
+                    if (!nzchar(x)) {
+                        return(NULL) # nolint: return_linter
+                    }
                     return(as_length_one_quo.character(x)) # nolint: return_linter
                 } else {
                     rlang::abort(
@@ -215,10 +218,7 @@ check_span_structure_values <- function(
     call = rlang::caller_env()
 ) {
     is_empty_entry <- function(e) {
-        length(e) == 0 ||
-            (length(e) == 1 &&
-                rlang::is_quosure(e[[1]]) &&
-                identical(rlang::as_label(e[[1]]), ""))
+        length(e) == 0
     }
 
     empty_entries <- names(x)[sapply(x, is_empty_entry)]
