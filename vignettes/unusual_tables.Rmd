@@ -57,7 +57,10 @@ data <- tibble::tribble(
             "Xanomeline High Dose (N=84)",
             "Total (N=254)"
         ),
-        col2 = factor(c("ITT", "Eff", "Com"), levels = c("ITT", "Eff", "Com"))
+        col2 = factor(
+            c("ITT", "Eff", "Com"),
+            levels = c("ITT", "Eff", "Com")
+        )
     ) |>
     dplyr::mutate(
         val = rpois(216, 15), # Here I am just faking the data for display purposes
@@ -73,10 +76,14 @@ tfrmt(
     column = vars(col1, col2),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("XX")
         )
     ),
-    row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc("column")),
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc("column")
+    ),
     col_plan = col_plan(
         `Pooled Id`,
         `Site Id`,

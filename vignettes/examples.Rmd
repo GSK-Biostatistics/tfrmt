@@ -43,6 +43,8 @@ tfrmt(
     # Specify body plan
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -54,21 +56,27 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xxx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("Mean", "Median", "Min", "Max"),
             frmt("xxx.x")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "SD",
             frmt("xxx.xx")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
@@ -82,9 +90,13 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
-        label_loc = element_row_grp_loc(location = "column")
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
     ),
 
     # Specify column styling plan
@@ -92,14 +104,14 @@ tfrmt(
         col_style_structure(
             align = c(".", ",", " "),
             col = c(
-                "Placebo",
-                "Xanomeline Low Dose",
-                "Xanomeline High Dose",
-                "Total",
-                "p-value"
-            )
+              "Placebo", "Xanomeline Low Dose",
+              "Xanomeline High Dose", "Total", "p-value"
+              )
         ),
-        col_style_structure(align = "left", col = c("rowlbl1", "rowlbl2"))
+        col_style_structure(
+            align = "left",
+            col = c("rowlbl1", "rowlbl2")
+        )
     ),
 
     # remove extra cols
@@ -152,6 +164,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} ({pct} %)",
                 n = frmt("xxx"),
@@ -159,18 +173,23 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xxx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("Mean", "Median", "Min", "Max"),
             frmt("xxx.x")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "SD",
             frmt("xxx.xx")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -199,6 +218,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -210,21 +231,27 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xxx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("Mean", "Median", "Min", "Max"),
             frmt("xxx.x")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "SD",
             frmt("xxx.xx")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
@@ -266,6 +293,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -277,21 +306,27 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xxx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("Mean", "Median", "Min", "Max"),
             frmt("xxx.x")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "SD",
             frmt("xxx.xx")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
@@ -310,23 +345,27 @@ tfrmt(
         col_style_structure(
             align = c(".", ",", " "),
             col = c(
-                "Placebo",
-                "Xanomeline Low Dose",
-                "Xanomeline High Dose",
-                "Total",
-                "p-value"
+                "Placebo", "Xanomeline Low Dose",
+                "Xanomeline High Dose", "Total", "p-value"
             )
         ),
-        col_style_structure(align = "left", col = c("rowlbl1", "rowlbl2"))
+        col_style_structure(
+            align = "left",
+            col = c("rowlbl1", "rowlbl2")
+        )
     ),
 
     # Specify row group plan
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
-        label_loc = element_row_grp_loc(location = "column")
+        label_loc = element_row_grp_loc(
+            location = "column"
+        )
     )
 ) |>
     print_to_gt(data_demog) |>
@@ -372,6 +411,8 @@ fmt_spec <- tfrmt(
     row_grp_plan = row_grp_plan(),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -383,9 +424,13 @@ fmt_spec <- tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -440,6 +485,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -451,9 +498,13 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -483,6 +534,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -494,9 +547,13 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -507,7 +564,9 @@ tfrmt(
     ),
     # Nest Preferred terms under SOC
     row_grp_plan = row_grp_plan(
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     )
 ) |>
     print_to_gt(data_ae2) |>
@@ -530,6 +589,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -541,9 +602,13 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -554,7 +619,9 @@ tfrmt(
     ),
     # Nest Preferred terms under SOC
     row_grp_plan = row_grp_plan(
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     ),
     # alignment
 
@@ -586,6 +653,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -597,9 +666,13 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -610,12 +683,17 @@ tfrmt(
     ),
     # Nest Preferred terms under SOC
     row_grp_plan = row_grp_plan(
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     ),
 
     # Specify column styling plan
     col_style_plan = col_style_plan(
-        col_style_structure(align = c(".", ",", " "), col = vars(p_low, p_high))
+        col_style_structure(
+            align = c(".", ",", " "),
+            col = vars(p_low, p_high)
+        )
     ),
     # columns
     col_plan = col_plan(
@@ -642,6 +720,8 @@ tfrmt(
     # specify value formatting
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -653,9 +733,13 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -666,12 +750,17 @@ tfrmt(
     ),
     # Nest Preferred terms under SOC
     row_grp_plan = row_grp_plan(
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     ),
 
     # Specify column styling plan
     col_style_plan = col_style_plan(
-        col_style_structure(align = c(".", ",", " "), col = c(p_low, p_high))
+        col_style_structure(
+            align = c(".", ",", " "),
+            col = c(p_low, p_high)
+        )
     ),
 
     # columns
@@ -731,24 +820,38 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     row_grp_plan = row_grp_plan(
         row_grp_structure(
-            group_val = list(group = "Change from Baseline"),
-            element_block(post_space = " ")
+            group_val = list(
+                group = "Change from Baseline"
+            ),
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
-            group_val = list(group = "p-value (Dose Response)"),
-            element_block(post_space = " ")
+            group_val = list(
+                group = "p-value (Dose Response)"
+            ),
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
-            group_val = list(group = "p-value (Xan - Placebo)"),
-            element_block(post_space = " ")
+            group_val = list(
+                group = "p-value (Xan - Placebo)"
+            ),
+            element_block = element_block(
+                post_space = " "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -759,6 +862,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -768,6 +872,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -777,6 +882,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
@@ -786,6 +892,8 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -801,10 +909,7 @@ tfrmt(
         contains("High")
     )
 ) |>
-    print_mock_gt(
-        data_efficacy |>
-            dplyr::select(-value)
-    ) |>
+    print_mock_gt(data_efficacy |> dplyr::select(-value)) |>
     gt::tab_options(
         container.width = 800
     )
@@ -839,10 +944,13 @@ tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
-        ), # we could also do: n = frmt("xx")
+        ), # we could also do: label_val = ".default", n = frmt("xx")
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -868,10 +976,13 @@ tfrmt(
     value = value,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
-        ), # we could also do: n = frmt("xx")
+        ), # we could also do: label_val = ".default", n = frmt("xx")
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -879,6 +990,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -889,6 +1001,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -898,6 +1011,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -907,6 +1021,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
@@ -935,10 +1050,13 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
-        ), # we could also do: n = frmt("xx")
+        ), # we could also do: label_val = ".default", n = frmt("xx")
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -946,6 +1064,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -956,6 +1075,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -965,6 +1085,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -974,6 +1095,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
@@ -1010,10 +1132,13 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
-        ), # we could also do: n = frmt("xx")
+        ), # we could also do: label_val = ".default", n = frmt("xx")
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1021,6 +1146,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -1031,6 +1157,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -1040,6 +1167,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -1049,6 +1177,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
@@ -1090,10 +1219,13 @@ tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
-        ), # we could also do: n = frmt("xx")
+        ), # we could also do: label_val = ".default", n = frmt("xx")
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -1101,6 +1233,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -1111,6 +1244,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -1120,6 +1254,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -1129,6 +1264,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
@@ -1148,18 +1284,32 @@ tfrmt(
     ),
     row_grp_plan = row_grp_plan(
         row_grp_structure(
-            group_val = list(group = "Change from Baseline"),
-            element_block(post_space = " ")
+            group_val = list(
+                group = "Change from Baseline"
+            ),
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
-            group_val = list(group = "p-value (Dose Response)"),
-            element_block(post_space = " ")
+            group_val = list(
+                group = "p-value (Dose Response)"
+            ),
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
-            group_val = list(group = "p-value (Xan - Placebo)"),
-            element_block(post_space = " ")
+            group_val = list(
+                group = "p-value (Xan - Placebo)"
+            ),
+            element_block = element_block(
+                post_space = " "
+            )
         ),
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     )
 ) |>
     print_to_gt(data_efficacy) |>

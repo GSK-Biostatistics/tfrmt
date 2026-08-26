@@ -43,11 +43,10 @@ es_data <- tibble::tibble(
     param = c(rep(c("n", "n", "pct", "pct"), 10)),
     column = c(rep(c("Placebo<br>(N=48)", "Treatment\n**(N=38)**"), 20)), # newline and bold syntax
     value = c(
-        24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38,
-        19, 18, 1900 / 48, 1800 / 38, 1, 1, 100 / 48, 100 / 38,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        1, 1, 100 / 48, 100 / 38, 1, 4, 100 / 48, 400 / 38,
-        1, 0, 100 / 48, 0, 2, 3, 200 / 48, 300 / 38
+        24, 19, 2400 / 48, 1900 / 38, 5, 1, 500 / 48, 100 / 38, 19, 18,
+        1900 / 48, 1800 / 38, 1, 1, 100 / 48, 100 / 38, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 100 / 48, 100 / 38, 1, 4,
+        100 / 48, 400 / 38, 1, 0, 100 / 48, 0, 2, 3, 200 / 48, 300 / 38
     )
 )
 
@@ -61,6 +60,8 @@ tfrmt(
     # set formatting for values
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -78,9 +79,13 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
-        label_loc = element_row_grp_loc(location = "indented")
+        label_loc = element_row_grp_loc(
+            location = "indented"
+        )
     )
 ) |>
     print_to_gt(es_data) |>

@@ -29,7 +29,8 @@ Demographics tables commonly contain a mix of categorical and continuous summari
 
 ```{r}
 ard_demog <- cards::ard_stack(
-    data = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
+    data = pharmaverseadam::adsl |>
+        dplyr::filter(SAFFL == "Y"),
     cards::ard_categorical(
         variables = "AGEGR1",
         statistic = ~ c("p")
@@ -116,13 +117,19 @@ tfrmt(
     sorting_cols = ord1,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("xx.x")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p = frmt("xx%", transform = ~ . * 100)
         )
     ),
-    big_n = big_n_structure(param_val = "bigN"),
+    big_n = big_n_structure(
+        param_val = "bigN"
+    ),
     col_plan = col_plan(-ord1)
 ) |>
     print_to_gt(ard_final)
@@ -146,7 +153,8 @@ ard_ae <- cards::ard_stack_hierarchical(
     data = adae,
     variables = c(AESOC, AEDECOD),
     by = ARM,
-    denominator = pharmaverseadam::adsl |> dplyr::filter(SAFFL == "Y"),
+    denominator = pharmaverseadam::adsl |>
+        dplyr::filter(SAFFL == "Y"),
     id = USUBJID,
     statistic = ~ c("n", "p")
 )
@@ -220,6 +228,8 @@ tfrmt(
     column = ARM,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} ({p}%)",
                 n = frmt("xx"),

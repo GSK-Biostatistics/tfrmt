@@ -54,6 +54,8 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     )
@@ -76,6 +78,8 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -97,6 +101,8 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -125,6 +131,8 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -152,6 +160,8 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -183,6 +193,8 @@ tfrmt(
     column = my_col,
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -238,6 +250,8 @@ tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -263,6 +277,8 @@ tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -275,7 +291,9 @@ tfrmt(
             )
         ),
         # rename column spanner in different level
-        span_structure(span2 = c("most columns" = "column cols")),
+        span_structure(
+            span2 = c("most columns" = "column cols")
+        ),
         group,
         label,
         starts_with("col"),
@@ -297,6 +315,8 @@ tfrmt(
     column = c(span2, span1, my_col),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x")
         )
     ),
@@ -304,8 +324,13 @@ tfrmt(
         group,
         label,
         # reordering spanners
-        span_structure(span1 = c("col 4")),
-        span_structure(span1 = c("cols 1,2"), my_col = c("col2", "col1")),
+        span_structure(
+            span1 = c("col 4")
+        ),
+        span_structure(
+            span1 = c("cols 1,2"),
+            my_col = c("col2", "col1")
+        ),
         everything(),
         new_col_3 = mycol3,
         -mycol5
@@ -337,6 +362,8 @@ tfrmt(
     column = c(span, my_col),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt("x.xx")
         )
     ),

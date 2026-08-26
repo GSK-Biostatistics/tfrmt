@@ -75,11 +75,15 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} ({percent})",
                 count = frmt("xx"),
@@ -94,7 +98,10 @@ tfrmt(
             footnote_text = "Source Note",
             group_val = "group 1"
         ),
-        footnote_structure(footnote_text = "Placebo", column_val = "PL"),
+        footnote_structure(
+            footnote_text = "Placebo",
+            column_val = "PL"
+        ),
         marks = "standard"
     ),
 ) |>
@@ -119,11 +126,15 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} ({percent})",
                 count = frmt("xx"),
@@ -157,11 +168,15 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} ({percent})",
                 count = frmt("xx"),
@@ -195,11 +210,15 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} ({percent})",
                 count = frmt("xx"),
@@ -234,11 +253,15 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} ({percent})",
                 count = frmt("xx"),
@@ -263,7 +286,9 @@ tfrmt(
     footnote_plan = footnote_plan(
         footnote_structure(
             footnote_text = "Footnote goes here",
-            column_val = list(span = "Treatment")
+            column_val = list(
+                span = "Treatment"
+            )
         ),
         marks = "extended"
     )
@@ -287,11 +312,15 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} ({percent})",
                 count = frmt("xx"),
@@ -316,7 +345,10 @@ tfrmt(
     footnote_plan = footnote_plan(
         footnote_structure(
             footnote_text = "Footnote goes here",
-            column_val = list(span = "Treatment", column = "T1&T2")
+            column_val = list(
+                span = "Treatment",
+                column = "T1&T2"
+            )
         ),
         marks = "extended"
     )

@@ -1,3 +1,4 @@
 [format]
 indent-width = 4
-exclude = [".lintr", ".lintr_restrictive", "vignettes/"]
+skip = ["c"]
+exclude = [".lintr", ".lintr_restrictive"]

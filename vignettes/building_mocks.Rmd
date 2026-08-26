@@ -64,6 +64,8 @@ tfrmt_spec <- tfrmt(
     # Specify body plan
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{count} {percent}",
                 count = frmt("xxx"),
@@ -248,6 +250,8 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
         # Specify body plan
         body_plan = body_plan(
             frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
                 frmt_combine(
                     "{num} ({lower}, {upper})",
                     num = frmt("xx.x"),
@@ -292,6 +296,8 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
         # Specify body plan
         body_plan = body_plan(
             frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
                 frmt_combine(
                     "{num} ({lower}, {upper})",
                     num = frmt("xx.x"),
@@ -343,7 +349,9 @@ tfrmt_n_pct(n = "count", pct = "percent") |>
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(
+                    post_space = "   "
+                )
             )
         )
     ) |>
@@ -399,17 +407,21 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
 
     # Specify body plan
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min},{max})",
@@ -420,6 +432,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -468,8 +481,12 @@ tfrmt(
     value = value,
     row_grp_plan = row_grp_plan(
         row_grp_structure(
-            group_val = list("group" = c("group 1", "group 2")),
-            element_block(post_space = "   ")
+            group_val = list(
+                group = c("group 1", "group 2")
+            ),
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
 
@@ -477,6 +494,7 @@ tfrmt(
     body_plan = body_plan(
         frmt_structure(
             group_val = "group 1",
+            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
@@ -485,6 +503,7 @@ tfrmt(
         ),
         frmt_structure(
             group_val = "group 2",
+            label_val = ".default",
             frmt_combine(
                 "{median} ({min},{max})",
                 median = frmt("xx"),
@@ -520,8 +539,12 @@ tfrmt(
     value = value,
     row_grp_plan = row_grp_plan(
         row_grp_structure(
-            group_val = list("group" = c("group 1", "group 2")),
-            element_block(post_space = "   ")
+            group_val = list(
+                "group" = c("group 1", "group 2")
+            ),
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
 
@@ -530,7 +553,11 @@ tfrmt(
         frmt_structure(
             group_val = "group 1",
             label_val = "label 1",
-            frmt_combine("{mean} ({sd})", mean = frmt("xx"), sd = frmt("xx"))
+            frmt_combine(
+                "{mean} ({sd})",
+                mean = frmt("xx"),
+                sd = frmt("xx")
+            )
         ),
         frmt_structure(
             group_val = "group 1",
@@ -594,7 +621,9 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = "   ")
+            element_block = element_block(
+                post_space = "   "
+            )
         )
     ),
     body_plan = body_plan(
@@ -603,6 +632,7 @@ tfrmt(
                 "grp1" = "group 1.1",
                 "grp2" = c("group 2.1", "group 2.2")
             ),
+            label_val = ".default",
             frmt("xx")
         ),
         frmt_structure(
@@ -610,6 +640,7 @@ tfrmt(
                 "grp1" = "group 1.2",
                 "grp2" = c("group 2.1", "group 2.2")
             ),
+            label_val = ".default",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),

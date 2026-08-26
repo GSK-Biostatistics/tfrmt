@@ -29,6 +29,8 @@ ae_mock_table <- function(tfrmt_obj) {
         subtitle = "Study ID: GSK12345",
         body_plan = body_plan(
             frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("XXX"),
@@ -40,6 +42,8 @@ ae_mock_table <- function(tfrmt_obj) {
                 )
             ),
             frmt_structure(
+                group_val = ".default",
+                label_val = ".default",
                 frmt_combine(
                     "{num} ({lower}, {upper})",
                     num = frmt("XX.X"),
@@ -142,7 +146,9 @@ ae_mock_table() |>
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(
+                    post_space = "   "
+                )
             )
         ),
         col_plan = col_plan(
@@ -220,7 +226,9 @@ ae_mock_table() |>
         column = "column",
         value = value,
         row_grp_plan = row_grp_plan(
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         ),
         col_plan = col_plan(
             T1,
@@ -249,6 +257,8 @@ fmt_spec <- tfrmt(
     row_grp_plan = row_grp_plan(),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -260,9 +270,13 @@ fmt_spec <- tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -306,6 +320,8 @@ tfrmt(
     # Specify body plan
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -317,21 +333,27 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xxx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("Mean", "Median", "Min", "Max"),
             frmt("xxx.x")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "SD",
             frmt("xxx.xx")
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
@@ -345,7 +367,9 @@ tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         label_loc = element_row_grp_loc(
             location = "column"
@@ -385,27 +409,35 @@ tfrmt(
             group_val = list(
                 group = "Change from Baseline"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
             group_val = list(
                 group = "p-value (Dose Response)"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
             group_val = list(
                 group = "p-value (Xan - Placebo)"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         )
     ),
     body_plan = body_plan(
         frmt_structure(
+            group_val = ".default",
             label_val = "n",
             frmt("xx")
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
@@ -416,6 +448,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
@@ -425,6 +458,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
@@ -434,6 +468,7 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
             label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
@@ -443,6 +478,8 @@ tfrmt(
             )
         ),
         frmt_structure(
+            group_val = ".default",
+            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
