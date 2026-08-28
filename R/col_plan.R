@@ -34,7 +34,8 @@
 #' @param ... For a col_plan and span_structure,
 #'   <[`tidy-select`][dplyr::dplyr_tidy_select]> arguments, unquoted expressions
 #'   separated by commas, and span_structures. span_structures must have the
-#'   arguments named to match the name the column in the input data has to identify the correct columns. See the examples
+#'   arguments named to match the name the column in the input data has to identify the correct columns.
+#'   Each named span entry must include at least one column value; empty values such as "" or c() are not allowed.See the examples
 #' @param .drop Boolean. Should un-listed columns be dropped from the data.
 #'   Defaults to FALSE.
 #'
@@ -134,6 +135,7 @@ col_plan <- function(..., .drop = FALSE) {
 span_structure <- function(...) {
     span_cols <- as.list(substitute(substitute(...)))[-1]
     span_cols <- check_span_structure_dots(span_cols)
+    check_span_structure_values(span_cols)
 
     structure(
         span_cols,
@@ -147,6 +149,13 @@ is_span_structure <- function(x) {
 
 #' @noRd
 check_span_structure_dots <- function(x) {
+    if (length(x) == 0) {
+        rlang::abort(
+            "span_structure() requires at least one named argument.",
+            call = rlang::caller_call()
+        )
+    }
+
     x_names <- names(x)
 
     if (is.null(x_names) || !all(nzchar(x_names))) {
@@ -188,6 +197,9 @@ check_span_structure_dots <- function(x) {
                         )
                     }
                 } else if (is.character(x)) {
+                    if (!nzchar(x)) {
+                        return(NULL) # nolint: return_linter
+                    }
                     return(as_length_one_quo.character(x)) # nolint: return_linter
                 } else {
                     rlang::abort(
@@ -199,6 +211,29 @@ check_span_structure_dots <- function(x) {
         )
 
     x_dots[!sapply(x_dots, is.null)]
+}
+
+#' @noRd
+check_span_structure_values <- function(
+    x,
+    call = rlang::caller_env()
+) {
+    is_empty_entry <- function(e) {
+        length(e) == 0 || all(vapply(e, is.null, logical(1)))
+    }
+
+    empty_entries <- names(x)[sapply(x, is_empty_entry)]
+    if (length(empty_entries) > 0) {
+        rlang::abort(
+            paste0(
+                "The following span_structure() arguments have no column values: ",
+                paste0("`", empty_entries, "`", collapse = ", ")
+            ),
+            call = call
+        )
+    }
+
+    invisible(NULL)
 }
 
 is_valid_span_structure_call <- function(x) {

@@ -1544,6 +1544,13 @@ test_that("col_plan returns correct errors", {
 })
 
 test_that("span_structure misc, including errors", {
+    ## empty inputs
+    expect_error(
+        span_structure(),
+        "span_structure() requires at least one named argument.",
+        fixed = TRUE
+    )
+
     ## unnamed values
     expect_error(
         span_structure(`blah blah blah`),
@@ -1566,6 +1573,20 @@ test_that("span_structure misc, including errors", {
             name_col = vars(matrix())
         ),
         "Invalid entry: `matrix()`\nOnly selection helpers (See <https://tidyselect.r-lib.org/reference>),",
+        fixed = TRUE
+    )
+
+    ## empty string column value
+    expect_error(
+        span_structure(col1 = "", col2 = vars(A, B)),
+        "The following span_structure() arguments have no column values: `col1`",
+        fixed = TRUE
+    )
+
+    ## empty c() column value
+    expect_error(
+        span_structure(col1 = "Test Label", col2 = c()),
+        "The following span_structure() arguments have no column values: `col2`",
         fixed = TRUE
     )
 })
