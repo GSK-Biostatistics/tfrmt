@@ -314,7 +314,7 @@ apply_col_alignment_pos <- function(col, align) {
             fill = "right"
         ) %>%
         tidyr::pivot_longer(
-            tidyselect::starts_with(
+            starts_with(
                 "col_split_"
             ),
             names_to = "col_split_lev",
