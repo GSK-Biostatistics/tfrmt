@@ -51,11 +51,11 @@ test_that("json row group plans", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = c("A", "C"),
-                element_block(post_space = "---")
+                element_block = element_block(post_space = "---")
             ),
             row_grp_structure(
-                group_val = c("B"),
-                element_block(post_space = " ")
+                group_val = "B",
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(
                 location = "column"
@@ -79,7 +79,7 @@ test_that("json row group plans", {
                     grp1 = "A",
                     grp2 = "b"
                 ),
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             ),
@@ -103,7 +103,6 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
                 frmt("XXX")
             )
         )
@@ -124,7 +123,6 @@ test_that("json body plan", {
                     grp_col1 = "group1",
                     grp_col2 = "subgroup"
                 ),
-                label_val = ".default",
                 test = frmt("XXX")
             )
         )
@@ -143,7 +141,6 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
                 frmt("XXX", transform = ~ . * 100)
             )
         )
@@ -158,7 +155,6 @@ test_that("json body plan", {
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
                 frmt("XXX", transform = function(x) {
                     x * 4
                 })
@@ -177,8 +173,6 @@ test_that("json body plan", {
     frmt_when_simp <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_when(
                     ">3" ~ frmt("(X.X%)"),
                     "<=3" ~ frmt("Undetectable")
@@ -199,8 +193,6 @@ test_that("json body plan", {
     frmt_when_scalar <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_when(
                     "<1" ~ "<1",
                     "==100" ~ "",
@@ -223,8 +215,6 @@ test_that("json body plan", {
     frmt_comb_simp <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{param1} {param2}",
                     param1 = frmt("XXX %"),
@@ -233,39 +223,41 @@ test_that("json body plan", {
             )
         )
     )
-    frmt_comb_simp %>%
-        as_json() %>%
-        expect_snapshot()
-    frmt_comb_simp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(frmt_comb_simp, ignore_attr = TRUE)
-    #Scientific test
+
+    expect_snapshot(as_json(frmt_comb_simp))
+
+    expect_equal(
+        frmt_comb_simp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        frmt_comb_simp,
+        ignore_attr = TRUE
+    )
+
+    # Scientific test
     sci <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
                 group_val = "group1",
-                label_val = ".default",
                 frmt("xx.xx", scientific = "x10^xx")
             )
         )
     )
 
-    sci %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(sci))
 
-    sci %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(sci, ignore_attr = TRUE)
+    expect_equal(
+        sci %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        sci,
+        ignore_attr = TRUE
+    )
 
-    #Everything test
+    # Everything test
     complex_frmt <- tfrmt(
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{param1} {param2}",
                     param1 = frmt("XXX %"),
@@ -278,12 +270,9 @@ test_that("json body plan", {
             ),
             frmt_structure(
                 group_val = "test1",
-                label_val = ".default",
                 foo = frmt("xx.x", missing = "--")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_when(
                     ">0.4" ~ frmt("(X.X%)", missing = ""),
                     "<=0.4" ~ frmt_combine(
@@ -297,33 +286,39 @@ test_that("json body plan", {
         )
     )
 
-    complex_frmt %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(complex_frmt))
 
-    complex_frmt %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(complex_frmt, ignore_attr = TRUE)
+    expect_equal(
+        complex_frmt %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        complex_frmt,
+        ignore_attr = TRUE
+    )
 })
 
 
 # big n's
 test_that("json big n", {
     big_n <- tfrmt(
-        big_n = big_n_structure(param_val = "bigN", n_frmt = frmt("\nN = xx"))
+        big_n = big_n_structure(
+            param_val = "bigN",
+            n_frmt = frmt("\nN = xx")
+        )
     )
-    big_n %>%
-        as_json() %>%
-        expect_snapshot()
 
-    big_n %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(big_n, ignore_attr = TRUE)
+    expect_snapshot(as_json(big_n))
+
+    expect_equal(
+        big_n %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        big_n,
+        ignore_attr = TRUE
+    )
 })
 
-#Footnote plans
+# Footnote plans
 test_that("json footnote plan", {
     fn_simp <- tfrmt(
         footnote_plan = footnote_plan(
@@ -337,14 +332,16 @@ test_that("json footnote plan", {
             marks = "standard"
         )
     )
-    fn_simp %>%
-        as_json() %>%
-        expect_snapshot()
 
-    fn_simp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(fn_simp, ignore_attr = TRUE)
+    expect_snapshot(as_json(fn_simp))
+
+    expect_equal(
+        fn_simp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        fn_simp,
+        ignore_attr = TRUE
+    )
 
     # multiple columns
     fn_cols <- tfrmt(
@@ -358,14 +355,16 @@ test_that("json footnote plan", {
             marks = "numbers"
         )
     )
-    fn_cols %>%
-        as_json() %>%
-        expect_snapshot()
 
-    fn_cols %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(fn_cols, ignore_attr = TRUE)
+    expect_snapshot(as_json(fn_cols))
+
+    expect_equal(
+        fn_cols %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        fn_cols,
+        ignore_attr = TRUE
+    )
 
     # group and labels
     gl_fn <- tfrmt(
@@ -377,13 +376,15 @@ test_that("json footnote plan", {
             )
         )
     )
-    gl_fn %>%
-        as_json() %>%
-        expect_snapshot()
-    gl_fn %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_identical(gl_fn)
+
+    expect_snapshot(as_json(gl_fn))
+
+    expect_identical(
+        gl_fn %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        gl_fn
+    )
 
     # Nest columns
     nested_fn <- tfrmt(
@@ -397,72 +398,87 @@ test_that("json footnote plan", {
             )
         )
     )
-    nested_fn %>%
-        as_json() %>%
-        expect_snapshot()
-    nested_fn %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(nested_fn, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(nested_fn))
+
+    expect_equal(
+        nested_fn %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        nested_fn,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("json col_plan", {
-    #Basic test
+    # Basic test
     cp <- tfrmt(col_plan = col_plan(col1, col2, col3))
-    cp %>%
-        as_json() %>%
-        expect_snapshot()
 
-    cp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(cp, ignore_attr = TRUE)
+    expect_snapshot(as_json(cp))
+
+    expect_equal(
+        cp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        cp,
+        ignore_attr = TRUE
+    )
 
     #Basic renaming
-    rename <- tfrmt(col_plan = col_plan("foo" = col1, col2, col3))
+    rename <- tfrmt(
+        col_plan = col_plan(
+            "foo" = col1,
+            col2,
+            col3
+        )
+    )
 
-    rename %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(rename))
 
-    rename %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(rename, ignore_attr = TRUE)
+    expect_equal(
+        rename %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        rename,
+        ignore_attr = TRUE
+    )
 
-    #Basic tidyselect
+    # Basic tidyselect
     base_ts <- tfrmt(
         col_plan = col_plan(
             starts_with("col")
         )
     )
-    base_ts %>%
-        as_json() %>%
-        expect_snapshot()
 
-    base_ts %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(base_ts, ignore_attr = c(".Environment"))
+    expect_snapshot(as_json(base_ts))
+
+    expect_equal(
+        base_ts %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        base_ts,
+        ignore_attr = ".Environment"
+    )
 
     #Basic span structure
     span <- tfrmt(
         column = c(span1, col),
         col_plan = col_plan(
             span_structure(
-                span1 = c("col 4")
+                span1 = "col 4"
             )
         )
     )
 
-    span %>%
-        as_json() %>%
-        expect_snapshot()
+    expect_snapshot(as_json(span))
 
-    span %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(span, ignore_attr = TRUE)
+    expect_equal(
+        span %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        span,
+        ignore_attr = TRUE
+    )
 
     # Span structure test
     span_tfrmt <- tfrmt(
@@ -471,10 +487,10 @@ test_that("json col_plan", {
             group,
             label,
             span_structure(
-                span1 = c("col 4")
+                span1 = "col 4"
             ),
             span_structure(
-                span1 = c("cols 1,2"),
+                span1 = "cols 1,2",
                 my_col = c("col2", "col1")
             ),
             span_structure(
@@ -500,14 +516,16 @@ test_that("json col_plan", {
             -mycol5
         )
     )
-    span_tfrmt %>%
-        as_json() %>%
-        expect_snapshot()
 
-    span_tfrmt %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(span_tfrmt, ignore_attr = TRUE)
+    expect_snapshot(as_json(span_tfrmt))
+
+    expect_equal(
+        span_tfrmt %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        span_tfrmt,
+        ignore_attr = TRUE
+    )
 })
 
 #col_style_plan
@@ -536,13 +554,16 @@ test_that("json col_style_plan", {
             )
         )
     )
-    csp %>%
-        as_json() %>%
-        expect_snapshot()
-    csp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(csp, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(csp))
+
+    expect_equal(
+        csp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        csp,
+        ignore_attr = TRUE
+    )
 
     csp_spaces <- tfrmt(
         col_style_plan = col_style_plan(
@@ -553,13 +574,16 @@ test_that("json col_style_plan", {
             )
         )
     )
-    csp_spaces %>%
-        as_json() %>%
-        expect_snapshot()
-    csp_spaces %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(csp_spaces, ignore_attr = TRUE)
+
+    expect_snapshot(as_json(csp_spaces))
+
+    expect_equal(
+        csp_spaces %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        csp_spaces,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("json page plan", {
@@ -576,28 +600,31 @@ test_that("json page plan", {
         )
     )
 
-    expect_snapshot(
-        as_json(pp)
-    )
+    expect_snapshot(as_json(pp))
 
-    pp %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(pp, ignore_attr = TRUE)
+    expect_equal(
+        pp %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        pp,
+        ignore_attr = TRUE
+    )
 
     pp_max_rows <- tfrmt(
         page_plan = page_plan(
             max_rows = 5
         )
     )
-    pp_max_rows %>%
-        as_json() %>%
-        expect_snapshot()
 
-    pp_max_rows %>%
-        as_json() %>%
-        json_to_tfrmt(json = .) %>%
-        expect_equal(pp_max_rows, ignore_attr = TRUE)
+    expect_snapshot(as_json(pp_max_rows))
+
+    expect_equal(
+        pp_max_rows %>%
+            as_json() %>%
+            json_to_tfrmt(json = .),
+        pp_max_rows,
+        ignore_attr = TRUE
+    )
 })
 
 test_that("page_plan() roundtrip to JSON with transform", {
@@ -610,13 +637,11 @@ test_that("page_plan() roundtrip to JSON with transform", {
             ),
             page_structure(label_val = "A"),
             note_loc = "source_note",
-            transform = ~ stringr::str_replace(.x, "foo", "bar")
+            transform = ~ stringr::str_replace(.x, stringr::fixed("foo"), "bar")
         )
     )
 
-    expect_snapshot(
-        as_json(page_plan_lambda)
-    )
+    expect_snapshot(as_json(page_plan_lambda))
 
     page_plan_lambda_from_json <- page_plan_lambda |>
         as_json() |>
@@ -646,7 +671,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
 
     # transform as function
     transform_function <- function(x) {
-        stringr::str_replace(x, "foo", "bar")
+        stringr::str_replace(x, stringr::fixed("foo"), "bar")
     }
 
     page_plan_function <- tfrmt(
@@ -661,9 +686,7 @@ test_that("page_plan() roundtrip to JSON with transform", {
         )
     )
 
-    expect_snapshot(
-        as_json(page_plan_function)
-    )
+    expect_snapshot(as_json(page_plan_function))
 
     page_plan_function_from_json <- page_plan_function |>
         as_json() |>
@@ -707,8 +730,6 @@ test_that("json read/write", {
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -720,27 +741,21 @@ test_that("json read/write", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 p = frmt("")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("n", "<65 yrs", "<12 months", "<25"),
                 p = frmt_when(
                     ">0.99" ~ ">0.99",
@@ -763,7 +778,7 @@ test_that("json read/write", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),

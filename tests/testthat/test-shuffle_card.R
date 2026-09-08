@@ -325,7 +325,7 @@ test_that("shuffle_card coerces all factor groups/variables to character", {
         sort(unique(as.character(adsl_$ETHNIC)))
     )
 })
-
+#   nolint start: duplicate_argument_linter
 test_that("shuffle_card fills missing group levels if the group is meaningful for cardx output", {
     # cardx ARD: this is a dput() of a cardx result (see commented out code below) SAVED 2024-08-30
     ard_cardx <- structure(
@@ -383,6 +383,7 @@ test_that("shuffle_card fills missing group levels if the group is meaningful fo
             as.data.frame()
     )
 })
+#   nolint end: duplicate_argument_linter
 
 test_that("shuffle_card() fills grouping columns with `Overall <var>` or `Any <var>`", {
     adae <- cards::ADAE |>
@@ -661,7 +662,8 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
         attributes(shuffled_ard)[["args"]]
     )
 
-    # ard_stack uses bind_ard under the hood - attributes will be lost
+    # ard_stack uses bind_ard under the hood, but retains its ard_stack class
+    # so by attributes should be preserved
     ard <- cards::ard_stack(
         data = adsl,
         cards::ard_tabulate(variables = "AGEGR1"),
@@ -669,11 +671,22 @@ test_that("shuffle_card() preserves the attributes of a `card` object", {
         .by = "ARM"
     )
 
-    expect_snapshot(
+    expect_silent(
         shuffled_ard <- shuffle_card(ard)
     )
+    expect_true("ARM" %in% names(shuffled_ard))
 
-    # Binding two ARDs together class without a by attribute
+    # Binding two ARDs together with by variable "ARM"
+    ard_no_stack_attr <- cards::bind_ard(
+        cards::ard_tabulate(cards::ADSL, variables = "AGEGR1", by = "ARM"),
+        cards::ard_tabulate(cards::ADSL, variables = "SEX", by = "ARM")
+    )
+
+    expect_snapshot(
+        shuffle_card(ard_no_stack_attr)
+    )
+
+    # Binding two ARDs together with no by variable
     ard_no_by_attr <- cards::bind_ard(
         cards::ard_tabulate(cards::ADSL, variables = "AGEGR1"),
         cards::ard_tabulate(cards::ADSL, variables = "SEX")

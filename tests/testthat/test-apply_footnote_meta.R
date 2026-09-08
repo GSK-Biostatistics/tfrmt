@@ -40,8 +40,6 @@ test_that("applying footnote meta column val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -54,18 +52,23 @@ test_that("applying footnote meta column val", {
             )
         ),
         footnote_plan = footnote_plan(
-            footnote_structure("Test footnote 1", column_val = "Placebo"),
+            footnote_structure(
+                "Test footnote 1",
+                column_val = "Placebo"
+            ),
             marks = "letters"
         )
     )
 
     expect_identical(
         attr(apply_tfrmt(es_data, tfrmt), ".footnote_locs"),
-        list(list(
-            "col" = "Placebo",
-            "spanning" = FALSE,
-            "note" = "Test footnote 1"
-        ))
+        list(
+            list(
+                "col" = "Placebo",
+                "spanning" = FALSE,
+                "note" = "Test footnote 1"
+            )
+        )
     )
     # named column vals
     tfrmt2 <- tfrmt(
@@ -78,8 +81,6 @@ test_that("applying footnote meta column val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -125,8 +126,6 @@ test_that("applying footnote meta column val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -144,7 +143,7 @@ test_that("applying footnote meta column val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -183,8 +182,6 @@ test_that("applying footnote meta column val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -202,14 +199,18 @@ test_that("applying footnote meta column val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
-            label_loc = element_row_grp_loc(location = "column")
+            label_loc = element_row_grp_loc(
+                location = "column"
+            )
         ),
         footnote_plan = footnote_plan(
             footnote_structure(
                 "Test footnote 2",
-                column_val = list(trt = "Placebo")
+                column_val = list(
+                    trt = "Placebo"
+                )
             ),
             marks = "letters"
         )
@@ -236,8 +237,6 @@ test_that("applying footnote meta column val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -321,8 +320,6 @@ test_that("applying footnote meta group val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -340,7 +337,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -369,8 +366,6 @@ test_that("applying footnote meta group val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -388,7 +383,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "noprint")
         ),
@@ -418,8 +413,6 @@ test_that("applying footnote meta group val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -437,7 +430,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -471,8 +464,6 @@ test_that("applying footnote meta group val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -490,7 +481,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "indented")
         ),
@@ -530,8 +521,6 @@ test_that("applying footnote meta group val", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -548,7 +537,7 @@ test_that("applying footnote meta group val", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "gtdefault")
         ),
@@ -585,8 +574,6 @@ test_that("applying footnote meta group val", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -623,8 +610,6 @@ test_that("applying footnote meta group val", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -699,8 +684,6 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -742,8 +725,6 @@ test_that("If 1 group/column var, can pass an unnamed vector", {
         # set formatting for value
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),

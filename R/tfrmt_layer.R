@@ -26,20 +26,25 @@
 #'
 #' tfrmt_1 <- tfrmt(title = "title1")
 #'
-#' tfrmt_2 <- tfrmt(title = "title2",subtitle = "subtitle2")
+#' tfrmt_2 <- tfrmt(
+#'     title = "title2",
+#'     subtitle = "subtitle2"
+#' )
 #'
 #' layered_table_format <- layer_tfrmt(tfrmt_1, tfrmt_2)
 #'
 layer_tfrmt <- function(x, y, ..., join_body_plans = TRUE) {
     if (missing(x)) {
-        stopifnot(is_tfrmt(y))
+        check_tfrmt(y)
         return(y)
     } else if (missing(y)) {
-        stopifnot(is_tfrmt(x))
+        check_tfrmt(x)
         return(x)
     }
 
-    stopifnot(is_tfrmt(y), is_tfrmt(x))
+    check_tfrmt(x)
+    check_tfrmt(y)
+    rlang::check_bool(join_body_plans)
 
     args <- union(names(x), names(y))
 
@@ -158,20 +163,24 @@ layer_tfrmt_arg.body_plan <- function(x, y, ..., join_body_plans = TRUE) {
 #' tfrmt_spec <- tfrmt(
 #'     group = c(group1, group2),
 #'     body_plan  = body_plan(
-#'       frmt_structure(
-#'          group_val = list(group2 = "value"),
-#'          label_val = ".default",
-#'          frmt("XXX")
-#'          ),
-#'      frmt_structure(
-#'          group_val = list(group1 = "value", group2 = "value"),
-#'          label_val = ".default",
-#'          frmt("XXX")
-#'        )
-#'     ))
+#'         frmt_structure(
+#'             frmt("XXX"),
+#'             group_val = list(
+#'                 group2 = "value"
+#'             )
+#'         ),
+#'         frmt_structure(
+#'             frmt("XXX"),
+#'             group_val = list(
+#'                 group1 = "value",
+#'                 group2 = "value"
+#'             )
+#'         )
+#'     )
+#' )
 #'
 #' tfrmt_spec %>%
-#'   update_group(New_Group = group1)
+#'     update_group(New_Group = group1)
 #'
 update_group <- function(tfrmt, ...) {
     dots <- as.list(substitute(substitute(...)))[-1]
@@ -345,5 +354,5 @@ reset_component <- function(tfrmt_obj, component_name) {
     tfrmt_obj[[component_name]] <- NULL
 
     # Return the modified tfrmt object
-    return(tfrmt_obj)
+    tfrmt_obj
 }

@@ -57,7 +57,7 @@ test_that("prep_...() pipe with demographic data", {
     # manual tidy -------------------------------------------------------------
     ard_tbl <- ard |>
         # rename cols, coalesce variable levels/stat_labels, unnest
-        cards::rename_ard_columns(columns = c("group1")) |>
+        cards::rename_ard_columns(columns = "group1") |>
         cards::unlist_ard_columns() |>
         dplyr::mutate(
             label = purrr::map_chr(
@@ -126,13 +126,9 @@ test_that("prep_...() pipe with demographic data", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} ({p}%)",
                     n = frmt("xxx"),
@@ -156,7 +152,7 @@ test_that("prep_...() pipe with demographic data", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -340,7 +336,7 @@ test_that("prep_...() pipe with adverse effects data", {
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(
+                    element_block = element_block(
                         post_space = " "
                     )
                 )

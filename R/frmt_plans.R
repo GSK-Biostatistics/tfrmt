@@ -22,26 +22,29 @@
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/main/images/tfrmt-frmts.jpg\" alt = \"Example comparing fmt, frmt_combine, and frmt_when\" style=\"width:100\\%;\">"`
 #' }}
 #'
+#' @returns frmt_structure object
+#'
+#' @export
+#'
 #' @examples
 #'
 #' sample_structure <- frmt_structure(
-#'           group_val = c("group1"),
-#'           label_val = ".default",
-#'           frmt("XXX")
-#'         )
-#' ## multiple group columns
-#' sample_structure <- frmt_structure(
-#'           group_val = list(grp_col1 = "group1", grp_col2 = "subgroup3"),
-#'           label_val = ".default",
-#'           frmt("XXX")
-#'         )
+#'     frmt("XXX"),
+#'     group_val = "group1"
+#' )
 #'
-#' @returns frmt_structure object
-#' @export
+#' # multiple group columns
+#' sample_structure <- frmt_structure(
+#'     frmt("XXX"),
+#'     group_val = list(
+#'         grp_col1 = "group1",
+#'         grp_col2 = "subgroup3"
+#'     )
+#' )
 frmt_structure <- function(
+    ...,
     group_val = ".default",
-    label_val = ".default",
-    ...
+    label_val = ".default"
 ) {
     param_frmt <- list(...)
     param_val <- names(param_frmt)
@@ -52,14 +55,12 @@ frmt_structure <- function(
         )
     }
 
+    check_frmt(param_frmt[[1]])
+
     if (is_frmt_combine(param_frmt[[1]])) {
         param_val <- names(param_frmt[[1]]$frmt_ls)
     } else if (is.null(param_val)) {
         param_val <- ".default"
-    }
-
-    if (!is_frmt(param_frmt[[1]])) {
-        stop(paste0("Entry is not an object of class `frmt`"))
     }
 
     if (is.list(group_val)) {
@@ -189,7 +190,7 @@ frmt <- function(
             scientific = scientific,
             transform = transform
         ),
-        class = c("frmt")
+        class = "frmt"
     )
 }
 
@@ -223,7 +224,11 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     replace_val <- dplyr::case_when(
         stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$") ~ vars_to_fmt,
         stringr::str_detect(vars_to_fmt, "^[a-zA-Z0-9_.]*$", negate = TRUE) &
-            stringr::str_detect(vars_to_fmt, "`", negate = TRUE) ~ paste0(
+            stringr::str_detect(
+                vars_to_fmt,
+                stringr::fixed("`"),
+                negate = TRUE
+            ) ~ paste0(
             "`",
             vars_to_fmt,
             "`"
@@ -237,7 +242,11 @@ frmt_combine <- function(expression, ..., missing = NULL) {
     }
 
     structure(
-        list(expression = exp_new, frmt_ls = frmt_ls, missing = missing),
+        list(
+            expression = exp_new,
+            frmt_ls = frmt_ls,
+            missing = missing
+        ),
         class = c("frmt_combine", "frmt")
     )
 }

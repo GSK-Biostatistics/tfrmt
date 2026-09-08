@@ -12,7 +12,7 @@ test_that("Defining the big Ns", {
 
     expect_equal(
         bn1[["param_val"]],
-        c("bigN"),
+        "bigN",
         ignore_attr = ".Environment"
     )
 
@@ -114,8 +114,6 @@ test_that("Simple Case big_n", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("X"),
@@ -126,24 +124,23 @@ test_that("Simple Case big_n", {
                 )
             ),
             frmt_structure(
-                group_val = "Age (y)",
-                label_val = "Mean (SD)",
                 frmt_combine(
                     "{mean} ({sd})",
                     mean = frmt("XX.X"),
                     sd = frmt("x.xx")
-                )
+                ),
+                group_val = "Age (y)",
+                label_val = "Mean (SD)"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -256,8 +253,6 @@ test_that("Test with spanning headers", {
         column = c(span2, span1, my_col),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -376,8 +371,6 @@ test_that("Multiple big N params", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("X"),
@@ -388,18 +381,17 @@ test_that("Multiple big N params", {
                 )
             ),
             frmt_structure(
-                group_val = "Age (y)",
-                label_val = "Mean (SD)",
                 frmt_combine(
                     "{mean} ({sd})",
                     mean = frmt("XX.X"),
                     sd = frmt("x.xx")
-                )
+                ),
+                group_val = "Age (y)",
+                label_val = "Mean (SD)"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         col_plan = col_plan(
@@ -410,7 +402,7 @@ test_that("Multiple big N params", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -500,8 +492,6 @@ test_that("Overlapping Big N's", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("X"),
@@ -512,18 +502,17 @@ test_that("Overlapping Big N's", {
                 )
             ),
             frmt_structure(
-                group_val = "Age (y)",
-                label_val = "Mean (SD)",
                 frmt_combine(
                     "{mean} ({sd})",
                     mean = frmt("XX.X"),
                     sd = frmt("x.xx")
-                )
+                ),
+                group_val = "Age (y)",
+                label_val = "Mean (SD)"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         col_plan = col_plan(
@@ -534,7 +523,7 @@ test_that("Overlapping Big N's", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         big_n = big_n_structure(
@@ -582,8 +571,6 @@ test_that("Missing Big N in dataset", {
         column = c(span2, span1, my_col),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -641,8 +628,6 @@ test_that("using 'value' for values column where there may be conflict in big_n"
         column = c(span2, span1, my_col),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -720,13 +705,11 @@ test_that("Test big n with footnotes", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             )
         ),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} ({percent})",
                     count = frmt("xx"),
@@ -738,11 +721,11 @@ test_that("Test big n with footnotes", {
             group,
             label,
             span_structure(
-                span = c("Placebo"),
-                column = c("PL")
+                span = "Placebo",
+                column = "PL"
             ),
             span_structure(
-                span = c("Treatment"),
+                span = "Treatment",
                 column = c("T1", "T2", "T1&T2")
             )
         ),
@@ -786,7 +769,7 @@ test_that("Test big n with footnotes", {
                 label_val = list(label = "label 1"),
                 column_val = list(
                     span = "Treatment",
-                    column = c("T2")
+                    column = "T2"
                 )
             )
         ),
@@ -896,8 +879,6 @@ test_that("big Ns vary by page", {
         sorting_cols = ord1,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -909,7 +890,7 @@ test_that("big Ns vary by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -918,7 +899,7 @@ test_that("big Ns vary by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -987,8 +968,6 @@ test_that("big Ns constant by page", {
         sorting_cols = ord1,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1000,7 +979,7 @@ test_that("big Ns constant by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1009,7 +988,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = FALSE
         )
     )
@@ -1052,8 +1031,6 @@ test_that("big Ns constant by page", {
         sorting_cols = ord1,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1065,7 +1042,7 @@ test_that("big Ns constant by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1074,7 +1051,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1144,8 +1121,6 @@ test_that("big Ns constant by page", {
         sorting_cols = ord1,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1157,7 +1132,7 @@ test_that("big Ns constant by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1166,7 +1141,7 @@ test_that("big Ns constant by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = FALSE
         )
     )
@@ -1223,8 +1198,6 @@ test_that("not enough big Ns by page", {
         sorting_cols = ord1,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1236,7 +1209,7 @@ test_that("not enough big Ns by page", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1245,7 +1218,7 @@ test_that("not enough big Ns by page", {
             )
         ),
         big_n = big_n_structure(
-            param_val = c("big_N"),
+            param_val = "big_N",
             by_page = TRUE
         )
     )
@@ -1300,8 +1273,6 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
         param = Param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1313,7 +1284,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1408,8 +1379,6 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
         param = Param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1421,7 +1390,7 @@ test_that("Paging (group) variable is sorted non-alphabetically", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(
@@ -1509,15 +1478,14 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
         param = Param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = "n",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "n"
             )
         ),
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -1553,7 +1521,8 @@ test_that("Two grouping variables with a page_plan work as expected (renamed var
     expect_identical(
         purrr::map_chr(
             output_list,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "by group: 101",

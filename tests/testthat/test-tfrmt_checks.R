@@ -11,8 +11,6 @@ test_that("Testing error messages for missing argument col_style_structure", {
             # specify value formatting
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt_combine(
                         "{n} {pct}",
                         n = frmt("xxx"),
@@ -24,27 +22,21 @@ test_that("Testing error messages for missing argument col_style_structure", {
                     )
                 ),
                 frmt_structure(
-                    group_val = ".default",
                     label_val = "n",
                     frmt("xxx")
                 ),
                 frmt_structure(
-                    group_val = ".default",
                     label_val = c("Mean", "Median", "Min", "Max"),
                     frmt("xxx.x")
                 ),
                 frmt_structure(
-                    group_val = ".default",
                     label_val = "SD",
                     frmt("xxx.xx")
                 ),
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     p = frmt("")
                 ),
                 frmt_structure(
-                    group_val = ".default",
                     label_val = c("n", "<65 yrs", "<12 months", "<25"),
                     p = frmt_when(
                         ">0.99" ~ ">0.99",
@@ -57,16 +49,20 @@ test_that("Testing error messages for missing argument col_style_structure", {
             col_plan = col_plan(-grp, -starts_with("ord")),
             # Specify column styling plan
             col_style_plan = col_style_plan(
-                col_style_structure(align = c(".", ",", " "))
+                col_style_structure(
+                    align = c(".", ",", " ")
+                )
             ),
 
             # Specify row group plan
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             )
         ),
         "Column element is missing from col_style_structure[.] Note: col here refers to the values within the column variable in your data, rather than the variable name itself"
@@ -86,13 +82,9 @@ test_that("Testing error message for invalid input to plan parameters, specifica
             col_plan = col_plan(-ord),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt("xx", missing = " ")
                 ),
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt_combine(
                         "{mean} ({sd})",
                         mean = frmt("xx.x"),
@@ -101,8 +93,6 @@ test_that("Testing error message for invalid input to plan parameters, specifica
                     )
                 ),
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     pval = frmt_when(
                         ">0.99" ~ ">0.99",
                         "<0.001" ~ "<0.001",
@@ -114,7 +104,7 @@ test_that("Testing error message for invalid input to plan parameters, specifica
             # col_style_structure() supplied to col_style_plan param instead of col_style_plan() funciton
             col_style_plan = col_style_structure(
                 col = `p-value`,
-                align = c("."),
+                align = ".",
                 type = "char"
             )
         ),
@@ -136,8 +126,6 @@ test_that("Testing error message for invalid input to big_n parameter", {
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt_combine(
                         "{n} {pct}",
                         n = frmt("X"),
@@ -154,7 +142,6 @@ test_that("Testing error message for invalid input to big_n parameter", {
                     )
                 ),
                 frmt_structure(
-                    group_val = ".default",
                     label_val = "n",
                     frmt("xx")
                 )
@@ -167,7 +154,9 @@ test_that("Testing error message for invalid input to big_n parameter", {
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(
+                        post_space = " "
+                    )
                 )
             ),
             # col_plan() supplied to big_n parameter instead of big_n_structure() function
@@ -191,20 +180,23 @@ test_that("Testing error for invalid col_style_structure with row_grp_plan when 
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt("xxx")
                 )
             ),
             col_style_plan = col_style_plan(
-                col_style_structure(col = grp, align = c(".", ",", " "))
+                col_style_structure(
+                    col = grp,
+                    align = c(".", ",", " ")
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(post_space = " ")
                 ),
-                label_loc = element_row_grp_loc(location = "indented")
+                label_loc = element_row_grp_loc(
+                    location = "indented"
+                )
             )
         ),
         class = "_tfrmt_invalid_row_grp_col_style_plan"
@@ -224,20 +216,25 @@ test_that("No error for col_style_structure with row_grp_plan when location is c
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt("xxx")
                 )
             ),
             col_style_plan = col_style_plan(
-                col_style_structure(col = grp, align = c(".", ",", " "))
+                col_style_structure(
+                    col = grp,
+                    align = c(".", ",", " ")
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(
+                        post_space = " "
+                    )
                 ),
-                label_loc = element_row_grp_loc(location = "column")
+                label_loc = element_row_grp_loc(
+                    location = "column"
+                )
             )
         )
     )
@@ -256,20 +253,25 @@ test_that("Error message for invalid col_style_structure includes group details"
             sorting_cols = c(ord1, ord2),
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     frmt("xxx")
                 )
             ),
             col_style_plan = col_style_plan(
-                col_style_structure(col = grp, align = c(".", ",", " "))
+                col_style_structure(
+                    col = grp,
+                    align = c(".", ",", " ")
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(
+                        post_space = " "
+                    )
                 ),
-                label_loc = element_row_grp_loc(location = "spanning")
+                label_loc = element_row_grp_loc(
+                    location = "spanning"
+                )
             )
         ),
         "Invalid col_style_structure in row_grp_plan"

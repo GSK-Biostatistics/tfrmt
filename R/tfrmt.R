@@ -67,106 +67,110 @@
 #' @examples
 #'
 #' tfrmt_spec <- tfrmt(
-#'   label = label,
-#'   column = column,
-#'   param = param,
-#'   value=value)
-#'
-#' tfrmt_spec <- tfrmt(
-#'   label = label,
-#'   column = column,
-#'   param = param,
-#'   value=value,
-#' # Set the formatting for values
-#'   body_plan = body_plan(
-#'     frmt_structure(
-#'       group_val = ".default",
-#'       label_val = ".default",
-#'       frmt_combine("{n} {pct}",
-#'            n = frmt("xxx"),
-#'            pct = frmt_when(
-#'                 "==100" ~ "(100%)",
-#'                 "==0" ~ "",
-#'                 TRUE ~ frmt("(xx.x %)")
-#'                 )
-#'            )
-#'     )
-#'   ),
-#' # Specify column styling plan
-#'   col_style_plan = col_style_plan(
-#'     col_style_structure(col = vars(everything()), align = c(".",","," "))
-#'   ))
-#'
-#' tfrmt_spec <- tfrmt(
-#'   group = group,
-#'   label = label,
-#'   column = column,
-#'   param = param,
-#'   value=value,
-#'   sorting_cols = c(ord1, ord2),
-#'   # specify value formatting
-#'   body_plan = body_plan(
-#'     frmt_structure(
-#'       group_val = ".default",
-#'       label_val = ".default",
-#'       frmt_combine("{n} {pct}",
-#'            n = frmt("xxx"),
-#'            pct = frmt_when(
-#'                 "==100" ~ "(100%)",
-#'                 "==0" ~ "",
-#'                 TRUE ~ frmt("(xx.x %)")
-#'                 )
-#'            )
-#'     ),
-#'     frmt_structure(
-#'         group_val = ".default",
-#'         label_val = "n",
-#'         frmt("xxx")
-#'    ),
-#'     frmt_structure(
-#'         group_val = ".default",
-#'         label_val = c("Mean", "Median", "Min","Max"),
-#'         frmt("xxx.x")
-#'      ),
-#'     frmt_structure(
-#'         group_val = ".default",
-#'         label_val = "SD",
-#'         frmt("xxx.xx")
-#'     ),
-#'     frmt_structure(
-#'         group_val = ".default",
-#'         label_val = ".default",
-#'         p = frmt("")
-#'     ),
-#'     frmt_structure(
-#'         group_val = ".default",
-#'         label_val = c("n","<65 yrs","<12 months","<25"),
-#'         p = frmt_when(
-#'             ">0.99" ~ ">0.99",
-#'             "<0.001" ~ "<0.001",
-#'             TRUE ~ frmt("x.xxx", missing = "")
-#'         )
-#'     )
-#'   ),
-#'   # remove extra cols
-#'   col_plan = col_plan(-grp,
-#'                       -starts_with("ord") ),
-#'   # Specify column styling plan
-#'   col_style_plan = col_style_plan(
-#'     col_style_structure(col = vars(everything()), align = c(".",","," "))
-#'   ),
-#'
-#'   # Specify row group plan
-#'   row_grp_plan = row_grp_plan(
-#'     row_grp_structure(
-#'          group_val = ".default",
-#'          element_block(post_space = " ")
-#'     ),
-#'     label_loc = element_row_grp_loc(location = "column")
-#'   )
-#'
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     value = value
 #' )
 #'
+#' tfrmt_spec <- tfrmt(
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     value = value,
+#'
+#'     # Set the formatting for values
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             frmt_combine(
+#'                 "{n} {pct}",
+#'                 n = frmt("xxx"),
+#'                 pct = frmt_when(
+#'                     "==100" ~ "(100%)",
+#'                     "==0" ~ "",
+#'                     TRUE ~ frmt("(xx.x %)")
+#'                 )
+#'             )
+#'         )
+#'     ),
+#'     # Specify column styling plan
+#'     col_style_plan = col_style_plan(
+#'         col_style_structure(
+#'             col = vars(everything()),
+#'             align = c(".",","," ")
+#'         )
+#'     )
+#' )
+#'
+#' tfrmt_spec <- tfrmt(
+#'     group = group,
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     value = value,
+#'     sorting_cols = c(ord1, ord2),
+#'     # specify value formatting
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             frmt_combine(
+#'                 "{n} {pct}",
+#'                 n = frmt("xxx"),
+#'                 pct = frmt_when(
+#'                     "==100" ~ "(100%)",
+#'                     "==0" ~ "",
+#'                     TRUE ~ frmt("(xx.x %)")
+#'                 )
+#'             )
+#'         ),
+#'         frmt_structure(
+#'             frmt("xxx"),
+#'             label_val = "n"
+#'         ),
+#'         frmt_structure(
+#'             frmt("xxx.x"),
+#'             label_val = c("Mean", "Median", "Min","Max")
+#'         ),
+#'         frmt_structure(
+#'             frmt("xxx.xx"),
+#'             label_val = "SD"
+#'         ),
+#'         frmt_structure(
+#'             p = frmt("")
+#'         ),
+#'         frmt_structure(
+#'             p = frmt_when(
+#'                 ">0.99" ~ ">0.99",
+#'                 "<0.001" ~ "<0.001",
+#'                 TRUE ~ frmt("x.xxx", missing = "")
+#'            ),
+#'             label_val = c("n","<65 yrs","<12 months","<25")
+#'         )
+#'     ),
+#'     # remove extra cols
+#'     col_plan = col_plan(
+#'         -grp,
+#'         -starts_with("ord")
+#'     ),
+#'     # Specify column styling plan
+#'     col_style_plan = col_style_plan(
+#'         col_style_structure(
+#'             col = vars(everything()),
+#'             align = c(".",","," ")
+#'         )
+#'     ),
+#'     # Specify row group plan
+#'     row_grp_plan = row_grp_plan(
+#'         row_grp_structure(
+#'             group_val = ".default",
+#'             element_block = element_block(
+#'                 post_space = " "
+#'             )
+#'         ),
+#'         label_loc = element_row_grp_loc(
+#'             location = "column"
+#'         )
+#'     )
+#' )
 #'
 tfrmt <- function(
     tfrmt_obj,
@@ -195,7 +199,7 @@ tfrmt <- function(
 
     new_tfrmt <- structure(
         tfrmt_el,
-        class = c("tfrmt")
+        class = "tfrmt"
     )
 
     # check non-null plan parameters are supplied with plan function
@@ -228,6 +232,31 @@ tfrmt <- function(
 
 is_tfrmt <- function(x) {
     inherits(x, "tfrmt")
+}
+
+check_tfrmt <- function(
+    tfrmt,
+    arg = rlang::caller_arg(tfrmt),
+    call = rlang::caller_env(),
+    allow_null = FALSE
+) {
+    if (!missing(tfrmt)) {
+        if (is_tfrmt(tfrmt)) {
+            return(invisible(NULL)) # nolint: return_linter
+        }
+
+        if (allow_null && is.null(tfrmt)) {
+            return(invisible(NULL)) # nolint: return_linter
+        }
+    }
+
+    rlang::stop_input_type(
+        tfrmt,
+        "a tfrmt object",
+        allow_null = allow_null,
+        arg = arg,
+        call = call
+    )
 }
 
 tfrmt_find_args <- function(
@@ -270,8 +299,8 @@ tfrmt_find_args <- function(
 
 quo_get <- function(
     args,
-    as_var_args = c(),
-    as_quo_args = c(),
+    as_var_args = NULL,
+    as_quo_args = NULL,
     envir = parent.frame(),
     parent_env = parent.env(envir),
     allow_tidy_select = FALSE
@@ -282,12 +311,12 @@ quo_get <- function(
 
         if (missing(arg_call)) {
             ## args not defined can quietly return empty expressions.
-            return(quote(expr = ))
+            return(quote(expr = )) # nolint: return_linter
         } else {
             if (
                 identical(arg_call, rlang::quo()) || identical(arg_call, vars())
             ) {
-                return(arg_call)
+                return(arg_call) # nolint: return_linter
             }
 
             # don't try to eval quosures if it is intended to be a quosure
@@ -321,9 +350,10 @@ quo_get <- function(
                             is_basic_list(arg_call_results$result))
                     ) {
                         if (arg %in% as_var_args) {
-                            return(as_vars(arg_call_results$result))
+                            return(as_vars(arg_call_results$result)) # nolint: return_linter
                         } else {
                             return(
+                                # nolint: return_linter
                                 as_length_one_quo(
                                     arg_call_results$result,
                                     arg = as.character(arg)
@@ -333,7 +363,7 @@ quo_get <- function(
                     }
                 } else {
                     ## return value as normal if not a var or quo arg
-                    return(arg_call_results$result)
+                    return(arg_call_results$result) # nolint: return_linter
                 }
             }
 
@@ -367,7 +397,7 @@ quo_get <- function(
                     )
                 }
 
-                return(arg_val)
+                return(arg_val) # nolint: return_linter
             } else {
                 rlang::abort(
                     paste0(
@@ -408,7 +438,7 @@ check_var_arg_call_valid <- function(var_list, arg, allow_tidy_select = FALSE) {
                 "` to:\n\t",
                 new_arg_call
             ),
-            class = c("group_vars_error")
+            class = "group_vars_error"
         )
     }
 }

@@ -1,3 +1,4 @@
 [format]
 indent-width = 4
+skip = ["c"]
 exclude = [".lintr", ".lintr_restrictive"]

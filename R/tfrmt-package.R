@@ -21,9 +21,7 @@ NULL
 
 #  global variables
 utils::globalVariables(
-    c(
-        "."
-    )
+    "."
 )
 
 # shared variables

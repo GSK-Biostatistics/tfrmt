@@ -73,7 +73,7 @@ test_that("throw error when input argument errors out", {
     temp_function_2 <- function(..., env = parent.frame()) {
         arg_parent <- names(formals(sys.function(sys.parent(1))))
 
-        args <- setdiff(arg_parent, c("..."))
+        args <- setdiff(arg_parent, "...")
 
         val <- quo_get(
             args,

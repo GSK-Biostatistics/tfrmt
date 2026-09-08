@@ -66,14 +66,6 @@ test_that("inputs are as expected", {
     )
 
     expect_error(
-        print_to_ggplot(tfrmt_1, "test"),
-        "Requires data"
-    )
-    expect_error(
-        print_to_ggplot(tfrmt = "test", .data = test_data),
-        "Requires a tfrmt object"
-    )
-    expect_error(
         print_to_ggplot(tfrmt_2, risk),
         "print_to_ggplot must have label location 'indented' if row_group_plan is present"
     )

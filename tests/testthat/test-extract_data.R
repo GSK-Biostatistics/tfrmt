@@ -16,8 +16,6 @@ test_that("extract_data works for a single gt_tbl object", {
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -29,17 +27,14 @@ test_that("extract_data works for a single gt_tbl object", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             )
@@ -79,8 +74,6 @@ test_that("extract_data extracts updated names changed in the col_plan including
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -92,17 +85,14 @@ test_that("extract_data extracts updated names changed in the col_plan including
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             )
@@ -110,7 +100,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -159,8 +149,6 @@ test_that("extract_data extracts updated names changed in the col_plan including
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -172,17 +160,14 @@ test_that("extract_data extracts updated names changed in the col_plan including
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             )
@@ -190,7 +175,7 @@ test_that("extract_data extracts updated names changed in the col_plan including
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -235,8 +220,6 @@ test_that("extract_data extracts updated names changed in the col_plan", {
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -248,17 +231,14 @@ test_that("extract_data extracts updated names changed in the col_plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             )
@@ -266,7 +246,7 @@ test_that("extract_data extracts updated names changed in the col_plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -309,8 +289,6 @@ test_that("extract_data works for a gt_group object (paged tables)", {
         # specify value formatting
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -322,17 +300,14 @@ test_that("extract_data works for a gt_group object (paged tables)", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xxx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = c("Mean", "Median", "Min", "Max"),
                 frmt("xxx.x")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "SD",
                 frmt("xxx.xx")
             )
@@ -428,8 +403,6 @@ test_that("extract_data works for a table with bigN values", {
         sorting_cols = c(ord1, ord2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("X"),
@@ -446,7 +419,6 @@ test_that("extract_data works for a table with bigN values", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xx")
             )
@@ -459,7 +431,7 @@ test_that("extract_data works for a table with bigN values", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         big_n = big_n_structure(
@@ -485,9 +457,9 @@ test_that("extract_data works for a table with bigN values", {
     expected_patterns <- c("N = 30", "N = 40", "N = 60")
 
     # Assert that the labels contain your expected strings
-    expect_true(any(grepl("N = 30", column_labels)))
-    expect_true(any(grepl("N = 40", column_labels)))
-    expect_true(any(grepl("N = 60", column_labels)))
+    expect_true(any(grepl("N = 30", fixed = TRUE, column_labels)))
+    expect_true(any(grepl("N = 40", fixed = TRUE, column_labels)))
+    expect_true(any(grepl("N = 60", fixed = TRUE, column_labels)))
 })
 
 test_that("extract_data handles various spanning header depths", {
@@ -521,8 +493,6 @@ test_that("extract_data handles various spanning header depths", {
         column = c(span2, span1, my_col),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -556,8 +526,6 @@ test_that("extract_data handles various spanning header depths", {
         column = c(span1, my_col),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -584,8 +552,6 @@ test_that("extract_data handles various spanning header depths", {
         column = c(span1, my_col),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),

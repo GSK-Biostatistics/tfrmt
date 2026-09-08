@@ -38,8 +38,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -57,7 +55,7 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "spanning")
         )
@@ -76,8 +74,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -95,7 +91,7 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         )
@@ -117,8 +113,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -136,7 +130,7 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -166,8 +160,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -209,8 +201,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -228,7 +218,7 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         )
@@ -245,8 +235,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -264,7 +252,7 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -300,8 +288,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -347,8 +333,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -366,7 +350,7 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "column")
         ),
@@ -400,8 +384,6 @@ test_that("applying footnote plan", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -419,9 +401,11 @@ test_that("applying footnote plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
-            label_loc = element_row_grp_loc(location = "spanning")
+            label_loc = element_row_grp_loc(
+                location = "spanning"
+            )
         ),
         footnote_plan = footnote_plan(
             footnote_structure(
@@ -454,8 +438,6 @@ test_that("Check footnote order option works as expected", {
         param = param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),

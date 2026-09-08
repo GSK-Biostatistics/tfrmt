@@ -94,7 +94,7 @@ apply_col_style_plan <- function(
 
     force(.data)
 
-    return(.data)
+    .data
 }
 
 # function to get all columns the col_style_structure applies to
@@ -103,7 +103,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
         col_selection <- col_plan_span_structure_to_vars(
             x = selection,
             column_names = column_names,
-            data_names = c(),
+            data_names = NULL,
             preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE
         )
@@ -111,7 +111,7 @@ col_style_selections <- function(selection, column_names, col_plan_vars) {
         col_selection <- col_plan_quo_to_vars(
             x = selection,
             column_names = column_names,
-            data_names = c(),
+            data_names = NULL,
             preselected_cols = purrr::map_chr(col_plan_vars, rlang::as_label),
             return_only_selected = TRUE,
             default_everything_behavior = TRUE
@@ -272,7 +272,10 @@ apply_col_alignment_pos <- function(col, align) {
         dplyr::left_join(
             tibble::tibble(
                 align = trimws(align),
-                col_as_x = stringr::str_replace_all(align, "\\|", "")
+                col_as_x = stringr::str_remove_all(
+                    align,
+                    stringr::fixed("|")
+                )
             ),
             by = "col_as_x"
         )
@@ -328,7 +331,10 @@ apply_col_alignment_pos <- function(col, align) {
                 is.na(.data$col_split_val) ~ NA,
                 TRUE ~ dplyr::lag(.data$col_split_end, default = 0) + 1
             ),
-            col_split_lev = gsub("col_split_", "", .data$col_split_lev) %>%
+            col_split_lev = stringr::str_remove_all(
+                .data$col_split_lev,
+                stringr::fixed("col_split_")
+            ) %>%
                 as.numeric()
         )
 
@@ -349,7 +355,11 @@ apply_col_alignment_pos <- function(col, align) {
             col_sub_1 = dplyr::case_when(
                 .data$col_split_lev == 1 ~ NA_character_, # first substring so do not split - will go to  col_sub_2
                 .data$col_split_lev == .data$n_split_levs ~ col_sub, # last substring so do not split - will go to col_sub_1
-                stringr::str_detect(.data$col_sub, " ", negate = TRUE) &
+                stringr::str_detect(
+                    .data$col_sub,
+                    stringr::fixed(" "),
+                    negate = TRUE
+                ) &
                     .data$col_split_lev != 1 ~ col_sub, # no space found - cannot split or pad
                 TRUE ~ stringr::str_extract(.data$col_sub, "^.+?(?= )")
             ), # extract string prior to first space
@@ -393,7 +403,7 @@ apply_col_alignment_pos <- function(col, align) {
             )
         )
 
-    if (nrow(dplyr::filter(col_left_padded01, .data$no_space)) > 0) {
+    if (sum(col_left_padded01$no_space, na.rm = TRUE) > 0) {
         message(
             "Unable to complete positional alignment in col_style_structure due to lack of whitespace available formatted value"
         )

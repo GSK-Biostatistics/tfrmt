@@ -13,16 +13,16 @@
 #'   value=value) |>
 #'   tfrmt_to_json()
 tfrmt_to_json <- function(tfrmt, path = NULL) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Needs tfrmt")
-    }
+    check_tfrmt(tfrmt)
+    rlang::check_string(path, allow_null = TRUE)
+
     output <- as_json(tfrmt)
 
     if (!is.null(path)) {
         message(paste0("Writing json file out to:\n", path))
         write(output, path)
     } else {
-        return(output)
+        output
     }
 }
 
@@ -63,7 +63,7 @@ as_json.tfrmt <- function(x) {
     # Removing names added in by jsonlite
     # only change spaces at the beginning of the row
     json_split <- output_json %>%
-        stringr::str_split("\\\n") %>%
+        stringr::str_split(stringr::fixed("\n")) %>%
         unlist()
     # Needs updating
     to_replace <- stringr::str_which(json_split, '^\\s+\"\\s(\\.\\d+)?\"')
@@ -94,7 +94,7 @@ as_json.quosure <- function(x) {
     out <- x %>%
         rlang::as_label()
     if (out != "<empty>") {
-        return(out)
+        out
     }
 }
 
@@ -150,7 +150,7 @@ as_json.frmt_combine <- function(x) {
 #' @export
 as_json.col_plan <- function(x) {
     if (is.null(x)) {
-        c()
+        NULL
     } else {
         dot_ls <- x$dots %>%
             purrr::map(as_json)
@@ -166,9 +166,8 @@ as_json.col_plan <- function(x) {
 as_json.span_structure <- function(x) {
     purrr::map(
         x,
-        function(foo) {
-            purrr::map_chr(foo, as_json)
-        }
+        purrr::map_chr,
+        as_json
     ) %>%
         list(span_structure = .)
 }
@@ -267,7 +266,10 @@ ls_to_row_grp_plan <- function(ls) {
                 }
                 do.call(
                     row_grp_structure,
-                    list(group_val = group_val, element_block = el_block)
+                    list(
+                        group_val = group_val,
+                        element_block = el_block
+                    )
                 )
             })
 
@@ -420,7 +422,7 @@ ls_to_col_plan <- function(ls) {
                         rlang::parse_expr()
                 } else {
                     el[[1]] %>%
-                        stringr::str_replace_all("\\\"", "'") %>%
+                        stringr::str_replace_all(stringr::fixed("\""), "'") %>%
                         char_as_quo() %>%
                         rlang::quo_get_expr()
                 }
@@ -450,7 +452,7 @@ ls_to_col_style_plan <- function(ls) {
                 function(struct) {
                     stuct_in <- purrr::map(struct, unlist)
                     names(stuct_in) <- names(stuct_in) %>%
-                        stringr::str_replace("cols", "col")
+                        stringr::str_replace(stringr::fixed("cols"), "col")
                     cols_val <- struct[["cols"]][[1]]
                     if (
                         !is.null(names(cols_val)) &&

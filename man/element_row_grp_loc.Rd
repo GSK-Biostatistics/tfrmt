@@ -37,15 +37,21 @@ Element Row Group Location
 \examples{
 
 tfrmt_spec <- tfrmt(
-  group = c(grp1, grp2),
-  label = label,
-  param = param,
-  value = value,
-  column = column,
-  row_grp_plan = row_grp_plan(label_loc = element_row_grp_loc(location = "noprint")),
-  body_plan = body_plan(
-    frmt_structure(group_val = ".default", label_val = ".default", frmt("xx"))
-  )
+    group = c(grp1, grp2),
+    label = label,
+    param = param,
+    value = value,
+    column = column,
+    row_grp_plan = row_grp_plan(
+        label_loc = element_row_grp_loc(
+            location = "noprint"
+        )
+    ),
+    body_plan = body_plan(
+        frmt_structure(
+            frmt("xx")
+        )
+    )
 )
 
 }

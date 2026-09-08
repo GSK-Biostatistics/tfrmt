@@ -1,11 +1,11 @@
 test_that("Basic functionality: Resets a component and other components remain unchanged", {
     t_frmt <- tfrmt(
         title = "Table Title",
-        group = c("row_label1"),
-        label = c("row_label2"),
-        param = c("param"),
-        value = c("value"),
-        column = c("column")
+        group = "row_label1",
+        label = "row_label2",
+        param = "param",
+        value = "value",
+        column = "column"
     )
 
     modified_tfrmt <- reset_component(t_frmt, "title")
@@ -53,11 +53,11 @@ test_that("Error for non-'tfrmt' object", {
 test_that("Error for invalid component_name type", {
     t_frmt <- tfrmt(
         title = "Table Title",
-        group = c("row_label1"),
-        label = c("row_label2"),
-        param = c("param"),
-        value = c("value"),
-        column = c("column")
+        group = "row_label1",
+        label = "row_label2",
+        param = "param",
+        value = "value",
+        column = "column"
     )
 
     expect_error(
@@ -74,11 +74,11 @@ test_that("Error for invalid component_name type", {
 test_that("Error for nonexistent component", {
     t_frmt <- tfrmt(
         title = "Table Title",
-        group = c("row_label1"),
-        label = c("row_label2"),
-        param = c("param"),
-        value = c("value"),
-        column = c("column")
+        group = "row_label1",
+        label = "row_label2",
+        param = "param",
+        value = "value",
+        column = "column"
     )
 
     expect_error(

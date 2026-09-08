@@ -24,19 +24,23 @@ Remap group values in a tfrmt
 tfrmt_spec <- tfrmt(
     group = c(group1, group2),
     body_plan  = body_plan(
-      frmt_structure(
-         group_val = list(group2 = "value"),
-         label_val = ".default",
-         frmt("XXX")
-         ),
-     frmt_structure(
-         group_val = list(group1 = "value", group2 = "value"),
-         label_val = ".default",
-         frmt("XXX")
-       )
-    ))
+        frmt_structure(
+            frmt("XXX"),
+            group_val = list(
+                group2 = "value"
+            )
+        ),
+        frmt_structure(
+            frmt("XXX"),
+            group_val = list(
+                group1 = "value",
+                group2 = "value"
+            )
+        )
+    )
+)
 
 tfrmt_spec \%>\%
-  update_group(New_Group = group1)
+    update_group(New_Group = group1)
 
 }

@@ -994,7 +994,7 @@ test_that("multi-positional alignment detects inadequate inputs", {
         value = val,
         col_style_plan = col_style_plan(
             col_style_structure(
-                align = c(" xx |(xx)"),
+                align = " xx |(xx)",
                 type = "pos",
                 col = vars(two, three)
             )
@@ -1082,22 +1082,20 @@ test_that("helper for constructing positional alignment works", {
         value = val,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = "lbl1",
                 frmt_combine(
                     "{n} ({pct}%)",
                     n = frmt("x"),
                     pct = frmt("xx")
-                )
+                ),
+                label_val = "lbl1"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "lbl2",
                 frmt_combine(
                     "{n} ({pct}%)",
                     n = frmt("xxx"),
                     pct = frmt("xx.x")
-                )
+                ),
+                label_val = "lbl2"
             )
         )
     )

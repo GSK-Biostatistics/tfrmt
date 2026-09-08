@@ -2,7 +2,7 @@ test_that("Display row formats for tfrmt with <frmt>", {
     df <- tidyr::crossing(
         label = c("label 1", "label 2", "label 3"),
         column = c("PL", "T1", "T2"),
-        param = c("count")
+        param = "count"
     ) %>%
         dplyr::arrange_all() %>%
         dplyr::mutate(
@@ -17,14 +17,12 @@ test_that("Display row formats for tfrmt with <frmt>", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             )
         ),
 
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx.x")
             )
         )
@@ -63,9 +61,9 @@ test_that("Display row formats for tfrmt with <frmt>", {
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
     df <- dplyr::bind_rows(
         tidyr::crossing(
-            label = c("label 1"),
+            label = "label 1",
             column = c("PL", "T1", "T2"),
-            param = c("count")
+            param = "count"
         ),
         tidyr::crossing(
             label = c("label 2", "label 3"),
@@ -86,24 +84,22 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = "   ")
+                element_block = element_block(post_space = "   ")
             )
         ),
 
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = "label 1",
-                frmt("xxx")
+                frmt("xxx"),
+                label_val = "label 1"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = c("label 2", "label 3"),
                 frmt_combine(
                     "{count} ({percent})",
                     count = frmt("xx"),
                     percent = frmt("xx.x")
-                )
+                ),
+                label_val = c("label 2", "label 3")
             )
         )
     )
@@ -141,19 +137,19 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine>", {
 test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>", {
     df <- dplyr::bind_rows(
         tidyr::crossing(
-            label = c("label 1"),
+            label = "label 1",
             column = c("PL", "T1", "T2"),
-            param = c("n")
+            param = "n"
         ),
         tidyr::crossing(
-            label = c("label 2"),
+            label = "label 2",
             column = c("PL", "T1", "T2"),
             param = c("median", "sd")
         ),
         tidyr::crossing(
-            label = c("label 3"),
+            label = "label 3",
             column = c("PL", "T1", "T2"),
-            param = c("pval")
+            param = "pval"
         )
     ) %>%
         dplyr::arrange_all() %>%
@@ -169,27 +165,24 @@ test_that("Display row formats for tfrmt with <frmt> <frmt_combine> <frmt_when>"
 
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = "label 1",
-                frmt("xx")
+                frmt("xx"),
+                label_val = "label 1"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "label 2",
                 frmt_combine(
                     "{median} ({sd})",
                     median = frmt("xx"),
                     sd = frmt("xx.x")
-                )
+                ),
+                label_val = "label 2"
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "label 3",
                 frmt_when(
                     ">0.99" ~ ">0.99",
                     "<0.001" ~ "<0.001",
                     TRUE ~ frmt("x.xxx", missing = "")
-                )
+                ),
+                label_val = "label 3"
             )
         )
     )

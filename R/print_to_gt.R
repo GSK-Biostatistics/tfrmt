@@ -16,15 +16,28 @@
 #' @section Examples:
 #'```r
 #'
-#'   # Create tfrmt specification
-#'   tfrmt_spec <- tfrmt( label = label, column =
-#'   column, param = param, body_plan = body_plan( frmt_structure(group_val =
-#'   ".default", label_val = ".default", frmt_combine( "{count} {percent}",
-#'   count = frmt("xxx"), percent = frmt_when("==100"~ frmt(""), "==0"~ "",
-#'   "TRUE" ~ frmt("(xx.x%)")))) ))
+#' # Create tfrmt specification
+#' tfrmt_spec <- tfrmt(
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             frmt_combine(
+#'                 "{count} {percent}",
+#'                 count = frmt("xxx"),
+#'                 percent = frmt_when(
+#'                     "==100" ~ frmt(""),
+#'                     "==0" ~ "",
+#'                     "TRUE" ~ frmt("(xx.x%)")
+#'                 )
+#'             )
+#'         )
+#'     )
+#' )
 #'
-#'   # Print mock table using default
-#'   print_mock_gt(tfrmt = tfrmt_spec)
+#' # Print mock table using default
+#' print_mock_gt(tfrmt = tfrmt_spec)
 #'
 #'```
 #'
@@ -74,8 +87,6 @@ print_mock_gt <- function(
     if (is.null(tfrmt$body_plan)) {
         tfrmt$body_plan <- body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("X.X")
             )
         )
@@ -99,7 +110,8 @@ print_mock_gt <- function(
         }
     }
 
-    apply_tfrmt(.data, tfrmt, mock = TRUE) %>%
+    .data |>
+        apply_tfrmt(tfrmt, mock = TRUE) |>
         cleaned_data_to_gt(tfrmt, .unicode_ws)
 }
 
@@ -107,7 +119,8 @@ print_mock_gt <- function(
 #'
 #' @param tfrmt tfrmt object that will dictate the structure of the table
 #' @param .data Data to style in order to make the table
-#' @param .unicode_ws Whether to convert white space to unicode in preparation for output
+#' @param .unicode_ws Whether to convert white space to unicode in preparation
+#' for output
 #'
 #' @return a stylized gt object
 #' @export
@@ -116,30 +129,36 @@ print_mock_gt <- function(
 #'
 #' ```r
 #' library(dplyr)
+#'
 #' # Create tfrmt specification
 #' tfrmt_spec <- tfrmt(
-#'   label = label,
-#'   column = column,
-#'   param = param,
-#'   value=value,
-#'   body_plan = body_plan(
-#'     frmt_structure(group_val = ".default", label_val = ".default",
-#'                    frmt_combine(
-#'                      "{count} {percent}",
-#'                      count = frmt("xxx"),
-#'                      percent = frmt_when("==100"~ frmt(""),
-#'                                          "==0"~ "",
-#'                                          "TRUE" ~ frmt("(xx.x%)"))))
-#'   ))
+#'     label = label,
+#'     column = column,
+#'     param = param,
+#'     value = value,
+#'     body_plan = body_plan(
+#'         frmt_structure(
+#'             frmt_combine(
+#'                 "{count} {percent}",
+#'                 count = frmt("xxx"),
+#'                 percent = frmt_when(
+#'                     "==100" ~ frmt(""),
+#'                     "==0" ~ "",
+#'                     "TRUE" ~ frmt("(xx.x%)")
+#'                 )
+#'             )
+#'         )
+#'     )
+#' )
 #'
 #' # Create data
 #' df <- tidyr::crossing(
-#'         label = c("label 1", "label 2"),
-#'         column = c("placebo", "trt1"),
-#'         param = c("count", "percent")
-#'     ) |>
+#'     label = c("label 1", "label 2"),
+#'     column = c("placebo", "trt1"),
+#'     param = c("count", "percent")
+#' ) |>
 #'     dplyr::mutate(
-#'         value=c(24,19,2400/48,1900/38,5,1,500/48,100/38)
+#'         value = c(24,19,2400/48,1900/38,5,1,500/48,100/38)
 #'     )
 #'
 #' print_to_gt(tfrmt_spec,df)
@@ -149,17 +168,19 @@ print_mock_gt <- function(
 #' `r "<img src=\"https://raw.githubusercontent.com/GSK-Biostatistics/tfrmt/master/images/example_print_to_gt.png\" alt = \"2 by 2 table with labels down the side and placebo and trt1 across the top\" style=\"width:50\\%;\">"`
 #' }}
 print_to_gt <- function(tfrmt, .data, .unicode_ws = TRUE) {
-    if (!is_tfrmt(tfrmt)) {
-        stop("Requires a tfrmt object")
+    check_tfrmt(tfrmt)
+    if (missing(.data)) {
+        cli::cli_abort(
+            "Requires data, if not available please use `print_mock_gt()`"
+        )
     }
+    rlang::check_data_frame(.data)
+    rlang::check_bool(.unicode_ws)
 
-    # check required input variables are supplied
-    check_inputs(tfrmt, c("column", "param", "value"))
+    check_input_vars(tfrmt, c("column", "param", "value"))
 
-    if (!is.data.frame(.data)) {
-        stop("Requires data, if not available please use `print_mock_gt()`")
-    }
-    apply_tfrmt(.data, tfrmt, mock = FALSE) %>%
+    .data |>
+        apply_tfrmt(tfrmt) |>
         cleaned_data_to_gt(tfrmt, .unicode_ws)
 }
 
@@ -183,7 +204,7 @@ cleaned_data_to_gt <- function(.data, tfrmt, .unicode_ws) {
 #'
 #' @keywords internal
 cleaned_data_to_gt.list <- function(.data, tfrmt, .unicode_ws) {
-    purrr::map(.data, ~ cleaned_data_to_gt.default(.x, tfrmt, .unicode_ws)) %>%
+    purrr::map(.data, cleaned_data_to_gt.default, tfrmt, .unicode_ws) %>%
         gt::gt_group(.list = .)
 }
 #' Apply formatting to a single table
@@ -346,7 +367,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_style(
             style = gt::cell_borders(
-                sides = c("top"),
+                sides = "top",
                 color = "transparent",
                 weight = gt::px(0)
             ),
@@ -356,7 +377,7 @@ cleaned_data_to_gt.default <- function(.data, tfrmt, .unicode_ws) {
         ) %>%
         gt::tab_style(
             style = gt::cell_borders(
-                sides = c("bottom"),
+                sides = "bottom",
                 weight = gt::px(0),
                 color = "transparent"
             ),
@@ -478,7 +499,7 @@ format_gt_column_labels <- function(gt_table, .data) {
             dplyr::group_by(.data$value) %>%
             tidyr::nest(set = "cols") %>%
             dplyr::mutate(
-                set = purrr::map(.data$set, ~ dplyr::pull(., .data$cols))
+                set = purrr::map(.data$set, dplyr::pull, .data$cols)
             ) %>%
             dplyr::filter(
                 .data$value != "NA"

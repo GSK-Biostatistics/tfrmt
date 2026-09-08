@@ -37,8 +37,6 @@ test_that("markdown column labels - no spanning", {
         # set formatting for values
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} {pct}",
                     n = frmt("xxx"),
@@ -56,7 +54,7 @@ test_that("markdown column labels - no spanning", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             ),
             label_loc = element_row_grp_loc(location = "indented")
         )
@@ -125,8 +123,6 @@ test_that("markdown column labels - spanning", {
         column = vars(col1, col2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("XX")
             )
         ),
@@ -190,8 +186,6 @@ test_that("markdown column labels - renamed", {
         column = my_col,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),
@@ -235,8 +229,6 @@ test_that("column spanners and labels are appropriately aligned", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x.xx")
             )
         )

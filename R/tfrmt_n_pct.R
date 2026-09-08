@@ -60,8 +60,6 @@ tfrmt_n_pct <- function(
         ae_tbl <- tfrmt(
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     combo
                 )
             )
@@ -75,8 +73,6 @@ tfrmt_n_pct <- function(
             value = "value",
             body_plan = body_plan(
                 frmt_structure(
-                    group_val = ".default",
-                    label_val = ".default",
                     combo
                 )
             )

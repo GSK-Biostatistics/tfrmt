@@ -4,17 +4,17 @@
 \alias{frmt_structure}
 \title{Format Structure Object}
 \usage{
-frmt_structure(group_val = ".default", label_val = ".default", ...)
+frmt_structure(..., group_val = ".default", label_val = ".default")
 }
 \arguments{
+\item{...}{either a \code{\link[=frmt]{frmt()}}, \code{\link[=frmt_combine]{frmt_combine()}}, or a \code{\link[=frmt_when]{frmt_when()}} object.
+This can be named to also specify the parameter value}
+
 \item{group_val}{A string or a named list of strings which represent the
 value of group should be when the given frmt is implemented}
 
 \item{label_val}{A string which represent the value of label should be when
 the given frmt is implemented}
-
-\item{...}{either a \code{\link[=frmt]{frmt()}}, \code{\link[=frmt_combine]{frmt_combine()}}, or a \code{\link[=frmt_when]{frmt_when()}} object.
-This can be named to also specify the parameter value}
 }
 \value{
 frmt_structure object
@@ -34,17 +34,18 @@ Here are some example outputs:
 \examples{
 
 sample_structure <- frmt_structure(
-          group_val = c("group1"),
-          label_val = ".default",
-          frmt("XXX")
-        )
-## multiple group columns
-sample_structure <- frmt_structure(
-          group_val = list(grp_col1 = "group1", grp_col2 = "subgroup3"),
-          label_val = ".default",
-          frmt("XXX")
-        )
+    frmt("XXX"),
+    group_val = "group1"
+)
 
+# multiple group columns
+sample_structure <- frmt_structure(
+    frmt("XXX"),
+    group_val = list(
+        grp_col1 = "group1",
+        grp_col2 = "subgroup3"
+    )
+)
 }
 \seealso{
 \code{\link[=body_plan]{body_plan()}} combines the frmt_structures to be applied to the

@@ -35,14 +35,14 @@ Imports:
     jsonlite,
     magrittr,
     purrr,
-    rlang,
+    rlang (>= 1.1.0),
     stringi,
     stringr,
     tibble,
     tidyr,
     tidyselect
 Suggests:
-    cards (>= 0.8.0),
+    cards (>= 0.9.0),
     covr,
     ggfortify,
     knitr,

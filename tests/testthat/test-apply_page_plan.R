@@ -81,7 +81,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp: A", "grp: B", "grp: C")
     )
     expect_identical(
@@ -135,7 +135,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp2: a", "grp2: b")
     )
 
@@ -192,7 +192,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: A, grp2: a",
             "grp1: A, grp2: b",
@@ -247,7 +247,7 @@ test_that("Page plan with grouped split", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("lbl: n", "lbl: pct")
     )
     expect_identical(
@@ -370,7 +370,7 @@ test_that("page plan with mix of defined & group splits", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: A", "grp1: A", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -451,7 +451,7 @@ test_that("page plan with multiple structures", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c("grp1: A", "grp1: A", "grp1: A", "grp1: B", "grp1: B", "grp1: B")
     )
     expect_identical(
@@ -488,8 +488,6 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -531,8 +529,6 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -588,8 +584,6 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -650,8 +644,6 @@ test_that("Page plan with max_rows & group-level summary rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -708,8 +700,6 @@ test_that("Page plan with max_rows & group-level summary rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -778,8 +768,6 @@ test_that("page plan with both page_structure and max_rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -830,7 +818,7 @@ test_that("page plan with both page_structure and max_rows", {
     )
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: cat_1",
             "grp1: cat_2",
@@ -872,8 +860,6 @@ test_that("page plan with page_structure, single level variable", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -906,8 +892,8 @@ test_that("page plan with page_structure, single level variable", {
     expect_equal(auto_split, man_split, ignore_attr = TRUE)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
-        c("grp1: cat_1")
+        purrr::map_chr(auto_split, attr, ".page_note"),
+        "grp1: cat_1"
     )
 })
 
@@ -935,8 +921,6 @@ test_that("page_plan() with transform", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -951,29 +935,33 @@ test_that("page_plan() with transform", {
                     grp1 = ".default"
                 )
             ),
-            transform = ~ stringr::str_replace(.x, "grp1", "group 1")
+            transform = ~ stringr::str_replace(
+                .x,
+                stringr::fixed("grp1"),
+                "group 1"
+            )
         )
     )
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
-        c("group 1: cat_1")
+        purrr::map_chr(auto_split, attr, ".page_note"),
+        "group 1: cat_1"
     )
 
     # transform as function
     tfrmt_plan$page_plan$transform <- function(x) {
         x |>
-            stringr::str_replace("grp1", "group 1") |>
-            stringr::str_replace("cat_", "category ")
+            stringr::str_replace(stringr::fixed("grp1"), "group 1") |>
+            stringr::str_replace(stringr::fixed("cat_"), "category ")
     }
 
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
-        c("group 1: category 1")
+        purrr::map_chr(auto_split, attr, ".page_note"),
+        "group 1: category 1"
     )
 })
 
@@ -1000,8 +988,6 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1022,7 +1008,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "grp1: cat_1, grp2: cat_1",
             "grp1: cat_1, grp2: cat_2",
@@ -1037,9 +1023,9 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     # we want to go from `grp1: cat_1,\ngrp2: cat_1` to `Group 1 (cat_1),\nGroup 2 (cat_1)`
     tfrmt_plan$page_plan$transform <- function(x) {
         interim <- x |>
-            stringr::str_replace_all("grp", "Group ") |>
-            stringr::str_replace_all(": ", " (") |>
-            stringr::str_replace_all(",", "),")
+            stringr::str_replace_all(stringr::fixed("grp"), "Group ") |>
+            stringr::str_replace_all(stringr::fixed(": "), " (") |>
+            stringr::str_replace_all(stringr::fixed(","), "),")
 
         output <- stringr::str_pad(
             interim,
@@ -1054,7 +1040,7 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
     auto_split <- apply_tfrmt(test_data, tfrmt_plan)
 
     expect_identical(
-        purrr::map_chr(auto_split, ~ attr(.x, ".page_note")),
+        purrr::map_chr(auto_split, attr, ".page_note"),
         c(
             "Group 1 (cat_1), Group 2 (cat_1)",
             "Group 1 (cat_1), Group 2 (cat_2)",
@@ -1187,7 +1173,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     ard_ae5 <- ard_ae4 |>
         dplyr::full_join(
             ordering_aesoc,
-            by = c("AESOC")
+            by = "AESOC"
         ) |>
         dplyr::full_join(
             ordering_aeterm,
@@ -1280,12 +1266,16 @@ test_that("apply_page_plan() with label transformation in a complex table", {
                     )
                 ),
                 note_loc = "subtitle",
-                transform = ~ stringr::str_replace(.x, "Treatment", "Group")
+                transform = ~ stringr::str_replace(
+                    .x,
+                    stringr::fixed("Treatment"),
+                    "Group"
+                )
             ),
             row_grp_plan = row_grp_plan(
                 row_grp_structure(
                     group_val = ".default",
-                    element_block(post_space = " ")
+                    element_block = element_block(post_space = " ")
                 )
             )
         )
@@ -1295,7 +1285,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Group: Placebo (N=86)",
@@ -1306,7 +1297,7 @@ test_that("apply_page_plan() with label transformation in a complex table", {
 
     # test with transform as function
     test_tfrmt$page_plan$transform <- function(x) {
-        stringr::str_replace(x, "Treatment", "Group")
+        stringr::str_replace(x, stringr::fixed("Treatment"), "Group")
     }
 
     auto_split <- apply_tfrmt(ard_ae6, test_tfrmt)
@@ -1314,7 +1305,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Group: Placebo (N=86)",
@@ -1332,7 +1324,8 @@ test_that("apply_page_plan() with label transformation in a complex table", {
     expect_identical(
         purrr::map_chr(
             auto_split,
-            ~ attr(.x, ".page_note")
+            attr,
+            ".page_note"
         ),
         c(
             "Treatment: Placebo (N=86)",
@@ -1367,15 +1360,13 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(post_space = " ")
+                element_block = element_block(post_space = " ")
             )
         ),
         page_plan = page_plan(max_rows = 4)
@@ -1422,8 +1413,6 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1462,8 +1451,6 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),

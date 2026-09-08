@@ -73,8 +73,6 @@ test_that("print_to_gt() works", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x.xx")
             )
         )
@@ -96,12 +94,6 @@ test_that("print_to_gt() works", {
 })
 
 test_that("print_to_gt() complains with incorrect inputs", {
-    # complains when the first argument is not `tfrmt`
-    expect_snapshot(
-        error = TRUE,
-        print_to_gt(mtcars)
-    )
-
     # complains when the `.data` argument is not a data.frame
     tfrmt_plan <- tfrmt(
         label = label,
@@ -110,8 +102,6 @@ test_that("print_to_gt() complains with incorrect inputs", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -140,8 +130,6 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -168,8 +156,6 @@ test_that("print_mock_gt() messages when tfrmt$param is missing", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -205,8 +191,6 @@ test_that("print_to_gt() errors when required variables are missing", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("")
             )
         )
@@ -224,8 +208,6 @@ test_that("print_to_gt() errors when required variables are missing", {
         param = param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("")
             )
         )
@@ -242,8 +224,6 @@ test_that("print_to_gt() errors when required variables are missing", {
         label = rowlbl2,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("")
             )
         )
@@ -265,8 +245,6 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -293,8 +271,6 @@ test_that("print_mock_gt() messages when tfrmt$column is missing", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -332,8 +308,6 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -360,8 +334,6 @@ test_that("print_mock_gt() messages when tfrmt$value is missing", {
         param = param,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{count} {percent}",
                     count = frmt("xxx"),
@@ -412,8 +384,6 @@ test_that("print_mock_gt() with missing body_plan", {
         value = value,
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("X.X")
             )
         )
@@ -469,8 +439,6 @@ test_that("print_mock_data() removes `value` when it exists in the input data", 
         title = "Summary of Populations",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt_combine(
                     "{n} ({percent}%)",
                     n = frmt("xx"),
@@ -704,7 +672,6 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         title = "Title **bold**",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
                 label_val = "n",
                 frmt("xx")
             )
@@ -712,7 +679,7 @@ test_that("cleaned_data_to_gt() with page_plan & note location in subtitle", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = ".default",
-                element_block(
+                element_block = element_block(
                     post_space = " "
                 )
             )
@@ -873,12 +840,9 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         sorting_cols = c(g1, g2),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx.xx")
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "n (%)",
                 frmt_combine(
                     "{n} ({pct}%)",
@@ -887,7 +851,6 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
                 label_val = "(q1, q3)",
                 frmt_combine(
                     "({q1}, {q3})",
@@ -896,8 +859,6 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
                 )
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 pval = frmt_when(
                     "<.001" ~ "<.001",
                     TRUE ~ frmt("x.xxx")
@@ -907,11 +868,11 @@ test_that("cleaned_data_to_gt() with col_style_plan", {
         row_grp_plan = row_grp_plan(
             row_grp_structure(
                 group_val = list(g1 = "G1"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             row_grp_structure(
                 group_val = list(g1 = "G2_"),
-                element_block(post_space = "----")
+                element_block = element_block(post_space = "----")
             ),
             label_loc = element_row_grp_loc(
                 location = "spanning"
@@ -985,8 +946,6 @@ test_that("cleaned_data_to_gt() with row_grp_plan and location = 'column'", {
         col_plan = col_plan(-ord),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x")
             )
         ),

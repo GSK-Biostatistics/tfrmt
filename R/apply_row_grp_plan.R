@@ -243,7 +243,7 @@ fill_post_space <- function(post_space, fill, width) {
         fill_val <- stringr::str_sub(post_space, 1, width) # truncate to data width if needed
     }
 
-    return(fill_val)
+    fill_val
 }
 
 
@@ -296,7 +296,7 @@ combine_group_cols <- function(
                 run_id = dplyr::consecutive_id(!!!top_grouping)
             ) %>%
             dplyr::group_split() %>%
-            purrr::map(~ dplyr::select(.x, -run_id))
+            purrr::map(dplyr::select, -"run_id")
 
         .data <- split_dat %>%
             purrr::map_dfr(function(lone_dat) {

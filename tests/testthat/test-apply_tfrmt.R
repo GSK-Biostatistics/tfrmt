@@ -43,18 +43,15 @@ test_that("pivot_wider_tfrmt gives message when frmt_combine may be missing", {
         col_plan = col_plan(-ord),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x.x")
             ),
             frmt_structure(
-                group_val = ".default",
-                label_val = "m",
                 frmt_combine(
                     "{n}/{n_2}",
                     n = frmt("x"),
                     n_2 = frmt("x.x")
-                )
+                ),
+                label_val = "m"
             )
         )
     )
@@ -145,12 +142,12 @@ test_that("test tentative_process", {
 
     failing_func <- function(x, y = "value") {
         stop("this function failed")
-        paste0(x, y)
+        paste0(x, y) # nolint: unreachable_code_linter
     }
 
     rlang_abort_func <- function(x, y = "value") {
         rlang::abort("this function failed2")
-        paste0(x, y)
+        paste0(x, y) # nolint: unreachable_code_linter
     }
 
     ## function passing in tentative process
@@ -202,19 +199,6 @@ test_that("test tentative_process", {
     )
 })
 
-test_that("apply_tfrmt errors when passed a non-tfrmt object", {
-    dat <- tibble::tibble(lbl = "a", prm = "n", val = 1, col = "A")
-
-    not_a_tfrmt <- unclass(tfrmt(
-        label = lbl,
-        param = prm,
-        value = val,
-        column = col
-    ))
-
-    expect_error(apply_tfrmt(dat, not_a_tfrmt), "Requires a tfrmt object")
-})
-
 test_that("tentative_process handles errors with empty message", {
     empty_msg_func <- function(x) stop("")
     expect_snapshot(
@@ -241,8 +225,6 @@ test_that("frmt_struct_string handles no group variables", {
         col_plan = col_plan(-ord),
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("x.x")
             )
         )

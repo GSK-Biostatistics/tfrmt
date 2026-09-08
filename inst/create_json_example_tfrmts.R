@@ -9,8 +9,6 @@ tfrmt_demog <- tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("xxx"),
@@ -22,33 +20,27 @@ tfrmt_demog <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xxx")
+            frmt("xxx"),
+            label_val = "n"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("Mean", "Median", "Min", "Max"),
-            frmt("xxx.x")
+            frmt("xxx.x"),
+            label_val = c("Mean", "Median", "Min", "Max")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "SD",
-            frmt("xxx.xx")
+            frmt("xxx.xx"),
+            label_val = "SD"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p = frmt("")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = c("n", "<65 yrs", "<12 months", "<25"),
             p = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
                 TRUE ~ frmt("x.xxx", missing = "")
-            )
+            ),
+            label_val = c("n", "<65 yrs", "<12 months", "<25")
         )
     ),
 
@@ -83,7 +75,9 @@ tfrmt_demog <- tfrmt(
     row_grp_plan = row_grp_plan(
         row_grp_structure(
             group_val = ".default",
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         label_loc = element_row_grp_loc(
             location = "column"
@@ -102,8 +96,6 @@ tfrmt_ae <- tfrmt(
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             frmt_combine(
                 "{n} {pct}",
                 n = frmt("XXX"),
@@ -115,13 +107,9 @@ tfrmt_ae <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             AEs = frmt("[XXX]")
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             pval = frmt_when(
                 ">0.99" ~ ">0.99",
                 "<0.001" ~ "<0.001",
@@ -175,15 +163,12 @@ tfrmt_efficacy <- tfrmt(
     value = value,
     sorting_cols = c(ord1, ord2),
     body_plan = body_plan(
-        # we could also do: label_val = ".default", n = frmt("xx")
+        # we could also do: n = frmt("xx")
         frmt_structure(
-            group_val = ".default",
-            label_val = "n",
-            frmt("xx")
+            frmt("xx"),
+            label_val = "n"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = ".default",
             p.value = frmt_when(
                 "<0.001" ~ "<0.001",
                 ">0.99" ~ ">0.99",
@@ -191,45 +176,41 @@ tfrmt_efficacy <- tfrmt(
             )
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Median (Range)",
             frmt_combine(
                 "{median} ({min};{max})",
                 median = frmt("xx.x"),
                 min = frmt("xx"),
                 max = frmt("xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Median (Range)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Mean (SD)",
             frmt_combine(
                 "{mean} ({sd})",
                 mean = frmt("xx.x"),
                 sd = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Mean (SD)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "Diff of LS Means (SE)",
             frmt_combine(
                 "{diff} ({diff_se})",
                 diff = frmt("xx.x"),
                 diff_se = frmt("xx.xx"),
                 missing = " "
-            )
+            ),
+            label_val = "Diff of LS Means (SE)"
         ),
         frmt_structure(
-            group_val = ".default",
-            label_val = "95% CI",
             frmt_combine(
                 "({diff_lcl};{diff_ucl})",
                 diff_lcl = frmt("xx.x"),
                 diff_ucl = frmt("xx.x"),
                 missing = " "
-            )
+            ),
+            label_val = "95% CI"
         )
     ),
     col_plan = col_plan(
@@ -245,19 +226,25 @@ tfrmt_efficacy <- tfrmt(
             group_val = list(
                 group = "Change from Baseline"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
             group_val = list(
                 group = "p-value (Dose Response)"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         row_grp_structure(
             group_val = list(
                 group = "p-value (Xan - Placebo)"
             ),
-            element_block(post_space = " ")
+            element_block = element_block(
+                post_space = " "
+            )
         ),
         label_loc = element_row_grp_loc(
             location = "indented"
