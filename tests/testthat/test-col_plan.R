@@ -949,7 +949,7 @@ test_that("Order is kept for multi-col columns", {
 
     new_name_ord_in_dat <- test %>%
         dplyr::select(
-            tidyselect::starts_with("col")
+            starts_with("col")
         ) %>%
         tidyr::unite(
             "new",
