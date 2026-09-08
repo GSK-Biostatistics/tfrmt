@@ -439,7 +439,7 @@ unite_df_to_data_names <- function(
         tidyr::unite(
             "original",
             -c(
-                tidyselect::starts_with(
+                starts_with(
                     "__tfrmt_new_name__"
                 ),
                 "subtraction_status"
@@ -448,7 +448,7 @@ unite_df_to_data_names <- function(
         ) %>%
         tidyr::unite(
             "new_name",
-            tidyselect::starts_with("__tfrmt_new_name__"),
+            starts_with("__tfrmt_new_name__"),
             sep = .tlang_delim
         ) %>%
         dplyr::mutate(

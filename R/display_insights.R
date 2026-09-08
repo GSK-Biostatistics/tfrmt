@@ -106,7 +106,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 frmt_applied = "TEMP_fmt_to_apply"
             ) %>%
             dplyr::select(
-                -tidyselect::starts_with(
+                -starts_with(
                     "TEMP"
                 )
             ) %>%
@@ -130,7 +130,7 @@ display_row_frmts <- function(tfrmt, .data, convert_to_txt = TRUE) {
                 frmt_applied = "TEMP_fmt_to_apply"
             ) %>%
             dplyr::select(
-                -tidyselect::starts_with(
+                -starts_with(
                     "TEMP"
                 )
             ) %>%
