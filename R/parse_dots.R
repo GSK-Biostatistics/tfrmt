@@ -14,7 +14,7 @@ parse_special_dots.name <- function(x, ...) {
 
 #' @export
 #' @keywords internal
-parse_special_dots.call <- function(x, call = rlang::caller_env()) {
+parse_special_dots.call <- function(x, call = rlang::caller_env(), ...) {
     if (is_valid_tidyselect_call(x)) {
         return(rlang::quo(!!x))
     }
@@ -56,7 +56,7 @@ parse_special_dots.character <- function(x, ...) {
 
 #' @export
 #' @keywords internal
-parse_special_dots.default <- function(x, call = rlang::caller_env()) {
+parse_special_dots.default <- function(x, call = rlang::caller_env(), ...) {
     call_label <- format(rlang::frame_call(call))
 
     cli::cli_abort(
