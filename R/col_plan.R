@@ -193,19 +193,15 @@ parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
                           "Invalid entry: {.code {entry_label}}",
                           "x" = "Only the following can be entered as contents:",
                           "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),",
-                          "*" = "unquoted expressions representing variable names.",
-                          "i" = "Renaming variables with {.code new_name = old_name} is allowed."
-                        ),
-                        call = call
-                      )
-                    }
-                } else if (is.character(x)) {
-                    if (!nzchar(x)) {
-                        return(NULL) # nolint: return_linter
-                    }
-                    return(as_length_one_quo.character(x)) # nolint: return_linter
-                } else {
-                  cli::cli_abort(
+                    )
+                }
+            } else if (is.character(x)) {
+                if (!nzchar(x)) {
+                    return(NULL) # nolint: return_linter
+                }
+                return(as_length_one_quo.character(x)) # nolint: return_linter
+            } else {
+                cli::cli_abort(
                     "Unexpected entry type in {.fn span_structure}.",
                     call = call
                 )
