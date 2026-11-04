@@ -37,7 +37,8 @@ parse_special_dots.call <- function(x, call = rlang::caller_env(), ...) {
     # nolint end
 
     if (call_nm == "span_structure") {
-        # remove the span structures message as not applicable
+        # remove the span structures message as not applicable when the
+        # parent call is span_structure()
         error_msg_bullets <- error_msg_bullets[-3]
     }
 
