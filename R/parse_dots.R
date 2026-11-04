@@ -1,5 +1,3 @@
-#' @export
-#' @keywords internal
 parse_special_dots <- function(x, ...) {
     UseMethod("parse_special_dots", x)
 }
