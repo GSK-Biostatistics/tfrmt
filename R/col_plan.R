@@ -282,8 +282,8 @@ check_col_plan_dots <- function(x, call = rlang::caller_env()) {
                     "Invalid entry: {.code {entry_label}}",
                     "x" = "Only the following can be entered as contents:",
                     "*" = "span structures ({.fn span_structure}),",
-                    "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),",
-                    "*" = "unquoted expressions representing variable names.",
+                    "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),", # nolint: duplicate_argument_linter
+                    "*" = "unquoted expressions representing variable names.", # nolint: duplicate_argument_linter
                     "i" = "Renaming variables with {.code new_name = old_name} is allowed."
                   ),
                     call = call
