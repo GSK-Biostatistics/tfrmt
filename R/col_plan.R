@@ -133,7 +133,6 @@ col_plan <- function(..., .drop = FALSE) {
 #'
 #' @export
 span_structure <- function(...) {
-    # browser()
     span_cols <- as.list(substitute(substitute(...)))[-1]
     check_span_structure_args(span_cols)
     span_cols <- parse_span_structure_dots(span_cols)
