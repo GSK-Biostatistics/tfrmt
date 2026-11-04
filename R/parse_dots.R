@@ -63,5 +63,6 @@ parse_special_dots.default <- function(x, call = rlang::caller_env(), ...) {
 
     cli::cli_abort(
         "Unexpected entry type in {call_label}.",
+        call = call
     )
 }
