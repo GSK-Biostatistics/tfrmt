@@ -159,9 +159,9 @@ check_span_structure_args <- function(x, call = rlang::caller_env()) {
     x_names <- names(x)
 
     if (is.null(x_names) || !all(nzchar(x_names))) {
-      call_label <- format(rlang::frame_call(call))
-      cli::cli_abort(
-        c(
+        call_label <- format(rlang::frame_call(call))
+        cli::cli_abort(
+            c(
           "Entries of a {.fn span_structure} must be named.",
           "i" = "Got: {call_label}"
         ),
