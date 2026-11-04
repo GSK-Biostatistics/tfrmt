@@ -12,7 +12,7 @@ This text is not a task.
 
 - [ ] revisit some of the `check_` functions. I think the default approach should be the aim of the `check_()` functions is only to verify the input is as expected. Currently these functions do a lot more:
   - [ ] `parse_col_plan_dots()`
-  - [ ] `check_span_structure_dots()`
+  - [ ] `parse_span_structure_dots()`
 - [ ] revisit `is_valid_()` functionality
   - [ ] the constructor should always produce a valid object
 - [ ] some `is_()` functions should probably not be user facing (i.e. exported), such as: `is_frmt_structure()`, `is_frmt()`, `is_frmt_combine()`, `is_frmt_when()`, `is_row_grp_structure()`.
