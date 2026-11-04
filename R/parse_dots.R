@@ -25,16 +25,25 @@ parse_special_dots.call <- function(x, call = rlang::caller_env()) {
         return(rlang::eval_tidy(x)) # nolint: return_linter
     }
 
-    entry_label <- format(x)
-    cli::cli_abort(
-        c(
+    call_nm <- rlang::frame_call(call) |> rlang::call_name()
+
+    error_msg_bullets <- c(
             "Invalid entry: {.code {entry_label}}",
             "x" = "Only the following can be entered as contents:",
             "*" = "span structures ({.fn span_structure}),",
             "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),", # nolint: duplicate_argument_linter
             "*" = "unquoted expressions representing variable names.", # nolint: duplicate_argument_linter
             "i" = "Renaming variables with {.code new_name = old_name} is allowed."
-        ),
+        )
+
+    if (call_nm == "span_structure") {
+        # remove the span structures message as not applicable
+        error_msg_bullets <- error_msg_bullets[-3]
+    }
+
+    entry_label <- format(x)
+    cli::cli_abort(
+        error_msg_bullets,
         call = call
     )
 }
