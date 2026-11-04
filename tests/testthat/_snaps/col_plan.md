@@ -12,32 +12,32 @@
       span_structure(`blah blah blah`)
     Condition
       Error in `span_structure()`:
-      ! Entries of a `span_structure` must be named:
-       span_structure(`blah blah blah`)
+      ! Entries of a `span_structure()` must be named.
+      i Got: span_structure(`blah blah blah`)
 
 ---
 
     Code
       span_structure(name_col = 0+1i)
     Condition
-      Error in `purrr::map()`:
-      i In index: 1.
-      i With name: name_col.
-      Caused by error in `lapply()`:
+      Error in `span_structure()`:
       ! Invalid entry: `0 + (0+1i)`
-      Only selection helpers (See <https://tidyselect.r-lib.org/reference>),  or unquoted expressions representing variable names  can be entered as contents. Changing the names of individual variables using new_name = old_name syntax is allowable
+      x Only the following can be entered as contents:
+      * selection helpers (see <https://tidyselect.r-lib.org/reference>),
+      * unquoted expressions representing variable names.
+      i Renaming variables with `new_name = old_name` is allowed.
 
 ---
 
     Code
       span_structure(name_col = vars(matrix()))
     Condition
-      Error in `purrr::map()`:
-      i In index: 1.
-      i With name: name_col.
-      Caused by error in `lapply()`:
+      Error in `span_structure()`:
       ! Invalid entry: `matrix()`
-      Only selection helpers (See <https://tidyselect.r-lib.org/reference>),  or unquoted expressions representing variable names  can be entered as contents. Changing the names of individual variables using new_name = old_name syntax is allowable
+      x Only the following can be entered as contents:
+      * selection helpers (see <https://tidyselect.r-lib.org/reference>),
+      * unquoted expressions representing variable names.
+      i Renaming variables with `new_name = old_name` is allowed.
 
 ---
 
@@ -45,7 +45,8 @@
       span_structure(col1 = "", col2 = vars(A, B))
     Condition
       Error in `span_structure()`:
-      ! The following `span_structure()` arguments have no column values: `col1`
+      ! The following `span_structure()` arguments have no column values:
+      x `col1`
 
 ---
 
@@ -53,5 +54,6 @@
       span_structure(col1 = "Test Label", col2 = c())
     Condition
       Error in `span_structure()`:
-      ! The following `span_structure()` arguments have no column values: `col2`
+      ! The following `span_structure()` arguments have no column values:
+      x `col2`
 
