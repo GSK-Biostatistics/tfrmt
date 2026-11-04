@@ -116,7 +116,7 @@ col_plan <- function(..., .drop = FALSE) {
     ## selectively evaluate dots (only if is a span_structure)
     ## confirm contents otherwise
     dots <- as.list(substitute(substitute(...)))[-1]
-    dots <- check_col_plan_dots(dots)
+    dots <- parse_col_plan_dots(dots)
 
     structure(
         list(
@@ -227,6 +227,6 @@ is_valid_quo_call <- function(x) {
     as.character(as.list(x)[[1]]) %in% c("vars", "quo")
 }
 
-check_col_plan_dots <- function(x, call = rlang::caller_env()) {
+parse_col_plan_dots <- function(x, call = rlang::caller_env()) {
     lapply(x, parse_special_dots, call = call)
 }

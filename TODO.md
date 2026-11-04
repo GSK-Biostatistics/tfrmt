@@ -11,7 +11,7 @@ This text is not a task.
 ## Improvements
 
 - [ ] revisit some of the `check_` functions. I think the default approach should be the aim of the `check_()` functions is only to verify the input is as expected. Currently these functions do a lot more:
-  - [ ] `check_col_plan_dots()`
+  - [ ] `parse_col_plan_dots()`
   - [ ] `check_span_structure_dots()`
 - [ ] revisit `is_valid_()` functionality
   - [ ] the constructor should always produce a valid object
