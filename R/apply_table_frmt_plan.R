@@ -103,7 +103,7 @@ apply_table_frmt_plan <- function(
         dplyr::arrange(.data$TEMP_row) %>%
         dplyr::select(
             # drop TEMP_row values
-            -tidyselect::starts_with(
+            -starts_with(
                 "TEMP_"
             )
         )

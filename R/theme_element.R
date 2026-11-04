@@ -22,7 +22,9 @@
 #'
 #' @returns element_row_grp_loc object
 #'
+#'
 #' @export
+#'
 #'
 #' @examples
 #'
@@ -39,8 +41,7 @@
 #'     ),
 #'     body_plan = body_plan(
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = ".default", frmt("xx")
+#'             frmt("xx")
 #'         )
 #'     )
 #' )
@@ -97,8 +98,6 @@ is_element_row_grp_loc <- function(x) {
 #'     ),
 #'     body_plan = body_plan(
 #'         frmt_structure(
-#'             group_val = ".default",
-#'             label_val = ".default",
 #'             frmt("xx")
 #'         )
 #'     )

@@ -22,9 +22,8 @@
 #'     title = "Table Title",
 #'     body_plan = body_plan(
 #'         frmt_structure(
-#'             group_val = c("group1"),
-#'             label_val = ".default",
-#'             frmt("XXX")
+#'             frmt("XXX"),
+#'             group_val = "group1"
 #'         )
 #'     )
 #' )

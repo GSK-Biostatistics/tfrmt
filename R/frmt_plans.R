@@ -29,25 +29,22 @@
 #' @examples
 #'
 #' sample_structure <- frmt_structure(
-#'     group_val = c("group1"),
-#'     label_val = ".default",
-#'     frmt("XXX")
+#'     frmt("XXX"),
+#'     group_val = "group1"
 #' )
 #'
 #' # multiple group columns
 #' sample_structure <- frmt_structure(
+#'     frmt("XXX"),
 #'     group_val = list(
 #'         grp_col1 = "group1",
 #'         grp_col2 = "subgroup3"
-#'     ),
-#'     label_val = ".default",
-#'     frmt("XXX")
+#'     )
 #' )
-#'
 frmt_structure <- function(
+    ...,
     group_val = ".default",
-    label_val = ".default",
-    ...
+    label_val = ".default"
 ) {
     param_frmt <- list(...)
     param_val <- names(param_frmt)

@@ -488,8 +488,6 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -531,8 +529,6 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -588,8 +584,6 @@ test_that("Page plan with max_rows", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -650,8 +644,6 @@ test_that("Page plan with max_rows & group-level summary rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -708,8 +700,6 @@ test_that("Page plan with max_rows & group-level summary rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -778,8 +768,6 @@ test_that("page plan with both page_structure and max_rows", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -872,8 +860,6 @@ test_that("page plan with page_structure, single level variable", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -935,8 +921,6 @@ test_that("page_plan() with transform", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1004,8 +988,6 @@ test_that("page_plan() with transform and multiple 'page by' variables", {
         value = "val",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1378,8 +1360,6 @@ test_that("page_plan handles empty string groups without Index 1 error", {
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1433,8 +1413,6 @@ test_that("page_plan handles empty string groups in factor columns, with no row 
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),
@@ -1473,8 +1451,6 @@ test_that("Page plan with max_rows edge cases: spanning and too-small max_rows",
         value = "value",
         body_plan = body_plan(
             frmt_structure(
-                group_val = ".default",
-                label_val = ".default",
                 frmt("xx")
             )
         ),

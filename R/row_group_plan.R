@@ -73,8 +73,8 @@ row_grp_plan <- function(
 
 #' Row Group Structure Object
 #'
-#' Function needed to create a row_grp_structure object, which is a building block
-#' of [row_grp_plan()]
+#' Function needed to create a row_grp_structure object, which is a building
+#' block of [row_grp_plan()]
 #'
 #' @seealso [row_grp_plan()] for more details on how to group row group
 #'   structures, [element_block()] for more details on how to specify spacing
@@ -82,11 +82,11 @@ row_grp_plan <- function(
 #'
 #'   \href{https://gsk-biostatistics.github.io/tfrmt/articles/row_grp_plan.html}{Link to related article}
 #'
-#' @param group_val A string or a named list of strings which represent the
-#'   value of group should be when the given frmt is implemented
-#' @param element_block element_block() object to define the block styling
+#' @param group_val A character vector or a named list of strings which
+#'   represent the value of group should be when the given frmt is implemented
+#' @param element_block An [element_block()] object to define the block styling
 #'
-#' @returns row_grp_structure object
+#' @returns A `row_grp_structure` object
 #'
 #' @export
 #'
@@ -114,13 +114,14 @@ row_grp_plan <- function(
 row_grp_structure <- function(group_val = ".default", element_block) {
     check_element_block(element_block)
 
-    if (is.list(group_val)) {
-        group_val_names <- names(group_val)
-        if (is.null(group_val_names)) {
-            stop("when group_val is a list, must be a named list")
-        } else if (!all(nzchar(group_val_names))) {
-            stop("when group_val is a list, each entry must be named")
-        }
+    if (!rlang::is_list(group_val)) {
+        check_character(group_val)
+    }
+
+    if (rlang::is_list(group_val) && !rlang::is_named(group_val)) {
+        cli::cli_abort(
+            "When `group_val` is a list, it must be a named list."
+        )
     }
 
     structure(

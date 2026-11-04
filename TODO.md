@@ -15,6 +15,20 @@ This text is not a task.
   - [ ] `check_span_structure_dots()`
 - [ ] revisit `is_valid_()` functionality
   - [ ] the constructor should always produce a valid object
+- [ ] some `is_()` functions should probably not be user facing (i.e. exported), such as: `is_frmt_structure()`, `is_frmt()`, `is_frmt_combine()`, `is_frmt_when()`, `is_row_grp_structure()`.
+- [ ] improve messaging (to discuss):
+  - [ ] messages should be aware of the context (errors and warnings should surface from the functions directly called by the users)
+    - no `call = NULL`, but rather `call = rlang::caller_env()`
+  - [ ] improve multi-row cli messages (by adding bullet points)
+  - [ ] use inline formatting
+  - [ ] wrap lines to 80 characters
+  - [ ] revisit / add `is_()` and `check_()` functions for the tfrmt classes
+  - [ ] implement existing rlang checks, for example:
+    - `check_logical()` in `display_row_frmts()` instead of having a conditional statement and the very bottom of the function body
+    - `check_whole_number()` for width in `col_style_structure()`. Do we want to continue supporting `width` as character in `col_style_structure()`?
+  - [ ] decide on a consistent approach to:
+    -  classing the message
+    - including or not including context
 - [ ] functions should check their inputs. If the function is not user facing, then it should report the error / condition from the calling function. For example, `apply_tfrmt()` should have a `call = rlang::caller_env()` argument.
 - [ ] all user-facing functions should check all their inputs before doing any work.
   - for example, `big_n_structure()` should check `param_val`
@@ -37,4 +51,4 @@ This text is not a task.
 # Done ✓
 
 - [x] use namespaced calls @dragosmg
-- [x] ~~This task has been declined~~ (declined)
+- [x] ~~This is an example of a declined task~~ (declined)
