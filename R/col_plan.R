@@ -147,7 +147,6 @@ is_span_structure <- function(x) {
     inherits(x, "span_structure")
 }
 
-#' @noRd
 check_span_structure_dots <- function(x) {
     if (length(x) == 0) {
         rlang::abort(
