@@ -174,21 +174,21 @@ check_span_structure_args <- function(x, call = rlang::caller_env()) {
 
 parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
     x_dots <- lapply(x, function(span_entry) {
-           lapply(trim_vars_quo_c(span_entry), function(x) {
-                if (is.name(x)) {
-                    if (identical(rlang::as_label(x), "<empty>")) {
-                        return(NULL) # nolint: return_linter
-                    } else {
-                        return(rlang::quo(!!x)) # nolint: return_linter
-                    }
-                } else if (is.call(x)) {
-                    if (is_valid_tidyselect_call(x)) {
-                        rlang::quo(!!x)
-                    } else if (is_valid_quo_call(x)) {
-                        return(rlang::eval_tidy(x)) # nolint: return_linter
-                    } else {
-                      entry_label <- format(x)
-                      cli::cli_abort(
+        lapply(trim_vars_quo_c(span_entry), function(x) {
+            if (is.name(x)) {
+                if (identical(rlang::as_label(x), "<empty>")) {
+                    return(NULL) # nolint: return_linter
+                } else {
+                    return(rlang::quo(!!x)) # nolint: return_linter
+                }
+            } else if (is.call(x)) {
+                if (is_valid_tidyselect_call(x)) {
+                    rlang::quo(!!x)
+                } else if (is_valid_quo_call(x)) {
+                    return(rlang::eval_tidy(x)) # nolint: return_linter
+                } else {
+                    entry_label <- format(x)
+                    cli::cli_abort(
                         c(
                           "Invalid entry: {.code {entry_label}}",
                           "x" = "Only the following can be entered as contents:",
