@@ -150,7 +150,7 @@ is_span_structure <- function(x) {
 
 check_span_structure_args <- function(x, call = rlang::caller_env()) {
     if (length(x) == 0) {
-      cli::cli_abort(
+        cli::cli_abort(
             "{.fn span_structure} requires at least one named argument.",
             call = call
         )
