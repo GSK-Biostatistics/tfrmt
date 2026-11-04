@@ -227,8 +227,8 @@ check_span_structure_values <- function(
     empty_entries <- names(x)[sapply(x, is_empty_entry)]
 
     if (length(empty_entries) > 0) {
-      cli::cli_abort(
-        c(
+        cli::cli_abort(
+            c(
           "The following {.fn span_structure} arguments have no column values:",
           "x" = "{.code {empty_entries}}"
         ),
