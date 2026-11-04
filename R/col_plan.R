@@ -31,7 +31,7 @@
 #'
 #' @rdname col_plan
 #'
-#' @param ... For a col_plan and span_structure,
+#' @param ... For a `col_plan` and `span_structure`,
 #'   <[`tidy-select`][dplyr::dplyr_tidy_select]> arguments, unquoted expressions
 #'   separated by commas, and span_structures. span_structures must have the
 #'   arguments named to match the name the column in the input data has to identify the correct columns.

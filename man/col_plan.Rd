@@ -10,7 +10,7 @@ col_plan(..., .drop = FALSE)
 span_structure(...)
 }
 \arguments{
-\item{...}{For a col_plan and span_structure,
+\item{...}{For a \code{col_plan} and \code{span_structure},
 <\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> arguments, unquoted expressions
 separated by commas, and span_structures. span_structures must have the
 arguments named to match the name the column in the input data has to identify the correct columns.
