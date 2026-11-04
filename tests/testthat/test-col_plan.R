@@ -1532,7 +1532,7 @@ test_that("col_plan returns correct errors", {
             func("invalid entry")
         ),
         "Invalid entry: `func(\"invalid entry\")`",
-       fixed = TRUE
+        fixed = TRUE
     )
 })
 
