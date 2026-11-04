@@ -208,9 +208,8 @@ parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
                   cli::cli_abort(
                     "Unexpected entry type in {.fn span_structure}.",
                     call = call
-                  )
-                }
-            })
+                )
+            }
         })
     })
 
