@@ -193,8 +193,12 @@ parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
                           "Invalid entry: {.code {entry_label}}",
                           "x" = "Only the following can be entered as contents:",
                           "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),",
-                    )
-                }
+                          "*" = "unquoted expressions representing variable names.",
+                          "i" = "Renaming variables with {.code new_name = old_name} is allowed."
+                        ),
+                        call = call
+                      )
+                    }
             } else if (is.character(x)) {
                 if (!nzchar(x)) {
                     return(NULL) # nolint: return_linter
