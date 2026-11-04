@@ -25,6 +25,8 @@ parse_special_dots.call <- function(x, call = rlang::caller_env(), ...) {
 
     call_nm <- rlang::frame_call(call) |> rlang::call_name()
 
+    entry_label <- format(x)
+
     # nolint start: duplicate_argument_linter
     error_msg_bullets <- c(
             "Invalid entry: {.code {entry_label}}",
@@ -42,7 +44,6 @@ parse_special_dots.call <- function(x, call = rlang::caller_env(), ...) {
         error_msg_bullets <- error_msg_bullets[-3]
     }
 
-    entry_label <- format(x)
     cli::cli_abort(
         error_msg_bullets,
         call = call
