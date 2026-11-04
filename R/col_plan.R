@@ -212,7 +212,6 @@ check_span_structure_dots <- function(x) {
     x_dots[!sapply(x_dots, is.null)]
 }
 
-#' @noRd
 check_span_structure_values <- function(
     x,
     call = rlang::caller_env()
