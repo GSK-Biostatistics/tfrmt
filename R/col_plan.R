@@ -161,7 +161,7 @@ check_span_structure_dots <- function(x) {
     if (is.null(x_names) || !all(nzchar(x_names))) {
         rlang::abort(
             paste0(
-                "Entries of a span_stucture must be named:\n ",
+                "Entries of a `span_structure` must be named:\n ",
                 format(rlang::caller_call())
             ),
             call = rlang::caller_call()
