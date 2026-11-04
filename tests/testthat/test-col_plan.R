@@ -1537,23 +1537,26 @@ test_that("col_plan returns correct errors", {
 })
 
 test_that("span_structure misc, including errors", {
-  ## empty inputs
-  expect_snapshot(span_structure(), error = TRUE)
+    ## empty inputs
+    expect_snapshot(span_structure(), error = TRUE)
 
-  ## unnamed values
-  expect_snapshot(span_structure(`blah blah blah`), error = TRUE)
+    ## unnamed values
+    expect_snapshot(span_structure(`blah blah blah`), error = TRUE)
 
-  ## weird values
-  expect_snapshot(span_structure(name_col = 1i), error = TRUE)
+    ## weird values
+    expect_snapshot(span_structure(name_col = 1i), error = TRUE)
 
-  ## other functions values
-  expect_snapshot(span_structure(name_col = vars(matrix())), error = TRUE)
+    ## other functions values
+    expect_snapshot(span_structure(name_col = vars(matrix())), error = TRUE)
 
-  ## empty string column value
-  expect_snapshot(span_structure(col1 = "", col2 = vars(A, B)), error = TRUE)
+    ## empty string column value
+    expect_snapshot(span_structure(col1 = "", col2 = vars(A, B)), error = TRUE)
 
-  ## empty c() column value
-  expect_snapshot(span_structure(col1 = "Test Label", col2 = c()), error = TRUE)
+    ## empty c() column value
+    expect_snapshot(
+        span_structure(col1 = "Test Label", col2 = c()),
+        error = TRUE
+    )
 })
 
 test_that("Tidyselect subtraction with span_structure", {

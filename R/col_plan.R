@@ -278,7 +278,7 @@ check_col_plan_dots <- function(x, call = rlang::caller_env()) {
             } else {
                 entry_label <- format(entry)
                 cli::cli_abort(
-                  c(
+                    c(
                     "Invalid entry: {.code {entry_label}}",
                     "x" = "Only the following can be entered as contents:",
                     "*" = "span structures ({.fn span_structure}),",
@@ -286,16 +286,16 @@ check_col_plan_dots <- function(x, call = rlang::caller_env()) {
                     "*" = "unquoted expressions representing variable names.",
                     "i" = "Renaming variables with {.code new_name = old_name} is allowed."
                   ),
-                  call = call
+                    call = call
                 )
             }
         } else if (is.character(entry)) {
             return(as_length_one_quo.character(entry)) # nolint: return_linter
         } else {
-          cli::cli_abort(
-            "Unexpected entry type in {.fn span_structure}.",
-            call = call
-          )
+            cli::cli_abort(
+                "Unexpected entry type in {.fn span_structure}.",
+                call = call
+            )
         }
     })
 }
