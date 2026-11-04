@@ -232,8 +232,8 @@ check_span_structure_values <- function(
           "The following {.fn span_structure} arguments have no column values:",
           "x" = "{.code {empty_entries}}"
         ),
-        call = call
-      )
+            call = call
+        )
     }
 
     invisible(NULL)
