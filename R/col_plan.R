@@ -197,8 +197,8 @@ parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
                           "i" = "Renaming variables with {.code new_name = old_name} is allowed."
                         ),
                         call = call
-                      )
-                    }
+                    )
+                }
             } else if (is.character(x)) {
                 if (!nzchar(x)) {
                     return(NULL) # nolint: return_linter
