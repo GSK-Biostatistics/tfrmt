@@ -212,6 +212,7 @@ parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
                 }
             })
         })
+    })
 
     x_dots[!sapply(x_dots, is.null)]
 }
