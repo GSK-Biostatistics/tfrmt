@@ -58,6 +58,10 @@ parse_special_dots.character <- function(x, ...) {
 
 #' @export
 #' @keywords internal
-parse_special_dots.default <- function(x, ...) {
-    cli::cli_abort("not good")
+parse_special_dots.default <- function(x, call = rlang::caller_env()) {
+    call_label <- format(rlang::frame_call(call))
+
+    cli::cli_abort(
+        "Unexpected entry type in {call_label}.",
+    )
 }
