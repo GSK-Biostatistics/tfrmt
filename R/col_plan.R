@@ -226,7 +226,7 @@ check_span_structure_values <- function(
     if (length(empty_entries) > 0) {
         rlang::abort(
             paste0(
-                "The following span_structure() arguments have no column values: ",
+                "The following `span_structure()` arguments have no column values: ",
                 paste0("`", empty_entries, "`", collapse = ", ")
             ),
             call = call
