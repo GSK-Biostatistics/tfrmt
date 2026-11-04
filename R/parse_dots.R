@@ -8,7 +8,7 @@ parse_special_dots <- function(x, ...) {
 #' @keywords internal
 parse_special_dots.name <- function(x, ...) {
     if (identical(rlang::as_label(x), "<empty>")) {
-        return(NULL) # nolint: return_linter
+        return(NULL)
     }
 
     rlang::quo(!!x)
@@ -22,19 +22,21 @@ parse_special_dots.call <- function(x, call = rlang::caller_env()) {
     }
 
     if (is_valid_quo_call(x) || is_valid_span_structure_call(x)) {
-        return(rlang::eval_tidy(x)) # nolint: return_linter
+        return(rlang::eval_tidy(x))
     }
 
     call_nm <- rlang::frame_call(call) |> rlang::call_name()
 
+    # nolint start: duplicate_argument_linter
     error_msg_bullets <- c(
             "Invalid entry: {.code {entry_label}}",
             "x" = "Only the following can be entered as contents:",
             "*" = "span structures ({.fn span_structure}),",
-            "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),", # nolint: duplicate_argument_linter
-            "*" = "unquoted expressions representing variable names.", # nolint: duplicate_argument_linter
+            "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),",
+            "*" = "unquoted expressions representing variable names.",
             "i" = "Renaming variables with {.code new_name = old_name} is allowed."
         )
+    # nolint end
 
     if (call_nm == "span_structure") {
         # remove the span structures message as not applicable
