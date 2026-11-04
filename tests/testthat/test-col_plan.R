@@ -1531,66 +1531,30 @@ test_that("col_plan returns correct errors", {
         col_plan(
             func("invalid entry")
         ),
-        paste0(
-            "Invalid entry: `func(\"invalid entry\")`\n",
-            "Only span_structures (`span_structure()`),",
-            " selection helpers (See <https://tidyselect.r-lib.org/reference>),",
-            "  or unquoted expressions representing variable names  can be entered",
-            " as contents. Changing the names of individual variables using",
-            " new_name = old_name syntax is allowable"
-        ),
-        fixed = TRUE
+        "Invalid entry: `func(\"invalid entry\")`",
+       fixed = TRUE
     )
 })
 
 test_that("span_structure misc, including errors", {
-    ## empty inputs
-    expect_error(
-        span_structure(),
-        "span_structure() requires at least one named argument.",
-        fixed = TRUE
-    )
+  ## empty inputs
+  expect_snapshot(span_structure(), error = TRUE)
 
-    ## unnamed values
-    expect_error(
-        span_structure(`blah blah blah`),
-        "Entries of a span_stucture must be named:\n span_structure(`blah blah blah`)",
-        fixed = TRUE
-    )
+  ## unnamed values
+  expect_snapshot(span_structure(`blah blah blah`), error = TRUE)
 
-    ## weird values
-    expect_error(
-        span_structure(
-            name_col = 1i
-        ),
-        "Unexpected entry type in span_structure()",
-        fixed = TRUE
-    )
+  ## weird values
+  expect_snapshot(span_structure(name_col = 1i), error = TRUE)
 
-    ## other functions values
-    expect_error(
-        span_structure(
-            name_col = vars(matrix())
-        ),
-        "Invalid entry: `matrix()`\nOnly selection helpers (See <https://tidyselect.r-lib.org/reference>),",
-        fixed = TRUE
-    )
+  ## other functions values
+  expect_snapshot(span_structure(name_col = vars(matrix())), error = TRUE)
 
-    ## empty string column value
-    expect_error(
-        span_structure(col1 = "", col2 = vars(A, B)),
-        "The following span_structure() arguments have no column values: `col1`",
-        fixed = TRUE
-    )
+  ## empty string column value
+  expect_snapshot(span_structure(col1 = "", col2 = vars(A, B)), error = TRUE)
 
-    ## empty c() column value
-    expect_error(
-        span_structure(col1 = "Test Label", col2 = c()),
-        "The following span_structure() arguments have no column values: `col2`",
-        fixed = TRUE
-    )
+  ## empty c() column value
+  expect_snapshot(span_structure(col1 = "Test Label", col2 = c()), error = TRUE)
 })
-
 
 test_that("Tidyselect subtraction with span_structure", {
     df <- tidyr::crossing(

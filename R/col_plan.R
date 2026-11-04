@@ -262,38 +262,42 @@ is_valid_quo_call <- function(x) {
     as.character(as.list(x)[[1]]) %in% c("vars", "quo")
 }
 
-check_col_plan_dots <- function(x) {
-    lapply(x, function(x) {
-        if (is.name(x)) {
-            if (identical(rlang::as_label(x), "<empty>")) {
+check_col_plan_dots <- function(x, call = rlang::caller_env()) {
+    lapply(x, function(entry) {
+        if (is.name(entry)) {
+            if (identical(rlang::as_label(entry), "<empty>")) {
                 return(NULL) # nolint: return_linter
             } else {
-                return(rlang::quo(!!x)) # nolint: return_linter
+                return(rlang::quo(!!entry)) # nolint: return_linter
             }
-        } else if (is.call(x)) {
-            if (is_valid_tidyselect_call(x)) {
-                rlang::quo(!!x)
+        } else if (is.call(entry)) {
+            if (is_valid_tidyselect_call(entry)) {
+                rlang::quo(!!entry)
             } else if (
-                is_valid_quo_call(x) || is_valid_span_structure_call(x)
+                is_valid_quo_call(entry) || is_valid_span_structure_call(entry)
             ) {
-                return(rlang::eval_tidy(x)) # nolint: return_linter
+                return(rlang::eval_tidy(entry)) # nolint: return_linter
             } else {
-                stop(
-                    "Invalid entry: `",
-                    format(x),
-                    "`\n",
-                    "Only span_structures (`span_structure()`), ",
-                    "selection helpers (See <https://tidyselect.r-lib.org/reference>), ",
-                    " or unquoted expressions representing variable names ",
-                    " can be entered as contents.",
-                    " Changing the names of individual variables using new_name = old_name syntax is allowable",
-                    call. = FALSE
+                entry_label <- format(entry)
+                cli::cli_abort(
+                  c(
+                    "Invalid entry: {.code {entry_label}}",
+                    "x" = "Only the following can be entered as contents:",
+                    "*" = "span structures ({.fn span_structure}),",
+                    "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),",
+                    "*" = "unquoted expressions representing variable names.",
+                    "i" = "Renaming variables with {.code new_name = old_name} is allowed."
+                  ),
+                  call = call
                 )
             }
-        } else if (is.character(x)) {
-            return(as_length_one_quo.character(x)) # nolint: return_linter
+        } else if (is.character(entry)) {
+            return(as_length_one_quo.character(entry)) # nolint: return_linter
         } else {
-            stop("Unexpected entry type in span_structure()")
+          cli::cli_abort(
+            "Unexpected entry type in {.fn span_structure}.",
+            call = call
+          )
         }
     })
 }
