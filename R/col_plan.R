@@ -165,7 +165,7 @@ check_span_structure_args <- function(x, call = rlang::caller_env()) {
           "Entries of a {.fn span_structure} must be named.",
           "i" = "Got: {call_label}"
         ),
-        call = call
+            call = call
         )
     }
     invisible(NULL)
