@@ -1,0 +1,157 @@
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+name: pkgdown-website-preview
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+
+      - name: Install dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::pkgdown
+            any::downlit
+            any::xml2
+            any::ggraph
+            any::ggplot2
+            any::quarto
+            local::.
+          needs: website
+
+      - name: Build pkgdown site
+        shell: Rscript {0}
+        run: pkgdown::build_site(new_process = FALSE, install = FALSE)
+
+      - name: Check out gh-pages branch
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Copy preview into pr-preview/pr-<n>
+        run: |
+          PREVIEW_DIR="gh-pages/pr-preview/pr-${{ github.event.pull_request.number }}"
+          rm -rf "$PREVIEW_DIR"
+          mkdir -p "$PREVIEW_DIR"
+          rsync -av "docs/" "$PREVIEW_DIR/"
+
+      - name: Commit and push
+        working-directory: gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "Deploy preview for PR #${{ github.event.pull_request.number }}"
+            git push
+          fi
+
+      - name: Get Pages site URL
+        id: pages-url
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          URL=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages" \
+            | jq -r '.html_url // empty')
+          if [ -z "$URL" ]; then
+            # Fallback for repos where the Pages API hasn't been enabled/queried yet
+            OWNER="${{ github.repository_owner }}"
+            REPO="${{ github.event.repository.name }}"
+            URL="https://${OWNER}.github.io/${REPO}/"
+          fi
+          echo "url=${URL%/}" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview link on PR
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ steps.pages-url.outputs.url }}/pr-preview/pr-${{ github.event.pull_request.number }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const { owner, repo } = context.repo;
+            const previewUrl = process.env.PREVIEW_URL;
+            const commitSha = process.env.COMMIT_SHA;
+            const shortSha = commitSha.substring(0, 7);
+            const marker = "<!-- pr-preview-comment -->";
+            const body = `${marker}\n📖 Preview deployed: ${previewUrl}\n\nBuilt from commit \`${shortSha}\`.`;
+
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number: prNumber });
+            const existing = comments.data.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body });
+            }
+
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out gh-pages branch
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+
+      - name: Remove preview directory
+        run: |
+          PREVIEW_DIR="pr-preview/pr-${{ github.event.pull_request.number }}"
+          if [ -d "$PREVIEW_DIR" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git rm -r --ignore-unmatch "$PREVIEW_DIR"
+            git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
+            git push
+          else
+            echo "No preview directory found for this PR; nothing to clean up."
+          fi
+
+      - name: Update PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const { owner, repo } = context.repo;
+            const marker = "<!-- pr-preview-comment -->";
+            const body = `${marker}\n🗑️ Preview removed (PR closed).`;
+
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number: prNumber });
+            const existing = comments.data.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body });
+            }
