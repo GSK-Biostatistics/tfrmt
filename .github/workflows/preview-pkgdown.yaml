@@ -92,7 +92,7 @@ jobs:
       - name: Comment preview link on PR
         uses: actions/github-script@v7
         env:
-          PREVIEW_URL: ${{ steps.pages-url.outputs.url }}/pr-preview/pr-${{ github.event.pull_request.number }}
+          PREVIEW_URL: ${{ steps.pages-url.outputs.url }}/pr-preview/pr-${{ github.event.pull_request.number }}/dev
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
         with:
           script: |
