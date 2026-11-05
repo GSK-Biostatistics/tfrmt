@@ -92,9 +92,11 @@ export(tfrmt_to_json)
 export(update_group)
 importFrom(dplyr,vars)
 importFrom(magrittr,"%>%")
-importFrom(rlang,"!!!")
-importFrom(rlang,"!!")
-importFrom(rlang,"%||%")
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  "!!!",
+  "!!",
+  "%||%",
+  ":=",
+  .data
+)
 importFrom(tidyselect,starts_with)
