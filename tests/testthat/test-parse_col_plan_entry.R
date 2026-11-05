@@ -1,7 +1,7 @@
 test_that("symbols are converted to quosures", {
-  res <- parse_col_plan_entry(quote(col1))
-  expect_true(rlang::is_quosure(res))
-  expect_equal(rlang::quo_get_expr(res), quote(col1))
+    res <- parse_col_plan_entry(quote(col1))
+    expect_true(rlang::is_quosure(res))
+    expect_equal(rlang::quo_get_expr(res), quote(col1))
 })
 
 test_that("the empty symbol returns NULL", {
