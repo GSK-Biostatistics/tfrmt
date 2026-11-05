@@ -47,3 +47,10 @@ test_that("invalid calls inside span_structure() omit the span structure bullet"
 test_that("unsupported entry types error", {
     expect_error(parse_col_plan_entry(1i), "Unexpected entry type")
 })
+
+test_that("span_structure() cannot be nested in span_structure()", {
+    expect_error(
+        span_structure(a = span_structure(b = x)),
+        "Invalid entry"
+    )
+})

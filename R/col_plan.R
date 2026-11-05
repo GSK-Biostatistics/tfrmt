@@ -35,7 +35,7 @@
 #'   <[`tidy-select`][dplyr::dplyr_tidy_select]> arguments, unquoted expressions
 #'   separated by commas, and span_structures. span_structures must have the
 #'   arguments named to match the name the column in the input data has to identify the correct columns.
-#'   Each named span entry must include at least one column value; empty values such as "" or c() are not allowed.See the examples
+#'   Each named span entry must include at least one column value; empty values such as "" or c() are not allowed. See the examples
 #' @param .drop Boolean. Should un-listed columns be dropped from the data.
 #'   Defaults to FALSE.
 #'

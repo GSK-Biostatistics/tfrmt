@@ -15,15 +15,21 @@ parse_col_plan_entry.name <- function(x, ...) {
 #' @export
 #' @keywords internal
 parse_col_plan_entry.call <- function(x, call = rlang::caller_env(), ...) {
+    parent_call <- rlang::frame_call(call)
+    in_span_structure <- is.call(parent_call) &&
+        identical(rlang::call_name(parent_call), "span_structure")
+
     if (is_valid_tidyselect_call(x)) {
         return(rlang::quo(!!x))
     }
 
-    if (is_valid_quo_call(x) || is_valid_span_structure_call(x)) {
+    # span structures cannot be nested inside another span_structure()
+    if (
+        is_valid_quo_call(x) ||
+            (!in_span_structure && is_valid_span_structure_call(x))
+    ) {
         return(rlang::eval_tidy(x))
     }
-
-    call_nm <- rlang::frame_call(call) |> rlang::call_name()
 
     entry_label <- format(x)
 
@@ -38,7 +44,7 @@ parse_col_plan_entry.call <- function(x, call = rlang::caller_env(), ...) {
         )
     # nolint end
 
-    if (call_nm == "span_structure") {
+    if (in_span_structure) {
         # remove the span structures message as not applicable when the
         # parent call is span_structure()
         error_msg_bullets <- error_msg_bullets[-3]
