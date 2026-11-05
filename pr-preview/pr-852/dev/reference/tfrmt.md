@@ -134,7 +134,7 @@ tfrmt object
   value of "my_object" over assuming the column argument is an unquoted
   expression and view the entry to `column` as "Hello World". To pass
   "my_object" to tfrmt as a column name, use quotes around the value:
-  `tfrmt(columnn = "my_object")`.
+  `tfrmt(column = "my_object")`.
 
 - Additionally, unquoted expressions that match `tfrmt`'s other argument
   names can cause unexpected results. It is recommended to put quotes
