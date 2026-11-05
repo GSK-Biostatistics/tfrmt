@@ -494,6 +494,10 @@ as_length_one_quo.quosures <- function(x, ..., arg = NULL) {
 #' @export
 #' @keywords internal
 as_length_one_quo.character <- function(x, ...) {
+    if (!nzchar(x)) {
+        return(NULL) # nolint: return_linter
+    }
+
     rlang::quo(!!rlang::sym(x))
 }
 

@@ -283,7 +283,7 @@ display_val_frmts <- function(tfrmt, .data, mock = FALSE, col = NULL) {
     selection <- as.list(substitute(substitute(col)))[-1] %>%
         purrr::map(trim_vars_quo_c) %>%
         do.call("c", .) %>%
-        check_col_plan_dots()
+        parse_col_plan_dots()
 
     col_selection <- col_style_selections(
         selection,

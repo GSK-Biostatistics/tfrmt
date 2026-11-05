@@ -116,7 +116,7 @@ col_plan <- function(..., .drop = FALSE) {
     ## selectively evaluate dots (only if is a span_structure)
     ## confirm contents otherwise
     dots <- as.list(substitute(substitute(...)))[-1]
-    dots <- check_col_plan_dots(dots)
+    dots <- parse_col_plan_dots(dots)
 
     structure(
         list(
@@ -149,21 +149,19 @@ is_span_structure <- function(x) {
 }
 
 check_span_structure_args <- function(x, call = rlang::caller_env()) {
-    if (length(x) == 0) {
+    if (rlang::is_empty(x)) {
         cli::cli_abort(
             "{.fn span_structure} requires at least one named argument.",
             call = call
         )
     }
 
-    x_names <- names(x)
-
-    if (is.null(x_names) || !all(nzchar(x_names))) {
+    if (!rlang::is_named(x)) {
         call_label <- format(rlang::frame_call(call))
         cli::cli_abort(
             c(
-          "Entries of a {.fn span_structure} must be named.",
-          "i" = "Got: {call_label}"
+                "Entries of a {.fn span_structure} must be named.",
+                "i" = "Got: {call_label}"
         ),
             call = call
         )
@@ -174,43 +172,7 @@ check_span_structure_args <- function(x, call = rlang::caller_env()) {
 
 parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
     x_dots <- lapply(x, function(span_entry) {
-        lapply(trim_vars_quo_c(span_entry), function(x) {
-            if (is.name(x)) {
-                if (identical(rlang::as_label(x), "<empty>")) {
-                    return(NULL) # nolint: return_linter
-                } else {
-                    return(rlang::quo(!!x)) # nolint: return_linter
-                }
-            } else if (is.call(x)) {
-                if (is_valid_tidyselect_call(x)) {
-                    rlang::quo(!!x)
-                } else if (is_valid_quo_call(x)) {
-                    return(rlang::eval_tidy(x)) # nolint: return_linter
-                } else {
-                    entry_label <- format(x)
-                    cli::cli_abort(
-                        c(
-                          "Invalid entry: {.code {entry_label}}",
-                          "x" = "Only the following can be entered as contents:",
-                          "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),",
-                          "*" = "unquoted expressions representing variable names.", # nolint: duplicate_argument_linter
-                          "i" = "Renaming variables with {.code new_name = old_name} is allowed."
-                        ),
-                        call = call
-                    )
-                }
-            } else if (is.character(x)) {
-                if (!nzchar(x)) {
-                    return(NULL) # nolint: return_linter
-                }
-                return(as_length_one_quo.character(x)) # nolint: return_linter
-            } else {
-                cli::cli_abort(
-                    "Unexpected entry type in {.fn span_structure}.",
-                    call = call
-                )
-            }
-        })
+        lapply(trim_vars_quo_c(span_entry), parse_col_plan_entry, call = call)
     })
 
     x_dots[!sapply(x_dots, is.null)]
@@ -229,9 +191,9 @@ check_span_structure_values <- function(
     if (length(empty_entries) > 0) {
         cli::cli_abort(
             c(
-          "The following {.fn span_structure} arguments have no column values:",
-          "x" = "{.code {empty_entries}}"
-        ),
+                "The following {.fn span_structure} arguments have no column values:",
+                "x" = "{.code {empty_entries}}"
+            ),
             call = call
         )
     }
@@ -265,42 +227,6 @@ is_valid_quo_call <- function(x) {
     as.character(as.list(x)[[1]]) %in% c("vars", "quo")
 }
 
-check_col_plan_dots <- function(x, call = rlang::caller_env()) {
-    lapply(x, function(entry) {
-        if (is.name(entry)) {
-            if (identical(rlang::as_label(entry), "<empty>")) {
-                return(NULL) # nolint: return_linter
-            } else {
-                return(rlang::quo(!!entry)) # nolint: return_linter
-            }
-        } else if (is.call(entry)) {
-            if (is_valid_tidyselect_call(entry)) {
-                rlang::quo(!!entry)
-            } else if (
-                is_valid_quo_call(entry) || is_valid_span_structure_call(entry)
-            ) {
-                return(rlang::eval_tidy(entry)) # nolint: return_linter
-            } else {
-                entry_label <- format(entry)
-                cli::cli_abort(
-                    c(
-                    "Invalid entry: {.code {entry_label}}",
-                    "x" = "Only the following can be entered as contents:",
-                    "*" = "span structures ({.fn span_structure}),",
-                    "*" = "selection helpers (see {.url https://tidyselect.r-lib.org/reference}),", # nolint: duplicate_argument_linter
-                    "*" = "unquoted expressions representing variable names.", # nolint: duplicate_argument_linter
-                    "i" = "Renaming variables with {.code new_name = old_name} is allowed."
-                  ),
-                    call = call
-                )
-            }
-        } else if (is.character(entry)) {
-            return(as_length_one_quo.character(entry)) # nolint: return_linter
-        } else {
-            cli::cli_abort(
-                "Unexpected entry type in {.fn col_plan}.",
-                call = call
-            )
-        }
-    })
+parse_col_plan_dots <- function(x, call = rlang::caller_env()) {
+    lapply(x, parse_col_plan_entry, call = call)
 }

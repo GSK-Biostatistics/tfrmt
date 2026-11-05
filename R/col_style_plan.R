@@ -116,7 +116,7 @@ col_style_structure <- function(
     cols <- as.list(substitute(substitute(col)))[-1] %>%
         purrr::map(trim_vars_quo_c) %>%
         do.call("c", .) %>%
-        check_col_plan_dots()
+        parse_col_plan_dots()
 
     if (is.null(width) && is.null(align)) {
         rlang::abort(
