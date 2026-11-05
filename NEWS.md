@@ -9,8 +9,8 @@
 
 ## Bug fixes
 * Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
-* `span_structure()` now gives a clear error when called with no arguments (#639).
-
+* `span_structure()` now gives clear errors for invalid input: calling it with no arguments, giving a span an empty value (e.g. `""` or `c()`), or nesting a `span_structure()` inside another one (#639).
+* Error messages for invalid entries in `col_plan()` and `span_structure()` have been reworded to be clearer.
 
 # tfrmt 0.4.0
 
