@@ -1,7 +1,7 @@
 test_that("symbols are converted to quosures", {
   res <- parse_col_plan_entry(quote(col1))
   expect_true(rlang::is_quosure(res))
-  expect_equal(rlang::quo_get_expr(res), quote(col1))
+  expect_identical(rlang::quo_get_expr(res), quote(col1))
 })
 
 test_that("the empty symbol returns NULL", {
@@ -11,11 +11,11 @@ test_that("the empty symbol returns NULL", {
 test_that("tidyselect calls are converted to quosures without being evaluated", {
   res <- parse_col_plan_entry(quote(starts_with("a")))
   expect_true(rlang::is_quosure(res))
-  expect_equal(rlang::quo_get_expr(res), quote(starts_with("a")))
+  expect_identical(rlang::quo_get_expr(res), quote(starts_with("a")))
 
   res_neg <- parse_col_plan_entry(quote(-col1))
   expect_true(rlang::is_quosure(res_neg))
-  expect_equal(rlang::quo_get_expr(res_neg), quote(-col1))
+  expect_identical(rlang::quo_get_expr(res_neg), quote(-col1))
 })
 
 test_that("vars() calls are evaluated", {
@@ -32,7 +32,7 @@ test_that("span_structure() calls are evaluated", {
 test_that("character entries become length-one quosures", {
   res <- parse_col_plan_entry("col1")
   expect_true(rlang::is_quosure(res))
-  expect_equal(rlang::quo_get_expr(res), quote(col1))
+  expect_identical(rlang::quo_get_expr(res), quote(col1))
 })
 
 test_that("invalid calls error", {
