@@ -1,10 +1,10 @@
-parse_special_dots <- function(x, ...) {
-    UseMethod("parse_special_dots", x)
+parse_col_plan_entry <- function(x, ...) {
+    UseMethod("parse_col_plan_entry", x)
 }
 
 #' @export
 #' @keywords internal
-parse_special_dots.name <- function(x, ...) {
+parse_col_plan_entry.name <- function(x, ...) {
     if (identical(rlang::as_label(x), "<empty>")) {
         return(NULL)
     }
@@ -14,7 +14,7 @@ parse_special_dots.name <- function(x, ...) {
 
 #' @export
 #' @keywords internal
-parse_special_dots.call <- function(x, call = rlang::caller_env(), ...) {
+parse_col_plan_entry.call <- function(x, call = rlang::caller_env(), ...) {
     if (is_valid_tidyselect_call(x)) {
         return(rlang::quo(!!x))
     }
@@ -52,13 +52,13 @@ parse_special_dots.call <- function(x, call = rlang::caller_env(), ...) {
 
 #' @export
 #' @keywords internal
-parse_special_dots.character <- function(x, ...) {
+parse_col_plan_entry.character <- function(x, ...) {
     as_length_one_quo(x)
 }
 
 #' @export
 #' @keywords internal
-parse_special_dots.default <- function(x, call = rlang::caller_env(), ...) {
+parse_col_plan_entry.default <- function(x, call = rlang::caller_env(), ...) {
     call_label <- format(rlang::frame_call(call))
 
     cli::cli_abort(

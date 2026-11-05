@@ -172,7 +172,7 @@ check_span_structure_args <- function(x, call = rlang::caller_env()) {
 
 parse_span_structure_dots <- function(x, call = rlang::caller_env()) {
     x_dots <- lapply(x, function(span_entry) {
-        lapply(trim_vars_quo_c(span_entry), parse_special_dots, call = call)
+        lapply(trim_vars_quo_c(span_entry), parse_col_plan_entry, call = call)
     })
 
     x_dots[!sapply(x_dots, is.null)]
@@ -228,5 +228,5 @@ is_valid_quo_call <- function(x) {
 }
 
 parse_col_plan_dots <- function(x, call = rlang::caller_env()) {
-    lapply(x, parse_special_dots, call = call)
+    lapply(x, parse_col_plan_entry, call = call)
 }
