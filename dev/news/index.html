@@ -76,6 +76,9 @@
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
 <ul><li>Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/660" class="external-link">#660</a>).</li>
+<li>
+<code><a href="../reference/col_plan.html">span_structure()</a></code> now gives clear errors for invalid input: calling it with no arguments, giving a span an empty value (e.g. <code>""</code> or <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>), or nesting a <code><a href="../reference/col_plan.html">span_structure()</a></code> inside another one (<a href="https://github.com/GSK-Biostatistics/tfrmt/issues/639" class="external-link">#639</a>).</li>
+<li>Error messages for invalid entries in <code><a href="../reference/col_plan.html">col_plan()</a></code> and <code><a href="../reference/col_plan.html">span_structure()</a></code> have been reworded to be clearer.</li>
 </ul></div>
 </div>
     <div class="section level2">

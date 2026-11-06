@@ -19,12 +19,14 @@ span_structure(...)
 
 - ...:
 
-  For a col_plan and span_structure,
+  For a `col_plan` and `span_structure`,
   \<[`tidy-select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html)\>
   arguments, unquoted expressions separated by commas, and
   span_structures. span_structures must have the arguments named to
   match the name the column in the input data has to identify the
-  correct columns. See the examples
+  correct columns. Each named span entry must include at least one
+  column value; empty values such as "" or c() are not allowed. See the
+  examples
 
 - .drop:
 

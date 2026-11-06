@@ -89,10 +89,11 @@ opposed to preserving the first location.</p>
 
 
 <dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>For a col_plan and span_structure,
+<dd><p>For a <code>col_plan</code> and <code>span_structure</code>,
 &lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html" class="external-link">tidy-select</a></code>&gt; arguments, unquoted expressions
 separated by commas, and span_structures. span_structures must have the
-arguments named to match the name the column in the input data has to identify the correct columns. See the examples</p></dd>
+arguments named to match the name the column in the input data has to identify the correct columns.
+Each named span entry must include at least one column value; empty values such as "" or c() are not allowed. See the examples</p></dd>
 
 
 <dt id="arg--drop">.drop<a class="anchor" aria-label="anchor" href="#arg--drop"></a></dt>

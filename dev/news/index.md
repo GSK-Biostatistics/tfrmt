@@ -26,6 +26,18 @@
 - Robustly check that all required inputs (column, param, and value) are
   supplied to prevent unhelpful errors during table printing
   ([\#660](https://github.com/GSK-Biostatistics/tfrmt/issues/660)).
+- [`span_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/col_plan.md)
+  now gives clear errors for invalid input: calling it with no
+  arguments, giving a span an empty value (e.g. `""` or
+  [`c()`](https://rdrr.io/r/base/c.html)), or nesting a
+  [`span_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/col_plan.md)
+  inside another one
+  ([\#639](https://github.com/GSK-Biostatistics/tfrmt/issues/639)).
+- Error messages for invalid entries in
+  [`col_plan()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/col_plan.md)
+  and
+  [`span_structure()`](https://gsk-biostatistics.github.io/tfrmt/dev/reference/col_plan.md)
+  have been reworded to be clearer.
 
 ## tfrmt 0.4.0
 
