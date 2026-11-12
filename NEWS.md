@@ -1,16 +1,21 @@
-# tfrmt (development version)
+# tfrmt 0.5.0
 
 ## Improvements
-
-* The argument order for `frmt_structure()` has changed, with the ellipsis (`...`) now being in the first position. Users no longer need to explicitly pass `group_val = ".default"` and `label_val = ".default"`. (#501, @dragosmg)
-* Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
-* `footnote_structure()` now returns its elements in the same order as its arguments (`footnote_text`, `column_val`, `group_val`, `label_val`) (#589).
+* The argument order for `frmt_structure()` has changed, with the ellipsis (`...`) now being in the first position. Users no longer need to explicitly pass `group_val = ".default"` and `label_val = ".default"`. Code that passed these arguments positionally will need to use named arguments (#501, #751, @dragosmg).
+* `footnote_structure()` now returns its elements in the same order as its arguments (`footnote_text`, `column_val`, `group_val`, `label_val`) (#589, #737).
 * Add markdown processing of `title`, `subtitle`, and `source_note` (#664).
+* `col_plan()` and `span_structure()` now share a single entry parser, so both give consistent, clearer error messages for invalid entries. The messages show the offending entry and list what is allowed (span structures, tidyselect helpers, unquoted variable names, and renaming with `new_name = old_name`) (#851).
+* Internal type and argument checks now use `{rlang}` standalone checks and `{cli}` errors for more consistent error messages (#810, #839, #843).
+* `{cards}` 0.9.0 or higher (previously 0.8.0) and `{rlang}` 1.1.0 or higher are now required.
+* Package functions are now called with explicit namespace prefixes (e.g. `dplyr::mutate()`) instead of being imported wholesale, and a broad set of additional `{lintr}` linters were enabled with all resulting warnings fixed (#773, #785, #797, #817).
+* Removed unused `grp_row_test_data` function, which improves test coverage for `R/apply_row_grp_plan.R` (#662).
+* Increased test coverage across `apply_tfrmt()`, `apply_page_plan()`, `footnote_plan()` and `tfrmt_checks()` (#657, #661, #663, #736).
 
 ## Bug fixes
 * Robustly check that all required inputs (column, param, and value) are supplied to prevent unhelpful errors during table printing (#660).
-* `span_structure()` now gives clear errors for invalid input: calling it with no arguments, giving a span an empty value (e.g. `""` or `c()`), or nesting a `span_structure()` inside another one (#639).
-* Error messages for invalid entries in `col_plan()` and `span_structure()` have been reworded to be clearer.
+* `span_structure()` now gives clear errors for invalid input: calling it with no arguments, giving a span an empty value (e.g. `""` or `c()`), or nesting a `span_structure()` inside another one (#639, #844).
+* Fix bug in `shuffle_card()` where the `by` information was dropped for `ard_stack` objects, and the "`by` could not be inferred" message was shown for them. The message is still shown for other `bind_ard` objects (#834).
+* Fix bug in `display_row_frmts()` where non-boolean input gave an unhelpful "invalid argument" error.
 
 # tfrmt 0.4.0
 

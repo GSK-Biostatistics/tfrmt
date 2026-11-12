@@ -1,6 +1,6 @@
 Package: tfrmt
 Title: Applies Display Metadata to Analysis Results Datasets
-Version: 0.4.0.9000
+Version: 0.5.0
 Authors@R: c(
     person("Alanah", "Jonas", , "alanah.x.jonas@gsk.com", role = c("aut", "cre")),
     person("Becca", "Krouse", , "becca.z.krouse@gsk.com", role = "aut"),
@@ -52,8 +52,6 @@ Suggests:
     survival,
     testthat (>= 3.0.0),
     withr
-Remotes:
-    pharmaverse/cards
 Config/roxygen2/markdown: TRUE
 Config/roxygen2/version: 8.1.1
 Config/testthat/edition: 3
