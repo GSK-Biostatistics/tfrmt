@@ -21,3 +21,4 @@ man/figures/
 ^\.lintr$
 ^\.lintr_restrictive$
 ^TODO\.md$
+^revdep$
