@@ -1,6 +1,6 @@
 # Changelog
 
-## tfrmt (development version)
+## tfrmt 0.5.0
 
 ### Improvements
 
@@ -8,18 +8,54 @@
   [`frmt_structure()`](https://gsk-biostatistics.github.io/tfrmt/reference/frmt_structure.md)
   has changed, with the ellipsis (`...`) now being in the first
   position. Users no longer need to explicitly pass
-  `group_val = ".default"` and `label_val = ".default"`.
+  `group_val = ".default"` and `label_val = ".default"`. Code that
+  passed these arguments positionally will need to use named arguments
   ([\#501](https://github.com/GSK-Biostatistics/tfrmt/issues/501),
-  [@dragosmg](https://github.com/dragosmg))
-- Removed unused `grp_row_test_data` function, which improves test
-  coverage for `R/apply_row_grp_plan.R`
-  ([\#662](https://github.com/GSK-Biostatistics/tfrmt/issues/662)).
+  [\#751](https://github.com/GSK-Biostatistics/tfrmt/issues/751),
+  [@dragosmg](https://github.com/dragosmg)).
 - [`footnote_structure()`](https://gsk-biostatistics.github.io/tfrmt/reference/footnote_structure.md)
   now returns its elements in the same order as its arguments
   (`footnote_text`, `column_val`, `group_val`, `label_val`)
-  ([\#589](https://github.com/GSK-Biostatistics/tfrmt/issues/589)).
+  ([\#589](https://github.com/GSK-Biostatistics/tfrmt/issues/589),
+  [\#737](https://github.com/GSK-Biostatistics/tfrmt/issues/737)).
 - Add markdown processing of `title`, `subtitle`, and `source_note`
   ([\#664](https://github.com/GSK-Biostatistics/tfrmt/issues/664)).
+- [`col_plan()`](https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.md)
+  and
+  [`span_structure()`](https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.md)
+  now share a single entry parser, so both give consistent, clearer
+  error messages for invalid entries. The messages show the offending
+  entry and list what is allowed (span structures, tidyselect helpers,
+  unquoted variable names, and renaming with `new_name = old_name`)
+  ([\#851](https://github.com/GSK-Biostatistics/tfrmt/issues/851)).
+- Internal type and argument checks now use
+  [rlang](https://rlang.r-lib.org) standalone checks and
+  [cli](https://cli.r-lib.org) errors for more consistent error messages
+  ([\#810](https://github.com/GSK-Biostatistics/tfrmt/issues/810),
+  [\#839](https://github.com/GSK-Biostatistics/tfrmt/issues/839),
+  [\#843](https://github.com/GSK-Biostatistics/tfrmt/issues/843)).
+- [cards](https://github.com/pharmaverse/cards) 0.9.0 or higher
+  (previously 0.8.0) and [rlang](https://rlang.r-lib.org) 1.1.0 or
+  higher are now required.
+- Package functions are now called with explicit namespace prefixes
+  (e.g. [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html))
+  instead of being imported wholesale, and a broad set of additional
+  [lintr](https://lintr.r-lib.org) linters were enabled with all
+  resulting warnings fixed
+  ([\#773](https://github.com/GSK-Biostatistics/tfrmt/issues/773),
+  [\#785](https://github.com/GSK-Biostatistics/tfrmt/issues/785),
+  [\#797](https://github.com/GSK-Biostatistics/tfrmt/issues/797),
+  [\#817](https://github.com/GSK-Biostatistics/tfrmt/issues/817)).
+- Removed unused `grp_row_test_data` function, which improves test
+  coverage for `R/apply_row_grp_plan.R`
+  ([\#662](https://github.com/GSK-Biostatistics/tfrmt/issues/662)).
+- Increased test coverage across `apply_tfrmt()`, `apply_page_plan()`,
+  [`footnote_plan()`](https://gsk-biostatistics.github.io/tfrmt/reference/footnote_plan.md)
+  and `tfrmt_checks()`
+  ([\#657](https://github.com/GSK-Biostatistics/tfrmt/issues/657),
+  [\#661](https://github.com/GSK-Biostatistics/tfrmt/issues/661),
+  [\#663](https://github.com/GSK-Biostatistics/tfrmt/issues/663),
+  [\#736](https://github.com/GSK-Biostatistics/tfrmt/issues/736)).
 
 ### Bug fixes
 
@@ -32,12 +68,17 @@
   [`c()`](https://rdrr.io/r/base/c.html)), or nesting a
   [`span_structure()`](https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.md)
   inside another one
-  ([\#639](https://github.com/GSK-Biostatistics/tfrmt/issues/639)).
-- Error messages for invalid entries in
-  [`col_plan()`](https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.md)
-  and
-  [`span_structure()`](https://gsk-biostatistics.github.io/tfrmt/reference/col_plan.md)
-  have been reworded to be clearer.
+  ([\#639](https://github.com/GSK-Biostatistics/tfrmt/issues/639),
+  [\#844](https://github.com/GSK-Biostatistics/tfrmt/issues/844)).
+- Fix bug in
+  [`shuffle_card()`](https://gsk-biostatistics.github.io/tfrmt/reference/shuffle_card.md)
+  where the `by` information was dropped for `ard_stack` objects, and
+  the “`by` could not be inferred” message was shown for them. The
+  message is still shown for other `bind_ard` objects
+  ([\#834](https://github.com/GSK-Biostatistics/tfrmt/issues/834)).
+- Fix bug in
+  [`display_row_frmts()`](https://gsk-biostatistics.github.io/tfrmt/reference/display_row_frmts.md)
+  where non-boolean input gave an unhelpful “invalid argument” error.
 
 ## tfrmt 0.4.0
 
